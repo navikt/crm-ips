@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
     <fieldOverrides>
-        <field>IsReminderSet</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <fieldOverrides>
         <field>IsVisibleInSelfService</field>
         <formula>true</formula>
     </fieldOverrides>
     <fieldOverrides>
-        <field>ReminderDateTime</field>
-        <formula>Work_Trail__c.ips_Start_up_meeting_completed__c -(1/24)</formula>
+        <field>Priority</field>
+        <literalValue>Normal</literalValue>
     </fieldOverrides>
-    <fieldOverrides>
-        <field>Subject</field>
-        <formula>&quot;Meeting with Employer&quot;</formula>
-    </fieldOverrides>
-    <label>Meeting with Employer</label>
+    <label>New Task</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
         <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Subject</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ActivityDate</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>WhoId</field>
@@ -28,7 +30,13 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Description</field>
+                <field>Status</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>true</emptySpace>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -43,46 +51,13 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>IsVisibleInSelfService</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-        </quickActionLayoutColumns>
-        <quickActionLayoutColumns>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>Subject</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>ips_Subcategory_Type__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>StartDateTime</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>EndDateTime</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>ips_Travel_time__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>ips_Out_in_the_field__c</field>
+                <field>Description</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
     </quickActionLayout>
-    <successMessage>Meeting created</successMessage>
-    <targetObject>Event</targetObject>
+    <targetObject>Task</targetObject>
     <targetParentField>What</targetParentField>
-    <targetRecordType>Event.IPS_Event</targetRecordType>
+    <targetRecordType>Task.IPS_Task</targetRecordType>
     <type>Create</type>
 </QuickAction>
