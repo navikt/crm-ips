@@ -1,0 +1,260 @@
+
+    <apex:page showHeader="false" standardController="Individual_Placement_and_Support__c"  
+    renderAs="pdf"
+    sidebar="false" 
+    standardStylesheets="false" 
+    applyBodyTag="false" 
+    applyHtmlTag="false">
+<head>
+<!-- <apex:stylesheet value="{!$Resource.customCSS}" /> -->
+<title>SLDS ResponsiveDesign Visualforce Page in Salesforce Mobile</title>
+<style>
+   .createdDate{
+       float: right;
+       font-size:8px;
+   }
+   .boldtext{
+       font-weight: bolder;
+   }
+   table{
+     -fs-table-paginate: paginate;
+     border-collapse: collapse;
+     border-spacing: 0;
+ }
+</style>
+</head>
+<body style="font-family: SansSerif">
+      <div class="header">
+         <div class="createdDate">
+             Opprettet : <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                             <apex:param value="{!TODAY()}" /> 
+                         </apex:outputText>
+
+         </div>
+     <table width="50%">
+         <tr>
+             <td>
+               <apex:image url="{!$Resource.logo}" width="99" height="65"/> 
+             </td>
+         </tr>
+     </table>
+ </div>
+  <table width="100%">
+      <tr>
+          <td class="stronger" style="font-weight: bold; font-size:24px; padding-top:2em">
+                 Sluttrapport for {!Individual_Placement_and_Support__c.ips_Participant__r.FirstName} {!Individual_Placement_and_Support__c.ips_Participant__r.LastName}
+          </td>
+      </tr>
+     <tr >
+     <td style="padding-top:2em">
+         <b>Deltaker:</b> <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Participant__r.FirstName}"></apex:outputField> <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Participant__r.LastName}"></apex:outputField><br />
+         <b>Jobbspesialist: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.Owner.FirstName}"></apex:outputField> <br />
+         <b>Startdato: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.CreatedDate}"></apex:outputField>
+         <b>Sluttdato: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.LastModifiedDate}"></apex:outputField>
+     </td>
+ </tr>
+<br />
+ <tr>
+     <td>
+         <b>Møtehistorikk:</b>
+         <table style="margin:1em">
+             <tr>
+                 <td > 
+                     Oslo Lakkering
+                     13. Mai <br />
+                     <i>Pratet med sjefen. Ser ikke ut til å passe bra med deltaker, da dette er et stort neste industrielt verksted</i>
+                 </td>
+             </tr>
+             <tr>
+                <td > 
+                    Tony Treffeling
+                    11. Mai <br />
+                    <i>Trivelig folk, men arbeidsoppgavene virker ikke helt riktige for deltakeren</i>
+                </td>
+            </tr>
+         </table>
+     </td>
+ </tr>
+ <tr>
+    <td class="stronger" style="font-weight: bold; font-size:18px; padding-top:2em">
+        Yrkesrapport
+    </td>
+</tr>
+<tr>
+    <td>
+        <b>Ønsket yrke/bransje/karriere: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Desired_profession_industry_career__c	}"></apex:outputField>
+    </td>
+</tr>	
+<tr>
+    <td>
+        <b>Ønsket arbeidsmiljø: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Desired_working_environment__c}"></apex:outputField>
+    </td>
+</tr>
+<tr>
+    <td>
+        <b>Ønskede arbeidsoppgaver: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Desired_work_tasks__c	}"></apex:outputField>
+    </td>
+</tr>
+<tr>
+    <td>
+        <b>Personlige egenskaper: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.Personal_Qualities__c}"></apex:outputField>
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Mobilitet: </b><apex:outputField value="{!Individual_Placement_and_Support__c.ips_Mobility__c}"></apex:outputField>
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Helse: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Health__c	}"></apex:outputField>
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Økonomiske forhold: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Economic_conditions__c	}"></apex:outputField>
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Sosiale forhold: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Social_conditions__c	}"></apex:outputField>
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Interreser: </b>  <apex:outputField value="{!Individual_Placement_and_Support__c.ips_Interests_Hobbies__c	}"></apex:outputField>
+    </td>
+</tr>
+
+<tr>
+    <td class="stronger" style="font-weight: bold; font-size:18px; padding-top:2em">
+        Jobb
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Arbeidsgiver:</b> Hadeland Lakkering 
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Start:</b> 7. Aril 2020
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Slutt:</b>
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Form:</b> Fast Stilling 
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Stilling:</b> Lakkerer
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Timer:</b> 25
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Hva funker/funker ikke:</b> Lite og tett knyttet arbeidsmiljø fungerer veldig godt for deltakerne. 
+    </td>
+</tr>
+<tr>
+    <td>	
+        <b>Jobbstøtte</b> 
+    </td>
+</tr>
+<!--
+  <tr>
+     <td>
+         <b>Interesser:</b>  <apex:outputField value="{!IndividualSupport__c.Interesser_hobbyer__c}"	/>
+     </td>
+ </tr>
+  <tr>
+     <td>
+         <b>Personlige egenskaper:</b> <apex:outputField value="{!IndividualSupport__c.Interesser_hobbyer__c}" 	/>
+     </td>
+ </tr>
+ <tr>
+     <td>
+         <b>Helse:</b> <apex:outputField value="{!IndividualSupport__c.Helse__c}" 	/>
+     </td>
+ </tr>
+ <tr>
+     <td>
+         <b>Nettverk:</b> <apex:outputField value="{!IndividualSupport__c.Nettverk__c}"/>
+     </td>
+ </tr>
+ <tr>
+     <td>
+       <b>Samtale med tidligere arbeidsgivere:</b> <apex:outputField value="{!IndividualSupport__c.Samtale_med_tidligere_arbeidsgivere__c}"	/>
+     </td>
+ </tr>
+ <tr>
+     <td>
+       <b>Kulturbakgrunn:</b> <apex:outputField value="{!IndividualSupport__c.Kulturbakgrunn__c}"	/>
+     </td>
+ </tr>
+  <tr>
+     <td>
+       <b>Omgivelsesforhold :</b> <apex:outputField value="{!IndividualSupport__c.Omgivelsesforhold__c}"	/>
+     </td>
+ </tr>
+ <tr>
+     <td>
+       <b>Økonomi :</b> <apex:outputField value="{!IndividualSupport__c.konomi__c}"	/>
+     </td>
+ </tr>
+ <tr>
+     <td>
+       <b>Forberedelser til arbeidslivet:</b> <apex:outputField value="{!IndividualSupport__c.Forberedelser_til_arbeidslivet__c}"	/>
+     </td>
+ </tr>
+ <tr>
+     <td>
+       <b>Prioriterte yrkesønsker: </b> <apex:outputField value="{!IndividualSupport__c.Prioriterte_yrkes_nsker__c}"	/>
+     </td>
+ </tr>      -->       
+ </table>
+ 
+ <!--
+ <div>
+    <p class="boldtext">
+      Gjennomførte møter  
+     </p> 	
+     <table class="w3-light-grey" style="width:100%"> 
+         <tr>
+           <th>Type</th>
+           <th style="margin-left:3em">Dato</th>
+         </tr>
+         <apex:repeat var="event" value="{!eventList}">
+            <tr>
+              <td><apex:outputText value="{!event.Subject}"/></td>  
+            
+              <td><apex:outputText value=" {0,date,d. MMM yyyy}" style="float:right">
+                                                             <apex:param value="{!event.ActivityDate}" /> 
+                                                             </apex:outputText></td>
+              
+             </tr>
+             <tr >
+                  <td style="text-indent:40px; font-style:italic; max-width:50%"><i><apex:outputText value="{!event.Description}" /></i></td><td></td>
+             </tr>
+              <tr >
+                  <td style="text-indent:40px; font-style:italic; max-width:50%">
+                     <i> <apex:outputText rendered="{!NOT(ISBLANK(event.Who.FirstName))}" value=" Deltaker: {!event.Who.FirstName} {!event.Who.LastName} "/> </i>
+                  </td>
+                  <td></td>
+             </tr>
+         </apex:repeat>
+     </table>
+ </div> -->
+</body> 
+
+</apex:page>
