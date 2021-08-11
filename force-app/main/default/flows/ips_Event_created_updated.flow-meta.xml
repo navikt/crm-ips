@@ -200,6 +200,9 @@
                     <stringValue>Employer meeting</stringValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>myRule_6_A1</targetReference>
+            </connector>
             <label>Emlpoyer meeting created</label>
         </rules>
     </decisions>
@@ -210,9 +213,20 @@
                 <stringValue>[Event].AccountId </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_4_myRule_3_A3_5442872412</name>
+        <name>formula_4_myRule_3_A3_5551565911</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.AccountId}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>DATEVALUE([Event].StartDateTime ) </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_7_myRule_6_A1_8110560565</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!myVariable_current.StartDateTime} )</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -386,7 +400,7 @@
             </processMetadataValues>
             <field>WhatId</field>
             <value>
-                <elementReference>formula_4_myRule_3_A3_5442872412</elementReference>
+                <elementReference>formula_4_myRule_3_A3_5551565911</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -426,6 +440,187 @@
             </value>
         </inputAssignments>
         <object>Event</object>
+    </recordCreates>
+    <recordCreates>
+        <name>myRule_6_A1</name>
+        <label>Create public record</label>
+        <locationX>600</locationX>
+        <locationY>200</locationY>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Date</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Due Date Only</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>formula_7_myRule_6_A1_8110560565</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Priority</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Priority</field>
+            <value>
+                <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Status</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Subject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Subject</field>
+            <value>
+                <stringValue>IPS/UO Møte</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Related To ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Account;Asset;AssetRelationship;AssetWarranty;AssignedResource;Campaign;Case;CommSubscriptionConsent;ContactRequest;Contract;ContractLineItem;DelegatedAccount;Entitlement;Expense;ExpenseReport;ExpenseReportEntry;Image;ListEmail;LiveAgentSession;LiveChatTranscript;Location;MaintenanceAsset;MaintenancePlan;Opportunity;Order;PartyConsent;ProcessException;Product2;ProductConsumed;ProductItem;ProductRequest;ProductRequestLineItem;ProductServiceCampaign;ProductServiceCampaignItem;ProductTransfer;ResourceAbsence;ReturnOrder;ReturnOrderLineItem;ServiceAppointment;ServiceContract;ServiceCrew;ServiceCrewMember;ServiceResource;Shift;ShiftPattern;ShiftPatternEntry;Shipment;ShipmentItem;Solution;TimeSheet;TimeSheetEntry;WarrantyTerm;WorkOrder;WorkOrderLineItem;WorkPlan;WorkPlanSelectionRule;WorkPlanTemplate;WorkPlanTemplateEntry;WorkStep;WorkStepTemplate;Work_Trail__c;ips_Job__c</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>WhatId</field>
+            <value>
+                <elementReference>myVariable_current.AccountId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
     </recordCreates>
     <recordUpdates>
         <processMetadataValues>
