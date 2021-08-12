@@ -1,5 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>customNotifTypeName</name>
+            <value>
+                <stringValue>ips_Meeting_Collision</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>recipientCategory</name>
+            <value>
+                <stringValue>user</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>recipientType</name>
+            <value>
+                <stringValue>currentUser</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_17_A1</name>
+        <label>Send Meeting Collision Notification</label>
+        <locationX>1700</locationX>
+        <locationY>200</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <stringValue>000000000000000</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>customNotifTypeName</name>
+            <value>
+                <stringValue>ips_Meeting_Collision</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Møtekollisjon</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <stringValue>Dobbeltbooking av møte - Sjekk kalenderen din!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <stringValue>{!myVariable_current.Id}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>recipientIds</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>500.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>myCollection_myRule_17_A1recipientIds</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <assignments>
+        <name>myAssignment_myRule_17_A1</name>
+        <label>myAssignment_myRule_17_A1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myCollection_myRule_17_A1recipientIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>formula_18_myRule_17_A1_7851368936</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myRule_17_A1</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -114,7 +228,7 @@
                 <leftValueReference>myVariable_current.WhatId</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <elementReference>formula_2_myRule_1_3221920973</elementReference>
+                    <elementReference>formula_2_myRule_1_0271391706</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -224,6 +338,9 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>myAssignment_myRule_17_A1</targetReference>
+            </connector>
             <label>Collision Detected</label>
         </rules>
     </decisions>
@@ -341,7 +458,7 @@
                 <leftValueReference>myVariable_current.WhatId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>formula_6_myRule_5_9515679255</elementReference>
+                    <elementReference>formula_6_myRule_5_8791578059</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -412,7 +529,7 @@
                 <stringValue> [Event].Account.Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_10_myRule_9_A2_1574232341</name>
+        <name>formula_10_myRule_9_A2_0253562248</name>
         <dataType>String</dataType>
         <expression> {!myVariable_current.Account.Id}</expression>
     </formulas>
@@ -423,7 +540,7 @@
                 <stringValue>DATEVALUE([Event].StartDateTime ) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_11_myRule_9_A1_5606390083</name>
+        <name>formula_11_myRule_9_A1_4058898744</name>
         <dataType>Date</dataType>
         <expression>DATEVALUE({!myVariable_current.StartDateTime} )</expression>
     </formulas>
@@ -434,7 +551,7 @@
                 <stringValue>[Event].StartDateTime - ([Event].ips_Travel_time__c  /1440) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_14_myRule_13_A1_8697894840</name>
+        <name>formula_14_myRule_13_A1_0505829035</name>
         <dataType>DateTime</dataType>
         <expression>{!myVariable_current.StartDateTime} - ({!myVariable_current.ips_Travel_time__c}  /1440)</expression>
     </formulas>
@@ -445,9 +562,20 @@
                 <stringValue>&quot;Reisetid til&quot; + [Event].Subject</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_15_myRule_13_A1_9552702141</name>
+        <name>formula_15_myRule_13_A1_0906990403</name>
         <dataType>String</dataType>
         <expression>&quot;Reisetid til&quot; + {!myVariable_current.Subject}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>{!$User.Id}</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_18_myRule_17_A1_7851368936</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -456,7 +584,7 @@
                 <stringValue>&apos;00U1x&apos;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_3221920973</name>
+        <name>formula_2_myRule_1_0271391706</name>
         <dataType>String</dataType>
         <expression>&apos;00U1x&apos;</expression>
     </formulas>
@@ -467,7 +595,7 @@
                 <stringValue>[Event].StartDateTime</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_2120767885</name>
+        <name>formula_3_myRule_1_A1_6848060498</name>
         <dataType>DateTime</dataType>
         <expression>{!myVariable_current.StartDateTime}</expression>
     </formulas>
@@ -478,7 +606,7 @@
                 <stringValue>&apos;00U1x&apos;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_6_myRule_5_9515679255</name>
+        <name>formula_6_myRule_5_8791578059</name>
         <dataType>String</dataType>
         <expression>&apos;00U1x&apos;</expression>
     </formulas>
@@ -489,7 +617,7 @@
                 <stringValue>[Event].AccountId </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_7_myRule_5_A3_1294620623</name>
+        <name>formula_7_myRule_5_A3_4317289311</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.AccountId}</expression>
     </formulas>
@@ -525,6 +653,9 @@
         <label>Create Travel time meeting</label>
         <locationX>1300</locationX>
         <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision16</targetReference>
+        </connector>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>
@@ -648,7 +779,7 @@
             </processMetadataValues>
             <field>StartDateTime</field>
             <value>
-                <elementReference>formula_14_myRule_13_A1_8697894840</elementReference>
+                <elementReference>formula_14_myRule_13_A1_0505829035</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -684,7 +815,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_15_myRule_13_A1_9552702141</elementReference>
+                <elementReference>formula_15_myRule_13_A1_0906990403</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -862,7 +993,7 @@
             </processMetadataValues>
             <field>WhatId</field>
             <value>
-                <elementReference>formula_7_myRule_5_A3_1294620623</elementReference>
+                <elementReference>formula_7_myRule_5_A3_4317289311</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -944,7 +1075,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_11_myRule_9_A1_5606390083</elementReference>
+                <elementReference>formula_11_myRule_9_A1_4058898744</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1201,7 +1332,7 @@
             </processMetadataValues>
             <field>ips_Start_up_meeting_completed__c</field>
             <value>
-                <elementReference>formula_3_myRule_1_A1_2120767885</elementReference>
+                <elementReference>formula_3_myRule_1_A1_6848060498</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -1533,13 +1664,20 @@
             </processMetadataValues>
             <field>ips_Business__c</field>
             <value>
-                <elementReference>formula_10_myRule_9_A2_1574232341</elementReference>
+                <elementReference>formula_10_myRule_9_A2_0253562248</elementReference>
             </value>
         </inputAssignments>
         <object>Event</object>
     </recordUpdates>
     <startElementReference>myDecision</startElementReference>
     <status>Draft</status>
+    <variables>
+        <name>myCollection_myRule_17_A1recipientIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
