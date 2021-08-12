@@ -114,7 +114,7 @@
                 <leftValueReference>myVariable_current.WhatId</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <elementReference>formula_2_myRule_1_7179314875</elementReference>
+                    <elementReference>formula_2_myRule_1_8078833607</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -237,7 +237,7 @@
                 <leftValueReference>myVariable_current.WhatId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>formula_6_myRule_5_0072787920</elementReference>
+                    <elementReference>formula_6_myRule_5_4906254466</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -302,10 +302,21 @@
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
+                <stringValue>[Event].AccountId </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_10_myRule_9_A2_9439559060</name>
+        <dataType>String</dataType>
+        <expression>{!myVariable_current.AccountId}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
                 <stringValue>DATEVALUE([Event].StartDateTime ) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_10_myRule_9_A1_6102638139</name>
+        <name>formula_11_myRule_9_A1_6260760578</name>
         <dataType>Date</dataType>
         <expression>DATEVALUE({!myVariable_current.StartDateTime} )</expression>
     </formulas>
@@ -316,7 +327,7 @@
                 <stringValue>&apos;00U1x&apos;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_7179314875</name>
+        <name>formula_2_myRule_1_8078833607</name>
         <dataType>String</dataType>
         <expression>&apos;00U1x&apos;</expression>
     </formulas>
@@ -327,7 +338,7 @@
                 <stringValue>[Event].StartDateTime</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_6256229962</name>
+        <name>formula_3_myRule_1_A1_0424686242</name>
         <dataType>DateTime</dataType>
         <expression>{!myVariable_current.StartDateTime}</expression>
     </formulas>
@@ -338,7 +349,7 @@
                 <stringValue>&apos;00U1x&apos;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_6_myRule_5_0072787920</name>
+        <name>formula_6_myRule_5_4906254466</name>
         <dataType>String</dataType>
         <expression>&apos;00U1x&apos;</expression>
     </formulas>
@@ -349,7 +360,7 @@
                 <stringValue>[Event].AccountId </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_7_myRule_5_A3_7595532577</name>
+        <name>formula_7_myRule_5_A3_9988354499</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.AccountId}</expression>
     </formulas>
@@ -514,7 +525,7 @@
             </processMetadataValues>
             <field>WhatId</field>
             <value>
-                <elementReference>formula_7_myRule_5_A3_7595532577</elementReference>
+                <elementReference>formula_7_myRule_5_A3_9988354499</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -560,6 +571,9 @@
         <label>Create public record</label>
         <locationX>900</locationX>
         <locationY>200</locationY>
+        <connector>
+            <targetReference>myRule_9_A2</targetReference>
+        </connector>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>
@@ -593,7 +607,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_10_myRule_9_A1_6102638139</elementReference>
+                <elementReference>formula_11_myRule_9_A1_6260760578</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -850,7 +864,7 @@
             </processMetadataValues>
             <field>ips_Start_up_meeting_completed__c</field>
             <value>
-                <elementReference>formula_3_myRule_1_A1_6256229962</elementReference>
+                <elementReference>formula_3_myRule_1_A1_0424686242</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -1103,6 +1117,86 @@
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Event]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_9_A2</name>
+        <label>Set Related to on Acitivity</label>
+        <locationX>900</locationX>
+        <locationY>300</locationY>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Business</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Account</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>ips_Business__c</field>
+            <value>
+                <elementReference>formula_10_myRule_9_A2_9439559060</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Event</object>
     </recordUpdates>
     <startElementReference>myDecision</startElementReference>
     <status>Draft</status>
