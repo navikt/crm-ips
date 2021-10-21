@@ -10,32 +10,22 @@
         <field>CUST_OWNER_NAME</field>
     </columns>
     <columns>
-        <field>Work_Trail__c.ips_Status__c</field>
-    </columns>
-    <columns>
         <field>Work_Trail__c.ips_Start_up_meeting_completed__c</field>
     </columns>
     <columns>
         <field>Work_Trail__c.ips_First_meeting_with_the_Employer_held__c</field>
     </columns>
-    <description>Arbeidsgivermøter hodlt etter 30 dagers frist</description>
-    <filter>
-        <criteriaItems>
-            <column>Work_Trail__c.ips_Employer_meeting_within_30_Days__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>0</value>
-        </criteriaItems>
-        <language>en_US</language>
-    </filter>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Work_Trail__c.ips_Employer_meeting_within_30_Days__c</field>
+    </columns>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Work_Trail__c.ips_Employer_meeting_within_30_Days__c</field>
+        <field>Work_Trail__c.ips_Status__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Mine jobbspor utenfor arg.m frist</name>
+    <name>Mine IPS/SE pr status</name>
     <params>
         <name>co</name>
         <value>1</value>
