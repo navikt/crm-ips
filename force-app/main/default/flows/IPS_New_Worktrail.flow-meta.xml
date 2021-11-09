@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Redirect_0</name>
-        <label>Redirect</label>
-        <locationX>50</locationX>
-        <locationY>638</locationY>
-        <actionName>c:IPS_redirect</actionName>
-        <actionType>component</actionType>
-        <inputParameters>
-            <name>recordId</name>
-            <value>
-                <elementReference>Create_Worktrail_0_0</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>758</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -34,7 +19,7 @@
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
         <locationX>182</locationX>
-        <locationY>398</locationY>
+        <locationY>518</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -85,10 +70,16 @@
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>638</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>RecordTypeId</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
@@ -102,14 +93,20 @@
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>50</locationX>
-        <locationY>518</locationY>
+        <locationY>638</locationY>
         <connector>
-            <targetReference>Redirect_0</targetReference>
+            <targetReference>Opprettet</targetReference>
         </connector>
         <inputAssignments>
             <field>OwnerId</field>
             <value>
                 <elementReference>EierCheckbox.recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>RecordTypeId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -121,11 +118,33 @@
         <object>Work_Trail__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>Get_RecordTypeId</name>
+        <label>Get RecordTypeId</label>
+        <locationX>182</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>New_Worktrail</targetReference>
+        </connector>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>RecordTypeName</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>RecordTypeId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt Jobbspor</label>
         <locationX>182</locationX>
-        <locationY>158</locationY>
+        <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -161,10 +180,26 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Opprettet</name>
+        <label>Opprettet</label>
+        <locationX>50</locationX>
+        <locationY>758</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>CreatedMessage</name>
+            <fieldText>&lt;p&gt;Jobbspor har blitt opprettet&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
         <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -213,15 +248,22 @@
         <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>New_Worktrail</targetReference>
+            <targetReference>Get_RecordTypeId</targetReference>
         </connector>
     </start>
     <status>Active</status>
     <variables>
-        <name>IPSRecordtype</name>
+        <name>RecordTypeId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>RecordTypeName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
