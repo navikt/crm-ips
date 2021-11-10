@@ -25,6 +25,9 @@
         <locationY>200</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>myDecision12</targetReference>
+        </connector>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -107,7 +110,7 @@
             <assignToReference>myCollection_myRule_10_A1recipientIds</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>formula_11_myRule_10_A1_6009587189</elementReference>
+                <elementReference>formula_11_myRule_10_A1_1102155120</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -198,6 +201,58 @@
                 <targetReference>myRule_1_A1</targetReference>
             </connector>
             <label>Start-up meeting created</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>4.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision12</name>
+        <label>myDecision12</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_13</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.IPS_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Meeting with Employer</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_13_A1</targetReference>
+            </connector>
+            <label>Meeting with Employert</label>
         </rules>
     </decisions>
     <decisions>
@@ -352,6 +407,9 @@
         <label>myDecision9</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision12</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_10</name>
@@ -400,7 +458,7 @@
                 <stringValue>{!$User.Id}</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_11_myRule_10_A1_6009587189</name>
+        <name>formula_11_myRule_10_A1_1102155120</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
     </formulas>
@@ -411,7 +469,7 @@
                 <stringValue>[Event].StartDateTime</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_7061559222</name>
+        <name>formula_2_myRule_1_A1_5974876569</name>
         <dataType>DateTime</dataType>
         <expression>{!myVariable_current.StartDateTime}</expression>
     </formulas>
@@ -422,7 +480,7 @@
                 <stringValue>[Event].StartDateTime - ([Event].ips_Travel_time__c  /1440) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_7_myRule_6_A1_8754862636</name>
+        <name>formula_7_myRule_6_A1_2330534672</name>
         <dataType>DateTime</dataType>
         <expression>{!myVariable_current.StartDateTime} - ({!myVariable_current.ips_Travel_time__c}  /1440)</expression>
     </formulas>
@@ -433,7 +491,7 @@
                 <stringValue>&quot;Reisetid til&quot; + [Event].Subject</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_8_myRule_6_A1_8054978399</name>
+        <name>formula_8_myRule_6_A1_8050172212</name>
         <dataType>String</dataType>
         <expression>&quot;Reisetid til&quot; + {!myVariable_current.Subject}</expression>
     </formulas>
@@ -465,13 +523,10 @@
     </processMetadataValues>
     <processType>Workflow</processType>
     <recordCreates>
-        <name>myRule_4_A3</name>
+        <name>myRule_13_A1</name>
         <label>Create public record</label>
-        <locationX>400</locationX>
-        <locationY>400</locationY>
-        <connector>
-            <targetReference>myDecision5</targetReference>
-        </connector>
+        <locationX>1300</locationX>
+        <locationY>200</locationY>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>
@@ -492,6 +547,12 @@
                 </value>
             </processMetadataValues>
             <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
                     <stringValue>Reference</stringValue>
@@ -500,6 +561,42 @@
             <field>EndDateTime</field>
             <value>
                 <elementReference>myVariable_current.EndDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Assigned To ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Calendar;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>myVariable_current.CreatedById</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -519,6 +616,12 @@
                 <name>leftHandSideLabel</name>
                 <value>
                     <stringValue>Start Date Time</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue/>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -881,7 +984,7 @@
             </processMetadataValues>
             <field>StartDateTime</field>
             <value>
-                <elementReference>formula_7_myRule_6_A1_8754862636</elementReference>
+                <elementReference>formula_7_myRule_6_A1_2330534672</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -917,7 +1020,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_8_myRule_6_A1_8054978399</elementReference>
+                <elementReference>formula_8_myRule_6_A1_8050172212</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1072,7 +1175,7 @@
             </processMetadataValues>
             <field>ips_Start_up_meeting_completed__c</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_7061559222</elementReference>
+                <elementReference>formula_2_myRule_1_A1_5974876569</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -1273,7 +1376,7 @@
         <locationX>400</locationX>
         <locationY>300</locationY>
         <connector>
-            <targetReference>myRule_4_A3</targetReference>
+            <targetReference>myDecision5</targetReference>
         </connector>
         <filters>
             <processMetadataValues>
@@ -1327,7 +1430,7 @@
         <object>Work_Trail__c</object>
     </recordUpdates>
     <startElementReference>myDecision</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>myCollection_myRule_10_A1recipientIds</name>
         <dataType>String</dataType>
