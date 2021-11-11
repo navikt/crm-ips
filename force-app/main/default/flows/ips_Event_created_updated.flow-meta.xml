@@ -110,7 +110,7 @@
             <assignToReference>myCollection_myRule_10_A1recipientIds</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>formula_11_myRule_10_A1_1102155120</elementReference>
+                <elementReference>formula_11_myRule_10_A1_8361622917</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -458,7 +458,7 @@
                 <stringValue>{!$User.Id}</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_11_myRule_10_A1_1102155120</name>
+        <name>formula_11_myRule_10_A1_8361622917</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
     </formulas>
@@ -469,7 +469,7 @@
                 <stringValue>[Event].StartDateTime</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_5974876569</name>
+        <name>formula_2_myRule_1_A1_0129628706</name>
         <dataType>DateTime</dataType>
         <expression>{!myVariable_current.StartDateTime}</expression>
     </formulas>
@@ -480,7 +480,7 @@
                 <stringValue>[Event].StartDateTime - ([Event].ips_Travel_time__c  /1440) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_7_myRule_6_A1_2330534672</name>
+        <name>formula_7_myRule_6_A1_8653680273</name>
         <dataType>DateTime</dataType>
         <expression>{!myVariable_current.StartDateTime} - ({!myVariable_current.ips_Travel_time__c}  /1440)</expression>
     </formulas>
@@ -491,11 +491,11 @@
                 <stringValue>&quot;Reisetid til&quot; + [Event].Subject</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_8_myRule_6_A1_8050172212</name>
+        <name>formula_8_myRule_6_A1_9659011312</name>
         <dataType>String</dataType>
         <expression>&quot;Reisetid til&quot; + {!myVariable_current.Subject}</expression>
     </formulas>
-    <interviewLabel>ips_Event_created_updated-7_InterviewLabel</interviewLabel>
+    <interviewLabel>ips_Event_created_updated-11_InterviewLabel</interviewLabel>
     <label>Event created/updated</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -984,7 +984,7 @@
             </processMetadataValues>
             <field>StartDateTime</field>
             <value>
-                <elementReference>formula_7_myRule_6_A1_2330534672</elementReference>
+                <elementReference>formula_7_myRule_6_A1_8653680273</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1020,7 +1020,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_8_myRule_6_A1_8050172212</elementReference>
+                <elementReference>formula_8_myRule_6_A1_9659011312</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1175,7 +1175,7 @@
             </processMetadataValues>
             <field>ips_Start_up_meeting_completed__c</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_5974876569</elementReference>
+                <elementReference>formula_2_myRule_1_A1_0129628706</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -1206,7 +1206,7 @@
             <name>referenceTargetField</name>
         </processMetadataValues>
         <name>myRule_1_A2</name>
-        <label>Set status to mapping</label>
+        <label>Oppstartsdato Jobbspor</label>
         <locationX>100</locationX>
         <locationY>300</locationY>
         <connector>
@@ -1229,7 +1229,7 @@
             <processMetadataValues>
                 <name>dataType</name>
                 <value>
-                    <stringValue>Picklist</stringValue>
+                    <stringValue>DateTime</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -1241,7 +1241,7 @@
             <processMetadataValues>
                 <name>leftHandSideLabel</name>
                 <value>
-                    <stringValue>Status</stringValue>
+                    <stringValue>Oppstartsdato</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -1253,12 +1253,12 @@
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>Picklist</stringValue>
+                    <stringValue>Reference</stringValue>
                 </value>
             </processMetadataValues>
-            <field>ips_Status__c</field>
+            <field>Oppstartsdato__c</field>
             <value>
-                <stringValue>Mapping</stringValue>
+                <elementReference>myVariable_current.StartDateTime</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
