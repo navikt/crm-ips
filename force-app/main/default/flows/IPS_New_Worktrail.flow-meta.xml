@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Redirect</name>
+        <label>Redirect</label>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
+        <actionName>c:IPS_redirect</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>Get_existing.Id</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationX>578</locationX>
+        <locationY>998</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -16,10 +31,35 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <decisions>
+        <name>If_worktrail_exists</name>
+        <label>If worktrail exists</label>
+        <locationX>248</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>Registrer_Jobbspor</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Does not exist</defaultConnectorLabel>
+        <rules>
+            <name>Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_existing</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Redirect</targetReference>
+            </connector>
+            <label>Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>182</locationX>
-        <locationY>518</locationY>
+        <locationX>446</locationX>
+        <locationY>758</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -69,8 +109,8 @@
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationX>578</locationX>
+        <locationY>878</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -92,8 +132,8 @@
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>50</locationX>
-        <locationY>638</locationY>
+        <locationX>314</locationX>
+        <locationY>878</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -119,9 +159,36 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Get_existing</name>
+        <label>Get existing</label>
+        <locationX>248</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>If_worktrail_exists</targetReference>
+        </connector>
+        <filters>
+            <field>ips_Participant__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Participant.recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Status__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Ended</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>182</locationX>
+        <locationX>248</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -143,13 +210,13 @@
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt Jobbspor</label>
-        <locationX>182</locationX>
+        <locationX>248</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Registrer_Jobbspor</targetReference>
+            <targetReference>Get_existing</targetReference>
         </connector>
         <fields>
             <name>Participant</name>
@@ -188,8 +255,8 @@
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -204,8 +271,8 @@
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>182</locationX>
-        <locationY>398</locationY>
+        <locationX>446</locationX>
+        <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -218,7 +285,7 @@
             <defaultValue>
                 <booleanValue>false</booleanValue>
             </defaultValue>
-            <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjoenn</fieldText>
+            <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjonen</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -251,7 +318,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>122</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
