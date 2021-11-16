@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Konto_kontakt__c</fullName>
+    <fullName>Kontaktperson_hos_Arbeidsgiver__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
-    <label>Konto kontakt</label>
+    <label>Kontaktperson hos Arbeidsgiver</label>
     <lookupFilter>
         <active>true</active>
+        <errorMessage>Her er det kun arbeidsgiverkontakter som skal legges til!</errorMessage>
         <filterItems>
-            <field>$Source.RelatedToAccount__c</field>
-            <operation>notEqual</operation>
-            <value>Person Account</value>
+            <field>Contact.IsPersonAccount</field>
+            <operation>equals</operation>
+            <value>False</value>
         </filterItems>
         <isOptional>false</isOptional>
     </lookupFilter>
