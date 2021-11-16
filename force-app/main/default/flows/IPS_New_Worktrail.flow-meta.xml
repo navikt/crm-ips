@@ -18,7 +18,7 @@
     <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>998</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
@@ -33,7 +33,7 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>248</locationX>
+        <locationX>314</locationX>
         <locationY>518</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
@@ -58,7 +58,7 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>446</locationX>
+        <locationX>578</locationX>
         <locationY>758</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
@@ -107,13 +107,48 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
+        <name>Create_Error_log</name>
+        <label>Create Error log</label>
+        <locationX>578</locationX>
+        <locationY>1118</locationY>
+        <inputAssignments>
+            <field>Category__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Level__c</field>
+            <value>
+                <stringValue>INFO</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <stringValue>Duplicate creation stopped</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_ID__c</field>
+            <value>
+                <elementReference>Get_existing.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>878</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Noe_gikk_galt</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>RecordTypeId</field>
             <value>
@@ -137,6 +172,9 @@
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Noe_gikk_galt</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>OwnerId</field>
             <value>
@@ -161,7 +199,7 @@
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>248</locationX>
+        <locationX>314</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -188,7 +226,7 @@
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>248</locationX>
+        <locationX>314</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -210,7 +248,7 @@
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt Jobbspor</label>
-        <locationX>248</locationX>
+        <locationX>314</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -253,6 +291,25 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Noe_gikk_galt</name>
+        <label>Noe gikk galt</label>
+        <locationX>578</locationX>
+        <locationY>998</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Create_Error_log</targetReference>
+        </connector>
+        <fields>
+            <name>Errormessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Kunne ikke opprettes. Kontakt din administrator&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>314</locationX>
@@ -271,7 +328,7 @@
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>446</locationX>
+        <locationX>578</locationX>
         <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -318,7 +375,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>122</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
