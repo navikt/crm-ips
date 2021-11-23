@@ -4,7 +4,7 @@
         <name>Redirect</name>
         <label>Redirect</label>
         <locationX>50</locationX>
-        <locationY>638</locationY>
+        <locationY>878</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -19,7 +19,7 @@
         <name>Redirect_0_0</name>
         <label>Redirect</label>
         <locationX>842</locationX>
-        <locationY>998</locationY>
+        <locationY>1238</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -34,7 +34,7 @@
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>758</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -59,7 +59,7 @@
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
         <locationX>578</locationX>
-        <locationY>758</locationY>
+        <locationY>998</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -110,7 +110,7 @@
         <name>Create_Error_log</name>
         <label>Create Error log</label>
         <locationX>578</locationX>
-        <locationY>1118</locationY>
+        <locationY>1358</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -142,7 +142,7 @@
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>842</locationX>
-        <locationY>878</locationY>
+        <locationY>1118</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -168,7 +168,7 @@
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>314</locationX>
-        <locationY>878</locationY>
+        <locationY>1118</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -200,7 +200,7 @@
         <name>Get_existing</name>
         <label>Get existing</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>638</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -221,6 +221,26 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Participant_Details</name>
+        <label>Get Participant Details</label>
+        <locationX>314</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Participant_Detail</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Participant.recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -254,7 +274,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_existing</targetReference>
+            <targetReference>Get_Participant_Details</targetReference>
         </connector>
         <fields>
             <name>Participant</name>
@@ -294,7 +314,7 @@
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
         <locationX>578</locationX>
-        <locationY>998</locationY>
+        <locationY>1238</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -313,7 +333,7 @@
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>314</locationX>
-        <locationY>998</locationY>
+        <locationY>1238</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -326,10 +346,81 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Participant_Detail</name>
+        <label>Participant Detail</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_existing</targetReference>
+        </connector>
+        <fields>
+            <name>Participant_Detail_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Participant_Detail_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>PersonIcon</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>PersonIcon</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Person</stringValue>
+                        </value>
+                    </inputParameters>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Participant_Detail_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Name</name>
+                    <fieldText>&lt;p&gt;&lt;b&gt;Valgt Deltaker&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!Get_Participant_Details.FirstName}        {!Get_Participant_Details.LastName}&lt;/p&gt;&lt;p&gt;Personnummer: {!Get_Participant_Details.INT_PersonIdent__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>11</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
         <locationX>578</locationX>
-        <locationY>638</locationY>
+        <locationY>878</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -381,7 +472,7 @@
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>RecordTypeId</name>
         <dataType>String</dataType>
