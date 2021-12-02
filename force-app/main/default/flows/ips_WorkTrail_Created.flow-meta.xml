@@ -1,119 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionCalls>
-        <processMetadataValues>
-            <name>customNotifTypeName</name>
-            <value>
-                <stringValue>IPS_Deltaker_i_status_Sluttet</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>recipientCategory</name>
-            <value>
-                <stringValue>user</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>recipientType</name>
-            <value>
-                <stringValue>reference</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>myRule_9_A1</name>
-        <label>Deltaker i Status Sluttet</label>
-        <locationX>900</locationX>
-        <locationY>200</locationY>
-        <actionName>customNotificationAction</actionName>
-        <actionType>customNotificationAction</actionType>
-        <inputParameters>
-            <name>customNotifTypeId</name>
-            <value>
-                <stringValue>000000000000000</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>customNotifTypeName</name>
-            <value>
-                <stringValue>IPS_Deltaker_i_status_Sluttet</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>title</name>
-            <value>
-                <stringValue>{!myVariable_current.Name} Sluttet</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>body</name>
-            <value>
-                <stringValue>Dette jobbsporet er satt i status &quot;Sluttet&quot;</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>targetId</name>
-            <value>
-                <stringValue>{!myVariable_current.Id}</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>recipientIds</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>maxOccurs</name>
-                <value>
-                    <numberValue>500.0</numberValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>objectType</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <name>recipientIds</name>
-            <value>
-                <elementReference>myCollection_myRule_9_A1recipientIds</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
-    <assignments>
-        <name>myAssignment_myRule_9_A1</name>
-        <label>myAssignment_myRule_9_A1</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>myCollection_myRule_9_A1recipientIds</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>myVariable_current.Owner:User.Manager.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>myRule_9_A1</targetReference>
-        </connector>
-    </assignments>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -187,9 +73,6 @@
         <label>myDecision6</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision8</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_7</name>
@@ -207,58 +90,6 @@
             <label>Is Changed</label>
         </rules>
     </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>3.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision8</name>
-        <label>myDecision8</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_9</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ips_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Ended</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myAssignment_myRule_9_A1</targetReference>
-            </connector>
-            <label>Status Ended</label>
-        </rules>
-    </decisions>
     <formulas>
         <processMetadataValues>
             <name>originalFormula</name>
@@ -266,7 +97,7 @@
                 <stringValue>&quot;Jobbsporet - &quot;+ [Work_Trail__c].ips_Participant__r.FirstName +&quot; &quot;+ [Work_Trail__c].ips_Participant__r.LastName </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_5243168410</name>
+        <name>formula_2_myRule_1_A1_0154650579</name>
         <dataType>String</dataType>
         <expression>&quot;Jobbsporet - &quot;+ {!myVariable_current.ips_Participant__r.FirstName} +&quot; &quot;+ {!myVariable_current.ips_Participant__r.LastName}</expression>
     </formulas>
@@ -277,7 +108,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_5_myRule_4_A1_1196135757</name>
+        <name>formula_5_myRule_4_A1_6041868809</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -308,7 +139,7 @@
         <dataType>Boolean</dataType>
         <expression>!ISNEW()</expression>
     </formulas>
-    <interviewLabel>ips_WorkTrail_Created-4_InterviewLabel</interviewLabel>
+    <interviewLabel>ips_WorkTrail_Created-2_InterviewLabel</interviewLabel>
     <label>WorkTrail Created - ips/uo</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -376,7 +207,7 @@
             </processMetadataValues>
             <field>IPS_Start_Date_IPS__c</field>
             <value>
-                <elementReference>formula_5_myRule_4_A1_1196135757</elementReference>
+                <elementReference>formula_5_myRule_4_A1_6041868809</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -495,7 +326,7 @@
             </processMetadataValues>
             <field>Name</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_5243168410</elementReference>
+                <elementReference>formula_2_myRule_1_A1_0154650579</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -529,9 +360,6 @@
         <label>Update Historical Work Trail</label>
         <locationX>700</locationX>
         <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision8</targetReference>
-        </connector>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -693,13 +521,6 @@
     </recordUpdates>
     <startElementReference>myDecision</startElementReference>
     <status>Active</status>
-    <variables>
-        <name>myCollection_myRule_9_A1recipientIds</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
