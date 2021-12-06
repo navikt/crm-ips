@@ -80,6 +80,13 @@
             <label>Owner filled inn</label>
         </rules>
     </decisions>
+    <dynamicChoiceSets>
+        <name>IPS_test</name>
+        <dataType>String</dataType>
+        <displayField>ips_Behandlingsteam__c</displayField>
+        <object>Work_Trail__c</object>
+        <valueField>ips_Behandlingsteam__c</valueField>
+    </dynamicChoiceSets>
     <formulas>
         <name>UserId</name>
         <dataType>String</dataType>
@@ -413,6 +420,16 @@
             </fields>
             <isRequired>false</isRequired>
         </fields>
+        <fields>
+            <name>Er_bruker_informert</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Er dette riktig Deltaker? Er Deltaker informert?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -428,14 +445,8 @@
             <targetReference>Owner_Selected</targetReference>
         </connector>
         <fields>
-            <name>Er_bruker_infomert</name>
-            <dataType>Boolean</dataType>
-            <defaultValue>
-                <booleanValue>false</booleanValue>
-            </defaultValue>
-            <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjonen</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
+            <fieldType>ObjectProvided</fieldType>
+            <isRequired>false</isRequired>
         </fields>
         <fields>
             <name>EierCheckbox</name>
@@ -472,7 +483,17 @@
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
+    <variables>
+        <name>Behandlingsteam</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <elementReference>IPS_test</elementReference>
+        </value>
+    </variables>
     <variables>
         <name>RecordTypeId</name>
         <dataType>String</dataType>
