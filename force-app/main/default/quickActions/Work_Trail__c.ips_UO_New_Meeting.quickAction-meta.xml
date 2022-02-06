@@ -1,47 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Brukes bare av IPS</description>
-    <fieldOverrides>
-        <field>ips_Out_in_the_field__c</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>IPS_Type__c</field>
-        <literalValue>Meeting with Employer</literalValue>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>IsReminderSet</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>IsVisibleInSelfService</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>ReminderDateTime</field>
-        <formula>Work_Trail__c.ips_Start_up_meeting_completed__c -(1/24)</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>Subject</field>
-        <formula>&quot;Møte med Arbeidsgiver&quot;</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>TAG_ActivityType__c</field>
-        <literalValue>Rekruttere og inkludere</literalValue>
-    </fieldOverrides>
+    <description>New meeting for UO</description>
     <fieldOverrides>
         <field>TAG_NoPersonInformation__c</field>
         <formula>true</formula>
     </fieldOverrides>
-    <label>Meeting with Employer</label>
+    <fieldOverrides>
+        <field>WhoId</field>
+        <formula>Work_Trail__c.ips_Participant__r.PersonContactId</formula>
+    </fieldOverrides>
+    <label>New Meeting</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
         <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
+                <field>WhoId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
                 <field>Subject</field>
-                <uiBehavior>Required</uiBehavior>
+                <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
@@ -51,17 +32,12 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>ips_Subcategory_Type_IPS__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>IPS_Type__c</field>
                 <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>IsVisibleInSelfService</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>WhatId</field>
-                <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
@@ -78,16 +54,11 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>RelatedToAccount__c</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>Konto_kontakt__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_Is_the_employer_decision_maker__c</field>
+                <field>Konto_kontakt__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -102,12 +73,12 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_Travel_time__c</field>
+                <field>ips_Out_in_the_field__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_Out_in_the_field__c</field>
+                <field>ips_Travel_time__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
@@ -115,6 +86,6 @@
     <successMessage>Meeting created</successMessage>
     <targetObject>Event</targetObject>
     <targetParentField>What</targetParentField>
-    <targetRecordType>Event.IPS_Event</targetRecordType>
+    <targetRecordType>Event.ips_UO_m_ter</targetRecordType>
     <type>Create</type>
 </QuickAction>
