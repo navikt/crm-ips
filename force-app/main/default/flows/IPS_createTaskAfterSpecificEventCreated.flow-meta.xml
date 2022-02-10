@@ -3,7 +3,7 @@
     <decisions>
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
-        <locationX>314</locationX>
+        <locationX>446</locationX>
         <locationY>455</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
@@ -50,6 +50,28 @@
             </connector>
             <label>isMeetingWithJobbutvikling</label>
         </rules>
+        <rules>
+            <name>isMeetingStartUp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEvents.IPS_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Start up meeting</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getEvents.ips_Completed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateWorkTrailStart</targetReference>
+            </connector>
+            <label>isMeetingStartUp</label>
+        </rules>
     </decisions>
     <description>When an meeting with employer is created - a task is created</description>
     <interviewLabel>IPS - create task after a specific event is created {!$Flow.CurrentDateTime}</interviewLabel>
@@ -76,7 +98,7 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>314</locationX>
+        <locationX>446</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -98,13 +120,14 @@
         <queriedFields>WhoId</queriedFields>
         <queriedFields>StartDateTime</queriedFields>
         <queriedFields>RecordTypeId</queriedFields>
+        <queriedFields>ips_Completed__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>updateMeetingWithId_0_0_0</name>
+        <name>updateMeetingWithId_0</name>
         <label>Update meeting with Id</label>
-        <locationX>314</locationX>
-        <locationY>791</locationY>
+        <locationX>50</locationX>
+        <locationY>695</locationY>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
@@ -113,8 +136,41 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>updateMeetingWithId_0_0</name>
+        <label>Update meeting with Id</label>
+        <locationX>314</locationX>
+        <locationY>695</locationY>
+        <inputAssignments>
+            <field>IPS_taskId__c</field>
+            <value>
+                <elementReference>varOutputTaskId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>updateWorkTrailStart</name>
+        <label>updateWorkTrailStart</label>
+        <locationX>578</locationX>
+        <locationY>575</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getEvents.WhatId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ips_Start_up_meeting_completed__c</field>
+            <value>
+                <elementReference>getEvents.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>320</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
@@ -133,6 +189,13 @@
                 <stringValue>Meeting with Employer</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Start up meeting</stringValue>
+            </value>
+        </filters>
         <object>Event</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
@@ -144,7 +207,7 @@
         <locationX>50</locationX>
         <locationY>575</locationY>
         <connector>
-            <targetReference>updateMeetingWithId_0_0_0</targetReference>
+            <targetReference>updateMeetingWithId_0</targetReference>
         </connector>
         <flowName>IPS_subflowCreateTask</flowName>
         <inputAssignments>
@@ -168,7 +231,7 @@
         <inputAssignments>
             <name>varRecordTypeDeveloperName</name>
             <value>
-                <elementReference>getEvents.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeNameEmployeeMeeting</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -206,7 +269,7 @@
         <locationX>314</locationX>
         <locationY>575</locationY>
         <connector>
-            <targetReference>updateMeetingWithId_0_0_0</targetReference>
+            <targetReference>updateMeetingWithId_0_0</targetReference>
         </connector>
         <flowName>IPS_subflowCreateTask</flowName>
         <inputAssignments>
@@ -230,7 +293,7 @@
         <inputAssignments>
             <name>varRecordTypeDeveloperName</name>
             <value>
-                <elementReference>getEvents.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeNameEmployeeMeeting</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -319,6 +382,16 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>varRecordTypeNameEmployeeMeeting</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>IPS_Task</stringValue>
+        </value>
+    </variables>
+    <variables>
         <name>varRelatedToAccount</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -331,5 +404,12 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>varStartUpCompleted</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
