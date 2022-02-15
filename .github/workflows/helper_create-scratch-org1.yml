@@ -56,7 +56,7 @@ jobs:
       - name: Authenticate Dev Hub
         run: |
           echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
+          sfdx auth:sfdxurl::force://PlatformCLI::5Aep861nW.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/PROD_SFDX_URL.txt -a devhub -d
           rm -f ./PROD_SFDX_URL.txt
       
       # Create scratch org
@@ -133,10 +133,10 @@ jobs:
           ./sfdx-cli/install
           
           echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
+          sfdx auth:sfdxurl:force://PlatformCLI::5Aep861nW.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com ./PROD_SFDX_URL.txt -a devhub -d
           rm -f ./PROD_SFDX_URL.txt
 
-          sfdx auth:sfdxurl:store -f ./SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
+          sfdx auth:sfdxurl:force://PlatformCLI::5Aep816nw.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
 
       # Click here to login
       - name: Click Here to Login
@@ -190,10 +190,10 @@ jobs:
           rm -rf ./sfdx-cli
           
           echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
+          sfdx auth:sfdxurl:force://PlatformCLI::5Aep816nw.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/PROD_SFDX_URL.txt -a devhub -d
           rm -f ./PROD_SFDX_URL.txt
 
-          sfdx auth:sfdxurl:store -f ./SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
+          sfdx auth:sfdxurl:force://PlatformCLI::5Aep816nw.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
 
           git config --global user.name "github-actions"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -259,7 +259,7 @@ jobs:
       - name: Authenticate Dev Hub
         run: |
           echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
+          sfdx auth:sfdxurl:force://PlatformCLI::5Aep861nW.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/PROD_SFDX_URL.txt -a devhub -d
           rm -f ./PROD_SFDX_URL.txt
       
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
@@ -270,7 +270,7 @@ jobs:
       
       # Authenticate scratch org
       - name: Authenticate scratch org
-        run: sfdx auth:sfdxurl:store -f ./SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
+        run: sfdx auth:sfdxurlforce://PlatformCLI::5Aep816nw.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
       
       # Delete Scratch org
       - name: Delete Scratch Org

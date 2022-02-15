@@ -38,7 +38,7 @@ jobs:
       - name: Authenticate prod
         run: |
           echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
+          sfdx auth:sfdxurl:force://PlatformCLI::5Aep861nW.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/PROD_SFDX_URL.txt -a devhub -d
           rm -f ./PROD_SFDX_URL.txt
 
       # Promote package
@@ -58,7 +58,7 @@ jobs:
       - name: Authenticate preprod
         run: |
           echo ${{ secrets.PREPROD_SFDX_URL}} > ./PREPROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PREPROD_SFDX_URL.txt -a preprod -s
+          sfdx auth:sfdxurl:force://PlatformCLI::5Aep861nW.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/PREPROD_SFDX_URL.txt -a preprod -s
           rm -f ./PREPROD_SFDX_URL.txt
 
       # Install package version to preprod
@@ -140,7 +140,7 @@ jobs:
       - name: Authenticate prod
         run: |
           echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
+          sfdx auth:sfdxurl:force://PlatformCLI::5Aep861nW.r4PHi6xSo2gr9W_HC6mk5s2A2g5nq2H3yQkN_BKCCFhDUh_GWF0lQvD8TWtclX69Nv7btPbnwOQhl@efficiency-power-6838.cs128.my.salesforce.com/PROD_SFDX_URL.txt -a devhub -d
           rm -f ./PROD_SFDX_URL.txt
 
       # Set release variables
