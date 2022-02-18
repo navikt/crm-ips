@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Brukes bare av IPS</description>
     <fieldOverrides>
         <field>IPS_Type__c</field>
-        <literalValue>Start up meeting</literalValue>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>IsVisibleInSelfService</field>
-        <formula>true</formula>
+        <literalValue>Meeting with Participant</literalValue>
     </fieldOverrides>
     <fieldOverrides>
         <field>Subject</field>
-        <formula>&quot;Start-up meeting&quot;</formula>
+        <formula>&quot;Møte med deltaker&quot;</formula>
     </fieldOverrides>
     <fieldOverrides>
         <field>TAG_NoPersonInformation__c</field>
@@ -20,11 +17,16 @@
         <field>WhoId</field>
         <formula>Work_Trail__c.ips_Participant__r.PersonContactId</formula>
     </fieldOverrides>
-    <label>Start-up meeting</label>
+    <label>Meeting with participant.</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
         <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Subject</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>Meeting_Agenda__c</field>
@@ -32,24 +34,24 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>OwnerId</field>
-                <uiBehavior>Required</uiBehavior>
+                <field>IsVisibleInSelfService__c</field>
+                <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_Completed__c</field>
-                <uiBehavior>Readonly</uiBehavior>
+                <field>OwnerId</field>
+                <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
         <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>EndDateTime</field>
+                <field>StartDateTime</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>StartDateTime</field>
+                <field>EndDateTime</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -64,7 +66,6 @@
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
     </quickActionLayout>
-    <successMessage>Meeting created</successMessage>
     <targetObject>Event</targetObject>
     <targetParentField>What</targetParentField>
     <targetRecordType>Event.IPS_Event</targetRecordType>
