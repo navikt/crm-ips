@@ -1,5 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>createTravelTime</name>
+        <label>createTravelTime</label>
+        <locationX>314</locationX>
+        <locationY>791</locationY>
+        <actionName>IPS_eventTravelTimeController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>updateMeetingWithId_0_0_0</targetReference>
+        </connector>
+        <inputParameters>
+            <name>currentRecord</name>
+            <value>
+                <elementReference>getEvents.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>endDate</name>
+            <value>
+                <elementReference>getEvents.EndDateTime</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isUpdate</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ownerId</name>
+            <value>
+                <elementReference>getEvents.OwnerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>relatedTo</name>
+            <value>
+                <elementReference>getEvents.WhatId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>startDate</name>
+            <value>
+                <elementReference>getEvents.StartDateTime</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>travelTimeAfter</name>
+            <value>
+                <elementReference>getEvents.IPS_travelTimeFrom__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>travelTimeBefore</name>
+            <value>
+                <elementReference>getEvents.ips_Travel_time__c</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <decisions>
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
@@ -91,20 +150,13 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Event</object>
-        <queriedFields>ips_Subcategory_Type_IPS__c</queriedFields>
-        <queriedFields>IPS_Subcategory_Type_UO__c</queriedFields>
-        <queriedFields>OwnerId</queriedFields>
-        <queriedFields>WhatId</queriedFields>
-        <queriedFields>WhoId</queriedFields>
-        <queriedFields>StartDateTime</queriedFields>
-        <queriedFields>RecordTypeId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
         <name>updateMeetingWithId_0_0_0</name>
         <label>Update meeting with Id</label>
         <locationX>314</locationX>
-        <locationY>791</locationY>
+        <locationY>911</locationY>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
@@ -144,7 +196,7 @@
         <locationX>50</locationX>
         <locationY>575</locationY>
         <connector>
-            <targetReference>updateMeetingWithId_0_0_0</targetReference>
+            <targetReference>createTravelTime</targetReference>
         </connector>
         <flowName>IPS_subflowCreateTask</flowName>
         <inputAssignments>
@@ -206,7 +258,7 @@
         <locationX>314</locationX>
         <locationY>575</locationY>
         <connector>
-            <targetReference>updateMeetingWithId_0_0_0</targetReference>
+            <targetReference>createTravelTime</targetReference>
         </connector>
         <flowName>IPS_subflowCreateTask</flowName>
         <inputAssignments>
