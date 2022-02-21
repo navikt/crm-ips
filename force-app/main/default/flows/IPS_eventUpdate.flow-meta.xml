@@ -1,14 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>updateTravelTime</name>
+        <label>updateTravelTime</label>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
+        <actionName>IPS_eventTravelTimeController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>updateTask</targetReference>
+        </connector>
+        <inputParameters>
+            <name>currentRecord</name>
+            <value>
+                <elementReference>getEvent.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>endDate</name>
+            <value>
+                <elementReference>getEvent.EndDateTime</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isUpdate</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ownerId</name>
+            <value>
+                <elementReference>getEvent.OwnerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>relatedTo</name>
+            <value>
+                <elementReference>getEvent.WhatId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>startDate</name>
+            <value>
+                <elementReference>getEvent.StartDateTime</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>travelTimeAfter</name>
+            <value>
+                <elementReference>getEvent.IPS_travelTimeFrom__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>travelTimeBefore</name>
+            <value>
+                <elementReference>getEvent.ips_Travel_time__c</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>updateTravelTime_0</name>
+        <label>updateTravelTime</label>
+        <locationX>314</locationX>
+        <locationY>575</locationY>
+        <actionName>IPS_eventTravelTimeController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>updateTask</targetReference>
+        </connector>
+        <inputParameters>
+            <name>currentRecord</name>
+            <value>
+                <elementReference>getEvent.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>endDate</name>
+            <value>
+                <elementReference>getEvent.EndDateTime</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isUpdate</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ownerId</name>
+            <value>
+                <elementReference>getEvent.OwnerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>relatedTo</name>
+            <value>
+                <elementReference>getEvent.WhatId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>startDate</name>
+            <value>
+                <elementReference>getEvent.StartDateTime</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>travelTimeAfter</name>
+            <value>
+                <elementReference>getEvent.IPS_travelTimeFrom__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>travelTimeBefore</name>
+            <value>
+                <elementReference>getEvent.ips_Travel_time__c</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <decisions>
         <name>checkForCriteria</name>
         <label>checkForCriteria</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>455</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>isIPSEmployerMeeting</name>
-            <conditionLogic>1 AND 4 AND (2 OR 3)</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>getEvent.IPS_Type__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -30,21 +148,14 @@
                     <stringValue>Job support</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>getEvent.IPS_taskId__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>updateTask</targetReference>
+                <targetReference>updateTravelTime</targetReference>
             </connector>
             <label>isIPSEmployerMeeting</label>
         </rules>
         <rules>
             <name>isUOEmployerMeeting</name>
-            <conditionLogic>1 AND 4 AND (2 OR 3)</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>getEvent.IPS_Type__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -66,15 +177,8 @@
                     <stringValue>Follow-up</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>getEvent.IPS_taskId__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>updateTask</targetReference>
+                <targetReference>updateTravelTime_0</targetReference>
             </connector>
             <label>isUOEmployerMeeting</label>
         </rules>
@@ -105,7 +209,7 @@
     <recordLookups>
         <name>getEvent</name>
         <label>getEvent</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -120,23 +224,12 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Event</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>ActivityDate</queriedFields>
-        <queriedFields>StartDateTime</queriedFields>
-        <queriedFields>EndDateTime</queriedFields>
-        <queriedFields>ips_Subcategory_Type_IPS__c</queriedFields>
-        <queriedFields>IPS_Subcategory_Type_UO__c</queriedFields>
-        <queriedFields>ips_Travel_time__c</queriedFields>
-        <queriedFields>IPS_travelTimeFrom__c</queriedFields>
-        <queriedFields>OwnerId</queriedFields>
-        <queriedFields>IPS_Type__c</queriedFields>
-        <queriedFields>IPS_taskId__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
         <name>updateTask</name>
         <label>updateTask</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>791</locationY>
         <filters>
             <field>Id</field>
@@ -154,7 +247,7 @@
         <object>Task</object>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getEvent</targetReference>
@@ -164,6 +257,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Meeting with Employer</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Completed__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>Event</object>
