@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>53.0</apiVersion>
     <description>Subflow - can be called from another flow.</description>
     <interviewLabel>IPS subflow create task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS subflow create task</label>
@@ -34,6 +34,12 @@
             <field>ActivityDate</field>
             <value>
                 <elementReference>varDueDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Konto_kontakt__c</field>
+            <value>
+                <elementReference>varKontoKontakt</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -139,6 +145,13 @@
     <variables>
         <name>varDueDate</name>
         <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varKontoKontakt</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>

@@ -38,7 +38,7 @@
         <inputParameters>
             <name>relatedTo</name>
             <value>
-                <elementReference>getEvents.RelatedToAccount__c</elementReference>
+                <elementReference>getEvents.WhatId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -95,7 +95,7 @@
         <inputParameters>
             <name>relatedTo</name>
             <value>
-                <elementReference>getEvents.RelatedToAccount__c</elementReference>
+                <elementReference>getEvents.WhatId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -292,26 +292,12 @@
         </rules>
         <rules>
             <name>isMeetingMoved</name>
-            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>isDateTimeChanged</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -509,6 +495,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>varKontoKontakt</name>
+            <value>
+                <elementReference>getEvents.Konto_kontakt__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>varOwnerId</name>
             <value>
                 <elementReference>getEvents.Owner:User.Id</elementReference>
@@ -568,6 +560,12 @@
             <name>varDueDate</name>
             <value>
                 <elementReference>getEvents.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varKontoKontakt</name>
+            <value>
+                <elementReference>getEvents.Konto_kontakt__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
