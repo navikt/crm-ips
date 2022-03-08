@@ -3,7 +3,7 @@
     <actionCalls>
         <name>createTravelTime</name>
         <label>createTravelTime</label>
-        <locationX>314</locationX>
+        <locationX>50</locationX>
         <locationY>575</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -60,7 +60,7 @@
     <actionCalls>
         <name>createTravelTime_0</name>
         <label>createTravelTime</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -117,7 +117,7 @@
     <actionCalls>
         <name>updateTravelTime</name>
         <label>updateTravelTime</label>
-        <locationX>842</locationX>
+        <locationX>578</locationX>
         <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -173,70 +173,9 @@
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <decisions>
-        <name>checkCriteria</name>
-        <label>checkCriteria</label>
-        <locationX>446</locationX>
-        <locationY>455</locationY>
-        <defaultConnector>
-            <targetReference>checkUpdate</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isCompleted</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ips_Completed__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_Type__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Start up meeting</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateStartUpDate</targetReference>
-            </connector>
-            <label>isCompleted</label>
-        </rules>
-        <rules>
-            <name>isNewEvent</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>isNew</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getEvents.ips_Completed__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getEvents.IPS_Type__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Start up meeting</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>createTravelTime</targetReference>
-            </connector>
-            <label>isNewEvent</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
-        <locationX>842</locationX>
+        <locationX>578</locationX>
         <locationY>575</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -305,8 +244,31 @@
             <label>isMeetingMoved</label>
         </rules>
     </decisions>
-    <description>creation or updates on startup meetings
-- set startdate for worktrail when meeting is completed</description>
+    <decisions>
+        <name>createOrUpdate</name>
+        <label>createOrUpdate</label>
+        <locationX>314</locationX>
+        <locationY>455</locationY>
+        <defaultConnector>
+            <targetReference>checkUpdate</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isNewEvent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>createTravelTime</targetReference>
+            </connector>
+            <label>isNewEvent</label>
+        </rules>
+    </decisions>
     <formulas>
         <name>isDateTimeChanged</name>
         <dataType>Boolean</dataType>
@@ -317,8 +279,8 @@
         <dataType>Boolean</dataType>
         <expression>IsNew()</expression>
     </formulas>
-    <interviewLabel>IPS - create or update starttup meeting {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - create or update starttup meeting</label>
+    <interviewLabel>IPS - create or update participant meeting {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - create or update participant meeting</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -341,11 +303,11 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>checkCriteria</targetReference>
+            <targetReference>createOrUpdate</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -359,53 +321,18 @@
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordUpdates>
-        <name>updateStartUpDate</name>
-        <label>updateStartUpDate</label>
-        <locationX>50</locationX>
-        <locationY>575</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.WhatId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Oppstartsdato__c</field>
-            <value>
-                <elementReference>$Record.StartDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ips_Start_up_meeting_completed__c</field>
-            <value>
-                <elementReference>$Record.StartDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Work_Trail__c</object>
-    </recordUpdates>
     <start>
-        <locationX>320</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
         </connector>
-        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
-        <filterLogic>or</filterLogic>
-        <filters>
-            <field>ips_Completed__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>IPS_Type__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Start up meeting</stringValue>
+                <stringValue>Meeting with Participant</stringValue>
             </value>
         </filters>
         <object>Event</object>
