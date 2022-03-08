@@ -35,7 +35,6 @@ public class IPS_eventTravelTimeControllerTest {
           IPS_Type__c = 'Meeting with Employer',
           ips_Subcategory_Type_IPS__c = 'Job support');
           insert createEvent2; 
-     
     }
     
 
@@ -70,5 +69,24 @@ public class IPS_eventTravelTimeControllerTest {
      List<Event> travelTimeList = [SELECT id FROM Event];
      //List should not be empty
     System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty');
+    }
+    
+@isTest
+    static void updateEventTravelTime1(){
+   	IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
+        
+        List<Event> updateEvent = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c FROM Event WHERE IPS_eventId__c!=null];
+        for(Event i:updateEvent){
+            firstInput.isUpdate = true;
+            firstInput.startDate = i.StartDateTime;
+        	firstInput.endDate = i.EndDateTime;
+        	firstInput.currentRecord= i.Id;
+        	firstInput.travelTimeBefore=Integer.valueOf(i.ips_Travel_time__c);
+        	firstInput.travelTimeAfter= Integer.valueOf(i.IPS_travelTimeFrom__c);
+        }
+         Test.startTest();
+        IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{firstInput});
+        Test.stopTest();
+        
     }
 }
