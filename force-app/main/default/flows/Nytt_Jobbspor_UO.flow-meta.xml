@@ -7,6 +7,7 @@
         <locationY>878</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -22,6 +23,7 @@
         <locationY>1238</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -30,6 +32,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
@@ -230,6 +233,7 @@
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>ips_Participant__c</field>
             <operator>EqualTo</operator>
@@ -257,6 +261,7 @@
         <connector>
             <targetReference>Participant_Detail</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -277,6 +282,7 @@
         <connector>
             <targetReference>New_Worktrail</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
             <operator>EqualTo</operator>

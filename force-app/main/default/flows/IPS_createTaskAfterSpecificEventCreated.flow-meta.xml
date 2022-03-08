@@ -10,6 +10,7 @@
         <connector>
             <targetReference>updateMeetingWithId_0_0_0</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>currentRecord</name>
             <value>
@@ -59,6 +60,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
@@ -141,6 +143,7 @@
         <connector>
             <targetReference>checkMeetingCriteria</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -171,6 +174,7 @@
         <connector>
             <targetReference>getEvents</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Subject</field>
             <operator>NotEqualTo</operator>

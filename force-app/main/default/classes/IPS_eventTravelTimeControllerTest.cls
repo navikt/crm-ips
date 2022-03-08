@@ -86,7 +86,6 @@ public class IPS_eventTravelTimeControllerTest {
         }
          Test.startTest();
         IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{firstInput});
-        Test.stopTest();
-        
+        Test.stopTest(); 
     }
 }

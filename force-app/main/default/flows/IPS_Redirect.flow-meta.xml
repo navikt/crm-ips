@@ -7,6 +7,7 @@
         <locationY>518</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -15,6 +16,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <interviewLabel>IPS Redirect {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS Redirect</label>
     <processMetadataValues>
@@ -45,6 +47,7 @@
         <connector>
             <targetReference>Get_Work_Trail</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -65,6 +68,7 @@
         <connector>
             <targetReference>Get_Account</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
