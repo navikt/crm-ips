@@ -15,6 +15,7 @@ public class IPS_eventTravelTimeControllerTest {
         Event createEvent = new Event(
           ips_Travel_time__c = 15,
           whatId =acc.id,
+          RelatedToAccount__c = acc.id,
           RecordTypeId =devRecordTypeId,
           IPS_travelTimeFrom__c = 20,
           StartDateTime = system.Datetime.now(),
@@ -26,6 +27,7 @@ public class IPS_eventTravelTimeControllerTest {
         
         Event createEvent2 = new Event(
           ips_Travel_time__c = 0,
+          RelatedToAccount__c = acc.id,
           whatId =acc.id,
           RecordTypeId =devRecordTypeId,
           IPS_travelTimeFrom__c = 0,
