@@ -2,9 +2,31 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <decisions>
+        <name>checkIfTravelExixts</name>
+        <label>checkIfTravelExixts</label>
+        <locationX>182</locationX>
+        <locationY>887</locationY>
+        <defaultConnectorLabel>notExists</defaultConnectorLabel>
+        <rules>
+            <name>travelExists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getTravelPosts</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>deleteTravelTime</targetReference>
+            </connector>
+            <label>travelExists</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkMeetingType</name>
         <label>checkMeetingType</label>
-        <locationX>182</locationX>
+        <locationX>336</locationX>
         <locationY>311</locationY>
         <defaultConnector>
             <targetReference>checkTravelTime</targetReference>
@@ -20,6 +42,13 @@
                     <stringValue>Meeting with Employer</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_taskId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>slettTask</targetReference>
             </connector>
@@ -29,7 +58,7 @@
     <decisions>
         <name>checkTravelTime</name>
         <label>checkTravelTime</label>
-        <locationX>182</locationX>
+        <locationX>336</locationX>
         <locationY>647</locationY>
         <defaultConnectorLabel>Njet</defaultConnectorLabel>
         <rules>
@@ -50,7 +79,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>deleteTravelTime_0</targetReference>
+                <targetReference>getTravelPosts</targetReference>
             </connector>
             <label>isTravelTime</label>
         </rules>
@@ -77,10 +106,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordDeletes>
-        <name>deleteTravelTime_0</name>
+        <name>deleteTravelTime</name>
         <label>deleteTravelTime</label>
         <locationX>50</locationX>
-        <locationY>767</locationY>
+        <locationY>1007</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>IPS_eventId__c</field>
@@ -94,7 +123,7 @@
     <recordDeletes>
         <name>slettTask</name>
         <label>slettTask</label>
-        <locationX>50</locationX>
+        <locationX>204</locationX>
         <locationY>431</locationY>
         <connector>
             <targetReference>checkTravelTime</targetReference>
@@ -109,8 +138,29 @@
         </filters>
         <object>Task</object>
     </recordDeletes>
+    <recordLookups>
+        <name>getTravelPosts</name>
+        <label>getTravelPosts</label>
+        <locationX>182</locationX>
+        <locationY>767</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkIfTravelExixts</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IPS_eventId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Event</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>56</locationX>
+        <locationX>210</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>checkMeetingType</targetReference>
