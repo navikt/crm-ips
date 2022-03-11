@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customConsoleComponents>
+        <primaryTabComponents>
+            <containers>
+                <isContainerAutoSizeEnabled>true</isContainerAutoSizeEnabled>
+                <region>Right</region>
+                <sidebarComponents>
+                    <componentType>Lookup</componentType>
+                    <createAction>NewAccount</createAction>
+                    <enableLinking>true</enableLinking>
+                    <label>Arbeidsgiver</label>
+                    <lookup>RelatedToAccount__c</lookup>
+                    <updateAction>Account.UpdateAccount</updateAction>
+                </sidebarComponents>
+                <sidebarComponents>
+                    <componentType>Lookup</componentType>
+                    <createAction>NewContact</createAction>
+                    <enableLinking>true</enableLinking>
+                    <label>Arbeidsgiverkontak</label>
+                    <lookup>Konto_kontakt__c</lookup>
+                </sidebarComponents>
+                <style>Accordion</style>
+                <unit>Percentage</unit>
+                <width>10</width>
+            </containers>
+        </primaryTabComponents>
+    </customConsoleComponents>
     <excludeButtons>Accept</excludeButtons>
     <excludeButtons>AddToOutlook</excludeButtons>
     <excludeButtons>Cancel</excludeButtons>
@@ -70,11 +96,15 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Subject</field>
+                <field>ips_uo_Subject__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Meeting_Agenda__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>IPS_Status__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -104,10 +134,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ips_Out_in_the_field__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ips_Completed__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -153,6 +179,10 @@
                 <behavior>Readonly</behavior>
                 <field>CreatedById</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Subject</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -185,6 +215,14 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <miniLayout>
+        <fields>WhoId</fields>
+        <fields>WhatId</fields>
+        <fields>Subject</fields>
+        <fields>OwnerId</fields>
+        <fields>StartDateTime</fields>
+        <fields>EndDateTime</fields>
+    </miniLayout>
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
@@ -229,8 +267,8 @@
             </layoutItem>
         </relatedContentItems>
     </relatedContent>
-    <relatedObjects>WhoId</relatedObjects>
-    <relatedObjects>WhatId</relatedObjects>
+    <relatedObjects>RelatedToAccount__c</relatedObjects>
+    <relatedObjects>Konto_kontakt__c</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>

@@ -25,9 +25,9 @@
         <layoutColumns>
             <layoutItems>
                 <reportChartComponent>
-                    <cacheData>false</cacheData>
-                    <contextFilterableField>ACCOUNT_ID</contextFilterableField>
-                    <hideOnError>true</hideOnError>
+                    <cacheData>true</cacheData>
+                    <contextFilterableField>PARENT_ID</contextFilterableField>
+                    <hideOnError>false</hideOnError>
                     <includeContext>true</includeContext>
                     <reportName>New_Activities_with_Accounts_Report_SFC</reportName>
                     <showTitle>false</showTitle>
@@ -48,10 +48,6 @@
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>EditableWebsite__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>TAG_Proff_no__c</field>
@@ -97,6 +93,10 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
+                <field>CRM_PersonAddress__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
                 <field>CRM_AccountType__c</field>
             </layoutItems>
             <layoutItems>
@@ -127,7 +127,32 @@
         <detailHeading>false</detailHeading>
         <editHeading>false</editHeading>
         <label>Description Information</label>
-        <layoutColumns/>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Warning__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>WarningNote__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>WarningRegisteredBy__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>WarningRemovalDate__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>WarningFormattedText__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>WarningDate__c</field>
+            </layoutItems>
+        </layoutColumns>
         <style>OneColumn</style>
     </layoutSections>
     <layoutSections>
@@ -145,39 +170,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>INT_OrganizationalStructure__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Varsel</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Warning__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>WarningRegisteredBy__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>WarningNote__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>WarningDate__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -201,15 +193,21 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
-    <layoutSections>
-        <customLabel>false</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Additional Information</label>
-        <layoutColumns/>
-        <layoutColumns/>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
+    <miniLayout>
+        <fields>Name</fields>
+        <fields>ParentId</fields>
+        <relatedLists>
+            <fields>TASK.SUBJECT</fields>
+            <fields>Date__c</fields>
+            <fields>TAG_ActivityType__c</fields>
+            <fields>ACTIVITY_SUBTYPE</fields>
+            <fields>TAG_Status__c</fields>
+            <fields>CORE.USERS.FULL_NAME</fields>
+            <fields>TASK.WHAT_NAME</fields>
+            <fields>TASK.WHO_NAME</fields>
+            <relatedList>Activity.RelatedToAccount__c</relatedList>
+        </relatedLists>
+    </miniLayout>
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
@@ -218,19 +216,9 @@
             <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>LogACall</actionName>
-            <actionType>QuickAction</actionType>
+            <actionName>Edit</actionName>
+            <actionType>StandardButton</actionType>
             <sortOrder>1</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Account.TAG_NewEvent</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>2</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Account.TAG_CreateTask</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>3</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <relatedContent>
@@ -241,23 +229,19 @@
         </relatedContentItems>
     </relatedContent>
     <relatedLists>
-        <fields>NAME</fields>
-        <fields>Type__c</fields>
-        <fields>NumberOfEmployees__c</fields>
-        <fields>StartDate__c</fields>
-        <fields>Status__c</fields>
-        <relatedList>TemporaryLayoff__c.Account__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>CRM_YearQuarter__c</fields>
-        <fields>CRM_VirksomhetTapteDagsverk__c</fields>
-        <fields>CRM_VirksomhetProsent__c</fields>
-        <fields>TAG_Account_Industry__c</fields>
-        <fields>CRM_NaeringProsent__c</fields>
-        <fields>CRM_LandProsent__c</fields>
-        <relatedList>Absence__c.CRM_Account__c</relatedList>
-        <sortField>CRM_YearQuarter__c</sortField>
-        <sortOrder>Desc</sortOrder>
+        <excludeButtons>NewEvent</excludeButtons>
+        <excludeButtons>NewTask</excludeButtons>
+        <fields>TASK.SUBJECT</fields>
+        <fields>Date__c</fields>
+        <fields>TAG_ActivityType__c</fields>
+        <fields>ACTIVITY_SUBTYPE</fields>
+        <fields>TAG_Status__c</fields>
+        <fields>TASK.WHAT_NAME</fields>
+        <fields>TASK.WHO_NAME</fields>
+        <fields>CORE.USERS.FULL_NAME</fields>
+        <relatedList>Activity.RelatedToAccount__c</relatedList>
+        <sortField>Date__c</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
@@ -269,21 +253,6 @@
         <relatedList>ArenaActivity__c.Account__c</relatedList>
         <sortField>NAME</sortField>
         <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <excludeButtons>NewEvent</excludeButtons>
-        <excludeButtons>NewTask</excludeButtons>
-        <fields>TASK.SUBJECT</fields>
-        <fields>Date__c</fields>
-        <fields>TAG_ActivityType__c</fields>
-        <fields>ACTIVITY_SUBTYPE</fields>
-        <fields>TAG_Status__c</fields>
-        <fields>CORE.USERS.FULL_NAME</fields>
-        <fields>TASK.WHAT_NAME</fields>
-        <fields>TASK.WHO_NAME</fields>
-        <relatedList>Activity.RelatedToAccount__c</relatedList>
-        <sortField>Date__c</sortField>
-        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
@@ -303,71 +272,6 @@
         <relatedList>RelatedContactList</relatedList>
     </relatedLists>
     <relatedLists>
-        <excludeButtons>AddRelation</excludeButtons>
-        <excludeButtons>MassAddToCampaign</excludeButtons>
-        <excludeButtons>Merge</excludeButtons>
-        <fields>CONTACT.FULL_NAME</fields>
-        <fields>CONTACT.TITLE</fields>
-        <fields>TAG_Theme__c</fields>
-        <fields>TAG_MobileEmail__c</fields>
-        <relatedList>RelatedAccountContactRelationList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <relatedList>RelatedAccountContactRoleList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>MEMBER_NAME</fields>
-        <fields>TEAM_MEMBER_ROLE</fields>
-        <fields>TAG_Active__c</fields>
-        <relatedList>RelatedAccountSalesTeam</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>OPPORTUNITY.NAME</fields>
-        <fields>OPPORTUNITY.STAGE_NAME</fields>
-        <fields>OPPORTUNITY.AMOUNT</fields>
-        <fields>OPPORTUNITY.CLOSE_DATE</fields>
-        <relatedList>RelatedOpportunityList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Inquiry_Category_2__c</fields>
-        <fields>Source__c</fields>
-        <fields>InclusionStage__c</fields>
-        <fields>OWNER.ALIAS</fields>
-        <fields>TAG_Age__c</fields>
-        <relatedList>CustomOpportunity__c.Account__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>CAMPAIGN.NAME</fields>
-        <fields>CAMPAIGN.CAMPAIGN_TYPE</fields>
-        <fields>CAMPAIGN.START_DATE</fields>
-        <fields>CAMPAIGN.BUDGETED_COST</fields>
-        <fields>CAMPAIGN.STATUS</fields>
-        <relatedList>RelatedAccountCampaignList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>CustomCampaign__c</fields>
-        <fields>Contact__c</fields>
-        <fields>Status__c</fields>
-        <relatedList>CustomCampaignMember__c.Account__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>CustomCampaign__c</fields>
-        <fields>Contact__c</fields>
-        <fields>Status__c</fields>
-        <relatedList>CustomCampaignMember__c.AccountSentral__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>CONTRACT.CONTRACT_NUMBER</fields>
-        <fields>CONTRACT.NAME</fields>
-        <fields>CONTRACT.START_DATE</fields>
-        <fields>CONTRACT.END_DATE</fields>
-        <fields>CONTRACT.STATUS</fields>
-        <relatedList>RelatedContractList</relatedList>
-    </relatedLists>
-    <relatedLists>
         <fields>Name</fields>
         <fields>EffectiveFromDate</fields>
         <fields>EffectiveToDate</fields>
@@ -384,16 +288,6 @@
         <sortField>CREATED_DATE</sortField>
         <sortOrder>Desc</sortOrder>
     </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>CRM_SubTheme__c</fields>
-        <fields>CRM_Status__c</fields>
-        <fields>CRM_NavUnit__c</fields>
-        <fields>CREATED_DATE</fields>
-        <relatedList>NavTask__c.CRM_AccountRelated__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
     <relatedObjects>ParentId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
@@ -401,7 +295,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h3N0000035LVs</masterLabel>
+        <masterLabel>00h3O000001Cz5O</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
