@@ -6,12 +6,8 @@
         <literalValue>Normal</literalValue>
     </fieldOverrides>
     <fieldOverrides>
-        <field>Status</field>
-        <literalValue>Open</literalValue>
-    </fieldOverrides>
-    <fieldOverrides>
         <field>Subject</field>
-        <formula>&quot;fritekst&quot;</formula>
+        <formula>&quot;&lt;skriv tittel på delmål her&gt;&quot;</formula>
     </fieldOverrides>
     <fieldOverrides>
         <field>Type_of_Task_IPSUO__c</field>
@@ -21,7 +17,6 @@
         <field>WhoId</field>
         <formula>Work_Trail__c.ips_Participant__r.PersonContactId</formula>
     </fieldOverrides>
-    <icon>ServiceCloudLogo</icon>
     <label>New sub-goal</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
@@ -29,7 +24,7 @@
         <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_uo_Subject__c</field>
+                <field>Subject</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -37,8 +32,28 @@
                 <field>Description</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>WhoId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>WhatId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>IsVisibleInSelfService__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
         </quickActionLayoutColumns>
         <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Status</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>ActivityDate</field>
@@ -46,8 +61,18 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_Due_Date_Time__c</field>
-                <uiBehavior>Edit</uiBehavior>
+                <field>Priority</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>OwnerId</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Type_of_Task_IPSUO__c</field>
+                <uiBehavior>Readonly</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
     </quickActionLayout>
