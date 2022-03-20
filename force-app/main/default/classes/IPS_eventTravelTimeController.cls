@@ -68,7 +68,7 @@ public class IPS_eventTravelTimeController {
         @InvocableVariable(required=true)
         public Id ownerId;
 
-        @InvocableVariable(required=true)
+        @InvocableVariable
         public Id relatedTo;
     }
 
