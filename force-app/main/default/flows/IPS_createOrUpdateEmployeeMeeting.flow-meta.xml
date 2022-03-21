@@ -38,7 +38,7 @@
         <inputParameters>
             <name>relatedTo</name>
             <value>
-                <elementReference>getEvents.WhatId</elementReference>
+                <elementReference>getEvents.RelatedToAccount__c</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -61,12 +61,15 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>createTravelTime_0</name>
+        <name>createTravelTime_0_0</name>
         <label>createTravelTime</label>
-        <locationX>1106</locationX>
+        <locationX>842</locationX>
         <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>checkUpdate</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>currentRecord</name>
@@ -95,7 +98,7 @@
         <inputParameters>
             <name>relatedTo</name>
             <value>
-                <elementReference>getEvents.WhatId</elementReference>
+                <elementReference>getEvents.RelatedToAccount__c</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -118,12 +121,15 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>updateTravelTime</name>
+        <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
-        <locationX>1370</locationX>
-        <locationY>815</locationY>
+        <locationX>1282</locationX>
+        <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>checkUpdate</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>currentRecord</name>
@@ -152,7 +158,7 @@
         <inputParameters>
             <name>relatedTo</name>
             <value>
-                <elementReference>getEvents.WhatId</elementReference>
+                <elementReference>getEvents.RelatedToAccount__c</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -227,11 +233,76 @@
         </rules>
     </decisions>
     <decisions>
+        <description>check if changes is added travel or updates</description>
+        <name>checkpoint1</name>
+        <label>checkpoint1</label>
+        <locationX>1062</locationX>
+        <locationY>575</locationY>
+        <defaultConnector>
+            <targetReference>updateTravelTime_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>anything else</defaultConnectorLabel>
+        <rules>
+            <name>addTravel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getEvents.ips_Travel_time__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.IPS_travelTimeFrom__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getEvents.IPS_travelTimeFrom__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>createTravelTime_0_0</targetReference>
+            </connector>
+            <label>addTravel</label>
+        </rules>
+        <rules>
+            <name>isDateTime</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isDateTimeChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>checkUpdate</targetReference>
+            </connector>
+            <label>isDateTime</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
-        <locationX>1238</locationX>
-        <locationY>575</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <locationX>1062</locationX>
+        <locationY>911</locationY>
+        <defaultConnector>
+            <targetReference>updateTask</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>toFinishLine</defaultConnectorLabel>
         <rules>
             <name>IsEmployeerMeetingFinished</name>
             <conditionLogic>and</conditionLogic>
@@ -254,65 +325,14 @@
             </connector>
             <label>IsEmployeerMeetingFinished</label>
         </rules>
-        <rules>
-            <name>isTravelTimeAdded</name>
-            <conditionLogic>(1 AND 3) OR (2 AND 4)</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>createTravelTime_0</targetReference>
-            </connector>
-            <label>isTravelTimeAdded</label>
-        </rules>
-        <rules>
-            <name>isMeetingMoved</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>isDateTimeChanged</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateTask</targetReference>
-            </connector>
-            <label>isMeetingMoved</label>
-        </rules>
     </decisions>
     <decisions>
         <name>isEventNew</name>
         <label>isEventNew</label>
-        <locationX>776</locationX>
+        <locationX>688</locationX>
         <locationY>455</locationY>
         <defaultConnector>
-            <targetReference>checkUpdate</targetReference>
+            <targetReference>checkpoint1</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -370,7 +390,7 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>776</locationX>
+        <locationX>688</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -391,8 +411,11 @@
     <recordUpdates>
         <name>updateFirstEmployeeMeeting</name>
         <label>updateFirstEmployeeMeeting</label>
-        <locationX>842</locationX>
-        <locationY>695</locationY>
+        <locationX>930</locationX>
+        <locationY>1031</locationY>
+        <connector>
+            <targetReference>updateTask</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -423,32 +446,28 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <description>Updates the task regarding IPS/UO meeting</description>
         <name>updateTask</name>
         <label>updateTask</label>
-        <locationX>1370</locationX>
-        <locationY>695</locationY>
-        <connector>
-            <targetReference>updateTravelTime</targetReference>
-        </connector>
+        <locationX>1062</locationX>
+        <locationY>1247</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.IPS_taskId__c</elementReference>
+                <elementReference>getEvents.IPS_taskId__c</elementReference>
             </value>
         </filters>
         <inputAssignments>
             <field>ActivityDate</field>
             <value>
-                <elementReference>$Record.ActivityDate</elementReference>
+                <elementReference>getEvents.ActivityDate</elementReference>
             </value>
         </inputAssignments>
         <object>Task</object>
     </recordUpdates>
     <start>
-        <locationX>650</locationX>
+        <locationX>562</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
