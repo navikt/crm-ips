@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>New meeting for IPS</description>
+    <description>Brukes av IPS</description>
+    <fieldOverrides>
+        <field>TAG_NoPersonInformation__c</field>
+        <formula>True</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>WhoId</field>
+        <formula>Work_Trail__c.ips_Participant__r.PersonContactId</formula>
+    </fieldOverrides>
     <label>New Meeting.</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
@@ -14,17 +22,12 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>Subject</field>
-                <uiBehavior>Edit</uiBehavior>
+                <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Meeting_Agenda__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>ips_Subcategory_Type_IPS__c</field>
-                <uiBehavior>Edit</uiBehavior>
+                <field>Description</field>
+                <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
@@ -33,12 +36,17 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>OwnerId</field>
+                <field>StartDateTime</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_Completed__c</field>
+                <field>EndDateTime</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ips_Out_in_the_field__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
@@ -55,13 +63,13 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>StartDateTime</field>
-                <uiBehavior>Required</uiBehavior>
+                <field>ips_Is_the_employer_decision_maker__c</field>
+                <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>EndDateTime</field>
-                <uiBehavior>Required</uiBehavior>
+                <field>ips_Subcategory_Type_IPS__c</field>
+                <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
@@ -71,11 +79,6 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>IPS_travelTimeFrom__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>ips_Out_in_the_field__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
