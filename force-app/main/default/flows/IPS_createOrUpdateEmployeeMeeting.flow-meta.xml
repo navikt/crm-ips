@@ -123,7 +123,7 @@
     <actionCalls>
         <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
-        <locationX>1282</locationX>
+        <locationX>1106</locationX>
         <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -236,7 +236,7 @@
         <description>check if changes is added travel or updates</description>
         <name>checkpoint1</name>
         <label>checkpoint1</label>
-        <locationX>1062</locationX>
+        <locationX>974</locationX>
         <locationY>575</locationY>
         <defaultConnector>
             <targetReference>updateTravelTime_0</targetReference>
@@ -244,7 +244,7 @@
         <defaultConnectorLabel>anything else</defaultConnectorLabel>
         <rules>
             <name>addTravel</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 AND 2) OR (3 AND 4)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -278,26 +278,11 @@
             </connector>
             <label>addTravel</label>
         </rules>
-        <rules>
-            <name>isDateTime</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>isDateTimeChanged</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>checkUpdate</targetReference>
-            </connector>
-            <label>isDateTime</label>
-        </rules>
     </decisions>
     <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
-        <locationX>1062</locationX>
+        <locationX>974</locationX>
         <locationY>911</locationY>
         <defaultConnector>
             <targetReference>updateTask</targetReference>
@@ -329,7 +314,7 @@
     <decisions>
         <name>isEventNew</name>
         <label>isEventNew</label>
-        <locationX>688</locationX>
+        <locationX>644</locationX>
         <locationY>455</locationY>
         <defaultConnector>
             <targetReference>checkpoint1</targetReference>
@@ -390,7 +375,7 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>688</locationX>
+        <locationX>644</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -411,7 +396,7 @@
     <recordUpdates>
         <name>updateFirstEmployeeMeeting</name>
         <label>updateFirstEmployeeMeeting</label>
-        <locationX>930</locationX>
+        <locationX>842</locationX>
         <locationY>1031</locationY>
         <connector>
             <targetReference>updateTask</targetReference>
@@ -448,7 +433,7 @@
     <recordUpdates>
         <name>updateTask</name>
         <label>updateTask</label>
-        <locationX>1062</locationX>
+        <locationX>974</locationX>
         <locationY>1247</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -467,7 +452,7 @@
         <object>Task</object>
     </recordUpdates>
     <start>
-        <locationX>562</locationX>
+        <locationX>518</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
