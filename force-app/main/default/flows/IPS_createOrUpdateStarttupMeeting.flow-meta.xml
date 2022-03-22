@@ -115,7 +115,7 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>updateTravelTime</name>
+        <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
         <locationX>842</locationX>
         <locationY>695</locationY>
@@ -175,7 +175,7 @@
     <decisions>
         <name>checkCriteria</name>
         <label>checkCriteria</label>
-        <locationX>446</locationX>
+        <locationX>380</locationX>
         <locationY>455</locationY>
         <defaultConnector>
             <targetReference>checkUpdate</targetReference>
@@ -236,9 +236,12 @@
     <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
-        <locationX>842</locationX>
+        <locationX>710</locationX>
         <locationY>575</locationY>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <defaultConnector>
+            <targetReference>updateTravelTime_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>isTravelTimeAdded</name>
             <conditionLogic>(1 AND 3) OR (2 AND 4)</conditionLogic>
@@ -274,35 +277,6 @@
                 <targetReference>createTravelTime_0</targetReference>
             </connector>
             <label>isTravelTimeAdded</label>
-        </rules>
-        <rules>
-            <name>isMeetingMoved</name>
-            <conditionLogic>3 AND (1 OR 2)</conditionLogic>
-            <conditions>
-                <leftValueReference>getEvents.ips_Travel_time__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getEvents.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>isDateTimeChanged</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateTravelTime</targetReference>
-            </connector>
-            <label>isMeetingMoved</label>
         </rules>
     </decisions>
     <description>creation or updates on startup meetings
@@ -341,7 +315,7 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>446</locationX>
+        <locationX>380</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -387,7 +361,7 @@
         <object>Work_Trail__c</object>
     </recordUpdates>
     <start>
-        <locationX>320</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
