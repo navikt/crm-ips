@@ -22,6 +22,9 @@ call sfdx force:package:install --package 04t7U000000ToNYQA0 -r -k %3 --wait 10 
 echo "Installerer crm-community-base ver. 0.48"
 call sfdx force:package:install --package 04t7U000000ToLwQAK -r -k %3 --wait 10 --publishwait 10
 
+echo "Installerer crm-journal-utilities ver. 0.13.0"
+call sfdx force:package:install --package 04t7U000000ToHfQAK -r -k %3 --wait 10 --publishwait 10
+
 echo "Dytter kildekoden til scratch org'en"
 call sfdx force:source:push
 
