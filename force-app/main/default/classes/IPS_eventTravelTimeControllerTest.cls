@@ -22,7 +22,8 @@ public class IPS_eventTravelTimeControllerTest {
           EndDateTime = system.Datetime.now()+(60/1440),
           Subject = 'Møte med Arbeidsgiver',
           IPS_Type__c = 'Meeting with Employer',
-          ips_Subcategory_Type_IPS__c = 'Job support');
+          ips_Subcategory_Type_IPS__c = 'Job support',
+          ips_Completed__c =true);
           insert createEvent;
         
         Event createEvent2 = new Event(
@@ -35,7 +36,8 @@ public class IPS_eventTravelTimeControllerTest {
           EndDateTime = system.Datetime.now()+(60/1440),
           Subject = 'Møte med Arbeidsgiver',
           IPS_Type__c = 'Meeting with Employer',
-          ips_Subcategory_Type_IPS__c = 'Job support');
+          ips_Subcategory_Type_IPS__c = 'Job support',
+          ips_Completed__c =true);
           insert createEvent2; 
     }
     

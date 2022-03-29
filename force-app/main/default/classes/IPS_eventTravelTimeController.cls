@@ -99,6 +99,7 @@ public class IPS_eventTravelTimeController {
             eBefore.OwnerId = ownerId;
             eBefore.RecordTypeId = recordTypeId;
             eBefore.IPS_eventId__c = currentRecord;
+            eBefore.ips_Completed__c =true;
             insert eBefore;
         }
 
@@ -114,6 +115,7 @@ public class IPS_eventTravelTimeController {
             eAfter.OwnerId = ownerId;
             eAfter.RecordTypeId = recordTypeId;
             eAfter.IPS_eventId__c = currentRecord;
+            eAfter.ips_Completed__c =true;
             insert eAfter;
         }
     }
