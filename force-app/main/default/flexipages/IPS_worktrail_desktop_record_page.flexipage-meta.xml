@@ -21,12 +21,6 @@
         </itemInstances>
         <itemInstances>
             <fieldInstance>
-                <fieldItem>Record.ips_Passive__c</fieldItem>
-                <identifier>field4</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
                 <fieldItem>Record.IPS_Ung__c</fieldItem>
                 <identifier>field5</identifier>
             </fieldInstance>
@@ -721,6 +715,9 @@
                             <value>Work_Trail__c.New_sub_goal</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>Work_Trail__c.IPS_setParticipantPassive</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>Work_Trail__c.New_Job</value>
                         </valueListItems>
                         <valueListItems>
@@ -752,10 +749,31 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>numVisibleActions</name>
-                    <value>9</value>
+                    <value>10</value>
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>highlightsPanel</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Passiv</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Warning</value>
+                </componentInstanceProperties>
+                <componentName>crmAlertBanner</componentName>
+                <identifier>c_crmAlertBanner1</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.ips_Passive__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
