@@ -44,8 +44,6 @@ public class IPS_eventTravelTimeController {
 
     //Input variables from flow
     public class evenctRequest {
-        @InvocableVariable
-        public List<Event> travelTime;
 
         @InvocableVariable(required=true)
         public boolean isUpdate;
