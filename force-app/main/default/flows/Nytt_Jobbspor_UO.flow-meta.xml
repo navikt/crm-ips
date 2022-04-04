@@ -90,7 +90,7 @@
         <expression>{!$User.Id}</expression>
     </formulas>
     <interviewLabel>Nytt Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Nytt Jobbspor</label>
+    <label>Nytt Jobbspor UO</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -151,14 +151,9 @@
             <targetReference>Redirect_0_0</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
-        <inputAssignments>
-            <field>IPS_Ung__c</field>
-            <value>
-                <elementReference>IPS_Ung</elementReference>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>RecordTypeId</field>
             <value>
@@ -191,12 +186,6 @@
         <faultConnector>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
-        <inputAssignments>
-            <field>IPS_Ung__c</field>
-            <value>
-                <elementReference>IPS_Ung</elementReference>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>OwnerId</field>
             <value>
@@ -336,6 +325,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -416,6 +406,7 @@
                             <stringValue>Person</stringValue>
                         </value>
                     </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <storeOutputAutomatically>true</storeOutputAutomatically>
                 </fields>
@@ -515,6 +506,7 @@
                     <stringValue>Work_Trail__c</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
