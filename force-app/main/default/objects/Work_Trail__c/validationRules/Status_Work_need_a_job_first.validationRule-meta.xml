@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Work_need_a_job_first</fullName>
+    <active>true</active>
+    <description>Det må være registrert en jobb før man kan sette jobbsporet i status Jobber</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(ips_Status__c, &quot;Working&quot;),
+ISNULL($ObjectType.ips_Job__c.Fields.Name)
+)</errorConditionFormula>
+    <errorDisplayField>ips_Status__c</errorDisplayField>
+    <errorMessage>Det må være registrert en aktiv jobb i jobbsporet før man kan velge status &quot;Jobber&quot;</errorMessage>
+</ValidationRule>
