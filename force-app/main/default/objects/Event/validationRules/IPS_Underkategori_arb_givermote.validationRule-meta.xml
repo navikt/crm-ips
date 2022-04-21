@@ -2,12 +2,12 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IPS_Underkategori_arb_givermote</fullName>
     <active>true</active>
-    <description>Når man legger inn arbeidsgiver i et møte så skal også underkategori fylles ut</description>
     <errorConditionFormula>AND(
+OR
+(ISBLANK(Text(ips_Subcategory_Type_IPS__c)),
+ISBLANK(Text(F_rste_arbeidsgiverm_te__c))),
  RecordType.DeveloperName = &quot;IPS_Event&quot;,
- NOT(ISBLANK(RelatedToAccount__c )),
-ISBLANK(Text(ips_Subcategory_Type_IPS__c))
+NOT(ISBLANK(RelatedToAccount__c ))
 )</errorConditionFormula>
-    <errorDisplayField>ips_Subcategory_Type_IPS__c</errorDisplayField>
-    <errorMessage>Underkategori må legges til !</errorMessage>
+    <errorMessage>Feltene &quot;Underkategori&quot; og  &quot;Første arbeidsgivermøte i Jobbsporet? &quot; er obligatoriske ved arbeidsgivermøter</errorMessage>
 </ValidationRule>

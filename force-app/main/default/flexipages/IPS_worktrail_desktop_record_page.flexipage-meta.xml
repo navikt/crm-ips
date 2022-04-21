@@ -2,6 +2,124 @@
 <FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
     <flexiPageRegions>
         <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>Edit</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Work_Trail__c.IPS_setParticipantPassive</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>PrintableView</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>collapsed</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>enableActionsConfiguration</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>enableActionsInNative</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideChatterActions</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>numVisibleActions</name>
+                    <value>5</value>
+                </componentInstanceProperties>
+                <componentName>force:highlightsPanel</componentName>
+                <identifier>highlightsPanel</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Passiv</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Warning</value>
+                </componentInstanceProperties>
+                <componentName>crmAlertBanner</componentName>
+                <identifier>c_crmAlertBanner1</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.ips_Passive__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>hideUpdateButton</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>variant</name>
+                    <value>linear</value>
+                </componentInstanceProperties>
+                <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
+                <identifier>pathAssistant</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <name>header</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>decorate</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;p&gt;&lt;b&gt;Deltaker skal informeres om:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Navn og kontaktinformasjon på behandlingsansvarlig hos NAV&lt;/li&gt;&lt;li&gt;Formålet(ene med behandlingen&lt;/li&gt;&lt;li&gt;Fra hvem og hvilke opplysninger som innhentes fra andre enn bruker selv&lt;/li&gt;&lt;li&gt;Om opplysningene blir utlevert til andre, og til hvem&lt;/li&gt;&lt;li&gt;Deltakers rett til å kreve innsyn, retting, eller sletting av personopplysninger&lt;/li&gt;&lt;/ul&gt;</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:richText</componentName>
+                <identifier>richText</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-88c7f1b7-b502-4d4d-af77-2a8af99128a6</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.Name</fieldItem>
                 <identifier>field1</identifier>
@@ -29,6 +147,12 @@
             <fieldInstance>
                 <fieldItem>Record.Oppstartsdato__c</fieldItem>
                 <identifier>field6</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_First_meeting_with_the_Employer_held__c</fieldItem>
+                <identifier>Recordips_First_meeting_with_the_Employer_held_cField1</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -82,6 +206,24 @@
             </componentInstance>
         </itemInstances>
         <name>Facet-b41f7e21-182e-43ef-ab87-a055ae5c3388</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-b41f7e21-182e-43ef-ab87-a055ae5c3388</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Informasjon</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>fieldSection</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-79d5d477-556a-4d05-9567-5bb4455eba26</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -147,20 +289,6 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>columns</name>
-                    <value>Facet-b41f7e21-182e-43ef-ab87-a055ae5c3388</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>Informasjon</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:fieldSection</componentName>
-                <identifier>fieldSection</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>columns</name>
                     <value>Facet-0ed426f5-ed51-426c-8bd4-b9a9d3614bd5</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
@@ -169,59 +297,337 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>fieldSection1</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
-        <name>Facet-39959532-dbd5-4dfc-ad2a-88ab9ac3ee91</name>
+        <name>Facet-36018774-e395-4f19-9d65-7b1707b36753</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_Transparency_consent_obtained_date__c</fieldItem>
+                <identifier>field43</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_Can_the_employer_be_contacted__c</fieldItem>
+                <identifier>field44</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_What_can_be_shared_with_the_employer__c</fieldItem>
+                <identifier>field45</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.What_cannot_be_shared_with_the_employer__c</fieldItem>
+                <identifier>field46</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_Benefits_of_openness_to_the_employer__c</fieldItem>
+                <identifier>field47</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_Disadvantages_of_openness_employe__c</fieldItem>
+                <identifier>field48</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-ljy1valwhs</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentInstanceProperties>
-                    <name>active</name>
-                    <value>true</value>
-                </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>body</name>
-                    <value>Facet-39959532-dbd5-4dfc-ad2a-88ab9ac3ee91</value>
+                    <value>Facet-ljy1valwhs</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>Informasjon og Samarbeid</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>tab</identifier>
+                <componentName>flexipage:column</componentName>
+                <identifier>column14</identifier>
             </componentInstance>
         </itemInstances>
-        <name>Facet-4192a64e-e0b3-4a80-a689-ed7120ce0188</name>
+        <name>Facet-tuk5p9jdmo</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>decorate</name>
-                    <value>true</value>
+                    <name>columns</name>
+                    <value>Facet-tuk5p9jdmo</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>richTextValue</name>
-                    <value>&lt;p&gt;&lt;b&gt;Bruker skal informeres om:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Navn og kontaktinformasjon på behandlingsansvarlig hos NAV&lt;/li&gt;&lt;li&gt;Formålet(ene med behandlingen&lt;/li&gt;&lt;li&gt;Fra hvem og hvilke opplysninger som innhentes fra andre enn bruker selv&lt;/li&gt;&lt;li&gt;Om opplysningene blir utlevert til andre, og til hvem&lt;/li&gt;&lt;li&gt;Brukers rett til å kreve innsyn, retting, eller sletting av personopplysninger&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</value>
+                    <name>label</name>
+                    <value>Åpenhet</value>
                 </componentInstanceProperties>
-                <componentName>flexipage:richText</componentName>
-                <identifier>richText</identifier>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>fieldSection12</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-d5f763b9-1ead-4e2e-8dc4-f43ab0a5a1c5</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_Financialframework_before_start_work__c</fieldItem>
+                <identifier>field40</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_Plan__c</fieldItem>
+                <identifier>field41</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ips_Transition_to_work__c</fieldItem>
+                <identifier>field42</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-cbd393e2-d95d-4291-b16f-d73f0cedad07</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-cbd393e2-d95d-4291-b16f-d73f0cedad07</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>column12</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-62123569-d9a7-4985-83e6-6282d0a7d5be</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-62123569-d9a7-4985-83e6-6282d0a7d5be</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Økonomiske rammer før oppstart i jobb</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>fieldSection11</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-fdteczpc48</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>Work_Trail__c.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>AttachedContentDocuments</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListComponentOverride</name>
+                    <value>ADVGRID</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>rowsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>relatedListSingleContainer3</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-889c5354-b554-420f-b6e2-d0f6f4d6d840</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-88c7f1b7-b502-4d4d-af77-2a8af99128a6</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Informasjon ut til Deltaker</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection--3r57jjhnsv6</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection5</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>tabs</name>
-                    <value>Facet-4192a64e-e0b3-4a80-a689-ed7120ce0188</value>
+                    <name>body</name>
+                    <value>Facet-79d5d477-556a-4d05-9567-5bb4455eba26</value>
                 </componentInstanceProperties>
-                <componentName>flexipage:tabset</componentName>
-                <identifier>tabset1</identifier>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Informasjon</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection1</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection1</identifier>
             </componentInstance>
         </itemInstances>
-        <name>leftsidebar</name>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-36018774-e395-4f19-9d65-7b1707b36753</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Samarbeid</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection2</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-d5f763b9-1ead-4e2e-8dc4-f43ab0a5a1c5</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Åpenhet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection--remkdog5r4</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection3</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-fdteczpc48</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Økonomiske rammer før oppstart i jobb</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection--83wdvbo3ije</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection4</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-889c5354-b554-420f-b6e2-d0f6f4d6d840</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Dokumenter</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection--f62q4xbodpu</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection6</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-1dfc73f4-1943-470b-bdfa-2bc7297decc9</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>lookupFieldName</name>
+                    <value>Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>updateQuickActionName</name>
+                    <value>Work_Trail__c.work_trail_name</value>
+                </componentInstanceProperties>
+                <componentName>console:relatedRecord</componentName>
+                <identifier>console_relatedRecord1</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Small</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>accordionSections</name>
+                    <value>Facet-1dfc73f4-1943-470b-bdfa-2bc7297decc9</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>defaultSectionName</name>
+                    <value>accordionSection--3r57jjhnsv6</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordion</componentName>
+                <identifier>flexipage_accordion1</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>sidebar</name>
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -243,10 +649,6 @@
                 <identifier>field22</identifier>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-81efdd4f-f759-4175-b72e-2117ef5daded</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.ips_Environmental_conditions__c</fieldItem>
@@ -265,7 +667,7 @@
                 <identifier>field25</identifier>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-520d90c1-8679-49eb-a0f9-6a44f5454ec2</name>
+        <name>Facet-81efdd4f-f759-4175-b72e-2117ef5daded</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -277,16 +679,6 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:column</componentName>
                 <identifier>column3</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-520d90c1-8679-49eb-a0f9-6a44f5454ec2</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>column4</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-f31ece1c-4b90-421a-b495-5ee47120c0e8</name>
@@ -379,16 +771,6 @@
                 <identifier>field31</identifier>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-c28db132-aa43-4bba-8da5-c9d8689db4a8</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_Network__c</fieldItem>
-                <identifier>field32</identifier>
-            </fieldInstance>
-        </itemInstances>
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.ips_Preferred_working_hours__c</fieldItem>
@@ -397,11 +779,17 @@
         </itemInstances>
         <itemInstances>
             <fieldInstance>
+                <fieldItem>Record.ips_Network__c</fieldItem>
+                <identifier>field32</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
                 <fieldItem>Record.ips_Geography__c</fieldItem>
                 <identifier>field34</identifier>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-0928db24-d2fd-410e-a0d7-c3ce988257a3</name>
+        <name>Facet-c28db132-aa43-4bba-8da5-c9d8689db4a8</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -413,16 +801,6 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:column</componentName>
                 <identifier>column51</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-0928db24-d2fd-410e-a0d7-c3ce988257a3</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>column6</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-0ca5e36c-edfc-4e00-aa28-fc82f0c95f78</name>
@@ -445,8 +823,346 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
-                <componentName>runtime_sales_activities:activityPanel</componentName>
-                <identifier>runtime_sales_activities_activityPanel1</identifier>
+                <componentInstanceProperties>
+                    <name>amountOfMonths</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecords</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToOpen</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>buttonIsHidden</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>configId</name>
+                    <value>IPS_event_delmal</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>filterIsActive</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerIcon</name>
+                    <value>standard:apps</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleEnglish</name>
+                    <value>Sub Goals (of Main Goals)</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleNorwegian</name>
+                    <value>Delmål (av hovedmål)</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter1Label</name>
+                    <value>Fullført/ikke fullført</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter2Label</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>timelineParentField</name>
+                    <value>Id</value>
+                </componentInstanceProperties>
+                <componentName>timeline</componentName>
+                <identifier>c_timeline1</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>amountOfMonths</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecords</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToOpen</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>buttonIsHidden</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>configId</name>
+                    <value>IPS_Event_Task</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>filterIsActive</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerIcon</name>
+                    <value>standard:report</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleEnglish</name>
+                    <value>Tasks and Logs</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleNorwegian</name>
+                    <value>Oppgaver og Logger (epost, samtale, sms mm)</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter1Label</name>
+                    <value>Oppgave/Logg</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter2Label</name>
+                    <value>Status</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>timelineParentField</name>
+                    <value>Id</value>
+                </componentInstanceProperties>
+                <componentName>timeline</componentName>
+                <identifier>c_timeline2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>amountOfMonths</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecords</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToOpen</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>buttonIsHidden</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>configId</name>
+                    <value>IPS_Events</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>filterIsActive</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerIcon</name>
+                    <value>custom:custom65</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleEnglish</name>
+                    <value>Meetings with Employer</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleNorwegian</name>
+                    <value>Møter med Arbeidsgiver</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter1Label</name>
+                    <value>Underkategori</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter2Label</name>
+                    <value>Status</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>timelineParentField</name>
+                    <value>Id</value>
+                </componentInstanceProperties>
+                <componentName>timeline</componentName>
+                <identifier>c_timeline3</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>amountOfMonths</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecords</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToOpen</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>buttonIsHidden</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>configId</name>
+                    <value>IPS_event_participant</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>filterIsActive</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerIcon</name>
+                    <value>standard:person_account</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleEnglish</name>
+                    <value>Meetings with participant</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleNorwegian</name>
+                    <value>Møter med deltaker</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter1Label</name>
+                    <value>Type møte</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter2Label</name>
+                    <value>Status</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>timelineParentField</name>
+                    <value>Id</value>
+                </componentInstanceProperties>
+                <componentName>timeline</componentName>
+                <identifier>c_timeline4</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>amountOfMonths</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecords</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToLoad</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToOpen</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>buttonIsHidden</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>configId</name>
+                    <value>IPS_Job</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>filterIsActive</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerIcon</name>
+                    <value>custom:custom18</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleEnglish</name>
+                    <value>Jobs</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleNorwegian</name>
+                    <value>Jobber</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter1Label</name>
+                    <value>Ansettelsesform</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter2Label</name>
+                    <value>Status</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>timelineParentField</name>
+                    <value>Id</value>
+                </componentInstanceProperties>
+                <componentName>timeline</componentName>
+                <identifier>c_timeline5</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>Facet-f7a9cf0c-581a-48e7-a91d-c29f72ad865b</name>
@@ -582,40 +1298,10 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>relatedListSingleContainer1</identifier>
+                <identifier>force_relatedListSingleContainer1</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-kqan5i6w7dr</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>parentFieldApiName</name>
-                    <value>Work_Trail__c.Id</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListApiName</name>
-                    <value>AttachedContentDocuments</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
-                    <value>ADVGRID</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>relatedListSingleContainer3</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-45edd177-d46d-4a0e-a53c-beec1afc61be</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -679,117 +1365,10 @@
                 <identifier>tab10</identifier>
             </componentInstance>
         </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-45edd177-d46d-4a0e-a53c-beec1afc61be</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>Dokumenter</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>tab11</identifier>
-            </componentInstance>
-        </itemInstances>
         <name>Facet-a645aa81-399a-4831-9469-6d5362a9856c</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>actionNames</name>
-                    <valueList>
-                        <valueListItems>
-                            <value>Edit</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.ips_Meeting_with_Employer_ips</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.IPS_Meeting_with_participant</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.New_sub_goal</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.IPS_setParticipantPassive</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.New_Job</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.IPS_New_Meeting</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Global.NewTask</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.IPS_Start_up_meeting</value>
-                        </valueListItems>
-                    </valueList>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>collapsed</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>enableActionsConfiguration</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>enableActionsInNative</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>hideChatterActions</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>numVisibleActions</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentName>force:highlightsPanel</componentName>
-                <identifier>highlightsPanel</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>message</name>
-                    <value>Passiv</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>type</name>
-                    <value>Warning</value>
-                </componentInstanceProperties>
-                <componentName>crmAlertBanner</componentName>
-                <identifier>c_crmAlertBanner1</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.ips_Passive__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>true</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>hideUpdateButton</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>variant</name>
-                    <value>linear</value>
-                </componentInstanceProperties>
-                <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
-                <identifier>pathAssistant</identifier>
-            </componentInstance>
-        </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
@@ -798,143 +1377,54 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
                 <identifier>tabset2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_Financialframework_before_start_work__c</fieldItem>
-                <identifier>field40</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_Plan__c</fieldItem>
-                <identifier>field41</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_Transition_to_work__c</fieldItem>
-                <identifier>field42</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <name>Facet-cbd393e2-d95d-4291-b16f-d73f0cedad07</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-cbd393e2-d95d-4291-b16f-d73f0cedad07</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>column12</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-62123569-d9a7-4985-83e6-6282d0a7d5be</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_Transparency_consent_obtained_date__c</fieldItem>
-                <identifier>field43</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_Can_the_employer_be_contacted__c</fieldItem>
-                <identifier>field44</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_What_can_be_shared_with_the_employer__c</fieldItem>
-                <identifier>field45</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.What_cannot_be_shared_with_the_employer__c</fieldItem>
-                <identifier>field46</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_Benefits_of_openness_to_the_employer__c</fieldItem>
-                <identifier>field47</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.ips_Disadvantages_of_openness_employe__c</fieldItem>
-                <identifier>field48</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <name>Facet-ljy1valwhs</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-ljy1valwhs</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>column14</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-tuk5p9jdmo</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>columns</name>
-                    <value>Facet-62123569-d9a7-4985-83e6-6282d0a7d5be</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>Økonomiske rammer før oppstart i jobb</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:fieldSection</componentName>
-                <identifier>fieldSection11</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>columns</name>
-                    <value>Facet-tuk5p9jdmo</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>Åpenhet</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:fieldSection</componentName>
-                <identifier>fieldSection12</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>rightsidebar</name>
-        <type>Region</type>
-    </flexiPageRegions>
     <masterLabel>IPS worktrail desktop record page</masterLabel>
     <sobjectType>Work_Trail__c</sobjectType>
     <template>
-        <name>flexipage:recordHomeThreeColTemplateDesktop</name>
+        <name>flexipage:recordHomeLeftSidebarTemplateDesktop</name>
         <properties>
             <name>actionNames</name>
+            <valueList>
+                <valueListItems>
+                    <value>Edit</value>
+                </valueListItems>
+                <valueListItems>
+                    <value>Work_Trail__c.ips_Meeting_with_Employer_ips</value>
+                </valueListItems>
+                <valueListItems>
+                    <value>Work_Trail__c.IPS_Meeting_with_participant</value>
+                </valueListItems>
+                <valueListItems>
+                    <value>Work_Trail__c.New_Job</value>
+                </valueListItems>
+                <valueListItems>
+                    <value>Work_Trail__c.New_sub_goal</value>
+                </valueListItems>
+                <valueListItems>
+                    <value>Global.NewTask</value>
+                </valueListItems>
+                <valueListItems>
+                    <value>Work_Trail__c.IPS_New_Meeting</value>
+                </valueListItems>
+                <valueListItems>
+                    <value>Work_Trail__c.IPS_Start_up_meeting</value>
+                </valueListItems>
+            </valueList>
         </properties>
         <properties>
             <name>enablePageActionConfig</name>
-            <value>false</value>
+            <value>true</value>
         </properties>
     </template>
     <type>RecordPage</type>
