@@ -38,7 +38,7 @@
         <inputParameters>
             <name>relatedTo</name>
             <value>
-                <elementReference>getEvents.RelatedToAccount__c</elementReference>
+                <elementReference>getEvents.WhatId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -98,7 +98,7 @@
         <inputParameters>
             <name>relatedTo</name>
             <value>
-                <elementReference>getEvents.RelatedToAccount__c</elementReference>
+                <elementReference>getEvents.WhatId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -153,12 +153,6 @@
             <name>ownerId</name>
             <value>
                 <elementReference>getEvents.OwnerId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>relatedTo</name>
-            <value>
-                <elementReference>getEvents.RelatedToAccount__c</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -303,6 +297,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getEvents.F_rste_arbeidsgiverm_te__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ja</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -613,6 +614,13 @@
             <name>varTaskId</name>
         </outputAssignments>
     </subflows>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>varDueDate</name>
         <dataType>DateTime</dataType>
