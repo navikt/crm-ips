@@ -14,7 +14,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Deltaker</label>
+        <label>Deltaker (legg inn deltaker når denne deltar i møte)</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -41,7 +41,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Aktører fra arbeidslivet (Ikke legg til ved møter du har med deltaker 1:1)</label>
+        <label>Arbeidsgiver og arbeidsgiverkontakt (legg kun inn når de deltar i møte)</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -62,7 +62,7 @@
                 <field>ips_Subcategory_Type_IPS__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>F_rste_arbeidsgiverm_te__c</field>
             </layoutItems>
         </layoutColumns>
@@ -87,10 +87,6 @@
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>IPS_Type__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>OwnerId</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -146,6 +142,10 @@
         <label>System Information</label>
         <layoutColumns>
             <layoutItems>
+                <behavior>Required</behavior>
+                <field>OwnerId</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>CreatedById</field>
             </layoutItems>
@@ -198,9 +198,14 @@
             <sortOrder>1</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Delete</actionName>
+            <actionName>PrintableView</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>2</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Delete</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>3</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <relatedContent>
@@ -235,7 +240,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h3N000003Ekfv</masterLabel>
+        <masterLabel>00h1x000003hy49</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
