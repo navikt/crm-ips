@@ -3,27 +3,28 @@ public class IPS_eventTravelTimeControllerTest {
 
 @TestSetup
     static void makeData(){
+
+        Account acc = new Account();
+        	acc.Name='Røre Pinne';
+        	acc.RecordTypeId=SObjectType.Account.getRecordTypeInfosByDeveloperName().get('IPS_UO_account_recordpage').getRecordTypeId();
         
-       Id empRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName()
-      .get('IPS_UO_account_recordpage')
-      .getRecordTypeId();
-        
-        Id personRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName()
-      .get('PersonAccount')
-      .getRecordTypeId();
-        
-        Account Acc = new Account(
-            FirstName='Røre',
-            LastName='Pinne',
-        	RecordTypeId=empRecordTypeId);
+        try{
             insert acc;
+        }catch(Exception e){
+            System.debug('Dette er arbeidsgiver:'+e);
+        }
         
-        Account Acc1 = new Account(
-            FirstName='Petter',
-            LastName='Putte',
-        	RecordTypeId=personRecordTypeId);
+        Account acc1 = new Account();
+            acc1.FirstName='Petter';
+            acc1.LastName='Putte';
+        	acc1.RecordTypeId=SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
+        
+        try{
             insert acc1;
-        
+        }catch(Exception e){
+            System.debug('Dette er personkonto:'+e);
+        }
+              
         Work_Trail__c trail = new Work_Trail__c(
         ips_Participant__c = acc1.id,
         ips_Status__c ='Referred',
