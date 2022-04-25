@@ -3,10 +3,32 @@ public class IPS_eventTravelTimeControllerTest {
 
 @TestSetup
     static void makeData(){
+        
+       Id empRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName()
+      .get('IPS_UO_account_recordpage')
+      .getRecordTypeId();
+        
+        Id personRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName()
+      .get('PersonAccount')
+      .getRecordTypeId();
+        
         Account Acc = new Account(
             FirstName='Røre',
-            LastName='Pinne');
+            LastName='Pinne',
+        	RecordTypeId=empRecordTypeId);
             insert acc;
+        
+        Account Acc1 = new Account(
+            FirstName='Petter',
+            LastName='Putte',
+        	RecordTypeId=personRecordTypeId);
+            insert acc1;
+        
+        Work_Trail__c trail = new Work_Trail__c(
+        ips_Participant__c = acc1.id,
+        ips_Status__c ='Referred',
+        ips_Passive__c=false);
+        insert trail;
         
        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
       .get('IPS_Event')
@@ -14,8 +36,8 @@ public class IPS_eventTravelTimeControllerTest {
         
         Event createEvent = new Event(
           ips_Travel_time__c = 15,
-          whatId =acc.id,
-          //RelatedToAccount__c = acc.id,
+          whatId =acc1.id,
+          RelatedToAccount__c = acc.id,
           RecordTypeId =devRecordTypeId,
           IPS_travelTimeFrom__c = 20,
           StartDateTime = system.Datetime.now(),
@@ -23,13 +45,16 @@ public class IPS_eventTravelTimeControllerTest {
           Subject = 'Møte med Arbeidsgiver',
           IPS_Type__c = 'Meeting with Employer',
           ips_Subcategory_Type_IPS__c = 'Job support',
+          ips_Subcategory_Type__c ='Job support',
+          IPS_Subcategory_Type_UO__c='Follow-up',
+          F_rste_arbeidsgiverm_te__c='Nei',
           ips_Completed__c =true);
           insert createEvent;
         
         Event createEvent2 = new Event(
           ips_Travel_time__c = 0,
-          //RelatedToAccount__c = acc.id,
-          whatId =acc.id,
+          RelatedToAccount__c = acc.id,
+          whatId =acc1.id,
           RecordTypeId =devRecordTypeId,
           IPS_travelTimeFrom__c = 0,
           StartDateTime = system.Datetime.now(),
@@ -37,6 +62,9 @@ public class IPS_eventTravelTimeControllerTest {
           Subject = 'Møte med Arbeidsgiver',
           IPS_Type__c = 'Meeting with Employer',
           ips_Subcategory_Type_IPS__c = 'Job support',
+          ips_Subcategory_Type__c ='Job support',
+          IPS_Subcategory_Type_UO__c='Follow-up',
+          F_rste_arbeidsgiverm_te__c='Nei',
           ips_Completed__c =true);
           insert createEvent2; 
     }
