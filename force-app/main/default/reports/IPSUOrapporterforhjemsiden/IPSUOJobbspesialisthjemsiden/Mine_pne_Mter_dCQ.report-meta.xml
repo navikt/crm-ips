@@ -28,7 +28,7 @@
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
-        <title>Åpne arb.g.møter</title>
+        <title>Åpne møter</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
@@ -70,13 +70,6 @@
             <operator>notEqual</operator>
             <value>Reisetid</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>Activity.IPS_Type__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Meeting with Employer</value>
-        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Matrix</format>
@@ -86,10 +79,15 @@
         <sortOrder>Asc</sortOrder>
     </groupingsAcross>
     <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.IPS_Type__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
         <field>DUE_DATE</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Mine Åpne Møter arbeidsgivermøter</name>
+    <name>Mine Åpne Møter</name>
     <params>
         <name>closed</name>
         <value>open</value>
