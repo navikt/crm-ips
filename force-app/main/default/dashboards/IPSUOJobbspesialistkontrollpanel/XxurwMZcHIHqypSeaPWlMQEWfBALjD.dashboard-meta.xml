@@ -7,6 +7,13 @@
     <colorPalette>nightfall</colorPalette>
     <dashboardChartTheme>light</dashboardChartTheme>
     <dashboardColorPalette>nightfall</dashboardColorPalette>
+    <dashboardFilters>
+        <dashboardFilterOptions>
+            <operator>greaterThan</operator>
+            <values>LAST_YEAR</values>
+        </dashboardFilterOptions>
+        <name>Oppstartsdato fra i år</name>
+    </dashboardFilters>
     <dashboardGridLayout>
         <dashboardGridComponents>
             <colSpan>4</colSpan>
@@ -19,6 +26,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Donut</componentType>
+                <dashboardFilterColumns>
+                    <column>Work_Trail__c.Oppstartsdato__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -55,6 +65,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Donut</componentType>
+                <dashboardFilterColumns>
+                    <column>Work_Trail__c.Oppstartsdato__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -91,6 +104,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Donut</componentType>
+                <dashboardFilterColumns>
+                    <column>Work_Trail__c.Oppstartsdato__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -126,20 +142,19 @@
                     <axisBinding>y</axisBinding>
                     <column>RowCount</column>
                 </chartSummary>
-                <chartSummary>
-                    <aggregate>Sum</aggregate>
-                    <axisBinding>y2</axisBinding>
-                    <column>Activity.ips_Is_the_employer_decision_maker__c</column>
-                </chartSummary>
-                <componentType>ColumnLineGrouped</componentType>
+                <componentType>BarGrouped</componentType>
+                <dashboardFilterColumns>
+                    <column>DUE_DATE</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
+                <drillDownUrl>https://efficiency-ability-4227.lightning.force.com/lightning/o/Event/list?filterName=00B3O000003J8RYUA0</drillDownUrl>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
+                <groupingColumn>Activity.IPS_Type__c</groupingColumn>
                 <groupingColumn>DUE_DATE</groupingColumn>
-                <groupingColumn>STATUS</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
@@ -150,103 +165,13 @@
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Mine fullførte og åpne møter</header>
-                <legendPosition>Bottom</legendPosition>
-                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_fullfrte_og_pne_mter_fQU</report>
+                <header>Mine Åpne Møter</header>
+                <legendPosition>Right</legendPosition>
+                <report>IPSUOJobbspesialisthjemsiden/Mine_pne_Mter_dCQ</report>
                 <showPercentage>false</showPercentage>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
-                <title>Siste 90 dager</title>
                 <useReportChart>false</useReportChart>
-            </dashboardComponent>
-            <rowIndex>8</rowIndex>
-            <rowSpan>15</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>4</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <axisBinding>y</axisBinding>
-                    <column>RowCount</column>
-                </chartSummary>
-                <componentType>Gauge</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <gaugeMax>10.0</gaugeMax>
-                <gaugeMin>0.0</gaugeMin>
-                <groupingSortProperties/>
-                <header>Mine aktive jobbspor</header>
-                <indicatorBreakpoint1>3.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>5.0</indicatorBreakpoint2>
-                <indicatorHighColor>#F23607</indicatorHighColor>
-                <indicatorLowColor>#6FBC0B</indicatorLowColor>
-                <indicatorMiddleColor>#FDE235</indicatorMiddleColor>
-                <report>IPSUOJobbspesialisthjemsiden/Mine_aktive_jobbspor_V68</report>
-                <showPercentage>false</showPercentage>
-                <showRange>true</showRange>
-                <showTotal>true</showTotal>
-                <showValues>false</showValues>
-                <title>Oppstartsmøte - Oppstartsdato</title>
-            </dashboardComponent>
-            <rowIndex>8</rowIndex>
-            <rowSpan>7</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>8</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <componentType>FlexTable</componentType>
-                <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
-                    <flexTableColumn>
-                        <reportColumn>Activity.IPS_Type__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>WHAT_NAME</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>WHO_NAME</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <breakPoint1>3.0</breakPoint1>
-                        <breakPoint2>11.0</breakPoint2>
-                        <breakPointOrder>0</breakPointOrder>
-                        <highRangeColor>15731210</highRangeColor>
-                        <lowRangeColor>6140222</lowRangeColor>
-                        <midRangeColor>16555805</midRangeColor>
-                        <reportColumn>Activity.ips_Is_the_employer_decision_maker__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>SUBJECT</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableSortInfo>
-                        <sortColumn>Activity.ips_Is_the_employer_decision_maker__c</sortColumn>
-                        <sortOrder>2</sortOrder>
-                    </flexTableSortInfo>
-                    <hideChatterPhotos>true</hideChatterPhotos>
-                </flexComponentProperties>
-                <groupingSortProperties/>
-                <header>Mine Åpne Møter</header>
-                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_pne_Mter_dCQ</report>
-                <title>Siste 90 dager</title>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
             <rowSpan>15</rowSpan>
@@ -261,27 +186,129 @@
                     <axisBinding>y</axisBinding>
                     <column>RowCount</column>
                 </chartSummary>
-                <componentType>Funnel</componentType>
+                <componentType>Donut</componentType>
+                <dashboardFilterColumns>
+                    <column>Work_Trail__c.Oppstartsdato__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
+                <drillDownUrl>https://efficiency-ability-4227.lightning.force.com/lightning/o/Work_Trail__c/list?filterName=00B3O000003J8LkUAK</drillDownUrl>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>true</expandOthers>
-                <groupingColumn>STATUS</groupingColumn>
+                <groupingColumn>CUST_NAME</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Mine fullførte og åpne møter</header>
+                <header>Åpne oppstartsmøter uten oppstartsdato</header>
                 <legendPosition>Right</legendPosition>
-                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_fullfrte_og_pne_mter_fQU</report>
-                <showPercentage>true</showPercentage>
+                <report>IPSUOJobbspesialisthjemsiden/pne_oppstartsmter_uten_oppstartsdato_SEi</report>
+                <showPercentage>false</showPercentage>
+                <showTotal>true</showTotal>
                 <showValues>false</showValues>
                 <sortBy>RowLabelAscending</sortBy>
-                <title>Siste 90 dager</title>
+                <useReportChart>false</useReportChart>
+            </dashboardComponent>
+            <rowIndex>8</rowIndex>
+            <rowSpan>7</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>4</colSpan>
+            <columnIndex>8</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartAxisRange>Auto</chartAxisRange>
+                <chartSummary>
+                    <axisBinding>y</axisBinding>
+                    <column>RowCount</column>
+                </chartSummary>
+                <componentType>BarGrouped</componentType>
+                <dashboardFilterColumns>
+                    <column>DUE_DATE</column>
+                </dashboardFilterColumns>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingColumn>DUE_DATE</groupingColumn>
+                <groupingColumn>Activity.IPS_Status__c</groupingColumn>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                    <groupingSorts>
+                        <groupingLevel>g2</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>Mine fullførte og åpne møter</header>
+                <legendPosition>Right</legendPosition>
+                <report>IPSUOJobbspesialisthjemsiden/Mine_fullfrte_og_pne_mter_fQU</report>
+                <showPercentage>false</showPercentage>
+                <showValues>true</showValues>
+                <sortBy>RowLabelDescending</sortBy>
+                <useReportChart>false</useReportChart>
+            </dashboardComponent>
+            <rowIndex>8</rowIndex>
+            <rowSpan>15</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>4</colSpan>
+            <columnIndex>4</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartAxisRange>Auto</chartAxisRange>
+                <chartSummary>
+                    <aggregate>Sum</aggregate>
+                    <axisBinding>y</axisBinding>
+                    <column>Activity.ips_Travel_time__c</column>
+                </chartSummary>
+                <chartSummary>
+                    <aggregate>Sum</aggregate>
+                    <axisBinding>y</axisBinding>
+                    <column>Activity.IPS_travelTimeFrom__c</column>
+                </chartSummary>
+                <chartSummary>
+                    <aggregate>Sum</aggregate>
+                    <axisBinding>y</axisBinding>
+                    <column>Activity.Total_Duration__c</column>
+                </chartSummary>
+                <chartSummary>
+                    <aggregate>Sum</aggregate>
+                    <axisBinding>y</axisBinding>
+                    <column>Activity.ips_Is_the_employer_decision_maker__c</column>
+                </chartSummary>
+                <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>DUE_DATE</column>
+                </dashboardFilterColumns>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingColumn>DUE_DATE</groupingColumn>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>Min utetid</header>
+                <legendPosition>Right</legendPosition>
+                <report>IPSUOJobbspesialisthjemsiden/Min_utetid_sNL</report>
+                <showPercentage>false</showPercentage>
+                <showPicturesOnCharts>false</showPicturesOnCharts>
+                <showValues>true</showValues>
+                <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>false</useReportChart>
             </dashboardComponent>
             <rowIndex>15</rowIndex>
@@ -298,6 +325,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Donut</componentType>
+                <dashboardFilterColumns>
+                    <column>DUE_DATE</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -314,7 +344,7 @@
                 </groupingSortProperties>
                 <header>Mine arbeidsgivermøter</header>
                 <legendPosition>Right</legendPosition>
-                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_arbeidsgivermter_siste_7_dager_2Un</report>
+                <report>IPSUOJobbspesialisthjemsiden/Mine_arbeidsgivermter_siste_7_dager_2Un</report>
                 <showPercentage>false</showPercentage>
                 <showTotal>true</showTotal>
                 <showValues>true</showValues>
@@ -336,6 +366,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Donut</componentType>
+                <dashboardFilterColumns>
+                    <column>DUE_DATE</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -352,7 +385,7 @@
                 </groupingSortProperties>
                 <header>Mine arbeidsgivermøter forrige/denne mnd</header>
                 <legendPosition>Right</legendPosition>
-                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_arbeidsgivermter_forrigedenne_mnd_ELM</report>
+                <report>IPSUOJobbspesialisthjemsiden/Mine_arbeidsgivermter_forrigedenne_mnd_ELM</report>
                 <showPercentage>false</showPercentage>
                 <showTotal>true</showTotal>
                 <showValues>true</showValues>
@@ -373,6 +406,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>ColumnGrouped</componentType>
+                <dashboardFilterColumns>
+                    <column>DUE_DATE</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -393,7 +429,7 @@
                 </groupingSortProperties>
                 <header>Mitt teams arbeidsgivermøter</header>
                 <legendPosition>Right</legendPosition>
-                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mitt_teams_arbeidgmte_forrigedenne_md_5el</report>
+                <report>IPSUOJobbspesialisthjemsiden/Mitt_teams_arbeidgmte_forrigedenne_md_5el</report>
                 <showPercentage>false</showPercentage>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
@@ -409,7 +445,7 @@
     <dashboardType>LoggedInUser</dashboardType>
     <description>Oversikt for jobbspesialister IPS/UO</description>
     <isGridLayout>true</isGridLayout>
-    <runningUser>test-dap86gt5fkmg@example.com</runningUser>
+    <runningUser>test-vjhwe27yakxf@example.com</runningUser>
     <textColor>#000000</textColor>
     <title>Jobbspesialist kontrollpanel hjemmeside</title>
     <titleColor>#000000</titleColor>
