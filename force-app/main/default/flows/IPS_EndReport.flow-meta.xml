@@ -5,7 +5,7 @@
         <name>addEmployeer</name>
         <label>addEmployeer</label>
         <locationX>1262</locationX>
-        <locationY>1118</locationY>
+        <locationY>1790</locationY>
         <assignmentItems>
             <assignToReference>employeeMeetings</assignToReference>
             <operator>Add</operator>
@@ -32,10 +32,40 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addJobs</name>
+        <label>addJobs</label>
+        <locationX>954</locationX>
+        <locationY>1118</locationY>
+        <assignmentItems>
+            <assignToReference>jobsList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobsList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>jobRow</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobsList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateJobs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addParticipant</name>
         <label>addParticipant</label>
         <locationX>998</locationX>
-        <locationY>1118</locationY>
+        <locationY>1790</locationY>
         <assignmentItems>
             <assignToReference>participantMeetings</assignToReference>
             <operator>Add</operator>
@@ -65,7 +95,7 @@
         <name>addTask_0</name>
         <label>addTask</label>
         <locationX>954</locationX>
-        <locationY>1766</locationY>
+        <locationY>2438</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
@@ -99,10 +129,35 @@
         </value>
     </constants>
     <decisions>
+        <name>checkJob</name>
+        <label>checkJob</label>
+        <locationX>974</locationX>
+        <locationY>878</locationY>
+        <defaultConnector>
+            <targetReference>isMeetingsNull</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IsJobNotNull</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getJobs</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>iterateJobs</targetReference>
+            </connector>
+            <label>IsJobNotNull</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkMeetingType</name>
         <label>checkMeetingType</label>
         <locationX>1262</locationX>
-        <locationY>998</locationY>
+        <locationY>1670</locationY>
         <defaultConnector>
             <targetReference>iterateMeetings</targetReference>
         </defaultConnector>
@@ -142,7 +197,7 @@
         <name>checkRecordType</name>
         <label>checkRecordType</label>
         <locationX>974</locationX>
-        <locationY>2078</locationY>
+        <locationY>2750</locationY>
         <defaultConnector>
             <targetReference>noWorkTrail</targetReference>
         </defaultConnector>
@@ -182,7 +237,7 @@
         <name>checkReportType</name>
         <label>checkReportType</label>
         <locationX>314</locationX>
-        <locationY>2198</locationY>
+        <locationY>2870</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isEndReport</name>
@@ -219,7 +274,7 @@
         <name>checkReportType_0</name>
         <label>checkReportType</label>
         <locationX>1106</locationX>
-        <locationY>2198</locationY>
+        <locationY>2870</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isEndReport_0</name>
@@ -253,7 +308,7 @@
         <name>checkTask</name>
         <label>checkTask</label>
         <locationX>974</locationX>
-        <locationY>1526</locationY>
+        <locationY>2198</locationY>
         <defaultConnector>
             <targetReference>checkRecordType</targetReference>
         </defaultConnector>
@@ -278,7 +333,7 @@
         <name>isMeetingsNull</name>
         <label>isMeetingsNull</label>
         <locationX>974</locationX>
-        <locationY>758</locationY>
+        <locationY>1430</locationY>
         <defaultConnector>
             <targetReference>noMeetingInfo</targetReference>
         </defaultConnector>
@@ -303,9 +358,13 @@
     <formulas>
         <name>employeeRow</name>
         <dataType>String</dataType>
-        <expression>RPAD(TEXT(DAY({!iterateMeetings.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateMeetings.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateMeetings.ActivityDate})),10)
-&amp;RPAD({!iterateMeetings.Subject},20)
-&amp;RPAD(IF({!iterateMeetings.IPS_No_Show__c}==false,&quot;Ikke tilstede&quot;,&quot;Deltaker tilstede&quot;),20)</expression>
+        <expression>RPAD({!iterateMeetings.Subject},50)&amp;&apos;, &apos;
+&amp;RPAD(TEXT(DAY({!iterateMeetings.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateMeetings.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateMeetings.ActivityDate})),10)</expression>
+    </formulas>
+    <formulas>
+        <name>jobRow</name>
+        <dataType>String</dataType>
+        <expression>{!iterateJobs.Name}&amp;&apos; , &apos;&amp;TEXT({!iterateJobs.ips_Form_of_Employment__c})&amp;&apos; , &apos;&amp;TEXT({!iterateJobs.ips_Status__c})</expression>
     </formulas>
     <formulas>
         <name>participantRow</name>
@@ -329,10 +388,24 @@
     <interviewLabel>IPS - end report {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - end report</label>
     <loops>
+        <name>iterateJobs</name>
+        <label>iterateJobs</label>
+        <locationX>866</locationX>
+        <locationY>998</locationY>
+        <collectionReference>getJobs</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>addJobs</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>isMeetingsNull</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>iterateMeetings</name>
         <label>iterateMeetings</label>
         <locationX>910</locationX>
-        <locationY>878</locationY>
+        <locationY>1550</locationY>
         <collectionReference>getMeetings</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -346,7 +419,7 @@
         <name>iterateTasks</name>
         <label>iterateTasks</label>
         <locationX>866</locationX>
-        <locationY>1646</locationY>
+        <locationY>2318</locationY>
         <collectionReference>getTasks</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -375,6 +448,27 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <name>getJobs</name>
+        <label>getJobs</label>
+        <locationX>974</locationX>
+        <locationY>638</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>selectReportType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Job__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>getMeetings</name>
         <label>getMeetings</label>
@@ -414,6 +508,7 @@
         <queriedFields>ActivityDate</queriedFields>
         <queriedFields>IPS_No_Show__c</queriedFields>
         <queriedFields>IPS_Type__c</queriedFields>
+        <queriedFields>ips_Employee_Name__c</queriedFields>
         <sortField>ActivityDate</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -448,7 +543,7 @@
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>selectReportType</targetReference>
+            <targetReference>getJobs</targetReference>
         </connector>
         <filterLogic>1 AND (2 OR 3)</filterLogic>
         <filters>
@@ -522,6 +617,10 @@
             <field>RecordTypeId</field>
         </outputAssignments>
         <outputAssignments>
+            <assignToReference>varDesiredProfession</assignToReference>
+            <field>ips_Desired_profession_industry_career__c</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>workTrailEndDate</assignToReference>
             <field>ips_End_Date__c</field>
         </outputAssignments>
@@ -537,12 +636,16 @@
             <assignToReference>participantName</assignToReference>
             <field>ips_Participant__c</field>
         </outputAssignments>
+        <outputAssignments>
+            <assignToReference>varPriorityCareerWishes</assignToReference>
+            <field>ips_Priority_career_wishes__c</field>
+        </outputAssignments>
     </recordLookups>
     <recordUpdates>
         <name>updateWorktrail</name>
         <label>updateWorktrail</label>
         <locationX>50</locationX>
-        <locationY>2438</locationY>
+        <locationY>3110</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -563,7 +666,7 @@
         <name>updateWorktrail_0</name>
         <label>updateWorktrail</label>
         <locationX>314</locationX>
-        <locationY>2438</locationY>
+        <locationY>3110</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -584,7 +687,7 @@
         <name>noMeetingInfo</name>
         <label>No meeting</label>
         <locationX>1038</locationX>
-        <locationY>878</locationY>
+        <locationY>1550</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -603,7 +706,7 @@
         <name>noWorkTrail</name>
         <label>Not a worktrail</label>
         <locationX>1634</locationX>
-        <locationY>2198</locationY>
+        <locationY>2870</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -619,12 +722,12 @@
         <name>selectReportType</name>
         <label>Select report type</label>
         <locationX>974</locationX>
-        <locationY>638</locationY>
+        <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>isMeetingsNull</targetReference>
+            <targetReference>checkJob</targetReference>
         </connector>
         <fields>
             <name>varReportIntervall</name>
@@ -647,7 +750,7 @@
         <name>workTrailEndReport_0_0</name>
         <label>Slutt rapport</label>
         <locationX>842</locationX>
-        <locationY>2318</locationY>
+        <locationY>2990</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -735,7 +838,7 @@
         <name>workTrailEndReport_0_0_0</name>
         <label>Slutt rapport</label>
         <locationX>50</locationX>
-        <locationY>2318</locationY>
+        <locationY>2990</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -853,7 +956,7 @@
         <name>workTrailIntervall</name>
         <label>Intervall</label>
         <locationX>314</locationX>
-        <locationY>2318</locationY>
+        <locationY>2990</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1011,7 +1114,7 @@
             <targetReference>getWorktrail</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>newLine</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
@@ -1036,7 +1139,7 @@
     <textTemplates>
         <name>templateUOEndReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Sluttrapport for {!varWorkTrailName}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Deltaker:             {!participantName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Jobbspesialist:    {!ownerId}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;NAV-veileder:     &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!supervisorName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Startdato:           {!workTrailStartDate}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Sluttdato:           {!workTrailEndDate}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Sluttårsak:          {!endCause}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Yrkesprofil&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ønsket yrke/bransje/karriere:&lt;/p&gt;&lt;p&gt;  &lt;/p&gt;&lt;p&gt;Beskrivelse av hvordan jobbspesialist og deltaker har jobbet sammen om yrkeskartlegging og karriereprofil:&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!summarizeCooperation}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Handlingsplan&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Hovedmål:   &lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varMainGoal}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!taskList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;﻿&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Oppsummering av den jobben jobbspesialist har gjort ut mot arbeidsgivere i den hensikt å skaffe jobbmuligheter. Hva er årsaken til at kontaktene ikke resulterte i muligheter for jobb?&amp;nbsp;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!SummarizeEmployeer}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Avslutning&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Avsluttende oppsummering og anbefaling om videre tiltak eller tilrettelegging.&amp;nbsp;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!summarizeEnd}&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Sluttrapport for {!varWorkTrailName}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Deltaker:             {!participantName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Jobbspesialist:    {!ownerId}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;NAV-veileder:     &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!supervisorName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Startdato:           {!workTrailStartDate}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Sluttdato:           {!workTrailEndDate}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Sluttårsak:          {!endCause}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Yrkesprofil&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ønsket yrke/bransje/karriere:&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varDesiredProfession}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Beskrivelse av hvordan jobbspesialist og deltaker har jobbet sammen om yrkeskartlegging og karriereprofil:&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!summarizeCooperation}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Handlingsplan&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Hovedmål:   &lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varMainGoal}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!taskList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;﻿&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Oppsummering av jobb utført mot arbeidsgiver:&lt;/span&gt;&amp;nbsp;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!SummarizeEmployeer}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Oversikt over deltakers jobber:&lt;/p&gt;&lt;p&gt;{!jobsList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Avslutning&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Avsluttende oppsummering:&lt;/span&gt;&amp;nbsp;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!summarizeEnd}&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>assignmentParticipant</name>
@@ -1055,6 +1158,13 @@
     </variables>
     <variables>
         <name>endCause</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>jobsList</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -1117,7 +1227,28 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>varDesiredProfession</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varMainGoal</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varParticipantName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varPriorityCareerWishes</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
