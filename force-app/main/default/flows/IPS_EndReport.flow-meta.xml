@@ -2,40 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <assignments>
-        <name>addEmployeer</name>
-        <label>addEmployeer</label>
-        <locationX>1262</locationX>
-        <locationY>1790</locationY>
-        <assignmentItems>
-            <assignToReference>employeeMeetings</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>employeeMeetings</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>employeeRow</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>employeeMeetings</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iterateMeetings</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addJobs</name>
+        <name>addJobs_0</name>
         <label>addJobs</label>
-        <locationX>954</locationX>
-        <locationY>1118</locationY>
+        <locationX>138</locationX>
+        <locationY>3206</locationY>
         <assignmentItems>
             <assignToReference>jobsList</assignToReference>
             <operator>Add</operator>
@@ -58,51 +28,46 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>iterateJobs</targetReference>
+            <targetReference>iterateJobs_0</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>addParticipant</name>
-        <label>addParticipant</label>
-        <locationX>998</locationX>
-        <locationY>1790</locationY>
+        <name>addParticipantNoShow</name>
+        <label>addParticipantNoShow</label>
+        <locationX>158</locationX>
+        <locationY>2726</locationY>
         <assignmentItems>
-            <assignToReference>participantMeetings</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>varParticipantNoShow</assignToReference>
+            <operator>AssignCount</operator>
             <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>participantMeetings</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>participantRow</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>participantMeetings</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
+                <elementReference>getParticipantNoShow</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>iterateMeetings</targetReference>
+            <targetReference>getJobs_0</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>addTask_0</name>
-        <label>addTask</label>
-        <locationX>954</locationX>
-        <locationY>2438</locationY>
+        <name>addParticipantShowMeeting</name>
+        <label>addParticipantShowMeeting</label>
+        <locationX>158</locationX>
+        <locationY>2486</locationY>
         <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>varParticipantShowCount</assignToReference>
+            <operator>AssignCount</operator>
             <value>
-                <stringValue>&lt;br&gt;</stringValue>
+                <elementReference>getParticipantMeetings</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>getParticipantNoShow</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addTask</name>
+        <label>addTask</label>
+        <locationX>138</locationX>
+        <locationY>2054</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
@@ -121,6 +86,29 @@
             <targetReference>iterateTasks</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>setEmplName</name>
+        <label>setEmplName</label>
+        <locationX>246</locationX>
+        <locationY>1478</locationY>
+        <assignmentItems>
+            <assignToReference>employeeMeetings</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetings.RelatedToAccount__r.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>employeeMeetings</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateEmplMeetings</targetReference>
+        </connector>
+    </assignments>
     <constants>
         <name>conGES</name>
         <dataType>String</dataType>
@@ -129,16 +117,16 @@
         </value>
     </constants>
     <decisions>
-        <name>checkJob</name>
+        <name>checkJob_0</name>
         <label>checkJob</label>
-        <locationX>974</locationX>
-        <locationY>878</locationY>
+        <locationX>158</locationX>
+        <locationY>2966</locationY>
         <defaultConnector>
-            <targetReference>isMeetingsNull</targetReference>
+            <targetReference>updateWorktrail_0_0</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>IsJobNotNull</name>
+            <name>IsJobNotNull_0</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>getJobs</leftValueReference>
@@ -148,62 +136,22 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>iterateJobs</targetReference>
+                <targetReference>iterateJobs_0</targetReference>
             </connector>
             <label>IsJobNotNull</label>
         </rules>
     </decisions>
     <decisions>
-        <name>checkMeetingType</name>
-        <label>checkMeetingType</label>
-        <locationX>1262</locationX>
-        <locationY>1670</locationY>
-        <defaultConnector>
-            <targetReference>iterateMeetings</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>isParticipant</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>iterateMeetings.IPS_Type__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Meeting with Participant</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addParticipant</targetReference>
-            </connector>
-            <label>isParticipant</label>
-        </rules>
-        <rules>
-            <name>isEmployeer</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>iterateMeetings.IPS_Type__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Meeting with Employer</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addEmployeer</targetReference>
-            </connector>
-            <label>isEmployeer</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>checkRecordType</name>
         <label>checkRecordType</label>
-        <locationX>974</locationX>
-        <locationY>2750</locationY>
+        <locationX>745</locationX>
+        <locationY>878</locationY>
         <defaultConnector>
-            <targetReference>noWorkTrail</targetReference>
+            <targetReference>noWorkTrail_0</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
-            <name>isUO</name>
+            <name>isUO_0</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>recordTypeName</leftValueReference>
@@ -213,12 +161,12 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>checkReportType</targetReference>
+                <targetReference>checkReportType_0_0</targetReference>
             </connector>
             <label>isUO</label>
         </rules>
         <rules>
-            <name>isIPS</name>
+            <name>isIPS_0</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>recordTypeName</leftValueReference>
@@ -228,16 +176,19 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>checkReportType_0</targetReference>
+                <targetReference>getJobs</targetReference>
             </connector>
             <label>isIPS</label>
         </rules>
     </decisions>
     <decisions>
-        <name>checkReportType</name>
+        <name>checkReportType_0_0</name>
         <label>checkReportType</label>
-        <locationX>314</locationX>
-        <locationY>2870</locationY>
+        <locationX>432</locationX>
+        <locationY>998</locationY>
+        <defaultConnector>
+            <targetReference>getJobs</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isEndReport</name>
@@ -250,7 +201,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>workTrailEndReport_0_0_0</targetReference>
+                <targetReference>workTrailEndReport</targetReference>
             </connector>
             <label>isEndReport</label>
         </rules>
@@ -265,56 +216,22 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>workTrailIntervall</targetReference>
+                <targetReference>workTrailIntervall_0</targetReference>
             </connector>
             <label>isIntervallReport</label>
         </rules>
     </decisions>
     <decisions>
-        <name>checkReportType_0</name>
-        <label>checkReportType</label>
-        <locationX>1106</locationX>
-        <locationY>2870</locationY>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isEndReport_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varReportEnd</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>workTrailEndReport_0_0</targetReference>
-            </connector>
-            <label>isEndReport</label>
-        </rules>
-        <rules>
-            <name>isIntervallReport_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varReportIntervall</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <label>isIntervallReport</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkTask</name>
+        <name>checkTask_0</name>
         <label>checkTask</label>
-        <locationX>974</locationX>
-        <locationY>2198</locationY>
+        <locationX>158</locationX>
+        <locationY>1814</locationY>
         <defaultConnector>
-            <targetReference>checkRecordType</targetReference>
+            <targetReference>getParticipantMeetings</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>IsNull</defaultConnectorLabel>
         <rules>
-            <name>IsNotTaskNull</name>
+            <name>IsNotTaskNull_0</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>getTasks</leftValueReference>
@@ -329,104 +246,85 @@
             <label>IsNotTaskNull</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>isMeetingsNull</name>
-        <label>isMeetingsNull</label>
-        <locationX>974</locationX>
-        <locationY>1430</locationY>
-        <defaultConnector>
-            <targetReference>noMeetingInfo</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isNull</defaultConnectorLabel>
-        <rules>
-            <name>isNotNull</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getMeetings</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>iterateMeetings</targetReference>
-            </connector>
-            <label>isNotNull</label>
-        </rules>
-    </decisions>
     <description>End report for IPS/UO</description>
     <formulas>
         <name>employeeRow</name>
         <dataType>String</dataType>
-        <expression>RPAD({!iterateMeetings.Subject},50)&amp;&apos;, &apos;
-&amp;RPAD(TEXT(DAY({!iterateMeetings.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateMeetings.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateMeetings.ActivityDate})),10)</expression>
+        <expression>{!iterateEmplMeetings.RelatedToAccount__r.Name}</expression>
     </formulas>
     <formulas>
         <name>jobRow</name>
         <dataType>String</dataType>
-        <expression>{!iterateJobs.Name}&amp;&apos; , &apos;&amp;TEXT({!iterateJobs.ips_Form_of_Employment__c})&amp;&apos; , &apos;&amp;TEXT({!iterateJobs.ips_Status__c})</expression>
-    </formulas>
-    <formulas>
-        <name>participantRow</name>
-        <dataType>String</dataType>
-        <expression>{!newLine}
-&amp;&quot;Dato: &quot; &amp;TEXT(DAY({!iterateMeetings.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateMeetings.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateMeetings.ActivityDate}))
-&amp;{!newLine}
-&amp;&quot;Emne: &quot;
-&amp; {!iterateMeetings.Subject}</expression>
+        <expression>{!iterateJobs_0.Name}</expression>
     </formulas>
     <formulas>
         <name>taskRow</name>
         <dataType>String</dataType>
-        <expression>&quot;Delmål:&quot;
-&amp;{!newLine}
-&amp;RPAD(TEXT(DAY({!iterateTasks.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateTasks.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateTasks.ActivityDate})),10)
-&amp;RPAD({!iterateTasks.Subject},40,&apos; &apos;)
-&amp;{!newLine}
-&amp;RPAD({!iterateTasks.Description},255,&apos; &apos;)</expression>
+        <expression>RPAD(TEXT(DAY({!iterateTasks.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateTasks.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateTasks.ActivityDate})),10,&apos; &apos;)
+&amp;RPAD({!iterateTasks.Subject},100,&apos; &apos;)
+&amp;RPAD(
+CASE(TEXT({!iterateTasks.Status}),
+&apos;Open&apos;,&apos;Åpen&apos;,
+&apos;Completed&apos;,&apos;Lukket&apos;,
+&apos; &apos;
+)
+,20,&apos; &apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>varTaskRowHeading</name>
+        <dataType>String</dataType>
+        <expression>RPAD(&quot;Dato &quot;,10,&apos; &apos;)&amp;RPAD(&quot;Beskrivelse &quot;,100,&apos; &apos;)&amp;RPAD(&quot;Status &quot;,20,&apos; &apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>viewRecordTypeName</name>
+        <dataType>String</dataType>
+        <expression>CASE({!recordTypeName},
+&apos;ips_Supported_Employment&apos;,&apos;Utvidet oppfølging&apos;,
+&apos;IPS&apos;
+)</expression>
     </formulas>
     <interviewLabel>IPS - end report {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - end report</label>
     <loops>
-        <name>iterateJobs</name>
-        <label>iterateJobs</label>
-        <locationX>866</locationX>
-        <locationY>998</locationY>
-        <collectionReference>getJobs</collectionReference>
+        <name>iterateEmplMeetings</name>
+        <label>iterateEmplMeetings</label>
+        <locationX>158</locationX>
+        <locationY>1358</locationY>
+        <collectionReference>getEmplMeetings</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>addJobs</targetReference>
+            <targetReference>setEmplName</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>isMeetingsNull</targetReference>
+            <targetReference>getTasks</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
-        <name>iterateMeetings</name>
-        <label>iterateMeetings</label>
-        <locationX>910</locationX>
-        <locationY>1550</locationY>
-        <collectionReference>getMeetings</collectionReference>
+        <name>iterateJobs_0</name>
+        <label>iterateJobs</label>
+        <locationX>50</locationX>
+        <locationY>3086</locationY>
+        <collectionReference>getJobs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>checkMeetingType</targetReference>
+            <targetReference>addJobs_0</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>checkTask</targetReference>
+            <targetReference>updateWorktrail_0_0</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>iterateTasks</name>
         <label>iterateTasks</label>
-        <locationX>866</locationX>
-        <locationY>2318</locationY>
+        <locationX>50</locationX>
+        <locationY>1934</locationY>
         <collectionReference>getTasks</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>addTask_0</targetReference>
+            <targetReference>addTask</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>checkRecordType</targetReference>
+            <targetReference>getParticipantMeetings</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -449,13 +347,66 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <name>getJobs</name>
-        <label>getJobs</label>
-        <locationX>974</locationX>
-        <locationY>638</locationY>
+        <name>getEmplMeetings</name>
+        <label>getEmplMeetings</label>
+        <locationX>158</locationX>
+        <locationY>1238</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>selectReportType</targetReference>
+            <targetReference>iterateEmplMeetings</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrail.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Meeting with Employer</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Subcategory_Type_UO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Relationship building</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Event</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getJobs</name>
+        <label>getJobs</label>
+        <locationX>745</locationX>
+        <locationY>3830</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Job__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getJobs_0</name>
+        <label>getJobs</label>
+        <locationX>158</locationX>
+        <locationY>2846</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkJob_0</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -470,20 +421,68 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>getMeetings</name>
-        <label>getMeetings</label>
-        <locationX>974</locationX>
-        <locationY>398</locationY>
+        <name>getOwner</name>
+        <label>getOwner</label>
+        <locationX>745</locationX>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getTasks</targetReference>
+            <targetReference>getSupervisor</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrail.OwnerId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>LastName</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getParticipantDetails</name>
+        <label>getParticipantDetails</label>
+        <locationX>745</locationX>
+        <locationY>518</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getRecordtypeName</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrail.ips_Participant__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>LastName</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getParticipantMeetings</name>
+        <label>getParticipantMeetings</label>
+        <locationX>158</locationX>
+        <locationY>2366</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>addParticipantShowMeeting</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>recordId</elementReference>
+                <elementReference>getWorktrail.ips_Participant__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -494,39 +493,66 @@
             </value>
         </filters>
         <filters>
-            <field>IPS_Type__c</field>
+            <field>IPS_No_Show__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Meeting with Employer</stringValue>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Subject</queriedFields>
-        <queriedFields>RelatedToAccount__c</queriedFields>
-        <queriedFields>ActivityDate</queriedFields>
-        <queriedFields>IPS_No_Show__c</queriedFields>
-        <queriedFields>IPS_Type__c</queriedFields>
-        <sortField>ActivityDate</sortField>
-        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getParticipantNoShow</name>
+        <label>getParticipantNoShow</label>
+        <locationX>158</locationX>
+        <locationY>2606</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>addParticipantNoShow</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrail.ips_Participant__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_No_Show__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Meeting with Participant</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>getRecordtypeName</name>
         <label>getRecordtypeName</label>
-        <locationX>974</locationX>
-        <locationY>278</locationY>
+        <locationX>745</locationX>
+        <locationY>638</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getMeetings</targetReference>
+            <targetReference>selectReportType</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>recordTypeId</elementReference>
+                <elementReference>getWorktrail.RecordTypeId</elementReference>
             </value>
         </filters>
         <object>RecordType</object>
@@ -536,20 +562,44 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>getTasks</name>
-        <label>getTasks</label>
-        <locationX>974</locationX>
-        <locationY>518</locationY>
+        <name>getSupervisor</name>
+        <label>getSupervisor</label>
+        <locationX>745</locationX>
+        <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getJobs</targetReference>
+            <targetReference>getParticipantDetails</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrail.ips_NAV_supervisor__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>LastName</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getTasks</name>
+        <label>getTasks</label>
+        <locationX>158</locationX>
+        <locationY>1694</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkTask_0</targetReference>
         </connector>
         <filterLogic>1 AND (2 OR 3)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>recordId</elementReference>
+                <elementReference>getWorktrail.Id</elementReference>
             </value>
         </filters>
         <filters>
@@ -573,6 +623,8 @@
         <queriedFields>ips_uo_Subject__c</queriedFields>
         <queriedFields>Description</queriedFields>
         <queriedFields>ActivityDate</queriedFields>
+        <queriedFields>IPS_Status__c</queriedFields>
+        <queriedFields>Status</queriedFields>
         <sortField>ActivityDate</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -580,11 +632,11 @@
     <recordLookups>
         <name>getWorktrail</name>
         <label>getWorktrail</label>
-        <locationX>974</locationX>
+        <locationX>745</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getRecordtypeName</targetReference>
+            <targetReference>getOwner</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -594,57 +646,18 @@
                 <elementReference>recordId</elementReference>
             </value>
         </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Work_Trail__c</object>
-        <outputAssignments>
-            <assignToReference>endCause</assignToReference>
-            <field>End_Cause__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>varWorkTrailName</assignToReference>
-            <field>Name</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>workTrailStartDate</assignToReference>
-            <field>Oppstartsdato__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>ownerId</assignToReference>
-            <field>OwnerId</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>recordTypeId</assignToReference>
-            <field>RecordTypeId</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>varDesiredProfession</assignToReference>
-            <field>ips_Desired_profession_industry_career__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>workTrailEndDate</assignToReference>
-            <field>ips_End_Date__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>varMainGoal</assignToReference>
-            <field>ips_Main_goal__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>supervisorName</assignToReference>
-            <field>ips_NAV_supervisor__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>participantName</assignToReference>
-            <field>ips_Participant__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>varPriorityCareerWishes</assignToReference>
-            <field>ips_Priority_career_wishes__c</field>
-        </outputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>updateWorktrail</name>
+        <name>updateWorktrail_0_0</name>
         <label>updateWorktrail</label>
-        <locationX>50</locationX>
-        <locationY>3110</locationY>
+        <locationX>158</locationX>
+        <locationY>3518</locationY>
+        <connector>
+            <targetReference>getJobs</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -662,10 +675,13 @@
         <object>Work_Trail__c</object>
     </recordUpdates>
     <recordUpdates>
-        <name>updateWorktrail_0</name>
+        <name>updateWorktrail_0_0_0</name>
         <label>updateWorktrail</label>
-        <locationX>314</locationX>
-        <locationY>3110</locationY>
+        <locationX>442</locationX>
+        <locationY>1238</locationY>
+        <connector>
+            <targetReference>getJobs</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -683,34 +699,18 @@
         <object>Work_Trail__c</object>
     </recordUpdates>
     <screens>
-        <name>noMeetingInfo</name>
-        <label>No meeting</label>
-        <locationX>1038</locationX>
-        <locationY>1550</locationY>
+        <name>noWorkTrail_0</name>
+        <label>Not a worktrail</label>
+        <locationX>1058</locationX>
+        <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>checkTask</targetReference>
+            <targetReference>getJobs</targetReference>
         </connector>
         <fields>
-            <name>noMeetingTxt</name>
-            <fieldText>&lt;p&gt;This worktrail have no meetings related.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>noWorkTrail</name>
-        <label>Not a worktrail</label>
-        <locationX>1634</locationX>
-        <locationY>2870</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>noWorkTrailText</name>
+            <name>noWorkTrailText_0</name>
             <fieldText>&lt;p&gt;This is not a proper worktrail&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
@@ -720,13 +720,13 @@
     <screens>
         <name>selectReportType</name>
         <label>Select report type</label>
-        <locationX>974</locationX>
+        <locationX>745</locationX>
         <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>checkJob</targetReference>
+            <targetReference>checkRecordType</targetReference>
         </connector>
         <fields>
             <name>varReportIntervall</name>
@@ -746,106 +746,18 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>workTrailEndReport_0_0</name>
+        <name>workTrailEndReport</name>
         <label>Slutt rapport</label>
-        <locationX>842</locationX>
-        <locationY>2990</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>compMessage</name>
-            <extensionName>c:crmAlertBanner</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>message</name>
-                <value>
-                    <stringValue>Du har valgt å lage sluttrapport</stringValue>
-                </value>
-            </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <fields>
-            <name>workTrailEndReport_0_0_Section1</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailEndReport_0_0_Section1_Column1</name>
-                <fieldType>Region</fieldType>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>workTrailEndReport_0_0_Section2</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailEndReport_0_0_Section2_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>txtParticipantText</name>
-                    <fieldText>&lt;p&gt;Deltakernavn:&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <fields>
-                    <name>txtSupervisorName</name>
-                    <fieldText>&lt;p&gt;NAV veileder navn:&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>6</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailEndReport_0_0_Section2_Column2</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>varParticipantsName</name>
-                    <fieldText>&lt;p&gt;{!participantName}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <fields>
-                    <name>varSupervisorName</name>
-                    <fieldText>&lt;p&gt;{!supervisorName}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>6</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>workTrailEndReport_0_0_0</name>
-        <label>Slutt rapport</label>
-        <locationX>50</locationX>
-        <locationY>2990</locationY>
+        <locationX>158</locationX>
+        <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>updateWorktrail</targetReference>
+            <targetReference>getEmplMeetings</targetReference>
         </connector>
         <fields>
-            <name>compMessage_0</name>
+            <name>compMessage_0_0</name>
             <extensionName>c:crmAlertBanner</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -859,10 +771,10 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>workTrailEndReport_0_0_0_Section1</name>
+            <name>workTrailEndReport_Section1</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailEndReport_0_0_0_Section1_Column1</name>
+                <name>workTrailEndReport_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <inputParameters>
                     <name>width</name>
@@ -875,14 +787,19 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>workTrailEndReport_0_0_0_Section2</name>
+            <name>workTrailEndReport_Section2</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailEndReport_0_0_0_Section2_Column1</name>
+                <name>workTrailEndReport_Section2_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>txtParticipantText_0</name>
+                    <name>txtParticipantText_0_0</name>
                     <fieldText>&lt;p&gt;Deltakernavn:&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>recordTypetxt_0</name>
+                    <fieldText>&lt;p&gt;Type: &lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -894,11 +811,16 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>workTrailEndReport_0_0_0_Section2_Column2</name>
+                <name>workTrailEndReport_Section2_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>varParticipantsName_0</name>
-                    <fieldText>&lt;p&gt;{!participantName}&lt;/p&gt;</fieldText>
+                    <name>varParticipantsName_0_0</name>
+                    <fieldText>&lt;p&gt;{!getParticipantDetails.FirstName} &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!getParticipantDetails.LastName}&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>recordTypeNametxt_0</name>
+                    <fieldText>&lt;p&gt;{!viewRecordTypeName}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -912,10 +834,10 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>workTrailEndReport_0_0_0_Section3</name>
+            <name>workTrailEndReport_Section3</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailEndReport_0_0_0_Section3_Column1</name>
+                <name>workTrailEndReport_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>summarizeCooperation</name>
@@ -952,18 +874,18 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>workTrailIntervall</name>
+        <name>workTrailIntervall_0</name>
         <label>Intervall</label>
-        <locationX>314</locationX>
-        <locationY>2990</locationY>
+        <locationX>442</locationX>
+        <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>updateWorktrail_0</targetReference>
+            <targetReference>updateWorktrail_0_0_0</targetReference>
         </connector>
         <fields>
-            <name>compMessage_0_0_0</name>
+            <name>compMessage_0_0_0_0</name>
             <extensionName>c:crmAlertBanner</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -977,10 +899,10 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>workTrailIntervall_Section1</name>
+            <name>workTrailIntervall_0_Section1</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailIntervall_Section1_Column1</name>
+                <name>workTrailIntervall_0_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <inputParameters>
                     <name>width</name>
@@ -993,13 +915,13 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>workTrailIntervall_Section2</name>
+            <name>workTrailIntervall_0_Section2</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailIntervall_Section2_Column1</name>
+                <name>workTrailIntervall_0_Section2_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>txtParticipantText_0_0_0</name>
+                    <name>txtParticipantText_0_0_0_0</name>
                     <fieldText>&lt;p&gt;Deltakernavn:&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
@@ -1012,10 +934,10 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>workTrailIntervall_Section2_Column2</name>
+                <name>workTrailIntervall_0_Section2_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>varParticipantsName_0_0_0</name>
+                    <name>varParticipantsName_0_0_0_0</name>
                     <fieldText>&lt;p&gt;{!participantName}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
@@ -1030,18 +952,18 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>selectDate</name>
+            <name>selectDate_0</name>
             <fieldText>&lt;p&gt;Velg periode underveis rapport gjelder for&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>workTrailIntervall_Section3</name>
+            <name>workTrailIntervall_0_Section3</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailIntervall_Section3_Column1</name>
+                <name>workTrailIntervall_0_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>fromDate</name>
+                    <name>fromDate_0</name>
                     <dataType>Date</dataType>
                     <fieldText>Dato gjeldende fra:</fieldText>
                     <fieldType>InputField</fieldType>
@@ -1056,10 +978,10 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>workTrailIntervall_Section3_Column2</name>
+                <name>workTrailIntervall_0_Section3_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>toDate</name>
+                    <name>toDate_0</name>
                     <dataType>Date</dataType>
                     <fieldText>Dato gjeldende til:</fieldText>
                     <fieldType>InputField</fieldType>
@@ -1076,13 +998,13 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>workTrailIntervall_Section4</name>
+            <name>workTrailIntervall_0_Section4</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailIntervall_Section4_Column1</name>
+                <name>workTrailIntervall_0_Section4_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>summarizeCooperation_0</name>
+                    <name>summarizeCooperation_0_0_0</name>
                     <fieldText>Hva ønskes inn her</fieldText>
                     <fieldType>LargeTextArea</fieldType>
                     <isRequired>true</isRequired>
@@ -1098,7 +1020,7 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>SummarizeEmployeer_0</name>
+            <name>SummarizeEmployeer_0_0_0</name>
             <fieldText>Hva ønskes inn her</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>false</isRequired>
@@ -1107,7 +1029,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>848</locationX>
+        <locationX>619</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrail</targetReference>
@@ -1127,7 +1049,7 @@
     <textTemplates>
         <name>templateIntervallUOReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Underveisrapport for {!varWorkTrailName}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Deltaker:             {!participantName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Jobbspesialist:    {!ownerId}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;NAV-veileder:     &lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;{!supervisorName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!workTrailStartDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra {!fromDate} - {!toDate}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Hva ønskes inn her.&lt;/p&gt;&lt;p&gt;{!summarizeCooperation_0}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;&lt;p&gt;  &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Plan fremover&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Hva ønskes inn her&lt;/p&gt;&lt;p&gt;{!SummarizeEmployeer_0}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Underveisrapport for {!varWorkTrailName}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Deltaker:             {!getParticipantDetails.FirstName} {!getParticipantDetails.LastName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Jobbspesialist:    {!getOwner.FirstName} {!getOwner.LastName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;NAV-veileder:     &lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;{!getSupervisor.FirstName} {!getSupervisor.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!getWorktrail.Oppstartsdato__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra {!a3a3a4da-2fc2-4c5c-b94e-a42edf006c35} - {!ce10a1f7-2772-4c52-b2fb-5a2e276902c3}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Hva ønskes inn her.&lt;/p&gt;&lt;p&gt;{!e5c16b8c-b789-4f00-acc7-b435e3a72aac}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;&lt;p&gt;  &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Plan fremover&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Hva ønskes inn her&lt;/p&gt;&lt;p&gt;{!d3c32551-51d7-470d-8ae1-b06937fa4be9}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <description>End report template for IPS</description>
@@ -1138,7 +1060,7 @@
     <textTemplates>
         <name>templateUOEndReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Sluttrapport for {!varWorkTrailName}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Deltaker:             {!participantName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Jobbspesialist:    {!ownerId}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;NAV-veileder:     &lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!supervisorName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!workTrailStartDate}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Sluttdato:           {!workTrailEndDate}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Sluttårsak:          {!endCause}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); font-size: 16px; font-family: &amp;quot;Segoe UI&amp;quot;, &amp;quot;Segoe UI Web&amp;quot;, Arial, Verdana, sans-serif; color: rgb(38, 38, 38);&quot;&gt;Yrkeskartlegging og karriereplanlegging&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ønsket yrke/bransje/karriere:&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varDesiredProfession}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!summarizeCooperation}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Handlingsplan&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hovedmål:&lt;/b&gt;   &lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varMainGoal}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!taskList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: &amp;quot;Segoe UI&amp;quot;, &amp;quot;Segoe UI Web&amp;quot;, Arial, Verdana, sans-serif; color: rgb(38, 38, 38);&quot;&gt;Samarbeid med arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: &amp;quot;Times New Roman&amp;quot;; color: rgb(0, 0, 0);&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;﻿&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 12px; color: rgb(38, 38, 38); font-family: &amp;quot;Segoe UI&amp;quot;, &amp;quot;Segoe UI Web&amp;quot;, Arial, Verdana, sans-serif;&quot;&gt;Oppsummering av samarbeid med arbeidsgivere&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!SummarizeEmployeer}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 12px; font-family: &amp;quot;Segoe UI&amp;quot;, &amp;quot;Segoe UI Web&amp;quot;, Arial, Verdana, sans-serif; color: rgb(38, 38, 38);&quot;&gt;Deltakelse i jobb/arbeidstrening&lt;/span&gt;&lt;/p&gt;&lt;p&gt;{!jobsList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Oppsumme&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;ring&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 12px; color: rgb(68, 68, 68);&quot;&gt;Avsluttende oppsummering:&lt;/span&gt;&amp;nbsp;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!summarizeEnd}&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Sluttrapport for {!varWorkTrailName}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Deltaker:             {!getParticipantDetails.FirstName} {!getParticipantDetails.LastName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Jobbspesialist:    {!getOwner.FirstName} {!getOwner.LastName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;NAV-veileder:     &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!getSupervisor.FirstName} {!getSupervisor.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Startdato:           {!getWorktrail.Oppstartsdato__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Sluttdato:           {!getWorktrail.ips_End_Date__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Sluttårsak:          {!getWorktrail.End_Cause__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(38, 38, 38); font-size: 16px; background-color: rgb(255, 255, 255);&quot;&gt;Yrkeskartlegging og karriereplanlegging&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ønsket yrke/bransje/karriere:&lt;/p&gt;&lt;p&gt;{!getWorktrail.ips_Desired_profession_industry_career__c}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!summarizeCooperation}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Handlingsplan&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hovedmål:&lt;/b&gt;   &lt;/p&gt;&lt;p&gt;{!getWorktrail.ips_Main_goal__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!varTaskRowHeading}&lt;/p&gt;&lt;p&gt;{!taskList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varParticipantShowCount} deltakermøter med deltaker tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varParticipantNoShow} deltakermøter hvor deltaker ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(38, 38, 38); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Samarbeid med arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 12px;&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;﻿&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(38, 38, 38); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Oppsummering av samarbeid med arbeidsgivere&lt;/span&gt;&lt;/p&gt;&lt;p&gt;{!SummarizeEmployeer}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(38, 38, 38); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Deltakelse i jobb/arbeidstrening&lt;/span&gt;&lt;/p&gt;&lt;p&gt;{!jobsList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Oppsumme﻿ring&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Avsluttende oppsummering:&lt;/span&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;{!summarizeEnd}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>assignmentParticipant</name>
@@ -1233,6 +1155,17 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>varEmplCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
         <name>varMainGoal</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1245,6 +1178,28 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varParticipantNoShow</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varParticipantShowCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
     <variables>
         <name>varPriorityCareerWishes</name>
