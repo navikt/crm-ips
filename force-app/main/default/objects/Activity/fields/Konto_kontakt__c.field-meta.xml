@@ -2,7 +2,6 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Konto_kontakt__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
-    <deprecated>false</deprecated>
     <externalId>false</externalId>
     <inlineHelpText>Kontakten hos Arbeidsgiver</inlineHelpText>
     <label>Konto kontakt</label>
@@ -12,6 +11,11 @@
             <field>Contact.AccountId</field>
             <operation>equals</operation>
             <valueField>$Source.RelatedToAccount__c</valueField>
+        </filterItems>
+        <filterItems>
+            <field>Contact.IsPersonAccount</field>
+            <operation>equals</operation>
+            <value>False</value>
         </filterItems>
         <isOptional>false</isOptional>
     </lookupFilter>
