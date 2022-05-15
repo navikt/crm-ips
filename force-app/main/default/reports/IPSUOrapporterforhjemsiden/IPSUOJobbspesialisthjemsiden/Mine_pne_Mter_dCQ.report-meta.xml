@@ -13,13 +13,13 @@
             <axisBinding>y</axisBinding>
             <column>Activity.ips_Is_the_employer_decision_maker__c</column>
         </chartSummaries>
-        <chartType>VerticalColumnGroupedLine</chartType>
+        <chartType>VerticalColumnStackedLine</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>DUE_DATE</groupingColumn>
+        <groupingColumn>START_DATE_TIME</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>Activity.IPS_Status__c</secondaryGroupingColumn>
+        <secondaryGroupingColumn>Activity.IPS_Type__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -54,7 +54,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>LAST_N_DAYS:30</value>
+            <value>THIS_YEAR</value>
         </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -70,21 +70,23 @@
             <operator>notEqual</operator>
             <value>Reisetid</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Activity.IPS_Type__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Start up meeting,Meeting with Participant,Meeting with Employer,Co-operation meeting,First Meeting with Employer</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
-    <format>Matrix</format>
-    <groupingsAcross>
-        <dateGranularity>Day</dateGranularity>
-        <field>Activity.IPS_Status__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsAcross>
+    <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>Activity.IPS_Type__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
-        <field>DUE_DATE</field>
+        <field>START_DATE_TIME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Mine Åpne Møter</name>
