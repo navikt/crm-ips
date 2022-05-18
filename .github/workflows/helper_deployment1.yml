@@ -39,8 +39,8 @@ jobs:
             echo "::set-output name=target::$(echo ${{ secrets.UAT_SFDX_URL }})"
             echo "'preprod' was set"
           elif [ ${{ github.event.inputs.org }} == "sit" ];then
-            echo "::set-output name=target::$(echo ${{ secrets.SIT_SFDX_URL }})"
-            echo "'preprod' was set"
+            echo "::set-output name=target::$(echo ${{ secrets.INTEGRATION_SANDBOX_SFDX_URL }})"
+            echo "'sit' was set"
           fi
 
       # Authorize SFDX
