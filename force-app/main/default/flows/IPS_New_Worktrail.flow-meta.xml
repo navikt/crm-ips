@@ -4,7 +4,7 @@
         <name>Redirect</name>
         <label>Redirect</label>
         <locationX>50</locationX>
-        <locationY>878</locationY>
+        <locationY>1046</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -20,7 +20,7 @@
         <name>Redirect_0_0</name>
         <label>Redirect</label>
         <locationX>842</locationX>
-        <locationY>1238</locationY>
+        <locationY>1406</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -34,10 +34,42 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <decisions>
+        <name>checkAgeAndConsent</name>
+        <label>checkAgeAndConsent</label>
+        <locationX>842</locationX>
+        <locationY>686</locationY>
+        <defaultConnector>
+            <targetReference>Get_existing</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isUnderWithoutConsent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>adjustfor100</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>18.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>consentParentParticipant</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Consent</targetReference>
+            </connector>
+            <label>isUnderWithoutConsent</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
         <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationY>926</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -62,7 +94,7 @@
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
         <locationX>578</locationX>
-        <locationY>998</locationY>
+        <locationY>1166</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -85,6 +117,31 @@
     </decisions>
     <description>Flow for IPS</description>
     <formulas>
+        <name>adjustfor100</name>
+        <dataType>Number</dataType>
+        <expression>if({!participantsAge}&lt;0,{!participantsAge}+100,{!participantsAge})</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>participantDOB</name>
+        <dataType>Date</dataType>
+        <expression>DATE(
+VALUE(&quot;20&quot;&amp;MID({!Get_Participant_Details.INT_PersonIdent__c},5,2)),
+VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},3,2)),
+VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},1,2))
+)</expression>
+    </formulas>
+    <formulas>
+        <name>participantsAge</name>
+        <dataType>Number</dataType>
+        <expression>IF(NOT(ISBLANK({!participantDOB} )) ,
+IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;= DATE( YEAR(TODAY()) , MONTH( TODAY() ) , DAY( TODAY() ) ),
+     YEAR (Today()) - YEAR ( {!participantDOB}),
+     YEAR (Today()) - YEAR ( {!participantDOB}) -1 ),
+  null)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
         <name>UserId</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
@@ -100,7 +157,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -114,7 +171,7 @@
         <name>Create_Error_log</name>
         <label>Create Error log</label>
         <locationX>578</locationX>
-        <locationY>1358</locationY>
+        <locationY>1526</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -146,7 +203,7 @@
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>842</locationX>
-        <locationY>1118</locationY>
+        <locationY>1286</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -190,13 +247,19 @@
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>314</locationX>
-        <locationY>1118</locationY>
+        <locationY>1286</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
+        <inputAssignments>
+            <field>IPS_Consent__c</field>
+            <value>
+                <elementReference>consentParentParticipant</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>IPS_Ung__c</field>
             <value>
@@ -234,7 +297,7 @@
         <name>Get_existing</name>
         <label>Get existing</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>806</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -261,8 +324,8 @@
     <recordLookups>
         <name>Get_Participant_Details</name>
         <label>Get Participant Details</label>
-        <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationX>842</locationX>
+        <locationY>446</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Participant_Detail</targetReference>
@@ -282,8 +345,8 @@
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>314</locationX>
-        <locationY>158</locationY>
+        <locationX>842</locationX>
+        <locationY>206</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>New_Worktrail</targetReference>
@@ -304,10 +367,26 @@
     </recordLookups>
     <runInMode>DefaultMode</runInMode>
     <screens>
+        <name>Consent</name>
+        <label>Consent</label>
+        <locationX>1370</locationX>
+        <locationY>806</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>noConsent</name>
+            <fieldText>&lt;p&gt;Deltaker er under 18, skriftilig samtykke fra foresatte må foreligge.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>New_Worktrail</name>
         <label>Nytt Jobbspor</label>
-        <locationX>314</locationX>
-        <locationY>278</locationY>
+        <locationX>842</locationX>
+        <locationY>326</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -342,6 +421,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -352,7 +432,7 @@
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
         <locationX>578</locationX>
-        <locationY>1238</locationY>
+        <locationY>1406</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -371,7 +451,7 @@
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>314</locationX>
-        <locationY>1238</locationY>
+        <locationY>1406</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -386,13 +466,13 @@
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationX>842</locationX>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_existing</targetReference>
+            <targetReference>checkAgeAndConsent</targetReference>
         </connector>
         <fields>
             <name>Participant_Detail_Section1</name>
@@ -422,6 +502,7 @@
                             <stringValue>Person</stringValue>
                         </value>
                     </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <storeOutputAutomatically>true</storeOutputAutomatically>
                 </fields>
@@ -462,6 +543,47 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
+            <name>Participant_Detail_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Participant_Detail_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>toYoung</name>
+                    <fieldText>&lt;p&gt;Deltaker er under 18 år.&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>consentParentParticipant</name>
+                    <dataType>Boolean</dataType>
+                    <defaultValue>
+                        <booleanValue>false</booleanValue>
+                    </defaultValue>
+                    <fieldText>Skriftlig samtykke fra foresatt(e) foreligger</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>true</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>adjustfor100</leftValueReference>
+                    <operator>LessThan</operator>
+                    <rightValue>
+                        <numberValue>18.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
             <name>IPS_Ung</name>
             <dataType>Boolean</dataType>
             <fieldText>IPS Ung</fieldText>
@@ -482,7 +604,7 @@
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
         <locationX>578</locationX>
-        <locationY>878</locationY>
+        <locationY>1046</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -521,6 +643,7 @@
                     <stringValue>Work_Trail__c</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -528,8 +651,8 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>188</locationX>
-        <locationY>0</locationY>
+        <locationX>716</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
