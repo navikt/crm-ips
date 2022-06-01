@@ -125,11 +125,12 @@
     <formulas>
         <name>participantDOB</name>
         <dataType>Date</dataType>
-        <expression>DATE(
+        <expression>IF(NOT(ISBLANK({!Get_Participant_Details.INT_PersonIdent__c})),
+DATE(
 VALUE(&quot;20&quot;&amp;MID({!Get_Participant_Details.INT_PersonIdent__c},5,2)),
 VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},3,2)),
 VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},1,2))
-)</expression>
+),null)</expression>
     </formulas>
     <formulas>
         <name>participantsAge</name>
@@ -574,12 +575,19 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
             </fields>
             <isRequired>false</isRequired>
             <visibilityRule>
-                <conditionLogic>and</conditionLogic>
+                <conditionLogic>or</conditionLogic>
                 <conditions>
                     <leftValueReference>adjustfor100</leftValueReference>
                     <operator>LessThan</operator>
                     <rightValue>
                         <numberValue>18.0</numberValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>participantsAge</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -618,7 +626,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
             <defaultValue>
                 <booleanValue>false</booleanValue>
             </defaultValue>
-            <fieldText>Har du informert deltakeren om sine rettigheter knyttet til personvern?</fieldText>
+            <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjonen</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
