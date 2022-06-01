@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Redirect</name>
         <label>Redirect</label>
-        <locationX>50</locationX>
-        <locationY>1046</locationY>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -19,8 +19,8 @@
     <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>842</locationX>
-        <locationY>1406</locationY>
+        <locationX>1106</locationX>
+        <locationY>1358</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -36,8 +36,8 @@
     <decisions>
         <name>checkAgeAndConsent</name>
         <label>checkAgeAndConsent</label>
-        <locationX>842</locationX>
-        <locationY>686</locationY>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
         </defaultConnector>
@@ -68,8 +68,8 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>314</locationX>
-        <locationY>926</locationY>
+        <locationX>578</locationX>
+        <locationY>878</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -93,8 +93,8 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>578</locationX>
-        <locationY>1166</locationY>
+        <locationX>842</locationX>
+        <locationY>1118</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -125,11 +125,12 @@
     <formulas>
         <name>participantDOB</name>
         <dataType>Date</dataType>
-        <expression>DATE(
+        <expression>IF(NOT(ISBLANK({!Get_Participant_Details.INT_PersonIdent__c})),
+DATE(
 VALUE(&quot;20&quot;&amp;MID({!Get_Participant_Details.INT_PersonIdent__c},5,2)),
 VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},3,2)),
 VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},1,2))
-)</expression>
+),null)</expression>
     </formulas>
     <formulas>
         <name>participantsAge</name>
@@ -157,7 +158,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -170,8 +171,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>578</locationX>
-        <locationY>1526</locationY>
+        <locationX>842</locationX>
+        <locationY>1478</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -202,12 +203,13 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>842</locationX>
-        <locationY>1286</locationY>
+        <locationX>1106</locationX>
+        <locationY>1238</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -246,8 +248,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>314</locationX>
-        <locationY>1286</locationY>
+        <locationX>578</locationX>
+        <locationY>1238</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -296,8 +298,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>314</locationX>
-        <locationY>806</locationY>
+        <locationX>578</locationX>
+        <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -324,8 +326,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <recordLookups>
         <name>Get_Participant_Details</name>
         <label>Get Participant Details</label>
-        <locationX>842</locationX>
-        <locationY>446</locationY>
+        <locationX>314</locationX>
+        <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Participant_Detail</targetReference>
@@ -345,8 +347,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>842</locationX>
-        <locationY>206</locationY>
+        <locationX>314</locationX>
+        <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>New_Worktrail</targetReference>
@@ -369,14 +371,14 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <screens>
         <name>Consent</name>
         <label>Consent</label>
-        <locationX>1370</locationX>
-        <locationY>806</locationY>
+        <locationX>50</locationX>
+        <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>noConsent</name>
-            <fieldText>&lt;p&gt;Deltaker er under 18, skriftilig samtykke fra foresatte må foreligge.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Deltaker er under 18, skriftilig samtykke fra foresatt(e) må foreligge.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -385,8 +387,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt Jobbspor</label>
-        <locationX>842</locationX>
-        <locationY>326</locationY>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -431,8 +433,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>578</locationX>
-        <locationY>1406</locationY>
+        <locationX>842</locationX>
+        <locationY>1358</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -450,8 +452,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>314</locationX>
-        <locationY>1406</locationY>
+        <locationX>578</locationX>
+        <locationY>1358</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -466,8 +468,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>842</locationX>
-        <locationY>566</locationY>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -573,12 +575,19 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
             </fields>
             <isRequired>false</isRequired>
             <visibilityRule>
-                <conditionLogic>and</conditionLogic>
+                <conditionLogic>or</conditionLogic>
                 <conditions>
                     <leftValueReference>adjustfor100</leftValueReference>
                     <operator>LessThan</operator>
                     <rightValue>
                         <numberValue>18.0</numberValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>participantsAge</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -603,8 +612,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>578</locationX>
-        <locationY>1046</locationY>
+        <locationX>842</locationX>
+        <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -651,8 +660,8 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>716</locationX>
-        <locationY>48</locationY>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
