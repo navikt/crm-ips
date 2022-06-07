@@ -2,10 +2,42 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <assignments>
+        <name>addCurrentAccountId</name>
+        <label>addCurrentAccountId</label>
+        <locationX>1626</locationX>
+        <locationY>1934</locationY>
+        <assignmentItems>
+            <assignToReference>varAccountId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsIPS.RelatedToAccount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateEmplMeetingsIPS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addCurrentAccountId_0</name>
+        <label>addCurrentAccountId</label>
+        <locationX>334</locationX>
+        <locationY>1934</locationY>
+        <assignmentItems>
+            <assignToReference>varAccountId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUO.RelatedToAccount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateEmplMeetingsUO</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addJobs_0</name>
         <label>addJobs</label>
         <locationX>138</locationX>
-        <locationY>3206</locationY>
+        <locationY>3662</locationY>
         <assignmentItems>
             <assignToReference>jobsList</assignToReference>
             <operator>Add</operator>
@@ -132,8 +164,8 @@
     <assignments>
         <name>addJobsIPS</name>
         <label>addJobsIPS</label>
-        <locationX>1146</locationX>
-        <locationY>2054</locationY>
+        <locationX>1430</locationX>
+        <locationY>3662</locationY>
         <assignmentItems>
             <assignToReference>jobsListIPS</assignToReference>
             <operator>Add</operator>
@@ -219,7 +251,7 @@
         <name>addParticipantNoShow</name>
         <label>addParticipantNoShow</label>
         <locationX>158</locationX>
-        <locationY>2726</locationY>
+        <locationY>3182</locationY>
         <assignmentItems>
             <assignToReference>varParticipantNoShow</assignToReference>
             <operator>AssignCount</operator>
@@ -232,10 +264,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addParticipantNoShowIPS</name>
+        <label>addParticipantNoShowIPS</label>
+        <locationX>1450</locationX>
+        <locationY>3182</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantNoShow</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>getParticipantNoShow</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getJobsIPS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addParticipantShowMeeting</name>
         <label>addParticipantShowMeeting</label>
         <locationX>158</locationX>
-        <locationY>2486</locationY>
+        <locationY>2942</locationY>
         <assignmentItems>
             <assignToReference>varParticipantShowCount</assignToReference>
             <operator>AssignCount</operator>
@@ -248,10 +296,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addParticipantShowMeeting_0</name>
+        <label>addParticipantShowMeeting</label>
+        <locationX>1450</locationX>
+        <locationY>2942</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantShowCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>getParticipantMeetingsIPS</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getParticipantNoShowIPS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addTask</name>
         <label>addTask</label>
         <locationX>138</locationX>
-        <locationY>2054</locationY>
+        <locationY>2510</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
@@ -271,10 +335,88 @@
         </connector>
     </assignments>
     <assignments>
-        <name>setEmplName</name>
-        <label>setEmplName</label>
-        <locationX>246</locationX>
+        <name>addTask_0</name>
+        <label>addTask</label>
+        <locationX>618</locationX>
+        <locationY>1718</locationY>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>taskRowIntervall</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateTasksUOIntervall</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addTaskIPS</name>
+        <label>addTaskIPS</label>
+        <locationX>1430</locationX>
+        <locationY>2510</locationY>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>taskRowIPS</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateTasksIPS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>isDuplicat</name>
+        <label>isDuplicat</label>
+        <locationX>1626</locationX>
         <locationY>1478</locationY>
+        <assignmentItems>
+            <assignToReference>varAccountId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsIPS.RelatedToAccount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>checkForDuplicat</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>isDuplicatUO</name>
+        <label>isDuplicatUO</label>
+        <locationX>334</locationX>
+        <locationY>1478</locationY>
+        <assignmentItems>
+            <assignToReference>varAccountId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUO.RelatedToAccount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>checkForDuplicatUO</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setEmplName_0</name>
+        <label>setEmplName</label>
+        <locationX>422</locationX>
+        <locationY>1718</locationY>
         <assignmentItems>
             <assignToReference>employeeMeetings</assignToReference>
             <operator>Add</operator>
@@ -290,14 +432,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>iterateEmplMeetingsUO</targetReference>
+            <targetReference>addCurrentAccountId_0</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>setEmplName_0</name>
+        <name>setEmplName_0_0</name>
         <label>setEmplName</label>
-        <locationX>1254</locationX>
-        <locationY>1478</locationY>
+        <locationX>1714</locationX>
+        <locationY>1718</locationY>
         <assignmentItems>
             <assignToReference>employeeMeetingsIPS</assignToReference>
             <operator>Add</operator>
@@ -313,9 +455,31 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>iterateEmplMeetingsIPS</targetReference>
+            <targetReference>addCurrentAccountId</targetReference>
         </connector>
     </assignments>
+    <collectionProcessors>
+        <name>sortTaskUOIntervall</name>
+        <elementSubtype>SortCollectionProcessor</elementSubtype>
+        <label>sortTaskUOIntervall</label>
+        <locationX>638</locationX>
+        <locationY>1358</locationY>
+        <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
+        <collectionReference>getTasksUOIntervall</collectionReference>
+        <connector>
+            <targetReference>checkTask_0_0</targetReference>
+        </connector>
+        <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
+            <sortField>Status</sortField>
+            <sortOrder>Desc</sortOrder>
+        </sortOptions>
+        <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
+            <sortField>CompletedDateTime</sortField>
+            <sortOrder>Desc</sortOrder>
+        </sortOptions>
+    </collectionProcessors>
     <constants>
         <name>conGES</name>
         <dataType>String</dataType>
@@ -324,10 +488,60 @@
         </value>
     </constants>
     <decisions>
+        <name>checkForDuplicat</name>
+        <label>checkForDuplicat</label>
+        <locationX>1626</locationX>
+        <locationY>1598</locationY>
+        <defaultConnector>
+            <targetReference>setEmplName_0_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isDuplicatAccount</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsIPS.RelatedToAccount__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>varAccountId</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addCurrentAccountId</targetReference>
+            </connector>
+            <label>isDuplicatAccount</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkForDuplicatUO</name>
+        <label>checkForDuplicatUO</label>
+        <locationX>334</locationX>
+        <locationY>1598</locationY>
+        <defaultConnector>
+            <targetReference>setEmplName_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isDuplicatAccountUO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUO.RelatedToAccount__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>varAccountId</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addCurrentAccountId_0</targetReference>
+            </connector>
+            <label>isDuplicatAccountUO</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkJob_0</name>
         <label>checkJob</label>
         <locationX>158</locationX>
-        <locationY>2966</locationY>
+        <locationY>3422</locationY>
         <defaultConnector>
             <targetReference>updateWorktrailUOEnd</targetReference>
         </defaultConnector>
@@ -351,8 +565,8 @@
     <decisions>
         <name>checkJob_0_0</name>
         <label>checkJob</label>
-        <locationX>1166</locationX>
-        <locationY>1814</locationY>
+        <locationX>1450</locationX>
+        <locationY>3422</locationY>
         <defaultConnector>
             <targetReference>updateWorktrailIPS</targetReference>
         </defaultConnector>
@@ -376,7 +590,7 @@
     <decisions>
         <name>checkRecordType</name>
         <label>checkRecordType</label>
-        <locationX>1205</locationX>
+        <locationX>1401</locationX>
         <locationY>518</locationY>
         <defaultConnector>
             <targetReference>noWorkTrail_0</targetReference>
@@ -416,7 +630,7 @@
     <decisions>
         <name>checkReportType</name>
         <label>checkReportType</label>
-        <locationX>432</locationX>
+        <locationX>540</locationX>
         <locationY>998</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -453,7 +667,7 @@
     <decisions>
         <name>checkReportTypeIPS</name>
         <label>checkReportTypeIPS</label>
-        <locationX>1440</locationX>
+        <locationX>1724</locationX>
         <locationY>998</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -488,7 +702,7 @@
         <name>checkTask_0</name>
         <label>checkTask</label>
         <locationX>158</locationX>
-        <locationY>1814</locationY>
+        <locationY>2270</locationY>
         <defaultConnector>
             <targetReference>getParticipantMeetings</targetReference>
         </defaultConnector>
@@ -507,6 +721,56 @@
                 <targetReference>iterateTasks</targetReference>
             </connector>
             <label>IsNotTaskNull</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkTask_0_0</name>
+        <label>checkTask</label>
+        <locationX>638</locationX>
+        <locationY>1478</locationY>
+        <defaultConnector>
+            <targetReference>updateWorktrailUOIntervall</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>IsNull</defaultConnectorLabel>
+        <rules>
+            <name>IsNotTaskNull_0_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getTasksUOIntervall</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>iterateTasksUOIntervall</targetReference>
+            </connector>
+            <label>IsNotTaskNull</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkTaskIPS</name>
+        <label>checkTaskIPS</label>
+        <locationX>1450</locationX>
+        <locationY>2270</locationY>
+        <defaultConnector>
+            <targetReference>getParticipantMeetingsIPS</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>IsNull</defaultConnectorLabel>
+        <rules>
+            <name>IsNotTaskNullIPS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getTasksIPS</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>iterateTasksIPS</targetReference>
+            </connector>
+            <label>IsNotTaskNullIPS</label>
         </rules>
     </decisions>
     <description>End report for IPS/UO</description>
@@ -533,6 +797,34 @@ CASE(TEXT({!iterateTasks.Status}),
 TEXT(DAY({!iterateTasks.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateTasks.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateTasks.ActivityDate}))
 &amp;&apos;  -  &apos;&amp;
 TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasks.CompletedDateTime})))</expression>
+    </formulas>
+    <formulas>
+        <name>taskRowIntervall</name>
+        <dataType>String</dataType>
+        <expression>{!iterateTasksUOIntervall.Subject}
+&amp;&apos;, &apos;&amp;
+CASE(TEXT({!iterateTasksUOIntervall.Status}),
+&apos;Open&apos;,&apos;Åpen&apos;,
+&apos;Completed&apos;,&apos;Gjennomført&apos;,
+&apos; &apos;)
+&amp;&apos;, &apos;&amp;
+TEXT(DAY({!iterateTasksUOIntervall.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateTasksUOIntervall.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateTasksUOIntervall.ActivityDate}))
+&amp;&apos;  -  &apos;&amp;
+TEXT(DAY(DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})))</expression>
+    </formulas>
+    <formulas>
+        <name>taskRowIPS</name>
+        <dataType>String</dataType>
+        <expression>{!iterateTasksIPS.Subject}
+&amp;&apos;, &apos;&amp;
+CASE(TEXT({!iterateTasksIPS.Status}),
+&apos;Open&apos;,&apos;Åpen&apos;,
+&apos;Completed&apos;,&apos;Gjennomført&apos;,
+&apos; &apos;)
+&amp;&apos;, &apos;&amp;
+TEXT(DAY({!iterateTasksIPS.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateTasksIPS.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateTasksIPS.ActivityDate}))
+&amp;&apos;  -  &apos;&amp;
+TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))</expression>
     </formulas>
     <formulas>
         <name>varEndDateIPS</name>
@@ -572,15 +864,15 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <loops>
         <name>iterateEmplMeetingsIPS</name>
         <label>iterateEmplMeetingsIPS</label>
-        <locationX>1166</locationX>
+        <locationX>1450</locationX>
         <locationY>1358</locationY>
         <collectionReference>getEmplMeetingsIPS</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>setEmplName_0</targetReference>
+            <targetReference>isDuplicat</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>getJobsIPS</targetReference>
+            <targetReference>getTasksIPS</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -591,7 +883,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <collectionReference>getEmplMeetings</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>setEmplName</targetReference>
+            <targetReference>isDuplicatUO</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>getTasksUO</targetReference>
@@ -601,7 +893,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <name>iterateJobs</name>
         <label>iterateJobs</label>
         <locationX>50</locationX>
-        <locationY>3086</locationY>
+        <locationY>3542</locationY>
         <collectionReference>getJobs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -614,8 +906,8 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <loops>
         <name>iterateJobsIPS</name>
         <label>iterateJobsIPS</label>
-        <locationX>1058</locationX>
-        <locationY>1934</locationY>
+        <locationX>1342</locationX>
+        <locationY>3542</locationY>
         <collectionReference>getJobsIPS</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -629,7 +921,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <name>iterateTasks</name>
         <label>iterateTasks</label>
         <locationX>50</locationX>
-        <locationY>1934</locationY>
+        <locationY>2390</locationY>
         <collectionReference>getTasksUO</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -637,6 +929,34 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>getParticipantMeetings</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>iterateTasksIPS</name>
+        <label>iterateTasksIPS</label>
+        <locationX>1342</locationX>
+        <locationY>2390</locationY>
+        <collectionReference>getTasksIPS</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>addTaskIPS</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>getParticipantMeetingsIPS</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>iterateTasksUOIntervall</name>
+        <label>iterateTasksUOIntervall</label>
+        <locationX>530</locationX>
+        <locationY>1598</locationY>
+        <collectionReference>getTasksUOIntervall</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>addTask_0</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>updateWorktrailUOIntervall</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -696,7 +1016,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordLookups>
         <name>getEmplMeetingsIPS</name>
         <label>getEmplMeetingsIPS</label>
-        <locationX>1166</locationX>
+        <locationX>1450</locationX>
         <locationY>1238</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -718,21 +1038,23 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
             </value>
         </filters>
         <filters>
-            <field>IPS_Subcategory_Type_UO__c</field>
+            <field>ips_Subcategory_Type_IPS__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Relationship building</stringValue>
+                <stringValue>Job development</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
+        <sortField>RelatedToAccount__c</sortField>
+        <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>getJobs</name>
         <label>getJobs</label>
         <locationX>158</locationX>
-        <locationY>2846</locationY>
+        <locationY>3302</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkJob_0</targetReference>
@@ -754,8 +1076,8 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordLookups>
         <name>getJobsIPS</name>
         <label>getJobsIPS</label>
-        <locationX>1166</locationX>
-        <locationY>1694</locationY>
+        <locationX>1450</locationX>
+        <locationY>3302</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkJob_0_0</targetReference>
@@ -783,7 +1105,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordLookups>
         <name>getOwnerIPS</name>
         <label>getOwnerIPS</label>
-        <locationX>1440</locationX>
+        <locationX>1724</locationX>
         <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -807,7 +1129,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordLookups>
         <name>getOwnerUO</name>
         <label>getOwnerUO</label>
-        <locationX>432</locationX>
+        <locationX>540</locationX>
         <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -831,7 +1153,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordLookups>
         <name>getParticipantDetailsIPS</name>
         <label>getParticipantDetailsIPS</label>
-        <locationX>1440</locationX>
+        <locationX>1724</locationX>
         <locationY>878</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -855,7 +1177,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordLookups>
         <name>getParticipantDetailsUO</name>
         <label>getParticipantDetailsUO</label>
-        <locationX>432</locationX>
+        <locationX>540</locationX>
         <locationY>878</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -880,7 +1202,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <name>getParticipantMeetings</name>
         <label>getParticipantMeetings</label>
         <locationX>158</locationX>
-        <locationY>2366</locationY>
+        <locationY>2822</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>addParticipantShowMeeting</targetReference>
@@ -912,10 +1234,45 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>getParticipantMeetingsIPS</name>
+        <label>getParticipantMeetingsIPS</label>
+        <locationX>1450</locationX>
+        <locationY>2822</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>addParticipantShowMeeting_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varCurrentRecord</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Meeting with Participant</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_No_Show__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Event</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getParticipantNoShow</name>
         <label>getParticipantNoShow</label>
         <locationX>158</locationX>
-        <locationY>2606</locationY>
+        <locationY>3062</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>addParticipantNoShow</targetReference>
@@ -947,9 +1304,44 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>getParticipantNoShowIPS</name>
+        <label>getParticipantNoShowIPS</label>
+        <locationX>1450</locationX>
+        <locationY>3062</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>addParticipantNoShowIPS</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varCurrentRecord</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_No_Show__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Meeting with Participant</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Event</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getRecordtypeName</name>
         <label>getRecordtypeName</label>
-        <locationX>1205</locationX>
+        <locationX>1401</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -970,10 +1362,53 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <name>getTasksIPS</name>
+        <label>getTasksIPS</label>
+        <locationX>1450</locationX>
+        <locationY>2150</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkTaskIPS</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varCurrentRecord</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Delmål</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Delmål (av hovedmål)</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Task</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Subject</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>ActivityDate</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>CompletedDateTime</queriedFields>
+        <sortField>ActivityDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getTasksUO</name>
         <label>getTasksUO</label>
         <locationX>158</locationX>
-        <locationY>1694</locationY>
+        <locationY>2150</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTask_0</targetReference>
@@ -1013,9 +1448,66 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>getTasksUOIntervall</name>
+        <label>getTasksUOIntervall</label>
+        <locationX>638</locationX>
+        <locationY>1238</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>sortTaskUOIntervall</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3) AND 4 AND 5</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varCurrentRecord</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Delmål</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Delmål (av hovedmål)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ActivityDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>fromDate_0</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ActivityDate</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>toDate_0</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Task</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Subject</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>ActivityDate</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>CompletedDateTime</queriedFields>
+        <sortField>ActivityDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getWorktrailIPS</name>
         <label>getWorktrailIPS</label>
-        <locationX>1440</locationX>
+        <locationX>1724</locationX>
         <locationY>638</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1036,7 +1528,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordLookups>
         <name>getWorktrailRecordTypeId</name>
         <label>getWorktrailRecordTypeId</label>
-        <locationX>1205</locationX>
+        <locationX>1401</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1063,7 +1555,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordLookups>
         <name>getWorktrailUO</name>
         <label>getWorktrailUO</label>
-        <locationX>432</locationX>
+        <locationX>540</locationX>
         <locationY>638</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1084,8 +1576,8 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordUpdates>
         <name>updateWorktrailIPS</name>
         <label>updateWorktrailIPS</label>
-        <locationX>1166</locationX>
-        <locationY>2366</locationY>
+        <locationX>1450</locationX>
+        <locationY>3974</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1106,7 +1598,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <name>updateWorktrailUOEnd</name>
         <label>updateWorktrailUOEnd</label>
         <locationX>158</locationX>
-        <locationY>3518</locationY>
+        <locationY>3974</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1126,8 +1618,8 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <recordUpdates>
         <name>updateWorktrailUOIntervall</name>
         <label>updateWorktrailUOIntervall</label>
-        <locationX>442</locationX>
-        <locationY>1238</locationY>
+        <locationX>638</locationX>
+        <locationY>2030</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1147,7 +1639,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <screens>
         <name>noWorkTrail_0</name>
         <label>Not a worktrail</label>
-        <locationX>1978</locationX>
+        <locationX>2262</locationX>
         <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1163,7 +1655,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <screens>
         <name>selectReportType</name>
         <label>Select report type</label>
-        <locationX>1205</locationX>
+        <locationX>1401</locationX>
         <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1191,7 +1683,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <screens>
         <name>workTrailEndReportIPS</name>
         <label>Avslutningsnotat</label>
-        <locationX>1166</locationX>
+        <locationX>1450</locationX>
         <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1326,8 +1818,8 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
                 <name>workTrailEndReportIPS_Section4_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxtSupervisorIPS</name>
-                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/p&gt;</fieldText>
+                    <name>displayTxtOwnerIPS</name>
+                    <fieldText>&lt;p&gt;{!getWorktrailIPS.Owner:User.Name}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1363,8 +1855,8 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
                 <name>workTrailEndReportIPS_Section5_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxtOwnerIPS</name>
-                    <fieldText>&lt;p&gt;{!getWorktrailIPS.Owner:User.Name}&lt;/p&gt;</fieldText>
+                    <name>displayTxtSupervisorIPS</name>
+                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1496,7 +1988,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayTxtWorkDevelopmentIPS</name>
-                    <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!getWorktrailIPS.ips_Framework_for_job_development_search__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!getWorktrailIPS.ips_Preferred_working_hours__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!getWorktrailIPS.ips_Network__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!getWorktrailIPS.ips_Geography__c}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1751,13 +2243,13 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <screens>
         <name>workTrailIntervall_0</name>
         <label>Intervall</label>
-        <locationX>442</locationX>
+        <locationX>638</locationX>
         <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>updateWorktrailUOIntervall</targetReference>
+            <targetReference>getTasksUOIntervall</targetReference>
         </connector>
         <fields>
             <name>compMessage_0_0_0_0</name>
@@ -1899,7 +2391,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1079</locationX>
+        <locationX>1275</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailRecordTypeId</targetReference>
@@ -1914,13 +2406,13 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <textTemplates>
         <name>templateIntervallUOReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Underveisrapport for {!varWorkTrailName}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Deltaker:             {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Jobbspesialist:    {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;NAV-veileder:     &lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!getWorktrailUO.&lt;/span&gt;&lt;span style=&quot;color: rgb(22, 50, 92); background-color: rgb(173, 216, 230); font-family: &amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif;&quot;&gt;ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!getWorktrailUO.Oppstartsdato__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!fromDate_0} - {!toDate_0}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Hva ønskes inn her.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;&lt;p&gt;  &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Plan fremover&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Hva ønskes inn her&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetings}&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Underveisrapport for {!varWorkTrailName}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Deltaker:             {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist:    {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;NAV-veileder:     &lt;/span&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!getWorktrailUO.&lt;/span&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(173, 216, 230); color: rgb(22, 50, 92);&quot;&gt;ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!getWorktrailUO.Oppstartsdato__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!fromDate_0} - {!toDate_0}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hovedmål:&amp;nbsp;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Delmål:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Delmål:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Delmål: Avsluttede delmål (fordelt på fullført/avbrutt)&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Emne – dato fullført&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;i style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid mellom jobbspesialist og deltaker i perioden:&lt;/i&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Liste over møter deltaker har deltatt på&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Emne – dato&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Liste over møter deltaker ikke har deltatt på&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Emne – dato&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;i style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/i&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Liste over gjennomførte møter med arbeidsgivere:&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Emne – dato – Arbeidsgiver – Underkategori type&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 12px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 12px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!employeeMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;  &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 12px;&quot;&gt;Plan fremover&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Hva ønskes inn her&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 12px;&quot;&gt;Deltakermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!participantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 12px;&quot;&gt;Arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!employeeMeetings}&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <description>End report template for IPS</description>
         <name>templateIPSEndReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Avslutningsnotat - {!getWorktrailIPS.Name}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Deltaker:           {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Jobbspesialist:  {!getOwnerIPS.FirstName} {!getOwnerIPS.LastName}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;NAV-veileder:&amp;nbsp;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;  {!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68);&quot;&gt;Startdato:         {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68);&quot;&gt;Sluttdato:         {!varEndDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;Sluttårsak:        {!getWorktrailIPS.End_Cause__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt; {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt; ble henvist til Individuell jobbstøtte (IPS) av behandler &lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;{!getOwnerIPS.FirstName} {!getOwnerIPS.LastName} &lt;/span&gt;på &lt;i&gt;XXX &lt;/i&gt;den &lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!varStartDateIPS}&lt;/span&gt;. IPS er et tilbud som bistår personer i behandling på XXX ut i ordinært, lønnet arbeid. Deltaker har vært med i perioden &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varStartDateIPS} - {!varEndDateIPS}.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Deltakers mål med IPS:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!displayTxtWorkDevelopmentIPS}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Hvilke utfordringer/hindringer har deltaker møtt i jobbutviklingsprosessen?&lt;/p&gt;&lt;p&gt;{!summarizeCooperationIPS}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Hvilke viktige faktorer har påvirket jobbutviklingen, positivt og negativt?&lt;/p&gt;&lt;p&gt;{!summarizePosNegIPS}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Bedriftskontakter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Jobber&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!jobsListIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Behov for tilrettelegging&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!needForHelpIPS}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Avslutning&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!summarizeEndIPS}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Avslutningsnotat - {!getWorktrailIPS.Name}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:           {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:  {!getOwnerIPS.FirstName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;  {!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68);&quot;&gt;Startdato:         {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68);&quot;&gt;Sluttdato:         {!varEndDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Sluttårsak:        {!getWorktrailIPS.End_Cause__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt; {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt; ble henvist til Individuell jobbstøtte (IPS) av behandler &lt;/span&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!getOwnerIPS.FirstName} {!getOwnerIPS.LastName} &lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;den &lt;/span&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varStartDateIPS}&lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;. IPS er et tilbud som bistår personer i behandling på XXX ut i ordinært, lønnet arbeid. Deltaker har vært med i perioden &lt;/span&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!varStartDateIPS} - {!varEndDateIPS}.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Deltakers mål med IPS:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Prioriterte yrker/ønsker:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Hovedmål&lt;/b&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Delmål&lt;/b&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;﻿Deltagermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Det er gjennomført {!varParticipantShowCount} deltagermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Det er {!varParticipantNoShow} deltagermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!jobsListIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Hvilke utfordringer/hindringer har deltaker møtt i jobbutviklingsprosessen?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizeCooperationIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Hvilke viktige faktorer har påvirket jobbutviklingen, positivt og negativt?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizePosNegIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Behov for tilrettelegging&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!needForHelpIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Samarbeid med arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetingsIPS}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Avslutning&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizeEndIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>templateUOEndReport</name>
@@ -2021,6 +2513,13 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     </variables>
     <variables>
         <name>taskList</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varAccountId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
