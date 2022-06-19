@@ -41,9 +41,6 @@
     <columns>
         <field>END_DATE_TIME</field>
     </columns>
-    <columns>
-        <field>DUE_DATE</field>
-    </columns>
     <filter>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -61,14 +58,24 @@
         </criteriaItems>
         <language>en_US</language>
     </filter>
-    <format>Summary</format>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.IPS_Type__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <field>Activity.Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Activity.IPS_Status__c</field>
+        <field>Activity.RelatedToAccount__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
-        <field>Activity.Date__c</field>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.IPS_Status__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Mine fullførte og åpne møter</name>
@@ -91,6 +98,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
-        <interval>INTERVAL_CUSTOM</interval>
+        <interval>INTERVAL_LAST120</interval>
     </timeFrameFilter>
 </Report>
