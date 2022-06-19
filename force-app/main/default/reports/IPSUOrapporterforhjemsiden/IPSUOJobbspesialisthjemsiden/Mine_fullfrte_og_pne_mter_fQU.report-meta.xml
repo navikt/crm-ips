@@ -8,16 +8,11 @@
             <axisBinding>y</axisBinding>
             <column>RowCount</column>
         </chartSummaries>
-        <chartSummaries>
-            <aggregate>Sum</aggregate>
-            <axisBinding>y</axisBinding>
-            <column>Activity.ips_Is_the_employer_decision_maker__c</column>
-        </chartSummaries>
-        <chartType>VerticalColumnGroupedLine</chartType>
+        <chartType>LineGrouped</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>DUE_DATE</groupingColumn>
-        <legendPosition>Bottom</legendPosition>
+        <groupingColumn>Activity.Date__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
         <secondaryGroupingColumn>Activity.IPS_Status__c</secondaryGroupingColumn>
         <showAxisLabels>true</showAxisLabels>
@@ -28,7 +23,6 @@
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
-        <title>fullførte og ikke fullførte møter</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
@@ -42,23 +36,15 @@
         <field>Activity.Konto_kontakt__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Activity.ips_Is_the_employer_decision_maker__c</field>
-    </columns>
-    <columns>
         <field>START_DATE_TIME</field>
     </columns>
     <columns>
         <field>END_DATE_TIME</field>
     </columns>
+    <columns>
+        <field>DUE_DATE</field>
+    </columns>
     <filter>
-        <criteriaItems>
-            <column>DUE_DATE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>LAST_N_DAYS:30</value>
-        </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
             <columnToColumn>false</columnToColumn>
@@ -75,14 +61,14 @@
         </criteriaItems>
         <language>en_US</language>
     </filter>
-    <format>Matrix</format>
-    <groupingsAcross>
+    <format>Summary</format>
+    <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>Activity.IPS_Status__c</field>
         <sortOrder>Asc</sortOrder>
-    </groupingsAcross>
+    </groupingsDown>
     <groupingsDown>
-        <field>DUE_DATE</field>
+        <field>Activity.Date__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Mine fullførte og åpne møter</name>
