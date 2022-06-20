@@ -12,6 +12,9 @@
     <columns>
         <field>Activity.IPS_Type__c</field>
     </columns>
+    <columns>
+        <field>START_DATE_TIME</field>
+    </columns>
     <filter>
         <criteriaItems>
             <column>CUST_CREATED_DATE</column>
@@ -25,14 +28,14 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Start up meeting,Meeting with Participant,Co-operation meeting</value>
+            <value>Start up meeting,Meeting with Participant</value>
         </criteriaItems>
         <criteriaItems>
             <column>Work_Trail__c.ips_Start_Date__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value></value>
+            <operator>lessOrEqual</operator>
+            <value>TODAY</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
