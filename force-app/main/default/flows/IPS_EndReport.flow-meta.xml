@@ -63,7 +63,7 @@
             <assignToReference>jobsList</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>iterateJobs.ips_Form_of_Employment__c</elementReference>
+                <elementReference>varJobType</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -119,7 +119,7 @@
             <assignToReference>jobsList</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>iterateJobs.ips_Status__c</elementReference>
+                <elementReference>varJobStatus</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -191,7 +191,7 @@
             <assignToReference>jobsListIPS</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>iterateJobsIPS.ips_Form_of_Employment__c</elementReference>
+                <elementReference>varJobTypeIPS</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -818,15 +818,15 @@
             <name>isWithinRange</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>iterateTasksUOIntervall.CompletedDateTime</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>fromDate_0</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
+                <leftValueReference>iterateTasksUOIntervall.CompletedDateTime</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>toDate_0</elementReference>
                 </rightValue>
@@ -836,13 +836,6 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iterateTasksUOIntervall.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Deferred</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1123,8 +1116,6 @@ CASE(TEXT({!iterateTasks.Status}),
 &apos;Completed&apos;,&apos;Gjennomført&apos;,
 &apos; &apos;)
 &amp;&apos;, &apos;&amp;
-TEXT(DAY({!iterateTasks.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateTasks.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateTasks.ActivityDate}))
-&amp;&apos;  -  &apos;&amp;
 TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasks.CompletedDateTime})))</expression>
     </formulas>
     <formulas>
@@ -1143,8 +1134,6 @@ CASE(TEXT({!iterateTasksIPS.Status}),
 &apos;Open&apos;,&apos;Åpen&apos;,
 &apos;Completed&apos;,&apos;Gjennomført&apos;,
 &apos; &apos;)
-&amp;&apos;, &apos;&amp;
-TEXT(DAY({!iterateTasksIPS.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateTasksIPS.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateTasksIPS.ActivityDate}))
 &amp;&apos;  -  &apos;&amp;
 TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))</expression>
     </formulas>
@@ -1179,6 +1168,48 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>varEndDateUO</name>
         <dataType>Date</dataType>
         <expression>{!getWorktrailUO.ips_End_Date__c}</expression>
+    </formulas>
+    <formulas>
+        <name>varJobStatus</name>
+        <dataType>String</dataType>
+        <expression>CASE(TEXT({!iterateJobs.ips_Status__c}),
+&apos;Ongoing&apos;,&apos;Pågående&apos;,
+&apos;Planned&apos;,&apos;Planlagt&apos;,
+&apos;Completed&apos;,&apos;Avsluttet&apos;,
+&apos; &apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>varJobStatusIPS</name>
+        <dataType>String</dataType>
+        <expression>CASE(TEXT({!iterateJobsIPS.ips_Status__c}),
+&apos;Ongoing&apos;,&apos;Pågående&apos;,
+&apos;Planned&apos;,&apos;Planlagt&apos;,
+&apos;Completed&apos;,&apos;Avsluttet&apos;,
+&apos; &apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>varJobType</name>
+        <dataType>String</dataType>
+        <expression>CASE(TEXT({!iterateJobs.ips_Form_of_Employment__c}),
+&apos;Freelance / self-employed&apos;,&apos;Freelance/selvstendig næringsdrivende&apos;,
+&apos;Job taster&apos;,&apos;Jobbsmak&apos;,
+&apos;Permanent employment&apos;,&apos;Fast ansettelse&apos;,
+&apos;Temporary employment&apos;,&apos;Tidsbegrenset ansettelse&apos;,
+&apos;Work training&apos;,&apos;Arbeidstrening&apos;,
+&apos;Zero hours contrac&apos;,&apos;Tilkalling ekstrajobb&apos;,
+&apos; &apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>varJobTypeIPS</name>
+        <dataType>String</dataType>
+        <expression>CASE(TEXT({!iterateJobsIPS.ips_Form_of_Employment__c}),
+&apos;Freelance / self-employed&apos;,&apos;Freelance/selvstendig næringsdrivende&apos;,
+&apos;Job taster&apos;,&apos;Jobbsmak&apos;,
+&apos;Permanent employment&apos;,&apos;Fast ansettelse&apos;,
+&apos;Temporary employment&apos;,&apos;Tidsbegrenset ansettelse&apos;,
+&apos;Work training&apos;,&apos;Arbeidstrening&apos;,
+&apos;Zero hours contrac&apos;,&apos;Tilkalling ekstrajobb&apos;,
+&apos; &apos;)</expression>
     </formulas>
     <formulas>
         <name>varParticipantIntervallUO</name>
@@ -2684,7 +2715,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             <inputParameters>
                 <name>message</name>
                 <value>
-                    <stringValue>Du har valgt å lage sluttrapport</stringValue>
+                    <stringValue>Du har valgt å lage en underveis rapport</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -2833,7 +2864,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <description>End report template for IPS</description>
         <name>templateIPSEndReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Avslutningsnotat - {!getWorktrailIPS.Name}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/b&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:           {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:  {!getOwnerIPS.FirstName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;  {!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68);&quot;&gt;Startdato:         {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68);&quot;&gt;Sluttdato:         {!varEndDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Sluttårsak:        {!getWorktrailIPS.End_Cause__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt; {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt; ble henvist til Individuell jobbstøtte (IPS) av behandler &lt;/span&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!getOwnerIPS.FirstName} {!getOwnerIPS.LastName} &lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;den &lt;/span&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varStartDateIPS}&lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;. IPS er et tilbud som bistår personer i behandling på XXX ut i ordinært, lønnet arbeid. Deltaker har vært med i perioden &lt;/span&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!varStartDateIPS} - {!varEndDateIPS}.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Deltakers mål med IPS:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Prioriterte yrker/ønsker:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Hovedmål&lt;/b&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Delmål&lt;/b&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;﻿Deltagermøter&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Det er gjennomført {!varParticipantShowCount} deltagermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Det er {!varParticipantNoShow} deltagermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!jobsListIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Hvilke utfordringer/hindringer har deltaker møtt i jobbutviklingsprosessen?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizeCooperationIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Hvilke viktige faktorer har påvirket jobbutviklingen, positivt og negativt?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizePosNegIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Behov for tilrettelegging&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!needForHelpIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Samarbeid med arbeidsgivere&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetingsIPS}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Avslutning&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizeEndIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Avslutningsnotat - {!getWorktrailIPS.Name}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:           {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:  {!getOwnerIPS.FirstName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;  {!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 14px;&quot;&gt;Startdato:         {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 14px;&quot;&gt;Sluttdato:         {!varEndDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Sluttårsak:        {!getWorktrailIPS.End_Cause__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt; {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt; ble henvist til Individuell jobbstøtte (IPS) av behandler &lt;/span&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!getOwnerIPS.FirstName} {!getOwnerIPS.LastName} &lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;den &lt;/span&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!varStartDateIPS}&lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;. Deltaker har vært med i perioden &lt;/span&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varStartDateIPS} - {!varEndDateIPS}.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 16px;&quot;&gt;Deltakers mål med IPS:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Prioriterte yrker/ønsker:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Hovedmål&lt;/strong&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Delmål&lt;/strong&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;﻿Deltagermøter&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Det er gjennomført {!varParticipantShowCount} deltagermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Det er {!varParticipantNoShow} deltagermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!jobsListIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Hvilke utfordringer/hindringer har deltaker møtt i jobbutviklingsprosessen?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizeCooperationIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Hvilke viktige faktorer har påvirket jobbutviklingen, positivt og negativt?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizePosNegIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Behov for tilrettelegging&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!needForHelpIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Samarbeid med arbeidsgivere&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;{!employeeMeetingsIPS}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Avslutning&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!summarizeEndIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-size: 14px;&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>templateUOEndReport</name>
