@@ -43,14 +43,8 @@
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>highlightsPanel</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 AND 2</booleanFilter>
                     <criteria>
-                        <leftValue>{!$Client.formFactor}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Large</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!$User.UserRole.Name}</leftValue>
+                        <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
                         <operator>CONTAINS</operator>
                         <rightValue>Jobbspesialist</rightValue>
                     </criteria>
@@ -73,9 +67,6 @@
                         </valueListItems>
                         <valueListItems>
                             <value>ChangeOwnerOne</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>ChangeRecordType</value>
                         </valueListItems>
                         <valueListItems>
                             <value>PrintableView</value>
@@ -108,16 +99,10 @@
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>force_highlightsPanel</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
-                        <leftValue>{!$User.UserRole.Name}</leftValue>
+                        <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
                         <operator>CONTAINS</operator>
-                        <rightValue>Metodeveileder</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!$User.UserRole.Name}</leftValue>
-                        <operator>CONTAINS</operator>
-                        <rightValue>Fagansvarlig</rightValue>
+                        <rightValue>Metodeveileder, Fagansvarlig</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -1129,6 +1114,39 @@
                         <leftValue>{!$Client.formFactor}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>Work_Trail__c.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>Educations__r</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListComponentOverride</name>
+                    <value>ADVGRID</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>rowsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.ips_Main_Goal_list__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Education/Apprentice</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
