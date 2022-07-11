@@ -47,9 +47,9 @@
                         <rightValue>trine.ronning@nav.no</rightValue>
                     </criteria>
                     <criteria>
-                        <leftValue>{!$User.UserRole.Name}</leftValue>
-                        <operator>CONTAINS</operator>
-                        <rightValue>Jobbspesialist</rightValue>
+                        <leftValue>{!$Permission.StandardPermission.ViewRoles}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -102,15 +102,15 @@
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>force_highlightsPanel</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 AND 2</booleanFilter>
+                    <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
-                        <leftValue>{!$User.UserRole.Name}</leftValue>
-                        <operator>CONTAINS</operator>
-                        <rightValue>Metodeveileder</rightValue>
+                        <leftValue>{!$Permission.StandardPermission.ViewRoles}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!$User.Email}</leftValue>
-                        <operator>EQUAL</operator>
+                        <operator>CONTAINS</operator>
                         <rightValue>trine.ronning@nav.no</rightValue>
                     </criteria>
                 </visibilityRule>
@@ -437,15 +437,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>relatedListComponentOverride</name>
-                    <value>ADVGRID</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>true</value>
+                    <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
                 <identifier>force_relatedListSingleContainer2</identifier>
@@ -459,36 +451,6 @@
             </componentInstance>
         </itemInstances>
         <name>Facet-151dd177-f9e4-4bfa-9955-5e2c02d7f002</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>parentFieldApiName</name>
-                    <value>Work_Trail__c.Id</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListApiName</name>
-                    <value>Jobs__r</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
-                    <value>ADVGRID</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>relatedListSingleContainer</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-7d2f8e0d-142d-4e95-94e0-b72269a6506f</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -546,7 +508,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>relatedListComponentOverride</name>
-                    <value>CARD</value>
+                    <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
                 <identifier>force_relatedListSingleContainer</identifier>
@@ -572,20 +534,6 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>tab2</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-7d2f8e0d-142d-4e95-94e0-b72269a6506f</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>Jobber</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>tab3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
