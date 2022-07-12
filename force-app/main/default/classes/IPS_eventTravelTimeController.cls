@@ -90,7 +90,7 @@ public class IPS_eventTravelTimeController {
             Event eBefore = new Event();
             eBefore.StartDateTime = startTimeBefore;
             eBefore.EndDateTime = startTimeAfter;
-            eBefore.WhatId = eventRelatedTo;
+            //eBefore.WhatId = eventRelatedTo;
             eBefore.Subject = 'Reisetid';
             eBefore.Description = 'Traveltime before';
             eBefore.TAG_NoPersonInformation__c = true;
@@ -106,7 +106,7 @@ public class IPS_eventTravelTimeController {
             Event eAfter = new Event();
             eAfter.StartDateTime = endTimeBefore;
             eAfter.EndDateTime = endTimeAfter;
-            eAfter.WhatId = eventRelatedTo;
+            //eAfter.WhatId = eventRelatedTo;
             eAfter.Subject = 'Reisetid';
             eAfter.Description = 'Traveltime after';
             eAfter.TAG_NoPersonInformation__c = true;

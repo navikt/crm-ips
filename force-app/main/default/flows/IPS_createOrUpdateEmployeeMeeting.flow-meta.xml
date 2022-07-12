@@ -36,12 +36,6 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>relatedTo</name>
-            <value>
-                <elementReference>getEvents.WhatId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>startDate</name>
             <value>
                 <elementReference>getEvents.StartDateTime</elementReference>
@@ -93,12 +87,6 @@
             <name>ownerId</name>
             <value>
                 <elementReference>getEvents.OwnerId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>relatedTo</name>
-            <value>
-                <elementReference>getEvents.WhatId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -183,7 +171,7 @@
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
             <name>isMeetingWithEmployerJobbstotte</name>
-            <conditionLogic>1 OR 2</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>getEvents.ips_Subcategory_Type_IPS__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -205,7 +193,7 @@
         </rules>
         <rules>
             <name>isMeetingWithEmployerJobbutvikling</name>
-            <conditionLogic>1 OR 2</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>getEvents.ips_Subcategory_Type_IPS__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -690,5 +678,12 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>varRelatedToId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
