@@ -20,7 +20,7 @@
         <name>Redirect_0_0</name>
         <label>Redirect</label>
         <locationX>1106</locationX>
-        <locationY>1358</locationY>
+        <locationY>1478</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -94,7 +94,7 @@
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
         <locationX>842</locationX>
-        <locationY>1118</locationY>
+        <locationY>1238</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -147,6 +147,11 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
     </formulas>
+    <formulas>
+        <name>varParticipantAddress</name>
+        <dataType>String</dataType>
+        <expression>{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c}</expression>
+    </formulas>
     <interviewLabel>New Worktrail {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Nytt Jobbspor</label>
     <processMetadataValues>
@@ -172,7 +177,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <name>Create_Error_log</name>
         <label>Create Error log</label>
         <locationX>842</locationX>
-        <locationY>1478</locationY>
+        <locationY>1598</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -204,7 +209,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>1106</locationX>
-        <locationY>1238</locationY>
+        <locationY>1358</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -216,6 +221,18 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
             <field>IPS_Participant_age__c</field>
             <value>
                 <elementReference>adjustfor100</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_Participants_home_address__c</field>
+            <value>
+                <elementReference>varParticipantAddress</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_Partticipant_phone_number__c</field>
+            <value>
+                <elementReference>getPersonDetail.INT_Phone1__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -255,7 +272,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>578</locationX>
-        <locationY>1238</locationY>
+        <locationY>1358</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -272,6 +289,18 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
             <field>IPS_Participant_age__c</field>
             <value>
                 <elementReference>adjustfor100</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_Participants_home_address__c</field>
+            <value>
+                <elementReference>varParticipantAddress</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_Partticipant_phone_number__c</field>
+            <value>
+                <elementReference>getPersonDetail.INT_Phone1__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -379,6 +408,27 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
+    <recordLookups>
+        <name>getPersonDetail</name>
+        <label>getPersonDetail</label>
+        <locationX>842</locationX>
+        <locationY>1118</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Owner_Selected</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Participant_Details.INT_PersonIdent__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Person__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <runInMode>DefaultMode</runInMode>
     <screens>
         <name>Consent</name>
@@ -446,7 +496,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
         <locationX>842</locationX>
-        <locationY>1358</locationY>
+        <locationY>1478</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -465,7 +515,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>578</locationX>
-        <locationY>1358</locationY>
+        <locationY>1478</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -630,7 +680,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Owner_Selected</targetReference>
+            <targetReference>getPersonDetail</targetReference>
         </connector>
         <fields>
             <name>Er_bruker_infomert</name>
