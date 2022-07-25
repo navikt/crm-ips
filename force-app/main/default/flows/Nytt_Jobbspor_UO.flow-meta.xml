@@ -150,7 +150,16 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
     <formulas>
         <name>varParticipantAddress</name>
         <dataType>String</dataType>
-        <expression>{!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c}</expression>
+        <expression>IF(
+ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
+&apos;&apos;,
+{!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c}
+)</expression>
+    </formulas>
+    <formulas>
+        <name>varParticipantsPhone</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;,{!getPersonDetails.INT_Phone1__c})</expression>
     </formulas>
     <interviewLabel>Nytt Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Nytt Jobbspor UO</label>
@@ -232,7 +241,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <inputAssignments>
             <field>IPS_Partticipant_phone_number__c</field>
             <value>
-                <elementReference>getPersonDetails.INT_Phone1__c</elementReference>
+                <elementReference>varParticipantsPhone</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -282,7 +291,7 @@ IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantD
         <inputAssignments>
             <field>IPS_Partticipant_phone_number__c</field>
             <value>
-                <elementReference>getPersonDetails.INT_Phone1__c</elementReference>
+                <elementReference>varParticipantsPhone</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
