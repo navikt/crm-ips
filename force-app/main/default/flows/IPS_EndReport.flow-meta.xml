@@ -2086,7 +2086,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             </value>
         </filters>
         <inputAssignments>
-            <field>IPS_report__c</field>
+            <field>IPS_reportIntervall__c</field>
             <value>
                 <elementReference>templateIntervallUOReport</elementReference>
             </value>
@@ -2126,6 +2126,16 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             <fieldText>Underveis rapport</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>recordTypeName</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>ips_Supported_Employment</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>varReportEnd</name>
