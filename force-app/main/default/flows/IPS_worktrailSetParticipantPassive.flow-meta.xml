@@ -5,7 +5,7 @@
         <name>setAssignment</name>
         <label>setAssignment</label>
         <locationX>182</locationX>
-        <locationY>854</locationY>
+        <locationY>1094</locationY>
         <assignmentItems>
             <assignToReference>getWorktrail.ips_Passive__c</assignToReference>
             <operator>Assign</operator>
@@ -17,13 +17,45 @@
             <targetReference>updateWorktrail</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>setHistoricId</name>
+        <label>setHistoricId</label>
+        <locationX>50</locationX>
+        <locationY>878</locationY>
+        <assignmentItems>
+            <assignToReference>getWorktrail.IPS_historicWorkTrailID__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varHistoricRowId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>setAssignment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>SetPassivEndDate</name>
+        <label>SetPassivEndDate</label>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
+        <assignmentItems>
+            <assignToReference>getHistoryField.IPS_endDatePassive__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>setDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateEndDate</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>isDateFilled</name>
         <label>isDateFilled</label>
         <locationX>182</locationX>
         <locationY>398</locationY>
         <defaultConnector>
-            <targetReference>setAssignment</targetReference>
+            <targetReference>getHistoryField</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -42,6 +74,11 @@
             <label>dateFilled</label>
         </rules>
     </decisions>
+    <formulas>
+        <name>setDate</name>
+        <dataType>Date</dataType>
+        <expression>today()</expression>
+    </formulas>
     <formulas>
         <description>Adds 30 days as follow up date</description>
         <name>varFollowUpDate</name>
@@ -70,12 +107,29 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
+        <name>createHistoricRow</name>
+        <label>createHistoricRow</label>
+        <locationX>50</locationX>
+        <locationY>758</locationY>
+        <assignRecordIdToReference>varHistoricRowId</assignRecordIdToReference>
+        <connector>
+            <targetReference>setHistoricId</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>IPS_Status__c</field>
+            <value>
+                <stringValue>Passiv</stringValue>
+            </value>
+        </inputAssignments>
+        <object>IPS_Historic_Work_Trail__c</object>
+    </recordCreates>
+    <recordCreates>
         <name>createTask</name>
         <label>createTask</label>
         <locationX>50</locationX>
         <locationY>638</locationY>
         <connector>
-            <targetReference>setAssignment</targetReference>
+            <targetReference>createHistoricRow</targetReference>
         </connector>
         <inputAssignments>
             <field>ActivityDate</field>
@@ -90,9 +144,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Priority</field>
+            <value>
+                <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>RecordTypeId</field>
             <value>
                 <elementReference>varRecordTypeId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Open</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -110,6 +176,27 @@
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>getHistoryField</name>
+        <label>getHistoryField</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>SetPassivEndDate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrail.IPS_historicWorkTrailID__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>IPS_Historic_Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>getRecordTypeId</name>
         <label>getRecordTypeId</label>
@@ -155,10 +242,20 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>updateEndDate</name>
+        <label>updateEndDate</label>
+        <locationX>314</locationX>
+        <locationY>758</locationY>
+        <connector>
+            <targetReference>setAssignment</targetReference>
+        </connector>
+        <inputReference>getHistoryField</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>updateWorktrail</name>
         <label>updateWorktrail</label>
         <locationX>182</locationX>
-        <locationY>974</locationY>
+        <locationY>1214</locationY>
         <inputReference>getWorktrail</inputReference>
     </recordUpdates>
     <screens>
@@ -279,6 +376,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varHistoricRowId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
