@@ -2,21 +2,21 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
-        <name>setParticipantValue</name>
-        <label>setParticipantValue</label>
+        <name>setContactId</name>
+        <label>setContactId</label>
         <locationX>176</locationX>
-        <locationY>551</locationY>
+        <locationY>398</locationY>
         <assignmentItems>
-            <assignToReference>$Record.WhoId</assignToReference>
+            <assignToReference>varContactId</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>getContactId.Id</elementReference>
             </value>
         </assignmentItems>
     </assignments>
-    <description>Add participants contactid to event meeting with participant</description>
-    <interviewLabel>IPS - set participant id on event {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - set participant id on event</label>
+    <description>Adds the contactId to events for UO and IPS - subflow</description>
+    <interviewLabel>IPS - subflow add contactI {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - subflow add contactId</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -40,10 +40,10 @@
         <name>getContactId</name>
         <label>getContactId</label>
         <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>setParticipantValue</targetReference>
+            <targetReference>setContactId</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -61,7 +61,7 @@
         <name>getWorkTrail</name>
         <label>getWorkTrail</label>
         <locationX>176</locationX>
-        <locationY>311</locationY>
+        <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getContactId</targetReference>
@@ -71,13 +71,11 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.WhatId</elementReference>
+                <elementReference>varWorkTrailId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Work_Trail__c</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>ips_Participant__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
@@ -86,17 +84,37 @@
         <connector>
             <targetReference>getWorkTrail</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>IPS_Type__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Meeting with Participant</stringValue>
-            </value>
-        </filters>
-        <object>Event</object>
-        <recordTriggerType>Create</recordTriggerType>
-        <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varContactId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>varPublicTrue</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varWorkTrailId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

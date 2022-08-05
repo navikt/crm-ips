@@ -8,7 +8,7 @@
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>updateMeetingWithId_0_0_0</targetReference>
+            <targetReference>checkIsPublic</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -162,7 +162,48 @@
             </value>
         </inputParameters>
     </actionCalls>
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>55.0</apiVersion>
+    <assignments>
+        <name>addPublicTrue</name>
+        <label>addPublicTrue</label>
+        <locationX>182</locationX>
+        <locationY>1151</locationY>
+        <assignmentItems>
+            <assignToReference>varPublicTrue</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateMeetingWithId_0_0_0</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>checkIsPublic</name>
+        <label>checkIsPublic</label>
+        <locationX>314</locationX>
+        <locationY>1031</locationY>
+        <defaultConnector>
+            <targetReference>updateMeetingWithId_0_0_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>IsPublicFalse</defaultConnectorLabel>
+        <rules>
+            <name>IsPublicTrue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_Skal_ikke_deles_med_Deltaker__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addPublicTrue</targetReference>
+            </connector>
+            <label>IsPublicTrue</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
@@ -329,7 +370,8 @@
 - create/update employee meeting
 - create task
 - create/update traveltime
-- update startdate</description>
+- update startdate
+- set public true</description>
     <formulas>
         <name>isDateTimeChanged</name>
         <dataType>Boolean</dataType>
@@ -410,11 +452,17 @@
         <name>updateMeetingWithId_0_0_0</name>
         <label>Update meeting with Id</label>
         <locationX>314</locationX>
-        <locationY>1031</locationY>
+        <locationY>1367</locationY>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
                 <elementReference>varOutputTaskId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IsVisibleInSelfService</field>
+            <value>
+                <elementReference>varPublicTrue</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -657,6 +705,16 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>varPublicTrue</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>varRecordId</name>
