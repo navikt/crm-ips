@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Go_to_report_page</name>
+        <label>Go to report page</label>
+        <locationX>182</locationX>
+        <locationY>4286</locationY>
+        <actionName>c:IPS_redirect</actionName>
+        <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>varReportingId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
         <name>addCurrentAccountId_0</name>
@@ -1029,6 +1045,9 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <label>updateReport</label>
         <locationX>182</locationX>
         <locationY>4166</locationY>
+        <connector>
+            <targetReference>Go_to_report_page</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
