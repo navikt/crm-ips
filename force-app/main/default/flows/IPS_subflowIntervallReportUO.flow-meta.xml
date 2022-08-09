@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Go_to_report_page</name>
+        <label>Go to report page</label>
+        <locationX>1194</locationX>
+        <locationY>4286</locationY>
+        <actionName>c:IPS_redirect</actionName>
+        <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>varReportId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
         <name>addNextPeriodText</name>
         <label>addNextPeriodText</label>
         <locationX>974</locationX>
-        <locationY>3734</locationY>
+        <locationY>3854</locationY>
         <assignmentItems>
             <assignToReference>taskListForward</assignToReference>
             <operator>Assign</operator>
@@ -21,7 +37,7 @@
         <name>addParticipantMeetingListUOIntervall</name>
         <label>addParticipantMeetingListUOIntervall</label>
         <locationX>1282</locationX>
-        <locationY>2510</locationY>
+        <locationY>2630</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUOShow</assignToReference>
             <operator>Add</operator>
@@ -107,7 +123,7 @@
         <name>addParticipantMeetingListUOIntervallForward</name>
         <label>addParticipantMeetingListUOIntervallForward</label>
         <locationX>1810</locationX>
-        <locationY>2510</locationY>
+        <locationY>2630</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUOForward</assignToReference>
             <operator>Add</operator>
@@ -165,7 +181,7 @@
         <name>addParticipantMeetingListUOIntervallNoShow</name>
         <label>addParticipantMeetingListUOIntervallNoShow</label>
         <locationX>1546</locationX>
-        <locationY>2510</locationY>
+        <locationY>2630</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUONoShow</assignToReference>
             <operator>Add</operator>
@@ -251,7 +267,7 @@
         <name>addPeriodTekst</name>
         <label>addPeriodTekst</label>
         <locationX>710</locationX>
-        <locationY>3734</locationY>
+        <locationY>3854</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Assign</operator>
@@ -264,10 +280,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addReportId</name>
+        <label>addReportId</label>
+        <locationX>820</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>varReportId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getIntervallReports.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>screenChoices</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addTaskForwardRange</name>
         <label>addTaskForwardRange</label>
         <locationX>1326</locationX>
-        <locationY>3302</locationY>
+        <locationY>3422</locationY>
         <assignmentItems>
             <assignToReference>taskListForward</assignToReference>
             <operator>Add</operator>
@@ -353,7 +385,7 @@
         <name>addTaskWithinRange</name>
         <label>addTaskWithinRange</label>
         <locationX>1062</locationX>
-        <locationY>3302</locationY>
+        <locationY>3422</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
@@ -460,7 +492,7 @@
         <name>setEmplNameForward</name>
         <label>setEmplNameForward</label>
         <locationX>1546</locationX>
-        <locationY>1838</locationY>
+        <locationY>1958</locationY>
         <assignmentItems>
             <assignToReference>varEmployeeMeetingForward</assignToReference>
             <operator>Add</operator>
@@ -567,7 +599,7 @@
         <name>setEmplNameIntervall</name>
         <label>setEmplNameIntervall</label>
         <locationX>1282</locationX>
-        <locationY>1838</locationY>
+        <locationY>1958</locationY>
         <assignmentItems>
             <assignToReference>varEmployeeMeetingIntervall</assignToReference>
             <operator>Add</operator>
@@ -674,7 +706,7 @@
         <name>setScreenVariablesNew</name>
         <label>setScreenVariablesNew</label>
         <locationX>1194</locationX>
-        <locationY>1358</locationY>
+        <locationY>1478</locationY>
         <assignmentItems>
             <assignToReference>varToDate</assignToReference>
             <operator>Assign</operator>
@@ -711,7 +743,7 @@
         <name>setScreenVariablesOld</name>
         <label>setScreenVariablesOld</label>
         <locationX>50</locationX>
-        <locationY>1118</locationY>
+        <locationY>1238</locationY>
         <assignmentItems>
             <assignToReference>varToDate</assignToReference>
             <operator>Assign</operator>
@@ -772,7 +804,7 @@
         <name>chechParticipantShow</name>
         <label>chechParticipantShow</label>
         <locationX>1678</locationX>
-        <locationY>2390</locationY>
+        <locationY>2510</locationY>
         <defaultConnector>
             <targetReference>iterateParticipantMeetingShow</targetReference>
         </defaultConnector>
@@ -855,7 +887,7 @@
         <name>checkDecision</name>
         <label>checkDecision</label>
         <locationX>820</locationX>
-        <locationY>878</locationY>
+        <locationY>998</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isExisting</name>
@@ -864,7 +896,7 @@
                 <leftValueReference>reportOld</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Fortsette på eksisterende underveisrapport</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -879,7 +911,7 @@
                 <leftValueReference>reportNew</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Lage ny underveisrapport</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -892,7 +924,7 @@
         <name>checkEmployeeMeeting</name>
         <label>checkEmployeeMeeting</label>
         <locationX>1546</locationX>
-        <locationY>1718</locationY>
+        <locationY>1838</locationY>
         <defaultConnector>
             <targetReference>iterateEmplMeetingsUOIntervall</targetReference>
         </defaultConnector>
@@ -946,7 +978,7 @@
         <name>checkIntervall</name>
         <label>checkIntervall</label>
         <locationX>1326</locationX>
-        <locationY>3182</locationY>
+        <locationY>3302</locationY>
         <defaultConnector>
             <targetReference>iterateTasksUOIntervall</targetReference>
         </defaultConnector>
@@ -1017,7 +1049,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>screenChoices</targetReference>
+                <targetReference>addReportId</targetReference>
             </connector>
             <label>isNotReportingNull</label>
         </rules>
@@ -1026,7 +1058,7 @@
         <name>checkTask_0_0</name>
         <label>checkTask</label>
         <locationX>1194</locationX>
-        <locationY>2942</locationY>
+        <locationY>3062</locationY>
         <defaultConnector>
             <targetReference>updateReportRecord</targetReference>
         </defaultConnector>
@@ -1051,7 +1083,7 @@
         <name>istaskListEmpty</name>
         <label>istaskListEmpty</label>
         <locationX>974</locationX>
-        <locationY>3614</locationY>
+        <locationY>3734</locationY>
         <defaultConnector>
             <targetReference>updateReportRecord</targetReference>
         </defaultConnector>
@@ -1155,7 +1187,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>iterateEmplMeetingsUOIntervall</name>
         <label>iterateEmplMeetingsUOIntervall</label>
         <locationX>1194</locationX>
-        <locationY>1598</locationY>
+        <locationY>1718</locationY>
         <collectionReference>getEmplMeetingsIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1169,7 +1201,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>iterateParticipantMeetingShow</name>
         <label>iterateParticipantMeetingShow</label>
         <locationX>1194</locationX>
-        <locationY>2270</locationY>
+        <locationY>2390</locationY>
         <collectionReference>getParticipantMeetingsIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1183,7 +1215,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>iterateTasksUOIntervall</name>
         <label>iterateTasksUOIntervall</label>
         <locationX>974</locationX>
-        <locationY>3062</locationY>
+        <locationY>3182</locationY>
         <collectionReference>getTasksUOIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1216,7 +1248,8 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>createReportingRecord</name>
         <label>createReportingRecord</label>
         <locationX>1194</locationX>
-        <locationY>1118</locationY>
+        <locationY>1238</locationY>
+        <assignRecordIdToReference>varReportId</assignRecordIdToReference>
         <connector>
             <targetReference>workTrailIntervallNew</targetReference>
         </connector>
@@ -1239,13 +1272,12 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             </value>
         </inputAssignments>
         <object>ips_report__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
         <name>getEmplMeetingsIntervall</name>
         <label>getEmplMeetingsIntervall</label>
         <locationX>1194</locationX>
-        <locationY>1478</locationY>
+        <locationY>1598</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>iterateEmplMeetingsUOIntervall</targetReference>
@@ -1366,7 +1398,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>getParticipantMeetingsIntervall</name>
         <label>getParticipantMeetingsIntervall</label>
         <locationX>1194</locationX>
-        <locationY>2150</locationY>
+        <locationY>2270</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>iterateParticipantMeetingShow</targetReference>
@@ -1394,7 +1426,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>getTasksUOIntervall</name>
         <label>getTasksUOIntervall</label>
         <locationX>1194</locationX>
-        <locationY>2822</locationY>
+        <locationY>2942</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTask_0_0</targetReference>
@@ -1449,7 +1481,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>updateOldReportToClosed</name>
         <label>updateOldReportToClosed</label>
         <locationX>1194</locationX>
-        <locationY>998</locationY>
+        <locationY>1118</locationY>
         <connector>
             <targetReference>createReportingRecord</targetReference>
         </connector>
@@ -1473,13 +1505,16 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>updateReportRecord</name>
         <label>updateReportRecord</label>
         <locationX>1194</locationX>
-        <locationY>4046</locationY>
+        <locationY>4166</locationY>
+        <connector>
+            <targetReference>Go_to_report_page</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>getIntervallReports.Id</elementReference>
+                <elementReference>varReportId</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -1518,10 +1553,10 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>screenChoices</name>
         <label>Valg av mulighet</label>
         <locationX>820</locationX>
-        <locationY>758</locationY>
-        <allowBack>true</allowBack>
+        <locationY>878</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>checkDecision</targetReference>
         </connector>
@@ -1535,18 +1570,21 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             <choiceReferences>reportOld</choiceReferences>
             <choiceReferences>reportNew</choiceReferences>
             <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>false</stringValue>
+            </defaultValue>
             <fieldText>Velg hvordan du ønsker å fortsette</fieldText>
             <fieldType>RadioButtons</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>workTrailIntervallNew</name>
         <label>IntervallNew</label>
         <locationX>1194</locationX>
-        <locationY>1238</locationY>
+        <locationY>1358</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1711,7 +1749,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>workTrailIntervallOld</name>
         <label>IntervallOld</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -2116,6 +2154,13 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     </variables>
     <variables>
         <name>varPriorityCareerWishes</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varReportId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
