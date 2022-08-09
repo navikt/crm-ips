@@ -778,6 +778,22 @@
         </connector>
     </assignments>
     <choices>
+        <name>chooseNew</name>
+        <choiceText>Lage en ny underveis rapport</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <name>chooseOld</name>
+        <choiceText>Fortsette på eksisterende underveis rapport</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </choices>
+    <choices>
         <name>reportNew</name>
         <choiceText>Lage ny underveisrapport</choiceText>
         <dataType>String</dataType>
@@ -893,10 +909,10 @@
             <name>isExisting</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>reportOld</leftValueReference>
+                <leftValueReference>chooseOld</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Fortsette på eksisterende underveisrapport</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -908,10 +924,10 @@
             <name>isNew</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>reportNew</leftValueReference>
+                <leftValueReference>chooseNew</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Lage ny underveisrapport</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1490,7 +1506,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>getIntervallReports.Id</elementReference>
+                <elementReference>varReportId</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -1566,12 +1582,12 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>chooseHowToProceed</name>
-            <choiceReferences>reportOld</choiceReferences>
-            <choiceReferences>reportNew</choiceReferences>
-            <dataType>String</dataType>
+            <name>screenChoicestxt</name>
+            <choiceReferences>chooseOld</choiceReferences>
+            <choiceReferences>chooseNew</choiceReferences>
+            <dataType>Boolean</dataType>
             <defaultValue>
-                <stringValue>false</stringValue>
+                <booleanValue>false</booleanValue>
             </defaultValue>
             <fieldText>Velg hvordan du ønsker å fortsette</fieldText>
             <fieldType>RadioButtons</fieldType>
