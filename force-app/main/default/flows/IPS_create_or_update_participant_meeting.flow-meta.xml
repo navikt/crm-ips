@@ -3,10 +3,13 @@
     <actionCalls>
         <name>createTravelTime</name>
         <label>createTravelTime</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>575</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>checkRelatedTo</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>currentRecord</name>
@@ -60,7 +63,7 @@
     <actionCalls>
         <name>createTravelTime_0</name>
         <label>createTravelTime</label>
-        <locationX>314</locationX>
+        <locationX>490</locationX>
         <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -117,7 +120,7 @@
     <actionCalls>
         <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
-        <locationX>578</locationX>
+        <locationX>754</locationX>
         <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -166,10 +169,77 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
+    <assignments>
+        <name>setPublic</name>
+        <label>setPublic</label>
+        <locationX>50</locationX>
+        <locationY>1151</locationY>
+        <assignmentItems>
+            <assignToReference>varPublicTrue</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateEvent</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>checkIsPublic</name>
+        <label>checkIsPublic</label>
+        <locationX>182</locationX>
+        <locationY>1031</locationY>
+        <defaultConnector>
+            <targetReference>UpdateEvent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>IsPublicFalse</defaultConnectorLabel>
+        <rules>
+            <name>isPublicTrue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_Skal_ikke_deles_med_Deltaker__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setPublic</targetReference>
+            </connector>
+            <label>isPublicTrue</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>If checkbox is true - subflow populate contactid on event</description>
+        <name>checkRelatedTo</name>
+        <label>checkRelatedTo</label>
+        <locationX>182</locationX>
+        <locationY>695</locationY>
+        <defaultConnector>
+            <targetReference>checkIsPublic</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isNotTrue</defaultConnectorLabel>
+        <rules>
+            <name>isTrue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_participant_related_to_meeting__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_contactId_to_event</targetReference>
+            </connector>
+            <label>isTrue</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
-        <locationX>446</locationX>
+        <locationX>622</locationX>
         <locationY>575</locationY>
         <defaultConnector>
             <targetReference>updateTravelTime_0</targetReference>
@@ -215,7 +285,7 @@
     <decisions>
         <name>createOrUpdate</name>
         <label>createOrUpdate</label>
-        <locationX>248</locationX>
+        <locationX>402</locationX>
         <locationY>455</locationY>
         <defaultConnector>
             <targetReference>checkUpdate</targetReference>
@@ -271,7 +341,7 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>248</locationX>
+        <locationX>402</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -289,8 +359,27 @@
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>UpdateEvent</name>
+        <label>UpdateEvent</label>
+        <locationX>182</locationX>
+        <locationY>1367</locationY>
+        <inputAssignments>
+            <field>IsVisibleInSelfService</field>
+            <value>
+                <elementReference>varPublicTrue</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>varContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>122</locationX>
+        <locationX>276</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
@@ -308,4 +397,41 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Add_contactId_to_event</name>
+        <label>Add contactId to event</label>
+        <locationX>50</locationX>
+        <locationY>815</locationY>
+        <connector>
+            <targetReference>checkIsPublic</targetReference>
+        </connector>
+        <flowName>IPS_subflowAddContactId</flowName>
+        <inputAssignments>
+            <name>varWorkTrailId</name>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>varContactId</assignToReference>
+            <name>varContactId</name>
+        </outputAssignments>
+    </subflows>
+    <variables>
+        <name>varContactId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varPublicTrue</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
 </Flow>

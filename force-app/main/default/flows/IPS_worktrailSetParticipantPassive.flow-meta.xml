@@ -4,8 +4,8 @@
     <assignments>
         <name>setAssignment</name>
         <label>setAssignment</label>
-        <locationX>182</locationX>
-        <locationY>1094</locationY>
+        <locationX>248</locationX>
+        <locationY>1190</locationY>
         <assignmentItems>
             <assignToReference>getWorktrail.ips_Passive__c</assignToReference>
             <operator>Assign</operator>
@@ -37,7 +37,7 @@
         <name>SetPassivEndDate</name>
         <label>SetPassivEndDate</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>758</locationY>
         <assignmentItems>
             <assignToReference>getHistoryField.IPS_endDatePassive__c</assignToReference>
             <operator>Assign</operator>
@@ -50,9 +50,34 @@
         </connector>
     </assignments>
     <decisions>
+        <name>checkForEmptyList</name>
+        <label>checkForEmptyList</label>
+        <locationX>446</locationX>
+        <locationY>638</locationY>
+        <defaultConnector>
+            <targetReference>setAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isNull</defaultConnectorLabel>
+        <rules>
+            <name>isNotNull</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getHistoryField</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetPassivEndDate</targetReference>
+            </connector>
+            <label>isNotNull</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>isDateFilled</name>
         <label>isDateFilled</label>
-        <locationX>182</locationX>
+        <locationX>248</locationX>
         <locationY>398</locationY>
         <defaultConnector>
             <targetReference>getHistoryField</targetReference>
@@ -121,6 +146,12 @@
                 <stringValue>Passiv</stringValue>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>IPS_Work_Trail__c</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
         <object>IPS_Historic_Work_Trail__c</object>
     </recordCreates>
     <recordCreates>
@@ -179,11 +210,11 @@
     <recordLookups>
         <name>getHistoryField</name>
         <label>getHistoryField</label>
-        <locationX>314</locationX>
+        <locationX>446</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>SetPassivEndDate</targetReference>
+            <targetReference>checkForEmptyList</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -223,7 +254,7 @@
     <recordLookups>
         <name>getWorktrail</name>
         <label>getWorktrail</label>
-        <locationX>182</locationX>
+        <locationX>248</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -245,7 +276,7 @@
         <name>updateEndDate</name>
         <label>updateEndDate</label>
         <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationY>878</locationY>
         <connector>
             <targetReference>setAssignment</targetReference>
         </connector>
@@ -254,14 +285,14 @@
     <recordUpdates>
         <name>updateWorktrail</name>
         <label>updateWorktrail</label>
-        <locationX>182</locationX>
-        <locationY>1214</locationY>
+        <locationX>248</locationX>
+        <locationY>1310</locationY>
         <inputReference>getWorktrail</inputReference>
     </recordUpdates>
     <screens>
         <name>setParticipantAsPassive</name>
         <label>Set participant as passive</label>
-        <locationX>182</locationX>
+        <locationX>248</locationX>
         <locationY>278</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -364,7 +395,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>122</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrail</targetReference>
