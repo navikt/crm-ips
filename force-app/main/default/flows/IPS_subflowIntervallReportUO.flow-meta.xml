@@ -4,7 +4,7 @@
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
         <locationX>1194</locationX>
-        <locationY>4526</locationY>
+        <locationY>5318</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -21,23 +21,23 @@
         <name>addNextPeriodText</name>
         <label>addNextPeriodText</label>
         <locationX>974</locationX>
-        <locationY>4094</locationY>
+        <locationY>4430</locationY>
         <assignmentItems>
             <assignToReference>taskListForward</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <stringValue>Deltaker har ingen planlagte delmål</stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateReportRecord</targetReference>
+            <targetReference>getJobs</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>addParticipantMeetingListUOIntervall</name>
         <label>addParticipantMeetingListUOIntervall</label>
         <locationX>1282</locationX>
-        <locationY>2870</locationY>
+        <locationY>3206</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUOShow</assignToReference>
             <operator>Add</operator>
@@ -123,7 +123,7 @@
         <name>addParticipantMeetingListUOIntervallForward</name>
         <label>addParticipantMeetingListUOIntervallForward</label>
         <locationX>1810</locationX>
-        <locationY>2870</locationY>
+        <locationY>3206</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUOForward</assignToReference>
             <operator>Add</operator>
@@ -181,7 +181,7 @@
         <name>addParticipantMeetingListUOIntervallNoShow</name>
         <label>addParticipantMeetingListUOIntervallNoShow</label>
         <locationX>1546</locationX>
-        <locationY>2870</locationY>
+        <locationY>3206</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUONoShow</assignToReference>
             <operator>Add</operator>
@@ -267,22 +267,22 @@
         <name>addPeriodTekst</name>
         <label>addPeriodTekst</label>
         <locationX>710</locationX>
-        <locationY>4094</locationY>
+        <locationY>4430</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <stringValue>Deltaker har ingen fullførte delmål i perioden</stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateReportRecord</targetReference>
+            <targetReference>getJobs</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>addReportId</name>
         <label>addReportId</label>
-        <locationX>1337</locationX>
+        <locationX>1469</locationX>
         <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>varReportId</assignToReference>
@@ -306,7 +306,7 @@
         <name>addTaskForwardRange</name>
         <label>addTaskForwardRange</label>
         <locationX>1326</locationX>
-        <locationY>3662</locationY>
+        <locationY>3998</locationY>
         <assignmentItems>
             <assignToReference>taskListForward</assignToReference>
             <operator>Add</operator>
@@ -392,7 +392,7 @@
         <name>addTaskWithinRange</name>
         <label>addTaskWithinRange</label>
         <locationX>1062</locationX>
-        <locationY>3662</locationY>
+        <locationY>3998</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
@@ -418,14 +418,14 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Forfallsdato: </stringValue>
+                <stringValue>Opprettet dato: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>iterateTasksUOIntervall.ActivityDate</elementReference>
+                <elementReference>varCreatedDate</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -439,7 +439,7 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Ferdigstilt dato: </stringValue>
+                <stringValue>Fullført dato: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -496,8 +496,198 @@
         </connector>
     </assignments>
     <assignments>
-        <name>setEmplNameForward</name>
-        <label>setEmplNameForward</label>
+        <name>addText</name>
+        <label>addText</label>
+        <locationX>798</locationX>
+        <locationY>2630</locationY>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen oppfølgingsmøter i perioden.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getParticipantMeetingsIntervall</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addText_0</name>
+        <label>addText</label>
+        <locationX>1062</locationX>
+        <locationY>2630</locationY>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen relasjonsbyggende møter i perioden.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getParticipantMeetingsIntervall</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addText_0_0</name>
+        <label>addText</label>
+        <locationX>1326</locationX>
+        <locationY>2630</locationY>
+        <assignmentItems>
+            <assignToReference>varEmployeeMeetingForward</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen planlagte arbeidsgivermøter</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getParticipantMeetingsIntervall</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setEmployerNameFollowUp</name>
+        <label>setEmployerNameFollowUp</label>
+        <locationX>1810</locationX>
+        <locationY>2198</locationY>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Arbeidsgiver: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.RelatedToAccount__r.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Møtedeltagere: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.Konto_kontakt__r.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>, </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.WhoId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Emne: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.Subject</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Dato: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.ActivityDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Beskrivelse av møtet: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingFollowUp</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateEmplMeetingsUOIntervall</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setEmployerNameNextPeriod</name>
+        <label>setEmployerNameNextPeriod</label>
         <locationX>1546</locationX>
         <locationY>2198</locationY>
         <assignmentItems>
@@ -512,6 +702,41 @@
             <operator>Add</operator>
             <value>
                 <elementReference>iterateEmplMeetingsUOIntervall.RelatedToAccount__r.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployeeMeetingForward</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployeeMeetingForward</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Møtedeltagere: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployeeMeetingForward</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.Konto_kontakt__r.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployeeMeetingForward</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>, </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployeeMeetingForward</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.WhoId</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -603,103 +828,138 @@
         </connector>
     </assignments>
     <assignments>
-        <name>setEmplNameIntervall</name>
-        <label>setEmplNameIntervall</label>
+        <name>setEmployerNameRelation</name>
+        <label>setEmployerNameRelation</label>
         <locationX>1282</locationX>
         <locationY>2198</locationY>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>Arbeidsgiver: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>iterateEmplMeetingsUOIntervall.RelatedToAccount__r.Name</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>&lt;br&gt;</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Møtedeltagere: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.Konto_kontakt__r.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>, </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEmplMeetingsUOIntervall.WhoId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>Emne: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>iterateEmplMeetingsUOIntervall.Subject</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>&lt;br&gt;</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>Dato: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>iterateEmplMeetingsUOIntervall.ActivityDate</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>&lt;br&gt;</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>Beskrivelse av møtet: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>&lt;br&gt;</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>iterateEmplMeetingsUOIntervall.Description</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>&lt;br&gt;</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varEmployeeMeetingIntervall</assignToReference>
+            <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>&lt;br&gt;</stringValue>
@@ -707,6 +967,155 @@
         </assignmentItems>
         <connector>
             <targetReference>iterateEmplMeetingsUOIntervall</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setJobtext</name>
+        <label>setJobtext</label>
+        <locationX>1282</locationX>
+        <locationY>4982</locationY>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Stilling som: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateJobs.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Jobbtype: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varJobType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Dato: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateJobs.ips_Start_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue> - </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateJobs.ips_End_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Status: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varJobStatus</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Antall timer i uka: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateJobs.ips_Number_of_hours__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Avsluttende kommentar: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varClosingArgument</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateJobs</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -835,7 +1244,7 @@
         <name>chechParticipantShow</name>
         <label>chechParticipantShow</label>
         <locationX>1678</locationX>
-        <locationY>2750</locationY>
+        <locationY>3086</locationY>
         <defaultConnector>
             <targetReference>iterateParticipantMeetingShow</targetReference>
         </defaultConnector>
@@ -917,7 +1326,7 @@
     <decisions>
         <name>checkDecision</name>
         <label>checkDecision</label>
-        <locationX>820</locationX>
+        <locationX>908</locationX>
         <locationY>998</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -968,14 +1377,14 @@
     <decisions>
         <name>checkEmployeeMeeting</name>
         <label>checkEmployeeMeeting</label>
-        <locationX>1546</locationX>
+        <locationX>1678</locationX>
         <locationY>2078</locationY>
         <defaultConnector>
             <targetReference>iterateEmplMeetingsUOIntervall</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
-            <name>isWithinRangeEmployee</name>
+            <name>isWithinRangeEmployeeRelation</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>iterateEmplMeetingsUOIntervall.ActivityDate</leftValueReference>
@@ -998,10 +1407,24 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.ips_Subcategory_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Relationship building</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.ips_Completed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>setEmplNameIntervall</targetReference>
+                <targetReference>setEmployerNameRelation</targetReference>
             </connector>
-            <label>isWithinRangeEmployee</label>
+            <label>isWithinRangeEmployeeRelation</label>
         </rules>
         <rules>
             <name>isForward</name>
@@ -1014,16 +1437,59 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>setEmplNameForward</targetReference>
+                <targetReference>setEmployerNameNextPeriod</targetReference>
             </connector>
             <label>isForward</label>
+        </rules>
+        <rules>
+            <name>isWithinRangeEmployerFollowUp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.ips_Subcategory_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Follow-up</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.ActivityDate</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>varFromDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.ActivityDate</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>varToDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.IPS_No_Show__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.ips_Completed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setEmployerNameFollowUp</targetReference>
+            </connector>
+            <label>isWithinRangeEmployerFollowUp</label>
         </rules>
     </decisions>
     <decisions>
         <name>checkIntervall</name>
         <label>checkIntervall</label>
         <locationX>1326</locationX>
-        <locationY>3542</locationY>
+        <locationY>3878</locationY>
         <defaultConnector>
             <targetReference>iterateTasksUOIntervall</targetReference>
         </defaultConnector>
@@ -1076,7 +1542,7 @@
     <decisions>
         <name>checkReportType</name>
         <label>checkReportType</label>
-        <locationX>1337</locationX>
+        <locationX>1469</locationX>
         <locationY>758</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -1103,9 +1569,9 @@
         <name>checkTask_0_0</name>
         <label>checkTask</label>
         <locationX>1194</locationX>
-        <locationY>3302</locationY>
+        <locationY>3638</locationY>
         <defaultConnector>
-            <targetReference>updateReportRecord</targetReference>
+            <targetReference>getJobs</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>IsNull</defaultConnectorLabel>
         <rules>
@@ -1125,12 +1591,67 @@
         </rules>
     </decisions>
     <decisions>
+        <name>isEmployerListEmpty</name>
+        <label>isEmployerListEmpty</label>
+        <locationX>1194</locationX>
+        <locationY>2510</locationY>
+        <defaultConnector>
+            <targetReference>getParticipantMeetingsIntervall</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isEmptyFollowUp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varEmployerMeetingFollowUp</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addText</targetReference>
+            </connector>
+            <label>isEmptyFollowUp</label>
+        </rules>
+        <rules>
+            <name>isEmptyRelation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varEmployerMeetingRelation</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addText_0</targetReference>
+            </connector>
+            <label>isEmptyRelation</label>
+        </rules>
+        <rules>
+            <name>isEmptyNextPeriod</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varEmployeeMeetingForward</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addText_0_0</targetReference>
+            </connector>
+            <label>isEmptyNextPeriod</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>istaskListEmpty</name>
         <label>istaskListEmpty</label>
         <locationX>974</locationX>
-        <locationY>3974</locationY>
+        <locationY>4310</locationY>
         <defaultConnector>
-            <targetReference>updateReportRecord</targetReference>
+            <targetReference>getJobs</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1172,25 +1693,25 @@
 TEXT(DAY(DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})))</expression>
     </formulas>
     <formulas>
+        <name>varClosingArgument</name>
+        <dataType>String</dataType>
+        <expression>if(TEXT({!iterateJobs.ips_Status__c})==&apos;Completed&apos;,&apos;Hva fungerte ikke: &apos;&amp;BR()&amp;{!iterateJobs.ips_What_did_not_work_at_the_workplace__c}&amp;BR()&amp;BR()&amp;&apos;Hva fungerte: &apos;&amp;BR()&amp;{!iterateJobs.ips_What_did_work_at_the_workplace__c},&apos;Jobb er ikke avsluttet&apos;
+)</expression>
+    </formulas>
+    <formulas>
         <name>varCompletedDate</name>
         <dataType>Date</dataType>
         <expression>DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})</expression>
     </formulas>
     <formulas>
+        <name>varCreatedDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!iterateTasksUOIntervall.CreatedDate})</expression>
+    </formulas>
+    <formulas>
         <name>varDescription</name>
         <dataType>String</dataType>
         <expression>&apos;Det er 3 måneder siden siste underveisrapport for: &apos; &amp; {!getWorktrailUO.Name}</expression>
-    </formulas>
-    <formulas>
-        <name>varEmployeeMeetingForwardList</name>
-        <dataType>String</dataType>
-        <expression>{!iterateEmplMeetingsUOIntervall.Subject}
-&amp;&apos;, &apos;&amp;
-TEXT(DAY({!iterateEmplMeetingsUOIntervall.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateEmplMeetingsUOIntervall.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateEmplMeetingsUOIntervall.ActivityDate}))
-&amp;&apos;, &apos;&amp;
-{!iterateEmplMeetingsUOIntervall.RelatedToAccount__r.Name}
-&amp;&apos;, &apos;&amp;
-TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     </formulas>
     <formulas>
         <name>varEmployeeMeetingRange</name>
@@ -1207,6 +1728,27 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>varEndDateUO</name>
         <dataType>Date</dataType>
         <expression>{!getWorktrailUO.ips_End_Date__c}</expression>
+    </formulas>
+    <formulas>
+        <name>varJobStatus</name>
+        <dataType>String</dataType>
+        <expression>CASE(TEXT({!iterateJobs.ips_Status__c}),
+&apos;Ongoing&apos;,&apos;Pågående&apos;,
+&apos;Planned&apos;,&apos;Planlagt&apos;,
+&apos;Completed&apos;,&apos;Avsluttet&apos;,
+&apos; &apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>varJobType</name>
+        <dataType>String</dataType>
+        <expression>CASE(TEXT({!iterateJobs.ips_Form_of_Employment__c}),
+&apos;Freelance / self-employed&apos;,&apos;Freelance/selvstendig næringsdrivende&apos;,
+&apos;Job taster&apos;,&apos;Jobbsmak&apos;,
+&apos;Permanent employment&apos;,&apos;Fast ansettelse&apos;,
+&apos;Temporary employment&apos;,&apos;Tidsbegrenset ansettelse&apos;,
+&apos;Work training&apos;,&apos;Arbeidstrening&apos;,
+&apos;Zero hours contrac&apos;,&apos;Tilkalling ekstrajobb&apos;,
+&apos; &apos;)</expression>
     </formulas>
     <formulas>
         <name>varParticipantIntervallUO</name>
@@ -1249,14 +1791,28 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             <targetReference>checkEmployeeMeeting</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>getParticipantMeetingsIntervall</targetReference>
+            <targetReference>isEmployerListEmpty</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>iterateJobs</name>
+        <label>iterateJobs</label>
+        <locationX>1194</locationX>
+        <locationY>4862</locationY>
+        <collectionReference>getJobs</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>setJobtext</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>updateReportRecord</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>iterateParticipantMeetingShow</name>
         <label>iterateParticipantMeetingShow</label>
         <locationX>1194</locationX>
-        <locationY>2630</locationY>
+        <locationY>2966</locationY>
         <collectionReference>getParticipantMeetingsIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1270,7 +1826,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>iterateTasksUOIntervall</name>
         <label>iterateTasksUOIntervall</label>
         <locationX>974</locationX>
-        <locationY>3422</locationY>
+        <locationY>3758</locationY>
         <collectionReference>getTasksUOIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1417,13 +1973,6 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
                 <stringValue>Meeting with Employer</stringValue>
             </value>
         </filters>
-        <filters>
-            <field>IPS_Subcategory_Type_UO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Relationship building</stringValue>
-            </value>
-        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -1432,7 +1981,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <description>Get all end report if it exists - only the ones that is open. Archived reports should not be altered.</description>
         <name>getIntervallReports</name>
         <label>getIntervallReports</label>
-        <locationX>1337</locationX>
+        <locationX>1469</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1467,9 +2016,30 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>getJobs</name>
+        <label>getJobs</label>
+        <locationX>1194</locationX>
+        <locationY>4742</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>iterateJobs</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Job__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getOwnerUO</name>
         <label>getOwnerUO</label>
-        <locationX>1337</locationX>
+        <locationX>1469</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1493,7 +2063,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <recordLookups>
         <name>getParticipantDetailsUO</name>
         <label>getParticipantDetailsUO</label>
-        <locationX>1337</locationX>
+        <locationX>1469</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1518,7 +2088,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>getParticipantMeetingsIntervall</name>
         <label>getParticipantMeetingsIntervall</label>
         <locationX>1194</locationX>
-        <locationY>2510</locationY>
+        <locationY>2846</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>iterateParticipantMeetingShow</targetReference>
@@ -1569,7 +2139,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>getTasksUOIntervall</name>
         <label>getTasksUOIntervall</label>
         <locationX>1194</locationX>
-        <locationY>3182</locationY>
+        <locationY>3518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTask_0_0</targetReference>
@@ -1597,12 +2167,13 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <queriedFields>ActivityDate</queriedFields>
         <queriedFields>Status</queriedFields>
         <queriedFields>CompletedDateTime</queriedFields>
+        <queriedFields>CreatedDate</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>getWorktrailUO</name>
         <label>getWorktrailUO</label>
-        <locationX>1337</locationX>
+        <locationX>1469</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1648,7 +2219,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>updateReportRecord</name>
         <label>updateReportRecord</label>
         <locationX>1194</locationX>
-        <locationY>4406</locationY>
+        <locationY>5198</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -1695,7 +2266,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <screens>
         <name>screenChoices</name>
         <label>Valg av mulighet</label>
-        <locationX>820</locationX>
+        <locationX>908</locationX>
         <locationY>878</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -2101,7 +2672,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1211</locationX>
+        <locationX>1343</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailUO</targetReference>
@@ -2116,7 +2687,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <textTemplates>
         <name>templateIntervallUOReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Underveisrapport for {!getWorktrailUO.Name}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Deltaker:             {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist:    {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;NAV-veileder:     {!getWorktrailUO.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!varStartDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Delmål:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid mellom jobbspesialist og deltaker i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter deltaker har deltatt på i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varParticipantIntervallUOShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter deltaker ikke har møtt til i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varParticipantIntervallUONoShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Møter gjennomført med arbeidsgivere i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;{!varEmployeeMeetingIntervall}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Plan for kommende period:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 12px; color: rgb(0, 0, 0);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 12px; color: rgb(0, 0, 0);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;{!varParticipantIntervallUOForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Underveisrapport for {!getWorktrailUO.Name}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:             {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:    {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:     {!getWorktrailUO.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!varStartDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid mellom jobbspesialist og deltaker i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter deltaker har deltatt på i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varParticipantIntervallUOShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter deltaker ikke har møtt til i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varParticipantIntervallUONoShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Relasjonsbyggende møter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeetingRelation}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Oppfølgingsmøter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeetingFollowUp}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varJobList}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Plan for kommende period:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varParticipantIntervallUOForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>assignmentParticipant</name>
@@ -2260,7 +2831,14 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>varEmployeeMeetingIntervall</name>
+        <name>varEmployerMeetingFollowUp</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varEmployerMeetingRelation</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -2269,6 +2847,13 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <variables>
         <name>varFromDate</name>
         <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varJobList</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
