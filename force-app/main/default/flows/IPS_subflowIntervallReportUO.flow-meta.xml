@@ -1114,6 +1114,20 @@
                 <elementReference>varClosingArgument</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>iterateJobs</targetReference>
         </connector>
@@ -1273,6 +1287,13 @@
                     <elementReference>varToDate</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>iterateParticipantMeetingShow.ips_Completed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>addParticipantMeetingListUOIntervall</targetReference>
             </connector>
@@ -1300,6 +1321,13 @@
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateParticipantMeetingShow.ips_Completed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1498,14 +1526,14 @@
             <name>isWithinRange</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>iterateTasksUOIntervall.CompletedDateTime</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varFromDate</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>iterateTasksUOIntervall.CompletedDateTime</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToDate</elementReference>
@@ -2034,6 +2062,8 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>ips_Job__c</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
