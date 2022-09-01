@@ -4,7 +4,7 @@
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
         <locationX>1194</locationX>
-        <locationY>5318</locationY>
+        <locationY>7334</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -21,7 +21,7 @@
         <name>addNextPeriodText</name>
         <label>addNextPeriodText</label>
         <locationX>974</locationX>
-        <locationY>4430</locationY>
+        <locationY>6110</locationY>
         <assignmentItems>
             <assignToReference>taskListForward</assignToReference>
             <operator>Add</operator>
@@ -34,10 +34,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addParticipantForwardText</name>
+        <label>addParticipantForwardText</label>
+        <locationX>1062</locationX>
+        <locationY>4982</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantIntervallUOForward</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Det er ingen planlagte møter med deltaker fremover.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getTasksUOIntervall</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addParticipantMeetingListUOIntervall</name>
         <label>addParticipantMeetingListUOIntervall</label>
         <locationX>1282</locationX>
-        <locationY>3206</locationY>
+        <locationY>3878</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUOShow</assignToReference>
             <operator>Add</operator>
@@ -123,7 +139,7 @@
         <name>addParticipantMeetingListUOIntervallForward</name>
         <label>addParticipantMeetingListUOIntervallForward</label>
         <locationX>1810</locationX>
-        <locationY>3206</locationY>
+        <locationY>3878</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUOForward</assignToReference>
             <operator>Add</operator>
@@ -181,7 +197,7 @@
         <name>addParticipantMeetingListUOIntervallNoShow</name>
         <label>addParticipantMeetingListUOIntervallNoShow</label>
         <locationX>1546</locationX>
-        <locationY>3206</locationY>
+        <locationY>3878</locationY>
         <assignmentItems>
             <assignToReference>varParticipantIntervallUONoShow</assignToReference>
             <operator>Add</operator>
@@ -264,10 +280,42 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addParticipantNoShowText</name>
+        <label>addParticipantNoShowText</label>
+        <locationX>1062</locationX>
+        <locationY>4646</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantIntervallUONoShow</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Deltager har ingen ikke møtt møter registrert i perioden.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>checkEmptyParticipantForwardList</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addParticipantShowText</name>
+        <label>addParticipantShowText</label>
+        <locationX>1062</locationX>
+        <locationY>4310</locationY>
+        <assignmentItems>
+            <assignToReference>participantMeetingIntervallShow</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Deltager har ingen møter registrert i perioden.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>checkEmptyParticipantNoShowList</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addPeriodTekst</name>
         <label>addPeriodTekst</label>
         <locationX>710</locationX>
-        <locationY>4430</locationY>
+        <locationY>6110</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
@@ -282,7 +330,7 @@
     <assignments>
         <name>addReportId</name>
         <label>addReportId</label>
-        <locationX>1469</locationX>
+        <locationX>1337</locationX>
         <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>varReportId</assignToReference>
@@ -306,7 +354,7 @@
         <name>addTaskForwardRange</name>
         <label>addTaskForwardRange</label>
         <locationX>1326</locationX>
-        <locationY>3998</locationY>
+        <locationY>5678</locationY>
         <assignmentItems>
             <assignToReference>taskListForward</assignToReference>
             <operator>Add</operator>
@@ -392,7 +440,7 @@
         <name>addTaskWithinRange</name>
         <label>addTaskWithinRange</label>
         <locationX>1062</locationX>
-        <locationY>3998</locationY>
+        <locationY>5678</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
@@ -498,7 +546,7 @@
     <assignments>
         <name>addText</name>
         <label>addText</label>
-        <locationX>798</locationX>
+        <locationX>1062</locationX>
         <locationY>2630</locationY>
         <assignmentItems>
             <assignToReference>varEmployerMeetingFollowUp</assignToReference>
@@ -508,14 +556,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getParticipantMeetingsIntervall</targetReference>
+            <targetReference>checkRelationList</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>addText_0</name>
+        <name>addText_0_0_0</name>
         <label>addText</label>
         <locationX>1062</locationX>
-        <locationY>2630</locationY>
+        <locationY>2966</locationY>
         <assignmentItems>
             <assignToReference>varEmployerMeetingRelation</assignToReference>
             <operator>Add</operator>
@@ -524,19 +572,19 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getParticipantMeetingsIntervall</targetReference>
+            <targetReference>checkForwardList</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>addText_0_0</name>
+        <name>addTextForward</name>
         <label>addText</label>
-        <locationX>1326</locationX>
-        <locationY>2630</locationY>
+        <locationX>1062</locationX>
+        <locationY>3302</locationY>
         <assignmentItems>
             <assignToReference>varEmployeeMeetingForward</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Ingen planlagte arbeidsgivermøter</stringValue>
+                <stringValue>Deltaker har ingen planlagte arbeidsgivermøter.</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -970,10 +1018,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>setJobListText</name>
+        <label>setJobListText</label>
+        <locationX>1062</locationX>
+        <locationY>6998</locationY>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen jobber registrert</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateReportRecord</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>setJobtext</name>
         <label>setJobtext</label>
         <locationX>1282</locationX>
-        <locationY>4982</locationY>
+        <locationY>6662</locationY>
         <assignmentItems>
             <assignToReference>varJobList</assignToReference>
             <operator>Add</operator>
@@ -1258,7 +1322,7 @@
         <name>chechParticipantShow</name>
         <label>chechParticipantShow</label>
         <locationX>1678</locationX>
-        <locationY>3086</locationY>
+        <locationY>3758</locationY>
         <defaultConnector>
             <targetReference>iterateParticipantMeetingShow</targetReference>
         </defaultConnector>
@@ -1354,7 +1418,7 @@
     <decisions>
         <name>checkDecision</name>
         <label>checkDecision</label>
-        <locationX>908</locationX>
+        <locationX>820</locationX>
         <locationY>998</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1436,7 +1500,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>iterateEmplMeetingsUOIntervall.ips_Subcategory_Type__c</leftValueReference>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Relationship building</stringValue>
@@ -1473,7 +1537,7 @@
             <name>isWithinRangeEmployerFollowUp</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>iterateEmplMeetingsUOIntervall.ips_Subcategory_Type__c</leftValueReference>
+                <leftValueReference>iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Follow-up</stringValue>
@@ -1514,10 +1578,135 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkEmptyParticipantForwardList</name>
+        <label>checkEmptyParticipantForwardList</label>
+        <locationX>1194</locationX>
+        <locationY>4862</locationY>
+        <defaultConnector>
+            <targetReference>getTasksUOIntervall</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isParticipantMeetingForwardEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varParticipantIntervallUOForward</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addParticipantForwardText</targetReference>
+            </connector>
+            <label>isParticipantMeetingForwardEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkEmptyParticipantMeeting</name>
+        <label>checkEmptyParticipantMeeting</label>
+        <locationX>1194</locationX>
+        <locationY>4190</locationY>
+        <defaultConnector>
+            <targetReference>checkEmptyParticipantNoShowList</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isParticipantMeetingListEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>participantMeetingIntervallShow</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addParticipantShowText</targetReference>
+            </connector>
+            <label>isParticipantMeetingListEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkEmptyParticipantNoShowList</name>
+        <label>checkEmptyParticipantNoShowList</label>
+        <locationX>1194</locationX>
+        <locationY>4526</locationY>
+        <defaultConnector>
+            <targetReference>checkEmptyParticipantForwardList</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isParticipantMeetingNoShowEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varParticipantIntervallUONoShow</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addParticipantNoShowText</targetReference>
+            </connector>
+            <label>isParticipantMeetingNoShowEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkFollowUpList</name>
+        <label>checkFollowUpList</label>
+        <locationX>1194</locationX>
+        <locationY>2510</locationY>
+        <defaultConnector>
+            <targetReference>checkRelationList</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isEmptyFollowUp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varEmployerMeetingFollowUp</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addText</targetReference>
+            </connector>
+            <label>isEmptyFollowUp</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkForwardList</name>
+        <label>checkForwardList</label>
+        <locationX>1194</locationX>
+        <locationY>3182</locationY>
+        <defaultConnector>
+            <targetReference>getParticipantMeetingsIntervall</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isEmptyForward</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varEmployeeMeetingForward</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addTextForward</targetReference>
+            </connector>
+            <label>isEmptyForward</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkIntervall</name>
         <label>checkIntervall</label>
         <locationX>1326</locationX>
-        <locationY>3878</locationY>
+        <locationY>5558</locationY>
         <defaultConnector>
             <targetReference>iterateTasksUOIntervall</targetReference>
         </defaultConnector>
@@ -1568,9 +1757,59 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkJobbList</name>
+        <label>checkJobbList</label>
+        <locationX>1194</locationX>
+        <locationY>6878</locationY>
+        <defaultConnector>
+            <targetReference>updateReportRecord</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varJobList</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setJobListText</targetReference>
+            </connector>
+            <label>isEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkRelationList</name>
+        <label>checkRelationList</label>
+        <locationX>1194</locationX>
+        <locationY>2846</locationY>
+        <defaultConnector>
+            <targetReference>checkForwardList</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isEmptyRelation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varEmployerMeetingRelation</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addText_0_0_0</targetReference>
+            </connector>
+            <label>isEmptyRelation</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkReportType</name>
         <label>checkReportType</label>
-        <locationX>1469</locationX>
+        <locationX>1337</locationX>
         <locationY>758</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -1597,7 +1836,7 @@
         <name>checkTask_0_0</name>
         <label>checkTask</label>
         <locationX>1194</locationX>
-        <locationY>3638</locationY>
+        <locationY>5318</locationY>
         <defaultConnector>
             <targetReference>getJobs</targetReference>
         </defaultConnector>
@@ -1619,65 +1858,10 @@
         </rules>
     </decisions>
     <decisions>
-        <name>isEmployerListEmpty</name>
-        <label>isEmployerListEmpty</label>
-        <locationX>1194</locationX>
-        <locationY>2510</locationY>
-        <defaultConnector>
-            <targetReference>getParticipantMeetingsIntervall</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>isEmptyFollowUp</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varEmployerMeetingFollowUp</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addText</targetReference>
-            </connector>
-            <label>isEmptyFollowUp</label>
-        </rules>
-        <rules>
-            <name>isEmptyRelation</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varEmployerMeetingRelation</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addText_0</targetReference>
-            </connector>
-            <label>isEmptyRelation</label>
-        </rules>
-        <rules>
-            <name>isEmptyNextPeriod</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varEmployeeMeetingForward</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addText_0_0</targetReference>
-            </connector>
-            <label>isEmptyNextPeriod</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>istaskListEmpty</name>
         <label>istaskListEmpty</label>
         <locationX>974</locationX>
-        <locationY>4310</locationY>
+        <locationY>5990</locationY>
         <defaultConnector>
             <targetReference>getJobs</targetReference>
         </defaultConnector>
@@ -1819,42 +2003,42 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
             <targetReference>checkEmployeeMeeting</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>isEmployerListEmpty</targetReference>
+            <targetReference>checkFollowUpList</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>iterateJobs</name>
         <label>iterateJobs</label>
         <locationX>1194</locationX>
-        <locationY>4862</locationY>
+        <locationY>6542</locationY>
         <collectionReference>getJobs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>setJobtext</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>updateReportRecord</targetReference>
+            <targetReference>checkJobbList</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>iterateParticipantMeetingShow</name>
         <label>iterateParticipantMeetingShow</label>
         <locationX>1194</locationX>
-        <locationY>2966</locationY>
+        <locationY>3638</locationY>
         <collectionReference>getParticipantMeetingsIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>chechParticipantShow</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>getTasksUOIntervall</targetReference>
+            <targetReference>checkEmptyParticipantMeeting</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>iterateTasksUOIntervall</name>
         <label>iterateTasksUOIntervall</label>
         <locationX>974</locationX>
-        <locationY>3758</locationY>
+        <locationY>5438</locationY>
         <collectionReference>getTasksUOIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -2009,7 +2193,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <description>Get all end report if it exists - only the ones that is open. Archived reports should not be altered.</description>
         <name>getIntervallReports</name>
         <label>getIntervallReports</label>
-        <locationX>1469</locationX>
+        <locationX>1337</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2047,7 +2231,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>getJobs</name>
         <label>getJobs</label>
         <locationX>1194</locationX>
-        <locationY>4742</locationY>
+        <locationY>6422</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>iterateJobs</targetReference>
@@ -2069,7 +2253,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <recordLookups>
         <name>getOwnerUO</name>
         <label>getOwnerUO</label>
-        <locationX>1469</locationX>
+        <locationX>1337</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2093,7 +2277,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <recordLookups>
         <name>getParticipantDetailsUO</name>
         <label>getParticipantDetailsUO</label>
-        <locationX>1469</locationX>
+        <locationX>1337</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2118,7 +2302,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>getParticipantMeetingsIntervall</name>
         <label>getParticipantMeetingsIntervall</label>
         <locationX>1194</locationX>
-        <locationY>2846</locationY>
+        <locationY>3518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>iterateParticipantMeetingShow</targetReference>
@@ -2169,7 +2353,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>getTasksUOIntervall</name>
         <label>getTasksUOIntervall</label>
         <locationX>1194</locationX>
-        <locationY>3518</locationY>
+        <locationY>5198</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTask_0_0</targetReference>
@@ -2203,7 +2387,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <recordLookups>
         <name>getWorktrailUO</name>
         <label>getWorktrailUO</label>
-        <locationX>1469</locationX>
+        <locationX>1337</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2249,7 +2433,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <name>updateReportRecord</name>
         <label>updateReportRecord</label>
         <locationX>1194</locationX>
-        <locationY>5198</locationY>
+        <locationY>7214</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -2296,7 +2480,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <screens>
         <name>screenChoices</name>
         <label>Valg av mulighet</label>
-        <locationX>908</locationX>
+        <locationX>820</locationX>
         <locationY>878</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -2702,7 +2886,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1343</locationX>
+        <locationX>1211</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailUO</targetReference>
@@ -2717,7 +2901,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
     <textTemplates>
         <name>templateIntervallUOReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Underveisrapport for utvidet oppfølging - &lt;/strong&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:             {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:    {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:     {!getWorktrailUO.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Startdato:           {!varStartDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Samarbeid mellom jobbspesialist og deltaker i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Møter deltaker har deltatt på i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varParticipantIntervallUOShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Møter deltaker ikke har møtt til i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varParticipantIntervallUONoShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Relasjonsbyggende møter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeetingRelation}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Oppfølgingsmøter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeetingFollowUp}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varJobList}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Plan for kommende period:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varParticipantIntervallUOForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Underveisrapport for utvidet oppfølging - &lt;/strong&gt;&lt;strong style=&quot;font-size: 18px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:             {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:    {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:     {!getWorktrailUO.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!varStartDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid mellom jobbspesialist og deltaker i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter deltaker har deltatt på i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varParticipantIntervallUOShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter deltaker ikke har møtt til i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varParticipantIntervallUONoShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Relasjonsbyggende møter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeetingRelation}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Oppfølgingsmøter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeetingFollowUp}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varJobList}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Plan for kommende periode:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varParticipantIntervallUOForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>assignmentParticipant</name>
