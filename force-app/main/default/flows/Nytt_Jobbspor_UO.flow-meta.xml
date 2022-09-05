@@ -194,7 +194,7 @@ VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},1,2))
         <name>participantsAge</name>
         <dataType>Number</dataType>
         <expression>IF(NOT(ISBLANK({!participantDOB} )) ,
-IF( DATE( YEAR({!participantDOB}), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;= DATE( YEAR(TODAY()) , MONTH( TODAY() ) , DAY( TODAY() ) ),
+IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;= DATE( YEAR(TODAY()) , MONTH( TODAY() ) , DAY( TODAY() ) ),
      YEAR (Today()) - YEAR ( {!participantDOB}),
      YEAR (Today()) - YEAR ( {!participantDOB}) -1 ),
   null)</expression>
