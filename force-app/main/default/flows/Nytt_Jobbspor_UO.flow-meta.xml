@@ -4,7 +4,7 @@
         <name>Redirect</name>
         <label>Redirect</label>
         <locationX>314</locationX>
-        <locationY>998</locationY>
+        <locationY>1334</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -20,7 +20,7 @@
         <name>Redirect_0_0</name>
         <label>Redirect</label>
         <locationX>1106</locationX>
-        <locationY>1478</locationY>
+        <locationY>1814</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -33,11 +33,43 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>setConsentValueFalse</name>
+        <label>setConsentValueFalse</label>
+        <locationX>182</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>varConsent</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>checkAgeAndConsent</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setConsentValueTrue</name>
+        <label>setConsentValueTrue</label>
+        <locationX>446</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>varConsent</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>consentParentParticipantUO</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>checkAgeAndConsent</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>checkAgeAndConsent</name>
         <label>checkAgeAndConsent</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>974</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
         </defaultConnector>
@@ -53,7 +85,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>consentParentParticipantUO</leftValueReference>
+                <leftValueReference>varConsent</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -66,10 +98,36 @@
         </rules>
     </decisions>
     <decisions>
+        <description>The consent part is not visible when participant is over 18 in screen flow. Even if the checkbox is default set to false it will not set false during runtime</description>
+        <name>checkAndSetConsent</name>
+        <label>checkAndSetConsent</label>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
+        <defaultConnector>
+            <targetReference>setConsentValueTrue</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isLessThan18</defaultConnectorLabel>
+        <rules>
+            <name>isOver18</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>adjustfor100</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>18.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setConsentValueFalse</targetReference>
+            </connector>
+            <label>isOver18</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
         <locationX>578</locationX>
-        <locationY>878</locationY>
+        <locationY>1214</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -94,7 +152,7 @@
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
         <locationX>842</locationX>
-        <locationY>1238</locationY>
+        <locationY>1574</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -186,7 +244,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Error_log</name>
         <label>Create Error log</label>
         <locationX>842</locationX>
-        <locationY>1598</locationY>
+        <locationY>1934</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -218,7 +276,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>1106</locationX>
-        <locationY>1358</locationY>
+        <locationY>1694</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -226,6 +284,12 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <isGoTo>true</isGoTo>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
+        <inputAssignments>
+            <field>IPS_Consent__c</field>
+            <value>
+                <elementReference>varConsent</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>IPS_Participant_age__c</field>
             <value>
@@ -269,13 +333,19 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>578</locationX>
-        <locationY>1358</locationY>
+        <locationY>1694</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
+        <inputAssignments>
+            <field>IPS_Consent__c</field>
+            <value>
+                <elementReference>varConsent</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>IPS_Participant_age__c</field>
             <value>
@@ -325,7 +395,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Get_existing</name>
         <label>Get existing</label>
         <locationX>578</locationX>
-        <locationY>758</locationY>
+        <locationY>1094</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -397,7 +467,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>getPersonDetails</name>
         <label>getPersonDetails</label>
         <locationX>842</locationX>
-        <locationY>1118</locationY>
+        <locationY>1454</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Owner_Selected</targetReference>
@@ -419,7 +489,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Consent</name>
         <label>Consent</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>1094</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -436,9 +506,9 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <label>Nytt Jobbspor</label>
         <locationX>314</locationX>
         <locationY>278</locationY>
-        <allowBack>true</allowBack>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>Get_Participant_Details</targetReference>
         </connector>
@@ -481,10 +551,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
         <locationX>842</locationX>
-        <locationY>1478</locationY>
-        <allowBack>true</allowBack>
+        <locationY>1814</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>Create_Error_log</targetReference>
         </connector>
@@ -500,10 +570,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>578</locationX>
-        <locationY>1478</locationY>
-        <allowBack>true</allowBack>
+        <locationY>1814</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>CreatedMessage</name>
             <fieldText>&lt;p&gt;Jobbspor har blitt opprettet&lt;/p&gt;</fieldText>
@@ -519,9 +589,9 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <locationY>518</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
-            <targetReference>checkAgeAndConsent</targetReference>
+            <targetReference>checkAndSetConsent</targetReference>
         </connector>
         <fields>
             <name>Participant_Detail_Section1</name>
@@ -568,7 +638,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Name</name>
-                    <fieldText>&lt;p&gt;&lt;b&gt;Valgt Deltaker&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!Get_Participant_Details.FirstName}        {!Get_Participant_Details.LastName}&lt;/p&gt;&lt;p&gt;Personnummer: {!Get_Participant_Details.INT_PersonIdent__c}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!Get_Participant_Details.FirstName}        {!Get_Participant_Details.LastName}&lt;/p&gt;&lt;p&gt;Personnummer: {!Get_Participant_Details.INT_PersonIdent__c}&lt;/p&gt;&lt;p&gt;DOB: {!participantDOB}&lt;/p&gt;&lt;p&gt;Alder: {!participantsAge}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -642,6 +712,9 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <fields>
             <name>IPS_Ung</name>
             <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
             <fieldText>IPS Ung</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
@@ -660,10 +733,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
         <locationX>842</locationX>
-        <locationY>998</locationY>
+        <locationY>1334</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>getPersonDetails</targetReference>
         </connector>
@@ -697,6 +770,12 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                 <name>objectApiName</name>
                 <value>
                     <stringValue>Work_Trail__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>$User.Id</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -737,5 +816,15 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varConsent</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
 </Flow>
