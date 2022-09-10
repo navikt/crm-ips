@@ -1,26 +1,32 @@
 @isTest
-public class IPS_eventTravelTimeControllerTest{
+public class IPS_eventTravelTimeControllerTest {
 
 @TestSetup
     static void makeData(){
-        String scn = '120697233445';
-        Account personAccount = IPS_TestDataFactory.createPersonAccount(scn);
-        try{
-            insert personAccount;
-        }catch(Exception e){
-            System.debug('Dette er person:'+e);
-        }
+
+        Account acc = new Account();
+        	acc.Name='Røre Pinne';
+        	acc.RecordTypeId=SObjectType.Account.getRecordTypeInfosByDeveloperName().get('IPS_UO_account_recordpage').getRecordTypeId();
         
-        String employerName = 'Strikke Pinne';
-        Account employerAccount = IPS_TestDataFactory.createEmployerAccount(employerName);
         try{
-            insert employerAccount;
+            insert acc;
         }catch(Exception e){
             System.debug('Dette er arbeidsgiver:'+e);
         }
+        
+        Account acc1 = new Account();
+            acc1.FirstName='Petter';
+            acc1.LastName='Putte';
+        	acc1.RecordTypeId=SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
+        
+        try{
+            insert acc1;
+        }catch(Exception e){
+            System.debug('Dette er personkonto:'+e);
+        }
               
         Work_Trail__c trail = new Work_Trail__c(
-        ips_Participant__c = personAccount.id,
+        ips_Participant__c = acc1.id,
         ips_Status__c ='Referred',
         ips_Passive__c=false);
         insert trail;
@@ -31,8 +37,8 @@ public class IPS_eventTravelTimeControllerTest{
         
         Event createEvent = new Event(
           ips_Travel_time__c = 15,
-          whatId =personAccount.id,
-          RelatedToAccount__c = employerAccount.id,
+          whatId =acc1.id,
+          RelatedToAccount__c = acc.id,
           RecordTypeId =devRecordTypeId,
           IPS_travelTimeFrom__c = 20,
           StartDateTime = system.Datetime.now(),
@@ -48,8 +54,8 @@ public class IPS_eventTravelTimeControllerTest{
         
         Event createEvent2 = new Event(
           ips_Travel_time__c = 0,
-          whatId =personAccount.id,
-          RelatedToAccount__c = employerAccount.id,
+          RelatedToAccount__c = acc.id,
+          whatId =acc1.id,
           RecordTypeId =devRecordTypeId,
           IPS_travelTimeFrom__c = 0,
           StartDateTime = system.Datetime.now(),
@@ -67,19 +73,23 @@ public class IPS_eventTravelTimeControllerTest{
 
 @isTest
     static void createEventTravelTime(){
+  
      List<Event> travelTimeList = [SELECT id FROM Event];
      //List should not be empty
-    System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty');           
+    System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty');     
+        
     }
     
 @isTest
     static void createwithOutTravelTime(){
+  
      List<Event> noEventTravel = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c FROM Event WHERE IPS_eventId__c=null AND ips_Travel_time__c<=0];
         for(Event j:noEventTravel){
             System.assertEquals(j.ips_Travel_time__c, 0, 'No travel time before');     
     		System.assertEquals(j.IPS_travelTimeFrom__c, 0, 'No travel time after');
         }
     }
+    
     
 @isTest
     static void updateEventTravelTime(){
@@ -111,5 +121,4 @@ public class IPS_eventTravelTimeControllerTest{
         IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{firstInput});
         Test.stopTest(); 
     }
-    
 }
