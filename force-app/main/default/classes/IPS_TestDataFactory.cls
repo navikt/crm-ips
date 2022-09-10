@@ -28,13 +28,13 @@ public with sharing class IPS_TestDataFactory {
     }
     
     public static User createUserCommunity( Account account) {
-        User user = createCommunityUser('Last');
-        user.ContactId = account.PersonContactId;
+        User user = createCommunityUser('Last',account.PersonContactId);
+        //user.ContactId = account.PersonContactId;
 
         return user;
     }
     
-    public static User createCommunityUser(String lastName) {
+    public static User createCommunityUser(String lastName,ID contactId) {
         Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'Customer Community Plus User' LIMIT 1];
         User user = new User(
             Username = 'IPS.' + lastName + '@nav.ips.no',
@@ -48,7 +48,8 @@ public with sharing class IPS_TestDataFactory {
             LanguageLocaleKey = 'no',
             ProfileId = profile.id,
             Department = '1',
-          	CRM_NAV_Ident__c = 'test123'
+          	CRM_NAV_Ident__c = 'test123',
+            ContactId = contactId
         );
         return user;
     }
