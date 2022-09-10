@@ -1,4 +1,3 @@
-@isTest
 public with sharing class IPS_TestDataFactory {
     
     public static Person__c createPerson(String ident) {
