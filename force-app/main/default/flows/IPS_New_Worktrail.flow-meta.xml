@@ -159,21 +159,21 @@
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Owner not selected</defaultConnectorLabel>
+        <defaultConnectorLabel>Owner is user</defaultConnectorLabel>
         <rules>
-            <name>Owner_Blank</name>
+            <name>ownerIsNotUser</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EierCheckbox.recordId</leftValueReference>
-                <operator>IsNull</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <elementReference>$User.Id</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>Create_Worktrail_0_0</targetReference>
             </connector>
-            <label>Owner filled inn</label>
+            <label>ownerIsNotUser</label>
         </rules>
     </decisions>
     <description>Flow for IPS</description>
