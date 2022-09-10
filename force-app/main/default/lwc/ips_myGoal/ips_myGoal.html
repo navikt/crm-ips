@@ -1,10 +1,16 @@
 <template>
-    <lightning-card>
-        <h3 slot="title">
-            <lightning-icon icon-name="utility:connected_apps" size="small"></lightning-icon>
-            Card Title
-        </h3>
-        <p>Her kommer målene mine</p>
-        <p>{goal}</p>
-    </lightning-card>  
+        <div class="goaltitle">
+                <img class="illustrasjon"
+                    src={myGoalImg}
+                    alt="Mitt mål"
+                />
+                Mitt mål
+        </div>
+        <div class="goalborder"></div>
+        <div if:true={isData}>
+            <p class="goaltext">{mainGoal}</p>
+        </div>
+        <div if:false={isData}>
+            <p class="goaltext">Ingen mål er definert.</p>
+        </div>
 </template>
