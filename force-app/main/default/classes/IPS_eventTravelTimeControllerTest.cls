@@ -1,5 +1,5 @@
 @isTest
-public class IPS_eventTravelTimeControllerTest {
+public class IPS_eventTravelTimeControllerTest{
 
 @TestSetup
     static void makeData(){
@@ -67,24 +67,19 @@ public class IPS_eventTravelTimeControllerTest {
 
 @isTest
     static void createEventTravelTime(){
-    
-  
      List<Event> travelTimeList = [SELECT id FROM Event];
      //List should not be empty
-    System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty');     
-        
+    System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty');           
     }
     
 @isTest
     static void createwithOutTravelTime(){
-  
      List<Event> noEventTravel = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c FROM Event WHERE IPS_eventId__c=null AND ips_Travel_time__c<=0];
         for(Event j:noEventTravel){
             System.assertEquals(j.ips_Travel_time__c, 0, 'No travel time before');     
     		System.assertEquals(j.IPS_travelTimeFrom__c, 0, 'No travel time after');
         }
     }
-    
     
 @isTest
     static void updateEventTravelTime(){
@@ -116,4 +111,5 @@ public class IPS_eventTravelTimeControllerTest {
         IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{firstInput});
         Test.stopTest(); 
     }
+    
 }
