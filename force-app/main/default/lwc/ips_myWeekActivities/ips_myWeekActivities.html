@@ -1,0 +1,24 @@
+<template>
+        <div class="activitytitle">
+                <img class="illustrasjon"
+                    src={myActivityImg}
+                    alt="Ukens aktiviteter"
+                />
+                Mine møter denne uken
+        </div>
+        <div class="activityborder"></div>
+
+        <div if:true={isData}>
+            <lightning-datatable
+                key-field="id"
+                data={userActivity}
+                columns={columns}
+                hide-checkbox-column="true"
+                >
+            </lightning-datatable>
+        </div>
+
+        <div if:false={isData}>
+            <p class="activitytext">Du har ingen aktiviteter denne uken.</p>
+        </div>
+</template>
