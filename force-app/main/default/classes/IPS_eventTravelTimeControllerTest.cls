@@ -1,10 +1,12 @@
 @isTest
+
 private class IPS_eventTravelTimeControllerTest{
 
 @TestSetup
     static void makeData(){
         String scn = '120697233445';
         Account personAccount = IPS_TestDataFactory.createPersonAccount(scn);
+
         try{
             insert personAccount;
         }catch(Exception e){
@@ -111,5 +113,5 @@ private class IPS_eventTravelTimeControllerTest{
         IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{firstInput});
         Test.stopTest(); 
     }
-    
 }
+

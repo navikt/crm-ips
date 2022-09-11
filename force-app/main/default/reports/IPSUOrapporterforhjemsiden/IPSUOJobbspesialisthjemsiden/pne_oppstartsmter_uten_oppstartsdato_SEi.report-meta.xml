@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
-    <columns>
-        <field>SUBJECT</field>
-    </columns>
-    <columns>
-        <field>Work_Trail__c.Oppstartsdato__c</field>
-    </columns>
-    <columns>
-        <field>STATUS</field>
-    </columns>
-    <columns>
-        <field>Activity.IPS_Type__c</field>
-    </columns>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>HorizontalBarGrouped</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>SUBJECT</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>STATUS</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
     <columns>
         <field>START_DATE_TIME</field>
     </columns>
@@ -28,7 +42,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Start up meeting,Meeting with Participant</value>
+            <value>Start up meeting</value>
         </criteriaItems>
         <criteriaItems>
             <column>Work_Trail__c.ips_Start_Date__c</column>
@@ -39,14 +53,20 @@
         </criteriaItems>
         <language>en_US</language>
     </filter>
-    <format>Summary</format>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>STATUS</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>CUST_NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
-        <field>CUST_CREATED_DATE</field>
+        <dateGranularity>Day</dateGranularity>
+        <field>SUBJECT</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Åpne oppstartsmøter uten oppstartsdato</name>
