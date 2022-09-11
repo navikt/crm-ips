@@ -36,4 +36,5 @@ public static List<Work_Trail__c> getUserGoal(){
             WHERE ips_Participant__c = :user.AccountId AND ips_Status__c !='Ended'
         ];
     }
+    
 }

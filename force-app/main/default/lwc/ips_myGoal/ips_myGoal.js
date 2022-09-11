@@ -24,4 +24,5 @@ export default class Ips_myGoal extends LightningElement {
             this.error = result.error;
         }
     }
+    
 }
