@@ -1,5 +1,4 @@
 @isTest
-<<<<<<< HEAD
 private class IPS_eventTravelTimeControllerTest {
 
 @TestSetup
@@ -9,16 +8,6 @@ private class IPS_eventTravelTimeControllerTest {
         	acc.Name='Røre Pinne';
         	acc.RecordTypeId=SObjectType.Account.getRecordTypeInfosByDeveloperName().get('IPS_UO_account_recordpage').getRecordTypeId();
         
-=======
-
-private class IPS_eventTravelTimeControllerTest{
-
-@TestSetup
-    static void makeData(){
-        String scn = '120697233445';
-        Account personAccount = IPS_TestDataFactory.createPersonAccount(scn);
-
->>>>>>> b76c474fdf82051542e5ede9cfc2e77768c5caba
         try{
             insert acc;
         }catch(Exception e){
@@ -132,9 +121,4 @@ private class IPS_eventTravelTimeControllerTest{
         IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{firstInput});
         Test.stopTest(); 
     }
-<<<<<<< HEAD
 }
-=======
-}
-
->>>>>>> b76c474fdf82051542e5ede9cfc2e77768c5caba
