@@ -1,6 +1,7 @@
-public with sharing class IPS_TestDataFactory {
+@IsTest
+private with sharing class IPS_TestDataFactory {
     
-    public static Person__c createPerson(String ident) {
+    private static Person__c createPerson(String ident) {
         Person__c person = new Person__c(
         INT_Confidential__c = 'UGRADERT',
         Name = ident,
@@ -9,7 +10,7 @@ public with sharing class IPS_TestDataFactory {
         return person;
     }
     
-    public static Account createPersonAccount(String ident){
+    private static Account createPersonAccount(String ident){
         Account accPerson = new Account(
         FirstName='First',
         LastName='Last',
@@ -19,21 +20,21 @@ public with sharing class IPS_TestDataFactory {
     return accPerson;
     }
     
-    public static User createUser( Account account) {
+    private static User createUser( Account account) {
         User user = createStandardUser('Last');
         user.ContactId = account.PersonContactId;
 
         return user;
     }
     
-    public static User createUserCommunity( Account account) {
+    private static User createUserCommunity( Account account) {
         User user = createCommunityUser('Last',account.PersonContactId);
         //user.ContactId = account.PersonContactId;
 
         return user;
     }
     
-    public static User createCommunityUser(String lastName,ID contactId) {
+    private static User createCommunityUser(String lastName,ID contactId) {
         Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'Customer Community Plus User' LIMIT 1];
         User user = new User(
             Username = 'IPS.' + lastName + '@nav.ips.no',
@@ -53,7 +54,7 @@ public with sharing class IPS_TestDataFactory {
         return user;
     }
     
-    public static User createStandardUser(String lastName) {
+    private static User createStandardUser(String lastName) {
         Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'Standard User' LIMIT 1];
         User user = new User(
             Username = 'IPS.' + lastName + '@nav.ips.no',
@@ -72,7 +73,7 @@ public with sharing class IPS_TestDataFactory {
         return user;
     }
     
-    public static Account createEmployerAccount(String employerName){
+    private static Account createEmployerAccount(String employerName){
         ID recordType = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('IPS_UO_account_recordpage').getRecordTypeId();
         Account accEmpl = new Account(
         	Name=employerName,
@@ -81,7 +82,7 @@ public with sharing class IPS_TestDataFactory {
     return accEmpl;
     }
     
-    public static Work_Trail__c getWorkTrail(Account account){
+    private static Work_Trail__c getWorkTrail(Account account){
         Work_Trail__c trail = new Work_Trail__c(
         ips_Participant__c = account.id,
         ips_Status__c ='Referred',
