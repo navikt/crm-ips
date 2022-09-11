@@ -1,4 +1,4 @@
-public class IPS_eventTravelTimeController {
+public with sharing class IPS_eventTravelTimeController {
     
     
     @InvocableMethod(label='IPS Traveltime' description='Create or update traveltime')
