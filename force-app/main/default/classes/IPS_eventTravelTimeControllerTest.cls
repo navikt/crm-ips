@@ -1,8 +1,8 @@
 @isTest
-public class IPS_eventTravelTimeControllerTest {
+private class IPS_eventTravelTimeControllerTest {
 
 @TestSetup
-    static void makeData(){
+    static void makeTrailData(){
 
         Account acc = new Account();
         	acc.Name='Røre Pinne';
