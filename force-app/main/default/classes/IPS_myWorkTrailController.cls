@@ -39,8 +39,8 @@ public with sharing class IPS_myWorkTrailController {
         
     }
 
-    @AuraEnabled
-    public static List<work_trail__c> getUOUserWorkTrail(String userId) {
+    @AuraEnabled(cacheAble = true)
+    public static List<work_trail__c> getUserWorkTrail(String userId) {
         List<Work_Trail__c> mytrail = new List<Work_Trail__c>();
 
         try{
@@ -53,10 +53,12 @@ public with sharing class IPS_myWorkTrailController {
             mytrail =[
                     SELECT 
                     id,
-                    ips_Main_goal__c,
-                    ips_Main_Goal_list__c,
-                    UO_Main_Goal_list__c
-                    FROM work_trail__c
+                    ips_Priority_career_wishes__c, 
+                    ips_Framework_for_job_development_search__c,
+                    ips_Preferred_working_hours__c, 
+                    ips_Network__c, 
+                    ips_Geography__c
+                    FROM Work_Trail__c
                     WHERE ips_Participant__c = :accountId 
                     AND ips_Status__c !='Ended'
                     LIMIT 1

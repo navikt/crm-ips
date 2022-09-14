@@ -1,0 +1,23 @@
+<template>
+    <div class="trailtitle">
+            <img class="illustrasjon"
+                src={myGoalImg}
+                alt="Jobbutvikling"
+            />
+            Jobbutvikling
+    </div>
+    <div class="trailborder"></div>
+    <template if:true={userTrail.data}>
+        <template for:each={userTrail.data} for:item="trail">   
+            <p key={trail.id} class="trailtext">{trail.ips_Priority_career_wishes__c}</p>
+            <p key={trail.id} class="trailtext">{trail.ips_Framework_for_job_development_search__c}</p>
+            <p key={trail.id} class="trailtext">{trail.ips_Preferred_working_hours__c}</p>
+            <p key={trail.id} class="trailtext">{trail.ips_Network__c}</p>
+            <p key={trail.id} class="trailtext">{trail.ips_Geography__c}</p>
+        </template>
+    </template>
+
+    <template if:true={userTrail.error}>
+        <p class="trailtext"></p>
+    </template>
+</template>
