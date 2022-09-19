@@ -5,14 +5,14 @@
         <name>conGES</name>
         <dataType>String</dataType>
         <value>
-            <stringValue/>
+            <stringValue></stringValue>
         </value>
     </constants>
     <decisions>
         <description>Test if worktrail is UO or IPS.</description>
         <name>checkRecordType</name>
         <label>checkRecordType</label>
-        <locationX>710</locationX>
+        <locationX>974</locationX>
         <locationY>518</locationY>
         <defaultConnector>
             <targetReference>noWorkTrail_0</targetReference>
@@ -43,15 +43,8 @@
                     <stringValue>IPS</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>varReportEnd</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>runEndReportingIPS</targetReference>
+                <targetReference>checkReportType_0</targetReference>
             </connector>
             <label>isIPS</label>
         </rules>
@@ -94,6 +87,44 @@
             <label>isIntervallReportUO</label>
         </rules>
     </decisions>
+    <decisions>
+        <description>Check if report type is end reporting or intervall reporting</description>
+        <name>checkReportType_0</name>
+        <label>checkReportType</label>
+        <locationX>1106</locationX>
+        <locationY>638</locationY>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isEndReportUO_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varReportEnd</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>runEndReportingIPS</targetReference>
+            </connector>
+            <label>isEndReportUO</label>
+        </rules>
+        <rules>
+            <name>isIntervallReportUO_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varReportIntervall</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>runIntervallReportIPS</targetReference>
+            </connector>
+            <label>isIntervallReportUO</label>
+        </rules>
+    </decisions>
     <description>End report for IPS/UO</description>
     <formulas>
         <name>varTaskRowHeading</name>
@@ -132,7 +163,7 @@
     <recordLookups>
         <name>getRecordtypeName</name>
         <label>getRecordtypeName</label>
-        <locationX>710</locationX>
+        <locationX>974</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -155,7 +186,7 @@
     <recordLookups>
         <name>getWorktrailRecordTypeId</name>
         <label>getWorktrailRecordTypeId</label>
-        <locationX>710</locationX>
+        <locationX>974</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -182,7 +213,7 @@
     <screens>
         <name>noWorkTrail_0</name>
         <label>Not a worktrail</label>
-        <locationX>1106</locationX>
+        <locationX>1634</locationX>
         <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -199,7 +230,7 @@
         <description>Select report type</description>
         <name>selectReportType</name>
         <label>Select report type</label>
-        <locationX>710</locationX>
+        <locationX>974</locationX>
         <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -210,19 +241,9 @@
         <fields>
             <name>varReportIntervall</name>
             <dataType>Boolean</dataType>
-            <fieldText>Underveis rapport</fieldText>
+            <fieldText>Underveisrapport</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>recordTypeName</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <stringValue>ips_Supported_Employment</stringValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
         </fields>
         <fields>
             <name>varReportEnd</name>
@@ -235,7 +256,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>584</locationX>
+        <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailRecordTypeId</targetReference>
@@ -260,7 +281,7 @@
         <name>runEndReportingIPS</name>
         <label>runEndReportingIPS</label>
         <locationX>842</locationX>
-        <locationY>638</locationY>
+        <locationY>758</locationY>
         <flowName>IPS_subflowEndReportIPS</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -274,6 +295,20 @@
                 <elementReference>viewRecordTypeName</elementReference>
             </value>
         </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>runIntervallReportIPS</name>
+        <label>runIntervallReportIPS</label>
+        <locationX>1106</locationX>
+        <locationY>758</locationY>
+        <flowName>IPS_subflow_intervall_report_IPS</flowName>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <subflows>
         <name>runIntervallReportUO</name>
