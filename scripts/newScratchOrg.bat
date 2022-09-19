@@ -7,6 +7,9 @@ call sfdx force:package:install --package 04t7U000000TqTEQA0 -r -k %3 --wait 10 
 echo "Installerer crm-platform-access-control ver. 0.103"
 call sfdx force:package:install --package 04t7U000000TqSLQA0 -r -k %3 --wait 10 --publishwait 10
 
+echo "Installerer 'crm-thread-view' ver. 0.1.0"
+call sfdx force:package:install --package 04t7U000000TqVFQA0 -r -k %3 --wait 10 --publishwait 10
+
 echo "Installerer crm-shared-timeline ver. 1.15"
 call sfdx force:package:install --package 04t7U000000TpOcQAK -r -k %3 --wait 10 --publishwait 10
 
