@@ -1,5 +1,5 @@
 @isTest
-private class IPS_eventTravelTimeControllerTest {
+public class IPS_eventTravelTimeControllerTest {
 
 @TestSetup
     static void makeTrailData(){
