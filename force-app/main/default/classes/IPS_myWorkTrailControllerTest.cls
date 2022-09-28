@@ -50,7 +50,6 @@ public class IPS_myWorkTrailControllerTest {
         	wList = IPS_myWorkTrailController.getUserWorkTrail(userId);
         Test.stopTest(); 
         
-        System.assertEquals(wList.size(), 0, 'List should not be empty');
-        
+        System.assertEquals(wList.size(), 0, 'List should not be empty'); 
     }
 }
