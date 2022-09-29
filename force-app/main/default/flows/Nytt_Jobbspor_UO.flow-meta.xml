@@ -315,9 +315,9 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>ips_Behandlingsteam__c</field>
+            <field>ips_Applying_Department__c</field>
             <value>
-                <elementReference>Behandlingsteam_Innsatsteam</elementReference>
+                <elementReference>Innsokende_avdeling</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -377,9 +377,9 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>ips_Behandlingsteam__c</field>
+            <field>ips_Applying_Department__c</field>
             <value>
-                <elementReference>Behandlingsteam_Innsatsteam</elementReference>
+                <elementReference>Innsokende_avdeling</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -495,7 +495,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <allowPause>false</allowPause>
         <fields>
             <name>noConsent</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Deltaker er under 18, skriftilig samtykke fra foresatt(e) må foreligge.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Deltaker er under 18 år.  Skriftlig samtykke fra foresatt(e) må foreligge.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -560,7 +560,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         </connector>
         <fields>
             <name>Errormessage</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Kunne ikke opprettes. Kontakt din administrator&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px; color: rgb(147, 40, 40);&quot;&gt;Ups.. Her gikk noe galt. Det kan se ut som deltakeren allerede er registrert i et aktivt jobbspor. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; color: rgb(147, 40, 40);&quot;&gt;Kontakt din &lt;/span&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(147, 40, 40);&quot;&gt;metodeveileder &lt;/strong&gt;&lt;span style=&quot;font-size: 14px; color: rgb(147, 40, 40);&quot;&gt;eller &lt;/span&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(147, 40, 40);&quot;&gt;Utviklingsteamet&lt;/strong&gt;&lt;span style=&quot;font-size: 14px; color: rgb(147, 40, 40);&quot;&gt;.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -576,7 +576,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <allowPause>false</allowPause>
         <fields>
             <name>CreatedMessage</name>
-            <fieldText>&lt;p&gt;Jobbspor har blitt opprettet&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(41, 66, 37);&quot;&gt;Jobbsporet er opprettet!&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -710,20 +710,11 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </visibilityRule>
         </fields>
         <fields>
-            <name>IPS_Ung</name>
-            <dataType>Boolean</dataType>
-            <defaultValue>
-                <booleanValue>false</booleanValue>
-            </defaultValue>
-            <fieldText>IPS Ung</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Behandlingsteam_Innsatsteam</name>
+            <name>Innsokende_avdeling</name>
             <dataType>String</dataType>
-            <fieldText>Behandlingsteam/Innsøkende avdeling</fieldText>
+            <fieldText>Innsøkende avdeling</fieldText>
             <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Avdelingen som har søkt deltaker inn til UO tiltaket&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -746,7 +737,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <defaultValue>
                 <booleanValue>false</booleanValue>
             </defaultValue>
-            <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjonen</fieldText>
+            <fieldText>Er deltaker informert om sine rettigheter som registrert i applikasjonen?</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
