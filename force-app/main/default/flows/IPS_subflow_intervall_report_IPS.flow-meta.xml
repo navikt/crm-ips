@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
-        <locationX>1150</locationX>
-        <locationY>6206</locationY>
+        <locationX>1084</locationX>
+        <locationY>6878</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -18,25 +18,9 @@
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
-        <name>addNextPeriodText</name>
-        <label>addNextPeriodText</label>
-        <locationX>930</locationX>
-        <locationY>3974</locationY>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Deltaker har ingen planlagte delmål</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>getPhoneTasksIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>addPeriodTekst</name>
         <label>addPeriodTekst</label>
-        <locationX>666</locationX>
+        <locationX>798</locationX>
         <locationY>3974</locationY>
         <assignmentItems>
             <assignToReference>taskList</assignToReference>
@@ -46,14 +30,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getPhoneTasksIPSIntervall</targetReference>
+            <targetReference>istaskListEmptyForward</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>addPeriodTekst_0</name>
         <label>addPeriodTekst</label>
-        <locationX>666</locationX>
-        <locationY>5198</locationY>
+        <locationX>798</locationX>
+        <locationY>5534</locationY>
         <assignmentItems>
             <assignToReference>taskListConversations</assignToReference>
             <operator>Add</operator>
@@ -62,13 +46,13 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getJobs</targetReference>
+            <targetReference>isTaskListConvoForwardEmpty</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>addReportId</name>
         <label>addReportId</label>
-        <locationX>1304</locationX>
+        <locationX>1205</locationX>
         <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>varReportId</assignToReference>
@@ -86,22 +70,6 @@
         </assignmentItems>
         <connector>
             <targetReference>checkReportType</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addTaskConversationsForward</name>
-        <label>addTaskConversationsForward</label>
-        <locationX>930</locationX>
-        <locationY>5198</locationY>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Det er ikke planlagt noen telefonsamtaler med arbeidsgiver i perioden</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>getJobs</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -194,7 +162,7 @@
         <name>addTaskForwardRange_0</name>
         <label>addTaskForwardRange</label>
         <locationX>1282</locationX>
-        <locationY>4766</locationY>
+        <locationY>5102</locationY>
         <assignmentItems>
             <assignToReference>taskListConversationsForward</assignToReference>
             <operator>Add</operator>
@@ -387,7 +355,7 @@
         <name>addTaskWithinRange_0</name>
         <label>addTaskWithinRange</label>
         <locationX>1018</locationX>
-        <locationY>4766</locationY>
+        <locationY>5102</locationY>
         <assignmentItems>
             <assignToReference>taskListConversations</assignToReference>
             <operator>Add</operator>
@@ -493,7 +461,7 @@
     <assignments>
         <name>addText_0</name>
         <label>addText</label>
-        <locationX>1018</locationX>
+        <locationX>952</locationX>
         <locationY>2510</locationY>
         <assignmentItems>
             <assignToReference>varEmployerMeeting</assignToReference>
@@ -509,7 +477,7 @@
     <assignments>
         <name>addText_0_0</name>
         <label>addText</label>
-        <locationX>1018</locationX>
+        <locationX>952</locationX>
         <locationY>2846</locationY>
         <assignmentItems>
             <assignToReference>varEmployeeMeetingForward</assignToReference>
@@ -523,9 +491,41 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addTextTaskConvosForward</name>
+        <label>addTextTaskConvosForward</label>
+        <locationX>798</locationX>
+        <locationY>5870</locationY>
+        <assignmentItems>
+            <assignToReference>taskListConversationsForward</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Det er ikke planlagt noen telefonsamtaler med arbeidsgiver i perioden</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getJobs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addTextTaskListForward</name>
+        <label>addTextTaskListForward</label>
+        <locationX>798</locationX>
+        <locationY>4310</locationY>
+        <assignmentItems>
+            <assignToReference>taskListForward</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Deltaker har ingen planlagte delmål</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getPhoneTasksIPSIntervall</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>setEmployerName</name>
         <label>setEmployerName</label>
-        <locationX>1238</locationX>
+        <locationX>1172</locationX>
         <locationY>2078</locationY>
         <assignmentItems>
             <assignToReference>varEmployerMeeting</assignToReference>
@@ -667,7 +667,7 @@
     <assignments>
         <name>setEmployerNameNextPeriod</name>
         <label>setEmployerNameNextPeriod</label>
-        <locationX>1502</locationX>
+        <locationX>1436</locationX>
         <locationY>2078</locationY>
         <assignmentItems>
             <assignToReference>varEmployeeMeetingForward</assignToReference>
@@ -809,8 +809,8 @@
     <assignments>
         <name>setJobtext</name>
         <label>setJobtext</label>
-        <locationX>1238</locationX>
-        <locationY>5750</locationY>
+        <locationX>1172</locationX>
+        <locationY>6422</locationY>
         <assignmentItems>
             <assignToReference>varJobList</assignToReference>
             <operator>Add</operator>
@@ -972,7 +972,7 @@
     <assignments>
         <name>setScreenVariablesNew</name>
         <label>setScreenVariablesNew</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>1598</locationY>
         <assignmentItems>
             <assignToReference>varToDate</assignToReference>
@@ -1094,7 +1094,7 @@
     <decisions>
         <name>checkDecision</name>
         <label>checkDecision</label>
-        <locationX>798</locationX>
+        <locationX>732</locationX>
         <locationY>998</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1145,7 +1145,7 @@
     <decisions>
         <name>checkEmployeeMeeting</name>
         <label>checkEmployeeMeeting</label>
-        <locationX>1502</locationX>
+        <locationX>1436</locationX>
         <locationY>1958</locationY>
         <defaultConnector>
             <targetReference>iterateEmplMeetingsIPSIntervall</targetReference>
@@ -1254,7 +1254,7 @@
         <name>checkPhoneIntervall</name>
         <label>checkPhoneIntervall</label>
         <locationX>1282</locationX>
-        <locationY>4646</locationY>
+        <locationY>4982</locationY>
         <defaultConnector>
             <targetReference>iteratePhoneTasksIPSIntervall</targetReference>
         </defaultConnector>
@@ -1307,7 +1307,7 @@
     <decisions>
         <name>checkReportType</name>
         <label>checkReportType</label>
-        <locationX>1304</locationX>
+        <locationX>1205</locationX>
         <locationY>758</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -1333,7 +1333,7 @@
     <decisions>
         <name>checkTask_0_0</name>
         <label>checkTask</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>3182</locationY>
         <defaultConnector>
             <targetReference>getPhoneTasksIPSIntervall</targetReference>
@@ -1358,8 +1358,8 @@
     <decisions>
         <name>checkTaskPhone</name>
         <label>checkTaskPhone</label>
-        <locationX>1150</locationX>
-        <locationY>4406</locationY>
+        <locationX>1084</locationX>
+        <locationY>4742</locationY>
         <defaultConnector>
             <targetReference>getJobs</targetReference>
         </defaultConnector>
@@ -1383,7 +1383,7 @@
     <decisions>
         <name>isEmployerListEmpty</name>
         <label>isEmployerListEmpty</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>2390</locationY>
         <defaultConnector>
             <targetReference>isMeetingEmptyForward</targetReference>
@@ -1408,7 +1408,7 @@
     <decisions>
         <name>isMeetingEmptyForward</name>
         <label>isMeetingEmptyForward</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>2726</locationY>
         <defaultConnector>
             <targetReference>getTasksIPSIntervall</targetReference>
@@ -1434,9 +1434,9 @@
         <name>istaskListConversationsEmpty</name>
         <label>istaskListConversationsEmpty</label>
         <locationX>930</locationX>
-        <locationY>5078</locationY>
+        <locationY>5414</locationY>
         <defaultConnector>
-            <targetReference>getJobs</targetReference>
+            <targetReference>isTaskListConvoForwardEmpty</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1454,8 +1454,18 @@
             </connector>
             <label>isTaskListConversationsEmpty</label>
         </rules>
+    </decisions>
+    <decisions>
+        <name>isTaskListConvoForwardEmpty</name>
+        <label>isTaskListConvoForwardEmpty</label>
+        <locationX>930</locationX>
+        <locationY>5750</locationY>
+        <defaultConnector>
+            <targetReference>getJobs</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>isTaskListConversationsForwardEmpty</name>
+            <name>IsEmptyTaskListConvo</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>taskListConversationsForward</leftValueReference>
@@ -1465,9 +1475,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>addTaskConversationsForward</targetReference>
+                <targetReference>addTextTaskConvosForward</targetReference>
             </connector>
-            <label>isTaskListConversationsForwardEmpty</label>
+            <label>IsEmpty</label>
         </rules>
     </decisions>
     <decisions>
@@ -1476,7 +1486,7 @@
         <locationX>930</locationX>
         <locationY>3854</locationY>
         <defaultConnector>
-            <targetReference>getPhoneTasksIPSIntervall</targetReference>
+            <targetReference>istaskListEmptyForward</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1494,6 +1504,16 @@
             </connector>
             <label>isPeriodTaskEmpty</label>
         </rules>
+    </decisions>
+    <decisions>
+        <name>istaskListEmptyForward</name>
+        <label>istaskListEmptyForward</label>
+        <locationX>930</locationX>
+        <locationY>4190</locationY>
+        <defaultConnector>
+            <targetReference>getPhoneTasksIPSIntervall</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isNextPeriodEmpty</name>
             <conditionLogic>and</conditionLogic>
@@ -1505,7 +1525,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>addNextPeriodText</targetReference>
+                <targetReference>addTextTaskListForward</targetReference>
             </connector>
             <label>isNextPeriodEmpty</label>
         </rules>
@@ -1599,7 +1619,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <description>Loop over all meetings with employers</description>
         <name>iterateEmplMeetingsIPSIntervall</name>
         <label>iterateEmplMeetingsIPSIntervall</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>1838</locationY>
         <collectionReference>getEmplMeetingsIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1613,8 +1633,8 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <loops>
         <name>iterateJobs</name>
         <label>iterateJobs</label>
-        <locationX>1150</locationX>
-        <locationY>5630</locationY>
+        <locationX>1084</locationX>
+        <locationY>6302</locationY>
         <collectionReference>getJobs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1628,7 +1648,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <name>iteratePhoneTasksIPSIntervall</name>
         <label>iteratePhoneTasksIPSIntervall</label>
         <locationX>930</locationX>
-        <locationY>4526</locationY>
+        <locationY>4862</locationY>
         <collectionReference>getPhoneTasksIPSIntervall</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1674,7 +1694,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordCreates>
         <name>createReportingRecord</name>
         <label>createReportingRecord</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>1238</locationY>
         <assignRecordIdToReference>varReportId</assignRecordIdToReference>
         <connector>
@@ -1703,8 +1723,8 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getEducationInfoIPS</name>
         <label>getEducationInfoIPS</label>
-        <locationX>1150</locationX>
-        <locationY>5966</locationY>
+        <locationX>1084</locationX>
+        <locationY>6638</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>updateReportRecord</targetReference>
@@ -1730,7 +1750,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getEmplMeetingsIntervall</name>
         <label>getEmplMeetingsIntervall</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>1718</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1752,7 +1772,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <description>Get all intervall reports if it exists - only the ones that is open. Archived reports should not be altered.</description>
         <name>getIntervallReports</name>
         <label>getIntervallReports</label>
-        <locationX>1304</locationX>
+        <locationX>1205</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1789,8 +1809,8 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getJobs</name>
         <label>getJobs</label>
-        <locationX>1150</locationX>
-        <locationY>5510</locationY>
+        <locationX>1084</locationX>
+        <locationY>6182</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>iterateJobs</targetReference>
@@ -1812,7 +1832,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getOwnerIPS</name>
         <label>getOwnerIPS</label>
-        <locationX>1304</locationX>
+        <locationX>1205</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1838,7 +1858,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <description>Get the name of the person account connected to the worktrail</description>
         <name>getParticipantDetailsIPS</name>
         <label>getParticipantDetailsIPS</label>
-        <locationX>1304</locationX>
+        <locationX>1205</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1863,8 +1883,8 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getPhoneTasksIPSIntervall</name>
         <label>getPhoneTasksIPSIntervall</label>
-        <locationX>1150</locationX>
-        <locationY>4286</locationY>
+        <locationX>1084</locationX>
+        <locationY>4622</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTaskPhone</targetReference>
@@ -1898,7 +1918,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getRecordType_0</name>
         <label>getRecordType</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>1358</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1921,7 +1941,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getTasksIPSIntervall</name>
         <label>getTasksIPSIntervall</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>3062</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1956,7 +1976,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getWorktrailIPS</name>
         <label>getWorktrailIPS</label>
-        <locationX>1304</locationX>
+        <locationX>1205</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1977,7 +1997,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordUpdates>
         <name>updateOldReportToClosed</name>
         <label>updateOldReportToClosed</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>1118</locationY>
         <connector>
             <targetReference>createReportingRecord</targetReference>
@@ -2001,8 +2021,8 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordUpdates>
         <name>updateReportRecord</name>
         <label>updateReportRecord</label>
-        <locationX>1150</locationX>
-        <locationY>6086</locationY>
+        <locationX>1084</locationX>
+        <locationY>6758</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -2049,7 +2069,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <screens>
         <name>screenChoices</name>
         <label>Valg av mulighet</label>
-        <locationX>798</locationX>
+        <locationX>732</locationX>
         <locationY>878</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -2115,7 +2135,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <screens>
         <name>workTrailIntervallNew</name>
         <label>IntervallNew</label>
-        <locationX>1150</locationX>
+        <locationX>1084</locationX>
         <locationY>1478</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -2430,7 +2450,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1178</locationX>
+        <locationX>1079</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailIPS</targetReference>
@@ -2445,7 +2465,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <textTemplates>
         <name>templateIntervallIPSReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;Underveisrapport for IPS - {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.MiddleName} {!getParticipantDetailsIPS.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:             {!getParticipantDetailsIPS.FirstName}  {!getParticipantDetailsIPS.MiddleName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:    {!getOwnerIPS.FirstName} {!getOwnerIPS.MiddleName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:     {!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Startdato:           {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Møter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeeting} &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Samtaler gjennomført med arbeidsgiver i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!taskListConversations}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varJobList}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Deltagelse i utdanning&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;           {!varEducationInfoField}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Plan for kommende period:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;﻿&lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Planlagte samtaler:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!taskListConversationsForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Underveisrapport for IPS - {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.MiddleName} {!getParticipantDetailsIPS.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:             {!getParticipantDetailsIPS.FirstName}  {!getParticipantDetailsIPS.MiddleName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:    {!getOwnerIPS.FirstName} {!getOwnerIPS.MiddleName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:     {!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Startdato:           {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;Deltakers mål med IPS:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Prioriterte yrkesønsker:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeeting} &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Samtaler gjennomført med arbeidsgiver i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;{!taskListConversations}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varJobList}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Deltagelse i utdanning&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;           {!varEducationInfoField}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Plan for kommende period:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;﻿&lt;/strong&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Planlagte samtaler:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!taskListConversationsForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>varEducationInfoField</name>
