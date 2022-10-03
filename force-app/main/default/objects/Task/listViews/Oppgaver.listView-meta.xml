@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Oppgaver</fullName>
-    <columns>SUBJECT</columns>
-    <columns>WHO_NAME</columns>
+    <columns>Type_of_Task_IPSUO__c</columns>
     <columns>WHAT_NAME</columns>
+    <columns>SUBJECT</columns>
     <columns>DUE_DATE</columns>
+    <columns>ips_Due_Date_Time__c</columns>
     <columns>STATUS</columns>
-    <columns>PRIORITY</columns>
-    <columns>ips_Completed__c</columns>
-    <columns>COMPLETED_DATE_TIME</columns>
-    <columns>LAST_UPDATE</columns>
     <filterScope>Mine</filterScope>
     <filters>
-        <field>SUBJECT</field>
+        <field>STATUS</field>
         <operation>notEqual</operation>
-        <value>IPS/UO Møte</value>
+        <value>Completed,Deferred</value>
     </filters>
     <filters>
-        <field>TYPE</field>
+        <field>Type_of_Task_IPSUO__c</field>
         <operation>notEqual</operation>
-        <value>Delmål</value>
+        <value>Delmål (av hovedmål)</value>
     </filters>
-    <label>Oppgaver</label>
+    <label>Åpne oppgaver</label>
     <sharedTo>
         <roleAndSubordinatesInternal>Metodeveileder_IPS_UO</roleAndSubordinatesInternal>
     </sharedTo>
