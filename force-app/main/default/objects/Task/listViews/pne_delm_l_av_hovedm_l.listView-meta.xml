@@ -2,16 +2,21 @@
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>pne_delm_l_av_hovedm_l</fullName>
     <columns>WHAT_NAME</columns>
-    <columns>TYPE</columns>
     <columns>SUBJECT</columns>
     <columns>STATUS</columns>
-    <columns>DUE_DATE</columns>
     <columns>ips_Due_Date_Time__c</columns>
+    <columns>DUE_DATE</columns>
+    <columns>Type_of_Task_IPSUO__c</columns>
     <filterScope>Mine</filterScope>
     <filters>
         <field>Type_of_Task_IPSUO__c</field>
         <operation>equals</operation>
         <value>Delmål (av hovedmål)</value>
+    </filters>
+    <filters>
+        <field>STATUS</field>
+        <operation>notEqual</operation>
+        <value>Completed,Deferred</value>
     </filters>
     <label>Åpne delmål (av hovedmål)</label>
     <sharedTo>
