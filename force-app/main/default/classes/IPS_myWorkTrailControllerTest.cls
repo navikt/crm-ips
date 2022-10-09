@@ -78,4 +78,28 @@ public class IPS_myWorkTrailControllerTest {
         System.assertEquals(wList.size(), 0, 'List should not be empty');
         
     }
+
+    @isTest
+    static void getWorkTrailIPS(){
+        String userId = [SELECT id FROM User LIMIT 1].id;
+        Test.startTest();
+        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
+        	wList = IPS_myWorkTrailController.getUserWorkProfileIPS(userId);
+        Test.stopTest(); 
+        
+        System.assertEquals(wList.size(), 0, 'List should not be empty');
+        
+    }
+
+    @isTest
+    static void getWorkTrailUO(){
+        String userId = [SELECT id FROM User LIMIT 1].id;
+        Test.startTest();
+        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
+        	wList = IPS_myWorkTrailController.getUserWorkProfileUO(userId);
+        Test.stopTest(); 
+        
+        System.assertEquals(wList.size(), 0, 'List should not be empty');
+        
+    }
 }

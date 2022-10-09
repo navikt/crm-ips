@@ -1,0 +1,126 @@
+<template >
+    
+    <div class="container">
+        <!--Navigation-->
+        <div class="brodsmulesti">
+            <lightning-breadcrumbs>
+                <lightning-breadcrumb label="Min side" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+                <lightning-breadcrumb label="Min arbeidsprofil" name="my-work-profile"></lightning-breadcrumb>
+            </lightning-breadcrumbs>
+        </div>
+
+        <!--Heading -->
+        <div class="activitytitle">
+            <img class="illustrasjon"
+                src={myWorkProfileIPS}
+                alt="Min arbeidsprofil"
+            />
+            Min arbeidsprofil
+        </div>
+        <!-- Border after heading -->
+        <div class="work-border"></div>
+        <!--Section Details-->
+            <lightning-accordion active-section-name="Kartlegging">
+                <lightning-accordion-section name="Detaljer" label="Detaljer">
+                    <form class="form-control">
+                        <span>
+                            <div if:true={IPSung}>
+                                <p>Deltaker er del av IPS Ung.</p>
+                            </div>
+                            <label>Henvist til jobbsporet</label>
+                            <p>{referredDate}</p>
+                            <label>Oppstartsdato</label>
+                            <p>{startDate}</p>
+                        </span>
+                    </form>                   
+            </lightning-accordion-section>
+
+            <!--Section with -->
+            <lightning-accordion-section name="Kartlegging" label="Kartlegging">
+                <form class="form-control">
+                    <span>
+                        <label>Interesser/hobbier</label>
+                        <p>{interestHobbies}</p>
+                        <label>Personlige kvaliteter</label>
+                        <p>{personalQualities}</p>
+                        <label>Kulturell bakgrunn</label>
+                        <p>{culturalBackground}</p>
+                        <label>Miljø</label>
+                        <p>{environmentalConditions}</p>
+                        <label>Økonomi</label>
+                        <p>{economy}</p>
+                        <label>Helse</label>
+                        <p>{health}</p>
+                    </span>
+                </form>
+            </lightning-accordion-section>
+
+            <!--Section with education-->
+            <lightning-accordion-section name="UtdanningOgErfaring" label="Utdanning og erfaring">
+                <form class="form-control">
+                    <span>
+                        <label>Utdanning</label>
+                        <p>{education}</p>
+                        <label>Arbeidserfaring</label>
+                        <p>{workExperiance}</p>
+                    </span>
+                </form>
+            </lightning-accordion-section>
+
+            <!--Section with opness-->
+            <lightning-accordion-section name="Åpenhet" label="Åpenhet">
+                <form class="form-control">
+                    <span>
+                        <label>Åpenhet innhentet</label>
+                        <p>{transparencyDate}</p>
+                        <div if:true={transparencyEmployerContact}>
+                            <label>Hva kan deles med arbeidsgiver?</label>
+                            <p>{transparencyEmployerShare}</p>
+                            <label>Hva skal ikke deles med arbeidsgiver?</label>
+                            <p>{transparencyEmployerNotShare}</p>
+                        </div>
+                        <div if:false={transparencyEmployerContact}>
+                            <p>Arbeidsgiver skal ikke kontaktes.</p>
+                        </div>
+                    </span>
+                </form>
+            </lightning-accordion-section>
+                
+            <!--Section with cooperation-->
+            <lightning-accordion-section name="Samarbeid" label="Samarbeid">
+                <form class="form-control">
+                    <span>
+                        <label>Nettverk</label>
+                        <p>{network}</p>
+                        <label>NAV veileder</label>
+                        <p>{navSupervisor}</p>
+                        <label>Behandlingsteam</label>
+                        <p>{treatmentTeam}</p>
+                        <div if:true={shareHealt}>
+                            <label>Kan informasjon fra jobbsporet deles med helse?</label>
+                            <p>Informasjon fra jobbsporet kan deles med helse.</p>
+                        </div>
+                        <div if:false={shareHealt}>
+                            <label>Kan informasjon fra jobbsporet deles med helse?</label>
+                            <p>Informasjon fra jobbsporet skal ikke deles med helse.</p>
+                        </div>
+                    </span>
+                </form>
+            </lightning-accordion-section>
+               
+            <!--Section economy-->
+            <lightning-accordion-section name="Økonomiske_rammer" label="Økonomiske rammer">
+                <form class="form-control">
+                    <span>
+                        <label>Økonomiske rammer før jobbstart</label>
+                        <p>{framesBeforeWork}</p>
+                        <label>Økonomisk rådgivning - gjeldsrådgivning</label>
+                        <p>{planWhenWork}</p>
+                        <label>Hvordan stønader og ytelser påvirkes etter overgang til jobb</label>
+                        <p>{transitionToWork}</p>
+                    </span>
+                </form>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>
