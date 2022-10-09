@@ -4,6 +4,26 @@ on:
 
 jobs:
   # ################################################################# #
+  # ######################## SFDX Version ########################### #
+  # ################################################################# #
+  create-package:
+    name: SFDX Version
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout source code
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      # Install SFDX
+      - name: Install SFDX
+        uses: sfdx-actions/setup-sfdx@v1
+
+      # Authenticate prod
+      - name: SFDX Version (verbose)
+        run: |
+          sfdx version --verbose
+
+  # ################################################################# #
   # ######################## CREATE PACKAGE ######################### #
   # ################################################################# #
   create-package:
