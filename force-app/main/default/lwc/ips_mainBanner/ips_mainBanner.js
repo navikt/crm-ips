@@ -11,7 +11,7 @@ export default class Ips_mainBanner extends LightningElement {
 @track name;
 /*fetch name from logged in user */
 @wire(getRecord,{
-    recordId: USER_ID,
+    recordId: [USER_ID],
     fields: [NAME_FIELD]
 })
 
