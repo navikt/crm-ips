@@ -8,13 +8,14 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 
 export default class Ips_mainMenu extends NavigationMixin(LightningElement) {
-    userIds = USER_ID;
-    //userIds = '0051X00000DAHjSQAX';
+    //@track userIds = '0051X00000DAHjSQAX';
+    @track userIds = USER_ID;
     @api recordId;
     @track record;
     isIPS = false;
     recordTypeName;
     isIPSTrue = false;
+    isUOTrue = false;
 
     /* profile logo */
     myProfileImg = IPS_HOME_LOGOS + '/ProfileFilled.svg';
@@ -30,11 +31,16 @@ export default class Ips_mainMenu extends NavigationMixin(LightningElement) {
     wiredTrail({error,data}){
         console.log('Dette er data fra wire: '+JSON.stringify(data));
             if(data){
-                this.record = data[0];
-                this.recordTypeName = this.record.RecordType?.DeveloperName;
-                if(this.recordTypeName ==='IPS'){
-                    this.isIPSTrue = true;
-                }
+                    this.record = data[0];
+                    this.recordTypeName = this.record.RecordType?.DeveloperName;
+                    if(this.recordTypeName ==='IPS'){
+                        this.isIPSTrue = true;
+                        this.isUOTrue = false;
+                    }
+                    if(this.recordTypeName ==='ips_Supported_Employment'){
+                        this.isUOTrue = true;
+                        this.isIPSTrue = false;
+                    }
             }else if(error){
                 console.log('Something went wrong: '+error);
             }
@@ -48,9 +54,5 @@ export default class Ips_mainMenu extends NavigationMixin(LightningElement) {
         return this.record?.RecordTypeId;
 
      }
-/*
-     get recordTypeName(){
-        return this.record.RecordType?.DeveloperName;
-     }*/
    
 }
