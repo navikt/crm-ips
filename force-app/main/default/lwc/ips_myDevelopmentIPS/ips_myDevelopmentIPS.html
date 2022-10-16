@@ -1,0 +1,59 @@
+<template>
+    <div class="container">
+        <!--Navigation-->
+        <div class="brodsmulesti">
+            <lightning-breadcrumbs>
+                <lightning-breadcrumb label="Min side" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+                <lightning-breadcrumb label="Min utviklingsplan" name="my-work-development"></lightning-breadcrumb>
+            </lightning-breadcrumbs>
+        </div>
+
+        <!--Heading -->
+        <div class="trailtext">
+            <img class="illustrasjon"
+                src={myWorkDevelopmentIPS}
+                alt="Min jobbutviklingsplan"
+            />
+            Min jobbutviklingsplan
+        </div>
+
+        <!-- Border after heading -->
+        <div class="work-border"></div>
+        
+        <!-- Main text in form -->
+        <form class="form-control">
+                <span>
+                    <label>Beskrivelse av mitt mål</label>
+                    <p>{mainGoal}</p>
+                    <label>Mine karriereønsker</label>
+                    <p>{careerWishes}</p>
+                    <label>Rammeverk??</label>
+                    <p>{frameworkJobDevelopment}</p>
+                    <label>Ønsket arbeidstid</label>
+                    <p>{prefferedWorkingHours}</p>
+                    <label>Nettverk</label>
+                    <p>{ipsNetwork}</p>
+                    <label>Ønsket arbeidsområde/geografi</label>
+                    <p>{geography}</p>
+                </span>
+            </form>
+            <div class="trailtext">
+                <c-linkTile
+                    link-header="Samarbeid med arbeidsgiver"
+                    navigation-address="ips_my_employer_activity__c"
+                    link-label="Oversikt over samarbeid med arbeidsgiver og referat."
+                    maximum-width="80%;"
+                >
+                 </c-linkTile>
+            </div>
+            <div class="trailtext">
+                <c-linkTile
+                link-header="Mine aktiviteter"
+                navigation-address="ips_my_participant_activity__c"
+                link-label="Mine møter og samarbeid med jobbspesialist."
+                maximum-width="80%;"
+                >
+                </c-linkTile>
+            </div>         
+</div>
+</template>

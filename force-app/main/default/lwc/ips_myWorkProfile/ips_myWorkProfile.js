@@ -12,8 +12,9 @@ export default class Ips_myWorkProfile extends NavigationMixin(LightningElement)
     myWorkProfileIPS = IPS_HOME_LOGOS + '/EmployerFilled.svg';
     @api recordId;
     record;
-    @track userIds = USER_ID;
-    //@track userIds = '0051X00000DAHjSQAX';
+    //@track userIds = USER_ID;
+    @track userIds = '0051X00000DAHjSQAX';
+    conversationEmployer = false;
 
 
     @wire(getUserWorkProfile,{userId:'$userIds'})
@@ -59,7 +60,7 @@ export default class Ips_myWorkProfile extends NavigationMixin(LightningElement)
      }
 
      get transparencyDate(){
-        return this.record?.ips_Transparency_consent_obtained_date__c;
+        return this.formatDate(this.record?.ips_Transparency_consent_obtained_date__c);
      }
 
      get transparencyEmployerContact(){
@@ -140,6 +141,13 @@ export default class Ips_myWorkProfile extends NavigationMixin(LightningElement)
 
      get workExperiance(){
         return this.record?.ips_Work_experience__c;
+     }
+
+     get conversationPreviousEmployer(){
+       /* if(this.ips_Conversation_with_previous_employers__c!== null){
+            this.conversationEmployer = true;
+        }*/
+        return this.ips_Conversation_with_previous_employers__c;
      }
 
 formatDate(date) {

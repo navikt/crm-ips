@@ -11,8 +11,8 @@ export default class Ips_myWorkProfileUO extends NavigationMixin(LightningElemen
     myWorkProfileUO = IPS_HOME_LOGOS + '/EmployerFilled.svg';
     @api recordId;
     record;
-    @track userIds = USER_ID;
-    //@track userIds = '0051X00000DAHjSQAX';
+    //@track userIds = USER_ID;
+    @track userIds = '0051X00000DAHjSQAX';
 
 
     @wire(getUserWorkProfile,{userId:'$userIds'})
