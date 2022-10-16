@@ -25,7 +25,7 @@ public with sharing class IPS_myWorkTrailController {
                     AND ips_Status__c !='Ended'
                     LIMIT 1
                     ];
-            return myTrail;
+            return mytrail;
     } 
 
     @AuraEnabled(cacheable = true)
@@ -46,14 +46,36 @@ public with sharing class IPS_myWorkTrailController {
                     ips_Health_service__c,ips_Behandlingsteam__c, NAV__c, ips_NAV_supervisor__c, ips_Network_partner__c,
                     ips_Financialframework_before_start_work__c, ips_Plan__c, ips_Transition_to_work__c,
                     ips_Interests_Hobbies__c, Personal_Qualities__c, ips_Cultural_background__c, ips_Environmental_conditions__c, ips_Economy__c, ips_Health__c, 
-                    ips_Education__c, ips_Work_experience__c
+                    ips_Education__c, ips_Work_experience__c,ips_Conversation_with_previous_employers__c
                     FROM Work_Trail__c
                     WHERE ips_Participant__c = :accountId 
                     AND ips_Status__c !='Ended'
                     LIMIT 1
                     ];
-            return myTrail;
+            return mytrail;
     } 
+
+    @AuraEnabled(cacheable = true)
+    public static List<work_trail__c> getUserWorkDevelopment(String userId){
+        List<Work_Trail__c> mytrail = new List<Work_Trail__c>();
+
+        List<User> userList = IPS_Utility.getPersonAccountId(userId);
+            if(userList.isEmpty()){
+                system.debug('No accountId found on user');
+                return new List<Work_Trail__c>();
+            }
+        String accountId = userList[0]?.AccountId;
+        mytrail =[
+            SELECT 
+            id,ips_Main_Goal_list__c, ips_Main_goal__c,ips_Priority_career_wishes__c, ips_Framework_for_job_development_search__c, ips_Preferred_working_hours__c, ips_Network__c,ips_Geography__c 
+            FROM work_trail__c
+            WHERE ips_Participant__c = :accountId 
+                    AND ips_Status__c !='Ended'
+                    LIMIT 1
+        ];
+        return mytrail; 
+    }
+
 
     @AuraEnabled(cacheable = true)
     public static List<work_trail__c> getUserWorkProfileUO(String userId) {
@@ -77,6 +99,6 @@ public with sharing class IPS_myWorkTrailController {
                     AND ips_Status__c !='Ended'
                     LIMIT 1
                     ];
-            return myTrail;
+            return mytrail;
     } 
 }

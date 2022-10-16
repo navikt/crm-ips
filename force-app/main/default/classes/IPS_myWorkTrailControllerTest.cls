@@ -102,4 +102,55 @@ public class IPS_myWorkTrailControllerTest {
         System.assertEquals(wList.size(), 0, 'List should not be empty');
         
     }
+
+    @isTest
+    static void getWorkDevelopment(){
+        String userId = [SELECT id FROM User LIMIT 1].id;
+        Test.startTest();
+        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
+        	wList = IPS_myWorkTrailController.getUserWorkDevelopment(userId);
+        Test.stopTest(); 
+        
+        System.assertEquals(wList.size(), 0, 'List should not be empty');
+        
+    }
+
+    @isTest
+    static void getParticipantsActivity(){
+        String userId = [SELECT id FROM User LIMIT 1].id;
+        Test.startTest();
+        List<Event> eList = new List<Event>();
+        	eList = IPS_myActivityController.getParticipantActivity(userId);
+        Test.stopTest(); 
+        
+        System.assertEquals(eList.size(), 0, 'List should not be empty');
+        
+    }
+
+    @isTest
+    static void getEmployerActivity(){
+        String userId = [SELECT id FROM User LIMIT 1].id;
+        Test.startTest();
+        List<Event> eList = new List<Event>();
+        	eList = IPS_myActivityController.getEmployerActivity(userId);
+        Test.stopTest(); 
+        
+        System.assertEquals(eList.size(), 0, 'List should not be empty');
+        
+    }
+
+    @isTest
+    static void getWeeklyActivity(){
+        String userId = [SELECT id FROM User LIMIT 1].id;
+        Test.startTest();
+        List<Event> eList = new List<Event>();
+        	eList = IPS_myActivityController.getUserActivity(userId,true);
+        Test.stopTest(); 
+        
+        System.assertEquals(eList.size(), 0, 'List should not be empty');
+        
+    }
+
+    
+    
 }
