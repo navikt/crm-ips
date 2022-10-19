@@ -9,8 +9,11 @@ sfdx force:package:install --package 04t7U000000TqfeQAC -r -k $3 --wait 10 --pub
 # Installer crm-platform-access-control ver. 0.104
 sfdx force:package:install --package 04t7U000000TqXkQAK -r -k $3 --wait 10 --publishwait 10
 
-# Installer crm-shared-timeline 1.15.0
-sfdx force:package:install --package 04t7U000000TpOcQAK -r -k $3 --wait 10 --publishwait 10
+#Installer crm-thread-view 0.1.0
+sfdx force:package:install --package 04t7U000000TqVFQA0 -r -k $3 --wait 10 --publishwait 10
+
+# Installer crm-shared-timeline 1.18.0
+sfdx force:package:install --package 04t7U000000TqbDQAS -r -k $3 --wait 10 --publishwait 10
 
 # Installer crm-shared-base1.1.0
 sfdx force:package:install --package 04t2o000000ySqpAAE -r -k $3 --wait 10 --publishwait 10
@@ -21,14 +24,14 @@ sfdx force:package:install --package 04t7U000000TqfjQAC -r -k $3 --wait 10 --pub
 # Installer crm-arbeidsgiver-base 1.266.0
 sfdx force:package:install --package 04t7U000000TqgrQAC -r -k $3 --wait 10 --publishwait 10
 
-# Installer crm-community-base ver. 0.71
-sfdx force:package:install --package 04t7U000000TqLFQA0 -r -k $3 --wait 10 --publishwait 10
+# Installer crm-community-base ver. 0.75
+sfdx force:package:install --package 04t7U000000TqevQAC -r -k $3 --wait 10 --publishwait 10
 
 # Installer crm-journal-utilities 0.17.0
 sfdx force:package:install --package 04t7U000000Tq8BQAS -r -k $3 --wait 10 --publishwait 10
 
-# Installer crm-ips 0.264.0
-sfdx force:package:install --package 04t7U000000TqgIQAS -r -k $3 --wait 10 --publishwait 10
+# Installer crm-ips 0.272.0
+sfdx force:package:install --package 04t7U000000TqnYQAS -r -k $3 --wait 10 --publishwait 10
 
 
 # Dytt kildekoden til scratch org'en

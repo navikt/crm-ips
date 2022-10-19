@@ -4,7 +4,7 @@
         <name>Redirect</name>
         <label>Redirect</label>
         <locationX>578</locationX>
-        <locationY>1454</locationY>
+        <locationY>1574</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -37,7 +37,7 @@
         <name>setConsentValueFalse</name>
         <label>setConsentValueFalse</label>
         <locationX>446</locationX>
-        <locationY>878</locationY>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varConsent</assignToReference>
             <operator>Assign</operator>
@@ -53,7 +53,7 @@
         <name>setConsentValueTrue</name>
         <label>setConsentValueTrue</label>
         <locationX>710</locationX>
-        <locationY>878</locationY>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varConsent</assignToReference>
             <operator>Assign</operator>
@@ -69,7 +69,7 @@
         <name>checkAgeAndConsent</name>
         <label>checkAgeAndConsent</label>
         <locationX>578</locationX>
-        <locationY>1094</locationY>
+        <locationY>1214</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
         </defaultConnector>
@@ -102,7 +102,7 @@
         <name>checkAndSetConsent</name>
         <label>checkAndSetConsent</label>
         <locationX>578</locationX>
-        <locationY>758</locationY>
+        <locationY>878</locationY>
         <defaultConnector>
             <targetReference>setConsentValueTrue</targetReference>
         </defaultConnector>
@@ -128,33 +128,40 @@
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>638</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>IsNotconfidential</defaultConnectorLabel>
         <rules>
             <name>IsConfidential</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3 OR 4)</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Participant_Details.CRM_Person__r.INT_Confidential__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>getPersonDetails.INT_Confidential__c</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue>STRENGT_FORTROLIG</stringValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>Get_Participant_Details.CRM_Person__r.INT_Confidential__c</leftValueReference>
+                <leftValueReference>getPersonDetails.INT_Confidential__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>STRENGT_FORTROLIG_UTLAND</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>Get_Participant_Details.CRM_Person__r.INT_Confidential__c</leftValueReference>
+                <leftValueReference>getPersonDetails.INT_Confidential__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>FORTROLIG</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getPersonDetails.INT_Confidential__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>STRENGT_FORTROLIG</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -167,7 +174,7 @@
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
         <locationX>842</locationX>
-        <locationY>1334</locationY>
+        <locationY>1454</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -435,7 +442,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Get_existing</name>
         <label>Get existing</label>
         <locationX>842</locationX>
-        <locationY>1214</locationY>
+        <locationY>1334</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -466,7 +473,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>checkForConfidential</targetReference>
+            <targetReference>getPersonDetails</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -506,11 +513,11 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>getPersonDetails</name>
         <label>getPersonDetails</label>
-        <locationX>1106</locationX>
-        <locationY>1574</locationY>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Owner_Selected</targetReference>
+            <targetReference>checkForConfidential</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -524,12 +531,12 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <object>Person__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <runInMode>DefaultMode</runInMode>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>Consent</name>
         <label>Consent</label>
         <locationX>314</locationX>
-        <locationY>1214</locationY>
+        <locationY>1334</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -591,7 +598,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>newWorktrail</name>
         <label>newWorktrail</label>
         <locationX>50</locationX>
-        <locationY>638</locationY>
+        <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -642,7 +649,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
         <locationX>578</locationX>
-        <locationY>638</locationY>
+        <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -789,12 +796,12 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
         <locationX>1106</locationX>
-        <locationY>1454</locationY>
+        <locationY>1574</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>getPersonDetails</targetReference>
+            <targetReference>Owner_Selected</targetReference>
         </connector>
         <fields>
             <name>Er_bruker_infomert</name>
