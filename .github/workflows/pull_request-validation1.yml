@@ -17,14 +17,14 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+        uses: sfdx-actions/setup-sfdx@v1
 
       # Authenticate dev hub
       - name: Authenticate Dev Hub
         run: |
-          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./PROD_SFDX_URL.txt
+          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
+          rm -f ./CRM_PROD_SFDX_URL.txt
 
       # Create scratch org
       - name: Create scratch org
@@ -54,7 +54,7 @@ jobs:
         run: |
           keys=""
           for p in $(jq '.result | .[].Name' -r <<< "$(sfdx force:package:list --json)"); do
-              keys+=$p":${{ secrets.PACKAGE_KEY }} "
+              keys+=$p":${{ secrets.CRM_PACKAGE_KEY }} "
           done
 
           echo "::set-output name=keys::$(echo $keys)"
@@ -74,7 +74,7 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+        uses: sfdx-actions/setup-sfdx@v1
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
@@ -111,7 +111,7 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+        uses: sfdx-actions/setup-sfdx@v1
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
@@ -199,6 +199,7 @@ jobs:
           totalCovered=0
           totalLines=0
 
+          # ! calculate code coverage for this repo only
           for row in $(jq -c -r '.[]' <<< "$(cat tests/apex/test-result-codecoverage.json)"); do
             name=$(jq -r '.name' <<< $row)
             if [[ " ${classes[@]} " =~ " ${name} " ]]; then
@@ -223,6 +224,7 @@ jobs:
           codecoverage=${{ steps.getCodeCoverage.outputs.codecoverage }}
           echo "Code coverage is $codecoverage%"
 
+          # ! do the actual check on code coverage percentage
           if [ $codecoverage -lt 85 ]; then
             echo "Because it is less than 85%, the validation failed"
             exit 125
@@ -245,14 +247,14 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+        uses: sfdx-actions/setup-sfdx@v1
 
       # Authenticate dev hub
       - name: Authenticate Dev Hub
         run: |
-          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./PROD_SFDX_URL.txt
+          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
+          rm -f ./CRM_PROD_SFDX_URL.txt
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
