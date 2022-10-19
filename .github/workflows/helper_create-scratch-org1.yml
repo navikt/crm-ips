@@ -55,9 +55,9 @@ jobs:
       # Authenticate dev hub
       - name: Authenticate Dev Hub
         run: |
-          echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./PROD_SFDX_URL.txt
+          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
+          rm -f ./CRM_PROD_SFDX_URL.txt
       
       # Create scratch org
       - name: Create scratch org
@@ -87,7 +87,7 @@ jobs:
         run: |
           keys=""
           for p in $(jq '.result | .[].Name' -r <<< "$(sfdx force:package:list --json)"); do
-              keys+=$p":${{ secrets.PACKAGE_KEY }} "
+              keys+=$p":${{ secrets.CRM_PACKAGE_KEY }} "
           done
 
           echo "::set-output name=keys::$(echo $keys)"
@@ -100,6 +100,7 @@ jobs:
       - name: Push source to scratch org
         run: sfdx force:source:push
 
+      # Assign Permission Sets
       - name: Assign Permission Sets
         run: |
           sleep 30
@@ -132,9 +133,9 @@ jobs:
           tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
           ./sfdx-cli/install
           
-          echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./PROD_SFDX_URL.txt
+          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
+          rm -f ./CRM_PROD_SFDX_URL.txt
 
           sfdx auth:sfdxurl:store -f ./SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
 
@@ -189,12 +190,13 @@ jobs:
           rm -rf sfdx-linux-amd64.tar.xz
           rm -rf ./sfdx-cli
           
-          echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./PROD_SFDX_URL.txt
+          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
+          rm -f ./CRM_PROD_SFDX_URL.txt
 
           sfdx auth:sfdxurl:store -f ./SCRATCH_ORG_SFDX_AUTH_URL.txt -a scratch-org -s
 
+          # ! commit as default user
           git config --global user.name "github-actions"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -f ./SCRATCH_ORG_SFDX_AUTH_URL.txt
@@ -203,12 +205,14 @@ jobs:
       # Pull Metadata (Every Minute)
       - name: Pull Metadata (Every Minute)
         run: |
-            end=$((SECONDS+20000)) # pull for 5.5 hours
+            end=$((SECONDS+20000)) # ! pull for 5.5 hours
             
             while [ $SECONDS -lt $end ]; do
               
               echo ""
               timeLeft=$(expr $end - $SECONDS)
+
+              # ! check how long left the process will run, to notify the user
               if [ $timeLeft -ge 3600 ]; then
                 hours=$(bc <<< "scale=1; $timeLeft / 3600")
                 echo "::warning::$hours hour(s) left until scratch org is deleted (the branch will remain)."
@@ -222,6 +226,7 @@ jobs:
               pull=$(sfdx force:source:pull -f --json)
               status=$(jq '.result.pulledSource' <<< $pull)
 
+              # ! only commit if new changes found
               if [ "$status" != "[]" ]; then
                 echo $pull | jq -r '.result.pulledSource'
                 echo ""
@@ -258,9 +263,9 @@ jobs:
       # Authenticate dev hub
       - name: Authenticate Dev Hub
         run: |
-          echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./PROD_SFDX_URL.txt
+          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
+          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
+          rm -f ./CRM_PROD_SFDX_URL.txt
       
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
