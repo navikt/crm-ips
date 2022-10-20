@@ -1,6 +1,6 @@
 import { LightningElement,api,track,wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getUserWorkDevelopment from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkDevelopment';
+import getUserWorkDevelopment from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrail';
 
 import USER_ID from '@salesforce/user/Id';
 /* all logos related to IPS/UO portal */

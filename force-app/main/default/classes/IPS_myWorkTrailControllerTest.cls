@@ -70,7 +70,7 @@ public class IPS_myWorkTrailControllerTest {
                     EndDateTime = System.today()+1,
                     Description = 'Møte handler om event '+i,
                     IPS_Type__c = 'Meeting with Participant',
-                    IPS_Status__c ='Åpen',
+                    ips_Completed__c = false,
                     IsVisibleInSelfService__c =true,
                     WhatId = trailIPS.id,
                     RecordTypeId = recTypeIdEvent
@@ -81,7 +81,7 @@ public class IPS_myWorkTrailControllerTest {
                 insert listEventParticipant;
              }
 
-             Integer numberOfRecords = 5;
+             numberOfRecords =0;
             List<Event> listEventEmployer = new List<Event>();
             for(Integer i=0;i<numberOfRecords;i++){
                 Event eventEmployer = new Event(
@@ -90,7 +90,7 @@ public class IPS_myWorkTrailControllerTest {
                     EndDateTime = System.today()+1,
                     Description = 'Møte handler om event '+i,
                     IPS_Type__c = 'Meeting with Employer',
-                    IPS_Status__c ='Åpen',
+                    ips_Completed__c = false,
                     IsVisibleInSelfService__c =true,
                     WhatId = trailIPS.id,
                     RecordTypeId = recTypeIdEvent
@@ -117,7 +117,7 @@ public class IPS_myWorkTrailControllerTest {
 
 
                     Test.startTest();
-                    wList = IPS_myWorkTrailController.getUserWorkTrail(account.id);
+                    wList = IPS_myWorkTrailController.UserWorkTrail(account.id);
                     Test.stopTest();
 
         System.assertNotEquals(wList.size(), 0, 'List should not be empty');
