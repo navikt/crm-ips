@@ -1,12 +1,10 @@
 @isTest
 public class IPS_myWorkTrailControllerTest {
-    
-    @isTest
-    static void getWorkTrail(){
-        Test.startTest();
-        Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User' LIMIT 1];
-        System.debug('Dette er profilen: '+communityProfile);
-        
+
+    @TestSetup
+    static void makeData(){
+        Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User Plus' LIMIT 1];
+                
         Person__c person = new Person__c();
         person.INT_Confidential__c = 'UGRADERT';
         person.Name = '12069712345';
@@ -14,7 +12,7 @@ public class IPS_myWorkTrailControllerTest {
         person.INT_FirstName__c = 'First';
         insert person;
         System.debug('Dette er person: '+person);
-        
+
         Account account = [
             SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c,CRM_Person__r.INT_Confidential__C
             FROM Account
@@ -22,8 +20,8 @@ public class IPS_myWorkTrailControllerTest {
             ORDER BY createddate desc
             LIMIT 1];
         System.debug('Dette er account: '+account);
-                    
-        User user = new User(
+
+        User userExperian = new User(
             Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
             LastName = person.INT_LastName__c,
             Email = 'IPS_testuser@nav.ips.no',
@@ -36,336 +34,123 @@ public class IPS_myWorkTrailControllerTest {
             ProfileId = communityProfile.id,
             ContactId = account.PersonContactId 
         );
-        insert user;
-        System.debug('Dette er user: '+user);
-            
+        insert userExperian;
+
+        String uniqueUserName = 'standarduser' + DateTime.now().getTime() + '@nav.ips.no';
+        Profile p = [select id from profile where name='System Administrator'];
+
+        User u = new User(
+            Alias = 'standt', Email='standarduser@nav.ips.no',
+            EmailEncodingKey='UTF-8', 
+            LastName='Standard', 
+            LanguageLocaleKey='no',
+            LocaleSidKey='no_NO', 
+            ProfileId = p.Id,
+            TimeZoneSidKey = 'Europe/Paris',
+            UserName=uniqueUserName);
+
+
         ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
-           
-        Work_Trail__c trailIPS = new Work_Trail__c(
-        ips_Participant__c = account.id,
-       	recordTypeId = recTypeIdIPS,
-        ips_Status__c ='Referred',
-        ips_Passive__c=false);
-        insert trailIPS;
-        
-        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
-        	wList = IPS_myWorkTrailController.getUserWorkTrail(user.id);
-        Test.stopTest(); 
-        
-        System.assertEquals(wList.size(), 0, 'List should not be empty');
-        
+            
+            Work_Trail__c trailIPS = new Work_Trail__c(
+            ips_Participant__c = account.id,
+            recordTypeId = recTypeIdIPS,
+            ips_Status__c ='Referred',
+            ips_Passive__c=false);
+            insert trailIPS;
+
+            ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+
+            Integer numberOfRecords = 5;
+            List<Event> listEventParticipant = new List<Event>();
+            for(Integer i=0;i<numberOfRecords;i++){
+                Event eventParticipant = new Event(
+                    Subject = 'Event '+i,
+                    StartDateTime = System.today(),
+                    EndDateTime = System.today()+1,
+                    Description = 'Møte handler om event '+i,
+                    IPS_Type__c = 'Meeting with Participant',
+                    IPS_Status__c ='Åpen',
+                    IsVisibleInSelfService__c =true,
+                    WhatId = trailIPS.id,
+                    RecordTypeId = recTypeIdEvent
+                );
+                listEventParticipant.add(eventParticipant);
+            }
+            if(!listEventParticipant.isEmpty()){
+                insert listEventParticipant;
+             }
+
+             Integer numberOfRecords = 5;
+            List<Event> listEventEmployer = new List<Event>();
+            for(Integer i=0;i<numberOfRecords;i++){
+                Event eventEmployer = new Event(
+                    Subject = 'Event '+i,
+                    StartDateTime = System.today(),
+                    EndDateTime = System.today()+1,
+                    Description = 'Møte handler om event '+i,
+                    IPS_Type__c = 'Meeting with Employer',
+                    IPS_Status__c ='Åpen',
+                    IsVisibleInSelfService__c =true,
+                    WhatId = trailIPS.id,
+                    RecordTypeId = recTypeIdEvent
+                );
+                listEventEmployer.add(eventEmployer);
+            }
+            if(!listEventEmployer.isEmpty()){
+                insert listEventEmployer;
+             }
     }
-    
-
+ 
     @isTest
-    static void getWorkTrailIPS(){
-        Test.startTest();
-		Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User' LIMIT 1];
-        
-        Person__c person = new Person__c();
-        person.INT_Confidential__c = 'UGRADERT';
-        person.Name = '12069712345';
-        person.INT_LastName__c = 'Last';
-        person.INT_FirstName__c = 'First';
-        insert person;
-        
-        Account account = [
-            SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c
-            FROM Account
-            WHERE LastName = :'Last' 
-            ORDER BY createddate desc
-            LIMIT 1];
-            
-            User user = new User(
-                Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
-                LastName = person.INT_LastName__c,
-                Email = 'IPS_testuser@nav.ips.no',
-                Alias = person.INT_LastName__c,
-                CommunityNickname = person.INT_LastName__c,
-                TimeZoneSidKey = 'Europe/Paris',
-                LocaleSidKey = 'no_NO',
-                EmailEncodingKey = 'UTF-8',
-                LanguageLocaleKey = 'no',
-                ProfileId = communityProfile.id,
-                ContactId = account.PersonContactId 
-            );
-			insert user;
-            
-            ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
-           
-        Work_Trail__c trailIPS = new Work_Trail__c(
-        ips_Participant__c = account.id,
-       	recordTypeId = recTypeIdIPS,
-        ips_Status__c ='Referred',
-        ips_Passive__c=false);
-        insert trailIPS;
-        
-        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
-        	wList = IPS_myWorkTrailController.getUserWorkProfileIPS(user.id);
-        Test.stopTest(); 
-        
-        System.assertEquals(wList.size(), 0, 'List should not be empty');
-        
-    }
-
-    @isTest
-    static void getWorkTrailUO(){
-       Test.startTest();
-		Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User' LIMIT 1];
-        
-        Person__c person = new Person__c();
-        person.INT_Confidential__c = 'UGRADERT';
-        person.Name = '12069712345';
-        person.INT_LastName__c = 'Last';
-        person.INT_FirstName__c = 'First';
-        insert person;
-        
-        Account account = [
-            SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c
-            FROM Account
-            WHERE LastName = :'Last' 
-            ORDER BY createddate desc
-            LIMIT 1];
-            
-            User user = new User(
-                Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
-                LastName = person.INT_LastName__c,
-                Email = 'IPS_testuser@nav.ips.no',
-                Alias = person.INT_LastName__c,
-                CommunityNickname = person.INT_LastName__c,
-                TimeZoneSidKey = 'Europe/Paris',
-                LocaleSidKey = 'no_NO',
-                EmailEncodingKey = 'UTF-8',
-                LanguageLocaleKey = 'no',
-                ProfileId = communityProfile.id,
-                ContactId = account.PersonContactId 
-            );
-			insert user;
-        
-        User userAcc = [
-            SELECT AccountId,Account.CRM_Person__r.INT_Confidential__C FROM User WHERE Id = :user.id
-        ];
-        System.debug('Innhold: '+userAcc);
-        
-            
-            ID recTypeIdUO = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('ips_Supported_Employment').getRecordTypeId();
-           
-        Work_Trail__c trailIPS = new Work_Trail__c(
-        ips_Participant__c = account.id,
-       	recordTypeId = recTypeIdUO,
-        ips_Status__c ='Referred',
-        ips_Passive__c=false);
-        insert trailIPS;
-        
-        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
-        	wList = IPS_myWorkTrailController.getUserWorkProfileUO(user.id);
-        Test.stopTest(); 
-        
-        System.assertEquals(wList.size(), 0, 'List should not be empty');
-        
-    }
-
-    @isTest
-    static void getWorkDevelopment(){
-
-        Test.startTest();
-		Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User' LIMIT 1];
-        
-        Person__c person = new Person__c();
-        person.INT_Confidential__c = 'UGRADERT';
-        person.Name = '12069712345';
-        person.INT_LastName__c = 'Last';
-        person.INT_FirstName__c = 'First';
-        insert person;
-        
-        Account account = [
-            SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c
-            FROM Account
-            WHERE LastName = :'Last' 
-            ORDER BY createddate desc
-            LIMIT 1];
-            
-            User user = new User(
-                Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
-                LastName = person.INT_LastName__c,
-                Email = 'IPS_testuser@nav.ips.no',
-                Alias = person.INT_LastName__c,
-                CommunityNickname = person.INT_LastName__c,
-                TimeZoneSidKey = 'Europe/Paris',
-                LocaleSidKey = 'no_NO',
-                EmailEncodingKey = 'UTF-8',
-                LanguageLocaleKey = 'no',
-                ProfileId = communityProfile.id,
-                ContactId = account.PersonContactId 
-            );
-			insert user;
-            
-            ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
-           
-        Work_Trail__c trailIPS = new Work_Trail__c(
-        ips_Participant__c = account.id,
-       	recordTypeId = recTypeIdIPS,
-        ips_Status__c ='Referred',
-        ips_Passive__c=false);
-        insert trailIPS;
-        
+    static void getWorkTrail(){
         List<Work_Trail__c> wList = new List<Work_Trail__c>();
-        wList = IPS_myWorkTrailController.getUserWorkDevelopment(user.id);
-        Test.stopTest(); 
+            User user =[SELECT id FROM User WHERE LastName='Standard'];
+            
+
+            Account account = [
+                SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c,CRM_Person__r.INT_Confidential__C
+                FROM Account
+                WHERE LastName = 'Last' 
+                ORDER BY createddate desc
+                LIMIT 1];
+
+
+                    Test.startTest();
+                    wList = IPS_myWorkTrailController.getUserWorkTrail(account.id);
+                    Test.stopTest();
+
+        System.assertNotEquals(wList.size(), 0, 'List should not be empty');
+    }
+
+
+    @isTest
+    static void employerEvent(){
+            List<Event> eList = new List<Event>();
         
-        System.assertEquals(wList.size(), 0, 'List should not be empty');
-        
+            ID accountID = [SELECT id FROM Account WHERE lastName ='Last']?.id;
+            String workTrailId =[SELECT id FROM work_trail__c WHERE ips_Participant__c= :accountID]?.id;
+     
+                    Test.startTest();
+                    eList = IPS_myActivityController.getEmployerActivity(workTrailId);
+                    Test.stopTest();
+
+        System.assertNotEquals(eList.size(), 0, 'List should not be empty');
     }
 
     @isTest
-    static void getParticipantsActivity(){
-        Test.startTest();
-		Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User' LIMIT 1];
+    static void participantEvent(){
+
+            List<Event> eList = new List<Event>();
         
-        Person__c person = new Person__c();
-        person.INT_Confidential__c = 'UGRADERT';
-        person.Name = '12069712345';
-        person.INT_LastName__c = 'Last';
-        person.INT_FirstName__c = 'First';
-        insert person;
-        
-        Account account = [
-            SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c
-            FROM Account
-            WHERE LastName = :'Last' 
-            ORDER BY createddate desc
-            LIMIT 1];
-            
-            User user = new User(
-                Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
-                LastName = person.INT_LastName__c,
-                Email = 'IPS_testuser@nav.ips.no',
-                Alias = person.INT_LastName__c,
-                CommunityNickname = person.INT_LastName__c,
-                TimeZoneSidKey = 'Europe/Paris',
-                LocaleSidKey = 'no_NO',
-                EmailEncodingKey = 'UTF-8',
-                LanguageLocaleKey = 'no',
-                ProfileId = communityProfile.id,
-                ContactId = account.PersonContactId 
-            );
-			insert user;
-            
-            ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
-           
-        Work_Trail__c trailIPS = new Work_Trail__c(
-        ips_Participant__c = account.id,
-       	recordTypeId = recTypeIdIPS,
-        ips_Status__c ='Referred',
-        ips_Passive__c=false);
-        insert trailIPS;
-        
-        List<Event> eList = new List<Event>();
-        	eList = IPS_myActivityController.getParticipantActivity(user.id);
-        Test.stopTest(); 
-        
-        System.assertEquals(eList.size(), 0, 'List should not be empty');
-        
+            ID accountID = [SELECT id FROM Account WHERE lastName ='Last']?.id;
+            String workTrailId =[SELECT id FROM work_trail__c WHERE ips_Participant__c= :accountID]?.id;
+     
+                    Test.startTest();
+                    eList = IPS_myActivityController.getParticipantActivity(workTrailId);
+                    Test.stopTest();
+
+        System.assertNotEquals(eList.size(), 0, 'List should not be empty');
     }
 
-    @isTest
-    static void getEmployerActivity(){
-        Test.startTest();
-		Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User' LIMIT 1];
-        
-        Person__c person = new Person__c();
-        person.INT_Confidential__c = 'UGRADERT';
-        person.Name = '12069712345';
-        person.INT_LastName__c = 'Last';
-        person.INT_FirstName__c = 'First';
-        insert person;
-        
-        Account account = [
-            SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c
-            FROM Account
-            WHERE LastName = :'Last' 
-            ORDER BY createddate desc
-            LIMIT 1];
-            
-            User user = new User(
-                Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
-                LastName = person.INT_LastName__c,
-                Email = 'IPS_testuser@nav.ips.no',
-                Alias = person.INT_LastName__c,
-                CommunityNickname = person.INT_LastName__c,
-                TimeZoneSidKey = 'Europe/Paris',
-                LocaleSidKey = 'no_NO',
-                EmailEncodingKey = 'UTF-8',
-                LanguageLocaleKey = 'no',
-                ProfileId = communityProfile.id,
-                ContactId = account.PersonContactId 
-            );
-			insert user;
-            
-            ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
-           
-        Work_Trail__c trailIPS = new Work_Trail__c(
-        ips_Participant__c = account.id,
-       	recordTypeId = recTypeIdIPS,
-        ips_Status__c ='Referred',
-        ips_Passive__c=false);
-        insert trailIPS;
-        
-        List<Event> eList = new List<Event>();
-        	eList = IPS_myActivityController.getEmployerActivity(user.id);
-        Test.stopTest(); 
-        
-        System.assertEquals(eList.size(), 0, 'List should not be empty');
-        
-    }
-
-    @isTest
-    static void getWeeklyActivity(){
-        Test.startTest();
-		Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User' LIMIT 1];
-        
-        Person__c person = new Person__c();
-        person.INT_Confidential__c = 'UGRADERT';
-        person.Name = '12069712345';
-        person.INT_LastName__c = 'Last';
-        person.INT_FirstName__c = 'First';
-        insert person;
-        
-        Account account = [
-            SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c
-            FROM Account
-            WHERE LastName = :'Last' 
-            ORDER BY createddate desc
-            LIMIT 1];
-            
-            User user = new User(
-                Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
-                LastName = person.INT_LastName__c,
-                Email = 'IPS_testuser@nav.ips.no',
-                Alias = person.INT_LastName__c,
-                CommunityNickname = person.INT_LastName__c,
-                TimeZoneSidKey = 'Europe/Paris',
-                LocaleSidKey = 'no_NO',
-                EmailEncodingKey = 'UTF-8',
-                LanguageLocaleKey = 'no',
-                ProfileId = communityProfile.id,
-                ContactId = account.PersonContactId 
-            );
-			insert user;
-            
-            ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
-           
-        Work_Trail__c trailIPS = new Work_Trail__c(
-        ips_Participant__c = account.id,
-       	recordTypeId = recTypeIdIPS,
-        ips_Status__c ='Referred',
-        ips_Passive__c=false);
-        insert trailIPS;
-        
-        List<Event> eList = new List<Event>();
-        	eList = IPS_myActivityController.getUserActivity(user.id,true);
-        Test.stopTest(); 
-        
-        System.assertEquals(eList.size(), 0, 'List should not be empty');
-}
 }

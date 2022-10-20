@@ -1,7 +1,7 @@
 public with sharing class IPS_myActivityController {
 
     @AuraEnabled(cacheable = true)
-    public static List<Event> getUserActivity(String userId, Boolean weekly){
+    public static List<Event> getUserActivity(String userId, String typeOfMeeting){
         List<User> userList = IPS_Utility.getPersonAccountId(userId);
                 if(userList.isEmpty()){
                     system.debug('No accountId found on user');
@@ -9,19 +9,20 @@ public with sharing class IPS_myActivityController {
                 }
         String participantId = userList[0]?.AccountId;
         String workTrailId =[SELECT id FROM work_trail__c WHERE ips_Participant__c= :participantId]?.id;
+
         System.debug('trailid: '+workTrailId);
-        if(workTrailId !=null && weekly==true){
+        if(workTrailId !=null && typeOfMeeting=='Weekly'){
             return getWeeklyActivity(workTrailId);
-        }else if(workTrailId !=null){
+        }else if(workTrailId !=null && typeOfMeeting =='Employer'){
             return getEmployerActivity(workTrailId);
-        }else if(workTrailId !=null){
+        }else if(workTrailId !=null && typeOfMeeting =='Participant'){
             return getParticipantActivity(workTrailId);
         }else{
             return new List<Event>();
         }
     }
     
-    private static List<Event> getWeeklyActivity(String workTrailId){
+    public static List<Event> getWeeklyActivity(String workTrailId){
         List<Event> userActivity = new List<Event>();
         userActivity =[
             SELECT id,Subject, ActivityDate, EndDateTime, StartDateTime, Description 
@@ -32,15 +33,7 @@ public with sharing class IPS_myActivityController {
         return userActivity;
     }
     
-    @AuraEnabled(cacheable = true)
-    public static List<Event> getEmployerActivity(String userId){
-        List<User> userList = IPS_Utility.getPersonAccountId(userId);
-                if(userList.isEmpty()){
-                    system.debug('No accountId found on user');
-                    return new List<event>();
-                }
-        String participantId = userList[0]?.AccountId;
-        String workTrailId =[SELECT id FROM work_trail__c WHERE ips_Participant__c= :participantId]?.id;
+    public static List<Event> getEmployerActivity(String workTrailId){
 
         List<Event> userActivity = new List<Event>();
         userActivity =[
@@ -52,15 +45,7 @@ public with sharing class IPS_myActivityController {
         return userActivity;
     }
 
-    @AuraEnabled(cacheable = true)
-    public static List<Event> getParticipantActivity(String userId){
-        List<User> userList = IPS_Utility.getPersonAccountId(userId);
-                if(userList.isEmpty()){
-                    system.debug('No accountId found on user');
-                    return new List<event>();
-                }
-        String participantId = userList[0]?.AccountId;
-        String workTrailId =[SELECT id FROM work_trail__c WHERE ips_Participant__c= :participantId]?.id;
+    public static List<Event> getParticipantActivity(String workTrailId){
 
         List<Event> userActivity = new List<Event>();
         userActivity =[

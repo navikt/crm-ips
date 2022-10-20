@@ -11,10 +11,11 @@ export default class Ips_myActivityUO extends NavigationMixin(LightningElement) 
     activityPartRecord;
     //@track userIds = USER_ID;
     @track userIds = '0051X00000DAHjSQAX';
+    typeMeeting ='Participant';
 
     myActivityImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
 
-    @wire(getParticipantActivity, {userId:'$userIds'})
+    @wire(getParticipantActivity, {userId:'$userIds',typeOfMeeting:'$typeMeeting'})
     userPartActivity({error,data}){
         console.log('Dette er data fra wire: '+JSON.stringify(data));
        if(data){

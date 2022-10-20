@@ -1,6 +1,6 @@
 import { LightningElement,api,track,wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getUserWorkProfile from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkProfileUO';
+import getUserWorkProfile from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrail';
 import USER_ID from '@salesforce/user/Id';
 
 

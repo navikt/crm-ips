@@ -1,6 +1,6 @@
 import { LightningElement,api,track,wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getEmployerActivity from '@salesforce/apex/IPS_myActivityController.getEmployerActivity';
+import getEmployerActivity from '@salesforce/apex/IPS_myActivityController.getUserActivity';
 import USER_ID from '@salesforce/user/Id';
 /* all logos related to IPS/UO portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
@@ -11,10 +11,11 @@ export default class Ips_myEmployerActivity extends NavigationMixin(LightningEle
     activityEmpRecord;
     //@track userIds = USER_ID;
     @track userIds = '0051X00000DAHjSQAX';
+    typeMeeting ='Employer';
 
     myActivityImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
 
-    @wire(getEmployerActivity, {userId:'$userIds'})
+    @wire(getEmployerActivity, {userId:'$userIds',typeOfMeeting:'$typeMeeting'})
     userEmpActivity({error,data}){
         console.log('Dette er data fra wire: '+JSON.stringify(data));
        if(data){
