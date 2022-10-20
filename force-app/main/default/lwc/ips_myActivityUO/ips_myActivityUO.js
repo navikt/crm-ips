@@ -1,6 +1,6 @@
 import { LightningElement,api,track,wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getParticipantActivity from '@salesforce/apex/IPS_myActivityController.getParticipantActivity';
+import getParticipantActivity from '@salesforce/apex/IPS_myActivityController.getUserActivity';
 import USER_ID from '@salesforce/user/Id';
 /* all logos related to IPS/UO portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';

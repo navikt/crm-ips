@@ -10,12 +10,13 @@ public with sharing class IPS_myWorkTrailController {
                     return new List<Work_Trail__c>();
                 }
             String accountId = userList[0]?.AccountId;
-            mytrail = getUserWorkTrail(accountId);
+            mytrail = UserWorkTrail(accountId);
             
             return mytrail;
     } 
 
-    public static List<work_trail__c> getUserWorkTrail(String accountId) {
+    public static List<work_trail__c> UserWorkTrail(String accountId) {
+        List<Work_Trail__c> mytrail = new List<Work_Trail__c>();
      
                 mytrail =[
                     SELECT 
