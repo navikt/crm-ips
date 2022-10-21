@@ -218,7 +218,7 @@ jobs:
           echo "::set-output name=codecoverage::$(echo $codecoverage)"
 
       # Validate at least 85% code coverage
-      - name: Validate at least 85% code coverage
+      - name: Validate at least 80% code coverage
         if: ${{ needs.run-tests.outputs.hasTestClasses }}
         run: |
           codecoverage=${{ steps.getCodeCoverage.outputs.codecoverage }}
@@ -226,10 +226,10 @@ jobs:
 
           # ! do the actual check on code coverage percentage
           if [ $codecoverage -lt 80 ]; then
-            echo "Because it is less than 85%, the validation failed"
+            echo "Because it is less than 80%, the validation failed"
             exit 125
           else
-            echo "Because it is equal or more than 85%, the validation succeeded"
+            echo "Because it is equal or more than 80%, the validation succeeded"
           fi
 
   # ################################################################# #
