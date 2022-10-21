@@ -1,0 +1,49 @@
+<template>
+    <div class="container">
+        <!--Navigation-->
+        <div class="brodsmulesti">
+            <lightning-breadcrumbs>
+                <lightning-breadcrumb label="Min side" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+                <lightning-breadcrumb label="Min utviklingsplan" name="ips_my_development__c" onclick={navigateToPage}></lightning-breadcrumb>
+                <lightning-breadcrumb label="Samarbeid med arbeidsgiver"></lightning-breadcrumb>
+            </lightning-breadcrumbs>
+        </div>
+
+        <!--Heading -->
+        <div class="trailtext">
+            <img class="illustrasjon"
+                src={myActivityImg}
+                alt="Samarbeid med arbeidsgiver"
+            />
+            Samarbeid med arbeidsgiver
+        </div>
+
+        <!-- Border after heading -->
+        <div class="work-border"></div>
+
+        <!-- Meetings presented -->
+        <form class="form-control">
+            <template for:each={activityEmpRecord} for:item="emp" for:index="index">
+                <div key={emp.id}>   
+                    <lightning-card class="slds-p-around_xxx-small">
+                        <form class="form-control">
+                            <div class="trailtext">
+                                <label slot="title">
+                                    <lightning-icon class="illustrasjon" icon-name="utility:food_and_drink"></lightning-icon>
+                                    {emp.Subject}
+                                </label>
+                                <div class="work-border"></div>
+                            </div>
+                            <label>Dato</label>
+                            <p>{emp.ActivityDate}</p>
+                            <label>Status</label>
+                            <p>{emp.IPS_Status__c}</p>
+                            <label>Agenda/referat</label>
+                            <p>{emp.Description}</p>
+                        </form>
+                    </lightning-card>
+                </div>
+            </template>
+        </form>
+    </div>
+</template>

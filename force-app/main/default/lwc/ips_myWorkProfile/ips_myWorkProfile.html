@@ -5,7 +5,7 @@
         <div class="brodsmulesti">
             <lightning-breadcrumbs>
                 <lightning-breadcrumb label="Min side" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
-                <lightning-breadcrumb label="Min arbeidsprofil" name="my-work-profile"></lightning-breadcrumb>
+                <lightning-breadcrumb label="Min profil" name="my-work-profile"></lightning-breadcrumb>
             </lightning-breadcrumbs>
         </div>
 
@@ -13,24 +13,27 @@
         <div class="activitytitle">
             <img class="illustrasjon"
                 src={myWorkProfileIPS}
-                alt="Min arbeidsprofil"
+                alt="Min profil"
             />
-            Min arbeidsprofil
+            Min profil
         </div>
         <!-- Border after heading -->
         <div class="work-border"></div>
+
         <!--Section Details-->
             <lightning-accordion active-section-name="Kartlegging">
-                <lightning-accordion-section name="Detaljer" label="Detaljer">
+                <lightning-accordion-section name="Informasjon" label="Informasjon om deg og din deltakelse">
                     <form class="form-control">
                         <span>
                             <div if:true={IPSung}>
-                                <p>Deltaker er del av IPS Ung.</p>
+                                <p>Deltakelse i IPS ung.</p>
                             </div>
                             <label>Henvist til jobbsporet</label>
                             <p>{referredDate}</p>
                             <label>Oppstartsdato</label>
                             <p>{startDate}</p>
+                            <label>Kontakt ved uteblivelse</label>
+                            <p>{contNoShow}</p>
                         </span>
                     </form>                   
             </lightning-accordion-section>
@@ -39,17 +42,18 @@
             <lightning-accordion-section name="Kartlegging" label="Kartlegging">
                 <form class="form-control">
                     <span>
-                        <label>Interesser/hobbier</label>
+                        <label>Interesser/hobbyer</label>
                         <p>{interestHobbies}</p>
-                        <label>Personlige kvaliteter</label>
+                        <label>Hva kjennetegner deg</label>
+                        <lightning-helptext content="Sterke sider, ferdigheter og egenskaper som du kan nyttiggjøre deg i arbeidslivet. Sider ved deg som du bør være bevisst på i jobbsammenheng som ikke alltid slår positivt ut"></lightning-helptext> 
                         <p>{personalQualities}</p>
-                        <label>Kulturell bakgrunn</label>
+                        <label>Kulturell bakgrunn. Viktige verdier og samlingspunkter i oppvekstmiljøet og senere i livet</label>
                         <p>{culturalBackground}</p>
-                        <label>Miljø</label>
+                        <label>Omgivelsene dine og miljøet du er en del av</label>
                         <p>{environmentalConditions}</p>
-                        <label>Økonomi</label>
+                        <label>Din økonomiske situasjon</label>
                         <p>{economy}</p>
-                        <label>Helse</label>
+                        <label>Din helsesituasjon relatert til jobb og behov for tilrettelegging</label>
                         <p>{health}</p>
                     </span>
                 </form>
@@ -59,10 +63,12 @@
             <lightning-accordion-section name="UtdanningOgErfaring" label="Utdanning og erfaring">
                 <form class="form-control">
                     <span>
-                        <label>Utdanning</label>
+                        <label>Din erfaring med tidligere utdanning. Det som var bra og det som var utfordrende</label>
                         <p>{education}</p>
-                        <label>Arbeidserfaring</label>
+                        <label>Din erfaring med tidligere arbeidsforhold. Det som var bra og det som var utfordrende</label>
                         <p>{workExperiance}</p>
+                        <label>Hvordan beskriver tidligere arbeidsgiver deg </label>
+                        <p>{conversationPreviousEmployer}</p>
                     </span>
                 </form>
             </lightning-accordion-section>
@@ -90,20 +96,12 @@
             <lightning-accordion-section name="Samarbeid" label="Samarbeid">
                 <form class="form-control">
                     <span>
-                        <label>Nettverk</label>
-                        <p>{network}</p>
                         <label>NAV veileder</label>
                         <p>{navSupervisor}</p>
                         <label>Behandlingsteam</label>
                         <p>{treatmentTeam}</p>
-                        <div if:true={shareHealt}>
-                            <label>Kan informasjon fra jobbsporet deles med helse?</label>
-                            <p>Informasjon fra jobbsporet kan deles med helse.</p>
-                        </div>
-                        <div if:false={shareHealt}>
-                            <label>Kan informasjon fra jobbsporet deles med helse?</label>
-                            <p>Informasjon fra jobbsporet skal ikke deles med helse.</p>
-                        </div>
+                        <label>Nettverk</label>
+                        <p>{network}</p>
                     </span>
                 </form>
             </lightning-accordion-section>
@@ -112,9 +110,9 @@
             <lightning-accordion-section name="Økonomiske_rammer" label="Økonomiske rammer">
                 <form class="form-control">
                     <span>
-                        <label>Økonomiske rammer før jobbstart</label>
+                        <label>Dine økonomiske rammer før jobbstart</label>
                         <p>{framesBeforeWork}</p>
-                        <label>Økonomisk rådgivning - gjeldsrådgivning</label>
+                        <label>Ditt behov for økonomisk rådgivning/gjeldsrådgivning</label>
                         <p>{planWhenWork}</p>
                         <label>Hvordan stønader og ytelser påvirkes etter overgang til jobb</label>
                         <p>{transitionToWork}</p>
