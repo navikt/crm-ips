@@ -15,7 +15,7 @@ public class IPS_myWorkTrailControllerTest {
         ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
             
         Work_Trail__c trailIPS = new Work_Trail__c(
-            ips_Participant__c = accountID,
+            ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
             ips_Status__c ='Working',
             ips_Passive__c=false
@@ -43,7 +43,7 @@ public class IPS_myWorkTrailControllerTest {
         ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
             
         Work_Trail__c trailIPS = new Work_Trail__c(
-            ips_Participant__c = accountID,
+            ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
             ips_Status__c ='Working',
             ips_Passive__c=false
@@ -86,7 +86,7 @@ public class IPS_myWorkTrailControllerTest {
         ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
             
         Work_Trail__c trailIPS = new Work_Trail__c(
-            ips_Participant__c = accountID,
+            ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
             ips_Status__c ='Working',
             ips_Passive__c=false
@@ -129,7 +129,7 @@ public class IPS_myWorkTrailControllerTest {
         ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
             
         Work_Trail__c trailIPS = new Work_Trail__c(
-            ips_Participant__c = accountID,
+            ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
             ips_Status__c ='Working',
             ips_Passive__c=false
