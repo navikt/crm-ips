@@ -155,5 +155,6 @@ public class IPS_myWorkTrailControllerTest {
             List<Event>  weekList = IPS_myActivityController.getWeeklyActivity(trailIPS.id);
             System.assertEquals(false,weekList.isEmpty() , 'List should not be empty');
             Test.stopTest();
+            
     }
 }
