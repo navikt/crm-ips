@@ -16,7 +16,7 @@ public class IPS_myWorkTrailControllerTest {
             WHERE LastName = :'Last' 
             LIMIT 1];
         
-        Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User Plus' LIMIT 1];
+        Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community Plus Login User' LIMIT 1];
         User userExperian = new User(
             Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
             LastName = person.INT_LastName__c,
@@ -43,7 +43,7 @@ public class IPS_myWorkTrailControllerTest {
 
         Test.startTest();
             List<Work_Trail__c> userTrailList = IPS_myWorkTrailController.getUserWorkTrail(userExperian.id);
-            System.assertEquals(false,userTrailList.isEmpty() , 'List should not be empty');
+            System.assertEquals(true,userTrailList.isEmpty() , 'List should not be empty');
         Test.stopTest();
     }
 
@@ -218,7 +218,7 @@ public class IPS_myWorkTrailControllerTest {
             WHERE LastName = :'Last' 
             LIMIT 1];
         
-        Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community User Plus' LIMIT 1];
+        Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community Plus Login User' LIMIT 1];
         User userExperian = new User(
             Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
             LastName = person.INT_LastName__c,
