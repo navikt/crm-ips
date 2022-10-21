@@ -1,7 +1,7 @@
 @isTest
 public class IPS_myWorkTrailControllerTest {
 
-    @is@Test
+    @isTest
     static void getUserWorkTrail(){
         Person__c person = new Person__c();
         person.INT_Confidential__c = 'UGRADERT';
@@ -203,7 +203,7 @@ public class IPS_myWorkTrailControllerTest {
             Test.stopTest();
     }
 
-    @is@Test
+    @isTest
     static void getUserEvent(){
         Person__c person = new Person__c();
         person.INT_Confidential__c = 'UGRADERT';
