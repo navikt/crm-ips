@@ -23,7 +23,7 @@ public class IPS_myWorkTrailControllerTest {
         insert trailIPS;
 
         Test.startTest();
-            List<Work_Trail__c> workTrailList = IPS_myWorkTrailController.UserWorkTrail(accountID);
+            List<Work_Trail__c> workTrailList = IPS_myWorkTrailController.UserWorkTrail(account.id);
             System.assertEquals(false,workTrailList.isEmpty() , 'List should not be empty');
         Test.stopTest();
     }
