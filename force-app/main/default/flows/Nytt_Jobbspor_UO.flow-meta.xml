@@ -4,7 +4,7 @@
         <name>Redirect</name>
         <label>Redirect</label>
         <locationX>578</locationX>
-        <locationY>1910</locationY>
+        <locationY>1574</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -20,7 +20,7 @@
         <name>Redirect_0_0</name>
         <label>Redirect</label>
         <locationX>1370</locationX>
-        <locationY>2270</locationY>
+        <locationY>1934</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -34,26 +34,10 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
-        <name>AssignValueUOO</name>
-        <label>AssignValueUOO</label>
-        <locationX>446</locationX>
-        <locationY>998</locationY>
-        <assignmentItems>
-            <assignToReference>UOOIsChecked</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>UOO</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>checkAndSetConsent</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>setConsentValueFalse</name>
         <label>setConsentValueFalse</label>
         <locationX>446</locationX>
-        <locationY>1334</locationY>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varConsent</assignToReference>
             <operator>Assign</operator>
@@ -69,7 +53,7 @@
         <name>setConsentValueTrue</name>
         <label>setConsentValueTrue</label>
         <locationX>710</locationX>
-        <locationY>1334</locationY>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varConsent</assignToReference>
             <operator>Assign</operator>
@@ -85,7 +69,7 @@
         <name>checkAgeAndConsent</name>
         <label>checkAgeAndConsent</label>
         <locationX>578</locationX>
-        <locationY>1550</locationY>
+        <locationY>1214</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
         </defaultConnector>
@@ -118,7 +102,7 @@
         <name>checkAndSetConsent</name>
         <label>checkAndSetConsent</label>
         <locationX>578</locationX>
-        <locationY>1214</locationY>
+        <locationY>878</locationY>
         <defaultConnector>
             <targetReference>setConsentValueTrue</targetReference>
         </defaultConnector>
@@ -190,7 +174,7 @@
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
         <locationX>842</locationX>
-        <locationY>1790</locationY>
+        <locationY>1454</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -212,35 +196,10 @@
         </rules>
     </decisions>
     <decisions>
-        <name>isParticipantUOO</name>
-        <label>isParticipantUOO</label>
-        <locationX>578</locationX>
-        <locationY>878</locationY>
-        <defaultConnector>
-            <targetReference>checkAndSetConsent</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>isUOO</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>UOOCheckbox</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AssignValueUOO</targetReference>
-            </connector>
-            <label>isUOO</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
         <locationX>1106</locationX>
-        <locationY>2030</locationY>
+        <locationY>1694</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -267,6 +226,11 @@
         <dataType>Number</dataType>
         <expression>if({!participantsAge}&lt;0,{!participantsAge}+100,{!participantsAge})</expression>
         <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>isUOorUOO</name>
+        <dataType>String</dataType>
+        <expression>IF({!UOOCheckbox}, &quot;UOO&quot;, &quot;UO&quot;)</expression>
     </formulas>
     <formulas>
         <name>participantDOB</name>
@@ -332,7 +296,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Error_log</name>
         <label>Create Error log</label>
         <locationX>1106</locationX>
-        <locationY>2390</locationY>
+        <locationY>2054</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -364,7 +328,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>1370</locationX>
-        <locationY>2150</locationY>
+        <locationY>1814</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -417,7 +381,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <inputAssignments>
             <field>ips_UO_Service__c</field>
             <value>
-                <elementReference>UOOIsChecked</elementReference>
+                <elementReference>isUOorUOO</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -427,7 +391,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>842</locationX>
-        <locationY>2150</locationY>
+        <locationY>1814</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -485,7 +449,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <inputAssignments>
             <field>ips_UO_Service__c</field>
             <value>
-                <elementReference>UOOIsChecked</elementReference>
+                <elementReference>isUOorUOO</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -495,7 +459,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Get_existing</name>
         <label>Get existing</label>
         <locationX>842</locationX>
-        <locationY>1670</locationY>
+        <locationY>1334</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -589,7 +553,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Consent</name>
         <label>Consent</label>
         <locationX>314</locationX>
-        <locationY>1670</locationY>
+        <locationY>1334</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -667,7 +631,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
         <locationX>1106</locationX>
-        <locationY>2270</locationY>
+        <locationY>1934</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -686,7 +650,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>842</locationX>
-        <locationY>2270</locationY>
+        <locationY>1934</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -707,7 +671,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>isParticipantUOO</targetReference>
+            <targetReference>checkAndSetConsent</targetReference>
         </connector>
         <fields>
             <name>Participant_Detail_Section1</name>
@@ -849,7 +813,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
         <locationX>1106</locationX>
-        <locationY>1910</locationY>
+        <locationY>1574</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
