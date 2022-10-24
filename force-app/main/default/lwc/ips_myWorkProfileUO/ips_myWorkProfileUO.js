@@ -1,6 +1,6 @@
 import { LightningElement,api,track,wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getUserWorkProfile from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkProfileUO';
+import getUserWorkProfile from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrail';
 import USER_ID from '@salesforce/user/Id';
 
 
@@ -11,8 +11,8 @@ export default class Ips_myWorkProfileUO extends NavigationMixin(LightningElemen
     myWorkProfileUO = IPS_HOME_LOGOS + '/EmployerFilled.svg';
     @api recordId;
     record;
-    @track userIds = USER_ID;
-    //@track userIds = '0051X00000DAHjSQAX';
+    //@track userIds = USER_ID;
+    @track userIds = '0051X00000DAHjSQAX';
 
 
     @wire(getUserWorkProfile,{userId:'$userIds'})

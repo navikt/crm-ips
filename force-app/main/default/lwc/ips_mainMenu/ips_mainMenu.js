@@ -8,8 +8,8 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 
 export default class Ips_mainMenu extends NavigationMixin(LightningElement) {
-    //@track userIds = '0051X00000DAHjSQAX';
-    @track userIds = USER_ID;
+    //@track userIds = USER_ID;
+    @track userIds = '0051X00000DAHjSQAX';
     @api recordId;
     @track record;
     isIPS = false;
@@ -54,5 +54,15 @@ export default class Ips_mainMenu extends NavigationMixin(LightningElement) {
         return this.record?.RecordTypeId;
 
      }
+
+     navigateToPage(event) {
+        const page = event.target.name;
+        this[NavigationMixin.Navigate]({
+            type: 'comm__namedPage',
+            attributes: {
+            name: page
+            }
+        });
+    }
    
 }

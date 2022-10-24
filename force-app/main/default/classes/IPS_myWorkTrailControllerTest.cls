@@ -1,105 +1,160 @@
 @isTest
 public class IPS_myWorkTrailControllerTest {
-@TestSetup
-    static void makeTrailData(){
-        
-        Account acc1 = new Account();
-            acc1.FirstName='Petter';
-            acc1.LastName='Putte';
-        	acc1.INT_PersonIdent__c ='12069712345';
-        	//acc1.CRM_Person__c =pers.Id;
-        	acc1.RecordTypeId=SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
-        insert acc1;
-        
-        Person__c pers = new Person__c();
-        	pers.Name=acc1.INT_PersonIdent__c;
-            pers.INT_LastName__c =acc1.LastName;
-        	pers.INT_Confidential__c ='UGRADERT';
-        	pers.CRM_Account__c = acc1.Id;
-        insert pers;
-       /* 
-        try{
-            insert pers;
-        }catch(Exception e){
-            System.debug('Dette er personkonto:'+e);
-        }
-        
-        
-        
-        Contact con = new Contact(
-        	FirstName = acc1.FirstName,
-            LastName = acc1.LastName,
-            AccountId = acc1.Account_18_ID__c);
-        
-        try{
-            insert con;
-        }catch(Exception e){
-            System.debug('Dette er contact:'+e);
-        }
-        */
-        //String conId = [SELECT id FROM Contact WHERE AccountId =:acc1.id].id;
-        
-        Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'Trial Customer Portal User' LIMIT 1];
-            User user = new User(
-              FirstName = 'John',
-              LastName = 'Doe',
-              Email = 'John.Doe@nav.no',
-              Username = 'John.Doe@nav.no',
-              Alias = 'j.doe',
-              LanguageLocaleKey = 'no',
-              LocaleSidKey = 'no_NO',
-              TimeZoneSidKey = 'Europe/Paris',
-              EmailEncodingKey = 'UTF-8',
-              ProfileId = profile.Id,
-              Department = '1',
-              ContactId = acc1.PersonContactId,
-              CRM_NAV_Ident__c = 'test123'
-            );
-        /*
-        
-*/
-              
-        Work_Trail__c trail = new Work_Trail__c(
-        ips_Participant__c = acc1.id,
-        ips_Status__c ='Referred',
-        ips_Passive__c=false);
-        insert trail;
- 
-    }
-    
+
     @isTest
     static void getWorkTrail(){
-        String userId = [SELECT id FROM User LIMIT 1].id;
+        ID recTypeIdAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
+        
+        Account account = new Account(
+            LastName = 'Last',
+            FirstName = 'First',
+            RecordTypeId =  recTypeIdAccount
+        );
+        insert account;
+
+        ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
+            
+        Work_Trail__c trailIPS = new Work_Trail__c(
+            ips_Participant__c = account.id,
+            recordTypeId = recTypeIdIPS,
+            ips_Status__c ='Working',
+            ips_Passive__c=false
+            );
+        insert trailIPS;
+
         Test.startTest();
-        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
-        	wList = IPS_myWorkTrailController.getUserWorkTrail(userId);
-        Test.stopTest(); 
-        
-        System.assertEquals(wList.size(), 0, 'List should not be empty');
-        
+            List<Work_Trail__c> workTrailList = IPS_myWorkTrailController.UserWorkTrail(account.id);
+            System.assertEquals(false,workTrailList.isEmpty() , 'List should not be empty');
+        Test.stopTest();
     }
 
     @isTest
-    static void getWorkTrailIPS(){
-        String userId = [SELECT id FROM User LIMIT 1].id;
-        Test.startTest();
-        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
-        	wList = IPS_myWorkTrailController.getUserWorkProfileIPS(userId);
-        Test.stopTest(); 
+    static void employerEvent(){
+
+        ID recTypeIdAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
         
-        System.assertEquals(wList.size(), 0, 'List should not be empty');
-        
+        Account account = new Account(
+            LastName = 'Last',
+            FirstName = 'First',
+            RecordTypeId =  recTypeIdAccount
+        );
+        insert account;
+
+        ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
+            
+        Work_Trail__c trailIPS = new Work_Trail__c(
+            ips_Participant__c = account.id,
+            recordTypeId = recTypeIdIPS,
+            ips_Status__c ='Working',
+            ips_Passive__c=false
+            );
+        insert trailIPS;
+
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+
+        Event eventEmployer = new Event(
+                    Subject = 'Event ',
+                    StartDateTime = System.today(),
+                    EndDateTime = System.today()+1,
+                    Description = 'Møte handler om event ',
+                    IPS_Type__c = 'Meeting with Employer',
+                    ips_Completed__c = false,
+                    IsVisibleInSelfService__c =true,
+                    WhatId = trailIPS.id,
+                    RecordTypeId = recTypeIdEvent
+        );
+        insert eventEmployer;
+            
+            Test.startTest();
+            List<Event>  eList = IPS_myActivityController.getEmployerActivity(trailIPS.id);
+            System.assertEquals(false,eList.isEmpty() , 'List should not be empty');
+            Test.stopTest();
     }
 
     @isTest
-    static void getWorkTrailUO(){
-        String userId = [SELECT id FROM User LIMIT 1].id;
-        Test.startTest();
-        	List<Work_Trail__c> wList = new List<Work_Trail__c>();
-        	wList = IPS_myWorkTrailController.getUserWorkProfileUO(userId);
-        Test.stopTest(); 
+    static void participantEvent(){
+
+        ID recTypeIdAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
         
-        System.assertEquals(wList.size(), 0, 'List should not be empty');
+        Account account = new Account(
+            LastName = 'Last',
+            FirstName = 'First',
+            RecordTypeId =  recTypeIdAccount
+        );
+        insert account;
+
+        ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
+            
+        Work_Trail__c trailIPS = new Work_Trail__c(
+            ips_Participant__c = account.id,
+            recordTypeId = recTypeIdIPS,
+            ips_Status__c ='Working',
+            ips_Passive__c=false
+            );
+        insert trailIPS;
+
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+
+        Event eventEmployer = new Event(
+                    Subject = 'Event ',
+                    StartDateTime = System.today(),
+                    EndDateTime = System.today()+1,
+                    Description = 'Møte handler om event ',
+                    IPS_Type__c = 'Meeting with Participant',
+                    ips_Completed__c = false,
+                    IsVisibleInSelfService__c =true,
+                    WhatId = trailIPS.id,
+                    RecordTypeId = recTypeIdEvent
+        );
+        insert eventEmployer;
+            
+            Test.startTest();
+            List<Event>  pList = IPS_myActivityController.getParticipantActivity(trailIPS.id);
+            System.assertEquals(false,pList.isEmpty() , 'List should not be empty');
+            Test.stopTest();
+    }
+
+    @isTest
+    static void weeklyEvent(){
+
+        ID recTypeIdAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
         
+        Account account = new Account(
+            LastName = 'Last',
+            FirstName = 'First',
+            RecordTypeId =  recTypeIdAccount
+        );
+        insert account;
+
+        ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
+            
+        Work_Trail__c trailIPS = new Work_Trail__c(
+            ips_Participant__c = account.id,
+            recordTypeId = recTypeIdIPS,
+            ips_Status__c ='Working',
+            ips_Passive__c=false
+            );
+        insert trailIPS;
+
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+
+        Event eventEmployer = new Event(
+                    Subject = 'Event ',
+                    StartDateTime = System.today(),
+                    EndDateTime = System.today()+1,
+                    Description = 'Møte handler om event ',
+                    IPS_Type__c = 'Meeting with Participant',
+                    ips_Completed__c = false,
+                    IsVisibleInSelfService__c =true,
+                    WhatId = trailIPS.id,
+                    RecordTypeId = recTypeIdEvent
+        );
+        insert eventEmployer;
+            
+            Test.startTest();
+            List<Event>  weekList = IPS_myActivityController.getWeeklyActivity(trailIPS.id);
+            System.assertEquals(false,weekList.isEmpty() , 'List should not be empty');
+            Test.stopTest();
+            
     }
 }
