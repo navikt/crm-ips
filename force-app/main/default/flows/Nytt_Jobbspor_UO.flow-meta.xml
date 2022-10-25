@@ -228,6 +228,11 @@
         <scale>0</scale>
     </formulas>
     <formulas>
+        <name>isUOorUOO</name>
+        <dataType>String</dataType>
+        <expression>IF({!UOOCheckbox}, &quot;UOO&quot;, &quot;UO&quot;)</expression>
+    </formulas>
+    <formulas>
         <name>participantDOB</name>
         <dataType>Date</dataType>
         <expression>IF(NOT(ISBLANK({!Get_Participant_Details.INT_PersonIdent__c})),
@@ -362,7 +367,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>ips_Behandlingsteam__c</field>
+            <field>ips_Applying_Department__c</field>
             <value>
                 <elementReference>Behandlingsteam_Innsatsteam</elementReference>
             </value>
@@ -371,6 +376,12 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <field>ips_Participant__c</field>
             <value>
                 <elementReference>Participant.recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_UO_Service__c</field>
+            <value>
+                <elementReference>isUOorUOO</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -424,7 +435,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>ips_Behandlingsteam__c</field>
+            <field>ips_Applying_Department__c</field>
             <value>
                 <elementReference>Behandlingsteam_Innsatsteam</elementReference>
             </value>
@@ -433,6 +444,12 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <field>ips_Participant__c</field>
             <value>
                 <elementReference>Participant.recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_UO_Service__c</field>
+            <value>
+                <elementReference>isUOorUOO</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -773,6 +790,16 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </visibilityRule>
         </fields>
         <fields>
+            <name>UOOCheckbox</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>UOO</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
             <name>IPS_Ung</name>
             <dataType>Boolean</dataType>
             <defaultValue>
@@ -781,11 +808,21 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <fieldText>IPS Ung</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>isAlwaysFalse</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>Behandlingsteam_Innsatsteam</name>
             <dataType>String</dataType>
-            <fieldText>Behandlingsteam/Innsøkende avdeling</fieldText>
+            <fieldText>Innsøkende avdeling</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -856,6 +893,16 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>isAlwaysFalse</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
     <variables>
         <name>RecordTypeId</name>
         <dataType>String</dataType>
