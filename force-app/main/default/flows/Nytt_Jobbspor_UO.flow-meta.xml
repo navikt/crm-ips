@@ -446,6 +446,12 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                 <elementReference>Participant.recordId</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>ips_UO_Service__c</field>
+            <value>
+                <elementReference>isUOorUOO</elementReference>
+            </value>
+        </inputAssignments>
         <object>Work_Trail__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -794,6 +800,26 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <isRequired>true</isRequired>
         </fields>
         <fields>
+            <name>IPS_Ung</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>IPS Ung</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>isAlwaysFalse</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
             <name>Behandlingsteam_Innsatsteam</name>
             <dataType>String</dataType>
             <fieldText>Innsøkende avdeling</fieldText>
@@ -867,6 +893,16 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>isAlwaysFalse</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
     <variables>
         <name>RecordTypeId</name>
         <dataType>String</dataType>
