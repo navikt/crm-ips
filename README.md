@@ -1,3 +1,8 @@
+## CRM-IPS
+Jobbsporet is work-oriented follow-up tool.
+Interaction between job specialists and a person who wants help to get into work. Expertise in guidance and knowledge of the labor market is essential for a targeted service.
+Joppsporet is a tool for job specialists to have an efficient everyday life with planning and documentation of the participant and to use the time as much as possible together with the participant.
+
 Template repository for CRM packages. Necessary steps after using template:
 
 1. Add secrets (see [description](https://github.com/navikt/crm-workflows-base))
