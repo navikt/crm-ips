@@ -9,7 +9,7 @@ This package is dependant on the following packages
 
 - [crm-platform-base](https://github.com/navikt/crm-platform-base)
 - [crm-platform-access-control](https://github.com/navikt/crm-platform-access-control)
-- [crm-thread-view]
+- [crm-thread-view](https://github.com/navikt/crm-thread-view)
 - [crm-shared-timeline](https://github.com/navikt/crm-shared-timeline)
 - [crm-shared-base](https://github.com/navikt/crm-shared-base)
 - [crm-platform-integration](https://github.com/navikt/crm-platform-integration)
