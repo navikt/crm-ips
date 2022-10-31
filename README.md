@@ -11,15 +11,11 @@ This package is dependant on the following packages
 - [crm-platform-access-control](https://github.com/navikt/crm-platform-access-control)
 - [crm-thread-view]
 - [crm-shared-timeline](https://github.com/navikt/crm-shared-timeline)
-- [crm-community-base]
-
-- [crm-platform-oppgave]
-- [crm-journal-utilities]
-- [crm-platform-integration]
-- [crm-henvendelse]
-
--   [XXXXXXXXXXXXX](https://github.com/navikt/XXXXXXXXXXXXX)
--   [XXXXXXXXXXXXX](https://github.com/navikt/XXXXXXXXXXXXX)
+- [crm-shared-base](https://github.com/navikt/crm-shared-base)
+- [crm-platform-integration](https://github.com/navikt/crm-platform-integration)
+- [crm-arbeidsgiver-base](https://github.com/navikt/crm-arbeidsgiver-base)
+- [crm-community-base](https://github.com/navikt/crm-community-base)
+- [crm-journal-utilities](https://github.com/navikt/crm-journal-utilities)
 
 ## Installation
 
