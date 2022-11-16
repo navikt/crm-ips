@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_checkStatusAndStartupDate</fullName>
+    <active>true</active>
+    <description>When moving status from Henvist to Initiell kontakt/kartlegging without startDate</description>
+    <errorConditionFormula>AND(
+  ISBLANK(Oppstartsdato__c),
+  ISPICKVAL(PRIORVALUE(ips_Status__c),&quot;Referred&quot;),
+  OR(
+    ISPICKVAL(ips_Status__c,&quot;Mapping&quot;),
+    ISPICKVAL(ips_Status__c,&quot;Initial contact&quot;)
+    ),
+  OR(
+     RecordType.DeveloperName =&apos;IPS&apos;,
+     RecordType.DeveloperName = &apos;ips_Supported_Employment&apos;)
+  )</errorConditionFormula>
+    <errorMessage>Kreves en oppstartsdato for å sette den i neste status.</errorMessage>
+</ValidationRule>
