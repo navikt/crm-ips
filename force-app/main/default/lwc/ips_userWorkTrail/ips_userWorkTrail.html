@@ -1,0 +1,108 @@
+<template>
+    
+    <div class="container">
+        <!--Navigation-->
+        <div class="brodsmulesti">
+            <lightning-breadcrumbs>
+                <lightning-breadcrumb label="Min side" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+                <lightning-breadcrumb label="Min handlingsplan"></lightning-breadcrumb>
+            </lightning-breadcrumbs>
+        </div>
+
+        <form class="form-control">
+            <span>
+                <label>Oppstartsdato</label>
+                <p>{startDate}</p>
+            </span>
+
+            <c-expandable-panel id="1" label='Yrkesprofil'>
+                    <span>
+                        <label>Henvist til jobbsporet</label>
+                                <p>{referredDate}</p>
+                                <label>Avdeling ansvarlig for søknad</label>
+                                <p>{applyingDepartment}</p>
+                                <label>Behandlingsteam</label>
+                                <p>{treatmentTeam}</p>
+                                <label>Nav veileder</label>
+                                <p>{navSupervisor}</p>
+                    </span>
+            </c-expandable-panel>
+        </form>
+    </div>
+
+    <div class="container">
+    
+
+        <h3 class="title">Handlingsplan</h3>
+
+        <form class="form-control">
+            <label>Mitt hovedmål</label>
+            <p>{mainGoal}</p>
+
+        </form>
+        
+
+        <div class="title">
+            <c-linkTile
+                link-header="Samarbeid med arbeidsgiver"
+                navigation-address="ips_my_employer_activity__c"
+                link-label="Oversikt over samarbeid med arbeidsgiver og referat."
+                maximum-width= 100%;
+            >
+             </c-linkTile>
+        </div>
+        <div class="title">
+            <c-linkTile
+            link-header="Mine aktiviteter"
+            navigation-address="ips_my_participant_activity__c"
+            link-label="Mine møter og samarbeid med jobbspesialist."
+            maximum-width= 100%;
+            >
+            </c-linkTile>
+        </div> 
+
+        
+
+        
+
+
+        <!--
+
+        <template for:each={sections} for:item="section">
+                <c-expandable-panel key={section.id} id={section.id} label={section.label}>
+                    Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Fusce dapibus, tellus ac
+                    cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor
+                    sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Nulla vitae
+                    elit libero, a pharetra augue.
+                </c-expandable-panel>
+        </template>
+
+    
+        <c-expandable-panel id="1" label='Yrkesprofil'>
+            <form class="form-control">
+                <span>
+                    <label>Henvist til jobbsporet</label>
+                    <p>{referredDate}</p>
+                    <label>Oppstartsdato</label>
+                    <p>{startDate}</p>
+                </span>
+            </form>
+            
+        </c-expandable-panel>
+
+
+        <lightning-accordion active-section-name="Jobbspor">
+            <lightning-accordion-section  name="Informasjon" label="Informasjon">
+                <form class="form-control">
+                    <span>
+                        <label>Henvist til jobbsporet</label>
+                        <p>{referredDate}</p>
+                        <label>Oppstartsdato</label>
+                        <p>{startDate}</p>
+                    </span>
+                </form>               
+            </lightning-accordion-section>
+        </lightning-accordion>
+        -->
+    </div> 
+</template>

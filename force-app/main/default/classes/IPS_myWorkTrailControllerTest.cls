@@ -1,5 +1,54 @@
 @isTest
 public class IPS_myWorkTrailControllerTest {
+    
+    @isTest
+    static void getUserWorkTrail(){
+        
+        Person__c person = new Person__c();
+        person.INT_Confidential__c = 'UGRADERT';
+        person.Name = '12069712345';
+        person.INT_LastName__c = 'Last';
+        person.INT_FirstName__c = 'First';
+        insert person;
+        
+        Account account = [
+            SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c,CRM_Person__r.INT_Confidential__C
+            FROM Account
+            WHERE LastName = :'Last' 
+            ORDER BY createddate desc
+            LIMIT 1];
+        
+        Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community Plus User' LIMIT 1];
+         User userExperian = new User(
+            Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
+            LastName = person.INT_LastName__c,
+            Email = 'IPS_testuser@nav.ips.no',
+            Alias = person.INT_LastName__c,
+            CommunityNickname = person.INT_LastName__c,
+            TimeZoneSidKey = 'Europe/Paris',
+            LocaleSidKey = 'no_NO',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'no',
+            ProfileId = communityProfile.id,
+            ContactId = account.PersonContactId 
+        );
+        insert userExperian;
+
+        ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
+            
+        Work_Trail__c trailIPS = new Work_Trail__c(
+            ips_Participant__c = account.id,
+            recordTypeId = recTypeIdIPS,
+            ips_Status__c ='Working',
+            ips_Passive__c=false
+            );
+        insert trailIPS;
+
+        Test.startTest();
+            List<Work_Trail__c> workTrailList = IPS_myWorkTrailController.getUserWorkTrail(userExperian.id);
+            System.assertEquals(true,workTrailList.isEmpty() , 'List should not be empty');
+        Test.stopTest();
+    }
 
     @isTest
     static void getWorkTrail(){
@@ -113,6 +162,53 @@ public class IPS_myWorkTrailControllerTest {
             System.assertEquals(false,pList.isEmpty() , 'List should not be empty');
             Test.stopTest();
     }
+    
+    @isTest
+    static void getUserEvent(){
+        
+        Person__c person = new Person__c();
+        person.INT_Confidential__c = 'UGRADERT';
+        person.Name = '12069712345';
+        person.INT_LastName__c = 'Last';
+        person.INT_FirstName__c = 'First';
+        insert person;
+        
+        Account account = [
+            SELECT Id, OwnerId, PersonContactId, FirstName, LastName, PersonEmail, CRM_Person__c,CRM_Person__r.INT_Confidential__C
+            FROM Account
+            WHERE LastName = :'Last' 
+            ORDER BY createddate desc
+            LIMIT 1];
+        
+        Profile communityProfile = [SELECT Id FROM Profile WHERE Name = 'Customer Community Plus User' LIMIT 1];
+         User userExperian = new User(
+            Username = 'IPS.' + person.INT_LastName__c + '@nav.ips.no',
+            LastName = person.INT_LastName__c,
+            Email = 'IPS_testuser@nav.ips.no',
+            Alias = person.INT_LastName__c,
+            CommunityNickname = person.INT_LastName__c,
+            TimeZoneSidKey = 'Europe/Paris',
+            LocaleSidKey = 'no_NO',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'no',
+            ProfileId = communityProfile.id,
+            ContactId = account.PersonContactId 
+        );
+        insert userExperian;
+            
+            Test.startTest();
+            List<Event>  weekList = IPS_myActivityController.getUserActivity(userExperian.id,'Weekly');
+            System.assertEquals(true,weekList.isEmpty() , 'List should not be empty');
+        
+        	List<Event> participantList = IPS_myActivityController.getUserActivity(userExperian.id,'Participant');
+        	System.assertEquals(true,participantList.isEmpty() , 'List should not be empty');
+        
+			List<Event> employerList = IPS_myActivityController.getUserActivity(userExperian.id,'Employer');
+        	System.assertEquals(true,employerList.isEmpty() , 'List should not be empty');
+            Test.stopTest();
+        
+    }
+    
 
     @isTest
     static void weeklyEvent(){
