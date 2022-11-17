@@ -17,18 +17,18 @@
     </columns>
     <filter>
         <criteriaItems>
-            <column>Work_Trail__c.ips_Other_end_cases__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>,Education - self-financed,Education - covered by NAV,Chaining for other work-oriented measures under the auspices of NAV,&quot;Other active measures in consultation with NAV (eg medical treatment, or municipal measures)&quot;,Illness,Applied for / granted old age pension / AFP,Applied / granted disability benefits,&quot;Other (military, pregnancy, relocation, etc.)&quot;,Not applicable</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>Work_Trail__c.ips_Status__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>Ended</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Work_Trail__c.End_Cause__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Work</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
@@ -40,10 +40,10 @@
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Work_Trail__c.ips_Status__c</field>
+        <field>Work_Trail__c.End_Cause__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Jobbspor status sluttet-andre årsaker</name>
+    <name>Jobbspor status sluttet til jobb</name>
     <params>
         <name>co</name>
         <value>1</value>

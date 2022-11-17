@@ -1,54 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>CUST_NAME</field>
+        <field>CHILD_NAME</field>
     </columns>
     <columns>
-        <field>CUST_CREATED_DATE</field>
+        <field>ips_Job__c.ips_Form_of_Employment__c</field>
     </columns>
     <columns>
-        <field>Work_Trail__c.Oppstartsdato__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ips_Job__c.ips_Number_of_hours__c</field>
     </columns>
     <columns>
-        <field>Work_Trail__c.ips_First_meeting_with_the_Employer_held__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ips_Job__c.ips_Inclusion_subsidies__c</field>
     </columns>
     <columns>
-        <field>CUST_LAST_ACTIVITY</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ips_Job__c.ips_Mentor_subsidies__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ips_Job__c.ips_Paid_work__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ips_Job__c.ips_Wage_subsidies__c</field>
+    </columns>
+    <columns>
+        <field>ips_Job__c.ips_Status__c</field>
+    </columns>
+    <columns>
+        <field>ips_Job__c.ips_End_Date__c</field>
     </columns>
     <filter>
         <criteriaItems>
-            <column>Work_Trail__c.ips_Other_end_cases__c</column>
+            <column>ips_Job__c.ips_Status__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>,Education - self-financed,Education - covered by NAV,Chaining for other work-oriented measures under the auspices of NAV,&quot;Other active measures in consultation with NAV (eg medical treatment, or municipal measures)&quot;,Illness,Applied for / granted old age pension / AFP,Applied / granted disability benefits,&quot;Other (military, pregnancy, relocation, etc.)&quot;,Not applicable</value>
+            <value>Ongoing</value>
         </criteriaItems>
         <criteriaItems>
             <column>Work_Trail__c.ips_Status__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
+            <operator>notEqual</operator>
             <value>Ended</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>CUST_OWNER_NAME</field>
+        <field>Work_Trail__c.ips_Start_Date__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Work_Trail__c.ips_Status__c</field>
+        <field>CUST_NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Jobbspor status sluttet-andre årsaker</name>
+    <name>Deltakere i aktiv jobb</name>
     <params>
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>CustomEntity$Work_Trail__c@Work_Trail__c.ips_Participant__c</reportType>
+    <reportType>CustomEntityCustomEntity$Work_Trail__c$ips_Job__c</reportType>
     <scope>team</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
