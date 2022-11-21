@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
-    <description>Migrated from the: IPS_Sett dato for sluttet i Jobbspor workflow rule
-Workflow rule description: &quot;</description>
+    <description>Setter sluttdato når status = sluttet
+Gjelder både for UO og IPS</description>
+    <interviewLabel>IPS_Sett dato for sluttet i Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS_Sett dato for sluttet i Jobbspor</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
@@ -12,10 +19,10 @@ Workflow rule description: &quot;</description>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>mainUpdate</name>
-        <label>mainUpdate</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <name>updateEnddate</name>
+        <label>Update enddate</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
         <inputAssignments>
             <field>ips_End_Date__c</field>
             <value>
@@ -25,13 +32,22 @@ Workflow rule description: &quot;</description>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>0</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>mainUpdate</targetReference>
+            <targetReference>updateEnddate</targetReference>
         </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Ended</stringValue>
+            </value>
+        </filters>
         <object>Work_Trail__c</object>
-        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
