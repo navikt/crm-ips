@@ -3,8 +3,8 @@
     <actionCalls>
         <name>createTravelTime</name>
         <label>createTravelTime</label>
-        <locationX>314</locationX>
-        <locationY>911</locationY>
+        <locationX>279</locationX>
+        <locationY>959</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -57,8 +57,8 @@
     <actionCalls>
         <name>createTravelTime_0_0</name>
         <label>createTravelTime</label>
-        <locationX>842</locationX>
-        <locationY>695</locationY>
+        <locationX>939</locationX>
+        <locationY>743</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -111,8 +111,8 @@
     <actionCalls>
         <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
-        <locationX>1106</locationX>
-        <locationY>695</locationY>
+        <locationX>1203</locationX>
+        <locationY>743</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -166,8 +166,8 @@
     <assignments>
         <name>addPublicTrue</name>
         <label>addPublicTrue</label>
-        <locationX>182</locationX>
-        <locationY>1487</locationY>
+        <locationX>147</locationX>
+        <locationY>1319</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -179,36 +179,50 @@
             <targetReference>updateMeetingWithId</targetReference>
         </connector>
     </assignments>
-    <decisions>
-        <name>checkIsPublic</name>
-        <label>checkIsPublic</label>
-        <locationX>314</locationX>
-        <locationY>1367</locationY>
-        <defaultConnector>
-            <targetReference>updateMeetingWithId</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>IsPublicFalse</defaultConnectorLabel>
-        <rules>
-            <name>IsPublicTrue</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.IPS_Skal_ikke_deles_med_Deltaker__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addPublicTrue</targetReference>
-            </connector>
-            <label>IsPublicTrue</label>
-        </rules>
-    </decisions>
+    <assignments>
+        <name>Copy_1_of_addPublicFalse</name>
+        <label>Copy 1 of addPublicFalse</label>
+        <locationX>965</locationX>
+        <locationY>1600</locationY>
+        <assignmentItems>
+            <assignToReference>varPublicTrue</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_meeting_with_Id1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_addPublicTrue</name>
+        <label>addPublicTrue</label>
+        <locationX>807</locationX>
+        <locationY>1535</locationY>
+        <assignmentItems>
+            <assignToReference>varPublicTrue</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_meeting_with_Id1</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
-        <locationX>314</locationX>
-        <locationY>575</locationY>
+        <locationX>279</locationX>
+        <locationY>623</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
             <name>isMeetingWithEmployerJobbstotte</name>
@@ -259,8 +273,8 @@
         <description>check if changes is added travel or updates</description>
         <name>checkpoint1</name>
         <label>checkpoint1</label>
-        <locationX>974</locationX>
-        <locationY>575</locationY>
+        <locationX>1071</locationX>
+        <locationY>623</locationY>
         <defaultConnector>
             <targetReference>updateTravelTime_0</targetReference>
         </defaultConnector>
@@ -305,10 +319,10 @@
     <decisions>
         <name>checkRelatedTo</name>
         <label>checkRelatedTo</label>
-        <locationX>314</locationX>
-        <locationY>1031</locationY>
+        <locationX>279</locationX>
+        <locationY>1079</locationY>
         <defaultConnector>
-            <targetReference>checkIsPublic</targetReference>
+            <targetReference>updateMeetingWithId</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>isFalse</defaultConnectorLabel>
         <rules>
@@ -330,10 +344,10 @@
     <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
-        <locationX>974</locationX>
-        <locationY>911</locationY>
+        <locationX>1071</locationX>
+        <locationY>959</locationY>
         <defaultConnector>
-            <targetReference>updateTask</targetReference>
+            <targetReference>Copy_1_of_checkRelatedTo</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>toFinishLine</defaultConnectorLabel>
         <rules>
@@ -367,10 +381,64 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Copy_1_of_checkRelatedTo</name>
+        <label>Copy 1 of checkRelatedTo</label>
+        <locationX>1071</locationX>
+        <locationY>1295</locationY>
+        <defaultConnector>
+            <targetReference>updateTask</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>noChanges</defaultConnectorLabel>
+        <rules>
+            <name>isTrue1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_participant_related_to_meeting__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_participant_related_to_meeting__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Add_contactid_into_event</targetReference>
+            </connector>
+            <label>isTrue</label>
+        </rules>
+        <rules>
+            <name>isFalse</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_participant_related_to_meeting__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_participant_related_to_meeting__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_addPublicFalse</targetReference>
+            </connector>
+            <label>isFalse</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>isEventNew</name>
         <label>isEventNew</label>
-        <locationX>644</locationX>
-        <locationY>455</locationY>
+        <locationX>675</locationX>
+        <locationY>503</locationY>
         <defaultConnector>
             <targetReference>checkpoint1</targetReference>
         </defaultConnector>
@@ -418,7 +486,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -431,8 +499,8 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>644</locationX>
-        <locationY>335</locationY>
+        <locationX>675</locationX>
+        <locationY>383</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>isEventNew</targetReference>
@@ -450,12 +518,40 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>updateFirstEmployeeMeeting</name>
-        <label>updateFirstEmployeeMeeting</label>
-        <locationX>842</locationX>
-        <locationY>1031</locationY>
+        <name>Update_meeting_with_Id1</name>
+        <label>Update meeting with Id</label>
+        <locationX>808</locationX>
+        <locationY>1742</locationY>
         <connector>
             <targetReference>updateTask</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>IPS_taskId__c</field>
+            <value>
+                <elementReference>varOutputTaskId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IsVisibleInSelfService__c</field>
+            <value>
+                <elementReference>varPublicTrue</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>varContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>updateFirstEmployeeMeeting</name>
+        <label>updateFirstEmployeeMeeting</label>
+        <locationX>939</locationX>
+        <locationY>1079</locationY>
+        <connector>
+            <targetReference>Copy_1_of_checkRelatedTo</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -476,8 +572,8 @@
     <recordUpdates>
         <name>updateMeetingWithId</name>
         <label>Update meeting with Id</label>
-        <locationX>314</locationX>
-        <locationY>1703</locationY>
+        <locationX>279</locationX>
+        <locationY>1535</locationY>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
@@ -485,7 +581,7 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>IsVisibleInSelfService</field>
+            <field>IsVisibleInSelfService__c</field>
             <value>
                 <elementReference>varPublicTrue</elementReference>
             </value>
@@ -501,8 +597,8 @@
     <recordUpdates>
         <name>updateTask</name>
         <label>updateTask</label>
-        <locationX>974</locationX>
-        <locationY>1247</locationY>
+        <locationX>1028</locationX>
+        <locationY>1954</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -520,8 +616,8 @@
         <object>Task</object>
     </recordUpdates>
     <start>
-        <locationX>518</locationX>
-        <locationY>0</locationY>
+        <locationX>549</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
         </connector>
@@ -548,10 +644,30 @@
     <subflows>
         <name>Add_contactid_into_event</name>
         <label>Add contactid into event</label>
-        <locationX>182</locationX>
-        <locationY>1151</locationY>
+        <locationX>147</locationX>
+        <locationY>1199</locationY>
         <connector>
-            <targetReference>checkIsPublic</targetReference>
+            <targetReference>addPublicTrue</targetReference>
+        </connector>
+        <flowName>IPS_subflowAddContactId</flowName>
+        <inputAssignments>
+            <name>varWorkTrailId</name>
+            <value>
+                <elementReference>getEvents.WhatId</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>varContactId</assignToReference>
+            <name>varContactId</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
+        <name>Copy_1_of_Add_contactid_into_event</name>
+        <label>Copy 1 of Add contactid into event</label>
+        <locationX>807</locationX>
+        <locationY>1415</locationY>
+        <connector>
+            <targetReference>Copy_1_of_addPublicTrue</targetReference>
         </connector>
         <flowName>IPS_subflowAddContactId</flowName>
         <inputAssignments>
@@ -568,8 +684,8 @@
     <subflows>
         <name>IPS_createTaskBasedOnMeetingJobbstotte</name>
         <label>Create task based on meeting - jobbstotte</label>
-        <locationX>50</locationX>
-        <locationY>695</locationY>
+        <locationX>15</locationX>
+        <locationY>743</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
@@ -636,8 +752,8 @@
     <subflows>
         <name>IPS_createTaskBasedOnMeetingJobbutvikling</name>
         <label>Create task based on meeting - jobbutvikling</label>
-        <locationX>314</locationX>
-        <locationY>695</locationY>
+        <locationX>279</locationX>
+        <locationY>743</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
@@ -797,6 +913,13 @@
     </variables>
     <variables>
         <name>varRelatedToId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varWhoIDEmpty</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
