@@ -15,26 +15,22 @@
                 <field>WhoId</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Subject</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ips_Subcategory_Type_IPS__c</field>
+                <behavior>Readonly</behavior>
+                <field>IPS_Status1__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>IPS_Status1__c</field>
+                <behavior>Required</behavior>
+                <field>OwnerId</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>IPS_Type__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>OwnerId</field>
+                <behavior>Edit</behavior>
+                <field>ips_Subcategory_Type_IPS__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -43,8 +39,12 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Møtebeskrivelse/referat</label>
+        <label>Møteferat</label>
         <layoutColumns>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Subject</field>
+            </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Description</field>
@@ -68,7 +68,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>IsRecurrence2</field>
+                <field>ips_uo_Kanal__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -99,6 +99,11 @@
     </layoutSections>
     <platformActionList>
         <actionListContext>Record</actionListContext>
+        <platformActionListItems>
+            <actionName>Event.ips_Lukk_mote</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
         <platformActionListItems>
             <actionName>FeedItem.TextPost</actionName>
             <actionType>QuickAction</actionType>
@@ -138,11 +143,6 @@
             <actionName>PrintableView</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>8</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Event.ips_Lukk_mote</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>ChangeRecordType</actionName>
