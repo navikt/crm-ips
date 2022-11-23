@@ -14,7 +14,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Deltaker (legg inn deltaker når den deltar i møte)</label>
+        <label>Deltaker</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -24,22 +24,11 @@
                 <behavior>Edit</behavior>
                 <field>WhoId</field>
             </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>IPS_No_Show__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>IPS_participant_related_to_meeting__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>IPS_Skal_ikke_deles_med_Deltaker__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -48,7 +37,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Arbeidsgiver og arbeidsgiverkontakt (legg inn kun når de deltar i møte)</label>
+        <label>Arbeidsgiver og arbeidsgiverkontakt</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -58,19 +47,15 @@
                 <behavior>Edit</behavior>
                 <field>Konto_kontakt__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ips_Is_the_employer_decision_maker__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>IPS_Subcategory_Type_UO__c</field>
+                <field>ips_Is_the_employer_decision_maker__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>F_rste_arbeidsgiverm_te__c</field>
+                <field>IPS_Subcategory_Type_UO__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -84,6 +69,10 @@
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Subject</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>F_rste_arbeidsgiverm_te__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -129,12 +118,12 @@
                 <behavior>Required</behavior>
                 <field>EndDateTime</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ips_Out_in_the_field__c</field>
             </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ips_Travel_time__c</field>
@@ -191,7 +180,7 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>Event.ips_Meeting_Completed</actionName>
+            <actionName>Event.ips_Lukk_mote</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
         </platformActionListItems>
@@ -206,9 +195,14 @@
             <sortOrder>2</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Delete</actionName>
+            <actionName>Clone</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>3</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Delete</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>4</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <relatedContent>
@@ -243,7 +237,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h5E000001iK5i</masterLabel>
+        <masterLabel>00h7a000002ZOD6</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
