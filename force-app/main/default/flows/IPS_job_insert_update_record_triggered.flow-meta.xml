@@ -2,10 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
     <assignments>
-        <name>put_IPS_as_working</name>
-        <label>Sett IPS til jobber</label>
+        <name>Set_IPS_status_to_working</name>
+        <label>Set IPS status to working</label>
         <locationX>50</locationX>
-        <locationY>852</locationY>
+        <locationY>911</locationY>
         <assignmentItems>
             <assignToReference>getWorktrail.ips_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -14,14 +14,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>IsEndDatePassed</targetReference>
+            <targetReference>hasEndDatePassed</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_status_as_completed</name>
-        <label>Sett Jobb Status til Avsluttet</label>
+        <label>Set status as completed</label>
         <locationX>50</locationX>
-        <locationY>1188</locationY>
+        <locationY>1247</locationY>
         <assignmentItems>
             <assignToReference>$Record.ips_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -37,7 +37,7 @@
         <name>set_status_as_ongoing</name>
         <label>Sett jobbstatus til Påbegynt</label>
         <locationX>50</locationX>
-        <locationY>396</locationY>
+        <locationY>455</locationY>
         <assignmentItems>
             <assignToReference>$Record.ips_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -50,23 +50,22 @@
         </connector>
     </assignments>
     <decisions>
-        <description>Checks to see if the end date has passed, and if so, sets the jobb status as completed</description>
-        <name>IsEndDatePassed</name>
-        <label>IsEndDatePassed</label>
+        <name>hasEndDatePassed</name>
+        <label>hasEndDatePassed</label>
         <locationX>182</locationX>
-        <locationY>1068</locationY>
+        <locationY>1127</locationY>
         <defaultConnector>
             <targetReference>UpdateJob</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>HasPassed</name>
+            <name>hasPassed</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
                 <operator>LessThan</operator>
                 <rightValue>
-                    <elementReference>todaysDate</elementReference>
+                    <elementReference>varTodaysDate</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -86,16 +85,16 @@
             <connector>
                 <targetReference>Set_status_as_completed</targetReference>
             </connector>
-            <label>HasPassed</label>
+            <label>hasPassed</label>
         </rules>
     </decisions>
     <decisions>
         <name>IsIPSJobOngoing</name>
         <label>IsIPSJobOngoing</label>
         <locationX>182</locationX>
-        <locationY>612</locationY>
+        <locationY>671</locationY>
         <defaultConnector>
-            <targetReference>IsEndDatePassed</targetReference>
+            <targetReference>hasEndDatePassed</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -125,13 +124,13 @@
         <name>IsStartDateTodayOrPreviously</name>
         <label>IsStartDateTodayOrPreviously</label>
         <locationX>182</locationX>
-        <locationY>276</locationY>
+        <locationY>335</locationY>
         <defaultConnector>
             <targetReference>IsIPSJobOngoing</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>IsTrue</name>
+            <name>istrue</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
@@ -144,7 +143,14 @@
                 <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
-                    <elementReference>todaysDate</elementReference>
+                    <elementReference>varTodaysDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>varTodaysDate</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -152,13 +158,6 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Ongoing</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>todaysDate</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -171,16 +170,16 @@
             <connector>
                 <targetReference>set_status_as_ongoing</targetReference>
             </connector>
-            <label>IsTrue</label>
+            <label>istrue</label>
         </rules>
     </decisions>
     <formulas>
-        <name>todaysDate</name>
+        <name>varTodaysDate</name>
         <dataType>Date</dataType>
-        <expression>TODAY()</expression>
+        <expression>today()</expression>
     </formulas>
-    <interviewLabel>IPS jobb insert/update {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS insert/update job</label>
+    <interviewLabel>IPS job insert / update record-triggered {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS subflow job insert / update</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -204,10 +203,10 @@
         <name>getWorktrail</name>
         <label>getWorktrail</label>
         <locationX>50</locationX>
-        <locationY>732</locationY>
+        <locationY>791</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>put_IPS_as_working</targetReference>
+            <targetReference>Set_IPS_status_to_working</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -225,17 +224,17 @@
         <name>UpdateJob</name>
         <label>UpdateJob</label>
         <locationX>182</locationX>
-        <locationY>1404</locationY>
+        <locationY>1463</locationY>
         <connector>
-            <targetReference>updateWorktrail</targetReference>
+            <targetReference>UpdateWorktrail</targetReference>
         </connector>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>updateWorktrail</name>
-        <label>updateWorktrail</label>
+        <name>UpdateWorktrail</name>
+        <label>UpdateWorktrail</label>
         <locationX>182</locationX>
-        <locationY>1524</locationY>
+        <locationY>1583</locationY>
         <inputReference>getWorktrail</inputReference>
     </recordUpdates>
     <start>
@@ -246,13 +245,6 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>ips_Start_Date__c</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
-        <filters>
             <field>ips_Status__c</field>
             <operator>NotEqualTo</operator>
             <value>
@@ -260,12 +252,8 @@
             </value>
         </filters>
         <object>ips_Job__c</object>
-        <schedule>
-            <frequency>Daily</frequency>
-            <startDate>2022-11-24</startDate>
-            <startTime>23:45:00.000Z</startTime>
-        </schedule>
-        <triggerType>Scheduled</triggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
 </Flow>
