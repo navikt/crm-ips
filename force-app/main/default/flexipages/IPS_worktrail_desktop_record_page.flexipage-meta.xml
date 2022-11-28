@@ -1298,11 +1298,11 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>configId</name>
-                    <value>IPS_task</value>
+                    <value>IPS_task_log_contact</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>customEmptySubtitle</name>
-                    <value>Det er ikke opprettet noen oppgaver!</value>
+                    <value>Det er ikke opprettet noen oppgaver</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>filterIsActive</name>
@@ -1310,7 +1310,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>headerIcon</name>
-                    <value>standard:action_list_component</value>
+                    <value>standard:task</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>headerTitleEnglish</name>
@@ -1334,6 +1334,13 @@
                 </componentInstanceProperties>
                 <componentName>timeline</componentName>
                 <identifier>c_timeline</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1368,7 +1375,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>customEmptySubtitle</name>
-                    <value>Det er ikke registrert noen jobber!</value>
+                    <value>Tomt. Har du registrert en jobb men ser den ikke her? Husk som minimum at startdato må registreres.</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>filterIsActive</name>
@@ -1437,10 +1444,11 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>configId</name>
+                    <value>UO_IPS_Edu</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>customEmptySubtitle</name>
-                    <value>Det er ikke registrert noen utdanning!</value>
+                    <value>Tomt. Har du registrert en jobb men ser den ikke her? Husk som minimum at startdato må registreres.</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>filterIsActive</name>
@@ -1472,6 +1480,19 @@
                 </componentInstanceProperties>
                 <componentName>timeline</componentName>
                 <identifier>c_timeline4</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.ips_Main_Goal_list__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Education/Apprentice</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>Facet-f7a9cf0c-581a-48e7-a91d-c29f72ad865b</name>
