@@ -95,10 +95,10 @@
         <locationY>638</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
-            <name>isEndReportUO_0</name>
+            <name>isEndReportIPS</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varReportEnd</leftValueReference>
+                <leftValueReference>varReportEndIPS</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -107,13 +107,13 @@
             <connector>
                 <targetReference>runEndReportingIPS</targetReference>
             </connector>
-            <label>isEndReportUO</label>
+            <label>isEndReportIPS</label>
         </rules>
         <rules>
-            <name>isIntervallReportUO_0</name>
+            <name>isIntervallReportIPS</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varReportIntervall</leftValueReference>
+                <leftValueReference>varReportIntervallIPS</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -122,7 +122,7 @@
             <connector>
                 <targetReference>runIntervallReportIPS</targetReference>
             </connector>
-            <label>isIntervallReportUO</label>
+            <label>isIntervallReportIPS</label>
         </rules>
     </decisions>
     <description>End report for IPS/UO</description>
@@ -244,13 +244,67 @@
             <fieldText>Underveisrapport</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>recordTypeName</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>ips_Supported_Employment</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>varReportEnd</name>
             <dataType>Boolean</dataType>
-            <fieldText>Sluttrapport/Avslutningsnotat</fieldText>
+            <fieldText>Sluttrapport</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>recordTypeName</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>ips_Supported_Employment</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>varReportIntervallIPS</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Underveisnotat</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>recordTypeName</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>IPS</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>varReportEndIPS</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Avslutningsnotat</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>recordTypeName</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>IPS</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>

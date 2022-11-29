@@ -4,7 +4,7 @@
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
         <locationX>182</locationX>
-        <locationY>4838</locationY>
+        <locationY>5630</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -41,10 +41,103 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addEducation</name>
+        <label>addEducation</label>
+        <locationX>162</locationX>
+        <locationY>5198</locationY>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Tittel: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Type utdanning: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varEducationType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Dato: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.ips_Start_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue> - </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.ips_End_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateEducation</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addJobsIPS</name>
         <label>addJobsIPS</label>
         <locationX>162</locationX>
-        <locationY>4406</locationY>
+        <locationY>4526</locationY>
         <assignmentItems>
             <assignToReference>jobsListIPS</assignToReference>
             <operator>Add</operator>
@@ -134,6 +227,70 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addNoEducationText</name>
+        <label>addNoEducationText</label>
+        <locationX>290</locationX>
+        <locationY>5078</locationY>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen utdanningsløp registrert.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateReport</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addNoJobText</name>
+        <label>addNoJobText</label>
+        <locationX>290</locationX>
+        <locationY>4406</locationY>
+        <assignmentItems>
+            <assignToReference>jobsListIPS</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen jobber registrert.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getEducation</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addNoTaskText</name>
+        <label>addNoTaskText</label>
+        <locationX>290</locationX>
+        <locationY>3254</locationY>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen fullførte delmål registrert.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getParticipantMeetingsIPS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addParticipantNoShowMeeting</name>
+        <label>addParticipantNoShowMeeting</label>
+        <locationX>182</locationX>
+        <locationY>4046</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantNoShow</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>getParticipantNoShowIPS</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getJobsIPS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addParticipantShowMeeting</name>
         <label>addParticipantShowMeeting</label>
         <locationX>182</locationX>
@@ -202,7 +359,7 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Delmål: </stringValue>
+                <stringValue>Emne: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -230,7 +387,7 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>iterateTasksIPS.CreatedDate</elementReference>
+                <elementReference>varTaskStartDate</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -252,34 +409,6 @@
             <operator>Add</operator>
             <value>
                 <elementReference>varEndedDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Beskrivelse av målet: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateTasksIPS.Description</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -467,6 +596,31 @@
         </value>
     </constants>
     <decisions>
+        <name>checkEducation</name>
+        <label>checkEducation</label>
+        <locationX>182</locationX>
+        <locationY>4958</locationY>
+        <defaultConnector>
+            <targetReference>addNoEducationText</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isEducationEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEducationNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEducation</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>iterateEducation</targetReference>
+            </connector>
+            <label>isEducationNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkForDuplicat</name>
         <label>checkForDuplicat</label>
         <locationX>534</locationX>
@@ -517,9 +671,9 @@
         <name>checkJob</name>
         <label>checkJob</label>
         <locationX>182</locationX>
-        <locationY>4166</locationY>
+        <locationY>4286</locationY>
         <defaultConnector>
-            <targetReference>updateReport</targetReference>
+            <targetReference>addNoJobText</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -549,19 +703,19 @@
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isWithParticipant</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>iterateEmplMeetingsIPS.WhoId</leftValueReference>
+                <leftValueReference>iterateEmplMeetingsIPS.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>getParticipantDetailsIPS.PersonContactId</elementReference>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>iterateEmplMeetingsIPS.IPS_No_Show__c</leftValueReference>
+                <leftValueReference>iterateEmplMeetingsIPS.ips_Completed__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -571,12 +725,12 @@
         </rules>
         <rules>
             <name>isNoShow</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>iterateEmplMeetingsIPS.WhoId</leftValueReference>
+                <leftValueReference>iterateEmplMeetingsIPS.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>getParticipantDetailsIPS.PersonContactId</elementReference>
+                    <stringValue>Participant Absent</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -648,7 +802,7 @@
         <locationX>182</locationX>
         <locationY>3134</locationY>
         <defaultConnector>
-            <targetReference>getParticipantMeetingsIPS</targetReference>
+            <targetReference>addNoTaskText</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>IsNull</defaultConnectorLabel>
         <rules>
@@ -678,6 +832,43 @@ CASE(TEXT({!iterateTasksIPS.Status}),
 &apos; &apos;)
 &amp;&apos;  -  &apos;&amp;
 TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))</expression>
+    </formulas>
+    <formulas>
+        <name>varEducationType</name>
+        <dataType>String</dataType>
+        <expression>CASE({!iterateEducation.ips_Form_of_Education__c},
+&apos;Certificate of Apprenticeship&apos;,&apos;Lærling&apos;,
+&apos;Full-time Study&apos;,&apos;Heltidsstudie&apos;,
+&apos;Part-time Study&apos;,&apos;Deltidsstudie&apos;,
+&apos;Evening Course&apos;,&apos;Kveldskurs&apos;,
+&apos;Day Cource&apos;,&apos;Kurs på dagtid&apos;,
+&apos;&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>varEndCause</name>
+        <dataType>String</dataType>
+        <expression>IF(ISPICKVAL({!getWorktrailIPS.End_Cause__c},&apos;Work&apos;),
+CASE({!getWorktrailIPS.ips_Work__c},
+ &apos;Work without wage subsidy&apos;, &apos;Arbeid uten lønnstilskudd&apos;, 
+&apos;Work with wage subsidies from NAV&apos;, &apos;Arbeid med lønnstilskudd fra NAV&apos;,
+&apos;Work in combination with other benefits from NAV&apos;, &apos;Arbeid i kombinasjon med andre ytelser fra NAV&apos;,
+&apos;Work in combination with a graduated disability pension&apos;, &apos;Arbeid i kombinasjon med gradert uførepensjon&apos;,
+&apos;&apos;)
+,
+IF(ISPICKVAL({!getWorktrailIPS.End_Cause__c},&apos;Other end causes&apos;),
+
+CASE({!getWorktrailIPS.ips_Other_end_cases__c},
+ &apos;Education - self-financed&apos;, &apos;Utdanning - egen finansiert&apos;, 
+&apos;Education - covered by NAV&apos;, &apos;Utdanning - dekket av NAV&apos;,
+&apos;Chaining for other work-oriented measures under the auspices of NAV&apos;, &apos;Kjeding til andre arbeidsrettede tiltak i regi av NAV&apos;,
+&apos;Other active measures in consultation with NAV (eg medical treatment, or municipal measures)&apos;, &apos;Andre aktive tiltak i samarbeid med NAV&apos;,
+&apos;Illness&apos;, &apos;Sykdom&apos;,
+&apos;Applied for / granted old age pension / AFP&apos;, &apos;Søkt/innvilget alderspensjon/AFP&apos;,
+&apos;Applied / granted disability benefits&apos;, &apos;Søkt/innvilget uføretrygd&apos;,
+&apos;Other (military, pregnancy, relocation, etc.)&apos;, &apos;Annet (millitæret, svangerskap,flytting etc)&apos;,
+&apos;Not applicable&apos;, &apos;Ingen&apos;,
+&apos;&apos;),&apos;&apos;))</expression>
     </formulas>
     <formulas>
         <name>varEndDateIPS</name>
@@ -725,8 +916,27 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <dataType>String</dataType>
         <expression>RPAD(&quot;Dato &quot;,10,&apos; &apos;)&amp;RPAD(&quot;Beskrivelse &quot;,100,&apos; &apos;)&amp;RPAD(&quot;Status &quot;,20,&apos; &apos;)</expression>
     </formulas>
+    <formulas>
+        <name>varTaskStartDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!iterateTasksIPS.CreatedDate})</expression>
+    </formulas>
     <interviewLabel>IPS - subflow end report IPS {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - subflow end report IPS</label>
+    <loops>
+        <name>iterateEducation</name>
+        <label>iterateEducation</label>
+        <locationX>74</locationX>
+        <locationY>5078</locationY>
+        <collectionReference>getEducation</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>addEducation</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>updateReport</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <loops>
         <name>iterateEmplMeetingsIPS</name>
         <label>iterateEmplMeetingsIPS</label>
@@ -745,14 +955,14 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <name>iterateJobsIPS</name>
         <label>iterateJobsIPS</label>
         <locationX>74</locationX>
-        <locationY>4286</locationY>
+        <locationY>4406</locationY>
         <collectionReference>getJobsIPS</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>addJobsIPS</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>updateReport</targetReference>
+            <targetReference>getEducation</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -832,6 +1042,27 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <object>ips_report__c</object>
     </recordCreates>
     <recordLookups>
+        <name>getEducation</name>
+        <label>getEducation</label>
+        <locationX>182</locationX>
+        <locationY>4838</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkEducation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Education__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getEmplMeetingsIPS</name>
         <label>getEmplMeetingsIPS</label>
         <locationX>182</locationX>
@@ -856,10 +1087,10 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             </value>
         </filters>
         <filters>
-            <field>ips_Subcategory_Type_IPS__c</field>
+            <field>WhoId</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Job development</stringValue>
+                <elementReference>getParticipantDetailsIPS.PersonContactId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -909,7 +1140,7 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <name>getJobsIPS</name>
         <label>getJobsIPS</label>
         <locationX>182</locationX>
-        <locationY>4046</locationY>
+        <locationY>4166</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkJob</targetReference>
@@ -992,7 +1223,7 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <connector>
             <targetReference>addParticipantShowMeeting</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -1014,6 +1245,13 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <booleanValue>false</booleanValue>
             </value>
         </filters>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -1025,9 +1263,9 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <locationY>3926</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getJobsIPS</targetReference>
+            <targetReference>addParticipantNoShowMeeting</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -1036,17 +1274,24 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             </value>
         </filters>
         <filters>
-            <field>IPS_No_Show__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
             <field>IPS_Type__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Meeting with Participant</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Participant Absent</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_No_Show__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -1090,7 +1335,7 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <connector>
             <targetReference>checkTaskIPS</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filterLogic>1 AND (2 OR 3) AND (4 OR 5)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -1110,6 +1355,20 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Delmål (av hovedmål)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Completed__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -1150,7 +1409,7 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <name>updateReport</name>
         <label>updateReport</label>
         <locationX>182</locationX>
-        <locationY>4718</locationY>
+        <locationY>5510</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -1243,7 +1502,7 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         </fields>
         <fields>
             <name>displayTxt55</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Hvis resultatet av IPS er et stabilt arbeidsforhold, er det ikke på samme måte behov for en fyldig rapport. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Husk at rapporten alltid skal godkjennes av deltaker.&amp;nbsp;&lt;/strong&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Hvis resultatet av IPS er et stabilt arbeidsforhold, er det ikke på samme måte behov for en fyldig rapport. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Hovedregelen er at sluttrapporten skal gjennomgås med deltaker før innsending.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Dersom deltaker har kommentarer til rapporten bør dette fremgå.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Om deltaker ikke er tilgjengelig for gjennomgang skal rapporten sendes til deltaker, enten per post eller digitalt.&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1251,6 +1510,22 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fieldType>RegionContainer</fieldType>
             <fields>
                 <name>workTrailEndReportIPS_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailEndReportIPS_Section3</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailEndReportIPS_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayTxt2Old</name>
@@ -1266,70 +1541,11 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>workTrailEndReportIPS_Section2_Column2</name>
+                <name>workTrailEndReportIPS_Section3_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayTxtNameIPSOld</name>
                     <fieldText>&lt;p&gt;{!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>3</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailEndReportIPS_Section2_Column3</name>
-                <fieldType>Region</fieldType>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>3</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailEndReportIPS_Section2_Column4</name>
-                <fieldType>Region</fieldType>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>3</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>workTrailEndReportIPS_Section3</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailEndReportIPS_Section3_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxt4Old</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Behandlingsteam&lt;/strong&gt;:&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>3</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailEndReportIPS_Section3_Column2</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxtSupervisorIPSOld</name>
-                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Behandlingsteam__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1371,8 +1587,8 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <name>workTrailEndReportIPS_Section4_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxt5Old</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Oppstartsdato&lt;/strong&gt;:&lt;/p&gt;</fieldText>
+                    <name>displayTxt4Old</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Behandlingsteam&lt;/strong&gt;:&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1387,8 +1603,8 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <name>workTrailEndReportIPS_Section4_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxtToDateIPSOld</name>
-                    <fieldText>&lt;p&gt;{!varStartDateIPS}&lt;/p&gt;</fieldText>
+                    <name>displayTxtSupervisorIPSOld</name>
+                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Behandlingsteam__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1402,11 +1618,6 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fields>
                 <name>workTrailEndReportIPS_Section4_Column3</name>
                 <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxt6Old</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Sluttdato&lt;/strong&gt;:&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -1418,11 +1629,6 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fields>
                 <name>workTrailEndReportIPS_Section4_Column4</name>
                 <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxtFromDateIPSOld</name>
-                    <fieldText>&lt;p&gt;{!varEndDateIPS}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -1440,8 +1646,8 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <name>workTrailEndReportIPS_Section5_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxt7Old</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Sluttårsak:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <name>displayTxt5Old</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Oppstartsdato&lt;/strong&gt;:&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1456,8 +1662,8 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <name>workTrailEndReportIPS_Section5_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxtEndCauseIPSOld</name>
-                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Other_end_cases__c}&lt;/p&gt;</fieldText>
+                    <name>displayTxtToDateIPSOld</name>
+                    <fieldText>&lt;p&gt;{!varStartDateIPS}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1471,6 +1677,11 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fields>
                 <name>workTrailEndReportIPS_Section5_Column3</name>
                 <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxt6Old</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Sluttdato&lt;/strong&gt;:&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -1482,6 +1693,11 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fields>
                 <name>workTrailEndReportIPS_Section5_Column4</name>
                 <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxtFromDateIPSOld</name>
+                    <fieldText>&lt;p&gt;{!varEndDateIPS}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -1497,6 +1713,65 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fieldType>RegionContainer</fieldType>
             <fields>
                 <name>workTrailEndReportIPS_Section6_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxt7Old</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Sluttårsak:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>workTrailEndReportIPS_Section6_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxtEndCauseIPSOld</name>
+                    <fieldText>&lt;p&gt;{!varEndCause}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>workTrailEndReportIPS_Section6_Column3</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>workTrailEndReportIPS_Section6_Column4</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailEndReportIPS_Section7</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailEndReportIPS_Section7_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayTxtWorkDevelopmentIPSOld</name>
@@ -1519,10 +1794,10 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>workTrailEndReportIPS_Section7</name>
+            <name>workTrailEndReportIPS_Section8</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailEndReportIPS_Section7_Column1</name>
+                <name>workTrailEndReportIPS_Section8_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>ipsDisplay33Old</name>
@@ -1643,7 +1918,7 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         </fields>
         <fields>
             <name>displayTxt56</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hvis resultatet av IPS er et stabilt arbeidsforhold, er det ikke på samme måte behov for en fyldig rapport. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;Husk at rapporten alltid skal godkjennes av deltaker.&amp;nbsp;&lt;/strong&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hvis resultatet av IPS er et stabilt arbeidsforhold, er det ikke på samme måte behov for en fyldig rapport. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;Hovedregelen er at sluttrapporten skal gjennomgås med deltaker før innsending. &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;Dersom deltaker har kommentarer til rapporten bør dette fremgå. &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;Om deltaker ikke er tilgjengelig for gjennomgang skal rapporten sendes til deltaker, enten per post eller digitalt.&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1651,6 +1926,22 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fieldType>RegionContainer</fieldType>
             <fields>
                 <name>workTrailEndReportIPSNew_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailEndReportIPSNew_Section3</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailEndReportIPSNew_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayTxt2New</name>
@@ -1666,70 +1957,11 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>workTrailEndReportIPSNew_Section2_Column2</name>
+                <name>workTrailEndReportIPSNew_Section3_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayTxtNameIPSNew</name>
                     <fieldText>&lt;p&gt;{!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>3</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailEndReportIPSNew_Section2_Column3</name>
-                <fieldType>Region</fieldType>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>3</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailEndReportIPSNew_Section2_Column4</name>
-                <fieldType>Region</fieldType>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>3</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>workTrailEndReportIPSNew_Section3</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailEndReportIPSNew_Section3_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxt4New</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Behandlingsteam&lt;/strong&gt;:&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>3</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailEndReportIPSNew_Section3_Column2</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxtSupervisorIPSNew</name>
-                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Behandlingsteam__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1771,8 +2003,8 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <name>workTrailEndReportIPSNew_Section4_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxt5new</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Oppstartsdato&lt;/strong&gt;:&lt;/p&gt;</fieldText>
+                    <name>displayTxt4New</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Behandlingsteam&lt;/strong&gt;:&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1787,8 +2019,8 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <name>workTrailEndReportIPSNew_Section4_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxtToDateIPSNew</name>
-                    <fieldText>&lt;p&gt;{!varStartDateIPS}&lt;/p&gt;</fieldText>
+                    <name>displayTxtSupervisorIPSNew</name>
+                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Behandlingsteam__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1802,11 +2034,6 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fields>
                 <name>workTrailEndReportIPSNew_Section4_Column3</name>
                 <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxt6New</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Sluttdato&lt;/strong&gt;:&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -1818,11 +2045,6 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fields>
                 <name>workTrailEndReportIPSNew_Section4_Column4</name>
                 <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxtFromDateIPSNew</name>
-                    <fieldText>&lt;p&gt;{!varEndDateIPS}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -1840,8 +2062,8 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <name>workTrailEndReportIPSNew_Section5_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxt7New</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Sluttårsak:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <name>displayTxt5new</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Oppstartsdato&lt;/strong&gt;:&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1856,8 +2078,8 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
                 <name>workTrailEndReportIPSNew_Section5_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayTxtEndCauseIPSNew</name>
-                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Other_end_cases__c}&lt;/p&gt;</fieldText>
+                    <name>displayTxtToDateIPSNew</name>
+                    <fieldText>&lt;p&gt;{!varStartDateIPS}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1871,6 +2093,11 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fields>
                 <name>workTrailEndReportIPSNew_Section5_Column3</name>
                 <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxt6New</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Sluttdato&lt;/strong&gt;:&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -1882,6 +2109,11 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fields>
                 <name>workTrailEndReportIPSNew_Section5_Column4</name>
                 <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxtFromDateIPSNew</name>
+                    <fieldText>&lt;p&gt;{!varEndDateIPS}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -1897,6 +2129,65 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fieldType>RegionContainer</fieldType>
             <fields>
                 <name>workTrailEndReportIPSNew_Section6_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxt7New</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Sluttårsak:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>workTrailEndReportIPSNew_Section6_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxtEndCauseIPSNew</name>
+                    <fieldText>&lt;p&gt;{!varEndCause}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>workTrailEndReportIPSNew_Section6_Column3</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>workTrailEndReportIPSNew_Section6_Column4</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailEndReportIPSNew_Section7</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailEndReportIPSNew_Section7_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayTxtWorkDevelopmentIPSNew</name>
@@ -1919,10 +2210,10 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>workTrailEndReportIPSNew_Section7</name>
+            <name>workTrailEndReportIPSNew_Section8</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailEndReportIPSNew_Section7_Column1</name>
+                <name>workTrailEndReportIPSNew_Section8_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>ipsDisplay33New</name>
@@ -2000,7 +2291,7 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <description>End report template for IPS</description>
         <name>templateIPSEndReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Avslutningsnotat IPS - &lt;/strong&gt;&lt;strong style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt; {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Deltaker:                 {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist:        {!getOwnerIPS.FirstName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Behandlingsteam:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;  {!getWorktrailIPS.ips_Behandlingsteam__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 12px;&quot;&gt;Startdato:                {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 12px;&quot;&gt;Sluttdato:                {!varEndDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Sluttårsak:               {!getWorktrailIPS.End_Cause__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;{!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt; ble henvist til Individuell jobbstøtte (IPS)&lt;/span&gt;&lt;span style=&quot;font-size: 12px; color: rgb(0, 0, 0);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;den &lt;/span&gt;&lt;span style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!varStartDateIPS}&lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;. Deltaker har vært med i perioden &lt;/span&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varStartDateIPS} - {!varEndDateIPS}.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varPassiveRecord}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Deltakers mål med IPS:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Prioriterte yrkesønsker:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Hovedmål&lt;/strong&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Delmål&lt;/strong&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;﻿Deltagermøter&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varParticipantShowCount} deltagermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varParticipantNoShow} deltagermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px; color: rgb(0, 0, 0);&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!jobsListIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Beskriv forhold som har påvirket jobbutviklingsprosessen vesentlig. Hva har vært positivt og hva har vært utfordrende.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varsummarizeCooperation}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Behov for tilrettelegging&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varNeedForHelp}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Samarbeid med arbeidsgivere&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;﻿{!employeeMeetingsIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varCounterParticipantEmployeeMeeting} arbeidsgivermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varCountNoShow} arbeidsgivermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varSummarizeEmployeer}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Avslutning&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varsummarizeEnd}&lt;/span&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Avslutningsnotat IPS - &lt;/strong&gt;&lt;strong style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt; {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Deltaker:                 {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist:        {!getOwnerIPS.FirstName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Behandlingsteam:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;  {!getWorktrailIPS.ips_Behandlingsteam__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 12px;&quot;&gt;Startdato:                {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); font-size: 12px;&quot;&gt;Sluttdato:                {!varEndDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Sluttårsak:               {!varEndCause}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;{!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt; ble henvist til Individuell jobbstøtte (IPS)&lt;/span&gt;&lt;span style=&quot;font-size: 12px; color: rgb(0, 0, 0);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;den &lt;/span&gt;&lt;span style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!varStartDateIPS}&lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;. Deltaker har vært med i perioden &lt;/span&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varStartDateIPS} - {!varEndDateIPS}.&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varPassiveRecord}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Deltakers mål med IPS:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Prioriterte yrkesønsker:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Hovedmål&lt;/strong&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Delmål&lt;/strong&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;﻿Deltagermøter&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varParticipantShowCount} deltagermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varParticipantNoShow} deltagermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px; color: rgb(0, 0, 0);&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!jobsListIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Deltagelse i utdanning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-size: 12px;&quot;&gt;{!educationList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Beskriv forhold som har påvirket jobbutviklingsprosessen vesentlig. Hva har vært positivt og hva har vært utfordrende.&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varsummarizeCooperation}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Behov for tilrettelegging&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varNeedForHelp}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Samarbeid med arbeidsgivere&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;﻿{!employeeMeetingsIPS}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varCounterParticipantEmployeeMeeting} arbeidsgivermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varCountNoShow} arbeidsgivermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varSummarizeEmployeer}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Avslutning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varsummarizeEnd}&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>assignmentParticipant</name>
@@ -2020,6 +2311,13 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPS.CompletedDateTime})))&amp;&quot;.&quot;&amp
         <value>
             <numberValue>0.0</numberValue>
         </value>
+    </variables>
+    <variables>
+        <name>educationList</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>employeeMeetings</name>
