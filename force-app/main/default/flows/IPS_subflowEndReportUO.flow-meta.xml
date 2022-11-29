@@ -4,7 +4,7 @@
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
         <locationX>182</locationX>
-        <locationY>4286</locationY>
+        <locationY>4742</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -16,7 +16,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>55.0</apiVersion>
+    <apiVersion>56.0</apiVersion>
     <assignments>
         <name>addCurrentAccountId_0</name>
         <label>addCurrentAccountId</label>
@@ -176,6 +176,38 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addNoEducationText</name>
+        <label>addNoEducationText</label>
+        <locationX>270</locationX>
+        <locationY>4406</locationY>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Ingen utdanningsløp registrert.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateReport</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addNoJobsText</name>
+        <label>addNoJobsText</label>
+        <locationX>290</locationX>
+        <locationY>3734</locationY>
+        <assignmentItems>
+            <assignToReference>jobsList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen jobber registrert.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getEducation</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addParticipantNoShow</name>
         <label>addParticipantNoShow</label>
         <locationX>182</locationX>
@@ -216,7 +248,56 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>taskRow</elementReference>
+                <stringValue>Emne: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateTasks.Subject</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Status: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varTaskStatus</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue> - </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varTaskEndDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -239,7 +320,7 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Deltaker har ingen fullførte delmål i perioden</stringValue>
+                <stringValue>Ingen fullførte delmål registrert.</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -427,6 +508,31 @@
         </value>
     </constants>
     <decisions>
+        <name>checkEducation</name>
+        <label>checkEducation</label>
+        <locationX>182</locationX>
+        <locationY>4286</locationY>
+        <defaultConnector>
+            <targetReference>addNoEducationText</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isEducationEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEducationNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEducation</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateReport</targetReference>
+            </connector>
+            <label>isEducationNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkForDuplicatUO</name>
         <label>checkForDuplicatUO</label>
         <locationX>534</locationX>
@@ -479,9 +585,9 @@
         <locationX>182</locationX>
         <locationY>3614</locationY>
         <defaultConnector>
-            <targetReference>updateReport</targetReference>
+            <targetReference>addNoJobsText</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>IsJobNull</defaultConnectorLabel>
         <rules>
             <name>IsJobNotNull_0</name>
             <conditionLogic>and</conditionLogic>
@@ -509,19 +615,19 @@
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isWithParticipant</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>iterateEmplMeetingsUO.WhoId</leftValueReference>
+                <leftValueReference>iterateEmplMeetingsUO.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>getParticipantDetailsUO.PersonContactId</elementReference>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>iterateEmplMeetingsUO.IPS_No_Show__c</leftValueReference>
+                <leftValueReference>iterateEmplMeetingsUO.ips_Completed__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -531,12 +637,12 @@
         </rules>
         <rules>
             <name>isNoShow</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>iterateEmplMeetingsUO.WhoId</leftValueReference>
+                <leftValueReference>iterateEmplMeetingsUO.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>getParticipantDetailsUO.PersonContactId</elementReference>
+                    <stringValue>Participant Absent</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -626,6 +732,13 @@ CASE(TEXT({!iterateTasks.Status}),
 TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasks.CompletedDateTime})))</expression>
     </formulas>
     <formulas>
+        <name>varEndCause</name>
+        <dataType>String</dataType>
+        <expression>CASE({!getWorktrailUO.End_Cause__c},
+ &apos;Work&apos;, &apos;Arbeid&apos;, 
+&apos;Other end causes&apos;, &apos;Andre sluttårsaker&apos;,&apos;&apos;)</expression>
+    </formulas>
+    <formulas>
         <name>varEndDateUO</name>
         <dataType>Date</dataType>
         <expression>{!getWorktrailUO.ips_End_Date__c}</expression>
@@ -657,9 +770,21 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <expression>DATEVALUE({!getWorktrailUO.Oppstartsdato__c})</expression>
     </formulas>
     <formulas>
+        <name>varTaskEndDate</name>
+        <dataType>String</dataType>
+        <expression>TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasks.CompletedDateTime})))</expression>
+    </formulas>
+    <formulas>
         <name>varTaskRowHeading</name>
         <dataType>String</dataType>
         <expression>RPAD(&quot;Dato &quot;,10,&apos; &apos;)&amp;RPAD(&quot;Beskrivelse &quot;,100,&apos; &apos;)&amp;RPAD(&quot;Status &quot;,20,&apos; &apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>varTaskStatus</name>
+        <dataType>String</dataType>
+        <expression>IF(ISPICKVAL({!iterateTasks.IPS_Status1__c},&apos;Completed&apos;), &apos;Fullført&apos;,
+      IF({!iterateTasks.ips_Completed__c},&apos;Fullført&apos;,&apos;&apos;)
+)</expression>
     </formulas>
     <formulas>
         <name>viewRecordTypeName</name>
@@ -696,7 +821,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
             <targetReference>addJobs</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>updateReport</targetReference>
+            <targetReference>getEducation</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -762,6 +887,27 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <object>ips_report__c</object>
     </recordCreates>
     <recordLookups>
+        <name>getEducation</name>
+        <label>getEducation</label>
+        <locationX>182</locationX>
+        <locationY>4166</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkEducation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Education__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getEmplMeetings</name>
         <label>getEmplMeetings</label>
         <locationX>182</locationX>
@@ -786,10 +932,10 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
             </value>
         </filters>
         <filters>
-            <field>IPS_Subcategory_Type_UO__c</field>
+            <field>WhoId</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Relationship building</stringValue>
+                <elementReference>getParticipantDetailsUO.PersonContactId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -915,7 +1061,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <connector>
             <targetReference>addParticipantShowMeeting</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -937,6 +1083,13 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
                 <booleanValue>false</booleanValue>
             </value>
         </filters>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -950,7 +1103,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <connector>
             <targetReference>addParticipantNoShow</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND 3 AND (2 OR 4)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -972,6 +1125,13 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
                 <stringValue>Meeting with Participant</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Participant Absent</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -985,7 +1145,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <connector>
             <targetReference>checkTask_0</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filterLogic>1 AND (2 OR 3) AND (4 OR 5)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -1007,6 +1167,20 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
                 <stringValue>Delmål (av hovedmål)</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Completed__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Task</object>
         <queriedFields>Id</queriedFields>
@@ -1015,6 +1189,8 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <queriedFields>ActivityDate</queriedFields>
         <queriedFields>Status</queriedFields>
         <queriedFields>CompletedDateTime</queriedFields>
+        <queriedFields>IPS_Status1__c</queriedFields>
+        <queriedFields>ips_Completed__c</queriedFields>
         <sortField>ActivityDate</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -1044,7 +1220,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <name>updateReport</name>
         <label>updateReport</label>
         <locationX>182</locationX>
-        <locationY>4166</locationY>
+        <locationY>4622</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -1180,7 +1356,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayInfoTxtUOOld</name>
-                    <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Rapporten skal omhandle hva som har vært forsøkt av arbeidsoppgaver og tilrettelegging, og anbefaling om videre tiltak eller tilrettelegging. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Rapporten må kunne brukes som dokumentasjon ved utarbeidelse av arbeidsevnevurdering, også i forbindelse med søknad om uføretrygd dersom aktuelt. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hvis resultatet av Utvidet oppfølging er et stabilt arbeidsforhold, er det ikke på samme måte behov for en fyldig rapport. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;Husk at rapporten alltid skal godkjennes av deltaker.&amp;nbsp;&lt;/strong&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Rapporten skal omhandle hva som har vært forsøkt av arbeidsoppgaver og tilrettelegging, og anbefaling om videre tiltak eller tilrettelegging. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Rapporten må kunne brukes som dokumentasjon ved utarbeidelse av arbeidsevnevurdering, også i forbindelse med søknad om uføretrygd dersom aktuelt. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Hvis resultatet av Utvidet oppfølging er et stabilt arbeidsforhold, er det ikke på samme måte behov for en fyldig rapport. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); font-size: 12px;&quot;&gt;Hovedregelen er at sluttrapporten skal gjennomgås med deltaker før innsending. Dersom deltaker har kommentarer til rapporten bør dette fremgå. Om deltaker ikke er tilgjengelig for gjennomgang skal rapporten sendes til deltaker, enten per post eller digitalt.&lt;/strong&gt;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1373,7 +1549,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayInfoTxtUONew</name>
-                    <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Rapporten skal omhandle hva som har vært forsøkt av arbeidsoppgaver og tilrettelegging, og anbefaling om videre tiltak eller tilrettelegging. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Rapporten må kunne brukes som dokumentasjon ved utarbeidelse av arbeidsevnevurdering, også i forbindelse med søknad om uføretrygd dersom aktuelt. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Hvis resultatet av Utvidet oppfølging er et stabilt arbeidsforhold, er det ikke på samme måte behov for en fyldig rapport. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Husk at rapporten alltid skal godkjennes av deltaker.&amp;nbsp;&lt;/b&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Rapporten skal omhandle hva som har vært forsøkt av arbeidsoppgaver og tilrettelegging, og anbefaling om videre tiltak eller tilrettelegging. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Rapporten må kunne brukes som dokumentasjon ved utarbeidelse av arbeidsevnevurdering, også i forbindelse med søknad om uføretrygd dersom aktuelt. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;Hvis resultatet av Utvidet oppfølging er et stabilt arbeidsforhold, er det ikke på samme måte behov for en fyldig rapport. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); font-size: 12px;&quot;&gt;Hovedregelen er at sluttrapporten skal gjennomgås med deltaker før innsending. Dersom deltaker har kommentarer til rapporten bør dette fremgå. Om deltaker ikke er tilgjengelig for gjennomgang skal rapporten sendes til deltaker, enten per post eller digitalt.&lt;/strong&gt;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -1472,7 +1648,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
             <targetReference>getWorktrailUO</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>newLine</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
@@ -1481,7 +1657,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <textTemplates>
         <name>templateUOEndReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Sluttrapport Utvidet oppfølging - &lt;/strong&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt; {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Deltaker:                 {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist:        {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;NAV-veileder:         {!getWorktrailUO.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Behandlingsteam:  {!getWorktrailUO.ips_Behandlingsteam__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Startdato:               {!varStartDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Sluttdato:               {!varEndDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Sluttårsak:              {!getWorktrailUO.ips_Other_end_cases__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 12px; color: rgb(38, 38, 38);&quot;&gt;Yrkeskartlegging og karriereplanlegging&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Ønsket yrke/bransje/karriere&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!getWorktrailUO.ips_Desired_profession_industry_career__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varsummarizeCooperation}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Handlingsplan&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Hovedmål&lt;/strong&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;  &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Delmål&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Deltagermøter&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varParticipantShowCount} deltagermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varParticipantNoShow} deltagermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px; color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Oppsummering av samarbeid mellom deltaker og jobbspesialist&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!varSummarizeParticipant}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Samarbeid med arbeidsgivere&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!employeeMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varCountParticipantEmployeeMeeting} arbeidsgivermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varCountParticipantEmployeeNoShow} arbeidsgivermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Oppsummering av samarbeid med arbeidsgivere&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!varSummarizeEmployeer}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!jobsList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Oppsummering av jobbdeltakelse&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varsummarizeParticipantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Avsluttende Oppsummering&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varsummarizeEnd}&lt;/span&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Sluttrapport Utvidet oppfølging - &lt;/strong&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt; {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Deltaker:                     {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist:            {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;NAV-veileder:             {!getWorktrailUO.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Innsøkende avdeling: {!getWorktrailUO.ips_Applying_Department__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-size: 12px;&quot;&gt;Startdato:                   {!varStartDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-size: 12px;&quot;&gt;Sluttdato:                   {!varEndDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Sluttårsak:                  {!varEndCause}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(38, 38, 38); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Yrkeskartlegging og karriereplanlegging&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Ønsket yrke/bransje/karriere&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!getWorktrailUO.ips_Desired_profession_industry_career__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 12px;&quot;&gt;{!varsummarizeCooperation}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Handlingsplan&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Hovedmål&lt;/strong&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;  &lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Delmål&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Deltagermøter&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varParticipantShowCount} deltagermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varParticipantNoShow} deltagermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-size: 12px;&quot;&gt;Oppsummering av samarbeid mellom deltaker og jobbspesialist&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varSummarizeParticipant}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Samarbeid med arbeidsgivere&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for    arbeid:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!employeeMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er gjennomført {!varCountParticipantEmployeeMeeting} arbeidsgivermøte(r) med deltager tilstede.&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Det er {!varCountParticipantEmployeeNoShow} arbeidsgivermøte(r) hvor deltager ikke har møtt.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Oppsummering av samarbeid med arbeidsgivere&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varSummarizeEmployeer}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!jobsList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Oppsummering av jobbdeltakelse&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varsummarizeParticipantMeetings}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Avsluttende Oppsummering&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!varsummarizeEnd}&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>assignmentParticipant</name>
@@ -1492,14 +1668,14 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <objectType>Event</objectType>
     </variables>
     <variables>
-        <name>employeeMeetings</name>
+        <name>educationList</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>endCause</name>
+        <name>employeeMeetings</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
