@@ -4,7 +4,7 @@
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
         <locationX>1084</locationX>
-        <locationY>6878</locationY>
+        <locationY>7646</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -18,6 +18,101 @@
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
+        <name>addEducation</name>
+        <label>addEducation</label>
+        <locationX>1064</locationX>
+        <locationY>7214</locationY>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Tittel: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Type utdanning: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varEducationType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Dato: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.ips_Start_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue> - </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.ips_End_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateEducation</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addEducationEmptytext</name>
+        <label>addEducationEmptytext</label>
+        <locationX>1192</locationX>
+        <locationY>7094</locationY>
+        <assignmentItems>
+            <assignToReference>varEducationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen utdanning registrert.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateReportRecord</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addPeriodTekst</name>
         <label>addPeriodTekst</label>
         <locationX>798</locationX>
@@ -26,7 +121,7 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Deltaker har ingen fullførte delmål i perioden</stringValue>
+                <stringValue>Deltaker har ingen fullførte delmål i perioden.</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -52,7 +147,7 @@
     <assignments>
         <name>addReportId</name>
         <label>addReportId</label>
-        <locationX>1205</locationX>
+        <locationX>1236</locationX>
         <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>varReportId</assignToReference>
@@ -81,7 +176,7 @@
             <assignToReference>taskListForward</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Delmål: </stringValue>
+                <stringValue>Emne: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -110,34 +205,6 @@
             <operator>Add</operator>
             <value>
                 <elementReference>iterateTasksIPSIntervall.ActivityDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Beskrivelse av målet: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateTasksIPSIntervall.Description</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -253,7 +320,7 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Delmål: </stringValue>
+                <stringValue>Emne: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -303,34 +370,6 @@
             <operator>Add</operator>
             <value>
                 <elementReference>varCompletedDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Beskrivelse av målet: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateTasksIPSIntervall.Description</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -491,6 +530,22 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addTextJobEmpty</name>
+        <label>addTextJobEmpty</label>
+        <locationX>1192</locationX>
+        <locationY>6422</locationY>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen jobber registrert.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getEducationInfoIPS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addTextTaskConvosForward</name>
         <label>addTextTaskConvosForward</label>
         <locationX>798</locationX>
@@ -515,7 +570,7 @@
             <assignToReference>taskListForward</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Deltaker har ingen planlagte delmål</stringValue>
+                <stringValue>Deltaker har ingen åpne delmål fremover.</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -573,7 +628,7 @@
             <assignToReference>varEmployerMeeting</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.WhoId</elementReference>
+                <elementReference>varParticipantName</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -629,21 +684,14 @@
             <assignToReference>varEmployerMeeting</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Beskrivelse av møtet: </stringValue>
+                <stringValue>Status: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>varEmployerMeeting</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.Description</elementReference>
+                <elementReference>varEventStatus</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -685,7 +733,7 @@
         </assignmentItems>
         <assignmentItems>
             <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <stringValue>&lt;br&gt;</stringValue>
             </value>
@@ -715,7 +763,7 @@
             <assignToReference>varEmployeeMeetingForward</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.WhoId</elementReference>
+                <elementReference>varParticipantName</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -771,34 +819,6 @@
             <assignToReference>varEmployeeMeetingForward</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Beskrivelse av møtet: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.Description</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
                 <stringValue>&lt;br&gt;</stringValue>
             </value>
         </assignmentItems>
@@ -809,8 +829,8 @@
     <assignments>
         <name>setJobtext</name>
         <label>setJobtext</label>
-        <locationX>1172</locationX>
-        <locationY>6422</locationY>
+        <locationX>1064</locationX>
+        <locationY>6542</locationY>
         <assignmentItems>
             <assignToReference>varJobList</assignToReference>
             <operator>Add</operator>
@@ -1094,7 +1114,7 @@
     <decisions>
         <name>checkDecision</name>
         <label>checkDecision</label>
-        <locationX>732</locationX>
+        <locationX>753</locationX>
         <locationY>998</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1143,6 +1163,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkEducationList</name>
+        <label>checkEducationList</label>
+        <locationX>1084</locationX>
+        <locationY>6974</locationY>
+        <defaultConnector>
+            <targetReference>addEducationEmptytext</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isEducationListEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEducationListNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEducationInfoIPS</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>iterateEducation</targetReference>
+            </connector>
+            <label>isEducationListNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkEmployeeMeeting</name>
         <label>checkEmployeeMeeting</label>
         <locationX>1436</locationX>
@@ -1153,7 +1198,7 @@
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isWithinRangeEmployeeMeeting</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5)</conditionLogic>
             <conditions>
                 <leftValueReference>iterateEmplMeetingsIPSIntervall.ActivityDate</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
@@ -1173,6 +1218,20 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsIPSIntervall.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsIPSIntervall.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Participant Absent</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1207,7 +1266,7 @@
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isWithinRange</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
             <conditions>
                 <leftValueReference>iterateTasksIPSIntervall.CompletedDateTime</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
@@ -1224,6 +1283,13 @@
             </conditions>
             <conditions>
                 <leftValueReference>iterateTasksIPSIntervall.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateTasksIPSIntervall.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Completed</stringValue>
@@ -1248,6 +1314,31 @@
                 <targetReference>addTaskForwardRange</targetReference>
             </connector>
             <label>isForwardRange</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkJobList</name>
+        <label>checkJobList</label>
+        <locationX>1084</locationX>
+        <locationY>6302</locationY>
+        <defaultConnector>
+            <targetReference>addTextJobEmpty</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isJobListEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isJobListNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getJobs</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>iterateJobs</targetReference>
+            </connector>
+            <label>isJobListNotEmpty</label>
         </rules>
     </decisions>
     <decisions>
@@ -1307,7 +1398,7 @@
     <decisions>
         <name>checkReportType</name>
         <label>checkReportType</label>
-        <locationX>1205</locationX>
+        <locationX>1236</locationX>
         <locationY>758</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -1540,7 +1631,10 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPSIntervall.CompletedDateTime})))&amp;&quot;.&
     <formulas>
         <name>varClosingArgument</name>
         <dataType>String</dataType>
-        <expression>if(TEXT({!iterateJobs.ips_Status__c})==&apos;Completed&apos;,&apos;Hva fungerte ikke: &apos;&amp;BR()&amp;{!iterateJobs.ips_What_did_not_work_at_the_workplace__c}&amp;BR()&amp;BR()&amp;&apos;Hva fungerte: &apos;&amp;BR()&amp;{!iterateJobs.ips_What_did_work_at_the_workplace__c},&apos;Jobb er ikke avsluttet&apos;
+        <expression>if(TEXT({!iterateJobs.ips_Status__c})==&apos;Completed&apos;,
+&apos;Hva fungerte ikke: &apos; &amp;BR()&amp;{!iterateJobs.ips_What_did_not_work_at_the_workplace__c} &amp; BR() &amp; BR() &amp;
+&apos;Hva fungerte: &apos;&amp; BR() &amp; {!iterateJobs.ips_What_did_work_at_the_workplace__c},
+&apos;Jobb er ikke avsluttet&apos;
 )</expression>
     </formulas>
     <formulas>
@@ -1559,6 +1653,18 @@ TEXT(DAY(DATEVALUE({!iterateTasksIPSIntervall.CompletedDateTime})))&amp;&quot;.&
         <expression>&apos;Det er 3 måneder siden siste underveisrapport for: &apos; &amp; {!getWorktrailIPS.Name}</expression>
     </formulas>
     <formulas>
+        <name>varEducationType</name>
+        <dataType>String</dataType>
+        <expression>CASE({!iterateEducation.ips_Form_of_Education__c},
+&apos;Certificate of Apprenticeship&apos;,&apos;Lærling&apos;,
+&apos;Full-time Study&apos;,&apos;Heltidsstudie&apos;,
+&apos;Part-time Study&apos;,&apos;Deltidsstudie&apos;,
+&apos;Evening Course&apos;,&apos;Kveldskurs&apos;,
+&apos;Day Cource&apos;,&apos;Kurs på dagtid&apos;,
+&apos;&apos;
+)</expression>
+    </formulas>
+    <formulas>
         <name>varEmployeeMeetingRange</name>
         <dataType>String</dataType>
         <expression>{!iterateEmplMeetingsIPSIntervall.Subject}
@@ -1568,6 +1674,17 @@ TEXT(DAY({!iterateEmplMeetingsIPSIntervall.ActivityDate}))&amp;&quot;.&quot;&amp
 {!iterateEmplMeetingsIPSIntervall.RelatedToAccount__r.Name}
 &amp;&apos;, &apos;&amp;
 TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression>
+    </formulas>
+    <formulas>
+        <name>varEventStatus</name>
+        <dataType>String</dataType>
+        <expression>CASE({!iterateEmplMeetingsIPSIntervall.IPS_Status1__c},
+&apos;Open&apos;,&apos;Åpen&apos;,
+&apos;Completed&apos;,&apos;Fullført&apos;,
+&apos;Participant Absent&apos;,&apos;Deltaker møtte ikke&apos;,
+&apos;Cancelled&apos;,&apos;Avlyst&apos;,
+&apos;&apos;
+)</expression>
     </formulas>
     <formulas>
         <name>varJobStatus</name>
@@ -1589,6 +1706,11 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
 &apos;Work training&apos;,&apos;Arbeidstrening&apos;,
 &apos;Zero hours contrac&apos;,&apos;Tilkalling ekstrajobb&apos;,
 &apos; &apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>varParticipantName</name>
+        <dataType>String</dataType>
+        <expression>{!getParticipantDetailsIPS.FirstName}&amp;&apos; &apos;&amp;{!getParticipantDetailsIPS.MiddleName}&amp;&apos; &apos;&amp;{!getParticipantDetailsIPS.LastName}</expression>
     </formulas>
     <formulas>
         <name>varStartDateIPS</name>
@@ -1616,6 +1738,20 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <interviewLabel>IPS - subflow intervall report IPS {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - subflow intervall report IPS</label>
     <loops>
+        <name>iterateEducation</name>
+        <label>iterateEducation</label>
+        <locationX>976</locationX>
+        <locationY>7094</locationY>
+        <collectionReference>getEducationInfoIPS</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>addEducation</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>updateReportRecord</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <description>Loop over all meetings with employers</description>
         <name>iterateEmplMeetingsIPSIntervall</name>
         <label>iterateEmplMeetingsIPSIntervall</label>
@@ -1633,8 +1769,8 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <loops>
         <name>iterateJobs</name>
         <label>iterateJobs</label>
-        <locationX>1084</locationX>
-        <locationY>6302</locationY>
+        <locationX>976</locationX>
+        <locationY>6422</locationY>
         <collectionReference>getJobs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1724,10 +1860,10 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <name>getEducationInfoIPS</name>
         <label>getEducationInfoIPS</label>
         <locationX>1084</locationX>
-        <locationY>6638</locationY>
+        <locationY>6854</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>updateReportRecord</targetReference>
+            <targetReference>checkEducationList</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1737,14 +1873,13 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
                 <elementReference>recordId</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>ips_Education__c</object>
         <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>ips_Form_of_Education__c</queriedFields>
         <queriedFields>ips_Start_Date__c</queriedFields>
         <queriedFields>ips_End_Date__c</queriedFields>
-        <queriedFields>ips_Form_of_Education__c</queriedFields>
-        <queriedFields>ips_Name_of_the_Education_Institution__c</queriedFields>
-        <queriedFields>Name</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -1764,15 +1899,31 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
                 <elementReference>recordId</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Meeting with Employer</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhoId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getParticipantDetailsIPS.PersonContactId</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
+        <sortField>ActivityDate</sortField>
+        <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <description>Get all intervall reports if it exists - only the ones that is open. Archived reports should not be altered.</description>
         <name>getIntervallReports</name>
         <label>getIntervallReports</label>
-        <locationX>1205</locationX>
+        <locationX>1236</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1813,7 +1964,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <locationY>6182</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>iterateJobs</targetReference>
+            <targetReference>checkJobList</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1832,7 +1983,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getOwnerIPS</name>
         <label>getOwnerIPS</label>
-        <locationX>1205</locationX>
+        <locationX>1236</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1858,7 +2009,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <description>Get the name of the person account connected to the worktrail</description>
         <name>getParticipantDetailsIPS</name>
         <label>getParticipantDetailsIPS</label>
-        <locationX>1205</locationX>
+        <locationX>1236</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1878,6 +2029,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <queriedFields>LastName</queriedFields>
         <queriedFields>FirstName</queriedFields>
         <queriedFields>MiddleName</queriedFields>
+        <queriedFields>PersonContactId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -1976,7 +2128,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getWorktrailIPS</name>
         <label>getWorktrailIPS</label>
-        <locationX>1205</locationX>
+        <locationX>1236</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2022,7 +2174,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <name>updateReportRecord</name>
         <label>updateReportRecord</label>
         <locationX>1084</locationX>
-        <locationY>6758</locationY>
+        <locationY>7526</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -2069,7 +2221,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <screens>
         <name>screenChoices</name>
         <label>Valg av mulighet</label>
-        <locationX>732</locationX>
+        <locationX>753</locationX>
         <locationY>878</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -2084,7 +2236,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <inputParameters>
                 <name>message</name>
                 <value>
-                    <stringValue>Det finnes en eksisterende underveisrapport</stringValue>
+                    <stringValue>Det finnes et eksisterende underveisnotat</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -2093,7 +2245,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         </fields>
         <fields>
             <name>warningTxt</name>
-            <fieldText>&lt;p&gt;Du har en underveisrapport som ligger i status åpen.&lt;/p&gt;&lt;p&gt;Ønsker du å fortsette på denne rapporten eller lage en ny underveisrapport?&lt;/p&gt;&lt;p&gt;Velg under.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Hvis du velger å lage en ny rapport, settes status til fullført og en ny underveisrapport opprettes.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Du har et underveisnotat som ligger i status åpen.&lt;/p&gt;&lt;p&gt;Ønsker du å fortsette på dette notatet eller lage et nytt underveisnotat?&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Hvis du velger å lage et nytt notat, settes status til fullført og et nytt underveisnotat opprettes.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -2118,14 +2270,17 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <defaultValue>
                 <booleanValue>false</booleanValue>
             </defaultValue>
-            <fieldText>Lage en ny underveisrapport</fieldText>
+            <fieldText>Lage et nytt underveisnotat</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>varOldReport</name>
             <dataType>Boolean</dataType>
-            <fieldText>Fortsette på eksisterende underveisrapport</fieldText>
+            <defaultValue>
+                <booleanValue>true</booleanValue>
+            </defaultValue>
+            <fieldText>Fortsette på eksisterende underveisnotat</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -2150,7 +2305,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <inputParameters>
                 <name>message</name>
                 <value>
-                    <stringValue>Du har valgt å lage en ny underveisrapport</stringValue>
+                    <stringValue>Du har valgt å lage et nytt underveisnotat</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -2163,6 +2318,11 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <fields>
                 <name>workTrailIntervallNew_Section1_Column1</name>
                 <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTextNew1</name>
+                    <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Underveisnotatet skal omhandle hva som har skjedd i tiltaksgjennomføringen i den perioden notatet gjelder for.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Deltaker bør alltid få tilbud om å gjennomgå notatet i fellesskap før innsending.&amp;nbsp;&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -2184,26 +2344,35 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
                     <fieldText>&lt;p&gt;&lt;strong&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Deltakernavn:&lt;/strong&gt;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>6</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailIntervallNew_Section2_Column2</name>
-                <fieldType>Region</fieldType>
                 <fields>
                     <name>DisplayParticipantNameNew</name>
-                    <fieldText>&lt;p&gt;{!getParticipantDetailsIPS.FirstName} &lt;/p&gt;&lt;p&gt;{!getParticipantDetailsIPS.MiddleName}&lt;/p&gt;&lt;p&gt;{!getParticipantDetailsIPS.LastName}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;{!varParticipantName}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>displayTxtGoalNew</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Hovedmål:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>displayGoalNew</name>
+                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>displayTxtCarrerNew</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Karriereønsker:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>displayCarrerNew</name>
+                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
-                        <stringValue>6</stringValue>
+                        <stringValue>12</stringValue>
                     </value>
                 </inputParameters>
                 <isRequired>false</isRequired>
@@ -2212,7 +2381,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         </fields>
         <fields>
             <name>selectDateNew</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Velg periode underveis rapport gjelder for&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Velg periode underveis notat gjelder for:&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -2266,7 +2435,29 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
                     <name>summarizePeriodeNew</name>
                     <fieldText>Oppsummering av tiltaksperioden</fieldText>
                     <fieldType>LargeTextArea</fieldType>
+                    <helpText>&lt;p&gt;Hva har skjedd i samarbeidet mellom deg og deltaker i den foregående perioden?&lt;/p&gt;&lt;p&gt;Eksempler: oppsøkt bedrifter sammen, jobbsmak, gjennomgått karriereveiledning, arbeidet med CV og/eller jobbsøkerferdigheter m.m.&lt;/p&gt;&lt;p&gt;Har jobbutviklingen og retningen endret seg underveis, i så fall hvordan og hvorfor?&amp;nbsp;&lt;/p&gt;&lt;p&gt;Oppsummering av den jobben jobbspesialist har gjort ut mot arbeidsgivere i den hensikt å skaffe jobbmuligheter.&lt;/p&gt;&lt;p&gt;Har du og/eller deltaker vært i kontakt med arbeidsgivere, hvis ja: beskriv. Dersom deltaker har vært i jobb bør dette beskrives, inkludert hvordan samarbeidet har vært med arbeidsgiver.&amp;nbsp;&lt;/p&gt;</helpText>
                     <isRequired>true</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailIntervallNew_Section5</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailIntervallNew_Section5_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxtSummarizePeriodeNew</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Tekst etter fritekstfelt 1:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Her hentes følgende opp fra Jobbsporet:&lt;/p&gt;&lt;p&gt;- fullførte delmål i perioden m/ beskrivelse&lt;/p&gt;&lt;p&gt;- samarbeid mellom jobbspesialist og deltaker i perioden (oversikt over møter deltaker har deltatt på og oppsatte møter deltakeren har uteblitt fra)&lt;/p&gt;&lt;p&gt;- samarbeid med arbeidsgivere i perioden (oversikt over møter med arbeidsgivere, deltakere i møtet, møtekategori etc.)&lt;/p&gt;&lt;p&gt;- oversikt over jobber/arbeidstreninger deltaker har hatt i perioden&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -2282,7 +2473,29 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <name>SummarizeNextPeriodeNew</name>
             <fieldText>Plan kommende periode</fieldText>
             <fieldType>LargeTextArea</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Kort beskrivelse av hva som er planlagt fremover.&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailIntervallNew_Section6</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailIntervallNew_Section6_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxtUpcomingPeriodeNew</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Tekst etter fritekstfelt 2:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Her hentes følgende opp fra deltakers jobbspor:&lt;/p&gt;&lt;p&gt;- Delmål som står med status åpen&lt;/p&gt;&lt;p&gt;- Møter som står med status åpen&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -2305,7 +2518,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <inputParameters>
                 <name>message</name>
                 <value>
-                    <stringValue>Du har valgt å endre en eksisterende underveisrapport</stringValue>
+                    <stringValue>Du har valgt å endre et eksisterende underveisnotat</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -2335,30 +2548,14 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
                 <name>workTrailIntervallOld_Section2_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>txtParticipantTextOld</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Deltakernavn:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <name>displayText1</name>
+                    <fieldText>&lt;p&gt;Underveisnotatet skal omhandle hva som har skjedd i tiltaksgjennomføringen i den perioden rapporten gjelder for.&lt;/p&gt;&lt;p&gt;Deltaker bør alltid få tilbud om å gjennomgå rapporten i fellesskap før innsending.&amp;nbsp;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
-                        <stringValue>6</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>workTrailIntervallOld_Section2_Column2</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>DisplayParticipantNameOld</name>
-                    <fieldText>&lt;p&gt;{!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.MiddleName}&lt;/p&gt;&lt;p&gt;{!getParticipantDetailsIPS.LastName}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>6</stringValue>
+                        <stringValue>12</stringValue>
                     </value>
                 </inputParameters>
                 <isRequired>false</isRequired>
@@ -2370,6 +2567,52 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <fieldType>RegionContainer</fieldType>
             <fields>
                 <name>workTrailIntervallOld_Section3_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>txtParticipantTextOld</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Deltakernavn:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>DisplayParticipantNameOld</name>
+                    <fieldText>&lt;p&gt;{!varParticipantName}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>txtGoalTextOld</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Hovedmål: &lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>DisplayTextGoalOld</name>
+                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>txtCarrierTextOld</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Karriereønsker:&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>DisplayTextCarrerlOld</name>
+                    <fieldText>&lt;p&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailIntervallOld_Section4</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailIntervallOld_Section4_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>fromDateOld</name>
@@ -2390,7 +2633,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>workTrailIntervallOld_Section3_Column2</name>
+                <name>workTrailIntervallOld_Section4_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>toDateOld</name>
@@ -2413,10 +2656,10 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>workTrailIntervallOld_Section4</name>
+            <name>workTrailIntervallOld_Section5</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>workTrailIntervallOld_Section4_Column1</name>
+                <name>workTrailIntervallOld_Section5_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>summarizePeriodeOld</name>
@@ -2425,7 +2668,29 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
                     </defaultValue>
                     <fieldText>Oppsummering av tiltaksperioden</fieldText>
                     <fieldType>LargeTextArea</fieldType>
+                    <helpText>&lt;p&gt;Hva har skjedd i samarbeidet mellom deg og deltaker i den foregående perioden?&lt;/p&gt;&lt;p&gt;Eksempler: oppsøkt bedrifter sammen, jobbsmak, gjennomgått karriereveiledning, arbeidet med CV og/eller jobbsøkerferdigheter m.m. &lt;/p&gt;&lt;p&gt;Har jobbutviklingen og retningen endret seg underveis, i så fall hvordan og hvorfor?&amp;nbsp;&lt;/p&gt;&lt;p&gt;Oppsummering av den jobben jobbspesialist har gjort ut mot arbeidsgivere i den hensikt å skaffe jobbmuligheter. &lt;/p&gt;&lt;p&gt;Har du og/eller deltaker vært i kontakt med arbeidsgivere, hvis ja: beskriv. Dersom deltaker har vært i jobb bør dette beskrives, inkludert hvordan samarbeidet har vært med arbeidsgiver.&amp;nbsp;&lt;/p&gt;</helpText>
                     <isRequired>true</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailIntervallOld_Section6</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailIntervallOld_Section6_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxtSummarizePeriodeOld</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Tekst etter fritekstfelt 1:&lt;/strong&gt; &lt;/p&gt;&lt;p&gt;Her hentes følgende opp fra Jobbsporet:&lt;/p&gt;&lt;p&gt;- fullførte delmål i perioden m/ beskrivelse&lt;/p&gt;&lt;p&gt;- samarbeid mellom jobbspesialist og deltaker i perioden (oversikt over møter deltaker har deltatt på og oppsatte møter deltakeren har uteblitt fra)&lt;/p&gt;&lt;p&gt;- samarbeid med arbeidsgivere i perioden (oversikt over møter med arbeidsgivere, deltakere i møtet, møtekategori etc.)&lt;/p&gt;&lt;p&gt;- oversikt over jobber/arbeidstreninger deltaker har hatt i perioden&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -2444,13 +2709,35 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             </defaultValue>
             <fieldText>Plan kommende periode</fieldText>
             <fieldType>LargeTextArea</fieldType>
+            <helpText>&lt;p&gt;Kort beskrivelse av hva som er planlagt fremover.&lt;/p&gt;</helpText>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>workTrailIntervallOld_Section7</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>workTrailIntervallOld_Section7_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayTxtUpcomingPeriodeOld</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Tekst etter fritekstfelt 2:&lt;/strong&gt; &lt;/p&gt;&lt;p&gt;Her hentes følgende opp fra deltakers jobbspor:&lt;/p&gt;&lt;p&gt;- Delmål som står med status åpen&lt;/p&gt;&lt;p&gt;- Møter som står med status åpen&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1079</locationX>
+        <locationX>1110</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailIPS</targetReference>
@@ -2465,12 +2752,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <textTemplates>
         <name>templateIntervallIPSReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Underveisrapport for IPS - {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.MiddleName} {!getParticipantDetailsIPS.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:             {!getParticipantDetailsIPS.FirstName}  {!getParticipantDetailsIPS.MiddleName} {!getParticipantDetailsIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:    {!getOwnerIPS.FirstName} {!getOwnerIPS.MiddleName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:     {!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Startdato:           {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;Deltakers mål med IPS:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Prioriterte yrkesønsker:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeeting} &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Samtaler gjennomført med arbeidsgiver i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;{!taskListConversations}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varJobList}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Deltagelse i utdanning&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;           {!varEducationInfoField}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Plan for kommende period:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;﻿&lt;/strong&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Planlagte samtaler:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!taskListConversationsForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;</text>
-    </textTemplates>
-    <textTemplates>
-        <name>varEducationInfoField</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Tittel: &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!getEducationInfoIPS.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Utdanningssted : {!getEducationInfoIPS.ips_Name_of_the_Education_Institution__c}&lt;/p&gt;&lt;p&gt;startdato evt {!getEducationInfoIPS.ips_Start_Date__c}&lt;/p&gt;&lt;p&gt;sluttdato: {!getEducationInfoIPS.ips_End_Date__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;Underveisrapport for IPS - {!getParticipantDetailsIPS.FirstName} {!getParticipantDetailsIPS.MiddleName} {!getParticipantDetailsIPS.LastName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:                {!varParticipantName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:       {!getOwnerIPS.FirstName} {!getOwnerIPS.MiddleName} {!getOwnerIPS.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Behandlingsteam: {!getWorktrailIPS.ips_Behandlingsteam__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:        {!getWorktrailIPS.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Startdato:              {!varStartDateIPS}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;Deltakers mål med IPS&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Prioriterte yrkesønsker:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!getWorktrailIPS.ips_Priority_career_wishes__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!getWorktrailIPS.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Samarbeid med arbeidsgivere i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Møter gjennomført med arbeidsgiver(e) i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeeting} &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varJobList}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Deltagelse i utdanning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!varEducationList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Plan for kommende period:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;﻿&lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>assignmentParticipant</name>
@@ -2621,6 +2903,13 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>varEducationList</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varEmployeeMeetingForward</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -2657,13 +2946,6 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     </variables>
     <variables>
         <name>varMainGoal</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>varParticipantName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
