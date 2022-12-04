@@ -147,7 +147,7 @@
     <assignments>
         <name>addReportId</name>
         <label>addReportId</label>
-        <locationX>1236</locationX>
+        <locationX>1434</locationX>
         <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>varReportId</assignToReference>
@@ -1114,7 +1114,7 @@
     <decisions>
         <name>checkDecision</name>
         <label>checkDecision</label>
-        <locationX>753</locationX>
+        <locationX>885</locationX>
         <locationY>998</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1160,6 +1160,28 @@
                 <targetReference>updateOldReportToClosed</targetReference>
             </connector>
             <label>isNew</label>
+        </rules>
+        <rules>
+            <name>isboth</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varOldReport</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>varNewReport</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>displayWarningBoth</targetReference>
+            </connector>
+            <label>isboth</label>
         </rules>
     </decisions>
     <decisions>
@@ -1398,7 +1420,7 @@
     <decisions>
         <name>checkReportType</name>
         <label>checkReportType</label>
-        <locationX>1236</locationX>
+        <locationX>1434</locationX>
         <locationY>758</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -1923,7 +1945,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <description>Get all intervall reports if it exists - only the ones that is open. Archived reports should not be altered.</description>
         <name>getIntervallReports</name>
         <label>getIntervallReports</label>
-        <locationX>1236</locationX>
+        <locationX>1434</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1983,7 +2005,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getOwnerIPS</name>
         <label>getOwnerIPS</label>
-        <locationX>1236</locationX>
+        <locationX>1434</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2009,7 +2031,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <description>Get the name of the person account connected to the worktrail</description>
         <name>getParticipantDetailsIPS</name>
         <label>getParticipantDetailsIPS</label>
-        <locationX>1236</locationX>
+        <locationX>1434</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2128,7 +2150,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordLookups>
         <name>getWorktrailIPS</name>
         <label>getWorktrailIPS</label>
-        <locationX>1236</locationX>
+        <locationX>1434</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2219,9 +2241,21 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <object>ips_report__c</object>
     </recordUpdates>
     <screens>
+        <description>Du har huket av for både ny rapport og eksisterende rapport.</description>
+        <name>displayWarningBoth</name>
+        <label>displayWarningBoth</label>
+        <locationX>1456</locationX>
+        <locationY>1118</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>screenChoices</name>
         <label>Valg av mulighet</label>
-        <locationX>753</locationX>
+        <locationX>885</locationX>
         <locationY>878</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -2737,7 +2771,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1110</locationX>
+        <locationX>1308</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailIPS</targetReference>
