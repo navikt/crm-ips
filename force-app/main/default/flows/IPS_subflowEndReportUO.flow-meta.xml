@@ -4,7 +4,7 @@
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
         <locationX>182</locationX>
-        <locationY>4742</locationY>
+        <locationY>4286</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -176,22 +176,6 @@
         </connector>
     </assignments>
     <assignments>
-        <name>addNoEducationText</name>
-        <label>addNoEducationText</label>
-        <locationX>270</locationX>
-        <locationY>4406</locationY>
-        <assignmentItems>
-            <assignToReference>educationList</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Ingen utdanningsløp registrert.</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>updateReport</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>addNoJobsText</name>
         <label>addNoJobsText</label>
         <locationX>290</locationX>
@@ -204,7 +188,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getEducation</targetReference>
+            <targetReference>updateReport</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -283,7 +267,14 @@
             <assignToReference>taskList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue> - </stringValue>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>taskList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Fullført dato: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -508,31 +499,6 @@
         </value>
     </constants>
     <decisions>
-        <name>checkEducation</name>
-        <label>checkEducation</label>
-        <locationX>182</locationX>
-        <locationY>4286</locationY>
-        <defaultConnector>
-            <targetReference>addNoEducationText</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isEducationEmpty</defaultConnectorLabel>
-        <rules>
-            <name>isEducationNotEmpty</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getEducation</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateReport</targetReference>
-            </connector>
-            <label>isEducationNotEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>checkForDuplicatUO</name>
         <label>checkForDuplicatUO</label>
         <locationX>534</locationX>
@@ -587,7 +553,7 @@
         <defaultConnector>
             <targetReference>addNoJobsText</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>IsJobNull</defaultConnectorLabel>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>IsJobNotNull_0</name>
             <conditionLogic>and</conditionLogic>
@@ -782,8 +748,12 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <formulas>
         <name>varTaskStatus</name>
         <dataType>String</dataType>
-        <expression>IF(ISPICKVAL({!iterateTasks.IPS_Status1__c},&apos;Completed&apos;), &apos;Fullført&apos;,
-      IF({!iterateTasks.ips_Completed__c},&apos;Fullført&apos;,&apos;&apos;)
+        <expression>IF({!iterateTasks.ips_Completed__c},&apos;Fullført&apos;,
+CASE({!iterateTasks.IPS_Status1__c},
+&apos;Completed&apos;, &apos;Fullført&apos;,
+&apos;Open&apos;, &apos;Åpen&apos;,
+&apos;&apos;
+)
 )</expression>
     </formulas>
     <formulas>
@@ -821,7 +791,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
             <targetReference>addJobs</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>getEducation</targetReference>
+            <targetReference>updateReport</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -886,27 +856,6 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         </inputAssignments>
         <object>ips_report__c</object>
     </recordCreates>
-    <recordLookups>
-        <name>getEducation</name>
-        <label>getEducation</label>
-        <locationX>182</locationX>
-        <locationY>4166</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkEducation</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ips_Work_Trail__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>ips_Education__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <name>getEmplMeetings</name>
         <label>getEmplMeetings</label>
@@ -1220,7 +1169,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <name>updateReport</name>
         <label>updateReport</label>
         <locationX>182</locationX>
-        <locationY>4622</locationY>
+        <locationY>4166</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -1648,7 +1597,7 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
             <targetReference>getWorktrailUO</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>newLine</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
@@ -1666,13 +1615,6 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Event</objectType>
-    </variables>
-    <variables>
-        <name>educationList</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>employeeMeetings</name>
