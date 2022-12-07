@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Redirect</name>
         <label>Redirect</label>
-        <locationX>778</locationX>
-        <locationY>1622</locationY>
+        <locationX>578</locationX>
+        <locationY>1574</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -19,8 +19,8 @@
     <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>1570</locationX>
-        <locationY>2198</locationY>
+        <locationX>1370</locationX>
+        <locationY>2054</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -36,8 +36,8 @@
     <assignments>
         <name>setConsentValueFalse</name>
         <label>setConsentValueFalse</label>
-        <locationX>646</locationX>
-        <locationY>1046</locationY>
+        <locationX>545</locationX>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varConsent</assignToReference>
             <operator>Assign</operator>
@@ -52,8 +52,8 @@
     <assignments>
         <name>setConsentValueTrue</name>
         <label>setConsentValueTrue</label>
-        <locationX>910</locationX>
-        <locationY>1046</locationY>
+        <locationX>809</locationX>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varConsent</assignToReference>
             <operator>Assign</operator>
@@ -68,8 +68,8 @@
     <decisions>
         <name>checkAgeAndConsent</name>
         <label>checkAgeAndConsent</label>
-        <locationX>778</locationX>
-        <locationY>1262</locationY>
+        <locationX>677</locationX>
+        <locationY>1214</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
         </defaultConnector>
@@ -101,8 +101,8 @@
         <description>The consent part is not visible when participant is over 18 in screen flow. Even if the checkbox is default set to false it will not set false during runtime</description>
         <name>checkAndSetConsent</name>
         <label>checkAndSetConsent</label>
-        <locationX>778</locationX>
-        <locationY>926</locationY>
+        <locationX>677</locationX>
+        <locationY>878</locationY>
         <defaultConnector>
             <targetReference>setConsentValueTrue</targetReference>
         </defaultConnector>
@@ -127,8 +127,8 @@
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
-        <locationX>514</locationX>
-        <locationY>686</locationY>
+        <locationX>363</locationX>
+        <locationY>638</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
         </defaultConnector>
@@ -173,8 +173,8 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>1042</locationX>
-        <locationY>1502</locationY>
+        <locationX>1040</locationX>
+        <locationY>1454</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -198,8 +198,8 @@
     <decisions>
         <name>isUserInformed</name>
         <label>isUserInformed</label>
-        <locationX>1306</locationX>
-        <locationY>1742</locationY>
+        <locationX>1502</locationX>
+        <locationY>1694</locationY>
         <defaultConnector>
             <targetReference>displayUserWarning</targetReference>
         </defaultConnector>
@@ -223,8 +223,8 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>1306</locationX>
-        <locationY>1958</locationY>
+        <locationX>1106</locationX>
+        <locationY>1814</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -255,7 +255,7 @@
     <formulas>
         <name>isUOorUOO</name>
         <dataType>String</dataType>
-        <expression>IF({!UOOCheckbox}, &quot;UOO&quot;, &quot;UO&quot;)</expression>
+        <expression>IF({!UOOCheckbox}, &quot;UO Training&quot;, &quot;UO&quot;)</expression>
     </formulas>
     <formulas>
         <name>participantDOB</name>
@@ -307,7 +307,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -320,8 +320,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>1306</locationX>
-        <locationY>2318</locationY>
+        <locationX>1106</locationX>
+        <locationY>2174</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -352,12 +352,13 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1570</locationX>
-        <locationY>2078</locationY>
+        <locationX>1370</locationX>
+        <locationY>1934</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -414,8 +415,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>1042</locationX>
-        <locationY>2078</locationY>
+        <locationX>842</locationX>
+        <locationY>1934</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -482,8 +483,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>1042</locationX>
-        <locationY>1382</locationY>
+        <locationX>1040</locationX>
+        <locationY>1334</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -510,8 +511,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>Get_Participant_Details</name>
         <label>Get Participant Details</label>
-        <locationX>514</locationX>
-        <locationY>446</locationY>
+        <locationX>363</locationX>
+        <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getPersonDetails</targetReference>
@@ -531,8 +532,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>514</locationX>
-        <locationY>206</locationY>
+        <locationX>363</locationX>
+        <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>New_Worktrail</targetReference>
@@ -554,8 +555,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>getPersonDetails</name>
         <label>getPersonDetails</label>
-        <locationX>514</locationX>
-        <locationY>566</locationY>
+        <locationX>363</locationX>
+        <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkForConfidential</targetReference>
@@ -576,8 +577,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>Consent</name>
         <label>Consent</label>
-        <locationX>514</locationX>
-        <locationY>1382</locationY>
+        <locationX>314</locationX>
+        <locationY>1334</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -592,8 +593,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>displayUserWarning</name>
         <label>displayUserWarning</label>
-        <locationX>1620</locationX>
-        <locationY>1680</locationY>
+        <locationX>1898</locationX>
+        <locationY>1814</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -608,8 +609,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt Jobbspor</label>
-        <locationX>514</locationX>
-        <locationY>326</locationY>
+        <locationX>363</locationX>
+        <locationY>278</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -654,8 +655,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>newWorktrail</name>
         <label>newWorktrail</label>
-        <locationX>250</locationX>
-        <locationY>806</locationY>
+        <locationX>50</locationX>
+        <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -670,8 +671,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>1306</locationX>
-        <locationY>2198</locationY>
+        <locationX>1106</locationX>
+        <locationY>2054</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -689,8 +690,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>1042</locationX>
-        <locationY>2198</locationY>
+        <locationX>842</locationX>
+        <locationY>2054</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -705,8 +706,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>778</locationX>
-        <locationY>806</locationY>
+        <locationX>677</locationX>
+        <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -835,7 +836,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <defaultValue>
                 <booleanValue>false</booleanValue>
             </defaultValue>
-            <fieldText>UOO</fieldText>
+            <fieldText>Utvidet oppfølging i opplæring</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -872,8 +873,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>1306</locationX>
-        <locationY>1622</locationY>
+        <locationX>1502</locationX>
+        <locationY>1574</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -926,8 +927,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>388</locationX>
-        <locationY>48</locationY>
+        <locationX>237</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
