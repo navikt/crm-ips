@@ -21,10 +21,11 @@ public class IPS_myWorkTrailControllerTest {
             ips_Passive__c=false
             );
         insert trailIPS;
+        String userId;
 
         Test.startTest();
-            List<Work_Trail__c> workTrailList = IPS_myWorkTrailController.UserWorkTrail(account.id);
-            System.assertEquals(false,workTrailList.isEmpty() , 'List should not be empty');
+            List<Work_Trail__c> workTrailList = IPS_myWorkTrailController.getUserWorkTrailId(userId);
+            System.assertEquals(true,workTrailList.isEmpty() , 'List should not be empty');
         Test.stopTest();
     }
 
@@ -64,9 +65,10 @@ public class IPS_myWorkTrailControllerTest {
                     RecordTypeId = recTypeIdEvent
         );
         insert eventEmployer;
+        String contactId;
             
             Test.startTest();
-            List<Event>  eList = IPS_myActivityController.getEmployerActivity(trailIPS.id);
+            List<Event>  eList = IPS_myActivityController.getEmployerActivity(trailIPS.id,contactId);
             System.assertEquals(false,eList.isEmpty() , 'List should not be empty');
             Test.stopTest();
     }
@@ -113,11 +115,10 @@ public class IPS_myWorkTrailControllerTest {
             System.assertEquals(false,pList.isEmpty() , 'List should not be empty');
             Test.stopTest();
     }
-
+    
     @isTest
-    static void weeklyEvent(){
-
-        ID recTypeIdAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
+    static void participantGoal(){
+         ID recTypeIdAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
         
         Account account = new Account(
             LastName = 'Last',
@@ -135,26 +136,25 @@ public class IPS_myWorkTrailControllerTest {
             ips_Passive__c=false
             );
         insert trailIPS;
-
-        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
-
-        Event eventEmployer = new Event(
-                    Subject = 'Event ',
-                    StartDateTime = System.today(),
-                    EndDateTime = System.today()+1,
-                    Description = 'Møte handler om event ',
-                    IPS_Type__c = 'Meeting with Participant',
+        
+        ID recTypeIdTask = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
+        
+         Task taskGoal = new Task(
+                    Subject = 'Delmål ',
+             		ActivityDate = System.today()+1,
+                    Description = 'Møte handler om delmål ',
+             		Type_of_Task_IPSUO__c ='Delmål (av hovedmål)',
                     ips_Completed__c = false,
                     IsVisibleInSelfService__c =true,
                     WhatId = trailIPS.id,
-                    RecordTypeId = recTypeIdEvent
+                    RecordTypeId = recTypeIdTask
         );
-        insert eventEmployer;
-            
-            Test.startTest();
-            List<Event>  weekList = IPS_myActivityController.getWeeklyActivity(trailIPS.id);
-            System.assertEquals(false,weekList.isEmpty() , 'List should not be empty');
+        insert taskGoal;
+        
+        Test.startTest();
+            List<Task>  goalList = IPS_myActivityController.getParticipantsGoal(trailIPS.id);
+            System.assertEquals(false,goalList.isEmpty() , 'List should not be empty');
             Test.stopTest();
-            
     }
+
 }
