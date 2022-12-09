@@ -1,5 +1,6 @@
 import { LightningElement,track,wire } from 'lwc';
 import { getFieldDisplayValue, getFieldValue, getRecord} from 'lightning/uiRecordApi';
+import Id from '@salesforce/user/Id';
 /* work_trail__c */
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 import FIELD_RECORDTYPENAME from '@salesforce/schema/Work_Trail__c.RecordType.DeveloperName';
@@ -105,7 +106,7 @@ myWorkDevelopmentIPS = IPS_HOME_LOGOS + '/EmployerFilled.svg';
 myActivityImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
 myGoalImg = IPS_HOME_LOGOS + '/TaskFilled.svg';
 myPlanImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
-@track currentuser = '0051X00000DtVvmQAF';
+currentuser = Id;
 recordId;
 recordtypename;
 contactId;
