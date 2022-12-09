@@ -4,7 +4,7 @@
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
         <locationX>1678</locationX>
-        <locationY>7118</locationY>
+        <locationY>7790</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -17,6 +17,99 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
+    <assignments>
+        <name>addEducation</name>
+        <label>addEducation</label>
+        <locationX>1658</locationX>
+        <locationY>7358</locationY>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Tittel:</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Type utdanning:</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varEducationType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Dato: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.ips_Start_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue> - </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterateEducation.ips_End_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterateEducation</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>addNextPeriodText</name>
         <label>addNextPeriodText</label>
@@ -31,6 +124,22 @@
         </assignmentItems>
         <connector>
             <targetReference>getJobs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addNoEducationText</name>
+        <label>addNoEducationText</label>
+        <locationX>1786</locationX>
+        <locationY>7238</locationY>
+        <assignmentItems>
+            <assignToReference>educationList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Ingen utdanningsløp registrert.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateReportRecord</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -899,7 +1008,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateReportRecord</targetReference>
+            <targetReference>getEducation</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -1030,7 +1139,7 @@
             <assignToReference>varJobList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Avsluttende kommentar: </stringValue>
+                <stringValue>Avsluttende kommentar</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -1526,6 +1635,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkIfEducation</name>
+        <label>checkIfEducation</label>
+        <locationX>1678</locationX>
+        <locationY>7118</locationY>
+        <defaultConnector>
+            <targetReference>addNoEducationText</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isEducationEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEducationNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEducation</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>iterateEducation</targetReference>
+            </connector>
+            <label>isEducationNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkIntervall</name>
         <label>checkIntervall</label>
         <locationX>2074</locationX>
@@ -1664,7 +1798,7 @@
         <locationX>1678</locationX>
         <locationY>6662</locationY>
         <defaultConnector>
-            <targetReference>updateReportRecord</targetReference>
+            <targetReference>getEducation</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1837,6 +1971,18 @@ TEXT(DAY(DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})))&amp;&quot;.&q
         <expression>&apos;Det er 3 måneder siden siste underveisrapport for: &apos; &amp; {!getWorktrailUO.Name}</expression>
     </formulas>
     <formulas>
+        <name>varEducationType</name>
+        <dataType>String</dataType>
+        <expression>CASE({!iterateEducation.ips_Form_of_Education__c},
+&apos;Certificate of Apprenticeship&apos;,&apos;Lærling&apos;,
+&apos;Full-time Study&apos;,&apos;Heltidsstudie&apos;,
+&apos;Part-time Study&apos;,&apos;Deltidsstudie&apos;,
+&apos;Evening Course&apos;,&apos;Kveldskurs&apos;,
+&apos;Day Cource&apos;,&apos;Kurs på dagtid&apos;,
+&apos;&apos;
+)</expression>
+    </formulas>
+    <formulas>
         <name>varEmployeeMeetingRange</name>
         <dataType>String</dataType>
         <expression>{!iterateEmplMeetingsUOIntervall.Subject}
@@ -1869,7 +2015,7 @@ TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c})</expression>
 &apos;Job taster&apos;,&apos;Jobbsmak&apos;,
 &apos;Permanent employment&apos;,&apos;Fast ansettelse&apos;,
 &apos;Temporary employment&apos;,&apos;Tidsbegrenset ansettelse&apos;,
-&apos;Work training&apos;,&apos;Arbeidstrening&apos;,
+&apos;work training&apos;,&apos;Arbeidstrening&apos;,
 &apos;Zero hours contrac&apos;,&apos;Tilkalling ekstrajobb&apos;,
 &apos; &apos;)</expression>
     </formulas>
@@ -1917,6 +2063,20 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
     </formulas>
     <interviewLabel>IPS - subflow intervall report UO {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - subflow intervall report UO</label>
+    <loops>
+        <name>iterateEducation</name>
+        <label>iterateEducation</label>
+        <locationX>1570</locationX>
+        <locationY>7238</locationY>
+        <collectionReference>getEducation</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>addEducation</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>updateReportRecord</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <loops>
         <name>iterateEmplMeetingsUOIntervall</name>
         <label>iterateEmplMeetingsUOIntervall</label>
@@ -2086,6 +2246,27 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>getEducation</name>
+        <label>getEducation</label>
+        <locationX>1678</locationX>
+        <locationY>6998</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkIfEducation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Education__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>getEmplMeetingsIntervall</name>
         <label>getEmplMeetingsIntervall</label>
@@ -2418,7 +2599,7 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
         <name>updateReportRecord</name>
         <label>updateReportRecord</label>
         <locationX>1678</locationX>
-        <locationY>6998</locationY>
+        <locationY>7670</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -2758,7 +2939,7 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>DisplayTxtNew1</name>
-                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Tekst etter fritekstfelt 1:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Her hentes følgende opp fra Jobbsporet:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- fullførte delmål i perioden m/ beskrivelse&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- samarbeid mellom jobbspesialist og deltaker i perioden (oversikt over møter deltaker har deltatt på og oppsatte møter deltakeren har uteblitt fra)&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- samarbeid med arbeidsgivere i perioden (oversikt over møter med arbeidsgivere, deltakere i møtet, møtekategori etc.)&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- oversikt over jobber/arbeidstreninger deltaker har hatt i perioden&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Her hentes følgende opp fra Jobbsporet:&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;fullførte delmål i perioden m/ beskrivelse&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;samarbeid mellom jobbspesialist og deltaker i perioden (oversikt over møter deltaker har deltatt på og oppsatte møter deltakeren har uteblitt fra)&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;samarbeid med arbeidsgivere i perioden (oversikt over møter med arbeidsgivere, deltakere i møtet, møtekategori etc.)&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;oversikt over jobber/arbeidstreninger deltaker har hatt i perioden&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -2791,7 +2972,7 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>DisplayTxtNew2</name>
-                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Tekst etter fritekstfelt 2:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Her hentes følgende opp fra deltakers jobbspor:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- Delmål som står med status åpen&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- Møter som står med status åpen&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Her hentes følgende opp fra deltakers jobbspor:&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Delmål som står med status åpen&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Møter som står med status åpen&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -3012,7 +3193,7 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>txtDescription2</name>
-                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Tekst etter fritekstfelt 1:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Her hentes følgende opp fra Jobbsporet:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- fullførte delmål i perioden m/ beskrivelse&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- samarbeid mellom jobbspesialist og deltaker i perioden (oversikt over møter deltaker har deltatt på og oppsatte møter deltakeren har uteblitt fra)&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- samarbeid med arbeidsgivere i perioden (oversikt over møter med arbeidsgivere, deltakere i møtet, møtekategori etc.)&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- oversikt over jobber/arbeidstreninger deltaker har hatt i perioden&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Her hentes følgende opp fra Jobbsporet:&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;fullførte delmål i perioden m/ beskrivelse&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;samarbeid mellom jobbspesialist og deltaker i perioden (oversikt over møter deltaker har deltatt på og oppsatte møter deltakeren har uteblitt fra)&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;samarbeid med arbeidsgivere i perioden (oversikt over møter med arbeidsgivere, deltakere i møtet, møtekategori etc.)&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;oversikt over jobber/arbeidstreninger deltaker har hatt i perioden&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -3048,7 +3229,7 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>txtDescription3</name>
-                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Tekst etter fritekstfelt 2:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Her hentes følgende opp fra deltakers jobbspor:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- Delmål som står med status åpen&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;- Møter som står med status åpen&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Her hentes følgende opp fra deltakers jobbspor:&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Delmål som står med status åpen&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Møter som står med status åpen&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -3080,7 +3261,7 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
     <textTemplates>
         <name>templateIntervallUOReport</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Underveisrapport for Utvidet oppfølging - {!varParticipantName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:                      {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:             {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:              {!getWorktrailUO.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Innsøkende avdeling:  {!getWorktrailUO.ips_Applying_Department__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Startdato:                    {!varStartDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Samarbeid mellom jobbspesialist og deltaker i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Møter deltaker har deltatt på i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varParticipantIntervallUOShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Møter deltaker ikke har møtt til i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varParticipantIntervallUONoShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter gjennomført med arbeidsgiver(e) i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeetingRelation}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varJobList}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Plan for kommende periode:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varParticipantIntervallUOForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Underveisrapport for Utvidet oppfølging - {!varParticipantName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Innledning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Deltaker:                      {!getParticipantDetailsUO.FirstName} {!getParticipantDetailsUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Jobbspesialist:             {!getOwnerUO.FirstName} {!getOwnerUO.LastName}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;NAV-veileder:              {!getWorktrailUO.ips_NAV_supervisor__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Innsøkende avdeling:  {!getWorktrailUO.ips_Applying_Department__c}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Startdato:                    {!varStartDateUO}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Hovedmål:&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!getWorktrailUO.ips_Main_goal__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Oppsummering av perioden fra  {!varFromDate} - {!varToDate}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varsummarizePeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Fullførte delmål i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!taskList}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Samarbeid mellom jobbspesialist og deltaker i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Møter deltaker har deltatt på i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varParticipantIntervallUOShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Møter deltaker skulle vært tilstede på i perioden:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!varParticipantIntervallUONoShow}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Møter gjennomført med arbeidsgiver(e) i perioden:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varEmployerMeetingRelation}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Deltagelse i jobb/arbeidstrening&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varJobList}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Deltagelse i utdanning&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;{!educationList}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Plan for kommende periode:&lt;/strong&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varSummarizeNextPeriode}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Planlagte delmål:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;{!taskListForward}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Planlagte møter:&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varParticipantIntervallUOForward}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!varEmployeeMeetingForward}&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>assignmentParticipant</name>
@@ -3089,6 +3270,13 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Event</objectType>
+    </variables>
+    <variables>
+        <name>educationList</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>employeeMeetings</name>
