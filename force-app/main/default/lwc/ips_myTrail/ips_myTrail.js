@@ -1,4 +1,4 @@
-import { LightningElement,track,wire } from 'lwc';
+import { LightningElement,track,wire} from 'lwc';
 import { getFieldDisplayValue, getFieldValue, getRecord} from 'lightning/uiRecordApi';
 import Id from '@salesforce/user/Id';
 /* work_trail__c */
@@ -106,7 +106,7 @@ myWorkDevelopmentIPS = IPS_HOME_LOGOS + '/EmployerFilled.svg';
 myActivityImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
 myGoalImg = IPS_HOME_LOGOS + '/TaskFilled.svg';
 myPlanImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
-currentuser = Id;
+currentUser = Id;
 recordId;
 recordtypename;
 contactId;
@@ -122,9 +122,13 @@ columns = COLUMNS;
 get isMobile() {
     return window.screen.width < 576;
   }
+
+get currentUserId(){
+    return this.currentUser;
+}
   
   /* Fetch recordId from logged in user */
-  @wire(getUserWorkTrailId,{userId:'$currentuser'})
+  @wire(getUserWorkTrailId,{userId: '$currentUser'})
   wiredtrail({ error, data }) {
         if (data) {
             this.record = data[0];
