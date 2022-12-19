@@ -1,0 +1,259 @@
+<template>
+    <div if:true={record}>
+        <div class="container skjema-max-width">
+            <form class="form-control">
+                <h2 tabindex="0" class="main-title">Arbeidsrettet oppfølging - IPS</h2>
+                <p tabindex="0">Her kan du se og lese om ditt samarbeid med jobbspesialisten din i NAV. Her vil du se de målene som du og jobbspesialisten samarbeider om, samt møter du har hatt eller skal ha sammen med jobbspesialisten. Du kan også se  personopplysningene som jobbspesialisten har lagt inn</p>
+                
+                <label tabindex="0">Henvist til jobbsporet</label>
+                <p tabindex="0">{referredDate}</p>
+                <label tabindex="0">Din jobbspesialist</label>
+                <p tabindex="0">{specialist}</p>
+                <div if:true={IPSung}>
+                    <p tabindex="0">Deltakelse i IPS ung.</p>
+                </div>
+            </form>
+        </div>
+        <div class="container skjema-max-width">  
+            <!-- Jobbutvikling alle felter -->
+            <h3 tabindex="0" class="title">
+                <img class="illustrasjon"
+                    src={myPlanImg}
+                    alt="Viser et ikon av en pil"
+                />
+                Jobbutvikling
+            </h3>
+            <div class="work-border"></div>
+            <form class="form-control">
+                <span>
+                    <label tabindex="0">Beskrivelse av mitt mål</label>
+                    <p tabindex="0">{mainGoal}</p>
+                    <label tabindex="0">Mine karriereønsker</label>
+                    <p tabindex="0">{careerwishes}</p>
+                    <label tabindex="0">Rammer for jobbutvikling/jobbsøk</label>
+                    <p tabindex="0">{frameworkjobdevelopment}</p>
+                    <label tabindex="0">Ønsket arbeidstid</label>
+                    <p tabindex="0">{prefferedworkinghours}</p>
+                    <label tabindex="0">Nettverk</label>
+                    <p tabindex="0">{ipsnetwork}</p>
+                    <label tabindex="0">Ønsket arbeidsområde/geografi</label>
+                    <p tabindex="0">{geography}</p>
+                </span>
+                <c-collapsable-section id="32" label='Åpne delmål' aria-label="Åpne delmål">
+                    <p>Her finner du de delmålene som du og jobbspesialisten din samarbeider om nå.</p>
+                    <table>
+                        <thead>
+                            <tr tabindex="0">
+                                <th class="" scope="col">
+                                    <label>Emne</label>
+                                </th>
+                                <th class="" scope="col">
+                                    <label>Dato</label>
+                                </th>
+                                <th class="" scope="col">
+                                    <label>Status</label>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={participantGoalRecord} for:item="goal">
+                                <tr key={goal.id}>
+                                    <td><p tabindex="0">{goal.Subject}</p></td>
+                                    <td><p tabindex="0">{goal.ActivityDate}</p></td>
+                                    <td><p tabindex="0">{goal.Status}</p></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </c-collapsable-section>
+                
+                <form class="form-control">
+                    <c-collapsable-section id="33" label='Kommende møter' aria-label="Kommende møter">
+                        <p tabindex="0">Her får du opp kommende møter som er satt opp med jobbspesialisten din.</p>
+                        <!-- Participant Meetings presented -->
+                        <template if:true={isActivity}>
+                            <template for:each={activityPartRecord} for:item="part" for:index="index">
+                                <div key={part.id}>
+                                    <lightning-card class="slds-p-around_xxx-small" >
+                                        <form class="form-control">
+                                            <div class="trailtext">
+                                                    <h3 tabindex="0" slot="title">
+                                                        <lightning-icon class="illustrasjon" icon-name="utility:user"></lightning-icon>
+                                                        {part.Subject}
+                                                    </h3> 
+                                                <div class="work-border"></div>
+                                            </div>
+                                            <label tabindex="0">Dato</label>
+                                            <p tabindex="0">{part.ActivityDate}</p>
+                                            <label tabindex="0">Beskrivelse</label>
+                                            <p tabindex="0">{part.Description}</p>
+                                        </form>
+                                    </lightning-card>
+                                </div>    
+                            </template>
+                        </template>
+                        <!-- Employer Meetings presented -->
+                        <form  class="form-control">
+                            <template if:true={isEmployer}>
+                                <p tabindex="0">Kommende møter satt opp med arbeidsgiver.</p>
+                                <template for:each={activityEmplRecord} for:item="part" for:index="index">
+                                    <div key={part.id}>
+                                        <lightning-card class="slds-p-around_xxx-small" >
+                                            <form class="form-control">
+                                                <div class="trailtext">
+                                                        <h3 tabindex="0" slot="title">
+                                                            <lightning-icon class="illustrasjon" icon-name="utility:company"></lightning-icon>
+                                                            {part.Subject}
+                                                        </h3> 
+                                                    <div class="work-border"></div>
+                                                </div>
+                                                <label tabindex="0">Dato</label>
+                                                <p tabindex="0">{part.ActivityDate}</p>
+                                                <label tabindex="0">Beskrivelse</label>
+                                                <p tabindex="0">{part.Description}</p>
+                                            </form>
+                                        </lightning-card>
+                                    </div>    
+                                </template>
+                            </template>
+                        </form>
+                    </c-collapsable-section>
+                    <c-collapsable-section id="34" label='Alle møter' aria-label="Alle møter">
+                    </c-collapsable-section>
+                </form> 
+            </form>
+        </div>
+        <div class="container skjema-max-width">
+            <form class="form-control">
+                <p>Vil du ha en tekst her??</p>
+                <c-collapsable-section id="7" label='Jobbstøtte' aria-label="Jobbstøtte">
+                    <form class="form-control">
+                        <label>Strategi før og etter jobb</label>
+                        <p>{workStrategy}</p>
+                        <label>Behov for tilrettelegging</label>
+                        <p>{workFacility}</p>
+                        <label>Tidlige tegn på økt symptomtrykk</label>
+                        <p>{earlySigns}</p>
+                        <label>Hvilke mestringsstrategier finnes?</label>
+                        <p>{copingStrategy}</p>
+                        <label>Nettverk</label>
+                        <p>{ipsnetwork}</p>
+                    </form>
+                </c-collapsable-section>
+                <c-collapsable-section id="8" label='Jobbsmak' aria-label="Jobbsmak">
+                </c-collapsable-section>
+                <c-collapsable-section id="9" label='Jobber' aria-label="Jobber">
+                </c-collapsable-section>
+                <c-collapsable-section id="10" label='Utdanning' aria-label="Utdanning">
+                </c-collapsable-section>
+            </form>
+        </div>
+        <!-- Section with the rest and is IPS -->
+        <div class="container skjema-max-width">
+            <form class="form-control">
+                <p>Vil du ha en tekst her??</p>
+
+                <!--<c-collapsable-section id="1" label='Informasjon om deg og din deltakelse' aria-label="Informasjon om deg og din deltakelse">
+                    <form class="form-control">
+                        <span>
+                            <div if:true={IPSung}>
+                                <p tabindex="0">Deltakelse i IPS ung.</p>
+                            </div>
+                            <label tabindex="0">Henvist til jobbsporet</label>
+                            <p tabindex="0">{referredDate}</p>
+                            <label tabindex="0">Oppstartsdato</label>
+                            <p tabindex="0">{startDate}</p>
+                            <label tabindex="0">Kontakt ved uteblivelse</label>
+                            <p tabindex="0">{contNoShow}</p>
+                        </span>
+                    </form>        
+                </c-collapsable-section> -->
+                <c-collapsable-section id="2" label='Kartlegging' aria-label="Kartlegging">
+                    <form class="form-control">
+                        <span>
+                            <label tabindex="0">Interesser/hobbyer</label>
+                            <p tabindex="0">{interestHobbies}</p>
+                            <label tabindex="0">Personlige egenskaper</label>
+                            <lightning-helptext tabindex="0" content="Sterke sider, ferdigheter og egenskaper som du kan nyttiggjøre deg i arbeidslivet. Sider ved deg som du bør være bevisst på i jobbsammenheng som ikke alltid slår positivt ut"></lightning-helptext> 
+                            <p tabindex="0">{personalQualities}</p>
+                            <label tabindex="0">Kulturell bakgrunn</label>
+                            <lightning-helptext tabindex="0" content="Viktige verdier og samlingspunkter i oppvekstmiljøet og senere i livet"></lightning-helptext>
+                            <p tabindex="0">{culturalBackground}</p>
+                            <label tabindex="0">Omgivelsene dine og miljøet du er en del av</label>
+                            <p tabindex="0">{environmentalConditions}</p>
+                            <label tabindex="0">Din økonomiske situasjon</label>
+                            <p tabindex="0">{economy}</p>
+                            <label tabindex="0">Din helsesituasjon relatert til jobb og behov for tilrettelegging</label>
+                            <p tabindex="0">{health}</p>
+                        </span>
+                    </form>
+                </c-collapsable-section> 
+                <c-collapsable-section id="3" label='Utdanning og erfaring' aria-label="Utdanning og erfaring">
+                    <form class="form-control">
+                        <span>
+                            <label tabindex="0">Din erfaring med tidligere utdanning. Det som var bra og det som var utfordrende</label>
+                            <p tabindex="0">{education}</p>
+                            <label tabindex="0">Din erfaring med tidligere arbeidsforhold. Det som var bra og det som var utfordrende</label>
+                            <p tabindex="0">{workExperiance}</p>
+                            <label tabindex="0">Referanse fra tidligere arbeidsgivere</label>
+                            <p tabindex="0">{conversationPreviousEmployer}</p>
+                        </span>
+                    </form>
+                </c-collapsable-section>
+                <c-collapsable-section id="4" label="Åpenhet" aria-label="Åpenhet">
+                    <form class="form-control">
+                        <span>
+                            <label tabindex="0">Åpenhet innhentet</label>
+                            <p tabindex="0">{transparencyDate}</p>
+                            <div if:true={transparencyEmployerContact}>
+                                <label tabindex="0">Hva kan deles med arbeidsgiver?</label>
+                                <p tabindex="0">{transparencyEmployerShare}</p>
+                                <label tabindex="0">Hva skal ikke deles med arbeidsgiver?</label>
+                                <p tabindex="0">{transparencyEmployerNotShare}</p>
+                            </div>
+                            <div if:false={transparencyEmployerContact}>
+                                <p tabindex="0">Arbeidsgiver skal ikke kontaktes.</p>
+                            </div>
+                        </span>
+                    </form>
+                </c-collapsable-section>
+                <c-collapsable-section id="5" label="Samarbeid" aria-label="Samarbeid">
+                    <form class="form-control">
+                        <span>
+                            <label tabindex="0">NAV veileder</label>
+                            <p tabindex="0">{navSupervisor}</p>
+                            <label tabindex="0">Behandlingsteam</label>
+                            <p tabindex="0">{treatmentTeam}</p>
+                            <label tabindex="0">Nettverk</label>
+                            <p tabindex="0">{ipsnetwork}</p>
+                        </span>
+                    </form>
+                </c-collapsable-section>
+                <c-collapsable-section id="6" label="Økonomiske rammer" aria-label="Økonomiske rammer">
+                    <form class="form-control">
+                        <span>
+                            <label tabindex="0">Dine økonomiske rammer før jobbstart</label>
+                            <p tabindex="0">{framesBeforeWork}</p>
+                            <label tabindex="0">Ditt behov for økonomisk rådgivning/gjeldsrådgivning</label>
+                            <p tabindex="0">{planWhenWork}</p>
+                            <label tabindex="0">Hvordan stønader og ytelser påvirkes etter overgang til jobb</label>
+                            <p tabindex="0">{transitionToWork}</p>
+                        </span>
+                    </form>
+                </c-collapsable-section>
+            </form>
+        </div>
+
+    </div>
+
+    <div if:false={record} class="container skjema-max-width">
+        <form>
+            <!--
+            <c-alert-banner 
+                type="Warning"
+                message ="Du må være aktiv deltaker i et av arbeidsmarkedstiltakene IPS eller Utvidet oppfølging for å kunne se denne siden">
+            </c-alert-banner>
+            -->
+        </form>
+    </div>
+</template>
