@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Oppgaver</fullName>
+    <booleanFilter>1 AND 2 AND (3 OR 4)</booleanFilter>
     <columns>Type_of_Task_IPSUO__c</columns>
     <columns>STATUS</columns>
     <columns>SUBJECT</columns>
@@ -10,13 +11,22 @@
     <filterScope>Mine</filterScope>
     <filters>
         <field>STATUS</field>
-        <operation>notEqual</operation>
-        <value>Completed,Deferred</value>
+        <operation>equals</operation>
+        <value>Open</value>
     </filters>
     <filters>
         <field>Type_of_Task_IPSUO__c</field>
         <operation>notEqual</operation>
         <value>Delmål (av hovedmål)</value>
+    </filters>
+    <filters>
+        <field>ips_Due_Date_Time__c</field>
+        <operation>equals</operation>
+    </filters>
+    <filters>
+        <field>ips_Due_Date_Time__c</field>
+        <operation>lessThan</operation>
+        <value>TODAY</value>
     </filters>
     <label>Åpne oppgaver</label>
     <sharedTo>
