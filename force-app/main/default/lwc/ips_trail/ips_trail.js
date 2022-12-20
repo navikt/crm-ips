@@ -260,7 +260,7 @@ export default class Ips_trail extends LightningElement {
     }
 
     get startDate(){
-        return getFieldValue(this.workTrailWire,FIELD_STARTDATE);
+        return this.formatDate(getFieldDisplayValue(this.workTrailWire,FIELD_STARTDATE));
     }
 
     get contNoShow(){
@@ -304,7 +304,7 @@ export default class Ips_trail extends LightningElement {
     }
 
     get transparencyDate(){
-        return getFieldDisplayValue(this.workTrailWire,FIELD_TRANSPARENCYDATE);
+        return this.formatDate(getFieldDisplayValue(this.workTrailWire,FIELD_TRANSPARENCYDATE));
     }
 
     get transparencyEmployerContact(){
