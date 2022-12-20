@@ -5,9 +5,9 @@ public without sharing class IPS_myActivityController {
 
         List<Task> userGoal = new List<Task>();
         userGoal =[
-            SELECT id,ActivityDate, Subject,Type_of_Task_IPSUO__c,Description
+            SELECT id,ActivityDate, Subject,Type_of_Task_IPSUO__c,Description,Status
             FROM Task 
-            WHERE WhatId = :workTrailId AND IsVisibleInSelfService__c =true AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'
+            WHERE WhatId = :workTrailId  AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'
             ORDER BY ActivityDate DESC
         ];
         return userGoal;
