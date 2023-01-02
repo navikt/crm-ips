@@ -5,7 +5,6 @@ import getUserEducation from '@salesforce/apex/IPS_myWorkTrailController.getUser
 export default class Ips_education extends NavigationMixin(LightningElement) {
     @api recordId;
     @track record;
-    @api header;
     error;
     @track userEducation;
    
@@ -17,35 +16,38 @@ export default class Ips_education extends NavigationMixin(LightningElement) {
             console.log('Something went wrong:', error);
         }
     }
-
-    get activitydate(){
-        return this.formatDate(this.record?.ActivityDate);
-    }
-
-    get timefrom(){
-        return this.record?.StartDateTime;
-    }
-
-    get timeto(){
-        return this.record?.EndDateTime;
-    }
-
+    
     get type(){
-        if(this.record?.IPS_Type__c ==='Meeting with Employer'){
-            return 'møte med arbeidstaker';
-        }
-        
-        if(this.record?.IPS_Type__c ==='Meeting with Participant'){
-            return 'møte med jobbspesialist';
-        }
+        return this.record?.ips_What_did_not_work_with_thiseducation__c;
     }
 
-    get subject(){
-        return this.record?.Subject;
+    get notworked(){
+        return this.record?.ips_What_did_work_with_this_education__c;
     }
 
-    get description(){
-        return this.record?.Description;
+    get worked(){
+        return this.record?.ips_What_did_work_with_this_education__c;
+    }
+
+
+    get supportplan(){
+        return this.record?.ips_Education_Support_Plan__c;
+    }
+
+    get startdate(){
+        return this.formatDate(this.record?.ips_Start_Date__c);
+    }
+
+    get enddate(){
+        return this.formatDate(this.record?.ips_End_Date__c);
+    }
+    
+    get educationtitle(){
+        return this.record?.Name;
+    }
+
+    get institutename(){
+        return this.record?.ips_Name_of_the_Education_Institution__c;
     }
 
     formatDate(date) {

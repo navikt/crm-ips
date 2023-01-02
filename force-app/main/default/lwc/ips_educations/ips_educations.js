@@ -1,41 +1,48 @@
 import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { sortList, getMobileSortingOptions } from 'c/sortController';
 import Id from '@salesforce/user/Id';
-import getUserEducation from '@salesforce/apex/IPS_myWorkTrailController.getUserEducations';
+import getUserEducations from '@salesforce/apex/IPS_myWorkTrailController.getallEducations';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 
 const COLUMNS =[
     {label: 'Utdanning', fieldName: 'Name',type: 'text',hideDefaultActions: true},
-    {label: 'Navn på utdanning', fieldName: 'ips_Name_of_the_Education_Institution__c', type: 'text', hideDefaultActions: true},
+    {label: 'Navn på institusjon', fieldName: 'ips_Name_of_the_Education_Institution__c', type: 'text', hideDefaultActions: true},
     {
         type: 'button',
-        fixedWidth: 200,
+        fixedWidth: 150,
         typeAttributes:{
             label: 'Se detaljer',
             title: 'Se detaljer',
             name: 'Utdanning',
             variant: 'Brand'
         }
+    },
+    {
+        type:'button',
+        fixedWidth: 150,
+        typeAttributes:{
+            label: 'Fullført',
+            title: 'Fullført',
+            name: 'Status',
+            variant: 'Destructive',
+            disabled:{fieldName:'disableButton'}
+        }
+        
     }
 ]
 export default class Ips_educations extends NavigationMixin(LightningElement){
-//currentUser = Id;
-currentUser ='0051X00000DtVvmQAF' ;
+currentUser = Id;
+//currentUser ='0051X00000DtVvmQAF' ;
+educationRecords;
 @track educationRecord;
 @track record;
-@track defaultSortDirection = 'desc';
-@track sortDirection = 'desc';
-@track sortedBy = 'ips_Start_Date__c';
 recordIds;
 isEducation = false;
 columns = COLUMNS;
 
-onHandleSort(event) {
-    this.sortDirection = event.detail.sortDirection;
-    this.sortedBy = event.detail.fieldName;
-    this.workOrders = sortList(this.workOrders, this.sortedBy, this.sortDirection);
-}
+get isMobile() {
+    return window.screen.width < 576;
+  }
 
 /* Fetch recordId from logged in user */
 @wire(getUserWorkTrailId,{userId: '$currentUser'})
@@ -48,11 +55,15 @@ wiredtrail({ error, data }) {
         }
     }
 
-    @wire(getUserEducation, {workTrailId:'$recordIds'})
+    @wire(getUserEducations, {workTrailId:'$recordIds'})
     userActivity({error,data}){
        if(data){
         if(data.length>0){
-            this.educationRecord = data;
+            this.educationRecords = data;
+            this.educationRecord = JSON.parse(JSON.stringify(this.educationRecords));
+            this.educationRecord.forEach(edu => {
+              edu.disableButton = edu.ips_Status__c !== 'Completed';
+            });
             this.isEducation = true;
         }
        }else if(error){
