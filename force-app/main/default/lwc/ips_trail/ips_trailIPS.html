@@ -28,7 +28,13 @@
                             <ul tabindex="0" key={goal.id}>
                                 <li tabindex="0"><p>{goal.Subject}</p></li>
                             </ul>
-                        </template>
+                        </template> 
+                        <p>
+                            <c-textlink 
+                            address="https://www.nav.no/no/person"
+                            label="Gå til delmål" icon-before="false">
+                            </c-textlink>
+                        </p>
                     </form>
                 </template>
                 <template if:true={isEducation}>
@@ -40,6 +46,12 @@
                                 <li tabindex="0"><p>{edu.Name}</p></li>
                             </ul>
                         </template>
+                        <p>
+                            <c-textlink 
+                            address="https://www.nav.no/no/person"
+                            label="Gå til utdanning/kurs" icon-before="false">
+                            </c-textlink>
+                        </p>
                     </form>
                 </template>
                 <template if:true={isJob}>
@@ -51,6 +63,12 @@
                                 <li tabindex="0"><p>{job.Name}</p></li>
                             </ul>
                         </template>
+                        <p>
+                            <c-textlink 
+                            address="https://www.nav.no/no/person"
+                            label="Gå til lønnet arbeid" icon-before="false">
+                            </c-textlink>
+                        </p>
                     </form>
                 </template>
                 <template if:true={isTraining}>
@@ -62,62 +80,17 @@
                                 <li tabindex="0"><p>{train.Name}</p></li>
                             </ul>
                         </template>
+                        <p>
+                            <c-textlink 
+                            address="https://www.nav.no/no/person"
+                            label="Gå til arbeidstrening" icon-before="false">
+                            </c-textlink>
+                        </p>
                     </form>
                 </template>
             </form>
         </div>
-        <!-- Second section -->
-        <div class="container skjema-max-width">
-
-            <h2 tabindex="0" class="title">Linker videre</h2>
-
-            <div class="container-light">
-                <c-linkTile
-                link-header="Delmål"
-                link-label="Her vil du se åpne delmål, gjennomførte mål med beskrivelse av målet."
-                navigation-address="ips_my_goals__c"
-                custom-text-style="padding: 1rem; "
-                >
-                </c-linkTile>
-            </div>
-            <div class="container-light">
-                <c-linkTile
-                    link-header="Møter"
-                    link-label="Her vil du se kommende møter, gjennomførte møter og møtereferater."
-                    navigation-address="ips_my_meetings__c"
-                    custom-text-style="padding: 1rem; "
-                >
-                </c-linkTile>
-            </div>
-            <div class="container-light">
-                <c-linkTile
-                    link-header="Jobber"
-                    link-label="Her vil du se jobber du er i nå, gjennomførte jobber og jobbstøtteplan knyttet til jobben."
-                    navigation-address="ips_my_jobs__c"
-                    custom-text-style="padding: 1rem; "
-                >
-                </c-linkTile>
-            </div>
-            <div class="container-light">
-                <c-linkTile
-                    link-header="Arbeidstrening"
-                    link-label="Her vil du se arbeidstrening du er i nå, gjennomførte arbeidstrening og plan for støtte knyttet til arbeidstrening."
-                    navigation-address="ips_my_trainings__c"
-                    custom-text-style="padding: 1rem; "
-                >
-                </c-linkTile>
-            </div>
-            <div class="container-light">
-                <c-linkTile
-                    link-header="Utdanning"
-                    link-label="Her vil du se utdanning/kurs du er i nå, gjennomførte utdanninger/kurs."
-                    navigation-address="ips_my_educations__c"
-                    custom-text-style="padding: 1rem; "
-                >
-                </c-linkTile>  
-            </div>
-        </div>
-        
+                
         <!-- Section with the rest and is IPS -->
         <div class="container skjema-max-width">
             <form class="form-control">
@@ -233,6 +206,58 @@
                     </form>
                 </c-collapsable-section>
             </form>
+        </div>
+
+        <!-- Second section -->
+        <div class="container skjema-max-width">
+
+            <h2 tabindex="0" class="title">Linker videre</h2>
+
+            <div class="container-light">
+                <c-linkTile
+                link-header="Delmål"
+                link-label="Her vil du se åpne delmål, gjennomførte mål med beskrivelse av målet."
+                navigation-address="ips_my_goals__c"
+                custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>
+            </div>
+            <div class="container-light">
+                <c-linkTile
+                    link-header="Møter"
+                    link-label="Her vil du se kommende møter, gjennomførte møter og møtereferater."
+                    navigation-address="ips_my_meetings__c"
+                    custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>
+            </div>
+            <div class="container-light">
+                <c-linkTile
+                    link-header="Jobber"
+                    link-label="Her vil du se jobber du er i nå, gjennomførte jobber og jobbstøtteplan knyttet til jobben."
+                    navigation-address="ips_my_jobs__c"
+                    custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>
+            </div>
+            <div class="container-light">
+                <c-linkTile
+                    link-header="Arbeidstrening"
+                    link-label="Her vil du se arbeidstrening du er i nå, gjennomførte arbeidstrening og plan for støtte knyttet til arbeidstrening."
+                    navigation-address="ips_my_trainings__c"
+                    custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>
+            </div>
+            <div class="container-light">
+                <c-linkTile
+                    link-header="Utdanning"
+                    link-label="Her vil du se utdanning/kurs du er i nå, gjennomførte utdanninger/kurs."
+                    navigation-address="ips_my_educations__c"
+                    custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>  
+            </div>
         </div>
 
     </div>

@@ -1,42 +1,60 @@
 import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { sortList, getMobileSortingOptions } from 'c/sortController';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 import getAllActivity from '@salesforce/apex/IPS_myActivityController.getAllActivity';
 
 const COLUMNS =[
-    {label: 'Møtedato', fieldName: 'ActivityDate',type: 'text',hideDefaultActions: true},
+    {
+        label: 'Møtedato', 
+        fieldName: 'ActivityDate',
+        type: 'date',
+        hideDefaultActions: true,
+            typeAttributes:{
+            year:"numeric" ,
+            month:"numeric" ,
+            day:"2-digit" ,
+            weekday:"long"
+        }
+    },
     {label: 'Emne', fieldName: 'Subject', type: 'text', hideDefaultActions: true},
     {
         type: 'button',
-        fixedWidth: 200,
+        fixedWidth: 170,
         typeAttributes:{
             label: 'Se detaljer',
             title: 'Se detaljer',
             name: 'Møte',
             variant: 'Brand'
         }
+    },
+    {
+        type:'button',
+        fixedWidth: 170,
+        typeAttributes:{
+            label: 'Lukket',
+            title: 'Lukket',
+            name: 'IPS_Status1__c',
+            variant: 'Destructive',
+            disabled:{fieldName:'disableButton'}
+        }
     }
 ]
 
 export default class Ips_myMeetings extends NavigationMixin(LightningElement) {
-currentUser = Id;
-//currentUser ='0051X00000DtVvmQAF' ;
-@track activityRecord;
+//currentUser = Id;
+currentUser ='0051X00000DtVvmQAF' ;
+activityRecords;
+@track activityRecord
 @track record;
-@track defaultSortDirection = 'desc';
-@track sortDirection = 'desc';
-@track sortedBy = 'ActivityDate';
 recordIds;
 isActivity = false;
 columns = COLUMNS;
 
-onHandleSort(event) {
-    this.sortDirection = event.detail.sortDirection;
-    this.sortedBy = event.detail.fieldName;
-    this.workOrders = sortList(this.workOrders, this.sortedBy, this.sortDirection);
-}
+
+get isMobile() {
+    return window.screen.width < 576;
+  }
 
 /* Fetch recordId from logged in user */
 @wire(getUserWorkTrailId,{userId: '$currentUser'})
@@ -53,7 +71,11 @@ wiredtrail({ error, data }) {
     userActivity({error,data}){
        if(data){
         if(data.length>0){
-            this.activityRecord = data;
+            this.activityRecords = data;
+            this.activityRecord = JSON.parse(JSON.stringify(this.activityRecords));
+            this.activityRecord.forEach(act => {
+              act.disableButton = act.IPS_Status1__c !== 'Completed';
+            });
             this.isActivity = true;
         }
        }else if(error){
