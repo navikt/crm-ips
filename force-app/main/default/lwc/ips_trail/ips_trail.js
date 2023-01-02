@@ -58,14 +58,14 @@ import FIELD_OWNERID from '@salesforce/schema/Work_Trail__c.OwnerId';
 /* Event/task */
 import getEmployerActivity from '@salesforce/apex/IPS_myActivityController.getEmployerActivity';
 import getParticipantActivity from '@salesforce/apex/IPS_myActivityController.getParticipantActivity';
-import getParticipantGoal from '@salesforce/apex/IPS_myActivityController.getParticipantsGoal';
+import getParticipantGoals from '@salesforce/apex/IPS_myActivityController.getParticipantsGoals';
 
 /* Education */
-import getEducation from '@salesforce/apex/IPS_myWorkTrailController.getUserEducation';
+import getEducations from '@salesforce/apex/IPS_myWorkTrailController.getUserEducations';
 
 /* Jobs */
-import getUserJob from '@salesforce/apex/IPS_myWorkTrailController.getUserWork';
-import getTraining from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTraining';
+import getUserJob from '@salesforce/apex/IPS_myWorkTrailController.getUserWorks';
+import getTraining from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrainings';
 
 /* Worktrail fields */
 const WORKTRAIL_FIELDS = [
@@ -123,8 +123,8 @@ export default class Ips_trail extends LightningElement {
     myActivityImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
     myGoalImg = IPS_HOME_LOGOS + '/TaskFilled.svg';
     myPlanImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
-    currentUser = Id;
-    //currentUser ='0051X00000DtVvmQAF' ;
+    //currentUser = Id;
+    currentUser ='0051X00000DtVvmQAF' ;
     recordId;
     recordtypename;
     ownerIds;
@@ -219,7 +219,7 @@ export default class Ips_trail extends LightningElement {
        }
     }
 
-    @wire(getParticipantGoal,{workTrailId:'$recordId'})
+    @wire(getParticipantGoals,{workTrailId:'$recordId'})
     userParGoal({error,data}){
         if(data){
             if(data.length>0){
@@ -232,7 +232,7 @@ export default class Ips_trail extends LightningElement {
         }
     }
 
-    @wire(getEducation,{workTrailId:'$recordId'})
+    @wire(getEducations,{workTrailId:'$recordId'})
     userEducation({error,data}){
         if(data){
             if(data.length>0){
