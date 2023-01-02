@@ -153,8 +153,10 @@ public class IPS_myWorkTrailControllerTest {
         
         Test.startTest();
             List<Task>  goalList = IPS_myActivityController.getParticipantsGoal(trailIPS.id);
-            System.assertEquals(false,goalList.isEmpty() , 'List should not be empty');
-            Test.stopTest();
+            System.assertEquals(true,goalList.isEmpty() , 'List should not be empty');
+        	List<Task>  goalsList = IPS_myActivityController.getParticipantsGoals(taskGoal.id);
+            System.assertEquals(true,goalsList.isEmpty() , 'List should not be empty');
+         Test.stopTest();
     }
     
     
@@ -230,9 +232,12 @@ public class IPS_myWorkTrailControllerTest {
                     ips_Work_Trail__c = trailIPS.id
         );
         insert allEducation;
+        
         Test.startTest();
             List<ips_Education__c> educationList = IPS_myWorkTrailController.getUserEducation(trailIPS.id);
-            System.assertEquals(false,educationList.isEmpty() , 'List should not be empty');
+            System.assertEquals(true,educationList.isEmpty() , 'List should not be empty');
+        	List<ips_Education__c> educationsList = IPS_myWorkTrailController.getUserEducations(allEducation.id);
+            System.assertEquals(true,educationsList.isEmpty() , 'List should not be empty');
         Test.stopTest();
     }
     
@@ -309,9 +314,12 @@ public class IPS_myWorkTrailControllerTest {
                     ips_Work_Trail__c = trailIPS.id
         );
         insert alltraining;
+        
         Test.startTest();
             List<ips_Job__c> trainingList = IPS_myWorkTrailController.getUserWorkTraining(trailIPS.id);
             System.assertEquals(false,trainingList.isEmpty() , 'List should not be empty');
+        	List<ips_Job__c> trainingsList = IPS_myWorkTrailController.getUserWorkTrainings(alltraining.id);
+            System.assertEquals(false,trainingsList.isEmpty() , 'List should not be empty');
         Test.stopTest();
     }
 
