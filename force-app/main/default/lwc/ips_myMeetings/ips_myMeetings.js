@@ -42,8 +42,8 @@ const COLUMNS =[
 ]
 
 export default class Ips_myMeetings extends NavigationMixin(LightningElement) {
-//currentUser = Id;
-currentUser ='0051X00000DtVvmQAF' ;
+currentUser = Id;
+//currentUser ='0051X00000DtVvmQAF' ;
 activityRecords;
 @track activityRecord
 @track record;
