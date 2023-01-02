@@ -1,0 +1,23 @@
+<template>
+    <div class="breadcrumbs container">
+        <lightning-breadcrumbs>
+            <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="Mine utdanninger/kurs" name="ips_my_educations__c"></lightning-breadcrumb>
+        </lightning-breadcrumbs>
+    </div>
+    <div class="container skjema-max-width">
+        <lightning-datatable 
+            class="trailtext"
+            key-field="Id" 
+            data={educationRecord} 
+            columns={columns} 
+            hide-checkbox-column="true" 
+            default-sort-direction={defaultSortDirection}
+            sorted-direction={sortDirection}
+            sorted-by={sortedBy}
+            onrowaction={handleRowAction}
+        >
+        </lightning-datatable>
+    </div>
+    
+</template>
