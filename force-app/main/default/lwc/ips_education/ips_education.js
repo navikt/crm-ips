@@ -5,6 +5,7 @@ import getUserEducation from '@salesforce/apex/IPS_myWorkTrailController.getUser
 export default class Ips_education extends NavigationMixin(LightningElement) {
     @api recordId;
     @track record;
+    @api header;
     error;
     @track userEducation;
    
