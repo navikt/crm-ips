@@ -1,7 +1,6 @@
 import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { sortList } from 'c/sortController';
-import getParticipantsGoals from '@salesforce/apex/IPS_myActivityController.getParticipantsGoals';
+import getParticipantsGoals from '@salesforce/apex/IPS_myActivityController.getAllGoals';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 
 const COLUMNS =[
@@ -42,8 +41,8 @@ const COLUMNS =[
 ]
 
 export default class Ips_myGoals extends NavigationMixin(LightningElement) {
-//currentUser = Id;
-currentUser ='0051X00000DtVvmQAF' ;
+currentUser = Id;
+//currentUser ='0051X00000DtVvmQAF' ;
 goalRecords;
 @track goalRecord;
 @track record;

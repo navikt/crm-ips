@@ -7,6 +7,19 @@ public without sharing class IPS_myActivityController {
         userGoal =[
             SELECT id,ActivityDate, Subject,Type_of_Task_IPSUO__c,Description,Status
             FROM Task 
+            WHERE WhatId = :workTrailId AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'  AND Status ='Open'
+            ORDER BY ActivityDate DESC
+        ];
+        return userGoal;
+    }
+
+    @AuraEnabled(cacheable = true)    
+    public static List<Task> getAllGoals(String workTrailId){
+
+        List<Task> userGoal = new List<Task>();
+        userGoal =[
+            SELECT id,ActivityDate, Subject,Type_of_Task_IPSUO__c,Description,Status
+            FROM Task 
             WHERE WhatId = :workTrailId AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'
             ORDER BY ActivityDate DESC
         ];
