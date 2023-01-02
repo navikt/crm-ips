@@ -5,6 +5,7 @@ import getMeeting from '@salesforce/apex/IPS_myActivityController.getMeeting';
 export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
     @api recordId;
     @track record;
+    @api header;
     error;
    
     @wire(getMeeting, {recId:'$recordId'})
