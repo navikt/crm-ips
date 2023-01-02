@@ -1,25 +1,17 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import getMeeting from '@salesforce/apex/IPS_myActivityController.getMeeting';
-import { refreshApex } from '@salesforce/apex';
 
 export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
     @api recordId;
     @track record;
     @api header;
-    //testId = '00U1X000004FRJ3UAO';
     error;
-    @track userActivity;
    
     @wire(getMeeting, {recId:'$recordId'})
     wiredmeeting({ error, data }) {
         if (data) {
             this.record = data[0];
-            /*
-            this.activitydate = this.record?.ActivityDate;
-            this.recordId = this.record?.Id;
-            this.contactId = this.record?.ips_Participant__r.PersonContactId;
-            */
         } else if (error) {
             console.log('Something went wrong:', error);
         }
@@ -30,11 +22,11 @@ export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
     }
 
     get timefrom(){
-        return this.record?.StartDateTime;
+        return this.formatDateTime(this.record?.StartDateTime);
     }
 
     get timeto(){
-        return this.record?.EndDateTime;
+        return this.formatDateTime(this.record?.EndDateTime);
     }
 
     get type(){
@@ -55,9 +47,23 @@ export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
         return this.record?.Description;
     }
 
-    formatDate(date) {
-        return new Date(date).toLocaleDateString(); 
+    formatDate(initialDate) {
+        if (initialDate === undefined) {
+            return null;
+        }
+        let date = new Date(initialDate);
+        return date.toLocaleDateString();
      }
+
+    formatDateTime(initialDatetime){
+        if (initialDatetime === undefined) {
+            return null;
+        }
+        let datetime = new Date(initialDatetime);
+        return (
+            datetime.toLocaleDateString() + ', ' + datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        );
+    }
 
      navigateToPage(event) {
         const page = event.target.name;
