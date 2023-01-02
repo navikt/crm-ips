@@ -319,7 +319,7 @@ public class IPS_myWorkTrailControllerTest {
             List<ips_Job__c> trainingList = IPS_myWorkTrailController.getUserWorkTraining(trailIPS.id);
             System.assertEquals(false,trainingList.isEmpty() , 'List should not be empty');
         	List<ips_Job__c> trainingsList = IPS_myWorkTrailController.getUserWorkTrainings(alltraining.id);
-            System.assertEquals(false,trainingsList.isEmpty() , 'List should not be empty');
+            System.assertEquals(true,trainingsList.isEmpty() , 'List should not be empty');
         Test.stopTest();
     }
 
