@@ -1,14 +1,14 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getMeeting from '@salesforce/apex/IPS_myActivityController.getMeeting';
+import getParticipantsGoal from '@salesforce/apex/IPS_myActivityController.getParticipantsGoal';
 
-export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
+export default class Ips_myGoal extends NavigationMixin(LightningElement) {
     @api recordId;
     @track record;
     error;
    
-    @wire(getMeeting, {recId:'$recordId'})
-    wiredmeeting({ error, data }) {
+    @wire(getParticipantsGoal, {recId:'$recordId'})
+    wiredgoal({ error, data }) {
         if (data) {
             this.record = data[0];
         } else if (error) {
@@ -20,43 +20,25 @@ export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
         return this.formatDate(this.record?.ActivityDate);
     }
 
-    get status(){
-        let goalStatus = this.record?.IPS_Status1__c;
-        if(goalStatus==='Open'){
-            return 'Åpen'
-        }
-        if(goalStatus==='Completed'){
-            return 'Lukket';
-        }
-        if(goalStatus==='Not applicable'){
-            return 'Ingen status'
-        }
-    }
-
-    get timefrom(){
-        return this.formatDateTimeToTime(this.record?.StartDateTime);
-    }
-
-    get timeto(){
-        return this.formatDateTimeToTime(this.record?.EndDateTime);
-    }
-
-    get type(){
-        if(this.record?.IPS_Type__c ==='Meeting with Employer'){
-            return 'møte med arbeidstaker';
-        }
-        
-        if(this.record?.IPS_Type__c ==='Meeting with Participant'){
-            return 'møte med jobbspesialist';
-        }
-    }
-
     get subject(){
         return this.record?.Subject;
     }
 
     get description(){
         return this.record?.Description;
+    }
+
+    get status(){
+        let goalStatus = this.record?.Status;
+        if(goalStatus==='Open'){
+            return 'Åpen'
+        }
+        if(goalStatus==='Completed'){
+            return 'Fullført';
+        }
+        if(goalStatus==='Not applicable'){
+            return 'Ingen status'
+        }
     }
 
     formatDate(initialDate) {

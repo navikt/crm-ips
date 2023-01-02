@@ -6,18 +6,27 @@
         </lightning-breadcrumbs>
     </div>
     <div class="container skjema-max-width">
-        <lightning-datatable 
-            class="trailtext"
-            key-field="Id" 
-            data={activityRecord} 
-            columns={columns} 
-            hide-checkbox-column="true" 
-            default-sort-direction={defaultSortDirection}
-            sorted-direction={sortDirection}
-            sorted-by={sortedBy}
-            onrowaction={handleRowAction}
-        >
-        </lightning-datatable>
+        <div if:false={isMobile}>
+            <lightning-datatable 
+                class="trailtext"
+                key-field="Id" 
+                data={activityRecords} 
+                columns={columns} 
+                hide-checkbox-column="true" 
+                onrowaction={handleRowAction}
+            >
+            </lightning-datatable>
+        </div> 
+        <div if:true={isMobile} style="height: 600px;">
+            <lightning-datatable 
+                class="trailtext"
+                key-field="Id" 
+                data={activityRecords} 
+                columns={columns} 
+                hide-checkbox-column="true" 
+                onrowaction={handleRowAction}
+            >
+            </lightning-datatable>
+        </div>
     </div>
-    
 </template>

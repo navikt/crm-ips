@@ -1,41 +1,59 @@
 import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { sortList, getMobileSortingOptions } from 'c/sortController';
+import { sortList } from 'c/sortController';
 import getParticipantsGoals from '@salesforce/apex/IPS_myActivityController.getParticipantsGoals';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 
 const COLUMNS =[
     {label: 'Delmål', fieldName: 'Subject',type: 'text',hideDefaultActions: true},
-    {label: 'Dato', fieldName: 'ActivityDate', type: 'text', hideDefaultActions: true},
+    {
+        label: 'Mål dato', 
+        fieldName: 'ActivityDate', 
+        type: 'date', hideDefaultActions: true,
+        typeAttributes:{
+            year:"numeric" ,
+            month:"numeric" ,
+            day:"2-digit" ,
+            weekday:"long"
+        }
+    },
     {
         type: 'button',
-        fixedWidth: 200,
+        fixedWidth: 150,
         typeAttributes:{
             label: 'Se detaljer',
             title: 'Se detaljer',
             name: 'Goal',
             variant: 'Brand'
         }
+    },
+    {
+        type:'button',
+        fixedWidth: 150,
+        typeAttributes:{
+            label: 'Fullført',
+            title: 'Fullført',
+            name: 'Status',
+            variant: 'Destructive',
+            disabled:{fieldName:'disableButton'}
+        }
+        
     }
 ]
 
 export default class Ips_myGoals extends NavigationMixin(LightningElement) {
 //currentUser = Id;
 currentUser ='0051X00000DtVvmQAF' ;
+goalRecords;
 @track goalRecord;
 @track record;
-@track defaultSortDirection = 'desc';
-@track sortDirection = 'desc';
-@track sortedBy = 'ActivityDate';
 recordIds;
 isGoal = false;
 columns = COLUMNS;
 
-onHandleSort(event) {
-    this.sortDirection = event.detail.sortDirection;
-    this.sortedBy = event.detail.fieldName;
-    this.workOrders = sortList(this.workOrders, this.sortedBy, this.sortDirection);
-}
+get isMobile() {
+    return window.screen.width < 576;
+  }
 
 /* Fetch recordId from logged in user */
     @wire(getUserWorkTrailId,{userId: '$currentUser'})
@@ -52,7 +70,11 @@ onHandleSort(event) {
     userGoal({error,data}){
        if(data){
         if(data.length>0){
-            this.goalRecord = data;
+            this.goalRecords = data;
+            this.goalRecord = JSON.parse(JSON.stringify(this.goalRecords));
+            this.goalRecord.forEach(goall => {
+              goall.disableButton = goall.Status !== 'Completed';
+            });
             this.isGoal = true;
         }
        }else if(error){
