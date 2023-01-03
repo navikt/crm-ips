@@ -19,7 +19,7 @@ export default class Ips_education extends NavigationMixin(LightningElement) {
     }
     
     get type(){
-        return this.record?.ips_What_did_not_work_with_thiseducation__c;
+        return this.record?.ips_Form_of_Education__c;
     }
 
     get notworked(){
@@ -51,8 +51,12 @@ export default class Ips_education extends NavigationMixin(LightningElement) {
         return this.record?.ips_Name_of_the_Education_Institution__c;
     }
 
-    formatDate(date) {
-        return new Date(date).toLocaleDateString(); 
+    formatDate(initialDate) {
+        if (initialDate === undefined) {
+            return null;
+        }
+        let date = new Date(initialDate);
+        return date.toLocaleDateString();
      }
 
      navigateToPage(event) {

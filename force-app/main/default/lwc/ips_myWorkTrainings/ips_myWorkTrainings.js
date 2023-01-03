@@ -1,13 +1,11 @@
 import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { sortList, getMobileSortingOptions } from 'c/sortController';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 import getUserWorkTrainings from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrainings';
 
 const COLUMNS =[
     {label: 'Arbeidstrening', fieldName: 'Name',type: 'text',hideDefaultActions: true},
-    {label: 'Type', fieldName: 'ips_Form_of_Employment__c', type: 'text', hideDefaultActions: true},
     {
         type: 'button',
         fixedWidth: 200,
@@ -17,26 +15,30 @@ const COLUMNS =[
             name: 'Arbeidstrening',
             variant: 'Brand'
         }
+    },
+    {
+        type:'button',
+        fixedWidth: 170,
+        typeAttributes:{
+            label: 'Fullført',
+            title: 'Fullført',
+            name: 'ips_Status__c',
+            variant: 'Destructive',
+            disabled:{fieldName:'disableButton'}
+        }
     }
 ]
 
 export default class Ips_myWorkTrainings extends NavigationMixin(LightningElement) {
-//currentUser = Id;
-currentUser ='0051X00000DtVvmQAF' ;
+currentUser = Id;
+//currentUser ='0051X00000DtVvmQAF' ;
 @track trainingRecord;
+trainingRecords;
 @track record;
-@track defaultSortDirection = 'desc';
-@track sortDirection = 'desc';
-@track sortedBy = 'ActivityDate';
 recordIds;
 isTraining = false;
 columns = COLUMNS;
 
-onHandleSort(event) {
-    this.sortDirection = event.detail.sortDirection;
-    this.sortedBy = event.detail.fieldName;
-    this.workOrders = sortList(this.workOrders, this.sortedBy, this.sortDirection);
-}
 
 /* Fetch recordId from logged in user */
 @wire(getUserWorkTrailId,{userId: '$currentUser'})
@@ -53,7 +55,11 @@ wiredtrail({ error, data }) {
     userActivity({error,data}){
        if(data){
         if(data.length>0){
-            this.trainingRecord = data;
+            this.trainingRecords = data;
+            this.trainingRecord = JSON.parse(JSON.stringify(this.trainingRecords));
+            this.trainingRecord.forEach(tra => {
+              tra.disableButton = tra.ips_Status__c !== 'Completed';
+            });
             this.isTraining = true;
         }
        }else if(error){
@@ -63,7 +69,6 @@ wiredtrail({ error, data }) {
     }
 
     handleRowAction(event) {
-        console.log('eventId: '+ event.detail.row.Id);
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {
