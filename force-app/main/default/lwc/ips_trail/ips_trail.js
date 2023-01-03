@@ -451,7 +451,7 @@ export default class Ips_trail extends LightningElement {
     }
 
     get mainGoalList(){
-        this.goal = getFieldDisplayValue(this.workTrailWire,FIELD_MAINGOALLIST);
+        this.goal = getFieldValue(this.workTrailWire,FIELD_MAINGOALLIST);
         if(this.goal === 'Work'){
             return 'Jobb.';
         }
@@ -462,7 +462,11 @@ export default class Ips_trail extends LightningElement {
 
     }
 
-    formatDate(date) {
-        return new Date(date).toLocaleDateString(); 
+    formatDate(initialDate) {
+        if (initialDate === undefined) {
+            return null;
+        }
+        let date = new Date(initialDate);
+        return date.toLocaleDateString();
      }
 }

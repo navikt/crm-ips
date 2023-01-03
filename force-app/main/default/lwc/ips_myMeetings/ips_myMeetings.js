@@ -32,8 +32,8 @@ const COLUMNS =[
         type:'button',
         fixedWidth: 170,
         typeAttributes:{
-            label: 'Lukket',
-            title: 'Lukket',
+            label: 'Fullført',
+            title: 'Fullført',
             name: 'IPS_Status1__c',
             variant: 'Destructive',
             disabled:{fieldName:'disableButton'}
@@ -43,7 +43,7 @@ const COLUMNS =[
 
 export default class Ips_myMeetings extends NavigationMixin(LightningElement) {
 currentUser = Id;
-//currentUser ='0051X00000DtVvmQAF' ;
+//currentUser ='0051X00000DtVvmQAF';
 activityRecords;
 @track activityRecord
 @track record;
