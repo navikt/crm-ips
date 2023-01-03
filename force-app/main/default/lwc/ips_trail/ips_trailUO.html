@@ -1,16 +1,16 @@
 <template>
     <div if:true={record}>
+        <!-- First section -->
         <div class="container skjema-max-width">
             <form class="form-control">
                 <h2 tabindex="0" class="main-title">Ditt jobbspor</h2>
                 <p tabindex="0">I ditt jobbspor kan du se og lese om ditt samarbeid med jobbspesialisten din i NAV. Her vil du se de målene som du og jobbspesialisten samarbeider om, samt møter du har hatt eller skal ha sammen med jobbspesialisten. Du kan også se  personopplysningene som jobbspesialisten har lagt inn</p>
                 
-                <label tabindex="0">Henvist til jobbsporet</label>
-                <p tabindex="0">{referredDate}</p>
                 <label tabindex="0">Din jobbspesialist</label>
-                <p tabindex="0">{specialist}</p>
+                <p tabindex="0"></p>
             </form>
         </div>
+        <!-- Second section -->
         <div class="container skjema-max-width">
             <h3 tabindex="0" class="title">    
                 <img class="illustrasjon"
@@ -23,102 +23,114 @@
             <form tabindex="0" class="form-control">
                 <label tabindex="0">Mitt hovedmål</label>
                 <p tabindex="0">{mainGoal}</p>
-                <label tabindex="0">Åpne delmål</label>
-                <p>Her finner du de delmålene som du og jobbspesialisten din samarbeider om nå.</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="" scope="col">
-                                <label>Emne</label>
-                            </th>
-                            <th class="" scope="col">
-                                <label>Dato</label>
-                            </th>
-                            <th class="" scope="col">
-                                <label>Status</label>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <!-- Section with user goal -->
+                <template if:true={isGoal}>
+                    <label tabindex="0">Åpne delmål</label>
+                    <p tabindex="0">Her er de åpne delmålene som du og jobbspesialisten din samarbeider om nå.</p>
+                    <form class="form-control">
                         <template for:each={participantGoalRecord} for:item="goal">
-                            <tr key={goal.id}>
-                                <td><p>{goal.Subject}</p></td>
-                                <td><p>{goal.ActivityDate}</p></td>
-                                <td><p>{goal.Status}</p></td>
+                            <ul tabindex="0" key={goal.id}>
+                                <li tabindex="0"><p>{goal.Subject}</p></li>
+                            </ul>
+                        </template>
+                        <p>
+                            <c-textlink 
+                            address="https://www.nav.no/no/person"
+                            label="Gå til delmål" icon-before="false">
+                            </c-textlink>
+                        </p>
+                    </form>
+                </template>
+                <template if:true={isEducation}>
+                    <label>Aktiv utdanning</label>
+                    <p>Viser den aktive utdanningen/kurset du er i nå.</p>
+                    <form class="form-control">
+                        <template for:each={educationRecord} for:item="edu">
+                            <ul tabindex="0" key={edu.id}>
+                                <li tabindex="0"><p>{edu.Name}</p></li>
+                            </ul>
+                        </template>
+                    </form>
+                    <p>
+                        <c-textlink 
+                        address="https://www.nav.no/no/person"
+                        label="Gå til utdanning/kurs" icon-before="false">
+                        </c-textlink>
+                    </p>
+                </template>
+                <template if:true={isJob}>
+                    <label>Lønnet arbeid</label>
+                    <p>Du er nå i lønnet arbeid.</p>
+                    <form class="form-control">
+                        <template for:each={jobsRecord} for:item="job">
+                            <ul tabindex="0" key={job.id}>
+                                <li tabindex="0"><p>{job.Name}</p></li>
+                            </ul>
+                        </template>
+                    </form>
+                    <p>
+                        <c-textlink 
+                        address="https://www.nav.no/no/person"
+                        label="Gå til lønnet arbeid" icon-before="false">
+                        </c-textlink>
+                    </p>
+                </template>
+                <template if:true={isTraining}>
+                    <label>Arbeidstrening</label>
+                    <p>Du er nå i arbeidstrening.</p>
+                    <form class="form-control">
+                        <template for:each={trainingRecord} for:item="train">
+                            <ul tabindex="0" key={train.id}>
+                                <li tabindex="0"><p>{train.Name}</p></li>
+                            </ul>
+                        </template>
+                        <p>
+                            <c-textlink 
+                            address="https://www.nav.no/no/person"
+                            label="Gå til arbeidstrening" icon-before="false">
+                            </c-textlink>
+                        </p>
+                    </form>
+                </template>
+                <!--<label tabindex="0">Åpne delmål</label>
+                <template if:true={isGoal}>
+                    <p tabindex="0">Her finner du de delmålene som du og jobbspesialisten din samarbeider om nå.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="" scope="col">
+                                    <label>Emne</label>
+                                </th>
+                                <th class="" scope="col">
+                                    <label>Dato</label>
+                                </th>
+                                <th class="" scope="col">
+                                    <label>Status</label>
+                                </th>
                             </tr>
-                        </template>
-                    </tbody>
-                </table>
-                <form class="form-control">
-                    <c-collapsable-section id="33" label='Kommende møter' aria-label="Kommende møter">
-                        <p tabindex="0">Her får du opp kommende møter som er satt opp med jobbspesialisten din.</p>
-                        <!-- Participant Meetings presented -->
-                        <template if:true={isActivity}>
-                            <template for:each={activityPartRecord} for:item="part" for:index="index">
-                                <div key={part.id}>
-                                    <lightning-card class="slds-p-around_xxx-small" >
-                                        <form class="form-control">
-                                            <div class="trailtext">
-                                                    <h3 tabindex="0" slot="title">
-                                                        <lightning-icon class="illustrasjon" icon-name="utility:user"></lightning-icon>
-                                                        {part.Subject}
-                                                    </h3> 
-                                                <div class="work-border"></div>
-                                            </div>
-                                            <label tabindex="0">Dato</label>
-                                            <p tabindex="0">{part.ActivityDate}</p>
-                                            <label tabindex="0">Beskrivelse</label>
-                                            <p tabindex="0">{part.Description}</p>
-                                        </form>
-                                    </lightning-card>
-                                </div>    
+                        </thead>
+                        <tbody>
+                            <template for:each={participantGoalRecord} for:item="goal">
+                                <tr key={goal.id}>
+                                    <td><p>{goal.Subject}</p></td>
+                                    <td><p>{goal.ActivityDate}</p></td>
+                                    <td><p>{goal.IPS_Status1__c}</p></td>
+                                </tr>
                             </template>
-                        </template>
-                        <!-- Employer Meetings presented -->
-                        <form  class="form-control">
-                            <template if:true={isEmployer}>
-                                <p tabindex="0">Kommende møter satt opp med arbeidsgiver.</p>
-                                <template for:each={activityEmplRecord} for:item="part" for:index="index">
-                                    <div key={part.id}>
-                                        <lightning-card class="slds-p-around_xxx-small" >
-                                            <form class="form-control">
-                                                <div class="trailtext">
-                                                        <h3 tabindex="0" slot="title">
-                                                            <lightning-icon class="illustrasjon" icon-name="utility:company"></lightning-icon>
-                                                            {part.Subject}
-                                                        </h3> 
-                                                    <div class="work-border"></div>
-                                                </div>
-                                                <label tabindex="0">Dato</label>
-                                                <p tabindex="0">{part.ActivityDate}</p>
-                                                <label tabindex="0">Beskrivelse</label>
-                                                <p tabindex="0">{part.Description}</p>
-                                            </form>
-                                        </lightning-card>
-                                    </div>    
-                                </template>
-                            </template>
-                        </form>
-                    </c-collapsable-section>
-                    <c-collapsable-section id="34" label='Alle møter' aria-label="Alle møter">
-                    </c-collapsable-section>
-                </form> 
-            </form>
-        </div>
+                        </tbody>
+                    </table>
+                </template>
+                <template if:false={isGoal}>
+                    <p>Ingen åpne delmål er registrert.</p>
+                </template> -->
+            </form> 
+        </div>  
+                 
+        <!-- Firth section -->
         <div class="container skjema-max-width">
             <form class="form-control">
-                <p>Vil du ha en tekst her??</p>
-                <c-collapsable-section id="8" label='Jobbsmak' aria-label="Jobbsmak">
-                </c-collapsable-section>
-                <c-collapsable-section id="9" label='Jobber' aria-label="Jobber">
-                </c-collapsable-section>
-                <c-collapsable-section id="10" label='Utdanning' aria-label="Utdanning">
-                </c-collapsable-section>
-            </form>
-        </div>
-        <div class="container skjema-max-width">
-            <form class="form-control">
-                <p>Vil du ha en tekst her??</p>
+                <h2 tabindex="0" class="title">Kartlegging og karriereplanlegging</h2>
+                <p tabindex="0">For å oppnå målet om en stabil tilknytning i lønnet arbeid er det viktig at både du og jobbspesialisten har bevissthet/kunnskap om dine ønsker, muligheter, evt. behov for tilrettelegging m.m.  </p>
                 <!--<c-collapsable-section id="11" label="Informasjon" aria-label="Informasjon">
                     <form class="form-control">
                         <span>
@@ -137,6 +149,7 @@
                 </c-collapsable-section>-->
                 <c-collapsable-section id="12" label="Yrkesprofil" aria-label="Yrkesprofil">
                     <form class="form-control">
+                        <p tabindex="0">Her finner du den informasjonen du har gitt jobbspesialisten som danner grunnlaget for å finne den riktige jobben for deg.  </p>
                         <span>
                             <label tabindex="0">Ønsket yrke/branje/karriere</label>
                             <p tabindex="0">{desiredProfession}</p>
@@ -160,12 +173,6 @@
                             <p tabindex="0">{other}</p>
                             <label tabindex="0">Nettverk/samarbeidspartner</label>
                             <p tabindex="0">{networkPartner}</p>
-                        </span>
-                    </form>
-                </c-collapsable-section>
-                <c-collapsable-section id="13" label="Utdannelse og erfaring" aria-label="Utdannelse og erfaring">
-                    <form class="form-control">
-                        <span>
                             <label tabindex="0">Utdanning</label>
                             <p tabindex="0">{education}</p>
                             <label tabindex="0">Arbeidserfaring</label>
@@ -175,6 +182,7 @@
                 </c-collapsable-section>
                 <c-collapsable-section id="14" label="Åpenhet" aria-label="Åpenhet">
                     <form class="form-control">
+                        <p tabindex="0">Her ser du hva du og jobbspesialisten har blitt enige om at jobbspesialisten kan dele om deg med potensielle arbeidsgivere.   </p>
                         <span>
                             <label tabindex="0">Åpenhet innhentet</label>
                             <p tabindex="0">{transparencyDate}</p>
@@ -192,6 +200,58 @@
                     </form>
                 </c-collapsable-section>
             </form>
+        </div>
+
+         <!-- Third section -->
+         <div class="container skjema-max-width">
+
+            <h2 tabindex="0" class="title">Linker videre</h2>
+
+            <div class="container-light">
+                <c-linkTile
+                link-header="Delmål"
+                link-label="Her vil du se åpne delmål, gjennomførte mål med beskrivelse av målet."
+                navigation-address="ips_my_goals__c"
+                custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>
+            </div>
+            <div class="container-light">
+                <c-linkTile
+                    link-header="Møter"
+                    link-label="Her vil du se kommende møter, gjennomførte møter og møtereferater."
+                    navigation-address="ips_my_meetings__c"
+                    custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>
+            </div>
+            <div class="container-light">
+                <c-linkTile
+                    link-header="Jobber"
+                    link-label="Her vil du se jobber du er i nå, gjennomførte jobber og jobbstøtteplan knyttet til jobben."
+                    navigation-address="ips_my_jobs__c"
+                    custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>
+            </div>
+            <div class="container-light">
+                <c-linkTile
+                    link-header="Arbeidstrening"
+                    link-label="Her vil du se arbeidstrening du er i nå, gjennomførte arbeidstrening og plan for støtte knyttet til arbeidstrening."
+                    navigation-address="ips_my_trainings__c"
+                    custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>
+            </div>
+            <div class="container-light">
+                <c-linkTile
+                    link-header="Utdanning"
+                    link-label="Her vil du se utdanning/kurs du er i nå, gjennomførte utdanninger/kurs."
+                    navigation-address="ips_my_educations__c"
+                    custom-text-style="padding: 1rem; "
+                >
+                </c-linkTile>  
+            </div>
         </div>
     </div>
 

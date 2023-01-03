@@ -1,0 +1,32 @@
+<template>
+    <div class="breadcrumbs container">
+        <lightning-breadcrumbs>
+            <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="mine møter" name="ips_my_meetings__c"></lightning-breadcrumb>
+        </lightning-breadcrumbs>
+    </div>
+    <div class="container skjema-max-width">
+        <div if:false={isMobile}>
+            <lightning-datatable 
+                class="trailtext"
+                key-field="Id" 
+                data={activityRecord} 
+                columns={columns} 
+                hide-checkbox-column="true" 
+                onrowaction={handleRowAction}
+            >
+            </lightning-datatable>
+        </div> 
+        <div if:true={isMobile} style="height: 600px;">
+            <lightning-datatable 
+                class="trailtext"
+                key-field="Id" 
+                data={activityRecord} 
+                columns={columns} 
+                hide-checkbox-column="true" 
+                onrowaction={handleRowAction}
+            >
+            </lightning-datatable>
+        </div>
+    </div>
+</template>

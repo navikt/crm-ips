@@ -1,0 +1,33 @@
+<template>
+    <div class="breadcrumbs container">
+        <lightning-breadcrumbs>
+            <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="mine utdanninger-kurs" name="ips_my_educations__c"></lightning-breadcrumb>
+        </lightning-breadcrumbs>
+    </div>
+    <div class="container skjema-max-width">
+        <div if:false={isMobile}>
+            <lightning-datatable 
+                class="trailtext"
+                key-field="Id" 
+                data={educationRecord} 
+                columns={columns} 
+                hide-checkbox-column="true" 
+                onrowaction={handleRowAction}
+        >
+        </lightning-datatable>
+        </div>
+        <div if:true={isMobile}>
+            <lightning-datatable 
+                class="trailtext"
+                key-field="Id" 
+                data={educationRecord} 
+                columns={columns} 
+                hide-checkbox-column="true" 
+                onrowaction={handleRowAction}
+        >
+        </lightning-datatable>
+        </div>
+    </div>
+    
+</template>

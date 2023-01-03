@@ -1,0 +1,52 @@
+<template>
+    <div class="breadcrumbs container">
+        <lightning-breadcrumbs>
+            <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="mine møter" name="ips_my_meetings__c" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="møtedetaljer" name="ips_my_meeting__c"></lightning-breadcrumb>
+        </lightning-breadcrumbs>
+    </div>
+    <div class="container skjema-max-width ">
+        <form class="form-control">
+            <h2 class="title"> Møtedetaljer - {type}</h2>
+            <div class="work-border"></div>
+            <table>
+                <tr>
+                    <td>
+                        <label tabindex="0">Dato</label>
+                        <p tabindex="0">{activitydate}</p>
+                    </td>
+                    <td>
+                        <label tabindex="0">Status</label>
+                        <p tabindex="0">{status}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label tabindex="0">Tid fra</label>
+                        <p tabindex="0">{timefrom}</p>
+                    </td>
+                    <td>
+                        <label tabindex="0">Tid til</label>
+                        <p tabindex="0">{timeto}</p>
+
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <label tabindex="0">Emne</label>
+                        <p tabindex="0">{subject}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label tabindex="0">Agenda/Referat</label>
+                        <p tabindex="0">{description}</p>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>    
+</template>
