@@ -2,13 +2,13 @@
     <div class="breadcrumbs container">
         <lightning-breadcrumbs>
             <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
-            <lightning-breadcrumb label="mine møter" name="ips_my_meetings__c" onclick={navigateToPage}></lightning-breadcrumb>
-            <lightning-breadcrumb label="møtedetaljer" name="ips_my_meeting__c"></lightning-breadcrumb>
+            <lightning-breadcrumb label="dine møter" name="ips_my_meetings__c" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="detaljer" name="ips_my_meeting__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
     <div class="container skjema-max-width ">
         <form class="form-control">
-            <h2 class="title"> Møtedetaljer - {type}</h2>
+            <h2 class="title"> {subject}</h2>
             <div class="work-border"></div>
             <table>
                 <tr>
@@ -36,14 +36,12 @@
             <table>
                 <tr>
                     <td>
-                        <label tabindex="0">Emne</label>
-                        <p tabindex="0">{subject}</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label tabindex="0">Agenda/Referat</label>
-                        <p tabindex="0">{description}</p>
+                        <div if:true={isClosed}>
+                            <label tabindex="0">Referat</label>
+                        </div>
+                        <div if:false={isClosed}>
+                            <label tabindex="0">Agenda</label>
+                        </div>
                     </td>
                 </tr>
             </table>

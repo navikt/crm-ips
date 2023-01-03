@@ -6,6 +6,7 @@ export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
     @api recordId;
     @track record;
     @api header;
+    isClosed = false;
     error;
    
     @wire(getMeeting, {recId:'$recordId'})
@@ -27,6 +28,7 @@ export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
             return 'Åpen'
         }
         if(goalStatus==='Completed'){
+            this.isClosed = true;
             return 'Lukket';
         }
         if(goalStatus==='Not applicable'){
