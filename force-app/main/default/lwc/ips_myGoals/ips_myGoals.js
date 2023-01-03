@@ -1,5 +1,6 @@
 import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
+import Id from '@salesforce/user/Id';
 import getParticipantsGoals from '@salesforce/apex/IPS_myActivityController.getAllGoals';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 
