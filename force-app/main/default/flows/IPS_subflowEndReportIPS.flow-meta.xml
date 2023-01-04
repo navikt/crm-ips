@@ -1071,7 +1071,7 @@ CASE({!getWorktrailIPS.ips_Other_end_cases__c},
         <connector>
             <targetReference>iterateEmplMeetingsIPS</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
+        <filterLogic>1 AND 2 AND (3 OR 4 OR 5)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -1098,6 +1098,13 @@ CASE({!getWorktrailIPS.ips_Other_end_cases__c},
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Job development</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Subcategory_Type_IPS__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Job support</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
