@@ -1,4 +1,5 @@
 import { LightningElement,wire,track } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import templateIPS from './ips_trailIPS.html';
 import templateUO from './ips_trailUO.html';
 import { getFieldDisplayValue, getFieldValue, getRecord} from 'lightning/uiRecordApi';
@@ -117,7 +118,7 @@ const WORKTRAIL_FIELDS = [
     FIELD_OWNERID
 ];
 
-export default class Ips_trail extends LightningElement {
+export default class Ips_trail extends NavigationMixin(LightningElement) {
     showTemplateIPS = true;
     myWorkDevelopmentIPS = IPS_HOME_LOGOS + '/EmployerFilled.svg';
     myActivityImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
@@ -143,6 +144,7 @@ export default class Ips_trail extends LightningElement {
     isEducation = false;
     isJob = false;
     isTraining = false;
+    isMeeting = false;
     goal;
 
 
@@ -190,7 +192,6 @@ export default class Ips_trail extends LightningElement {
     
     render(){
         return this.isIPS ? templateIPS : templateUO;
-
     }
 
     @wire(getParticipantActivity, {workTrailId:'$recordId'})
@@ -199,6 +200,7 @@ export default class Ips_trail extends LightningElement {
         if(data.length >0){
             this.activityPartRecord = data;
             this.isActivity = true;
+            this.isMeeting = true;
         }
        }else if(error){
            console.log('An error has ocurred');
@@ -212,6 +214,7 @@ export default class Ips_trail extends LightningElement {
         if(data.length>0){
             this.activityEmplRecord = data;
             this.isEmployer = true;
+            this.isMeeting = true;
         }
        }else if(error){
            console.log('An error has ocurred');
@@ -461,6 +464,19 @@ export default class Ips_trail extends LightningElement {
         else{return 'Ingen mål valgt.'}
 
     }
+
+    handleButtonClick(event) {
+        console.log('eventId: '+ event.detail.row.Id);
+        /*const row = event.detail.row;
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+              recordId: row.Id,
+              actionName: 'view'
+            }
+          });*/
+      }
+
 
     formatDate(initialDate) {
         if (initialDate === undefined) {
