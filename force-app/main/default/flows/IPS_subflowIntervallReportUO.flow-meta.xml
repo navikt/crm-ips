@@ -2276,7 +2276,7 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
         <connector>
             <targetReference>iterateEmplMeetingsUOIntervall</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -2296,6 +2296,13 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
             <operator>EqualTo</operator>
             <value>
                 <elementReference>getParticipantDetailsUO.PersonContactId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Subcategory_Type_UO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Relationship building</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
