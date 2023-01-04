@@ -5,9 +5,16 @@ public without sharing class IPS_myActivityController {
 
         List<Task> userGoal = new List<Task>();
         userGoal =[
-            SELECT id,ActivityDate, Subject,Type_of_Task_IPSUO__c,Description,Status
+            SELECT 
+                id,
+                Date__c, 
+                Subject,
+                Description,
+                toLabel(Status)
             FROM Task 
-            WHERE WhatId = :workTrailId AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'  AND Status ='Open'
+            WHERE WhatId = :workTrailId 
+            AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'  
+            AND Status ='Open'
             ORDER BY ActivityDate DESC
         ];
         return userGoal;
@@ -43,9 +50,22 @@ public without sharing class IPS_myActivityController {
         Date todaysDate = System.today();
         List<Event> emplActivity = new List<Event>();
         emplActivity =[
-            SELECT id,Subject, ActivityDate, EndDateTime, StartDateTime, Description,IPS_Type__c,toLabel(IPS_Status1__c) 
+            SELECT 
+                id,
+                Subject, 
+                ActivityDate, 
+                EndDateTime, 
+                StartDateTime, 
+                Description,
+                IPS_Type__c,
+                toLabel(IPS_Status1__c) 
             FROM event 
-            WHERE ActivityDate >=: todaysDate  AND WhatId = :workTrailId AND WhoId= :contactId AND IsVisibleInSelfService__c =true AND IPS_Type__c ='Meeting with Employer'
+            WHERE 
+                ActivityDate >=: todaysDate  
+                AND WhatId = :workTrailId 
+                AND WhoId= :contactId 
+                AND IsVisibleInSelfService__c =true 
+                AND IPS_Type__c ='Meeting with Employer'
             ORDER BY ActivityDate DESC
         ];
         return emplActivity;
