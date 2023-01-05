@@ -70,14 +70,14 @@
             <assignToReference>jobsList</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>Jobbtype: </stringValue>
+                <stringValue>Arbeidsgiver: </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>jobsList</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>varJobType</elementReference>
+                <elementReference>iterateJobs.ips_Employer__r.Name</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -155,6 +155,27 @@
             <operator>Add</operator>
             <value>
                 <elementReference>iterateJobs.ips_Number_of_hours__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobsList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobsList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Jobbtype: </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobsList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varJobType</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -581,7 +602,7 @@
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isWithParticipant</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>iterateEmplMeetingsUO.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -594,6 +615,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsUO.WhoId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -748,10 +776,11 @@ TEXT(DAY(DATEVALUE({!iterateTasks.CompletedDateTime})))&amp;&quot;.&quot;&amp;TE
     <formulas>
         <name>varTaskStatus</name>
         <dataType>String</dataType>
-        <expression>IF({!iterateTasks.ips_Completed__c},&apos;Fullført&apos;,
-CASE({!iterateTasks.IPS_Status1__c},
+        <expression>IF({!iterateTasks.IsClosed},&apos;Fullført&apos;,
+CASE({!iterateTasks.Status},
 &apos;Completed&apos;, &apos;Fullført&apos;,
 &apos;Open&apos;, &apos;Åpen&apos;,
+&apos;Not applicable&apos;, &apos;&apos;,
 &apos;&apos;
 )
 )</expression>
@@ -1131,10 +1160,10 @@ CASE({!iterateTasks.IPS_Status1__c},
             </value>
         </filters>
         <filters>
-            <field>IPS_Status1__c</field>
+            <field>IsClosed</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Completed</stringValue>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <filters>
@@ -1152,8 +1181,8 @@ CASE({!iterateTasks.IPS_Status1__c},
         <queriedFields>ActivityDate</queriedFields>
         <queriedFields>Status</queriedFields>
         <queriedFields>CompletedDateTime</queriedFields>
-        <queriedFields>IPS_Status1__c</queriedFields>
         <queriedFields>ips_Completed__c</queriedFields>
+        <queriedFields>IsClosed</queriedFields>
         <sortField>ActivityDate</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
