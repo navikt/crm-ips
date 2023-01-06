@@ -605,17 +605,11 @@
         <name>Endreport</name>
         <choiceText>Sluttrapport/Avslutningsnotat</choiceText>
         <dataType>String</dataType>
-        <value>
-            <stringValue>Sluttrapport</stringValue>
-        </value>
     </choices>
     <choices>
         <name>Intervallreport</name>
         <choiceText>Underveisrapport</choiceText>
         <dataType>String</dataType>
-        <value>
-            <stringValue>Underveisrapport</stringValue>
-        </value>
     </choices>
     <decisions>
         <name>Check_Post_State</name>
@@ -652,10 +646,10 @@
             <name>isEndReport</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>scArchiveChoices</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>Endreport</leftValueReference>
+                <operator>WasSelected</operator>
                 <rightValue>
-                    <elementReference>Endreport</elementReference>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -667,10 +661,10 @@
             <name>isIntervallReport</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>scArchiveChoices</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>Intervallreport</leftValueReference>
+                <operator>WasSelected</operator>
                 <rightValue>
-                    <elementReference>Intervallreport</elementReference>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
