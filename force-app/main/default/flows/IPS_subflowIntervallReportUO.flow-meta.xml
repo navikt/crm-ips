@@ -1700,7 +1700,7 @@
             <name>isWithinRangeDelmaal</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>varDueDate</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varFromDate</elementReference>
@@ -1727,9 +1727,9 @@
         </rules>
         <rules>
             <name>isForwardRangeDelmaal</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 AND 2) OR (2 AND 3 AND 4)</conditionLogic>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>varDueDate</leftValueReference>
                 <operator>GreaterThan</operator>
                 <rightValue>
                     <elementReference>varToDate</elementReference>
@@ -1742,6 +1742,20 @@
                     <stringValue>Delmål (av hovedmål)</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>varDueDate</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateTasksUOIntervall.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>addTaskForwardRange</targetReference>
             </connector>
@@ -1751,14 +1765,14 @@
             <name>isWithinRangePhoneCallsParticipant</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>varDueDate</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varFromDate</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>varDueDate</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToDate</elementReference>
@@ -1780,14 +1794,14 @@
             <name>isWithinRangePhoneCallsEmployer</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>varDueDate</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varFromDate</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>iterateTasksUOIntervall.ActivityDate</leftValueReference>
+                <leftValueReference>varDueDate</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToDate</elementReference>
@@ -1988,6 +2002,11 @@ TEXT(DAY(DATEVALUE({!iterateTasksUOIntervall.CompletedDateTime})))&amp;&quot;.&q
         <name>varDescription</name>
         <dataType>String</dataType>
         <expression>&apos;Det er 3 måneder siden siste underveisrapport for: &apos; &amp; {!getWorktrailUO.Name}</expression>
+    </formulas>
+    <formulas>
+        <name>varDueDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!iterateTasksUOIntervall.ips_Due_Date_Time__c})</expression>
     </formulas>
     <formulas>
         <name>varEducationType</name>
@@ -2573,13 +2592,13 @@ CASE(TEXT({!iterateEmplMeetingsUOIntervall.IPS_Subcategory_Type_UO__c}),
         <queriedFields>Id</queriedFields>
         <queriedFields>Subject</queriedFields>
         <queriedFields>Description</queriedFields>
-        <queriedFields>ActivityDate</queriedFields>
         <queriedFields>Status</queriedFields>
         <queriedFields>CompletedDateTime</queriedFields>
         <queriedFields>CreatedDate</queriedFields>
         <queriedFields>Type_of_Task_IPSUO__c</queriedFields>
         <queriedFields>IsClosed</queriedFields>
-        <sortField>ActivityDate</sortField>
+        <queriedFields>ips_Due_Date_Time__c</queriedFields>
+        <sortField>ips_Due_Date_Time__c</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
