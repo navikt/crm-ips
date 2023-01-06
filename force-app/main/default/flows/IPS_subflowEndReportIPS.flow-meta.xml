@@ -703,7 +703,7 @@
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isWithParticipant</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>iterateEmplMeetingsIPS.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -716,6 +716,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterateEmplMeetingsIPS.WhoId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1372,10 +1379,10 @@ CASE({!getWorktrailIPS.ips_Other_end_cases__c},
             </value>
         </filters>
         <filters>
-            <field>IPS_Status1__c</field>
+            <field>IsClosed</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Completed</stringValue>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <filters>
@@ -1387,14 +1394,7 @@ CASE({!getWorktrailIPS.ips_Other_end_cases__c},
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Task</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Subject</queriedFields>
-        <queriedFields>Description</queriedFields>
-        <queriedFields>ActivityDate</queriedFields>
-        <queriedFields>Status</queriedFields>
-        <queriedFields>CompletedDateTime</queriedFields>
-        <queriedFields>CreatedDate</queriedFields>
-        <sortField>ActivityDate</sortField>
+        <sortField>ips_Due_Date_Time__c</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
