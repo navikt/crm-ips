@@ -1,5 +1,6 @@
 public without sharing class IPS_myActivityController {
     
+    /* All open goals that is connected with worktrail */
     @AuraEnabled(cacheable = true)    
     public static List<Task> getParticipantsGoals(String workTrailId){
 
@@ -7,43 +8,111 @@ public without sharing class IPS_myActivityController {
         userGoal =[
             SELECT 
                 id,
-                Date__c, 
+                ActivityDate,
+                ips_Due_Date_Time__c,
                 Subject,
                 Description,
-                toLabel(Status)
+                Status
             FROM Task 
             WHERE WhatId = :workTrailId 
             AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'  
             AND Status ='Open'
-            ORDER BY ActivityDate DESC
+            ORDER BY ActivityDate ASC
         ];
         return userGoal;
     }
 
+    /* History of all completed goals connected with worktrail */
     @AuraEnabled(cacheable = true)    
     public static List<Task> getAllGoals(String workTrailId){
 
         List<Task> userGoal = new List<Task>();
         userGoal =[
-            SELECT id,ActivityDate, Subject,Type_of_Task_IPSUO__c,Description,Status
+            SELECT 
+                id,
+                ActivityDate,
+                ips_Due_Date_Time__c,
+                Subject,
+                Type_of_Task_IPSUO__c,
+                Description,
+                Status
             FROM Task 
-            WHERE WhatId = :workTrailId AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'
-            ORDER BY ActivityDate DESC
+            WHERE WhatId = :workTrailId 
+            AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'
+            AND Status = 'Completed'
+            ORDER BY ActivityDate ASC
         ];
         return userGoal;
     }
 
+    /* Detail on task row */
+    @AuraEnabled(cacheable = true)    
+    public static List<Task> getTaskDetail(String recId){
+
+        List<Task> taskDetail = new List<Task>();
+        taskDetail =[
+            SELECT 
+                id,
+                ActivityDate,
+                ips_Due_Date_Time__c,
+                Subject,
+                Type_of_Task_IPSUO__c,
+                Description,
+                Samtalereferat__c,
+                Status
+            FROM Task 
+            WHERE Id =:recId
+        ];
+        return taskDetail;
+    }
+
+    /* All Completed Logs that is connected with worktrail */
+    @AuraEnabled(cacheable = true)    
+    public static List<Task> getParticipantsLogs(String workTrailId){
+
+        List<Task> userGoal = new List<Task>();
+        userGoal =[
+            SELECT 
+                id,
+                ActivityDate,
+                ips_Due_Date_Time__c,
+                Subject,
+                Type_of_Task_IPSUO__c,
+                Description,
+                Samtalereferat__c,
+                Status
+            FROM Task 
+            WHERE WhatId = :workTrailId 
+            AND Type_of_Task_IPSUO__c ='Logg kontakt'  
+            AND Samtalereferat__c = true
+            AND Status ='Completed'
+            ORDER BY ActivityDate ASC
+        ];
+        return userGoal;
+    }
+
+
+//DELETE
     @AuraEnabled(cacheable = true)    
     public static List<Task> getParticipantsGoal(String recId){
 
         List<Task> userGoal = new List<Task>();
         userGoal =[
-            SELECT id,ActivityDate, Subject,Type_of_Task_IPSUO__c,Description,toLabel(Status )
+            SELECT 
+                id,
+                ActivityDate,
+                ips_Due_Date_Time__c,
+                Subject,
+                Type_of_Task_IPSUO__c,
+                Description,
+                Status
             FROM Task 
-            WHERE Id =:recId AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'
+            WHERE Id =:recId
         ];
         return userGoal;
     }
+
+    
 
     @AuraEnabled(cacheable = true)    
     public static List<Event> getEmployerActivity(String workTrailId,String contactId){
