@@ -2,29 +2,17 @@ import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
-import getAllActivity from '@salesforce/apex/IPS_myActivityController.getAllActivity';
+import getUserWorks from '@salesforce/apex/IPS_myWorkTrailController.getUserWorks';
 
 const COLUMNS =[
-    {
-        label: 'Møtedato', 
-        fieldName: 'ActivityDate',
-        type: 'date',
-        hideDefaultActions: true,
-            typeAttributes:{
-            year:"numeric" ,
-            month:"numeric" ,
-            day:"2-digit" ,
-            weekday:"long"
-        }
-    },
-    {label: 'Emne', fieldName: 'Subject', type: 'text', hideDefaultActions: true},
+    {label: 'Jobb', fieldName: 'Name',type: 'text',hideDefaultActions: true},
     {
         type: 'button',
-        fixedWidth: 170,
+        fixedWidth: 200,
         typeAttributes:{
             label: 'Se detaljer',
             title: 'Se detaljer',
-            name: 'Møte',
+            name: 'Jobb',
             variant: 'Brand'
         }
     },
@@ -34,28 +22,24 @@ const COLUMNS =[
         typeAttributes:{
             label: 'Fullført',
             title: 'Fullført',
-            name: 'IPS_Status1__c',
+            name: 'ips_Status__c',
             variant: 'Destructive',
             disabled:{fieldName:'disableButton'}
         }
     }
 ]
 
-export default class Ips_myMeetings extends NavigationMixin(LightningElement) {
+export default class Ips_myJobs extends NavigationMixin(LightningElement) {
 currentUser = Id;
-//currentUser ='0051X00000DtVvmQAF';
-activityRecords;
-@track activityRecord
+//currentUser ='0051X00000DtVvmQAF' ;
+@track jobRecord;
+jobRecords;
 @track record;
 recordIds;
-isActivity = false;
-columns = COLUMNS;
+isjob = false;
 isloading = true;
+columns = COLUMNS;
 
-
-get isMobile() {
-    return window.screen.width < 576;
-  }
 
 /* Fetch recordId from logged in user */
 @wire(getUserWorkTrailId,{userId: '$currentUser'})
@@ -68,17 +52,17 @@ wiredtrail({ error, data }) {
         }
     }
 
-    @wire(getAllActivity, {workTrailId:'$recordIds'})
-    userActivity({error,data}){
+    @wire(getUserWorks, {workTrailId:'$recordIds'})
+    userJob({error,data}){
        if(data){
         if(data.length>0){
-            this.activityRecords = data;
-            this.activityRecord = JSON.parse(JSON.stringify(this.activityRecords));
-            this.activityRecord.forEach(act => {
-              act.disableButton = act.IPS_Status1__c !== 'Completed';
+            this.jobRecords = data;
+            this.jobRecord = JSON.parse(JSON.stringify(this.jobRecords));
+            this.jobRecord.forEach(job => {
+              job.disableButton = job.ips_Status__c !== 'Completed';
             });
-            this.isActivity = true;
-            this.isloading = false;
+            this.loading = false;
+            this.isJob = true;
         }
        }else if(error){
            console.log('An error has ocurred');
@@ -87,7 +71,6 @@ wiredtrail({ error, data }) {
     }
 
     handleRowAction(event) {
-        console.log('eventId: '+ event.detail.row.Id);
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {

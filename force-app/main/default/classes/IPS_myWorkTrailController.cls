@@ -105,11 +105,11 @@ public with sharing class IPS_myWorkTrailController {
                 ips_Employer__c, 
                 ips_Employer_contact__c, 
                 ips_End_Date__c, 
-                toLabel(ips_Form_of_Employment__c), 
+                ips_Form_of_Employment__c, 
                 ips_Job_Support__c, 
                 ips_Number_of_hours__c, 
                 ips_Start_Date__c, 
-                toLabel(ips_Status__c), 
+                ips_Status__c, 
                 ips_What_did_not_work_at_the_workplace__c, 
                 ips_What_did_work_at_the_workplace__c
                 FROM ips_Job__c 
