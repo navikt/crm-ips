@@ -158,9 +158,20 @@ public without sharing class IPS_myActivityController {
         Date todaysDate = System.today();
         List<Event> userActivity = new List<Event>();
         userActivity =[
-            SELECT id,Subject, ActivityDate, EndDateTime, StartDateTime, Description,IPS_Type__c,toLabel(IPS_Status1__c)
+            SELECT 
+                id,
+                Subject, 
+                ActivityDate, 
+                EndDateTime, 
+                StartDateTime, 
+                Description,
+                IPS_Type__c,
+                IPS_Status1__c
             FROM event 
-            WHERE WhatId = :workTrailId AND IsVisibleInSelfService__c =true AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
+            WHERE 
+                WhatId = :workTrailId 
+                AND IsVisibleInSelfService__c =true 
+                AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
         ];
         return userActivity;
     }
