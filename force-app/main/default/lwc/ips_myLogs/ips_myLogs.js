@@ -1,12 +1,12 @@
 import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
-import getParticipantsGoals from '@salesforce/apex/IPS_myActivityController.getAllGoals';
+import getParticipantsLogs from '@salesforce/apex/IPS_myActivityController.getParticipantsLogs';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 
 const COLUMNS =[
     {
-        label: 'Frist', 
+        label: 'Dato', 
         fieldName: 'ActivityDate', 
         type: 'date', hideDefaultActions: true,
         typeAttributes:{
@@ -16,7 +16,7 @@ const COLUMNS =[
             weekday:"long"
         }
     },
-    {label: 'Delmål', fieldName: 'Subject',type: 'text',hideDefaultActions: true},
+    {label: 'Samtale', fieldName: 'Subject',type: 'text',hideDefaultActions: true},
     {
         type: 'button',
         fixedWidth: 150,
@@ -41,14 +41,14 @@ const COLUMNS =[
     }
 ]
 
-export default class Ips_myGoals extends NavigationMixin(LightningElement) {
+export default class Ips_myLogs extends NavigationMixin(LightningElement) {
 //currentUser = Id;
 currentUser ='0051x00000CiK8WAAV' ;
-goalRecords;
-@track goalRecord;
+loggRecords;
+@track loggRecord;
 @track record;
 recordIds;
-isGoal = false;
+isLogg = false;
 columns = COLUMNS;
 isloading = true;
 
@@ -67,16 +67,16 @@ get isMobile() {
             }
         }
 
-    @wire(getParticipantsGoals, {workTrailId:'$recordIds'})
+    @wire(getParticipantsLogs, {workTrailId:'$recordIds'})
     userGoal({error,data}){
        if(data){
         if(data.length>0){
-            this.goalRecords = data;
-            this.goalRecord = JSON.parse(JSON.stringify(this.goalRecords));
-            this.goalRecord.forEach(goall => {
-              goall.disableButton = goall.Status !== 'Completed';
+            this.loggRecords = data;
+            this.loggRecord = JSON.parse(JSON.stringify(this.loggRecords));
+            this.loggRecord.forEach(logg => {
+              logg.disableButton = logg.Status !== 'Completed';
             });
-            this.isGoal = true;
+            this.isLogg = true;
             this.isloading = false;
         }
        }else if(error){

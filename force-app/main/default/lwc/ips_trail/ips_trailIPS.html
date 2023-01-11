@@ -28,21 +28,14 @@
                         <form class="form-control container-light">
                             <table>
                                 <tr>
-                                    <th tabindex="0"><label>Delmål</label></th>
                                     <th tabindex="0"><label>Frist</label></th>
+                                    <th tabindex="0"><label>Delmål</label></th>
                                     <th></th>
                                 </tr>
                                 <template for:each={participantGoalRecord} for:item="goal">
                                     <tr tabindex="0" key={goal.id}>
+                                        <td tabindex="0"><p>{goal.ActivityDate}</p></td>
                                         <td tabindex="0"><p>{goal.Subject}</p></td>
-                                        <td tabindex="0"><p>{goal.Date__c}</p></td>
-                                        <td tabindex="0">
-                                            <c-button
-                                                button-label="Gå til detaljer"
-                                                value="delmål"
-                                                button-styling="Tertiary">
-                                            </c-button>
-                                        </td>
                                     </tr>
                                 </template> 
                             </table>
@@ -64,13 +57,6 @@
                                 <tr key={part.id}>
                                     <td tabindex="0"><p>{part.ActivityDate}</p></td>
                                     <td tabindex="0"><p>{part.Subject}</p></td>
-                                    <td tabindex="0">
-                                        <c-button
-                                            button-label="Gå til detaljer"
-                                            value="deltaker"
-                                            button-styling="Tertiary">
-                                        </c-button>
-                                    </td>
                                 </tr>
                                 </template>
                             </table>
@@ -320,7 +306,7 @@
             <div class="container-light">
                 <c-linkTile
                     link-header="Samtalereferat"
-                    navigation-address="ips_my_meetings__c"
+                    navigation-address="ips_my_logs__c"
                     custom-text-style="padding: 1rem; "
                 >
                 </c-linkTile>

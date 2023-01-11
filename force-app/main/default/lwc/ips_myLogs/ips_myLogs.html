@@ -2,7 +2,7 @@
     <div class="breadcrumbs container">
         <lightning-breadcrumbs>
             <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
-            <lightning-breadcrumb label="dine delmål" name="ips_my_goals__c"></lightning-breadcrumb>
+            <lightning-breadcrumb label="dine samtaler" name="ips_my_logs__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
     <div if:true={isloading} style="height: 200px; position:relative" >
@@ -14,7 +14,7 @@
                 <lightning-datatable 
                     class="trailtext"
                     key-field="Id" 
-                    data={goalRecord} 
+                    data={loggRecord} 
                     columns={columns} 
                     hide-checkbox-column="true" 
                     onrowaction={handleRowAction}
@@ -25,7 +25,7 @@
                 <lightning-datatable 
                     class="trailtext"
                     key-field="Id" 
-                    data={goalRecord} 
+                    data={loggRecord} 
                     columns={columns} 
                     hide-checkbox-column="true" 
                     onrowaction={handleRowAction}
