@@ -75,7 +75,6 @@ public without sharing class IPS_myActivityController {
             SELECT 
                 id,
                 ActivityDate,
-                ips_Due_Date_Time__c,
                 Subject,
                 Type_of_Task_IPSUO__c,
                 Description,
@@ -180,7 +179,16 @@ public without sharing class IPS_myActivityController {
     public static List<Event> getMeeting(String recId){
         List<Event> userMeeting = new List<Event>();
         userMeeting =[
-            SELECT id,Subject, ActivityDate,EndDate, EndDateTime, StartDateTime, Description,toLabel(IPS_Type__c),toLabel(IPS_Status1__c),RelatedToAccount__c 
+            SELECT 
+                id,
+                Subject, 
+                ActivityDate,
+                EndDate, 
+                EndDateTime, 
+                StartDateTime, 
+                Description,
+                IPS_Type__c,
+                IPS_Status1__c
             FROM event 
             WHERE Id = :recId
         ];
