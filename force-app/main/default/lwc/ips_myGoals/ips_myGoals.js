@@ -42,8 +42,8 @@ const COLUMNS =[
 ]
 
 export default class Ips_myGoals extends NavigationMixin(LightningElement) {
-//currentUser = Id;
-currentUser ='0051x00000CiK8WAAV' ;
+currentUser = Id;
+//currentUser ='0051x00000CiK8WAAV' ;
 goalRecords;
 @track goalRecord;
 @track record;
