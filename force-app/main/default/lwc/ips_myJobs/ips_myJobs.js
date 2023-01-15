@@ -2,7 +2,7 @@ import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
-import getUserWorks from '@salesforce/apex/IPS_myWorkTrailController.getUserWorks';
+import getUserJobs from '@salesforce/apex/IPS_jobController.getCompletedUserJobs';
 
 const COLUMNS =[
     {label: 'Jobb', fieldName: 'Name',type: 'text',hideDefaultActions: true},
@@ -31,7 +31,7 @@ const COLUMNS =[
 
 export default class Ips_myJobs extends NavigationMixin(LightningElement) {
 currentUser = Id;
-//currentUser ='0051X00000DtVvmQAF' ;
+//currentUser ='0051X00000EABDRQA5' ;
 @track jobRecord;
 jobRecords;
 @track record;
@@ -52,7 +52,7 @@ wiredtrail({ error, data }) {
         }
     }
 
-    @wire(getUserWorks, {workTrailId:'$recordIds'})
+    @wire(getUserJobs, {workTrailId:'$recordIds'})
     userJob({error,data}){
        if(data){
         if(data.length>0){

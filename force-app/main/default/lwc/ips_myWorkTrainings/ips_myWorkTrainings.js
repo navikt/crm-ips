@@ -2,7 +2,7 @@ import { LightningElement,wire ,track} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
-import getUserWorkTrainings from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrainings';
+import getUserWorkTrainings from '@salesforce/apex/IPS_jobController.getCompletedUserWorkTrainings';
 
 const COLUMNS =[
     {label: 'Arbeidstrening', fieldName: 'Name',type: 'text',hideDefaultActions: true},
@@ -31,7 +31,7 @@ const COLUMNS =[
 
 export default class Ips_myWorkTrainings extends NavigationMixin(LightningElement) {
 currentUser = Id;
-//currentUser ='0051X00000DtVvmQAF' ;
+//currentUser ='0051X00000EABDRQA5' ;
 @track trainingRecord;
 trainingRecords;
 @track record;
