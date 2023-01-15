@@ -6,7 +6,12 @@ public without sharing class IPS_EventSMSService {
         }
 
         List<Work_Trail__c> workTrailList = [
-            SELECT Id, ips_Participant__c, IPS_Partticipant_phone_number__c
+            SELECT
+                Id,
+                ips_Participant__c,
+                ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c,
+                ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c,
+                IPS_Partticipant_phone_number__c
             FROM Work_Trail__c
             WHERE Id IN :workTrailIdSet
         ];
@@ -30,17 +35,23 @@ public without sharing class IPS_EventSMSService {
         Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
 
         for (Event event : eventList) {
-            smsList.add(
-                IPS_SMS.createSMSRecord(
-                    'IPS',
-                    'Meeting Created',
-                    eventWorkTailMap.get(event).ips_Participant__c,
-                    event.Id,
-                    eventWorkTailMap.get(event).IPS_Partticipant_phone_number__c,
-                    constructCreatedMessage(event)
-                )
-            );
-            event.IPS_IsCreatedSMSSendt__c = true;
+            Work_Trail__c workTrail = eventWorkTailMap.get(event);
+            if (
+                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
+                workTrail.IPS_Partticipant_phone_number__c != null
+            ) {
+                smsList.add(
+                    IPS_SMS.createSMSRecord(
+                        'IPS',
+                        'Meeting Created',
+                        workTrail.ips_Participant__c,
+                        event.Id,
+                        workTrail.IPS_Partticipant_phone_number__c,
+                        constructCreatedMessage(event)
+                    )
+                );
+                event.IPS_IsCreatedSMSSendt__c = true;
+            }
         }
         insert smsList;
         update eventList;
@@ -59,17 +70,23 @@ public without sharing class IPS_EventSMSService {
         Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
 
         for (Event event : eventList) {
-            smsList.add(
-                IPS_SMS.createSMSRecord(
-                    'IPS',
-                    '24 Hour Scheduled Reminder',
-                    eventWorkTailMap.get(event).ips_Participant__c,
-                    event.Id,
-                    eventWorkTailMap.get(event).IPS_Partticipant_phone_number__c,
-                    constructReminderMessage(event)
-                )
-            );
-            event.IPS_IsReminderSMSSendt__c = true;
+            Work_Trail__c workTrail = eventWorkTailMap.get(event);
+            if (
+                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
+                workTrail.IPS_Partticipant_phone_number__c != null
+            ) {
+                smsList.add(
+                    IPS_SMS.createSMSRecord(
+                        'IPS',
+                        '24 Hour Scheduled Reminder',
+                        workTrail.ips_Participant__c,
+                        event.Id,
+                        workTrail.IPS_Partticipant_phone_number__c,
+                        constructReminderMessage(event)
+                    )
+                );
+                event.IPS_IsReminderSMSSendt__c = true;
+            }
         }
         insert smsList;
         update eventList;
@@ -88,17 +105,23 @@ public without sharing class IPS_EventSMSService {
         Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
 
         for (Event event : eventList) {
-            smsList.add(
-                IPS_SMS.createSMSRecord(
-                    'IPS',
-                    'Meeting Updated',
-                    eventWorkTailMap.get(event).ips_Participant__c,
-                    event.Id,
-                    eventWorkTailMap.get(event).IPS_Partticipant_phone_number__c,
-                    construcChangedMessage(event)
-                )
-            );
-            event.IPS_IsSendChangeSMS__c = false;
+            Work_Trail__c workTrail = eventWorkTailMap.get(event);
+            if (
+                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
+                workTrail.IPS_Partticipant_phone_number__c != null
+            ) {
+                smsList.add(
+                    IPS_SMS.createSMSRecord(
+                        'IPS',
+                        'Meeting Updated',
+                        workTrail.ips_Participant__c,
+                        event.Id,
+                        workTrail.IPS_Partticipant_phone_number__c,
+                        construcChangedMessage(event)
+                    )
+                );
+                event.IPS_IsSendChangeSMS__c = false;
+            }
         }
         insert smsList;
         update eventList;
