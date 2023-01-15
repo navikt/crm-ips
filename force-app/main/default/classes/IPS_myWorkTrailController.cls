@@ -19,6 +19,7 @@ public with sharing class IPS_myWorkTrailController {
             return mytrail;
     }
 
+    /* Ongoing education on main page */
     @AuraEnabled(cacheable = true)
     public static List<ips_Education__c> getUserEducations(String workTrailId){
         try {
@@ -42,6 +43,7 @@ public with sharing class IPS_myWorkTrailController {
         }
     }
 
+    /*All completed educations */
     @AuraEnabled(cacheable = true)
     public static List<ips_Education__c> getallEducations(String workTrailId){
         try {
@@ -56,6 +58,7 @@ public with sharing class IPS_myWorkTrailController {
                 toLabel(ips_Status__c)
                 FROM ips_Education__c
                 WHERE ips_Work_Trail__c =:workTrailId
+                AND ips_Status__c ='Completed'
                 ];
 
                 return myEducation;

@@ -22,6 +22,10 @@ export default class Ips_education extends NavigationMixin(LightningElement) {
         return this.record?.ips_Form_of_Education__c;
     }
 
+    get status(){
+        return this.record?.ips_Status__c;
+    }
+
     get notworked(){
         return this.record?.ips_What_did_work_with_this_education__c;
     }

@@ -6,10 +6,10 @@ import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUs
 
 const COLUMNS =[
     {label: 'Utdanning', fieldName: 'Name',type: 'text',hideDefaultActions: true},
-    {label: 'Navn på institusjon', fieldName: 'ips_Name_of_the_Education_Institution__c', type: 'text', hideDefaultActions: true},
+    {label: 'Utdanningssted', fieldName: 'ips_Name_of_the_Education_Institution__c', type: 'text', hideDefaultActions: true},
     {
         type: 'button',
-        fixedWidth: 150,
+        fixedWidth: 170,
         typeAttributes:{
             label: 'Se detaljer',
             title: 'Se detaljer',
@@ -19,7 +19,7 @@ const COLUMNS =[
     },
     {
         type:'button',
-        fixedWidth: 150,
+        fixedWidth: 170,
         typeAttributes:{
             label: 'Fullført',
             title: 'Fullført',
@@ -32,7 +32,7 @@ const COLUMNS =[
 ]
 export default class Ips_educations extends NavigationMixin(LightningElement){
 currentUser = Id;
-//currentUser ='0051X00000DtVvmQAF' ;
+//currentUser ='0051X00000EABDRQA5' ;
 educationRecords;
 @track educationRecord;
 @track record;
