@@ -2,10 +2,40 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
-        <name>setPublicTrue</name>
-        <label>setPublicTrue</label>
-        <locationX>50</locationX>
-        <locationY>791</locationY>
+        <name>addActivityDate</name>
+        <label>addActivityDate</label>
+        <locationX>314</locationX>
+        <locationY>455</locationY>
+        <assignmentItems>
+            <assignToReference>varDueDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>forCompletedDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateTask</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setAssignment</name>
+        <label>setAssignment</label>
+        <locationX>578</locationX>
+        <locationY>575</locationY>
+        <assignmentItems>
+            <assignToReference>varDueDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>forDueDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.WhoId</elementReference>
+            </value>
+        </assignmentItems>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -17,46 +47,67 @@
             <targetReference>UpdateTask</targetReference>
         </connector>
     </assignments>
-    <decisions>
-        <name>checkPublic</name>
-        <label>checkPublic</label>
-        <locationX>182</locationX>
-        <locationY>671</locationY>
-        <defaultConnector>
+    <assignments>
+        <name>setDueDate</name>
+        <label>setDueDate</label>
+        <locationX>50</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>varDueDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>forDueDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
             <targetReference>UpdateTask</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isPublicFalse</defaultConnectorLabel>
-        <rules>
-            <name>isPublicTrue</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.IPS_Skal_ikke_deles_med_Deltaker__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>setPublicTrue</targetReference>
-            </connector>
-            <label>isPublicTrue</label>
-        </rules>
-    </decisions>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setPublicTrue</name>
+        <label>setPublicTrue</label>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
+        <assignmentItems>
+            <assignToReference>varPublicTrue</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>setDueDate</targetReference>
+        </connector>
+    </assignments>
     <decisions>
-        <name>checkRelatedTo</name>
-        <label>checkRelatedTo</label>
-        <locationX>182</locationX>
+        <name>checkIfNew</name>
+        <label>checkIfNew</label>
+        <locationX>380</locationX>
         <locationY>335</locationY>
         <defaultConnector>
-            <targetReference>checkPublic</targetReference>
+            <targetReference>checkType</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>isFalse</defaultConnectorLabel>
+        <defaultConnectorLabel>isNotTaskNew</defaultConnectorLabel>
         <rules>
-            <name>isTrue</name>
+            <name>isTaskNew</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.IPS_participant_related_to_meeting__c</leftValueReference>
+                <leftValueReference>isNew</leftValueReference>
                 <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type_of_Task_IPSUO__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Delmål (av hovedmål)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ActivityDate</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
@@ -64,12 +115,74 @@
             <connector>
                 <targetReference>AddContactId</targetReference>
             </connector>
-            <label>isTrue</label>
+            <label>isTaskNew</label>
+        </rules>
+        <rules>
+            <name>isTaskNewLogs</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type_of_Task_IPSUO__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Loggfør samtale</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addActivityDate</targetReference>
+            </connector>
+            <label>isTaskNewLogs</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkType</name>
+        <label>checkType</label>
+        <locationX>710</locationX>
+        <locationY>455</locationY>
+        <defaultConnector>
+            <targetReference>UpdateTask</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isGoal</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type_of_Task_IPSUO__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Delmål (av hovedmål)</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setAssignment</targetReference>
+            </connector>
+            <label>isGoal</label>
         </rules>
     </decisions>
     <description>Used by UO/IPS task
 - add true to public checkbox
 - add contact id</description>
+    <formulas>
+        <name>forCompletedDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!$Record.CompletedDateTime})</expression>
+    </formulas>
+    <formulas>
+        <name>forDueDateTime</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!$Record.ips_Due_Date_Time__c})</expression>
+    </formulas>
+    <formulas>
+        <name>isNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
     <interviewLabel>IPS - create on ips_uo task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - create on ips_uo task</label>
     <processMetadataValues>
@@ -94,10 +207,22 @@
     <recordUpdates>
         <name>UpdateTask</name>
         <label>UpdateTask</label>
-        <locationX>182</locationX>
-        <locationY>1007</locationY>
+        <locationX>380</locationX>
+        <locationY>911</locationY>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>varDueDate</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>IsVisibleInSelfService</field>
+            <value>
+                <elementReference>varPublicTrue</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IsVisibleInSelfService__c</field>
             <value>
                 <elementReference>varPublicTrue</elementReference>
             </value>
@@ -111,10 +236,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>checkRelatedTo</targetReference>
+            <targetReference>checkIfNew</targetReference>
         </connector>
         <filterLogic>or</filterLogic>
         <filters>
@@ -131,67 +256,18 @@
                 <stringValue>Loggfør samtale</stringValue>
             </value>
         </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Loggfør SMS</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Loggfør Epost</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Oppgave</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Loggfør Samtale Arb.giver</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Loggfør SMS Arb.giver</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Oppgave Arb.giver</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Oppgave Arb.giver</stringValue>
-            </value>
-        </filters>
         <object>Task</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <name>AddContactId</name>
         <label>AddContactId</label>
         <locationX>50</locationX>
         <locationY>455</locationY>
         <connector>
-            <targetReference>checkPublic</targetReference>
+            <targetReference>setPublicTrue</targetReference>
         </connector>
         <flowName>IPS_subflowAddContactId</flowName>
         <inputAssignments>
@@ -215,6 +291,13 @@
     <variables>
         <name>varContactId</name>
         <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varDueDate</name>
+        <dataType>Date</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>

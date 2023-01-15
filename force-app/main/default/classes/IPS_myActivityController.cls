@@ -75,7 +75,6 @@ public without sharing class IPS_myActivityController {
             SELECT 
                 id,
                 ActivityDate,
-                ips_Due_Date_Time__c,
                 Subject,
                 Type_of_Task_IPSUO__c,
                 Description,
@@ -158,9 +157,20 @@ public without sharing class IPS_myActivityController {
         Date todaysDate = System.today();
         List<Event> userActivity = new List<Event>();
         userActivity =[
-            SELECT id,Subject, ActivityDate, EndDateTime, StartDateTime, Description,IPS_Type__c,toLabel(IPS_Status1__c)
+            SELECT 
+                id,
+                Subject, 
+                ActivityDate, 
+                EndDateTime, 
+                StartDateTime, 
+                Description,
+                IPS_Type__c,
+                IPS_Status1__c
             FROM event 
-            WHERE WhatId = :workTrailId AND IsVisibleInSelfService__c =true AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
+            WHERE 
+                WhatId = :workTrailId 
+                AND IsVisibleInSelfService__c =true 
+                AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
         ];
         return userActivity;
     }
@@ -169,7 +179,16 @@ public without sharing class IPS_myActivityController {
     public static List<Event> getMeeting(String recId){
         List<Event> userMeeting = new List<Event>();
         userMeeting =[
-            SELECT id,Subject, ActivityDate,EndDate, EndDateTime, StartDateTime, Description,toLabel(IPS_Type__c),toLabel(IPS_Status1__c),RelatedToAccount__c 
+            SELECT 
+                id,
+                Subject, 
+                ActivityDate,
+                EndDate, 
+                EndDateTime, 
+                StartDateTime, 
+                Description,
+                IPS_Type__c,
+                IPS_Status1__c
             FROM event 
             WHERE Id = :recId
         ];

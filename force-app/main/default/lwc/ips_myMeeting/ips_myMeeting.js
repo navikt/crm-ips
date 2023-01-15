@@ -25,14 +25,20 @@ export default class Ips_myMeeting extends NavigationMixin(LightningElement) {
     get status(){
         let goalStatus = this.record?.IPS_Status1__c;
         if(goalStatus==='Open'){
+            this.isClosed = false;
             return 'Åpen'
         }
         if(goalStatus==='Completed'){
             this.isClosed = true;
             return 'Lukket';
         }
-        if(goalStatus==='Not applicable'){
-            return 'Ingen status'
+        if(goalStatus==='Participant Absent'){
+            this.isClosed = false;
+            return 'Deltaker ikke møtt'
+        }
+        if(goalStatus==='Cancelled'){
+            this.isClosed = false;
+            return 'Avlyst'
         }
     }
 

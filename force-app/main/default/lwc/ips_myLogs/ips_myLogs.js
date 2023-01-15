@@ -42,8 +42,8 @@ const COLUMNS =[
 ]
 
 export default class Ips_myLogs extends NavigationMixin(LightningElement) {
-//currentUser = Id;
-currentUser ='0051x00000CiK8WAAV' ;
+currentUser = Id;
+//currentUser ='0051x00000CiK8WAAV' ;
 loggRecords;
 @track loggRecord;
 @track record;
