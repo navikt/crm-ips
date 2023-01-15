@@ -1,4 +1,4 @@
-public with sharing class IPS_SMS {
+public class IPS_SMS {
     public static SMS__c createSMSRecord(
         String domain,
         String type,
