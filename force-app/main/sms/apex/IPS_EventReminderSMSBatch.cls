@@ -13,12 +13,12 @@ public without sharing class IPS_EventReminderSMSBatch implements Database.Batch
         String query = 'SELECT ';
         query += 'Id, WhatId, WhoId, StartDateTime, EndDateTime ';
         query += 'FROM Event ';
-        query += 'WHERE StartDate < :horizonDate ';
-        query += 'AND StartDate > :now ';
-        query += 'AND RecordType.DeveloperName = \'IPS_Event\' ';
+        query += 'WHERE StartDateTime < :horizonDate ';
+        query += 'AND StartDateTime > :now ';
+        query += 'AND (RecordType.DeveloperName = \'IPS_Event\' OR RecordType.DeveloperName = \'Ips_uo_Deltakermote\' OR RecordType.DeveloperName = \'ips_UO_m_ter\') ';
         query += 'AND WhoId != null ';
-        //query += 'AND WhatId.Account.CRM_Person__r.IPS_IsReservationAgainstSMS__c = FALSE '; hvordan best hente info om bruker?
-        query += 'AND IPS_IsReminderSMSSendt__c = FALSE';
+        query += 'AND WhatId != null ';
+        query += 'AND IPS_IsReminderSMSSendt__c = false';
 
         return Database.getQueryLocator(query);
     }
@@ -34,7 +34,7 @@ public without sharing class IPS_EventReminderSMSBatch implements Database.Batch
     }
 
     public void finish(Database.BatchableContext bc) {
-        Long minutes = getMinutesUntilNextSMSBatch();
+        Long minutes = IPS_EventSMSService.getMinutesUntilNextSMSBatch();
         if (!Test.isRunningTest()) {
             try {
                 System.scheduleBatch(
@@ -49,25 +49,5 @@ public without sharing class IPS_EventReminderSMSBatch implements Database.Batch
                 logger.publishSynch();
             }
         }
-    }
-
-    private static Long getMinutesUntilNextSMSBatch() {
-        Long minutes = 60;
-        Datetime now = Datetime.now();
-        Datetime datetime1600 = Datetime.newInstance(Date.today(), Time.newInstance(16, 0, 0, 0));
-        Boolean isWithinAnHour = datetime1600.getTime() - Datetime.now().getTime() < 3600000;
-        Boolean isWithinTenMin = datetime1600.getTime() - Datetime.now().getTime() < 600000;
-        Boolean isFriday = now.format('EEEE') == 'Friday';
-        if (isWithinTenMin) {
-            Datetime nextDay = Datetime.newInstance(now.addDays(1).date(), Time.newInstance(9, 0, 0, 0));
-            minutes = (nextDay.getTime() - now.getTime()) / 60000;
-            if (isFriday) {
-                Datetime monday = Datetime.newInstance(now.addDays(3).date(), Time.newInstance(9, 0, 0, 0));
-                minutes = (monday.getTime() - now.getTime()) / 60000;
-            }
-        } else if (isWithinAnHour) {
-            minutes = (datetime1600.getTime() - now.getTime()) / 60000;
-        }
-        return minutes;
     }
 }

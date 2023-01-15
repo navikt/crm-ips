@@ -1,24 +1,49 @@
 public without sharing class IPS_EventSMSService {
+    private static Map<Event, Work_Trail__c> getEventWorkTailMap(List<Event> eventList) {
+        Set<Id> workTrailIdSet = new Set<Id>();
+        for (Event event : eventList) {
+            workTrailIdSet.add(event.WhatId);
+        }
+
+        List<Work_Trail__c> workTrailList = [
+            SELECT Id, ips_Participant__c, IPS_Partticipant_phone_number__c
+            FROM Work_Trail__c
+            WHERE Id IN :workTrailIdSet
+        ];
+
+        Map<Id, Work_Trail__c> workTrailMap = new Map<Id, Work_Trail__c>();
+
+        for (Work_Trail__c workTrail : workTrailList) {
+            workTrailMap.put(workTrail.Id, workTrail);
+        }
+
+        Map<Event, Work_Trail__c> eventWorkTailMap = new Map<Event, Work_Trail__c>();
+
+        for (Event event : eventList) {
+            eventWorkTailMap.put(event, workTrailMap.get(event.WhatId));
+        }
+        return eventWorkTailMap;
+    }
+
     public static void createSMS(List<Event> eventList) {
         List<SMS__c> smsList = new List<SMS__c>();
+        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
 
         for (Event event : eventList) {
             smsList.add(
                 IPS_SMS.createSMSRecord(
                     'IPS',
                     'Meeting Created',
-                    event.WhoId, //TODO hente ut accountId
+                    eventWorkTailMap.get(event).ips_Participant__c,
                     event.Id,
-                    event.WhatId, //IPS_Partticipant_phone_number__c,
+                    eventWorkTailMap.get(event).IPS_Partticipant_phone_number__c,
                     constructCreatedMessage(event)
                 )
             );
-            event.IPS_IsReminderSMSSendt__c = true;
+            event.IPS_IsCreatedSMSSendt__c = true;
         }
-        CRM_DatabaseOperations cdo = new CRM_DatabaseOperations();
-        cdo.setDomain(CRM_ApplicationDomain.Domain.IPS);
-        cdo.insertRecords(smsList);
-        cdo.updateRecords(eventList);
+        insert smsList;
+        update eventList;
     }
 
     private static String constructCreatedMessage(Event event) {
@@ -31,24 +56,23 @@ public without sharing class IPS_EventSMSService {
 
     public static void reminderSMS(List<Event> eventList) {
         List<SMS__c> smsList = new List<SMS__c>();
+        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
 
         for (Event event : eventList) {
             smsList.add(
                 IPS_SMS.createSMSRecord(
                     'IPS',
                     '24 Hour Scheduled Reminder',
-                    event.WhoId, //TODO hente ut accountId
+                    eventWorkTailMap.get(event).ips_Participant__c,
                     event.Id,
-                    event.WhatId, //IPS_Partticipant_phone_number__c,
+                    eventWorkTailMap.get(event).IPS_Partticipant_phone_number__c,
                     constructReminderMessage(event)
                 )
             );
             event.IPS_IsReminderSMSSendt__c = true;
         }
-        CRM_DatabaseOperations cdo = new CRM_DatabaseOperations();
-        cdo.setDomain(CRM_ApplicationDomain.Domain.IPS);
-        cdo.insertRecords(smsList);
-        cdo.updateRecords(eventList);
+        insert smsList;
+        update eventList;
     }
 
     private static String constructReminderMessage(Event event) {
@@ -59,27 +83,25 @@ public without sharing class IPS_EventSMSService {
         return message;
     }
 
-    public static void updateSMS(List<Event> eventList) {
+    public static void changeSMS(List<Event> eventList) {
         List<SMS__c> smsList = new List<SMS__c>();
+        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
 
         for (Event event : eventList) {
             smsList.add(
                 IPS_SMS.createSMSRecord(
                     'IPS',
                     'Meeting Updated',
-                    event.WhoId, //TODO hente ut accountId
+                    eventWorkTailMap.get(event).ips_Participant__c,
                     event.Id,
-                    event.WhatId, //IPS_Partticipant_phone_number__c,
+                    eventWorkTailMap.get(event).IPS_Partticipant_phone_number__c,
                     construcChangedMessage(event)
                 )
             );
-            //event.IPS_IsUpdateSMSSendt__c = true;
-            //datofelt?
+            event.IPS_IsSendChangeSMS__c = false;
         }
-        CRM_DatabaseOperations cdo = new CRM_DatabaseOperations();
-        cdo.setDomain(CRM_ApplicationDomain.Domain.IPS);
-        cdo.insertRecords(smsList);
-        //cdo.updateRecords(eventList);
+        insert smsList;
+        update eventList;
     }
 
     private static String construcChangedMessage(Event event) {
@@ -103,5 +125,25 @@ public without sharing class IPS_EventSMSService {
             (endDate.minute() < 10 ? '0' + String.valueOf(endDate.minute()) : String.valueOf(endDate.minute()));
 
         return timePeriod;
+    }
+
+    public static Long getMinutesUntilNextSMSBatch() {
+        Long minutes = 60;
+        Datetime now = Datetime.now();
+        Datetime datetime1600 = Datetime.newInstance(Date.today(), Time.newInstance(16, 0, 0, 0));
+        Boolean isWithinAnHour = datetime1600.getTime() - Datetime.now().getTime() < 3600000;
+        Boolean isWithinTenMin = datetime1600.getTime() - Datetime.now().getTime() < 600000;
+        Boolean isFriday = now.format('EEEE') == 'Friday';
+        if (isWithinTenMin) {
+            Datetime nextDay = Datetime.newInstance(now.addDays(1).date(), Time.newInstance(9, 0, 0, 0));
+            minutes = (nextDay.getTime() - now.getTime()) / 60000;
+            if (isFriday) {
+                Datetime monday = Datetime.newInstance(now.addDays(3).date(), Time.newInstance(9, 0, 0, 0));
+                minutes = (monday.getTime() - now.getTime()) / 60000;
+            }
+        } else if (isWithinAnHour) {
+            minutes = (datetime1600.getTime() - now.getTime()) / 60000;
+        }
+        return minutes;
     }
 }
