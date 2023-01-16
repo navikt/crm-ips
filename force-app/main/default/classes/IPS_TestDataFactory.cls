@@ -58,7 +58,6 @@ public with sharing class IPS_TestDataFactory {
             ips_Travel_time__c = 15,
             whoId = participantId,
             WhatId = jobbsporId,
-            RelatedToAccount__c = employerId,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
             StartDateTime = system.Datetime.now(),
