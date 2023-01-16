@@ -43,7 +43,6 @@ public without sharing class IPS_jobController {
                 Name, 
                 ips_Work_Trail__c, 
                 ips_Employer__c, 
-                ips_Employer_contact__c, 
                 ips_End_Date__c, 
                 ips_Form_of_Employment__c, 
                 ips_Job_Support__c, 
