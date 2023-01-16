@@ -5,33 +5,28 @@
             <lightning-breadcrumb label="dine delmål" name="ips_my_goals__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
-    <div if:true={isloading} style="height: 200px; position:relative" >
-        <lightning-spinner variant="base" size="medium"></lightning-spinner>
-    </div>
-    <div if:false={isloading}>
-        <div class="container skjema-max-width">
-            <div if:false={isMobile}>
-                <lightning-datatable 
-                    class="trailtext"
-                    key-field="Id" 
-                    data={goalRecord} 
-                    columns={columns} 
-                    hide-checkbox-column="true" 
-                    onrowaction={handleRowAction}
-                >
-            </lightning-datatable>
-            </div>
-            <div if:true={isMobile} style="height: 600px;">
-                <lightning-datatable 
-                    class="trailtext"
-                    key-field="Id" 
-                    data={goalRecord} 
-                    columns={columns} 
-                    hide-checkbox-column="true" 
-                    onrowaction={handleRowAction}
-                >
-            </lightning-datatable>
-            </div>
+    <div class="container skjema-max-width">
+        <div if:false={isMobile}>
+            <lightning-datatable 
+                class="trailtext"
+                key-field="Id" 
+                data={goalRecord} 
+                columns={columns} 
+                hide-checkbox-column="true" 
+                onrowaction={handleRowAction}
+            >
+        </lightning-datatable>
+        </div>
+        <div if:true={isMobile} style="height: 600px;">
+            <lightning-datatable 
+                class="trailtext"
+                key-field="Id" 
+                data={goalRecord} 
+                columns={columns} 
+                hide-checkbox-column="true" 
+                onrowaction={handleRowAction}
+            >
+        </lightning-datatable>
         </div>
     </div>
 </template>
