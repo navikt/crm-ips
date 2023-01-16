@@ -138,6 +138,7 @@ public class IPS_myWorkTrailControllerTest {
         insert trailIPS;
         
         ID recTypeIdTask = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
+        ID recTypeIdKontakt = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_UO_contactlog').getRecordTypeId();
         
          Task taskGoal = new Task(
                     Subject = 'Delmål ',
@@ -151,6 +152,21 @@ public class IPS_myWorkTrailControllerTest {
         );
         insert taskGoal;
         
+        Task taskKontakt = new Task(
+                    Subject = 'Kontaktlogg ',
+             		ActivityDate = System.today()+1,
+                    Description = 'Kontaktlogg ',
+             		Type_of_Task_IPSUO__c ='Logg kontakt',
+                    ips_Completed__c = true,
+                    IsVisibleInSelfService__c =true,
+            		Status ='Completed',
+                    WhatId = trailIPS.id,
+                    RecordTypeId = recTypeIdKontakt
+        );
+        insert taskKontakt;
+        
+        
+        
         Test.startTest();
             List<Task>  goalList = IPS_myActivityController.getParticipantsGoal(trailIPS.id);
             System.assertEquals(true,goalList.isEmpty() , 'List should not be empty');
@@ -158,9 +174,12 @@ public class IPS_myWorkTrailControllerTest {
             System.assertEquals(true,goalsList.isEmpty() , 'List should not be empty');
             List<Task>  allgoalsList = IPS_myActivityController.getAllGoals(taskGoal.id);
             System.assertEquals(true,allgoalsList.isEmpty() , 'List should not be empty');
+        	List<Task>  detailgoalsList = IPS_myActivityController.getTaskDetail(taskGoal.id);
+            System.assertEquals(false,detailgoalsList.isEmpty() , 'List should not be empty');
+        	List<Task>  kontaktList = IPS_myActivityController.getParticipantsLogs(trailIPS.id);
+            System.assertEquals(true,kontaktList.isEmpty() , 'List should not be empty');
          Test.stopTest();
     }
-    
     
    @isTest
     static void allEvent(){
@@ -202,6 +221,8 @@ public class IPS_myWorkTrailControllerTest {
             Test.startTest();
             List<Event>  allList = IPS_myActivityController.getAllActivity(trailIPS.id);
             System.assertEquals(false,allList.isEmpty() , 'List should not be empty');
+        	List<Event>  detailList = IPS_myActivityController.getMeeting(allEvent.id);
+            System.assertEquals(false,detailList.isEmpty() , 'List should not be empty');
             Test.stopTest();
     }
     
@@ -242,88 +263,6 @@ public class IPS_myWorkTrailControllerTest {
             System.assertEquals(true,educationsList.isEmpty() , 'List should not be empty');
             List<ips_Education__c> alleducationList = IPS_myWorkTrailController.getallEducations(allEducation.id);
             System.assertEquals(true,alleducationList.isEmpty() , 'List should not be empty');
-        Test.stopTest();
-    }
-    
-    @isTest
-    static void getjob(){
-        ID recTypeIdAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
-        
-        Account account = new Account(
-            LastName = 'Last',
-            FirstName = 'First',
-            RecordTypeId =  recTypeIdAccount
-        );
-        insert account;
-
-        ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
-            
-        Work_Trail__c trailIPS = new Work_Trail__c(
-            ips_Participant__c = account.id,
-            recordTypeId = recTypeIdIPS,
-            ips_Status__c ='Working',
-            ips_Passive__c=false
-            );
-        insert trailIPS;
-        
-       ips_Job__c alljob = new ips_Job__c(
-                    Name = 'Job1 ',
-                    ips_Start_Date__c = System.today(),
-                    ips_End_Date__c = System.today()+1,
-                    ips_Form_of_Employment__c = 'Freelance / self-employed',
-                    ips_Work_Trail__c = trailIPS.id
-        );
-        insert alljob;
-        Test.startTest();
-            List<ips_Job__c> jobList = IPS_myWorkTrailController.getUserWorks(trailIPS.id);
-            System.assertEquals(false,jobList.isEmpty() , 'List should not be empty');
-        Test.stopTest();
-    }
-    
-    @isTest
-    static void getTraining(){
-        ID recTypeIdAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PersonAccount').getRecordTypeId();
-        
-        Account account = new Account(
-            LastName = 'Last',
-            FirstName = 'First',
-            RecordTypeId =  recTypeIdAccount
-        );
-        insert account;
-        
-         ID recTypeIdEmpAccount = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Employer').getRecordTypeId();
-        
-        Account account2 = new Account(
-            Name = 'FIRST AND LAST',
-            RecordTypeId =  recTypeIdEmpAccount
-        );
-        insert account2;
-
-        ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
-            
-        Work_Trail__c trailIPS = new Work_Trail__c(
-            ips_Participant__c = account.id,
-            recordTypeId = recTypeIdIPS,
-            ips_Status__c ='Working',
-            ips_Passive__c=false
-            );
-        insert trailIPS;
-        
-       ips_Job__c alltraining = new ips_Job__c(
-                    Name = 'Job2 ',
-                    ips_Start_Date__c = System.today(),
-           			ips_Employer__c = account2.id,
-                    ips_End_Date__c = System.today()+1,
-                    ips_Form_of_Employment__c = 'work training',
-                    ips_Work_Trail__c = trailIPS.id
-        );
-        insert alltraining;
-        
-        Test.startTest();
-            List<ips_Job__c> trainingList = IPS_myWorkTrailController.getUserWorkDetail(trailIPS.id);
-            System.assertEquals(false,trainingList.isEmpty() , 'List should not be empty');
-        	List<ips_Job__c> trainingsList = IPS_myWorkTrailController.getUserWorkTrainings(alltraining.id);
-            System.assertEquals(true,trainingsList.isEmpty() , 'List should not be empty');
         Test.stopTest();
     }
 

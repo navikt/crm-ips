@@ -76,7 +76,9 @@ public class IPS_eventTravelTimeControllerTest {
   
      List<Event> travelTimeList = [SELECT id FROM Event];
      //List should not be empty
-    System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty');     
+    System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty'); 
+    
+   	
         
     }
     

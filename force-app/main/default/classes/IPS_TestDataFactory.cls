@@ -92,8 +92,8 @@ public with sharing class IPS_TestDataFactory {
         );
         return createEvent;
     }
-
-    public static ips_Job__c createJob(String employerId, String worktrailId, String status){
+    
+    public static ips_Job__c createJob(ID employerId, ID worktrailId, String status){
 
         ips_Job__c createJob = new ips_Job__c(
             Name = 'Jobb nr 1',
@@ -111,7 +111,7 @@ public with sharing class IPS_TestDataFactory {
         return createJob;
     }
 
-    public static ips_Job__c createWorkTraining(String employerId, String worktrailId,String status){
+    public static ips_Job__c createWorkTraining(ID employerId, ID worktrailId,String status){
 
         ips_Job__c createJob = new ips_Job__c(
             Name = 'Arbeidstrening nr 1',
