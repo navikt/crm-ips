@@ -58,7 +58,6 @@ public with sharing class IPS_TestDataFactory {
             ips_Travel_time__c = 15,
             whoId = participantId,
             WhatId = jobbsporId,
-            RelatedToAccount__c = employerId,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
             StartDateTime = system.Datetime.now(),
@@ -91,5 +90,41 @@ public with sharing class IPS_TestDataFactory {
             ips_Completed__c = false
         );
         return createEvent;
+    }
+    
+    public static ips_Job__c createJob(ID employerId, ID worktrailId, String status){
+
+        ips_Job__c createJob = new ips_Job__c(
+            Name = 'Jobb nr 1',
+            ips_Employer__c = employerId,
+            ips_Work_Trail__c = worktrailId,
+            ips_Start_Date__c = Date.newInstance(2022, 10, 17), 
+            ips_End_Date__c = Date.newInstance(2022, 12, 17), 
+            ips_Form_of_Employment__c = 'Permanent employment' , 
+            ips_Job_Support__c ='Dette er jobbstøtte', 
+            ips_Number_of_hours__c = 40, 
+            ips_Status__c = status, 
+            ips_What_did_not_work_at_the_workplace__c = 'Fungerte ikke', 
+            ips_What_did_work_at_the_workplace__c ='Fungerte'
+        );
+        return createJob;
+    }
+
+    public static ips_Job__c createWorkTraining(ID employerId, ID worktrailId,String status){
+
+        ips_Job__c createJob = new ips_Job__c(
+            Name = 'Arbeidstrening nr 1',
+            ips_Employer__c = employerId,
+            ips_Work_Trail__c = worktrailId,
+            ips_Start_Date__c = Date.newInstance(2022, 10, 17), 
+            ips_End_Date__c = Date.newInstance(2022, 12, 17), 
+            ips_Form_of_Employment__c = 'work training' , 
+            ips_Job_Support__c ='Dette er jobbstøtte', 
+            ips_Number_of_hours__c = 40, 
+            ips_Status__c = status, 
+            ips_What_did_not_work_at_the_workplace__c = 'Fungerte ikke', 
+            ips_What_did_work_at_the_workplace__c ='Fungerte'
+        );
+        return createJob;
     }
 }

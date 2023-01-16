@@ -65,8 +65,8 @@ import getParticipantGoals from '@salesforce/apex/IPS_myActivityController.getPa
 import getEducations from '@salesforce/apex/IPS_myWorkTrailController.getUserEducations';
 
 /* Jobs */
-import getUserJob from '@salesforce/apex/IPS_myWorkTrailController.getUserWorks';
-import getTraining from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrainings';
+import getUserJob from '@salesforce/apex/IPS_jobController.getActiveUserJobs';
+import getTraining from '@salesforce/apex/IPS_jobController.getActiveUserWorkTrainings';
 
 /* Worktrail fields */
 const WORKTRAIL_FIELDS = [
@@ -125,7 +125,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     myGoalImg = IPS_HOME_LOGOS + '/TaskFilled.svg';
     myPlanImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
     currentUser = Id;
-    //currentUser ='0051X00000DtVvmQAF' ;
+    //currentUser ='0051X00000EABDRQA5' ;
     recordId;
     recordtypename;
     ownerIds;

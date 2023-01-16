@@ -70,6 +70,7 @@ public class IPS_eventTravelTimeController {
         public Id relatedTo;
     }
 
+    @TestVisible
     private static void createTravelTime(
         dateTime startDate,
         dateTime endDate,
