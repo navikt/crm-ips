@@ -3,7 +3,7 @@
         <lightning-breadcrumbs>
             <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
             <lightning-breadcrumb label="dine møter" name="ips_my_meetings__c" onclick={navigateToPage}></lightning-breadcrumb>
-            <lightning-breadcrumb label="detaljer" name="ips_my_meeting__c"></lightning-breadcrumb>
+            <lightning-breadcrumb label="detaljer"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
     <div class="container skjema-max-width ">
@@ -38,9 +38,11 @@
                     <td>
                         <div if:true={isClosed}>
                             <label tabindex="0">Referat</label>
+                            <p tabindex="0">{description}</p>
                         </div>
                         <div if:false={isClosed}>
                             <label tabindex="0">Agenda</label>
+                            <p tabindex="0">{description}</p>
                         </div>
                     </td>
                 </tr>

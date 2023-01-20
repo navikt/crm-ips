@@ -50,6 +50,7 @@ activityRecords;
 recordIds;
 isActivity = false;
 columns = COLUMNS;
+isloading = true;
 
 
 get isMobile() {
@@ -77,6 +78,7 @@ wiredtrail({ error, data }) {
               act.disableButton = act.IPS_Status1__c !== 'Completed';
             });
             this.isActivity = true;
+            this.isloading = false;
         }
        }else if(error){
            console.log('An error has ocurred');
