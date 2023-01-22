@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Activity.ips_Is_the_employer_decision_maker__c</field>
+    </columns>
+    <columns>
         <field>Activity.Konto_kontakt__c</field>
     </columns>
     <columns>
@@ -37,9 +41,33 @@
             <operator>notEqual</operator>
             <value>Reisetid</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Activity.ips_Subcategory_Type_IPS__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Job support</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Activity.IPS_Subcategory_Type_UO__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Follow-up</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
-    <format>Summary</format>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.ips_Subcategory_Type_IPS__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.IPS_Subcategory_Type_UO__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>Activity.RelatedToAccount__c</field>
@@ -48,11 +76,6 @@
     <groupingsDown>
         <dateGranularity>Week</dateGranularity>
         <field>DUE_DATE</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Activity.ips_Is_the_employer_decision_maker__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Mine arbeidsgivermøter forrige/denne mnd</name>
