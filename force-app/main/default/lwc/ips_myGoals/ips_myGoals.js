@@ -5,9 +5,8 @@ import getParticipantsGoals from '@salesforce/apex/IPS_myActivityController.getA
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 
 const COLUMNS =[
-    {label: 'Delmål', fieldName: 'Subject',type: 'text',hideDefaultActions: true},
     {
-        label: 'Mål dato', 
+        label: 'Frist', 
         fieldName: 'ActivityDate', 
         type: 'date', hideDefaultActions: true,
         typeAttributes:{
@@ -17,6 +16,7 @@ const COLUMNS =[
             weekday:"long"
         }
     },
+    {label: 'Delmål', fieldName: 'Subject',type: 'text',hideDefaultActions: true},
     {
         type: 'button',
         fixedWidth: 150,
@@ -43,13 +43,14 @@ const COLUMNS =[
 
 export default class Ips_myGoals extends NavigationMixin(LightningElement) {
 currentUser = Id;
-//currentUser ='0051X00000DtVvmQAF' ;
+//currentUser ='0051x00000CiK8WAAV' ;
 goalRecords;
 @track goalRecord;
 @track record;
 recordIds;
 isGoal = false;
 columns = COLUMNS;
+isloading = true;
 
 get isMobile() {
     return window.screen.width < 576;
@@ -76,6 +77,7 @@ get isMobile() {
               goall.disableButton = goall.Status !== 'Completed';
             });
             this.isGoal = true;
+            this.isloading = false;
         }
        }else if(error){
            console.log('An error has ocurred');

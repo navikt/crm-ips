@@ -39,7 +39,7 @@ This workflows does the following:
 
 ## Secrets
 
-- Environemnt secrets
+- Environment secrets
     - `secrets.CRM_PROD_SFDX_URL`
     - `secrets.CRM_PREPROD_SFDX_URL`
     - `secrets.CRM_PACKAGE_KEY`

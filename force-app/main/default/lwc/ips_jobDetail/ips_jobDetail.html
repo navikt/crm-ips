@@ -1,15 +1,36 @@
 <template>
-    <div class="breadcrumbs container">
+    <div if:false={isWorkTraining} class="breadcrumbs container">
+        <lightning-breadcrumbs>
+            <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="dine jobber" name="ips_my_jobs__c" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="detaljer"></lightning-breadcrumb>
+        </lightning-breadcrumbs>
+    </div>
+    <div if:true={isWorkTraining} class="breadcrumbs container">
             <lightning-breadcrumbs>
                 <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
-                <lightning-breadcrumb label="dine arbeidstreninger" name="ips_my_worktraings__c" onclick={navigateToPage}></lightning-breadcrumb>
-                <lightning-breadcrumb label="detaljer" name="ips_my_worktraing__c"></lightning-breadcrumb>
+                <lightning-breadcrumb label="dine arbeidstreninger" name="ips_my_worktrainings__c" onclick={navigateToPage}></lightning-breadcrumb>
+                <lightning-breadcrumb label="detaljer"></lightning-breadcrumb>
             </lightning-breadcrumbs>
     </div>
     <div class="container skjema-max-width ">
         <form class="form-control">
             <h2 class="title"> {workName}</h2>
             <div class="work-border"></div>
+            <table>
+                <tr>
+                    <td>
+                        <label tabindex="0">Arbeidsgiver</label>
+                        <p tabindex="0">{employerName}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label tabindex="0">Arbeidsform</label>
+                        <p tabindex="0">{type}</p>
+                    </td>
+                </tr>
+            </table>
             <table>
                 <tr>
                     <td>
@@ -31,9 +52,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <label tabindex="0">Plan for support</label>
+                        <label tabindex="0">Plan for jobbstøtte</label>
                         <p tabindex="0">{jobsupport}</p>
-
                     </td>
                 </tr>
             </table>

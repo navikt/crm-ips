@@ -1,16 +1,18 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getParticipantsGoal from '@salesforce/apex/IPS_myActivityController.getParticipantsGoal';
+import getTaskDetail from '@salesforce/apex/IPS_myActivityController.getTaskDetail';
 
-export default class Ips_myGoal extends NavigationMixin(LightningElement) {
+export default class Ips_taskDetail extends  NavigationMixin(LightningElement) {
     @api recordId;
     @track record;
     error;
+    isloading = true;
    
-    @wire(getParticipantsGoal, {recId:'$recordId'})
-    wiredgoal({ error, data }) {
+    @wire(getTaskDetail, {recId:'$recordId'})
+    wireddetail({ error, data }) {
         if (data) {
             this.record = data[0];
+            this.isloading = false;
         } else if (error) {
             console.log('Something went wrong:', error);
         }
@@ -25,20 +27,32 @@ export default class Ips_myGoal extends NavigationMixin(LightningElement) {
     }
 
     get description(){
-        return this.record?.Description;
+        if(this.record?.Type_of_Task_IPSUO__c==='Logg kontakt' && this.record?.Samtalereferat__c === true){
+            return this.record?.Description;
+        }
+        if(this.record?.Type_of_Task_IPSUO__c==='Delmål (av hovedmål)'){
+            return this.record?.Description;
+        }else{
+            return null;
+        }
+        
     }
 
     get status(){
-        let goalStatus = this.record?.Status;
-        if(goalStatus==='Open'){
+        let taskStatus = this.record?.Status;
+        if(taskStatus==='Open'){
             return 'Åpen'
         }
-        if(goalStatus==='Completed'){
+        if(taskStatus==='Completed'){
             return 'Fullført';
         }
-        if(goalStatus==='Not applicable'){
+        if(taskStatus==='Not applicable'){
             return 'Ingen status'
         }
+    }
+
+    get type(){
+        return this.record?.Type_of_Task_IPSUO__c;
     }
 
     formatDate(initialDate) {

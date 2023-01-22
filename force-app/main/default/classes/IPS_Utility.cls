@@ -1,6 +1,5 @@
 public without sharing class IPS_Utility { 
-    
-    
+   
     public static List<User> getPersonAccountId(String userId) {
         List<User> userList = new List<User>();
         String confidential = 'UGRADERT';

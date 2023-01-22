@@ -1,32 +1,27 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getUserWorkTraining from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkDetail';
+import getJobDetail from '@salesforce/apex/IPS_jobController.getUserWorkDetail';
 
-export default class Ips_myWorkTraining extends NavigationMixin(LightningElement) {
+export default class Ips_jobDetail extends NavigationMixin(LightningElement) {
     @api recordId;
     @track record;
     isWorkTraining = false;
     error;
    
-    @wire(getUserWorkTraining, {recId:'$recordId'})
+    @wire(getJobDetail, {recId:'$recordId'})
     wiredtraining({ error, data }) {
         if (data) {
             console.log(data);
             this.record = data[0];
-            //this.accountId = this.record?.ips_Employer__c;
-            //this.accountContactId = this.record?.ips_Employer_contact__c;
+            if(this.record?.ips_Form_of_Employment__c ==='Work training'){
+                this.isWorkTraining = true;
+            }
         } else if (error) {
             console.log('Something went wrong:', error);
         }
     }
 
     get type(){
-        let empltype = this.record?.ips_Form_of_Employment__c;
-        if(this.empltype==='Arbeidstrening' || this.empltype ==='work training' ){
-            this.isWorkTraining = true;
-        }
-        return this.empltype;
-        /*
         if(this.record?.ips_Form_of_Employment__c ==='Freelance / self-employed'){
             return 'Freelance/selvstendig næringsdrivende';
         }
@@ -38,7 +33,14 @@ export default class Ips_myWorkTraining extends NavigationMixin(LightningElement
         }
         if(this.record?.ips_Form_of_Employment__c ==='Zero hours contrac'){
             return 'Tilkalling ekstrajobb';
-        }*/
+        }
+        if(this.record?.ips_Form_of_Employment__c ==='Work training'){
+            return 'Arbeidstrening';
+        }
+    }
+
+    get employerName(){
+        return this.record?.ips_Employer__r.Name;
     }
 
     get workName(){
