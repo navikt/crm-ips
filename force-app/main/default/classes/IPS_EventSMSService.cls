@@ -59,10 +59,9 @@ public without sharing class IPS_EventSMSService {
     }
 
     private static String constructCreatedMessage(Event event) {
-        String message = 'INFO\nDitt møte med jobbspesialisten er opprettet. Tidspunktet er:\n';
-        message += '\nDato: ' + formatTimePeriod(event.StartDateTime, event.EndDateTime);
-        message += '\n\nFor mer informasjon, se www.nav.no. Du kan ikke svare på denne meldingen.';
-        message += '\nMvh jobbspesialisten i NAV';
+        String message = 'Det er satt opp et møte med jobbspesialisten din.';
+        message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
+        message += '\n\nLogg inn på nav.no for detaljer. Du kan ikke svare på denne meldingen.';
         return message;
     }
 
@@ -95,10 +94,9 @@ public without sharing class IPS_EventSMSService {
     }
 
     private static String constructReminderMessage(Event event) {
-        String message = 'PÅMINNELSE\nVi minner om møte med jobbspesialisten din:\n';
-        message += 'Dato: ' + formatTimePeriod(event.StartDateTime, event.EndDateTime) + '\n';
-        message += '\n\nFor mer informasjon, se www.nav.no. Du kan ikke svare på denne meldingen.';
-        message += '\nMvh jobbspesialisten i NAV';
+        String message = 'Husk møte med jobbspesialisten din.';
+        message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
+        message += '\n\nDu kan ikke svare på denne meldingen.';
         return message;
     }
 
@@ -131,24 +129,19 @@ public without sharing class IPS_EventSMSService {
     }
 
     private static String construcChangedMessage(Event event) {
-        String message = 'INFO\nDitt møte med jobbspesialisten er endret. Nytt tidspunkt er:\n';
-        message += '\nDato: ' + formatTimePeriod(event.StartDateTime, event.EndDateTime);
-        message += '\n\nFor mer informasjon, se www.nav.no. Du kan ikke svare på denne meldingen.';
-        message += '\nMvh jobbspesialisten i NAV';
+        String message = 'Møte er endret. Ny tid for møte med jobbspesialisten din.';
+        message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
+        message += '\n\nDu kan ikke svare på denne meldingen.';
         return message;
     }
 
-    private static String formatTimePeriod(Datetime startDate, Datetime endDate) {
+    private static String formatTimePeriod(Datetime startDate) {
         String timePeriod =
             startDate.date().format() +
-            '\nKlokkeslett: ' +
+            ', kl ' +
             (startDate.hour() < 10 ? '0' + String.valueOf(startDate.hour()) : String.valueOf(startDate.hour())) +
-            '.' +
-            (startDate.minute() < 10 ? '0' + String.valueOf(startDate.minute()) : String.valueOf(startDate.minute())) +
-            ' - ' +
-            (endDate.hour() < 10 ? '0' + String.valueOf(endDate.hour()) : String.valueOf(endDate.hour())) +
-            '.' +
-            (endDate.minute() < 10 ? '0' + String.valueOf(endDate.minute()) : String.valueOf(endDate.minute()));
+            ':' +
+            (startDate.minute() < 10 ? '0' + String.valueOf(startDate.minute()) : String.valueOf(startDate.minute()));
 
         return timePeriod;
     }
