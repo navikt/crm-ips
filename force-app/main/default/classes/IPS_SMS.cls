@@ -5,7 +5,8 @@ public class IPS_SMS {
         Id accountId,
         Id eventId,
         String recipient,
-        String message
+        String message,
+        Id workTrail
     ) {
         SMS__c sms = new SMS__c();
         sms.Domain__c = domain;
@@ -14,6 +15,7 @@ public class IPS_SMS {
         sms.EventId__c = eventId;
         sms.Recipient__c = recipient;
         sms.Message__c = message;
+        sms.IPS_WorkTrail__c = workTrail;
         return sms;
     }
 }
