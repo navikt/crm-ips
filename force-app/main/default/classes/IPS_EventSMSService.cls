@@ -47,7 +47,8 @@ public without sharing class IPS_EventSMSService {
                         workTrail.ips_Participant__c,
                         event.Id,
                         workTrail.IPS_Partticipant_phone_number__c,
-                        constructCreatedMessage(event)
+                        constructCreatedMessage(event),
+                        workTrail.Id
                     )
                 );
                 event.IPS_IsCreatedSMSSendt__c = true;
@@ -82,7 +83,8 @@ public without sharing class IPS_EventSMSService {
                         workTrail.ips_Participant__c,
                         event.Id,
                         workTrail.IPS_Partticipant_phone_number__c,
-                        constructReminderMessage(event)
+                        constructReminderMessage(event),
+                        workTrail.Id
                     )
                 );
                 event.IPS_IsReminderSMSSendt__c = true;
@@ -117,7 +119,8 @@ public without sharing class IPS_EventSMSService {
                         workTrail.ips_Participant__c,
                         event.Id,
                         workTrail.IPS_Partticipant_phone_number__c,
-                        construcChangedMessage(event)
+                        construcChangedMessage(event),
+                        workTrail.Id
                     )
                 );
                 event.IPS_IsSendChangeSMS__c = false;
