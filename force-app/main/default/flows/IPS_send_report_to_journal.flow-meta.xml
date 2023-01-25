@@ -4,7 +4,7 @@
         <name>Generate_Document</name>
         <label>Generate Document</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>1334</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -44,7 +44,7 @@
         <name>Generate_Document1</name>
         <label>Generate Document</label>
         <locationX>314</locationX>
-        <locationY>998</locationY>
+        <locationY>1334</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -54,7 +54,19 @@
         <inputParameters>
             <name>documentString</name>
             <value>
-                <elementReference>Get_Necessary_Record_Info.IPS_endReport__c</elementReference>
+                <elementReference>Get_Necessary_Record_Info.IPS_intervallReport__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>navIdent</name>
+            <value>
+                <elementReference>varUserNavIdent</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>referenceId</name>
+            <value>
+                <elementReference>getWorkTrailParticipantsInfo.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -63,17 +75,14 @@
                 <stringValue>GENERATE_DOCUMENT</stringValue>
             </value>
         </inputParameters>
-        <outputParameters>
-            <assignToReference>PDF_DOCUMENT</assignToReference>
-            <name>documentString</name>
-        </outputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
         <description>Calls journal utils to perform the API post action</description>
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
         <locationX>314</locationX>
-        <locationY>1694</locationY>
+        <locationY>2030</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -102,11 +111,43 @@
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>addEndAssignment</name>
+        <label>addEndAssignment</label>
+        <locationX>314</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>varEnd</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>DisplayScrren</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addIntervallAssignment</name>
+        <label>addIntervallAssignment</label>
+        <locationX>50</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>varIntervall</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>DisplayScrren</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Add document variants to document list and assign document title</description>
         <name>Assign_Journal_Documents</name>
         <label>Assign Journal Documents</label>
         <locationX>50</locationX>
-        <locationY>1238</locationY>
+        <locationY>1574</locationY>
         <assignmentItems>
             <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
             <operator>Add</operator>
@@ -130,7 +171,7 @@
         <name>Assign_Journal_Documents1</name>
         <label>Assign Journal Documents</label>
         <locationX>314</locationX>
-        <locationY>1238</locationY>
+        <locationY>1574</locationY>
         <assignmentItems>
             <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
             <operator>Add</operator>
@@ -153,7 +194,7 @@
         <name>Assign_Journal_Entry_Default_data</name>
         <label>Assign Journal Entry Default data</label>
         <locationX>314</locationX>
-        <locationY>2270</locationY>
+        <locationY>2606</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.CRM_Created_By_Ident__c</assignToReference>
             <operator>Assign</operator>
@@ -191,7 +232,7 @@
         <name>Document_Variant_Assignment</name>
         <label>Document Variant Assignment</label>
         <locationX>50</locationX>
-        <locationY>1118</locationY>
+        <locationY>1454</locationY>
         <assignmentItems>
             <assignToReference>Document_Variant_PDF.filtype</assignToReference>
             <operator>Assign</operator>
@@ -222,7 +263,7 @@
         <name>Document_Variant_Assignment1</name>
         <label>Document Variant Assignment</label>
         <locationX>314</locationX>
-        <locationY>1118</locationY>
+        <locationY>1454</locationY>
         <assignmentItems>
             <assignToReference>Document_Variant_PDF.filtype</assignToReference>
             <operator>Assign</operator>
@@ -253,7 +294,7 @@
         <name>Journal_Request_Assignment</name>
         <label>Journal Request Assignment</label>
         <locationX>50</locationX>
-        <locationY>1478</locationY>
+        <locationY>1814</locationY>
         <assignmentItems>
             <assignToReference>Journal_Request.tittel</assignToReference>
             <operator>Assign</operator>
@@ -354,7 +395,7 @@
         <name>Journal_Request_Assignment1</name>
         <label>Journal Request Assignment</label>
         <locationX>314</locationX>
-        <locationY>1478</locationY>
+        <locationY>1814</locationY>
         <assignmentItems>
             <assignToReference>Journal_Request.tittel</assignToReference>
             <operator>Assign</operator>
@@ -455,7 +496,7 @@
         <name>Journal_Sak_Assignment</name>
         <label>Journal Sak Assignment</label>
         <locationX>50</locationX>
-        <locationY>1358</locationY>
+        <locationY>1694</locationY>
         <assignmentItems>
             <assignToReference>Journal_Sak.fagsakId</assignToReference>
             <operator>Assign</operator>
@@ -479,7 +520,7 @@
         <name>Journal_Sak_Assignment1</name>
         <label>Journal Sak Assignment</label>
         <locationX>314</locationX>
-        <locationY>1358</locationY>
+        <locationY>1694</locationY>
         <assignmentItems>
             <assignToReference>Journal_Sak.fagsakId</assignToReference>
             <operator>Assign</operator>
@@ -502,7 +543,7 @@
         <name>Set_Post_Completed</name>
         <label>Set Post Completed</label>
         <locationX>182</locationX>
-        <locationY>1934</locationY>
+        <locationY>2270</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -525,7 +566,7 @@
         <name>Set_Post_Failed</name>
         <label>Set Post Failed</label>
         <locationX>446</locationX>
-        <locationY>1934</locationY>
+        <locationY>2270</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -541,7 +582,7 @@
         <name>setJournalCaseId</name>
         <label>setJournalCaseId</label>
         <locationX>50</locationX>
-        <locationY>878</locationY>
+        <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>Journal_Case_ID</assignToReference>
             <operator>Assign</operator>
@@ -557,7 +598,7 @@
         <name>setJournalCaseId1</name>
         <label>setJournalCaseId</label>
         <locationX>314</locationX>
-        <locationY>878</locationY>
+        <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>Journal_Case_ID</assignToReference>
             <operator>Assign</operator>
@@ -573,7 +614,7 @@
         <name>setTypeEndReport</name>
         <label>setTypeEndReport</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>1094</locationY>
         <assignmentItems>
             <assignToReference>varReportType</assignToReference>
             <operator>Assign</operator>
@@ -589,7 +630,7 @@
         <name>setTypeIntervall</name>
         <label>setTypeIntervall</label>
         <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationY>1094</locationY>
         <assignmentItems>
             <assignToReference>varReportType</assignToReference>
             <operator>Assign</operator>
@@ -615,7 +656,7 @@
         <name>Check_Post_State</name>
         <label>Check Post State</label>
         <locationX>314</locationX>
-        <locationY>1814</locationY>
+        <locationY>2150</locationY>
         <defaultConnector>
             <targetReference>Set_Post_Failed</targetReference>
         </defaultConnector>
@@ -640,14 +681,14 @@
         <name>checkReportType</name>
         <label>checkReportType</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>974</locationY>
         <defaultConnectorLabel>Nothing</defaultConnectorLabel>
         <rules>
             <name>isEndReport</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Endreport</leftValueReference>
-                <operator>WasSelected</operator>
+                <leftValueReference>varEnd</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
@@ -661,8 +702,8 @@
             <name>isIntervallReport</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Intervallreport</leftValueReference>
-                <operator>WasSelected</operator>
+                <leftValueReference>varIntervall</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
@@ -671,6 +712,43 @@
                 <targetReference>setTypeIntervall</targetReference>
             </connector>
             <label>isIntervallReport</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkTypeOfReport</name>
+        <label>checkTypeOfReport</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
+        <defaultConnectorLabel>None</defaultConnectorLabel>
+        <rules>
+            <name>isIntervall</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Necessary_Record_Info.IPS_report_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intervall</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addIntervallAssignment</targetReference>
+            </connector>
+            <label>isIntervall</label>
+        </rules>
+        <rules>
+            <name>isEnd</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Necessary_Record_Info.IPS_report_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>End report</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addEndAssignment</targetReference>
+            </connector>
+            <label>isEnd</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -718,7 +796,7 @@
         <name>Create_Journal_Entry</name>
         <label>Create Journal Entry</label>
         <locationX>314</locationX>
-        <locationY>2390</locationY>
+        <locationY>2726</locationY>
         <inputReference>Journal_Entry_SF</inputReference>
     </recordCreates>
     <recordLookups>
@@ -726,7 +804,7 @@
         <name>Get_Account_Info</name>
         <label>Get Account Info</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>854</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkReportType</targetReference>
@@ -748,10 +826,10 @@
         <name>Get_Necessary_Record_Info</name>
         <label>Get Necessary Record Info</label>
         <locationX>314</locationX>
-        <locationY>278</locationY>
+        <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getWorkTrailParticipantsInfo</targetReference>
+            <targetReference>checkTypeOfReport</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -769,7 +847,7 @@
         <name>Get_SF_Theme_Common_Code</name>
         <label>Get SF Theme Common Code</label>
         <locationX>314</locationX>
-        <locationY>2150</locationY>
+        <locationY>2486</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Journal_Entry_Default_data</targetReference>
@@ -798,7 +876,7 @@
         <name>getWorkTrailParticipantsInfo</name>
         <label>getWorkTrailParticipantsInfo</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>734</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Account_Info</targetReference>
@@ -815,7 +893,6 @@
         <object>Work_Trail__c</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>ips_Participant__c</queriedFields>
-        <queriedFields>IPS_Personnummer__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
@@ -823,21 +900,47 @@
         <name>DisplayScrren</name>
         <label>DisplayScrren</label>
         <locationX>314</locationX>
-        <locationY>158</locationY>
+        <locationY>614</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Get_Necessary_Record_Info</targetReference>
+            <targetReference>getWorkTrailParticipantsInfo</targetReference>
         </connector>
         <fields>
-            <name>scArchiveChoices</name>
-            <choiceReferences>Endreport</choiceReferences>
-            <choiceReferences>Intervallreport</choiceReferences>
+            <name>DisplayTxt1</name>
+            <fieldText>&lt;p&gt;Du har valgt å arkivere en underveisrapport.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>varIntervall</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>DisplayTxt2</name>
             <dataType>String</dataType>
-            <fieldText>Velg type rapport som skal arkiveres</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>true</isRequired>
+            <defaultValue>
+                <stringValue>Du har valgt å arkivere en sluttrapport/sluttnotat</stringValue>
+            </defaultValue>
+            <fieldText>DisplayTxt2</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>isEnd</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>text</name>
@@ -851,7 +954,7 @@
         <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>DisplayScrren</targetReference>
+            <targetReference>Get_Necessary_Record_Info</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -946,6 +1049,26 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varEnd</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varIntervall</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>varReportType</name>
