@@ -107,7 +107,22 @@
                 <stringValue>POST_JOURNAL</stringValue>
             </value>
         </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputParameters>
+            <assignToReference>varErrorMessage</assignToReference>
+            <name>errorMessage</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varJournalId</assignToReference>
+            <name>journalpostId</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varJournalPostStatus</assignToReference>
+            <name>journalPostStatus</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>bolSuccess</assignToReference>
+            <name>success</name>
+        </outputParameters>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
@@ -193,8 +208,8 @@
     <assignments>
         <name>Assign_Journal_Entry_Default_data</name>
         <label>Assign Journal Entry Default data</label>
-        <locationX>314</locationX>
-        <locationY>2606</locationY>
+        <locationX>182</locationX>
+        <locationY>2510</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.CRM_Created_By_Ident__c</assignToReference>
             <operator>Assign</operator>
@@ -555,7 +570,7 @@
             <assignToReference>Journal_Entry_SF.Journal_Entry_ID__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Post_Journal_Request.journalpostId</elementReference>
+                <elementReference>varJournalId</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -574,9 +589,6 @@
                 <stringValue>Failed</stringValue>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Get_SF_Theme_Common_Code</targetReference>
-        </connector>
     </assignments>
     <assignments>
         <name>setJournalCaseId</name>
@@ -665,7 +677,7 @@
             <name>Success</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Post_Journal_Request.success</leftValueReference>
+                <leftValueReference>bolSuccess</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -795,8 +807,11 @@
         <description>Inserts a journal entry record. If post failed the entry status is set to failed and should be handled in asynchronous retry</description>
         <name>Create_Journal_Entry</name>
         <label>Create Journal Entry</label>
-        <locationX>314</locationX>
-        <locationY>2726</locationY>
+        <locationX>182</locationX>
+        <locationY>2630</locationY>
+        <connector>
+            <targetReference>UpdateReport</targetReference>
+        </connector>
         <inputReference>Journal_Entry_SF</inputReference>
     </recordCreates>
     <recordLookups>
@@ -846,8 +861,8 @@
     <recordLookups>
         <name>Get_SF_Theme_Common_Code</name>
         <label>Get SF Theme Common Code</label>
-        <locationX>314</locationX>
-        <locationY>2486</locationY>
+        <locationX>182</locationX>
+        <locationY>2390</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Journal_Entry_Default_data</targetReference>
@@ -895,6 +910,33 @@
         <queriedFields>ips_Participant__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>UpdateReport</name>
+        <label>UpdateReport</label>
+        <locationX>182</locationX>
+        <locationY>2750</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>IPS_status__c</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_journalId__c</field>
+            <value>
+                <elementReference>varJournalId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ips_report__c</object>
+    </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>DisplayScrren</name>
@@ -958,6 +1000,16 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>bolSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
     <variables>
         <description>Document variant wrapper for journal request</description>
         <name>Document_Variant_PDF</name>
@@ -1061,6 +1113,13 @@
         </value>
     </variables>
     <variables>
+        <name>varErrorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varIntervall</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
@@ -1071,7 +1130,28 @@
         </value>
     </variables>
     <variables>
+        <name>varJournalId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varJournalPostStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varReportType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varSuccess</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
