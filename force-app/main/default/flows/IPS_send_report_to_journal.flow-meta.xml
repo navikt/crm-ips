@@ -4,7 +4,7 @@
         <name>Generate_Document</name>
         <label>Generate Document</label>
         <locationX>50</locationX>
-        <locationY>1334</locationY>
+        <locationY>1214</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -15,18 +15,6 @@
             <name>documentString</name>
             <value>
                 <elementReference>Get_Necessary_Record_Info.IPS_endReport__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>navIdent</name>
-            <value>
-                <elementReference>varUserNavIdent</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>referenceId</name>
-            <value>
-                <elementReference>getWorkTrailParticipantsInfo.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -44,11 +32,11 @@
         <name>Generate_Document1</name>
         <label>Generate Document</label>
         <locationX>314</locationX>
-        <locationY>1334</locationY>
+        <locationY>1214</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Document_Variant_Assignment1</targetReference>
+            <targetReference>Document_Variant_Assignment</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -58,31 +46,22 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>navIdent</name>
-            <value>
-                <elementReference>varUserNavIdent</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>referenceId</name>
-            <value>
-                <elementReference>getWorkTrailParticipantsInfo.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>requestType</name>
             <value>
                 <stringValue>GENERATE_DOCUMENT</stringValue>
             </value>
         </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputParameters>
+            <assignToReference>PDF_DOCUMENT</assignToReference>
+            <name>documentString</name>
+        </outputParameters>
     </actionCalls>
     <actionCalls>
         <description>Calls journal utils to perform the API post action</description>
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
         <locationX>314</locationX>
-        <locationY>2030</locationY>
+        <locationY>1790</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -93,6 +72,12 @@
             <name>journalRequest</name>
             <value>
                 <elementReference>Journal_Request</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>navIdent</name>
+            <value>
+                <elementReference>$User.CRM_NAV_Ident__c</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -161,32 +146,8 @@
         <description>Add document variants to document list and assign document title</description>
         <name>Assign_Journal_Documents</name>
         <label>Assign Journal Documents</label>
-        <locationX>50</locationX>
-        <locationY>1574</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Document_Variant_PDF</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Documents.tittel</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Sluttrapport</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Journal_Sak_Assignment</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Add document variants to document list and assign document title</description>
-        <name>Assign_Journal_Documents1</name>
-        <label>Assign Journal Documents</label>
         <locationX>314</locationX>
-        <locationY>1574</locationY>
+        <locationY>1550</locationY>
         <assignmentItems>
             <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
             <operator>Add</operator>
@@ -198,32 +159,18 @@
             <assignToReference>Journal_Documents.tittel</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Underveisrapport</stringValue>
+                <elementReference>varDocumentTitle</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Journal_Sak_Assignment1</targetReference>
+            <targetReference>Journal_Request_Assignment</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Assign_Journal_Entry_Default_data</name>
         <label>Assign Journal Entry Default data</label>
         <locationX>182</locationX>
-        <locationY>2510</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.CRM_Created_By_Ident__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Entry_Unit</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.NAV_Case_Reference__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Case_ID</elementReference>
-            </value>
-        </assignmentItems>
+        <locationY>2150</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.CRM_Journal_Date__c</assignToReference>
             <operator>Assign</operator>
@@ -231,23 +178,16 @@
                 <elementReference>$Flow.CurrentDateTime</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.Theme__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Get_SF_Theme_Common_Code.Id</elementReference>
-            </value>
-        </assignmentItems>
         <connector>
-            <targetReference>Create_Journal_Entry</targetReference>
+            <targetReference>Update_Journal_Entry</targetReference>
         </connector>
     </assignments>
     <assignments>
         <description>Assigns needed values to document variant wrapper</description>
         <name>Document_Variant_Assignment</name>
         <label>Document Variant Assignment</label>
-        <locationX>50</locationX>
-        <locationY>1454</locationY>
+        <locationX>314</locationX>
+        <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>Document_Variant_PDF.filtype</assignToReference>
             <operator>Assign</operator>
@@ -274,54 +214,23 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Assigns needed values to document variant wrapper</description>
-        <name>Document_Variant_Assignment1</name>
-        <label>Document Variant Assignment</label>
-        <locationX>314</locationX>
-        <locationY>1454</locationY>
-        <assignmentItems>
-            <assignToReference>Document_Variant_PDF.filtype</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>PDF</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Document_Variant_PDF.fysiskDokument</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>PDF_DOCUMENT</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Document_Variant_PDF.variantformat</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>ARKIV</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Assign_Journal_Documents1</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <description>Assigns needed values to the journal requests and adds the document list.</description>
         <name>Journal_Request_Assignment</name>
         <label>Journal Request Assignment</label>
-        <locationX>50</locationX>
-        <locationY>1814</locationY>
+        <locationX>314</locationX>
+        <locationY>1670</locationY>
         <assignmentItems>
             <assignToReference>Journal_Request.tittel</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Sluttrapport</stringValue>
+                <elementReference>varDocumentTitle</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Journal_Request.kanal</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>ARCHIVE CHANNEL</stringValue>
+                <stringValue>NAV_NO</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -349,14 +258,14 @@
             <assignToReference>Journal_Request.journalfoerendeEnhet</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Journal_Entry_Unit</elementReference>
+                <elementReference>$User.Department</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Journal_Request.bruker.idType</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Account_Info.INT_fnr__c</elementReference>
+                <stringValue>FNR</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -370,14 +279,14 @@
             <assignToReference>Journal_Request.avsenderMottaker.idType</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Account_Info.INT_fnr__c</elementReference>
+                <stringValue>FNR</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Journal_Request.avsenderMottaker.id</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>getWorkTrailParticipantsInfo.ips_Participant__c</elementReference>
+                <elementReference>Get_Account_Info.INT_PersonIdent__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -403,162 +312,13 @@
         </assignmentItems>
         <connector>
             <targetReference>Post_Journal_Request</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Assigns needed values to the journal requests and adds the document list.</description>
-        <name>Journal_Request_Assignment1</name>
-        <label>Journal Request Assignment</label>
-        <locationX>314</locationX>
-        <locationY>1814</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Request.tittel</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Underveisrapport</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.kanal</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>ARCHIVE CHANNEL</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.sak</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Sak</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.journalpostType</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>INNGAAENDE</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.dokumenter</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Journal_Documents</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.journalfoerendeEnhet</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Entry_Unit</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.bruker.idType</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Get_Account_Info.INT_fnr__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.bruker.id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Get_Account_Info.INT_PersonIdent__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.avsenderMottaker.idType</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Get_Account_Info.INT_fnr__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.avsenderMottaker.id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>getWorkTrailParticipantsInfo.ips_Participant__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.avsenderMottaker.navn</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Person_Full_Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.tema</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Theme_Code</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.behandlingstema</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Subtheme_Code</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Post_Journal_Request</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Assigns necessary values to the Sak wrapper for journal entry.</description>
-        <name>Journal_Sak_Assignment</name>
-        <label>Journal Sak Assignment</label>
-        <locationX>50</locationX>
-        <locationY>1694</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Sak.fagsakId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Case_ID</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Sak.sakstype</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Case_Type</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Journal_Request_Assignment</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Assigns necessary values to the Sak wrapper for journal entry.</description>
-        <name>Journal_Sak_Assignment1</name>
-        <label>Journal Sak Assignment</label>
-        <locationX>314</locationX>
-        <locationY>1694</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Sak.fagsakId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Case_ID</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Sak.sakstype</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Case_Type</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Journal_Request_Assignment1</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Post_Completed</name>
         <label>Set Post Completed</label>
         <locationX>182</locationX>
-        <locationY>2270</locationY>
+        <locationY>2030</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -574,14 +334,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_SF_Theme_Common_Code</targetReference>
+            <targetReference>Assign_Journal_Entry_Default_data</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Post_Failed</name>
         <label>Set Post Failed</label>
         <locationX>446</locationX>
-        <locationY>2270</locationY>
+        <locationY>2030</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -589,38 +349,6 @@
                 <stringValue>Failed</stringValue>
             </value>
         </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>setJournalCaseId</name>
-        <label>setJournalCaseId</label>
-        <locationX>50</locationX>
-        <locationY>1214</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Case_ID</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Generate_Document</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>setJournalCaseId1</name>
-        <label>setJournalCaseId</label>
-        <locationX>314</locationX>
-        <locationY>1214</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Case_ID</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Generate_Document1</targetReference>
-        </connector>
     </assignments>
     <assignments>
         <name>setTypeEndReport</name>
@@ -635,7 +363,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>setJournalCaseId</targetReference>
+            <targetReference>Generate_Document</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -651,7 +379,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>setJournalCaseId1</targetReference>
+            <targetReference>Generate_Document1</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -668,7 +396,7 @@
         <name>Check_Post_State</name>
         <label>Check Post State</label>
         <locationX>314</locationX>
-        <locationY>2150</locationY>
+        <locationY>1910</locationY>
         <defaultConnector>
             <targetReference>Set_Post_Failed</targetReference>
         </defaultConnector>
@@ -777,6 +505,15 @@
         <expression>{!Get_Account_Info.CRM_Person__r.INT_LastName__c} &amp; &apos;, &apos; &amp; {!Get_Account_Info.CRM_Person__r.INT_FirstName__c} &amp; &apos; &apos; &amp;{!Get_Account_Info.CRM_Person__r.INT_MiddleName__c}</expression>
     </formulas>
     <formulas>
+        <name>varDocumentTitle</name>
+        <dataType>String</dataType>
+        <expression>IF({!varEnd}==true,
+&apos;Sluttrapport jobbsporet - &apos;+{!getWorkTrailParticipantsInfo.ips_Participant__r.INT_PersonIdent__c},
+IF({!varIntervall}==true,
+&apos;Underveisrapport jobbsporet - &apos;+{!getWorkTrailParticipantsInfo.ips_Participant__r.INT_PersonIdent__c},&apos; &apos;)
+)</expression>
+    </formulas>
+    <formulas>
         <name>varUserNavIdent</name>
         <dataType>String</dataType>
         <expression>{!$User.CRM_NAV_Ident__c}</expression>
@@ -803,17 +540,6 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <recordCreates>
-        <description>Inserts a journal entry record. If post failed the entry status is set to failed and should be handled in asynchronous retry</description>
-        <name>Create_Journal_Entry</name>
-        <label>Create Journal Entry</label>
-        <locationX>182</locationX>
-        <locationY>2630</locationY>
-        <connector>
-            <targetReference>UpdateReport</targetReference>
-        </connector>
-        <inputReference>Journal_Entry_SF</inputReference>
-    </recordCreates>
     <recordLookups>
         <description>Get necessary account information to post a journal entry</description>
         <name>Get_Account_Info</name>
@@ -859,35 +585,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_SF_Theme_Common_Code</name>
-        <label>Get SF Theme Common Code</label>
-        <locationX>182</locationX>
-        <locationY>2390</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Assign_Journal_Entry_Default_data</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>CRM_Code__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Journal_Theme_Code</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>CRM_Code_Set__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Tema</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Common_Code__c</object>
-        <queriedFields>Id</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>getWorkTrailParticipantsInfo</name>
         <label>getWorkTrailParticipantsInfo</label>
         <locationX>314</locationX>
@@ -911,10 +608,20 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_Journal_Entry</name>
+        <label>Update Journal Entry</label>
+        <locationX>182</locationX>
+        <locationY>2270</locationY>
+        <connector>
+            <targetReference>UpdateReport</targetReference>
+        </connector>
+        <inputReference>Journal_Entry_SF</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>UpdateReport</name>
         <label>UpdateReport</label>
         <locationX>182</locationX>
-        <locationY>2750</locationY>
+        <locationY>2390</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -965,18 +672,13 @@
             </visibilityRule>
         </fields>
         <fields>
-            <name>DisplayTxt2</name>
-            <dataType>String</dataType>
-            <defaultValue>
-                <stringValue>Du har valgt å arkivere en sluttrapport/sluttnotat</stringValue>
-            </defaultValue>
-            <fieldText>DisplayTxt2</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <name>DisplayTxt3</name>
+            <fieldText>&lt;p&gt;Du har valgt å arkivere en sluttrapport/sluttnotat&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>isEnd</leftValueReference>
+                    <leftValueReference>varEnd</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <booleanValue>true</booleanValue>
