@@ -1,4 +1,4 @@
-public without sharing class IPS_myActivityController {
+public with sharing class IPS_myActivityController {
     
     /* All open goals that is connected with worktrail */
     @AuraEnabled(cacheable = true)    
@@ -76,9 +76,11 @@ public without sharing class IPS_myActivityController {
                 id,
                 ActivityDate,
                 Subject,
+                IPS_subjectAndDate__c,
                 Type_of_Task_IPSUO__c,
                 Description,
                 Samtalereferat__c,
+                RelatedToAccount__r.name,
                 Status
             FROM Task 
             WHERE WhatId = :workTrailId 
@@ -102,8 +104,10 @@ public without sharing class IPS_myActivityController {
                 ActivityDate,
                 ips_Due_Date_Time__c,
                 Subject,
+                IPS_subjectAndDate__c,
                 Type_of_Task_IPSUO__c,
                 Description,
+                RelatedToAccount__r.name,
                 Status
             FROM Task 
             WHERE Id =:recId
@@ -120,11 +124,14 @@ public without sharing class IPS_myActivityController {
         emplActivity =[
             SELECT 
                 id,
-                Subject, 
-                ActivityDate, 
-                EndDateTime, 
-                StartDateTime, 
+                Subject,
+                IPS_subjectAndDate__c, 
+                ActivityDate,
+                ActivityDateTime,
+                IPS_timeFrom__c,
+                IPS_timeTo__c,
                 Description,
+                IPS_employerName__c,
                 IPS_Type__c,
                 toLabel(IPS_Status1__c) 
             FROM event 
@@ -144,9 +151,23 @@ public without sharing class IPS_myActivityController {
         Date todaysDate = System.today();
         List<Event> userActivity = new List<Event>();
         userActivity =[
-            SELECT id,Subject, ActivityDate, EndDateTime, StartDateTime, Description,IPS_Type__c,toLabel(IPS_Status1__c )
+            SELECT 
+                id,
+                Subject, 
+                IPS_subjectAndDate__c,
+                ActivityDate,
+                ActivityDateTime,
+                IPS_timeFrom__c,
+                IPS_timeTo__c,
+                Description,
+                IPS_Type__c,
+                toLabel(IPS_Status1__c )
             FROM event 
-            WHERE ActivityDate >=: todaysDate AND WhatId = :workTrailId AND IsVisibleInSelfService__c =true AND IPS_Type__c ='Meeting with Participant'
+            WHERE 
+                ActivityDate >=: todaysDate 
+                AND WhatId = :workTrailId 
+                AND IsVisibleInSelfService__c =true 
+                AND IPS_Type__c ='Meeting with Participant'
             ORDER BY ActivityDate DESC
         ];
         return userActivity;
@@ -160,9 +181,11 @@ public without sharing class IPS_myActivityController {
             SELECT 
                 id,
                 Subject, 
-                ActivityDate, 
-                EndDateTime, 
-                StartDateTime, 
+                IPS_subjectAndDate__c,
+                ActivityDate,
+                ActivityDateTime,
+                IPS_timeFrom__c,
+                IPS_timeTo__c, 
                 Description,
                 IPS_Type__c,
                 IPS_Status1__c
@@ -181,11 +204,12 @@ public without sharing class IPS_myActivityController {
         userMeeting =[
             SELECT 
                 id,
-                Subject, 
+                Subject,
+                IPS_subjectAndDate__c, 
                 ActivityDate,
-                EndDate, 
-                EndDateTime, 
-                StartDateTime, 
+                ActivityDateTime,
+                IPS_timeFrom__c,
+                IPS_timeTo__c,
                 Description,
                 IPS_Type__c,
                 IPS_Status1__c

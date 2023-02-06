@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_subjectAndDate__c</fullName>
+    <description>Concat fields of day and subject.</description>
+    <externalId>false</externalId>
+    <formula>CASE(
+WEEKDAY(ActivityDate ),
+1,&quot;Søndag&quot;,
+2,&quot;Mandag&quot;,
+3,&quot;Tirsdag&quot;,
+4,&quot;Onsdag&quot;,
+5,&quot;Torsdag&quot;,
+6,&quot;Fredag&quot;,
+7,&quot;Lørdag&quot;,
+&quot;Ingen&quot;
+)+&apos; &apos;+
+
+CASE(IPS_Type__c, 
+&apos;Meeting with Participant&apos;, 
+TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;+TEXT(YEAR(ActivityDate ))+&apos; - &apos;+ Subject, 
+&apos;Meeting with Employer&apos;,  
+TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;+TEXT(YEAR(ActivityDate ))+&apos; - &apos;+ Subject,
+&apos;First Meeting with Employer&apos;, 
+TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;+TEXT(YEAR(ActivityDate ))+&apos; - &apos;+ Subject,
+&apos;Start up meeting&apos;,
+TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;+TEXT(YEAR(ActivityDate ))+&apos; - &apos;+ Subject,
+null
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>IPS_subjectAndDate</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
