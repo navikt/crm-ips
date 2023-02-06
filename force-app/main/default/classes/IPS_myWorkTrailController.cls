@@ -29,7 +29,11 @@ public with sharing class IPS_myWorkTrailController {
                 id,
                 Name,
                 ips_Work_Trail__c,
+                ips_Contact_at_the_Education_Institution__c,
                 ips_Name_of_the_Education_Institution__c,
+                ips_Start_Date__c,
+                ips_End_Date__c,
+                ips_Education_Support_Plan__c,
                 toLabel(ips_Form_of_Education__c),
                 toLabel(ips_Status__c)
                 FROM ips_Education__c
