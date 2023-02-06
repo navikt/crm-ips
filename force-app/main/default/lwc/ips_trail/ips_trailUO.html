@@ -1,21 +1,17 @@
 <template>
     <div if:true={record}>
         <!-- First section -->
-        <div class="title container">
-            <lightning-icon size="large" theme="warning" icon-name="utility:warning"></lightning-icon>
-            <h2 tabindex="0">Siden er under konstruksjon. Kan oppleve ustabilitet og linker som ikke fungerer optimalt.</h2>
-        </div>
-        <div class="container skjema-max-width">
+        <div class="container container-col-main skjema-max-width">
             <form class="form-control">
-                <h2 tabindex="0" class="main-title">Ditt jobbspor</h2>
+                <h1 tabindex="0">Ditt jobbspor</h1>
                 <p tabindex="0">I ditt jobbspor kan du se og lese om ditt samarbeid med jobbspesialisten din i NAV. Her vil du se de målene som du og jobbspesialisten samarbeider om, samt møter du har hatt eller skal ha sammen med jobbspesialisten. Du kan også se  personopplysningene som jobbspesialisten har lagt inn</p>
                 
                 <label tabindex="0">Din jobbspesialist</label>
-                <p tabindex="0"></p>
+                <p tabindex="0">{ownerName}</p>
             </form>
         </div>
         <!-- Second section -->
-        <div class="container skjema-max-width">
+        <div class="container container-col-main skjema-max-width">
             <h3 tabindex="0" class="title">    
                 <img class="illustrasjon"
                     src={myPlanImg}
@@ -27,144 +23,212 @@
             <form tabindex="0" class="form-control">
                 <label tabindex="0">Ditt hovedmål</label>
                 <p tabindex="0">{mainGoal}</p>
-                <!-- Section with user goal -->
+
                 <template if:true={isGoal}>
-                    <c-collapsable-section id="41" label="Dine delmål" aria-label="Dine delmål">
+                    <div class="container container-col-light skjema-max-width">
+                    <form class="form-control">
+                        <h2 tabindex="0">Dine delmål</h2>
                         <p tabindex="0">Her er delmålene som du og jobbspesialisten din samarbeider om nå.</p>
-                        <form class="form-control container-light">
-                            <table>
-                                <tr>
-                                    <th tabindex="0"><label>Frist</label></th>
-                                    <th tabindex="0"><label>Delmål</label></th>
-                                    <th></th>
-                                </tr>
-                                <template for:each={participantGoalRecord} for:item="goal">
-                                    <tr tabindex="0" key={goal.id}>
-                                        <td tabindex="0"><p>{goal.ActivityDate}</p></td>
-                                        <td tabindex="0"><p>{goal.Subject}</p></td>
-                                    </tr>
-                                </template> 
-                            </table>
-                        </form>
-                    </c-collapsable-section>
-                </template>
-                <template if:true={isMeeting}>
-                    <c-collapsable-section id="45" label="Dine planlagte møter" aria-label="Dine planlagte møter"> 
-                    <template if:true={isActivity}>
-                        <p>Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover.</p>
-                        <form class="form-control container-light">
-                            <table>
-                                <tr>
-                                    <th><label>Dato</label></th>
-                                    <th><label>Emne</label></th>
-                                    <th></th>
-                                </tr>
-                                <template for:each={activityPartRecord} for:item="part">
-                                <tr key={part.id}>
-                                    <td tabindex="0"><p>{part.ActivityDate}</p></td>
-                                    <td tabindex="0"><p>{part.Subject}</p></td>
-                                </tr>
-                                </template>
-                            </table>
-                        </form>
-                    </template>
-                    <template if:true={isEmployer}>
-                        <p>Her er møtene som er planlagt mellom deg og arbeidsgiver fremover.</p>
-                        <form class="form-control container">
-                            <table>
-                                <tr>
-                                    <th><label>Dato</label></th>
-                                    <th><label>Emne</label></th>
-                                    <th></th>
-                                </tr>
-                                <template for:each={activityEmplRecord} for:item="emp">
-                                <tr key={emp.id}>
-                                    <td tabindex="0"><p>{emp.ActivityDate}</p></td>
-                                    <td tabindex="0"><p>{emp.Subject}</p></td>
-                                    <td tabindex="0">
-                                        <c-button
-                                            button-label="Gå til detaljer"
-                                            value="arbeidsgiver"
-                                            button-styling="Tertiary">
-                                        </c-button>
-                                    </td>
-                                </tr>
-                                </template>
-                            </table>
-                        </form>
+                        <template for:each={participantGoalRecord} for:item="goal" >
+                            <c-readmore key={goal.Id} label={goal.Subject} >                                
+                                <label tabindex="0">Frist</label>
+                                <p tabindex="0">
+                                    <lightning-formatted-date-time 
+                                            value={goal.ActivityDate} 
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit"
+                                            weekday="long">
+                                    </lightning-formatted-date-time>
+                                </p>
+                                <label tabindex="0">Beskrivelse av delmålet</label>
+                                <p tabindex="0">{goal.Description}</p>
+                            </c-readmore>
                         </template>
-                    </c-collapsable-section>
-                </template> 
-                <template if:true={isEducation}>
-                    <c-collapsable-section id="42" label="Dine utdanninger/kurs" aria-label="Dine utdanninger/kurs">
-                        <p tabindex="0">Viser den aktive utdanningen/kurset du er i nå.</p>
-                        <form class="form-control container-light">
-                        <table>
-                            <tr>
-                                <th tabindex="0"><label>Utdanning</label></th>
-                                <th tabindex="0"><label>Fra dato</label></th>
-                                <th tabindex="0"><label>Til dato</label></th>
-                                <th></th>
-                            </tr>
-                            <template for:each={educationRecord} for:item="edu">
-                                <tr key={edu.id}>
-                                    <td tabindex="0"><p>{edu.Name}</p></td>
-                                    <td tabindex="0"><p>{edu.ips_Start_Date__c}</p></td>
-                                    <td tabindex="0"><p>{edu.ips_End_Date__c}</p></td>
-                                </tr>
-                            </template>
-                        </table>
                     </form>
-                    </c-collapsable-section>
+                    </div>
                 </template>
-                <template if:true={isJob}>
-                    <c-collapsable-section id="43" label="Dine jobber" aria-label="Dine jobber">
-                        <p tabindex="0"></p>
-                        <form class="form-control container-light">
-                        <table>
-                            <tr>
-                                <th tabindex="0"><label>Jobb</label></th>
-                                <th tabindex="0"><label>Fra dato</label></th>
-                                <th tabindex="0"><label>Til dato</label></th>
-                                <th></th>
-                            </tr>
-                            <template for:each={jobsRecord} for:item="job">
-                                <tr tabindex="0" key={job.id}>
-                                    <td tabindex="0"><p>{job.Name}</p></td>
-                                    <td tabindex="0"><p>{job.ips_Start_Date__c}</p></td>
-                                    <td tabindex="0"><p>{job.ips_End_Date__c}</p></td>
-                                </tr>
+
+                <template if:true={isMeeting}>
+                    <div class="container container-col-light skjema-max-width">
+                        <form class="form-control">
+                            <h2 tabindex="0">Dine planlagte møter</h2>
+                            <p tabindex="0">Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover.</p>
+                            <template if:true={isActivity} for:each={activityPartRecord} for:item="part">
+                                <c-readmore key={part.Id} label={part.IPS_subjectAndDate__c} >                                
+                                    <label>Tid fra</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={part.IPS_timeFrom__c} 
+                                            hour="2-digit" 
+                                            minute="2-digit" 
+                                            hour12={isTwelveHours} 
+                                            time-zone="UTC">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Tid til</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={part.IPS_timeTo__c} 
+                                            hour="2-digit" 
+                                            minute="2-digit" 
+                                            hour12={isTwelveHours} 
+                                            time-zone="UTC">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Agenda</label>
+                                    <p>{part.Description}</p>
+                                </c-readmore>
                             </template>
-                        </table>
-                    </form>
-                    </c-collapsable-section>
-                </template>
-                <template if:true={isTraining}>
-                    <c-collapsable-section id="44" label="Dine arbeidstreninger" aria-label="Dine arbeidstreninger">
-                        <p tabindex="0"></p>
-                        <form class="form-control container-light">
-                            <table>
-                                <tr>
-                                    <th tabindex="0"><label>Arbeidstrening</label></th>
-                                    <th tabindex="0"><label>Fra dato</label></th>
-                                    <th tabindex="0"><label>Til dato</label></th>
-                                    <th></th>
-                                </tr>
-                                <template for:each={trainingRecord} for:item="train">
-                                    <tr tabindex="0" key={train.id}>
-                                        <td tabindex="0"><p>{train.Name}</p></td>
-                                        <td tabindex="0"><p>{train.ips_Start_Date__c}</p></td>
-                                        <td tabindex="0"><p>{train.ips_End_Date__c}</p></td>
-                                    </tr>
-                                </template>
-                            </table>
+                            <template if:true={isEmployer} for:each={activityEmplRecord} for:item="emp">
+                                <c-readmore key={emp.Id} label={emp.IPS_subjectAndDate__c} >                                
+                                    <label>Tid fra</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={emp.IPS_timeFrom__c} 
+                                            hour="2-digit" 
+                                            minute="2-digit" 
+                                            hour12={isTwelveHours}  
+                                            time-zone="UTC">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Tid til</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={emp.IPS_timeTo__c} 
+                                            hour="2-digit" 
+                                            minute="2-digit" 
+                                            hour12={isTwelveHours}  
+                                            time-zone="UTC">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Arbeidsgiver</label>
+                                    <p >{emp.IPS_employerName__c}</p>
+                                    <label>Agenda</label>
+                                    <p>{emp.Description}</p>
+                                </c-readmore>
+                            </template>
                         </form>
-                    </c-collapsable-section>
+                    </div>
+                </template>
+
+                <template if:true={isJob}>
+                    <div class="container container-col-light skjema-max-width">
+                        <form class="form-control">
+                            <h2>Dine jobber</h2>
+                            <p tabindex="0">Viser jobben du er i nå.</p>
+                            <template for:each={jobsRecord} for:item="job">
+                                <c-readmore key={job.Id} label={job.IPS_jobSubject__c}>
+                                    <label>Startdato</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={job.ips_Start_Date__c}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Sluttdato</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={job.ips_End_Date__c}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Antall timer</label>
+                                    <p>{job.ips_Number_of_hours__c}</p>
+                                    <label>Arbeidsform</label>
+                                    <p>{job.ips_Form_of_Employment__c}</p>
+                                    <label>Arbeidsoppgaver</label>
+                                    <p>{IPS_UO_Stillingsbeskrivelse__c}</p>
+                                    <label>Plan for støtte</label>
+                                    <p>{job.ips_Job_Support__c}</p>
+                                </c-readmore>
+                            </template>
+                        </form>
+                    </div>
+                </template>
+
+                <template if:true={isTraining}>
+                    <div class="container container-col-light skjema-max-width">
+                        <form class="form-control">
+                            <h2>Dine arbeidstreninger</h2>
+                            <p tabindex="0">Viser arbeidstreningen du er i nå.</p>
+                            <template for:each={trainingRecord} for:item="train">
+                                <c-readmore key={train.Id} label={train.IPS_jobSubject__c}>                                
+                                    <label>Startdato</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={train.ips_Start_Date__c}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Sluttdato</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={train.ips_End_Date__c}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Antall timer</label>
+                                    <p>{train.ips_Number_of_hours__c}</p>
+                                    <label>Arbeidsoppgaver</label>
+                                    <p>{IPS_UO_Stillingsbeskrivelse__c}</p>
+                                    <label>Plan for støtte</label>
+                                    <p>{train.ips_Job_Support__c}</p>
+                                </c-readmore>
+                            </template>
+                        </form>
+                    </div>
+                </template>
+        
+                <template if:true={isEducation}>
+                    <div class="container container-col-light skjema-max-width">
+                        <form class="form-control">
+                            <h2>Din opplæring</h2>
+                            <p tabindex="0">Viser den aktive opplæringen du er i nå.</p>
+                            <template for:each={educationRecord} for:item="edu">
+                                <c-readmore key={edu.Id} label={edu.Name}>                                
+                                    <label>Navn på utdanningsinstitusjon</label>
+                                    <p>{edu.ips_Name_of_the_Education_Institution__c}</p>
+                                    <label>Startdato</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={edu.ips_Start_Date__c}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Sluttdato</label>
+                                    <p>
+                                        <lightning-formatted-date-time 
+                                            value={edu.ips_End_Date__c}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <label>Studieform</label>
+                                    <p>{edu.ips_Form_of_Education__c}</p>
+                                    <label>Støtte under utdanningen</label>
+                                    <p>{edu.ips_Education_Support_Plan__c}</p>
+                                </c-readmore>
+                            </template>
+                        </form>
+                    </div>
                 </template>
             </form> 
-        </div>         
+        </div> 
+
         <!-- Third section -->
-        <div class="container skjema-max-width">
+        <div class="container container-col-main skjema-max-width">
             <form class="form-control">
                 <h2 tabindex="0" class="title">Din karriereplanlegging</h2>
                 <p tabindex="0">Her finner du yrkesprofilen som du og din jobbspesialist har kommet frem til. Yrkesprofilen inneholder dine tanker og ønsker om jobb, på kort og lang sikt. Eventuelle behov for tilrettelegging på arbeidsplassen er også beskrevet her.</p>
@@ -201,8 +265,9 @@
                         </span>
                     </form>
                 </c-collapsable-section>
+
                 <c-collapsable-section id="14" label="Åpenhet" aria-label="Åpenhet">
-                    <form class="form-control">
+                    <form class="form-control container-col-light">
                         <span>
                             <label tabindex="0">Åpenhet innhentet</label>
                             <p tabindex="0">{transparencyDate}</p>
@@ -221,14 +286,14 @@
                 </c-collapsable-section>
             </form>
         </div>
+
          <!-- Firth section -->
-         <div class="container skjema-max-width">
+         <div class="container container-col-historikk skjema-max-width">
             <h2 tabindex="0" class="title">Historikk</h2>
-            <h2 tabindex="0" class="title">UNDER UTVIKLING</h2>
             <form class="form-control">
                 <p>Her finner du oversikt over dine fullførte delmål, deltakelse i arbeidstrening, jobb eller opplæring som er avsluttet, fullførte møter og referater fra telefonsamtaler du har hatt med jobbspesialisten.</p>
             </form>
-            <div class="container-light">
+            <div class="container-col-light">
                 <c-linkTile
                     link-header="Samtalereferat"
                     navigation-address="ips_my_logs__c"
@@ -236,7 +301,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-light">
+            <div class="container-col-light">
                 <c-linkTile
                     link-header="Fullførte møter"
                     navigation-address="ips_my_meetings__c"
@@ -244,7 +309,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-light">
+            <div class="container-col-light">
                 <c-linkTile
                 link-header="Fullførte delmål"
                 navigation-address="ips_my_goals__c"
@@ -252,7 +317,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-light">
+            <div class="container-col-light">
                 <c-linkTile
                     link-header="Avsluttede jobber"
                     navigation-address="ips_my_jobs__c"
@@ -260,7 +325,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-light">
+            <div class="container-col-light">
                 <c-linkTile
                     link-header="Avsluttede arbeidstreninger"
                     navigation-address="ips_my_worktrainings__c"
@@ -268,7 +333,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-light">
+            <div class="container-col-light">
                 <c-linkTile
                     link-header="Avsluttede opplæringsløp"
                     navigation-address="ips_my_educations__c"
@@ -281,13 +346,11 @@
 
     <div if:false={record} class="container skjema-max-width">
         <form>
-            <!--
             <c-alert-banner 
-                type="Warning"
+                type="Info"
+                size="L"
                 message ="Du må være aktiv deltaker i et av arbeidsmarkedstiltakene IPS eller Utvidet oppfølging for å kunne se denne siden">
             </c-alert-banner>
-            -->
-
         </form>
     </div>
 </template>

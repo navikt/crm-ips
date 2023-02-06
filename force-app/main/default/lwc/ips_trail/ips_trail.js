@@ -55,6 +55,7 @@ import FIELD_FACILITY from '@salesforce/schema/Work_Trail__c.ips_Facilitation_ne
 import FIELD_EARLYSIGNS from '@salesforce/schema/Work_Trail__c.ips_Early_signs_increased_symptompressur__c';
 import FIELD_COPINGSTRATEGY from '@salesforce/schema/Work_Trail__c.ips_What_coping_strategies_are_there__c';
 import FIELD_OWNERID from '@salesforce/schema/Work_Trail__c.OwnerId';
+import FIELD_OWNERNAME from '@salesforce/schema/Work_Trail__c.IPS_ownerName__c';
 
 /* Event/task */
 import getEmployerActivity from '@salesforce/apex/IPS_myActivityController.getEmployerActivity';
@@ -115,7 +116,8 @@ const WORKTRAIL_FIELDS = [
     FIELD_COPINGSTRATEGY,
     FIELD_NETWORKPARTNER,
     FIELD_MAINGOALLIST,
-    FIELD_OWNERID
+    FIELD_OWNERID,
+    FIELD_OWNERNAME
 ];
 
 export default class Ips_trail extends NavigationMixin(LightningElement) {
@@ -124,8 +126,8 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     myActivityImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
     myGoalImg = IPS_HOME_LOGOS + '/TaskFilled.svg';
     myPlanImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
-    currentUser = Id;
-    //currentUser ='0051X00000EABDRQA5' ;
+    //currentUser = Id;
+    currentUser ='0051X00000EABDRQA5' ;
     recordId;
     recordtypename;
     ownerIds;
@@ -135,7 +137,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     @track activityPartRecord;
     @track activityEmplRecord;
     @track participantGoalRecord;
-    @track educationRecord;
+    educationRecord;
     jobsRecord;
     trainingRecord;
     isActivity = false;
@@ -146,6 +148,8 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     isTraining = false;
     isMeeting = false;
     goal;
+    isTwelveHours = false;
+
 
 
     get isMobile() {
@@ -197,6 +201,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     @wire(getParticipantActivity, {workTrailId:'$recordId'})
     userPartActivity({error,data}){
        if(data){
+        console.log(data);
         if(data.length >0){
             this.activityPartRecord = data;
             this.isActivity = true;
@@ -210,6 +215,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
 
     @wire(getEmployerActivity, {workTrailId:'$recordId',contactId: '$contactId'})
     userEmpActivity({error,data}){
+        console.log(data);
        if(data){
         if(data.length>0){
             this.activityEmplRecord = data;
@@ -228,19 +234,6 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
             if(data.length>0){
                 this.participantGoalRecord = data;
                 this.isGoal = true;
-            }
-        }else if(error){
-            console.log('An error has ocurred');
-            console.log(error);
-        }
-    }
-
-    @wire(getEducations,{workTrailId:'$recordId'})
-    userEducation({error,data}){
-        if(data){
-            if(data.length>0){
-                this.educationRecord = data;
-                this.isEducation = true;
             }
         }else if(error){
             console.log('An error has ocurred');
@@ -274,9 +267,28 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
         }
     }
 
+    @wire(getEducations,{workTrailId:'$recordId'})
+    userEducation({error,data}){
+        if(data){
+            if(data.length>0){
+                this.educationRecord = data;
+                this.isEducation = true;
+            }
+        }else if(error){
+            console.log('An error has ocurred');
+            console.log(error);
+        }
+    }
+
+   
+
     /* UO and IPS fields */
     get ownerIds(){
         return getFieldValue(this.workTrailWire,FIELD_OWNERID);
+    }
+
+    get ownerName(){
+        return getFieldValue(this.workTrailWire,FIELD_OWNERNAME);
     }
     
     get namefield(){
@@ -326,7 +338,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     }
 
     get referredDate(){
-        return this.formatDate(getFieldDisplayValue(this.workTrailWire,FIELD_REFFEREDDATE));
+        return this.formatDate(getFieldValue(this.workTrailWire,FIELD_REFFEREDDATE));
     }
 
     get startDate(){
