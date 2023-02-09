@@ -31,7 +31,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>hideChatterActions</name>
-                    <value>false</value>
+                    <value>true</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>numVisibleActions</name>
@@ -47,9 +47,9 @@
                         <rightValue>trine.ronning@nav.no</rightValue>
                     </criteria>
                     <criteria>
-                        <leftValue>{!$Permission.StandardPermission.ViewRoles}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>false</rightValue>
+                        <leftValue>{!$User.UserRole.Name}</leftValue>
+                        <operator>CONTAINS</operator>
+                        <rightValue>Jobbspesialist</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -102,16 +102,21 @@
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>force_highlightsPanel</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
+                    <booleanFilter>1 OR 2 OR 3</booleanFilter>
                     <criteria>
-                        <leftValue>{!$Permission.StandardPermission.ViewRoles}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>true</rightValue>
+                        <leftValue>{!$User.UserRole.Name}</leftValue>
+                        <operator>CONTAINS</operator>
+                        <rightValue>Metodeveileder</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!$User.Email}</leftValue>
                         <operator>CONTAINS</operator>
                         <rightValue>trine.ronning@nav.no</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!$User.UserRole.Name}</leftValue>
+                        <operator>CONTAINS</operator>
+                        <rightValue>Fagansvarlig</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
