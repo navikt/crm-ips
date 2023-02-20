@@ -1,35 +1,61 @@
 <template>
-    <div class="breadcrumbs container">
+    <div class="my-breadcrumbs container-col-main container skjema-max-width">
         <lightning-breadcrumbs>
             <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
             <lightning-breadcrumb label="dine møter" name="ips_my_meetings__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
-    <div if:true={isloading} style="height: 200px; position:relative" >
-        <lightning-spinner variant="base" size="medium"></lightning-spinner>
-    </div>
-    <div if:false={isloading} class="container skjema-max-width">
-        <div if:false={isMobile}>
-            <lightning-datatable 
-                class="trailtext"
-                key-field="Id" 
-                data={activityRecord} 
-                columns={columns} 
-                hide-checkbox-column="true" 
-                onrowaction={handleRowAction}
-            >
-            </lightning-datatable>
-        </div> 
-        <div if:true={isMobile} style="height: 600px;">
-            <lightning-datatable 
-                class="trailtext"
-                key-field="Id" 
-                data={activityRecord} 
-                columns={columns} 
-                hide-checkbox-column="true" 
-                onrowaction={handleRowAction}
-            >
-            </lightning-datatable>
+    <template if:true={isActivity}>
+        <div class="container container-col-main skjema-max-width">
+            <h2>
+                <img class="illustrasjon"
+                src={myMeetingImg}
+                alt="Viser ikon for liste"
+                />Oversikt over fullførte møter
+            </h2>
+            <form class="form-control">
+                <template for:each={activityRecords} for:item="met" >
+                    <div key={met.Id} class="container-light container-col-meeting skjema-max-width">
+                        <c-readmore label={met.IPS_subjectAndDate__c} >
+                                <label tabindex="0">Tid fra</label>
+                                <p tabindex="0">
+                                    <lightning-formatted-date-time 
+                                            value={met.IPS_timeFrom__c} 
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit"
+                                            weekday="long">
+                                    </lightning-formatted-date-time>
+                                </p>
+                                <label tabindex="0">Tid til</label>
+                                <p tabindex="0">
+                                    <lightning-formatted-date-time 
+                                            value={met.IPS_timeTo__c} 
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit"
+                                            weekday="long">
+                                    </lightning-formatted-date-time>
+                                </p>
+                                <div if:true={met.IPS_employerName__c}>
+                                    <label>Arbeidsgiver</label>
+                                    <p>{met.IPS_employerName__c}</p>
+                                </div> 
+                                <label tabindex="0">Referat</label>
+                                <p tabindex="0">{met.Description}</p>                           
+                        </c-readmore>
+                    </div>
+                </template>
+            </form>
         </div>
-    </div>
+    </template>
+    <template if:false={isActivity}>
+        <div class="container container-col-main skjema-max-width">
+            <c-alert-banner 
+                type="Info"
+                size="L"
+                message ="Du har ingen avtalte møter.">
+            </c-alert-banner>
+        </div>
+    </template>
 </template>
