@@ -31,6 +31,7 @@ public with sharing class IPS_myActivityController {
             SELECT 
                 id,
                 ActivityDate,
+                CompletedDateTime,
                 ips_Due_Date_Time__c,
                 Subject,
                 Type_of_Task_IPSUO__c,
@@ -39,8 +40,8 @@ public with sharing class IPS_myActivityController {
             FROM Task 
             WHERE WhatId = :workTrailId 
             AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'
-            AND Status = 'Completed'
-            ORDER BY ActivityDate ASC
+            AND Status = 'Fullført'
+            ORDER BY CompletedDateTime DESC
         ];
         return userGoal;
     }
@@ -86,8 +87,8 @@ public with sharing class IPS_myActivityController {
             WHERE WhatId = :workTrailId 
             AND Type_of_Task_IPSUO__c ='Logg kontakt'  
             AND Samtalereferat__c = true
-            AND Status ='Completed'
-            ORDER BY ActivityDate ASC
+            AND Status ='Fullført'
+            ORDER BY ActivityDate DESC
         ];
         return userGoal;
     }
@@ -174,26 +175,26 @@ public with sharing class IPS_myActivityController {
     }
 
     @AuraEnabled(cacheable = true) 
-    public static List<Event> getAllActivity(String workTrailId){
+    public static List<Event> getAllActivity(String workTrailId,String contactId){
         Date todaysDate = System.today();
         List<Event> userActivity = new List<Event>();
         userActivity =[
             SELECT 
                 id,
-                Subject, 
                 IPS_subjectAndDate__c,
-                ActivityDate,
-                ActivityDateTime,
                 IPS_timeFrom__c,
                 IPS_timeTo__c, 
                 Description,
                 IPS_Type__c,
-                IPS_Status1__c
+                IPS_Status1__c,
+                IPS_employerName__c
             FROM event 
             WHERE 
-                WhatId = :workTrailId 
-                AND IsVisibleInSelfService__c =true 
+                WhatId = :workTrailId
+                AND WhoId= :contactId 
+                //AND IsVisibleInSelfService__c =true
                 AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
+                ORDER BY ActivityDate DESC
         ];
         return userActivity;
     }
