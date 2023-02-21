@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IPS_subjectAndDate__c</fullName>
+    <deprecated>false</deprecated>
     <description>Concat fields of day and subject.</description>
     <externalId>false</externalId>
     <formula>CASE(
@@ -23,6 +24,14 @@ TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;
 &apos;First Meeting with Employer&apos;, 
 TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;+TEXT(YEAR(ActivityDate ))+&apos; - &apos;+ Subject,
 &apos;Start up meeting&apos;,
+TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;+TEXT(YEAR(ActivityDate ))+&apos; - &apos;+ Subject,
+null
+)+&apos; &apos;+
+
+CASE(Type_of_Task_IPSUO__c , 
+&apos;Logg kontakt&apos;, 
+TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;+TEXT(YEAR(ActivityDate ))+&apos; - &apos;+ Subject, 
+&apos;Oppgave&apos;,  
 TEXT(DAY( ActivityDate ))+&quot;.&quot;+TEXT(MONTH(ActivityDate ))+&quot;.&quot;+TEXT(YEAR(ActivityDate ))+&apos; - &apos;+ Subject,
 null
 )</formula>

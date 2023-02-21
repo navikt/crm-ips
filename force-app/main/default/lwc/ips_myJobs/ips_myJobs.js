@@ -3,9 +3,11 @@ import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 import getUserJobs from '@salesforce/apex/IPS_jobController.getCompletedUserJobs';
-
+/* all logos related to IPS/UO portal */
+import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myJobs extends NavigationMixin(LightningElement) {
+myJobImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
 currentUser = Id;
 //currentUser ='0053O000007R0NUQA0' ;
 @track jobRecords;
