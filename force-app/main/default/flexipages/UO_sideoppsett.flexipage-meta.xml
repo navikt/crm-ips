@@ -7,7 +7,14 @@
                     <name>actionNames</name>
                     <valueList>
                         <valueListItems>
-                            <value>AccountHierarchy</value>
+                            <value>Edit</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.IsPersonAccount}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>false</rightValue>
+                                </criteria>
+                            </visibilityRule>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
@@ -65,10 +72,18 @@
                         <valueListItems>
                             <value>NewContact</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>MassAddToCampaign</value>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>adminFilters</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>CONTACT.IS_PERSON_ACCOUNT|EQUALS|false</value>
+                        </valueListItems>
+                    </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>maxRecordsToDisplay</name>
@@ -119,11 +134,11 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>sortFieldAlias</name>
-                    <value>__DEFAULT__</value>
+                    <value>FULL_NAME</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>sortFieldOrder</name>
-                    <value>Default</value>
+                    <value>Ascending</value>
                 </componentInstanceProperties>
                 <componentName>lst:dynamicRelatedList</componentName>
                 <identifier>lst_dynamicRelatedList</identifier>
@@ -131,8 +146,14 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
-                <componentName>accountTeamMember</componentName>
-                <identifier>accountTeamMember</identifier>
+                <componentName>campaignMembers</componentName>
+                <identifier>c_campaignMembers</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>accountMessages</componentName>
+                <identifier>c_accountMessages</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -349,6 +370,12 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
+                <componentName>accountTeamMember</componentName>
+                <identifier>accountTeamMember</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>amountOfMonths</name>
                     <value>3</value>
@@ -366,12 +393,19 @@
                     <value>3</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>amountOfRecordsToOpen</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>buttonIsHidden</name>
-                    <value>false</value>
+                    <value>true</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>configId</name>
                     <value>UO_Event_Task</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>customEmptySubtitle</name>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>filterIsActive</name>
@@ -388,6 +422,10 @@
                 <componentInstanceProperties>
                     <name>headerTitleNorwegian</name>
                     <value>Aktiviteter</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideMyActivitiesFilter</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>picklistFilter1Label</name>
