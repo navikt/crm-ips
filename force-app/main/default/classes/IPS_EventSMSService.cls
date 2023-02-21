@@ -37,6 +37,7 @@ public without sharing class IPS_EventSMSService {
         for (Event event : eventList) {
             Work_Trail__c workTrail = eventWorkTailMap.get(event);
             if (
+                workTrail.ips_Participant__c != null &&
                 workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
                 workTrail.IPS_Partticipant_phone_number__c != null
             ) {
@@ -72,6 +73,7 @@ public without sharing class IPS_EventSMSService {
         for (Event event : eventList) {
             Work_Trail__c workTrail = eventWorkTailMap.get(event);
             if (
+                workTrail.ips_Participant__c != null &&
                 workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
                 workTrail.IPS_Partticipant_phone_number__c != null
             ) {
@@ -107,6 +109,7 @@ public without sharing class IPS_EventSMSService {
         for (Event event : eventList) {
             Work_Trail__c workTrail = eventWorkTailMap.get(event);
             if (
+                workTrail.ips_Participant__c != null &&
                 workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
                 workTrail.IPS_Partticipant_phone_number__c != null
             ) {
