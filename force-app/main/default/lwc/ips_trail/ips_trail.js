@@ -127,7 +127,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     myGoalImg = IPS_HOME_LOGOS + '/TaskFilled.svg';
     myPlanImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
     currentUser = Id;
-    //currentUser ='0051X00000EABDRQA5' ;
+    //currentUser ='0053O000007R0NUQA0' ;
     recordId;
     recordtypename;
     ownerIds;

@@ -7,8 +7,8 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_educations extends NavigationMixin(LightningElement){
 myEduImg = IPS_HOME_LOGOS + '/EmployerFilled.svg';
-//currentUser = Id;
-currentUser ='0053O000007R0NUQA0' ;
+currentUser = Id;
+//currentUser ='0053O000007R0NUQA0' ;
 @track educationRecords;
 @track record;
 recordIds;
