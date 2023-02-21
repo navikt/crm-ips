@@ -7,7 +7,7 @@ import getUserWorkTrainings from '@salesforce/apex/IPS_jobController.getComplete
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myWorkTrainings extends NavigationMixin(LightningElement) {
-mytrainImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
+mytrainImg = IPS_HOME_LOGOS + '/EmployerFilled.svg';
 currentUser = Id;
 //currentUser ='0053O000007R0NUQA0' ;
 @track trainingRecords;

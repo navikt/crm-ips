@@ -17,11 +17,17 @@
                 <p tabindex="0">{mainGoalList}</p>
                 <label tabindex="0">Beskrivelse av ditt mål</label>
                 <p tabindex="0">{mainGoal}</p>
+            
         
                 <template if:true={isGoal}>
-                    <div class="container container-col-light skjema-max-width">
+                    <div class="container container-col-light container-col-goals skjema-max-width">
                     <form class="form-control">
-                        <h2 tabindex="0">Dine delmål</h2>
+                        <h2>
+                            <img class="illustrasjon"
+                            src={myGoalImg}
+                            alt="Viser ikon for liste"
+                            />Dine delmål
+                        </h2>
                         <p tabindex="0">Her er delmålene som du og jobbspesialisten din samarbeider om nå.</p>
                         <template for:each={participantGoalRecord} for:item="goal" >
                             <c-readmore key={goal.Id} label={goal.Subject} >                                
@@ -44,9 +50,16 @@
                 </template>
                 
                 <template if:true={isMeeting}>
-                    <div class="container container-col-light skjema-max-width">
+                    <div class="container container-col-light container-col-meeting skjema-max-width">
                         <form class="form-control">
-                            <h2 tabindex="0">Dine planlagte møter</h2>
+                            <div>
+                                <h2>
+                                    <img class="illustrasjon"
+                                    src={myActivityImg}
+                                    alt="Viser ikon for kalender"
+                                    />Dine planlagte møter
+                                </h2>
+                            </div>                         
                             <p tabindex="0">Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover.</p>
                             <template if:true={isActivity} for:each={activityPartRecord} for:item="part">
                                 <c-readmore key={part.Id} label={part.IPS_subjectAndDate__c} >                                
@@ -107,9 +120,14 @@
                 </template>
 
                 <template if:true={isJob}>
-                    <div class="container container-col-light skjema-max-width">
+                    <div class="container container-col-light container-col-job skjema-max-width">
                         <form class="form-control">
-                            <h2>Dine jobber</h2>
+                            <h2>
+                                <img class="illustrasjon"
+                                src={myWorkDevelopmentIPS}
+                                alt=""
+                                />Dine jobber
+                            </h2>
                             <p tabindex="0">Viser jobben du er i nå.</p>
                             <template for:each={jobsRecord} for:item="job">
                                 <c-readmore key={job.Id} label={job.IPS_jobSubject__c}>
@@ -136,7 +154,7 @@
                                     <label>Arbeidsform</label>
                                     <p>{job.ips_Form_of_Employment__c}</p>
                                     <label>Arbeidsoppgaver</label>
-                                    <p>{IPS_UO_Stillingsbeskrivelse__c}</p>
+                                    <p>{job.IPS_UO_Stillingsbeskrivelse__c}</p>
                                     <label>Plan for støtte</label>
                                     <p>{job.ips_Job_Support__c}</p>
                                 </c-readmore>
@@ -146,9 +164,14 @@
                 </template>
 
                 <template if:true={isTraining}>
-                    <div class="container container-col-light skjema-max-width">
+                    <div class="container container-col-light container-col-trening skjema-max-width">
                         <form class="form-control">
-                            <h2>Dine arbeidstreninger</h2>
+                            <h2>
+                                <img class="illustrasjon"
+                                src={myWorkDevelopmentIPS}
+                                alt=""
+                                />Dine arbeidstreninger
+                            </h2>
                             <p tabindex="0">Viser arbeidstreningen du er i nå.</p>
                             <template for:each={trainingRecord} for:item="train">
                                 <c-readmore key={train.Id} label={train.IPS_jobSubject__c}>                                
@@ -183,9 +206,14 @@
                 </template>
 
                 <template if:true={isEducation}>
-                    <div class="container container-col-light skjema-max-width">
+                    <div class="container container-col-light container-col-edu skjema-max-width">
                         <form class="form-control">
-                            <h2>Din utdanning</h2>
+                            <h2>
+                                <img class="illustrasjon"
+                                src={myPlanImg}
+                                alt=""
+                                />Din utdanning
+                            </h2>
                             <p tabindex="0">Viser den aktive utdanningen du er i nå.</p>
                             <template for:each={educationRecord} for:item="edu">
                                 <c-readmore key={edu.Id} label={edu.Name}>                                
@@ -220,8 +248,7 @@
                 </template>
             </form>
         </div>
-    
-        
+
         <!-- Section with the rest and is IPS -->
         <div class="container container-col-main skjema-max-width">
             <form class="form-control">
@@ -330,20 +357,20 @@
         </div>
 
         <!-- Second section -->
-        <div class="container container-col-historikk skjema-max-width">
+        <div class="container container-col-main skjema-max-width">
             <h2 tabindex="0" class="title">Historikk</h2>
             <form class="form-control">
                 <p>Her finner du oversikt over dine fullførte delmål, deltakelse i arbeidstrening, jobb eller opplæring som er avsluttet, fullførte møter og referater fra telefonsamtaler du har hatt med jobbspesialisten.</p>
             </form>
-            <div class="container-col-light">
+            <div class="container container-col-ref">
                 <c-linkTile
                     link-header="Samtalereferat"
                     navigation-address="ips_my_logs__c"
-                    custom-text-style="padding: 1rem; "
+                    custom-text-style="padding: 1rem;"
                 >
                 </c-linkTile>
             </div>
-            <div class="container-col-light">
+            <div class="container container-col-meeting">
                 <c-linkTile
                     link-header="Fullførte møter"
                     navigation-address="ips_my_meetings__c"
@@ -351,7 +378,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-col-light">
+            <div class="container container-col-goals">
                 <c-linkTile
                 link-header="Fullførte delmål"
                 navigation-address="ips_my_goals__c"
@@ -359,7 +386,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-col-light">
+            <div class="container container-col-job">
                 <c-linkTile
                     link-header="Avsluttede jobber"
                     navigation-address="ips_my_jobs__c"
@@ -367,7 +394,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-col-light">
+            <div class="container container-col-trening">
                 <c-linkTile
                     link-header="Avsluttede arbeidstreninger"
                     navigation-address="ips_my_worktrainings__c"
@@ -375,7 +402,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container-col-light">
+            <div class="container container-col-edu">
                 <c-linkTile
                     link-header="Avsluttede opplæringsløp"
                     navigation-address="ips_my_educations__c"
