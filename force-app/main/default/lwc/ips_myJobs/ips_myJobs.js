@@ -7,13 +7,13 @@ import getUserJobs from '@salesforce/apex/IPS_jobController.getCompletedUserJobs
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myJobs extends NavigationMixin(LightningElement) {
-myJobImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
+myJobImg = IPS_HOME_LOGOS + '/EmployerFilled.svg';
 currentUser = Id;
-//currentUser ='0053O000007R0NUQA0' ;
+//currentUser ='0053O000007R0NUQA0';
 @track jobRecords;
 @track record;
 recordIds;
-isjob = false;
+@track isjobber = false;
 
 /* Fetch recordId from logged in user */
 @wire(getUserWorkTrailId,{userId: '$currentUser'})
@@ -31,7 +31,7 @@ wiredtrail({ error, data }) {
        if(data){
         if(data.length>0){
             this.jobRecords = data;
-            this.isJob = true;
+            this.isJobber = true;
         }
        }else if(error){
            console.log('An error has ocurred');
