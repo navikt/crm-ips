@@ -1,4 +1,4 @@
-public without sharing class IPS_jobController {
+public with sharing class IPS_jobController {
 
     /******************************** Work *******************************************/
     /* All completed jobs for participants */

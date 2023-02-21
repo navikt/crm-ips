@@ -6,18 +6,18 @@
         </lightning-breadcrumbs>
     </div>
 
-    <template if:true={isJob}>
+    <!--<template if:true={isJobber}>-->
         <div class="container container-col-main skjema-max-width">
             <form class="form-control">
                 <h2>
                     <img class="illustrasjon"
                     src={myJobImg}
                     alt=""
-                    />Dine jobber
+                    />Dine fullførte jobber
                 </h2>
                 <template for:each={jobRecords} for:item="job">
-                    <div key={job.Id} class="container-light container-col-goals skjema-max-width">
-                        <c-readmore label={job.Name}>
+                    <div key={job.Id} class="container-light container-col-job skjema-max-width">
+                        <c-readmore label={job.IPS_jobSubject__c}>
                             <label>Startdato</label>
                             <p>
                                 <lightning-formatted-date-time 
@@ -53,8 +53,9 @@
                 </template>
             </form>
         </div>
-    </template>
-    <template if:false={isJob}>
+   <!-- </template> -->
+
+    <!--<template if:false={isJob}>
         <div class="container container-col-main skjema-max-width">
             <c-alert-banner 
                 type="Info"
@@ -62,5 +63,5 @@
                 message ="Du har ingen ferdigstilte jobber.">
             </c-alert-banner>
         </div>
-    </template> 
+    </template> -->
 </template>
