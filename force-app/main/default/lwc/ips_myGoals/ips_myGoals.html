@@ -1,32 +1,47 @@
 <template>
-    <div class="breadcrumbs container">
-        <lightning-breadcrumbs>
-            <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
-            <lightning-breadcrumb label="dine delmål" name="ips_my_goals__c"></lightning-breadcrumb>
-        </lightning-breadcrumbs>
+    <div class="my-breadcrumbs container container-col-main skjema-max-width">
+                    <lightning-breadcrumbs>
+                        <lightning-breadcrumb label="Hjem " name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+                        <lightning-breadcrumb label="dine delmål"></lightning-breadcrumb>
+                    </lightning-breadcrumbs>
     </div>
-    <div class="container skjema-max-width">
-        <div if:false={isMobile}>
-            <lightning-datatable 
-                class="trailtext"
-                key-field="Id" 
-                data={goalRecord} 
-                columns={columns} 
-                hide-checkbox-column="true" 
-                onrowaction={handleRowAction}
-            >
-        </lightning-datatable>
+    <template if:true={isGoal}>
+        <div class="container container-col-main skjema-max-width">
+            <h2>
+                <img class="illustrasjon"
+                src={myGoalImg}
+                alt="Viser ikon for liste"
+                />Oversikt over dine gjennomførte delmål
+            </h2>
+            <form class="form-control">
+                <template for:each={goalRecords} for:item="goal" >
+                    <div key={goal.Id} class="container-light container-col-goals skjema-max-width">
+                        <c-readmore label={goal.Subject} >
+                                <label tabindex="0">Dato lukket</label>
+                                <p tabindex="0">
+                                    <lightning-formatted-date-time 
+                                            value={goal.CompletedDateTime} 
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit"
+                                            weekday="long">
+                                    </lightning-formatted-date-time>
+                                </p>
+                                <label tabindex="0">Beskrivelse av gjennomført delmål</label>
+                                <p tabindex="0">{goal.Description}</p>                           
+                        </c-readmore>
+                    </div>
+                </template>
+            </form>
         </div>
-        <div if:true={isMobile} style="height: 600px;">
-            <lightning-datatable 
-                class="trailtext"
-                key-field="Id" 
-                data={goalRecord} 
-                columns={columns} 
-                hide-checkbox-column="true" 
-                onrowaction={handleRowAction}
-            >
-        </lightning-datatable>
+    </template>
+    <template if:false={isGoal}>
+        <div class="container container-col-main skjema-max-width">
+            <c-alert-banner 
+                type="Info"
+                size="L"
+                message ="Du har ingen gjennomførte delmål ennå.">
+            </c-alert-banner>
         </div>
-    </div>
+    </template>
 </template>

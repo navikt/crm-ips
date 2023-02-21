@@ -1,34 +1,65 @@
 <template>
-    <div class="breadcrumbs container">
+    <div class="my-breadcrumbs container container-col-main skjema-max-width">
         <lightning-breadcrumbs>
             <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
             <lightning-breadcrumb label="ditt utdanningsløp" name="ips_my_educations__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
     
-    <div class="container skjema-max-width">
-        <div if:false={isMobile}>
-            <lightning-datatable 
-                class="trailtext"
-                key-field="Id" 
-                data={educationRecord} 
-                columns={columns} 
-                hide-checkbox-column="true" 
-                onrowaction={handleRowAction}
-        >
-        </lightning-datatable>
+    <template if:true={isEducation}>
+        <div class="container container-col-main skjema-max-width">
+            <form class="form-control">
+                <h2>
+                    <img class="illustrasjon"
+                    src={myEduImg}
+                    alt=""
+                    />Din utdanning
+                </h2>
+                <template for:each={educationRecords} for:item="edu">
+                    <div key={edu.Id} class="container-light container-col-goals skjema-max-width">
+                        <c-readmore label={edu.Name}>                                
+                            <label>Navn på utdanningsinstitusjon</label>
+                            <p>{edu.ips_Name_of_the_Education_Institution__c}</p>
+                            <label>Startdato</label>
+                            <p>
+                                <lightning-formatted-date-time 
+                                    value={edu.ips_Start_Date__c}
+                                    year="numeric"
+                                    month="2-digit"
+                                    day="2-digit">
+                                </lightning-formatted-date-time>
+                            </p>
+                            <label>Sluttdato</label>
+                            <p>
+                                <lightning-formatted-date-time 
+                                    value={edu.ips_End_Date__c}
+                                    year="numeric"
+                                    month="2-digit"
+                                    day="2-digit">
+                                </lightning-formatted-date-time>
+                            </p>
+                            <label>Studieform</label>
+                            <p>{edu.ips_Form_of_Education__c}</p>
+                            <label>Støtte under utdanningen</label>
+                            <p>{edu.ips_Education_Support_Plan__c}</p>
+                            <label>Hva fungerte under utdanningen</label>
+                            <p>{ips_What_did_work_with_this_education__c}</p>
+                            <label>Hva fungerte ikke under utdanningen</label>
+                            <p>{ips_What_did_not_work_with_thiseducation__c}</p>
+                        </c-readmore>
+                    </div> 
+                </template>
+            </form>
         </div>
-        <div if:true={isMobile}>
-            <lightning-datatable 
-                class="trailtext"
-                key-field="Id" 
-                data={educationRecord} 
-                columns={columns} 
-                hide-checkbox-column="true" 
-                onrowaction={handleRowAction}
-        >
-        </lightning-datatable>
+    </template>
+    <template if:false={isEducation}>
+        <div class="container container-col-main skjema-max-width">
+            <c-alert-banner 
+                type="Info"
+                size="L"
+                message ="Du har ingen registrerte utdanninger.">
+            </c-alert-banner>
         </div>
-    </div>
+    </template> 
     
 </template>

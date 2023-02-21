@@ -1,33 +1,66 @@
 <template>
-    <div class="breadcrumbs container">
+    <div class="my-breadcrumbs container container-col-main skjema-max-width">
         <lightning-breadcrumbs>
             <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
             <lightning-breadcrumb label="dine jobber" name="ips_my_jobs__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
 
-    <div class="container skjema-max-width">
-        <div if:false={isMobile}>
-            <lightning-datatable 
-                class="trailtext"
-                key-field="Id" 
-                data={jobRecord} 
-                columns={columns} 
-                hide-checkbox-column="true" 
-                onrowaction={handleRowAction}
-            >
-            </lightning-datatable>
-        </div> 
-        <div if:true={isMobile} style="height: 600px;">
-            <lightning-datatable 
-                class="trailtext"
-                key-field="Id" 
-                data={jobRecord} 
-                columns={columns} 
-                hide-checkbox-column="true" 
-                onrowaction={handleRowAction}
-            >
-            </lightning-datatable>
+    <template if:true={isJob}>
+        <div class="container container-col-main skjema-max-width">
+            <form class="form-control">
+                <h2>
+                    <img class="illustrasjon"
+                    src={myJobImg}
+                    alt=""
+                    />Dine jobber
+                </h2>
+                <template for:each={jobRecords} for:item="job">
+                    <div key={job.Id} class="container-light container-col-goals skjema-max-width">
+                        <c-readmore label={job.Name}>
+                            <label>Startdato</label>
+                            <p>
+                                <lightning-formatted-date-time 
+                                    value={job.ips_Start_Date__c}
+                                    year="numeric"
+                                    month="2-digit"
+                                    day="2-digit">
+                                </lightning-formatted-date-time>
+                            </p>
+                            <label>Sluttdato</label>
+                            <p>
+                                <lightning-formatted-date-time 
+                                    value={job.ips_End_Date__c}
+                                    year="numeric"
+                                    month="2-digit"
+                                    day="2-digit">
+                                </lightning-formatted-date-time>
+                            </p>
+                            <label>Antall timer</label>
+                            <p>{job.ips_Number_of_hours__c}</p>
+                            <label>Arbeidsform</label>
+                            <p>{job.ips_Form_of_Employment__c}</p>
+                            <label>Arbeidsoppgaver</label>
+                            <p>{job.IPS_UO_Stillingsbeskrivelse__c}</p>
+                            <label>Plan for støtte</label>
+                            <p>{job.ips_Job_Support__c}</p>
+                            <label>Hva fungerte i jobben</label>
+                            <p>{job.ips_What_did_work_at_the_workplace__c}</p>
+                            <label>Hva fungerte ikke i jobben</label>
+                            <p>{job.ips_What_did_not_work_at_the_workplace__c}</p>
+                        </c-readmore>
+                    </div> 
+                </template>
+            </form>
         </div>
-    </div>
+    </template>
+    <template if:false={isJob}>
+        <div class="container container-col-main skjema-max-width">
+            <c-alert-banner 
+                type="Info"
+                size="L"
+                message ="Du har ingen ferdigstilte jobber.">
+            </c-alert-banner>
+        </div>
+    </template> 
 </template>

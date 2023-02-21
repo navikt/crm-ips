@@ -3,41 +3,17 @@ import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 import getUserWorkTrainings from '@salesforce/apex/IPS_jobController.getCompletedUserWorkTrainings';
-
-const COLUMNS =[
-    {label: 'Arbeidstrening', fieldName: 'Name',type: 'text',hideDefaultActions: true},
-    {
-        type: 'button',
-        fixedWidth: 200,
-        typeAttributes:{
-            label: 'Se detaljer',
-            title: 'Se detaljer',
-            name: 'Arbeidstrening',
-            variant: 'Brand'
-        }
-    },
-    {
-        type:'button',
-        fixedWidth: 170,
-        typeAttributes:{
-            label: 'Fullført',
-            title: 'Fullført',
-            name: 'ips_Status__c',
-            variant: 'Destructive',
-            disabled:{fieldName:'disableButton'}
-        }
-    }
-]
+/* all logos related to IPS/UO portal */
+import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myWorkTrainings extends NavigationMixin(LightningElement) {
+mytrainImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
 currentUser = Id;
-//currentUser ='0051X00000EABDRQA5' ;
-@track trainingRecord;
-trainingRecords;
+//currentUser ='0053O000007R0NUQA0' ;
+@track trainingRecords;
 @track record;
 recordIds;
 isTraining = false;
-columns = COLUMNS;
 
 
 /* Fetch recordId from logged in user */
@@ -56,10 +32,6 @@ wiredtrail({ error, data }) {
        if(data){
         if(data.length>0){
             this.trainingRecords = data;
-            this.trainingRecord = JSON.parse(JSON.stringify(this.trainingRecords));
-            this.trainingRecord.forEach(tra => {
-              tra.disableButton = tra.ips_Status__c !== 'Completed';
-            });
             this.isTraining = true;
         }
        }else if(error){
@@ -67,16 +39,6 @@ wiredtrail({ error, data }) {
            console.log(error);
        }
     }
-
-    handleRowAction(event) {
-        this[NavigationMixin.Navigate]({
-            type: 'standard__recordPage',
-            attributes: {
-              recordId: event.detail.row.Id,
-              actionName: 'view'
-            }
-          });
-      }
 
       navigateToPage(event) {
         const page = event.target.name;

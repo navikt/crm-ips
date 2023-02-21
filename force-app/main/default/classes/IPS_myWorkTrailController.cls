@@ -57,9 +57,13 @@ public with sharing class IPS_myWorkTrailController {
                 id,
                 Name,
                 ips_Work_Trail__c,
+                ips_End_Date__c,
+                ips_Start_Date__c,
                 ips_Name_of_the_Education_Institution__c,
                 toLabel(ips_Form_of_Education__c),
-                toLabel(ips_Status__c)
+                toLabel(ips_Status__c),
+                ips_What_did_work_with_this_education__c,
+                ips_What_did_not_work_with_thiseducation__c
                 FROM ips_Education__c
                 WHERE ips_Work_Trail__c =:workTrailId
                 AND ips_Status__c ='Completed'
