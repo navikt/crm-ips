@@ -13,7 +13,7 @@ currentUser = Id;
 @track activityRecords;
 @track record;
 recordIds;
-isActivity = false;
+@track isActivity = false;
 
 /* Fetch recordId from logged in user */
 @wire(getUserWorkTrailId,{userId: '$currentUser'})

@@ -191,8 +191,8 @@ public with sharing class IPS_myActivityController {
             FROM event 
             WHERE 
                 WhatId = :workTrailId
-                AND WhoId= :contactId 
-                //AND IsVisibleInSelfService__c =true
+                AND WhoId= :contactId
+                AND IPS_Status1__c ='Completed'
                 AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
                 ORDER BY ActivityDate DESC
         ];
