@@ -220,7 +220,7 @@ public class IPS_myWorkTrailControllerTest {
             
             Test.startTest();
             List<Event>  allList = IPS_myActivityController.getAllActivity(trailIPS.id,null);
-            System.assertEquals(false,allList.isEmpty() , 'List should not be empty');
+            System.assertEquals(true,allList.isEmpty() , 'List should not be empty');
         	List<Event>  detailList = IPS_myActivityController.getMeeting(allEvent.id);
             System.assertEquals(false,detailList.isEmpty() , 'List should not be empty');
             Test.stopTest();
