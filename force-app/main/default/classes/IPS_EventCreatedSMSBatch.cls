@@ -13,6 +13,7 @@ public without sharing class IPS_EventCreatedSMSBatch implements Database.Batcha
         query += 'AND (RecordType.DeveloperName = \'IPS_Event\' OR RecordType.DeveloperName = \'Ips_uo_Deltakermote\' OR RecordType.DeveloperName = \'ips_UO_m_ter\') ';
         query += 'AND WhoId != null ';
         query += 'AND WhatId != null ';
+        query += 'AND IPS_Status1__c = \'Open\' ';
         query += 'AND IPS_IsCreatedSMSSendt__c = false';
 
         return Database.getQueryLocator(query);
