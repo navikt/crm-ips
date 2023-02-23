@@ -8,8 +8,8 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myJobs extends NavigationMixin(LightningElement) {
 myJobImg = IPS_HOME_LOGOS + '/EmployerFilled.svg';
-//currentUser = Id;
-currentUser ='0053O000007R0NUQA0';
+currentUser = Id;
+//currentUser ='0053O000007R0NUQA0';
 @track jobRecords;
 @track record;
 recordtypename;

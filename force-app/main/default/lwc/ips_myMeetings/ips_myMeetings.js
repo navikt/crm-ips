@@ -8,8 +8,8 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myMeetings extends NavigationMixin(LightningElement) {
 myMeetingImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
-//currentUser = Id;
-currentUser ='0053O000007R0NUQA0';
+currentUser = Id;
+//currentUser ='0053O000007R0NUQA0';
 @track activityRecords;
 @track record;
 recordIds;
