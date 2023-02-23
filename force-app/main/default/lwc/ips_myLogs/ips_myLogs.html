@@ -2,7 +2,7 @@
     <div class="my-breadcrumbs container container-col-main skjema-max-width">
         <lightning-breadcrumbs>
             <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
-            <lightning-breadcrumb label="dine samtaler" name="ips_my_logs__c"></lightning-breadcrumb>
+            <lightning-breadcrumb label="dine telefonsamtaler" name="ips_my_logs__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
     <template if:true={isLogg}>
@@ -11,13 +11,13 @@
                 <img class="illustrasjon"
                 src={myLoggImg}
                 alt="Viser ikon for liste"
-                />Oversikt over samtalereferat
+                />Oversikt over gjennomførte telefonsamtaler
             </h2>
             <form class="form-control">
                 <template for:each={loggRecords} for:item="logg" >
                     <div key={logg.Id} class="container-light container-col-goals skjema-max-width">
                         <c-readmore label={logg.IPS_subjectAndDate__c} >
-                                <label tabindex="0">Samtale dato</label>
+                                <label tabindex="0">Dato</label>
                                 <p tabindex="0">
                                     <lightning-formatted-date-time 
                                             value={logg.ActivityDate} 
@@ -27,7 +27,7 @@
                                             weekday="long">
                                     </lightning-formatted-date-time>
                                 </p>
-                                <label tabindex="0">Samtalereferat</label>
+                                <label tabindex="0">Referat</label>
                                 <p tabindex="0">{logg.Description}</p>                           
                         </c-readmore>
                     </div>

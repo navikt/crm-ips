@@ -8,12 +8,13 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myMeetings extends NavigationMixin(LightningElement) {
 myMeetingImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
-currentUser = Id;
-//currentUser ='0053O000007R0NUQA0';
+//currentUser = Id;
+currentUser ='0053O000007R0NUQA0';
 @track activityRecords;
 @track record;
 recordIds;
-isActivity = false;
+recordtypename;
+@track isActivity = false;
 
 /* Fetch recordId from logged in user */
 @wire(getUserWorkTrailId,{userId: '$currentUser'})
@@ -22,8 +23,18 @@ wiredtrail({ error, data }) {
             this.record = data[0];
             this.recordIds = this.record?.Id;
             this.contactId = this.record?.ips_Participant__r.PersonContactId;
+            this.recordtypename =this.record?.RecordType.DeveloperName;
         } else if (error) {
             console.log('Something went wrong:', error);
+        }
+    }
+
+    get isIPS(){
+        if(this.recordtypename === 'IPS'){
+            return true;
+        }
+        if(this.recortypename === 'ips_Supported_Employment'){
+            return false;
         }
     }
 

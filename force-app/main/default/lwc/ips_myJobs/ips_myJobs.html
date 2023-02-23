@@ -53,15 +53,25 @@
                 </template>
             </form>
         </div>
-   </template>
+  </template>
+
 
     <template if:false={isJobber}>
         <div class="container container-col-main skjema-max-width">
-            <c-alert-banner 
+            <div if:true={isIPS}>
+                <c-alert-banner 
                 type="Info"
                 size="L"
-                message ="Du har ingen ferdigstilte jobber.">
+                message ="Når det registreres en jobb, og denne avsluttes, vil den dukke opp her.">
             </c-alert-banner>
+            </div>
+            <div if:false={isIPS}>
+                <c-alert-banner 
+                type="Info"
+                size="M"
+                message ="Det har ikke vært registrert en jobb i handlingsplanen i ditt jobbspor tidligere. Når det registreres en jobb, og denne avsluttes, vil den dukke opp her.">
+            </c-alert-banner>
+            </div>
         </div>
     </template>
 </template>

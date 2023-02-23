@@ -37,6 +37,8 @@
                                             weekday="long">
                                     </lightning-formatted-date-time>
                                 </p>
+                                <label>Sted</label>
+                                <p>{met.Location}</p>
                                 <div if:true={met.IPS_employerName__c}>
                                     <label>Arbeidsgiver</label>
                                     <p>{met.IPS_employerName__c}</p>
@@ -51,11 +53,20 @@
     </template>
     <template if:false={isActivity}>
         <div class="container container-col-main skjema-max-width">
-            <c-alert-banner 
+            <div if:true={isIPS}>
+                <c-alert-banner 
                 type="Info"
-                size="L"
+                size="M"
+                message ="Når møtene er avsluttet vil de dukke opp her.">
+            </c-alert-banner>
+            </div>
+            <div if:false={isIPS}>
+                <c-alert-banner 
+                type="Info"
+                size="M"
                 message ="Du har ingen fullførte møter.">
             </c-alert-banner>
+            </div>
         </div>
     </template>
 </template>

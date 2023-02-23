@@ -7,11 +7,12 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_educations extends NavigationMixin(LightningElement){
 myEduImg = IPS_HOME_LOGOS + '/EmployerFilled.svg';
-currentUser = Id;
-//currentUser ='0053O000007R0NUQA0' ;
+//currentUser = Id;
+currentUser ='0053O000007R0NUQA0' ;
 @track educationRecords;
 @track record;
 recordIds;
+recordtypename;
 isEducation = false;
 
 
@@ -21,8 +22,18 @@ wiredtrail({ error, data }) {
         if (data) {
             this.record = data[0];
             this.recordIds = this.record?.Id;
+            this.recordtypename =this.record?.RecordType.DeveloperName;
         } else if (error) {
             console.log('Something went wrong:', error);
+        }
+    }
+
+    get isIPS(){
+        if(this.recordtypename === 'IPS'){
+            return true;
+        }
+        if(this.recortypename === 'ips_Supported_Employment'){
+            return false;
         }
     }
 
