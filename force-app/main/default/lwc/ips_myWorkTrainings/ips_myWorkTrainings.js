@@ -13,6 +13,7 @@ currentUser = Id;
 @track trainingRecords;
 @track record;
 recordIds;
+recordtypename;
 isTraining = false;
 
 
@@ -22,8 +23,17 @@ wiredtrail({ error, data }) {
         if (data) {
             this.record = data[0];
             this.recordIds = this.record?.Id;
+            this.recordtypename =this.record?.RecordType.DeveloperName;
         } else if (error) {
             console.log('Something went wrong:', error);
+        }
+    }
+    get isIPS(){
+        if(this.recordtypename === 'IPS'){
+            return true;
+        }
+        if(this.recortypename === 'ips_Supported_Employment'){
+            return false;
         }
     }
 

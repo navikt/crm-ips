@@ -36,15 +36,15 @@
                                     day="2-digit">
                                 </lightning-formatted-date-time>
                             </p>
-                            <label>Antall timer</label>
+                            <label>Antall timer pr uke</label>
                             <p>{train.ips_Number_of_hours__c}</p>
                             <label>Arbeidsoppgaver</label>
                             <p>{train.IPS_UO_Stillingsbeskrivelse__c}</p>
                             <label>Plan for støtte</label>
                             <p>{train.ips_Job_Support__c}</p>
-                            <label>Hva fungerte i jobben</label>
+                            <label>Hva fungerte i arbeidstreningen</label>
                             <p>{train.ips_What_did_work_at_the_workplace__c}</p>
-                            <label>Hva fungerte ikke i jobben</label>
+                            <label>Hva fungerte ikke i arbeidstreningen</label>
                             <p>{train.ips_What_did_not_work_at_the_workplace__c}</p>
                         </c-readmore>
                     </div> 
@@ -52,13 +52,23 @@
             </form>
         </div>
     </template>
+
     <template if:false={isTraining}>
         <div class="container container-col-main skjema-max-width">
-            <c-alert-banner 
+            <div if:true={isIPS}>
+                <c-alert-banner 
                 type="Info"
-                size="L"
-                message ="Du har ingen ferdigstilte jobbtreninger.">
+                size="M"
+                message ="Når det registreres en arbeidstrening, og denne avsluttes, vil den dukke opp her.">
             </c-alert-banner>
+            </div>
+            <div if:false={isIPS}>
+                <c-alert-banner 
+                type="Info"
+                size="M"
+                message ="Det har ikke vært registrert en arbeidstrening i handlingsplanen i ditt jobbspor tidligere. Når det registreres en arbeidstrening, og denne avsluttes, vil den dukke opp her.">
+            </c-alert-banner>
+            </div>
         </div>
-    </template> 
+    </template>
 </template>

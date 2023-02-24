@@ -129,7 +129,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     currentUser = Id;
     //currentUser ='0053O000007R0NUQA0' ;
     recordId;
-    recordtypename;
+    @track recordtypename;
     ownerIds;
     @track record;
     @track workTrailOwner;

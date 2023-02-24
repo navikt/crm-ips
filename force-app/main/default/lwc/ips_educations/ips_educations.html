@@ -54,12 +54,20 @@
     </template>
     <template if:false={isEducation}>
         <div class="container container-col-main skjema-max-width">
-            <c-alert-banner 
+            <div if:true={isIPS}>
+                <c-alert-banner 
                 type="Info"
-                size="L"
-                message ="Du har ingen registrerte utdanninger.">
+                size="M"
+                message ="Når du har avsluttet kurs/utdanning, vil den dukke opp her.">
             </c-alert-banner>
+            </div>
+            <div if:false={isIPS}>
+                <c-alert-banner 
+                type="Info"
+                size="M"
+                message ="Det har ikke vært registrert et opplæringsløp i handlingsplanen i ditt jobbspor tidligere. Når det registreres et opplæringsløp, og dette avsluttes, vil det dukke opp her.">
+            </c-alert-banner>
+            </div>
         </div>
-    </template> 
-    
+    </template>    
 </template>

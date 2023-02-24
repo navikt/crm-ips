@@ -8,10 +8,11 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myJobs extends NavigationMixin(LightningElement) {
 myJobImg = IPS_HOME_LOGOS + '/EmployerFilled.svg';
-//currentUser = Id;
-currentUser ='0053O000007R0NUQA0';
+currentUser = Id;
+//currentUser ='0053O000007R0NUQA0';
 @track jobRecords;
 @track record;
+recordtypename;
 recordIds;
 isjobber = false;
 
@@ -21,6 +22,7 @@ wiredtrail({ error, data }) {
         if (data) {
             this.record = data[0];
             this.recordIds = this.record?.Id;
+            this.recordtypename =this.record?.RecordType.DeveloperName;
         } else if (error) {
             console.log('Something went wrong:', error);
         }
@@ -37,6 +39,15 @@ wiredtrail({ error, data }) {
            console.log('An error has ocurred');
            console.log(error);
        }
+    }
+
+    get isIPS(){
+        if(this.recordtypename === 'IPS'){
+            return true;
+        }
+        if(this.recortypename === 'ips_Supported_Employment'){
+            return false;
+        }
     }
 
       navigateToPage(event) {

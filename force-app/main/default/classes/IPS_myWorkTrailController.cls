@@ -11,7 +11,7 @@ public with sharing class IPS_myWorkTrailController {
             String accountId = userList[0]?.AccountId;
             List<Work_Trail__c> mytrail = new List<Work_Trail__c>();
             mytrail = [
-                SELECT id,ips_Participant__r.PersonContactId
+                SELECT id,ips_Participant__r.PersonContactId,RecordType.DeveloperName
                 FROM Work_Trail__c 
                 WHERE ips_Participant__c = :accountId AND ips_Status__c !='Ended'
                 LIMIT 1];

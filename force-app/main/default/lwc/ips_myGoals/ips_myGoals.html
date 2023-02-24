@@ -37,11 +37,20 @@
     </template>
     <template if:false={isGoal}>
         <div class="container container-col-main skjema-max-width">
-            <c-alert-banner 
+            <div if:true={isIPS}>
+                <c-alert-banner 
                 type="Info"
-                size="L"
+                size="M"
+                message ="Når delmålet ditt er avsluttet, vil den dukke opp her.">
+            </c-alert-banner>
+            </div>
+            <div if:false={isIPS}>
+                <c-alert-banner 
+                type="Info"
+                size="M"
                 message ="Du har ingen gjennomførte delmål ennå.">
             </c-alert-banner>
+            </div>
         </div>
     </template>
 </template>

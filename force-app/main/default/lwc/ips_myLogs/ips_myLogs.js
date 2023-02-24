@@ -13,7 +13,7 @@ currentUser = Id;
 @track loggRecords;
 @track record;
 recordIds;
-isLogg = false;
+@track isLogg = false;
 
 
 /* Fetch recordId from logged in user */

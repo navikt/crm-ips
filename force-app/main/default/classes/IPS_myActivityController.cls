@@ -126,6 +126,7 @@ public with sharing class IPS_myActivityController {
             SELECT 
                 id,
                 Subject,
+                Location,
                 IPS_subjectAndDate__c, 
                 ActivityDate,
                 ActivityDateTime,
@@ -154,7 +155,8 @@ public with sharing class IPS_myActivityController {
         userActivity =[
             SELECT 
                 id,
-                Subject, 
+                Subject,
+                Location, 
                 IPS_subjectAndDate__c,
                 ActivityDate,
                 ActivityDateTime,
@@ -182,6 +184,7 @@ public with sharing class IPS_myActivityController {
             SELECT 
                 id,
                 IPS_subjectAndDate__c,
+                Location,
                 IPS_timeFrom__c,
                 IPS_timeTo__c, 
                 Description,
