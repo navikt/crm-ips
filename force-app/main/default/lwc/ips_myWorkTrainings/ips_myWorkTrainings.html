@@ -5,20 +5,18 @@
             <lightning-breadcrumb label="dine arbeidstreninger" name="ips_my_worktrainings__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
-    
-    <template if:true={isTraining}>
-        <div class="container container-col-main skjema-max-width">
+           <div class="container container-col-main skjema-max-width">
+            <h2>
+                <img class="illustrasjon"
+                src={mytrainImg}
+                alt=""
+                />Dine arbeidstreninger
+            </h2>
             <form class="form-control">
-                <h2>
-                    <img class="illustrasjon"
-                    src={mytrainImg}
-                    alt=""
-                    />Dine arbeidstreninger
-                </h2>
                 <template for:each={trainingRecords} for:item="train">
                     <div key={train.Id} class="container-light container-col-goals skjema-max-width">
                         <c-readmore  label={train.IPS_jobSubject__c}>
-                            <label>Startdato</label>
+                            <label>Periode</label>
                             <p>
                                 <lightning-formatted-date-time 
                                     value={train.ips_Start_Date__c}
@@ -26,9 +24,7 @@
                                     month="2-digit"
                                     day="2-digit">
                                 </lightning-formatted-date-time>
-                            </p>
-                            <label>Sluttdato</label>
-                            <p>
+                            &nbsp;-&nbsp;
                                 <lightning-formatted-date-time 
                                     value={train.ips_End_Date__c}
                                     year="numeric"
@@ -51,24 +47,25 @@
                 </template>
             </form>
         </div>
-    </template>
-
+        <!--
     <template if:false={isTraining}>
         <div class="container container-col-main skjema-max-width">
             <div if:true={isIPS}>
                 <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Når det registreres en arbeidstrening, og denne avsluttes, vil den dukke opp her.">
+                message ="Det har ikke vært registrert en arbeidstrening i ditt jobbspor. Når det registreres en arbeidstrening, og denne avsluttes, vil den bli synlig her.">
             </c-alert-banner>
             </div>
             <div if:false={isIPS}>
                 <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Det har ikke vært registrert en arbeidstrening i handlingsplanen i ditt jobbspor tidligere. Når det registreres en arbeidstrening, og denne avsluttes, vil den dukke opp her.">
+                message ="Det har ikke vært registrert en arbeidstrening i ditt jobbspor. Når det registreres en arbeidstrening, og denne avsluttes, vil den bli synlig her.">
             </c-alert-banner>
             </div>
         </div>
     </template>
+    -->
+
 </template>

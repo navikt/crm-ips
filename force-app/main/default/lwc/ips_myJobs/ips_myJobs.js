@@ -12,9 +12,8 @@ currentUser = Id;
 //currentUser ='0053O000007R0NUQA0';
 @track jobRecords;
 @track record;
-recordtypename;
 recordIds;
-isjobber = false;
+@track isjobber = false;
 
 /* Fetch recordId from logged in user */
 @wire(getUserWorkTrailId,{userId: '$currentUser'})
@@ -22,7 +21,6 @@ wiredtrail({ error, data }) {
         if (data) {
             this.record = data[0];
             this.recordIds = this.record?.Id;
-            this.recordtypename =this.record?.RecordType.DeveloperName;
         } else if (error) {
             console.log('Something went wrong:', error);
         }
@@ -32,22 +30,15 @@ wiredtrail({ error, data }) {
     userJob({error,data}){
        if(data){
         if(data.length>0){
+            console.log(data);
             this.jobRecords = data;
             this.isJobber = true;
+            console.log(this.isJobber);
         }
        }else if(error){
            console.log('An error has ocurred');
            console.log(error);
        }
-    }
-
-    get isIPS(){
-        if(this.recordtypename === 'IPS'){
-            return true;
-        }
-        if(this.recortypename === 'ips_Supported_Employment'){
-            return false;
-        }
     }
 
       navigateToPage(event) {

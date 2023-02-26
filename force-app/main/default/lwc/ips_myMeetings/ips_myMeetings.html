@@ -11,30 +11,28 @@
                 <img class="illustrasjon"
                 src={myMeetingImg}
                 alt="Viser ikon for liste"
-                />Oversikt over fullførte møter
+                />Oversikt over gjennomførte møter
             </h2>
             <form class="form-control">
                 <template for:each={activityRecords} for:item="met" >
                     <div key={met.Id} class="container-light container-col-meeting skjema-max-width">
                         <c-readmore label={met.IPS_subjectAndDate__c} >
-                                <label tabindex="0">Tid fra</label>
+                                <label tabindex="0">Tidspunkt</label>
                                 <p tabindex="0">
                                     <lightning-formatted-date-time 
                                             value={met.IPS_timeFrom__c} 
-                                            year="numeric"
-                                            month="2-digit"
-                                            day="2-digit"
-                                            weekday="long">
+                                            hour="2-digit" 
+                                            minute="2-digit" 
+                                            hour12={isTwelveHours} 
+                                            time-zone="UTC">
                                     </lightning-formatted-date-time>
-                                </p>
-                                <label tabindex="0">Tid til</label>
-                                <p tabindex="0">
+                                    &nbsp;-&nbsp;
                                     <lightning-formatted-date-time 
                                             value={met.IPS_timeTo__c} 
-                                            year="numeric"
-                                            month="2-digit"
-                                            day="2-digit"
-                                            weekday="long">
+                                            hour="2-digit" 
+                                            minute="2-digit" 
+                                            hour12={isTwelveHours} 
+                                            time-zone="UTC">
                                     </lightning-formatted-date-time>
                                 </p>
                                 <label>Sted</label>
@@ -57,14 +55,14 @@
                 <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Når møtene er avsluttet vil de dukke opp her.">
+                message ="Det er ikke registrert fullførte møter i ditt jobbspor.">
             </c-alert-banner>
             </div>
             <div if:false={isIPS}>
                 <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Du har ingen fullførte møter.">
+                message ="Det er ikke registrert fullførte møter i ditt jobbspor.">
             </c-alert-banner>
             </div>
         </div>

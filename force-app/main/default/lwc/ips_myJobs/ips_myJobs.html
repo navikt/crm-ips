@@ -6,19 +6,18 @@
         </lightning-breadcrumbs>
     </div>
 
-    <template if:true={isJobber}>
         <div class="container container-col-main skjema-max-width">
+            <h2>
+                <img class="illustrasjon"
+                src={myJobImg}
+                alt=""
+                />Dine avsluttede jobber
+            </h2>
             <form class="form-control">
-                <h2>
-                    <img class="illustrasjon"
-                    src={myJobImg}
-                    alt=""
-                    />Dine fullførte jobber
-                </h2>
                 <template for:each={jobRecords} for:item="job">
                     <div key={job.Id} class="container-light container-col-job skjema-max-width">
                         <c-readmore label={job.IPS_jobSubject__c}>
-                            <label>Startdato</label>
+                            <label>Periode</label>
                             <p>
                                 <lightning-formatted-date-time 
                                     value={job.ips_Start_Date__c}
@@ -26,9 +25,7 @@
                                     month="2-digit"
                                     day="2-digit">
                                 </lightning-formatted-date-time>
-                            </p>
-                            <label>Sluttdato</label>
-                            <p>
+                                &nbsp;-&nbsp;
                                 <lightning-formatted-date-time 
                                     value={job.ips_End_Date__c}
                                     year="numeric"
@@ -36,7 +33,7 @@
                                     day="2-digit">
                                 </lightning-formatted-date-time>
                             </p>
-                            <label>Antall timer</label>
+                            <label>Antall timer per uke</label>
                             <p>{job.ips_Number_of_hours__c}</p>
                             <label>Arbeidsform</label>
                             <p>{job.ips_Form_of_Employment__c}</p>
@@ -53,25 +50,15 @@
                 </template>
             </form>
         </div>
-  </template>
-
-
+<!--
     <template if:false={isJobber}>
         <div class="container container-col-main skjema-max-width">
-            <div if:true={isIPS}>
-                <c-alert-banner 
-                type="Info"
-                size="L"
-                message ="Når det registreres en jobb, og denne avsluttes, vil den dukke opp her.">
-            </c-alert-banner>
-            </div>
-            <div if:false={isIPS}>
-                <c-alert-banner 
+            <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Det har ikke vært registrert en jobb i handlingsplanen i ditt jobbspor tidligere. Når det registreres en jobb, og denne avsluttes, vil den dukke opp her.">
+                message ="Det har ikke vært registrert en jobb i ditt jobbspor tidligere. Når det registreres en jobb, og denne avsluttes, vil den bli synlig her.">
             </c-alert-banner>
-            </div>
         </div>
     </template>
+    -->
 </template>

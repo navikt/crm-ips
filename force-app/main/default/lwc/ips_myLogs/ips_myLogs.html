@@ -37,11 +37,20 @@
     </template>
     <template if:false={isLogg}>
         <div class="container container-col-main skjema-max-width">
-            <c-alert-banner 
+            <div if:true={isIPS}>
+                <c-alert-banner 
                 type="Info"
-                size="L"
-                message ="Du har ingen registrerte samtalereferat.">
+                size="M"
+                message ="Du har ingen registrerte telefonreferat.">
             </c-alert-banner>
+            </div>
+            <div if:false={isIPS}>
+                <c-alert-banner 
+                type="Info"
+                size="M"
+                message ="Din jobbspesialist har ikke lagt inn referat fra telefonsamtaler med deg.">
+            </c-alert-banner>
+            </div>
         </div>
     </template>
 </template>
