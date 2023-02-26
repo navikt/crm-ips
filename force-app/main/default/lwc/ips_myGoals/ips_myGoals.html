@@ -11,23 +11,30 @@
                 <img class="illustrasjon"
                 src={myGoalImg}
                 alt="Viser ikon for liste"
-                />Oversikt over dine gjennomførte delmål
+                />Oversikt over gjennomførte delmål
             </h2>
             <form class="form-control">
                 <template for:each={goalRecords} for:item="goal" >
                     <div key={goal.Id} class="container-light container-col-goals skjema-max-width">
                         <c-readmore label={goal.Subject} >
-                                <label tabindex="0">Dato lukket</label>
+                                <label tabindex="0">Periode</label>
                                 <p tabindex="0">
+                                    <lightning-formatted-date-time 
+                                            value={goal.CreatedDate} 
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                    </lightning-formatted-date-time>
+                                    &nbsp;-&nbsp; 
                                     <lightning-formatted-date-time 
                                             value={goal.CompletedDateTime} 
                                             year="numeric"
                                             month="2-digit"
-                                            day="2-digit"
-                                            weekday="long">
+                                            day="2-digit">
                                     </lightning-formatted-date-time>
+                                    
                                 </p>
-                                <label tabindex="0">Beskrivelse av gjennomført delmål</label>
+                                <label tabindex="0">Beskrivelse</label>
                                 <p tabindex="0">{goal.Description}</p>                           
                         </c-readmore>
                     </div>
@@ -41,14 +48,14 @@
                 <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Når delmålet ditt er avsluttet, vil den dukke opp her.">
+                message ="Det er ikke registrert gjennomførte delmål.">
             </c-alert-banner>
             </div>
             <div if:false={isIPS}>
                 <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Du har ingen gjennomførte delmål ennå.">
+                message ="Det er ikke registrert gjennomførte delmål.">
             </c-alert-banner>
             </div>
         </div>

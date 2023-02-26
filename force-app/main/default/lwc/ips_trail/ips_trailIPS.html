@@ -20,7 +20,7 @@
             
         
                 <template if:true={isGoal}>
-                    <div class="container container-col-light container-col-goals skjema-max-width">
+                    <div class="container container-col-light container-col-meeting skjema-max-width">
                     <form class="form-control">
                         <h2>
                             <img class="illustrasjon"
@@ -38,7 +38,7 @@
                                             year="numeric"
                                             month="2-digit"
                                             day="2-digit"
-                                            weekday="long">
+                                            weekday="short">
                                     </lightning-formatted-date-time>
                                 </p>
                                 <label tabindex="0">Beskrivelse av delmålet</label>
@@ -63,7 +63,7 @@
                             <p tabindex="0">Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover.</p>
                             <template if:true={isActivity} for:each={activityPartRecord} for:item="part">
                                 <c-readmore key={part.Id} label={part.IPS_subjectAndDate__c} >                                
-                                    <label>Tid fra</label>
+                                    <label>Tidspunkt</label>
                                     <p>
                                         <lightning-formatted-date-time 
                                             value={part.IPS_timeFrom__c} 
@@ -72,9 +72,7 @@
                                             hour12={isTwelveHours} 
                                             time-zone="UTC">
                                         </lightning-formatted-date-time>
-                                    </p>
-                                    <label>Tid til</label>
-                                    <p>
+                                        &nbsp;-&nbsp;
                                         <lightning-formatted-date-time 
                                             value={part.IPS_timeTo__c} 
                                             hour="2-digit" 
@@ -124,7 +122,7 @@
                 </template>
 
                 <template if:true={isJob}>
-                    <div class="container container-col-light container-col-job skjema-max-width">
+                    <div class="container container-col-light container-col-meeting skjema-max-width">
                         <form class="form-control">
                             <h2>
                                 <img class="illustrasjon"
@@ -135,7 +133,7 @@
                             <p tabindex="0">Viser jobben du er i nå.</p>
                             <template for:each={jobsRecord} for:item="job">
                                 <c-readmore key={job.Id} label={job.IPS_jobSubject__c}>
-                                    <label>Startdato</label>
+                                    <label>Periode</label>
                                     <p>
                                         <lightning-formatted-date-time 
                                             value={job.ips_Start_Date__c}
@@ -143,9 +141,7 @@
                                             month="2-digit"
                                             day="2-digit">
                                         </lightning-formatted-date-time>
-                                    </p>
-                                    <label>Sluttdato</label>
-                                    <p>
+                                        &nbsp;-&nbsp;
                                         <lightning-formatted-date-time 
                                             value={job.ips_End_Date__c}
                                             year="numeric"
@@ -153,7 +149,7 @@
                                             day="2-digit">
                                         </lightning-formatted-date-time>
                                     </p>
-                                    <label>Antall timer</label>
+                                    <label>Antall timer per uke</label>
                                     <p>{job.ips_Number_of_hours__c}</p>
                                     <label>Arbeidsform</label>
                                     <p>{job.ips_Form_of_Employment__c}</p>
@@ -168,7 +164,7 @@
                 </template>
 
                 <template if:true={isTraining}>
-                    <div class="container container-col-light container-col-trening skjema-max-width">
+                    <div class="container container-col-light container-col-meeting skjema-max-width">
                         <form class="form-control">
                             <h2>
                                 <img class="illustrasjon"
@@ -179,7 +175,7 @@
                             <p tabindex="0">Viser arbeidstreningen du er i nå.</p>
                             <template for:each={trainingRecord} for:item="train">
                                 <c-readmore key={train.Id} label={train.IPS_jobSubject__c}>                                
-                                    <label>Startdato</label>
+                                    <label>Periode</label>
                                     <p>
                                         <lightning-formatted-date-time 
                                             value={train.ips_Start_Date__c}
@@ -187,9 +183,7 @@
                                             month="2-digit"
                                             day="2-digit">
                                         </lightning-formatted-date-time>
-                                    </p>
-                                    <label>Sluttdato</label>
-                                    <p>
+                                        &nbsp;-&nbsp;
                                         <lightning-formatted-date-time 
                                             value={train.ips_End_Date__c}
                                             year="numeric"
@@ -197,7 +191,7 @@
                                             day="2-digit">
                                         </lightning-formatted-date-time>
                                     </p>
-                                    <label>Antall timer</label>
+                                    <label>Antall timer i uken</label>
                                     <p>{train.ips_Number_of_hours__c}</p>
                                     <label>Arbeidsoppgaver</label>
                                     <p>{IPS_UO_Stillingsbeskrivelse__c}</p>
@@ -210,7 +204,7 @@
                 </template>
 
                 <template if:true={isEducation}>
-                    <div class="container container-col-light container-col-edu skjema-max-width">
+                    <div class="container container-col-light container-col-meeting skjema-max-width">
                         <form class="form-control">
                             <h2>
                                 <img class="illustrasjon"
@@ -223,7 +217,7 @@
                                 <c-readmore key={edu.Id} label={edu.Name}>                                
                                     <label>Navn på utdanningsinstitusjon</label>
                                     <p>{edu.ips_Name_of_the_Education_Institution__c}</p>
-                                    <label>Startdato</label>
+                                    <label>Periode</label>
                                     <p>
                                         <lightning-formatted-date-time 
                                             value={edu.ips_Start_Date__c}
@@ -231,9 +225,7 @@
                                             month="2-digit"
                                             day="2-digit">
                                         </lightning-formatted-date-time>
-                                    </p>
-                                    <label>Sluttdato</label>
-                                    <p>
+                                        &nbsp;-&nbsp;
                                         <lightning-formatted-date-time 
                                             value={edu.ips_End_Date__c}
                                             year="numeric"
@@ -366,7 +358,7 @@
             <form class="form-control">
                 <p>Her finner du oversikt over dine fullførte delmål, deltakelse i arbeidstrening, jobb eller opplæring som er avsluttet, fullførte møter og referater fra telefonsamtaler du har hatt med jobbspesialisten.</p>
             </form>
-            <div class="container container-col-ref">
+            <div class="container container-col-goals">
                 <c-linkTile
                     link-header="Gjennomførte telefonsamtaler"
                     navigation-address="ips_my_logs__c"
@@ -374,7 +366,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container container-col-meeting">
+            <div class="container container-col-goals">
                 <c-linkTile
                     link-header="Avsluttede møter"
                     navigation-address="ips_my_meetings__c"
@@ -390,7 +382,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container container-col-job">
+            <div class="container container-col-goals">
                 <c-linkTile
                     link-header="Avsluttede jobber"
                     navigation-address="ips_my_jobs__c"
@@ -398,7 +390,7 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container container-col-trening">
+            <div class="container container-col-goals">
                 <c-linkTile
                     link-header="Avsluttede arbeidstreninger"
                     navigation-address="ips_my_worktrainings__c"
@@ -406,9 +398,9 @@
                 >
                 </c-linkTile>
             </div>
-            <div class="container container-col-edu">
+            <div class="container container-col-goals">
                 <c-linkTile
-                    link-header="Avsluttede opplæringsløp"
+                    link-header="Avsluttede utdanning og kurs"
                     navigation-address="ips_my_educations__c"
                     custom-text-style="padding: 1rem; "
                 >
@@ -421,7 +413,7 @@
         <form>
             <c-alert-banner 
                 type="Info"
-                size="L"
+                size="M"
                 message ="Du må være aktiv deltaker i et av arbeidsmarkedstiltakene IPS eller Utvidet oppfølging for å kunne se denne siden">
             </c-alert-banner>
         </form>

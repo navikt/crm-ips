@@ -8,6 +8,7 @@ public with sharing class IPS_myActivityController {
         userGoal =[
             SELECT 
                 id,
+                CreatedDate,
                 ActivityDate,
                 ips_Due_Date_Time__c,
                 Subject,
@@ -31,6 +32,7 @@ public with sharing class IPS_myActivityController {
             SELECT 
                 id,
                 ActivityDate,
+                CreatedDate,
                 CompletedDateTime,
                 ips_Due_Date_Time__c,
                 Subject,
@@ -76,6 +78,7 @@ public with sharing class IPS_myActivityController {
             SELECT 
                 id,
                 ActivityDate,
+                CreatedDate,
                 Subject,
                 IPS_subjectAndDate__c,
                 Type_of_Task_IPSUO__c,
@@ -103,6 +106,7 @@ public with sharing class IPS_myActivityController {
             SELECT 
                 id,
                 ActivityDate,
+                CreatedDate,
                 ips_Due_Date_Time__c,
                 Subject,
                 IPS_subjectAndDate__c,
@@ -126,6 +130,7 @@ public with sharing class IPS_myActivityController {
             SELECT 
                 id,
                 Subject,
+                CreatedDate,
                 Location,
                 IPS_subjectAndDate__c, 
                 ActivityDate,
@@ -156,6 +161,7 @@ public with sharing class IPS_myActivityController {
             SELECT 
                 id,
                 Subject,
+                CreatedDate,
                 Location, 
                 IPS_subjectAndDate__c,
                 ActivityDate,

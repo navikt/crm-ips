@@ -1,10 +1,20 @@
 <template>
+    <template if:true={isIPS} >
     <div class="my-breadcrumbs container container-col-main skjema-max-width">
         <lightning-breadcrumbs>
             <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
-            <lightning-breadcrumb label="ditt utdanningsløp" name="ips_my_educations__c"></lightning-breadcrumb>
+            <lightning-breadcrumb label="din utdanning" name="ips_my_educations__c"></lightning-breadcrumb>
         </lightning-breadcrumbs>
     </div>
+    </template>
+    <template if:false={isIPS}>
+    <div class="my-breadcrumbs container container-col-main skjema-max-width">
+        <lightning-breadcrumbs>
+            <lightning-breadcrumb label="Hjem" name="Home" onclick={navigateToPage}></lightning-breadcrumb>
+            <lightning-breadcrumb label="ditt opplæringsløp" name="ips_my_educations__c"></lightning-breadcrumb>
+        </lightning-breadcrumbs>
+    </div>
+    </template>
     
     <template if:true={isEducation}>
         <div class="container container-col-main skjema-max-width">
@@ -20,7 +30,7 @@
                         <c-readmore label={edu.Name}>                                
                             <label>Navn på utdanningsinstitusjon</label>
                             <p>{edu.ips_Name_of_the_Education_Institution__c}</p>
-                            <label>Startdato</label>
+                            <label>Periode</label>
                             <p>
                                 <lightning-formatted-date-time 
                                     value={edu.ips_Start_Date__c}
@@ -28,9 +38,7 @@
                                     month="2-digit"
                                     day="2-digit">
                                 </lightning-formatted-date-time>
-                            </p>
-                            <label>Sluttdato</label>
-                            <p>
+                            &nbsp;-&nbsp;
                                 <lightning-formatted-date-time 
                                     value={edu.ips_End_Date__c}
                                     year="numeric"
@@ -51,23 +59,23 @@
                 </template>
             </form>
         </div>
-    </template>
+   </template>
     <template if:false={isEducation}>
         <div class="container container-col-main skjema-max-width">
             <div if:true={isIPS}>
                 <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Når du har avsluttet kurs/utdanning, vil den dukke opp her.">
+                message ="Det har ikke vært registrert et opplæringsløp i ditt jobbspor. Når det registreres et opplæringsløp, og dette avsluttes, vil det bli synlig her.">
             </c-alert-banner>
             </div>
             <div if:false={isIPS}>
                 <c-alert-banner 
                 type="Info"
                 size="M"
-                message ="Det har ikke vært registrert et opplæringsløp i handlingsplanen i ditt jobbspor tidligere. Når det registreres et opplæringsløp, og dette avsluttes, vil det dukke opp her.">
+                message ="Det har ikke vært registrert et opplæringsløp i ditt jobbspor. Når det registreres et opplæringsløp, og dette avsluttes, vil det bli synlig her.">
             </c-alert-banner>
             </div>
         </div>
-    </template>    
+    </template>
 </template>
