@@ -1,4 +1,4 @@
-public with sharing class IPS_myActivityController {
+public without sharing class IPS_myActivityController {
     
     /* All open goals that is connected with worktrail */
     @AuraEnabled(cacheable = true)    
@@ -10,7 +10,6 @@ public with sharing class IPS_myActivityController {
                 id,
                 CreatedDate,
                 ActivityDate,
-                ips_Due_Date_Time__c,
                 Subject,
                 Description,
                 Status
@@ -34,7 +33,6 @@ public with sharing class IPS_myActivityController {
                 ActivityDate,
                 CreatedDate,
                 CompletedDateTime,
-                ips_Due_Date_Time__c,
                 Subject,
                 Type_of_Task_IPSUO__c,
                 Description,
@@ -100,6 +98,7 @@ public with sharing class IPS_myActivityController {
                 AND WhatId = :workTrailId 
                 AND WhoId= :contactId 
                 AND IPS_Type__c ='Meeting with Employer'
+                AND IPS_Status1__c ='Open'
             ORDER BY ActivityDate DESC
         ];
         return emplActivity;
@@ -128,6 +127,7 @@ public with sharing class IPS_myActivityController {
                 ActivityDate >=: todaysDate 
                 AND WhatId = :workTrailId 
                 AND IPS_Type__c ='Meeting with Participant'
+                AND IPS_Status1__c ='Open'
             ORDER BY ActivityDate DESC
         ];
         return userActivity;
