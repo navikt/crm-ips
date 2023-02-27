@@ -1,4 +1,4 @@
-public with sharing class IPS_myWorkTrailController {
+public without sharing class IPS_myWorkTrailController {
 
     @AuraEnabled(cacheable = true)
     public static List<work_trail__c> getUserWorkTrailId(String userId) {
