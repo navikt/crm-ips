@@ -30,10 +30,8 @@ wiredtrail({ error, data }) {
     userJob({error,data}){
        if(data){
         if(data.length>0){
-            console.log(data);
             this.jobRecords = data;
             this.isJobber = true;
-            console.log(this.isJobber);
         }
        }else if(error){
            console.log('An error has ocurred');
