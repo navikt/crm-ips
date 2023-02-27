@@ -90,7 +90,7 @@ public with sharing class IPS_myActivityController {
             WHERE WhatId = :workTrailId 
             AND Type_of_Task_IPSUO__c ='Logg kontakt'  
             AND Samtalereferat__c = true
-            AND Status ='Fullført'
+            AND Status ='Completed'
             ORDER BY ActivityDate DESC
         ];
         return userGoal;
