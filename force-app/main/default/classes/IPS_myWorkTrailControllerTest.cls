@@ -169,7 +169,7 @@ public class IPS_myWorkTrailControllerTest {
         
         Test.startTest();
             List<Task>  goalList = IPS_myActivityController.getParticipantsGoals(trailIPS.id);
-            System.assertEquals(true,goalList.isEmpty() , 'List should not be empty');
+            System.assertEquals(false,goalList.isEmpty() , 'List should not be empty');
             List<Task>  allgoalsList = IPS_myActivityController.getAllGoals(taskGoal.id);
             System.assertEquals(true,allgoalsList.isEmpty() , 'List should not be empty');
         	List<Task>  kontaktList = IPS_myActivityController.getParticipantsLogs(trailIPS.id);
