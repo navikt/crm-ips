@@ -146,7 +146,6 @@ public with sharing class IPS_myActivityController {
                 ActivityDate >=: todaysDate  
                 AND WhatId = :workTrailId 
                 AND WhoId= :contactId 
-                AND IsVisibleInSelfService__c =true 
                 AND IPS_Type__c ='Meeting with Employer'
             ORDER BY ActivityDate DESC
         ];
@@ -175,7 +174,6 @@ public with sharing class IPS_myActivityController {
             WHERE 
                 ActivityDate >=: todaysDate 
                 AND WhatId = :workTrailId 
-                AND IsVisibleInSelfService__c =true 
                 AND IPS_Type__c ='Meeting with Participant'
             ORDER BY ActivityDate DESC
         ];
