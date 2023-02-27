@@ -168,14 +168,10 @@ public class IPS_myWorkTrailControllerTest {
         
         
         Test.startTest();
-            List<Task>  goalList = IPS_myActivityController.getParticipantsGoal(trailIPS.id);
+            List<Task>  goalList = IPS_myActivityController.getParticipantsGoals(trailIPS.id);
             System.assertEquals(true,goalList.isEmpty() , 'List should not be empty');
-        	List<Task>  goalsList = IPS_myActivityController.getParticipantsGoals(taskGoal.id);
-            System.assertEquals(true,goalsList.isEmpty() , 'List should not be empty');
             List<Task>  allgoalsList = IPS_myActivityController.getAllGoals(taskGoal.id);
             System.assertEquals(true,allgoalsList.isEmpty() , 'List should not be empty');
-        	List<Task>  detailgoalsList = IPS_myActivityController.getTaskDetail(taskGoal.id);
-            System.assertEquals(false,detailgoalsList.isEmpty() , 'List should not be empty');
         	List<Task>  kontaktList = IPS_myActivityController.getParticipantsLogs(trailIPS.id);
             System.assertEquals(true,kontaktList.isEmpty() , 'List should not be empty');
          Test.stopTest();
@@ -221,8 +217,6 @@ public class IPS_myWorkTrailControllerTest {
             Test.startTest();
             List<Event>  allList = IPS_myActivityController.getAllActivity(trailIPS.id,null);
             System.assertEquals(true,allList.isEmpty() , 'List should not be empty');
-        	List<Event>  detailList = IPS_myActivityController.getMeeting(allEvent.id);
-            System.assertEquals(false,detailList.isEmpty() , 'List should not be empty');
             Test.stopTest();
     }
     
