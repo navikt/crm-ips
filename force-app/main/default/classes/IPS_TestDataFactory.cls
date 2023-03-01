@@ -27,6 +27,7 @@ public with sharing class IPS_TestDataFactory {
         trail.ips_Status__c = 'Referred';
         trail.ips_Passive__c = false;
         trail.IPS_Partticipant_phone_number__c = '987 65 432';
+        trail.IPS_Participants_home_address__c='Storgata 1';
         return trail;
     }
 
@@ -51,7 +52,7 @@ public with sharing class IPS_TestDataFactory {
         return createEvent;
     }
 
-    public static Event createEmployerEventWithParticipant(String employerId, String participantId, String jobbsporId) {
+    public static Event createEmployerEventWithParticipant(String employerId, String participantId, String jobbsporId, Id ownerId) {
         Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
 
         Event createEvent = new Event(
@@ -68,7 +69,10 @@ public with sharing class IPS_TestDataFactory {
             ips_Subcategory_Type__c = 'Job support',
             IPS_Subcategory_Type_UO__c = 'Follow-up',
             F_rste_arbeidsgiverm_te__c = 'Nei',
-            ips_Completed__c = true
+            RelatedToAccount__c=employerId,
+            ips_Completed__c = true,
+            OwnerId=ownerId,
+            Location='Kontoret'
         );
         return createEvent;
     }
@@ -126,5 +130,24 @@ public with sharing class IPS_TestDataFactory {
             ips_What_did_work_at_the_workplace__c ='Fungerte'
         );
         return createJob;
+    }
+
+    public static User createInternalUserWithManager(String username, Id managerId){
+        Profile platformProfile=[SELECT Id FROM Profile WHERE Name='Standard Platform User' LIMIT 1];
+
+        User platformUser=new User();
+        platformUser.FirstName='User';
+        platformUser.LastName='Test';
+        platformUser.Email=username;
+        platformUser.UserName=username;
+        platformUser.ProfileId=platformProfile.Id;
+        platformUser.CRM_Nav_Ident__c='A123456';
+        platformUser.Alias='plattest';
+        platformUser.TimeZoneSidKey='Europe/Paris';
+        platformUser.LocaleSidKey='no_NO';
+        platformUser.EmailEncodingKey='ISO-8859-1';
+        platformUser.LanguageLocaleKey='no';
+        platformUser.ManagerId=managerId;
+        return platformUser;
     }
 }
