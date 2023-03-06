@@ -70,20 +70,22 @@
                                 <c-readmore key={part.Id} label={part.IPS_subjectAndDate__c} >                                
                                     <label>Tidspunkt</label>
                                     <p>
-                                        <lightning-formatted-date-time 
-                                            value={part.IPS_timeFrom__c} 
+                                    <lightning-formatted-date-time
+                                            value={part.StartDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
                                             hour12={isTwelveHours} 
-                                            time-zone="UTC">
+                                            time-zone="Europe/Paris"
+                                           >
                                         </lightning-formatted-date-time>
                                         &nbsp;-&nbsp;
                                         <lightning-formatted-date-time 
-                                            value={part.IPS_timeTo__c} 
+                                            value={part.EndDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
                                             hour12={isTwelveHours} 
-                                            time-zone="UTC">
+                                            time-zone="Europe/Paris"
+                                            >
                                         </lightning-formatted-date-time>
                                     </p>
                                     <label>Sted</label>
@@ -96,22 +98,22 @@
                                 <c-readmore key={emp.Id} label={emp.IPS_subjectAndDate__c} >                                
                                     <label>Tid fra</label>
                                     <p>
-                                        <lightning-formatted-date-time 
-                                            value={emp.IPS_timeFrom__c} 
+                                        <lightning-formatted-date-time
+                                            value={emp.StartDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
-                                            hour12={isTwelveHours}  
-                                            time-zone="UTC">
+                                            hour12={isTwelveHours} 
+                                            time-zone="Europe/Paris"
+                                           >
                                         </lightning-formatted-date-time>
-                                    </p>
-                                    <label>Tid til</label>
-                                    <p>
+                                        &nbsp;-&nbsp;
                                         <lightning-formatted-date-time 
-                                            value={emp.IPS_timeTo__c} 
+                                            value={emp.EndDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
-                                            hour12={isTwelveHours}  
-                                            time-zone="UTC">
+                                            hour12={isTwelveHours} 
+                                            time-zone="Europe/Paris"
+                                            >
                                         </lightning-formatted-date-time>
                                     </p>
                                     <label>Sted</label>
@@ -371,7 +373,7 @@
         <form>
             <c-alert-banner 
                 type="Info"
-                size="L"
+                size="M"
                 message ="Du må være aktiv deltaker i et av arbeidsmarkedstiltakene IPS eller Utvidet oppfølging for å kunne se denne siden">
             </c-alert-banner>
         </form>
