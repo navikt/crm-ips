@@ -114,6 +114,8 @@ public without sharing class IPS_myActivityController {
                 Subject,
                 CreatedDate,
                 Location, 
+                EndDateTime, 
+                StartDateTime,
                 IPS_subjectAndDate__c,
                 ActivityDate,
                 ActivityDateTime,

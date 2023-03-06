@@ -15,10 +15,10 @@
                 <p tabindex="0">{ownerName}</p>
                 <label tabindex="0">Ditt hovedmål</label>
                 <p tabindex="0">{mainGoalList}</p>
+                
                 <label tabindex="0">Beskrivelse av ditt mål</label>
                 <p tabindex="0">{mainGoal}</p>
-            
-        
+
                 <template if:true={isGoal}>
                     <div class="container container-col-light container-col-meeting skjema-max-width">
                     <form class="form-control">
@@ -60,53 +60,58 @@
                                     />Dine planlagte møter
                                 </h2>
                             </div>                         
-                            <p tabindex="0">Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover.</p>
+                            <p tabindex="0">Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover hva skjer.</p>
                             <template if:true={isActivity} for:each={activityPartRecord} for:item="part">
                                 <c-readmore key={part.Id} label={part.IPS_subjectAndDate__c} >                                
                                     <label>Tidspunkt</label>
                                     <p>
-                                        <lightning-formatted-date-time 
-                                            value={part.IPS_timeFrom__c} 
+                                        <lightning-formatted-date-time
+                                            value={part.StartDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
                                             hour12={isTwelveHours} 
-                                            time-zone="UTC">
+                                            time-zone="Europe/Paris"
+                                           >
                                         </lightning-formatted-date-time>
                                         &nbsp;-&nbsp;
                                         <lightning-formatted-date-time 
-                                            value={part.IPS_timeTo__c} 
+                                            value={part.EndDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
                                             hour12={isTwelveHours} 
-                                            time-zone="UTC">
+                                            time-zone="Europe/Paris"
+                                            >
                                         </lightning-formatted-date-time>
                                     </p>
                                     <label>Sted</label>
                                      <p>{part.Location}</p>
                                     <label>Agenda</label>
-                                    <p>{part.Description}</p>
+                                        <p>
+                                        
+                                            {part.Description}
+                                    </p>
                                 </c-readmore>
                             </template>
                             <template if:true={isEmployer} for:each={activityEmplRecord} for:item="emp">
                                 <c-readmore key={emp.Id} label={emp.IPS_subjectAndDate__c} >                                
                                     <label>Tid fra</label>
                                     <p>
-                                        <lightning-formatted-date-time 
-                                            value={emp.IPS_timeFrom__c} 
+                                        <lightning-formatted-date-time
+                                            value={emp.StartDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
-                                            hour12={isTwelveHours}  
-                                            time-zone="UTC">
+                                            hour12={isTwelveHours} 
+                                            time-zone="Europe/Paris"
+                                           >
                                         </lightning-formatted-date-time>
-                                    </p>
-                                    <label>Tid til</label>
-                                    <p>
+                                        &nbsp;-&nbsp;
                                         <lightning-formatted-date-time 
-                                            value={emp.IPS_timeTo__c} 
+                                            value={emp.EndDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
-                                            hour12={isTwelveHours}  
-                                            time-zone="UTC">
+                                            hour12={isTwelveHours} 
+                                            time-zone="Europe/Paris"
+                                            >
                                         </lightning-formatted-date-time>
                                     </p>
                                     <label>Sted</label>
