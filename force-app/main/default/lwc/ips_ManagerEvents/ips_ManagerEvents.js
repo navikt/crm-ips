@@ -4,7 +4,7 @@ import getEventList from '@salesforce/apex/ips_ManagerEventController.getEventsF
 export default class Ips_ManagerEvents extends LightningElement {
 
     @track columns = [
-        { label: 'Medarbeider', fieldName: 'employeeName', type: 'text', sortable: true },
+        { label: 'Jobbspesialist', fieldName: 'employeeName', type: 'text', sortable: true },
         { label: 'Tid', fieldName: 'startTime', type: 'text'},
         { label: 'Emne', fieldName: 'subject', type: 'text' },
         { label: 'Sted', fieldName: 'location', type: 'text'},
