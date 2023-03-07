@@ -1,22 +1,21 @@
 public without sharing class IPS_ManagerEventController {
     
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerEvent> getEventsForCurrentWeek(){
         List<IPS_ManagerEvent> managerEvents=new List<IPS_ManagerEvent>();
         Set<Id> workTrailIds=new Set<Id>();
         DateTime startTime=getWeekStart(date.today());
         DateTime endTime=getWeekStart(date.today().addDays(7));
-        for(Event employeeEvent:[SELECT WhatId, Subject, Owner.Name, Location, StartDateTime FROM Event WHERE OwnerId in: getMyEmployeesUserId() AND StartDateTime>:startTime AND StartDateTime<:endTime AND WhatID!=null ORDER BY StartDateTime, OwnerId ]){
-            String test=employeeEvent.WhatID;
-            String test2='';
+        for(Event employeeEvent:[SELECT Id, WhatId, Subject, Owner.Name, Location, StartDateTime FROM Event WHERE OwnerId in: getMyEmployeesUserId() AND StartDateTime>:startTime AND StartDateTime<:endTime AND WhatID!=null ORDER BY StartDateTime, OwnerId ]){
             if(employeeEvent.WhatID.getSObjectType().getDescribe().getName()=='Work_Trail__c'){
                 IPS_ManagerEvent managerEvent=new IPS_ManagerEvent();
+                managerEvent.eventId=employeeEvent.Id;
                 managerEvent.employeeName=employeeEvent.Owner.Name;
                 managerEvent.subject=employeeEvent.Subject;
                 managerEvent.location=employeeEvent.Location;
                 managerEvent.workTrailId=employeeEvent.WhatId;
                 Datetime eventTime=employeeEvent.StartDateTime;
-                managerEvent.startTime=eventTime.day() + '.' + eventTime.month() + ' ' + eventTime.hour() + ':' + eventTime.minute();
+                managerEvent.startTime=eventTime.format('dd') + '.' + eventTime.format('MM') + '.' + eventTime.format('yyyy')  + ' ' + eventTime.format('HH') + ':' + eventTime.format('mm');
                 managerEvents.add(managerEvent);
 
                 workTrailIds.add(employeeEvent.WhatId);
