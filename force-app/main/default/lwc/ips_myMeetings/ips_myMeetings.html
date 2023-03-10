@@ -17,23 +17,24 @@
                 <template for:each={activityRecords} for:item="met" >
                     <div key={met.Id} class="container-light container-col-meeting skjema-max-width">
                         <c-readmore label={met.IPS_subjectAndDate__c} >
-                                <label tabindex="0">Tidspunkt</label>
+                                <label tabindex="0">Tidspunkt </label>
+                                
                                 <p tabindex="0">
-                                    <lightning-formatted-date-time 
-                                            value={met.IPS_timeFrom__c} 
+                                    <lightning-formatted-date-time
+                                            value={met.StartDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
                                             hour12={isTwelveHours} 
-                                            time-zone="UTC">
-                                    </lightning-formatted-date-time>
-                                    &nbsp;-&nbsp;
-                                    <lightning-formatted-date-time 
-                                            value={met.IPS_timeTo__c} 
+                                           >
+                                        </lightning-formatted-date-time>
+                                        &nbsp;-&nbsp;
+                                        <lightning-formatted-date-time 
+                                            value={met.EndDateTime} 
                                             hour="2-digit" 
                                             minute="2-digit" 
                                             hour12={isTwelveHours} 
-                                            time-zone="UTC">
-                                    </lightning-formatted-date-time>
+                                            >
+                                        </lightning-formatted-date-time>
                                 </p>
                                 <label>Sted</label>
                                 <p>{met.Location}</p>
