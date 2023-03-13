@@ -44,9 +44,6 @@
     <columns>
         <field>ASSIGNED</field>
     </columns>
-    <columns>
-        <field>Activity.IPS_Status1__c</field>
-    </columns>
     <filter>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -73,6 +70,11 @@
     </filter>
     <format>Summary</format>
     <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.IPS_Status1__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
         <field>DUE_DATE</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
@@ -84,7 +86,7 @@
     <name>Arbeidsgivermøter siste 7 dager</name>
     <params>
         <name>closed</name>
-        <value>closed</value>
+        <value>all</value>
     </params>
     <params>
         <name>type</name>
@@ -95,7 +97,7 @@
         <value>1</value>
     </params>
     <reportType>Activity</reportType>
-    <scope>team</scope>
+    <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>false</showSubTotals>
