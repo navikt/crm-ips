@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Redirect</name>
-        <label>Redirect</label>
-        <locationX>314</locationX>
-        <locationY>1574</locationY>
-        <actionName>c:IPS_redirect</actionName>
-        <actionType>component</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>recordId</name>
-            <value>
-                <elementReference>Get_existing.Id</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
         <locationX>1106</locationX>
-        <locationY>2054</locationY>
+        <locationY>2174</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
-        <connector>
-            <targetReference>updateWorkTrailName_0_0</targetReference>
-        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
@@ -39,11 +20,11 @@
     <assignments>
         <name>AddAge</name>
         <label>AddAge</label>
-        <locationX>644</locationX>
+        <locationX>512</locationX>
         <locationY>1118</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <elementReference>varAddParticipantAge</elementReference>
             </value>
@@ -55,13 +36,29 @@
     <assignments>
         <name>addAge1</name>
         <label>addAge</label>
-        <locationX>908</locationX>
+        <locationX>1040</locationX>
         <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <elementReference>adjustfor100</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_existing</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addAge2</name>
+        <label>addAge</label>
+        <locationX>776</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantAge</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varAddParticipantAge</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -125,7 +122,7 @@
         </defaultConnector>
         <defaultConnectorLabel>ageOK</defaultConnectorLabel>
         <rules>
-            <name>isAgeAdded</name>
+            <name>isAgeUnder18</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>varAddParticipantAge</leftValueReference>
@@ -144,7 +141,29 @@
             <connector>
                 <targetReference>varAlertAddedAge</targetReference>
             </connector>
-            <label>isAgeAdded</label>
+            <label>isAgeUnder18</label>
+        </rules>
+        <rules>
+            <name>IsAgeOver18AndAdded</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>participantsAge</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>varAddParticipantAge</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>18.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addAge2</targetReference>
+            </connector>
+            <label>IsAgeOver18AndAdded</label>
         </rules>
     </decisions>
     <decisions>
@@ -167,7 +186,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Redirect</targetReference>
+                <targetReference>alertIsExisting</targetReference>
             </connector>
             <label>Exists</label>
         </rules>
@@ -275,7 +294,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <formulas>
         <name>varWorkTrailName</name>
         <dataType>String</dataType>
-        <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetail.INT_FirstName__c}&amp;&apos; &apos;&amp;{!getPersonDetail.INT_LastName__c}</expression>
+        <expression>&apos;Jobbsporet - &apos;&amp;{!Get_Participant_Details.FirstName}&amp;&apos; &apos;&amp;{!Get_Participant_Details.LastName}</expression>
     </formulas>
     <interviewLabel>New Worktrail {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - opprett nytt jobbspor for deltaker IPS</label>
@@ -337,7 +356,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <locationY>1934</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>Redirect_0_0</targetReference>
+            <targetReference>updateWorkTrailName_0_0</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -585,7 +604,10 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>updateWorkTrailName_0_0</name>
         <label>updateWorkTrailName</label>
         <locationX>1106</locationX>
-        <locationY>2174</locationY>
+        <locationY>2054</locationY>
+        <connector>
+            <targetReference>Redirect_0_0</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -604,6 +626,27 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
+        <name>alertIsExisting</name>
+        <label>alertIsExisting</label>
+        <locationX>314</locationX>
+        <locationY>1574</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>displayTitle</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>isExisting</name>
+            <fieldText>&lt;p&gt;Deltaker er allerede registrert med ett aktivt jobbspor.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>confidentialScreen</name>
         <label>confidentialScreen</label>
         <locationX>50</locationX>
@@ -618,7 +661,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         </fields>
         <fields>
             <name>displaytxt</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet konfidensialitet.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -820,7 +863,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>diplayLeapYearTxt</name>
-                    <fieldText>&lt;p&gt;Deltaker kommer ut med ingen alder kalkulering.&lt;/p&gt;&lt;p&gt;Deltaker kan være født i skuddår.&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Kan ikke kalkulere alder på deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker kan være født i skuddår eller ha ett D-nummer.&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -860,7 +903,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>toYoung</name>
-                    <fieldText>&lt;p&gt;Deltaker er under 18 år.&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Deltaker er under 18 år.&lt;/strong&gt;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -873,7 +916,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
                     <fieldType>InputField</fieldType>
                     <isRequired>true</isRequired>
                     <validationRule>
-                        <errorMessage>&lt;p&gt;Du må verifisere at skriftlig samtykke foreligger&lt;/p&gt;</errorMessage>
+                        <errorMessage>&lt;p&gt;Du må verifisere at skriftlig samtykke foreligger.&lt;/p&gt;</errorMessage>
                         <formulaExpression>{!consentParentParticipant}</formulaExpression>
                     </validationRule>
                 </fields>
@@ -990,7 +1033,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <screens>
         <name>varAlertAddedAge</name>
         <label>varAlertAddedAge</label>
-        <locationX>644</locationX>
+        <locationX>512</locationX>
         <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
