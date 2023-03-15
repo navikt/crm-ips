@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Redirect</name>
-        <label>Redirect</label>
-        <locationX>578</locationX>
-        <locationY>1574</locationY>
-        <actionName>c:IPS_redirect</actionName>
-        <actionType>component</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>recordId</name>
-            <value>
-                <elementReference>Get_existing.Id</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>1370</locationX>
+        <locationX>1238</locationX>
         <locationY>2054</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
@@ -27,107 +11,82 @@
         <inputParameters>
             <name>recordId</name>
             <value>
-                <elementReference>Create_Worktrail_0</elementReference>
+                <elementReference>varWorkTrailId</elementReference>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>57.0</apiVersion>
     <assignments>
-        <name>setConsentValueFalse</name>
-        <label>setConsentValueFalse</label>
-        <locationX>545</locationX>
+        <name>addAgeAdded</name>
+        <label>addAgeAdded</label>
+        <locationX>842</locationX>
         <locationY>998</locationY>
         <assignmentItems>
-            <assignToReference>varConsent</assignToReference>
-            <operator>Assign</operator>
+            <assignToReference>varParticipantAge</assignToReference>
+            <operator>Add</operator>
             <value>
-                <booleanValue>false</booleanValue>
+                <elementReference>varAddParticipantAge</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>checkAgeAndConsent</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>setConsentValueTrue</name>
-        <label>setConsentValueTrue</label>
-        <locationX>809</locationX>
-        <locationY>998</locationY>
-        <assignmentItems>
-            <assignToReference>varConsent</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>consentParentParticipantUO</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>checkAgeAndConsent</targetReference>
-        </connector>
-    </assignments>
-    <decisions>
-        <name>checkAgeAndConsent</name>
-        <label>checkAgeAndConsent</label>
-        <locationX>677</locationX>
-        <locationY>1214</locationY>
-        <defaultConnector>
             <targetReference>Get_existing</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>isUnderWithoutConsent</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>adjustfor100</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <numberValue>18.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varConsent</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Consent</targetReference>
-            </connector>
-            <label>isUnderWithoutConsent</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <description>The consent part is not visible when participant is over 18 in screen flow. Even if the checkbox is default set to false it will not set false during runtime</description>
-        <name>checkAndSetConsent</name>
-        <label>checkAndSetConsent</label>
-        <locationX>677</locationX>
-        <locationY>878</locationY>
-        <defaultConnector>
-            <targetReference>setConsentValueTrue</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isLessThan18</defaultConnectorLabel>
-        <rules>
-            <name>isOver18</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>adjustfor100</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>18.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>setConsentValueFalse</targetReference>
-            </connector>
-            <label>isOver18</label>
-        </rules>
-    </decisions>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addAgeNotAdded</name>
+        <label>addAgeNotAdded</label>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantAge</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>adjustfor100</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>alertUnder18</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addAgeOK</name>
+        <label>addAgeOK</label>
+        <locationX>1106</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantAge</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>adjustfor100</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_existing</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addAgeUnderAndAdded</name>
+        <label>addAgeUnderAndAdded</label>
+        <locationX>578</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantAge</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varAddParticipantAge</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>alertUnder18</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
-        <locationX>363</locationX>
+        <locationX>380</locationX>
         <locationY>638</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
@@ -171,9 +130,85 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkIfAddedAge</name>
+        <label>checkIfAddedAge</label>
+        <locationX>710</locationX>
+        <locationY>878</locationY>
+        <defaultConnector>
+            <targetReference>addAgeOK</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>ageOK</defaultConnectorLabel>
+        <rules>
+            <name>isAgeUnder18</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>adjustfor100</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>adjustfor100</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>18.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addAgeNotAdded</targetReference>
+            </connector>
+            <label>isAgeUnder18</label>
+        </rules>
+        <rules>
+            <name>isAgeUnder18AndAdded</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>participantsAge</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>varAddParticipantAge</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>18.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addAgeUnderAndAdded</targetReference>
+            </connector>
+            <label>isAgeUnder18AndAdded</label>
+        </rules>
+        <rules>
+            <name>isAge18AndAdded</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>participantsAge</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>varAddParticipantAge</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>18.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addAgeAdded</targetReference>
+            </connector>
+            <label>isAge18AndAdded</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>1040</locationX>
+        <locationX>710</locationX>
         <locationY>1454</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
@@ -190,41 +225,16 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Redirect</targetReference>
+                <targetReference>alertIsExisting</targetReference>
             </connector>
             <label>Exists</label>
         </rules>
     </decisions>
     <decisions>
-        <name>isUserInformed</name>
-        <label>isUserInformed</label>
-        <locationX>1502</locationX>
-        <locationY>1694</locationY>
-        <defaultConnector>
-            <targetReference>displayUserWarning</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isNotInformed</defaultConnectorLabel>
-        <rules>
-            <name>isInformed</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Er_bruker_infomert</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Owner_Selected</targetReference>
-            </connector>
-            <label>isInformed</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>1106</locationX>
-        <locationY>1814</locationY>
+        <locationX>974</locationX>
+        <locationY>1694</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -245,7 +255,8 @@
             <label>ownerIsNotUser</label>
         </rules>
     </decisions>
-    <description>Nytt Jobbspor for Utvidet Oppfølging</description>
+    <description>Opprettelse av nytt Jobbspor for Utvidet Oppfølging</description>
+    <environments>Default</environments>
     <formulas>
         <name>adjustfor100</name>
         <dataType>Number</dataType>
@@ -274,7 +285,7 @@ VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},1,2))
 IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;= DATE( YEAR(TODAY()) , MONTH( TODAY() ) , DAY( TODAY() ) ),
      YEAR (Today()) - YEAR ( {!participantDOB}),
      YEAR (Today()) - YEAR ( {!participantDOB}) -1 ),
-  null)</expression>
+  0)</expression>
         <scale>0</scale>
     </formulas>
     <formulas>
@@ -296,8 +307,13 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;,{!getPersonDetails.INT_Phone1__c})</expression>
     </formulas>
+    <formulas>
+        <name>varWorkTrailName</name>
+        <dataType>String</dataType>
+        <expression>&apos;Jobbsporet - &apos;&amp;{!Get_Participant_Details.FirstName}&amp;&apos; &apos;&amp;{!Get_Participant_Details.LastName}</expression>
+    </formulas>
     <interviewLabel>Nytt Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Nytt Jobbspor UO</label>
+    <label>IPS - opprett nytt jobbspor for deltaker UO</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -320,8 +336,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>1106</locationX>
-        <locationY>2174</locationY>
+        <locationX>974</locationX>
+        <locationY>2054</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -352,25 +368,20 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1370</locationX>
-        <locationY>1934</locationY>
+        <locationX>1238</locationX>
+        <locationY>1814</locationY>
+        <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>Redirect_0_0</targetReference>
+            <targetReference>updateWorktrailName1</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
         <inputAssignments>
-            <field>IPS_Consent__c</field>
-            <value>
-                <elementReference>varConsent</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>IPS_Participant_age__c</field>
             <value>
-                <elementReference>adjustfor100</elementReference>
+                <elementReference>varParticipantAge</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -410,13 +421,13 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>842</locationX>
-        <locationY>1934</locationY>
+        <locationX>710</locationX>
+        <locationY>1814</locationY>
+        <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -424,15 +435,9 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
         <inputAssignments>
-            <field>IPS_Consent__c</field>
-            <value>
-                <elementReference>varConsent</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>IPS_Participant_age__c</field>
             <value>
-                <elementReference>adjustfor100</elementReference>
+                <elementReference>varParticipantAge</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -478,12 +483,11 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>1040</locationX>
+        <locationX>710</locationX>
         <locationY>1334</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -511,7 +515,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>Get_Participant_Details</name>
         <label>Get Participant Details</label>
-        <locationX>363</locationX>
+        <locationX>380</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -532,7 +536,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>363</locationX>
+        <locationX>380</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -555,7 +559,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>getPersonDetails</name>
         <label>getPersonDetails</label>
-        <locationX>363</locationX>
+        <locationX>380</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -573,35 +577,107 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <object>Person__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>updateWorktrailName</name>
+        <label>updateWorktrailName</label>
+        <locationX>710</locationX>
+        <locationY>2054</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>updateWorktrailName1</name>
+        <label>updateWorktrailName</label>
+        <locationX>1238</locationX>
+        <locationY>1934</locationY>
+        <connector>
+            <targetReference>Redirect_0_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
-        <name>Consent</name>
-        <label>Consent</label>
-        <locationX>314</locationX>
-        <locationY>1334</locationY>
-        <allowBack>true</allowBack>
+        <name>alertIsExisting</name>
+        <label>alertIsExisting</label>
+        <locationX>446</locationX>
+        <locationY>1574</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
-            <name>noConsent</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Deltaker er under 18, skriftilig samtykke fra foresatt(e) må foreligge.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <name>displayTitle5</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>isExisting</name>
+            <fieldText>&lt;p&gt;Deltaker er allerede registrert med ett aktivt jobbspor.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>displayUserWarning</name>
-        <label>displayUserWarning</label>
-        <locationX>1898</locationX>
-        <locationY>1814</locationY>
+        <name>alertUnder18</name>
+        <label>alertUnder18</label>
+        <locationX>314</locationX>
+        <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_existing</targetReference>
+        </connector>
         <fields>
-            <name>displayWarning</name>
-            <fieldText>&lt;p&gt;Husk å verifisere at deltaker har blitt informert.&lt;/p&gt;</fieldText>
+            <name>displayTxtAlertAge</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>displayUnderAge</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Du har registrert deltaker med en alder under 18 år.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>consentParent</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skriftlig samtykke fra foresatt(e) foreligger</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Du må verifisere at skriftlig samtykke foreligger.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!consentParent}</formulaExpression>
+            </validationRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -609,7 +685,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt Jobbspor</label>
-        <locationX>363</locationX>
+        <locationX>380</locationX>
         <locationY>278</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -617,6 +693,11 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <connector>
             <targetReference>Get_Participant_Details</targetReference>
         </connector>
+        <fields>
+            <name>DisplayTxtTitle1</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>Participant</name>
             <extensionName>flowruntime:lookup</extensionName>
@@ -650,29 +731,34 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>newWorktrail</name>
         <label>newWorktrail</label>
         <locationX>50</locationX>
         <locationY>758</locationY>
-        <allowBack>true</allowBack>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>DisplayTitle2</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>displaytxt</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 17, 0);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet konfidensialitet.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>1106</locationX>
-        <locationY>2054</locationY>
+        <locationX>974</locationX>
+        <locationY>1934</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -680,40 +766,58 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <targetReference>Create_Error_log</targetReference>
         </connector>
         <fields>
+            <name>displayTitle7</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>Errormessage</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Kunne ikke opprettes. Kontakt din administrator&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>842</locationX>
-        <locationY>2054</locationY>
+        <locationX>710</locationX>
+        <locationY>1934</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <connector>
+            <targetReference>updateWorktrailName</targetReference>
+        </connector>
+        <fields>
+            <name>displayTitle6</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>CreatedMessage</name>
             <fieldText>&lt;p&gt;Jobbspor har blitt opprettet&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>677</locationX>
+        <locationX>710</locationX>
         <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>checkAndSetConsent</targetReference>
+            <targetReference>checkIfAddedAge</targetReference>
         </connector>
+        <fields>
+            <name>DisplayTitle3</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>Participant_Detail_Section1</name>
             <fieldType>RegionContainer</fieldType>
@@ -771,6 +875,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                     <fieldText>Er dette riktig deltaker?</fieldText>
                     <fieldType>InputField</fieldType>
                     <isRequired>true</isRequired>
+                    <validationRule>
+                        <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Du må verifisere at dette er riktig deltaker.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                        <formulaExpression>{!Er_dette_riktig_deltaker}</formulaExpression>
+                    </validationRule>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -790,19 +898,17 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                 <name>Participant_Detail_Section2_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>toYoungUO</name>
-                    <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Deltaker er under 18 år.&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <name>displayLeapYearTxt</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Kan ikke kalkulere alder på deltaker &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Deltaker kan være født i skuddår eller ha ett D-nummer.&lt;/span&gt;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
-                    <name>consentParentParticipantUO</name>
-                    <dataType>Boolean</dataType>
-                    <defaultValue>
-                        <booleanValue>false</booleanValue>
-                    </defaultValue>
-                    <fieldText>Skriftlig samtykke fra foresatt(e) foreligger</fieldText>
+                    <name>varAddParticipantAge</name>
+                    <dataType>Number</dataType>
+                    <fieldText>Legg inn alder på deltaker</fieldText>
                     <fieldType>InputField</fieldType>
                     <isRequired>true</isRequired>
+                    <scale>0</scale>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -815,19 +921,12 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
             <visibilityRule>
-                <conditionLogic>or</conditionLogic>
-                <conditions>
-                    <leftValueReference>adjustfor100</leftValueReference>
-                    <operator>LessThan</operator>
-                    <rightValue>
-                        <numberValue>18.0</numberValue>
-                    </rightValue>
-                </conditions>
+                <conditionLogic>and</conditionLogic>
                 <conditions>
                     <leftValueReference>participantsAge</leftValueReference>
-                    <operator>IsNull</operator>
+                    <operator>EqualTo</operator>
                     <rightValue>
-                        <booleanValue>true</booleanValue>
+                        <numberValue>0.0</numberValue>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -870,19 +969,23 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>1502</locationX>
+        <locationX>974</locationX>
         <locationY>1574</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>isUserInformed</targetReference>
+            <targetReference>Owner_Selected</targetReference>
         </connector>
+        <fields>
+            <name>display</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>Er_bruker_infomert</name>
             <dataType>Boolean</dataType>
@@ -892,6 +995,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjonen</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(3, 45, 96);&quot;&gt;Du må verifisere at deltaker er informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Er_bruker_infomert}</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
             <name>EierCheckbox</name>
@@ -926,10 +1033,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>237</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
@@ -979,5 +1086,30 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>varParticipantAge</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>varTitle</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Opprett nytt jobbspor for deltaker i Utvidet oppfølging</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varWorkTrailId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
