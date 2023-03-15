@@ -942,6 +942,26 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <isRequired>true</isRequired>
         </fields>
         <fields>
+            <name>IPS_Ung</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>IPS Ung</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>isAlwaysFalse</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
             <name>Behandlingsteam_Innsatsteam</name>
             <dataType>String</dataType>
             <fieldText>Innsøkende avdeling</fieldText>
