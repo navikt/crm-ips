@@ -20,23 +20,23 @@
     <assignments>
         <name>AddAge</name>
         <label>AddAge</label>
-        <locationX>512</locationX>
-        <locationY>1118</locationY>
+        <locationX>380</locationX>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>varAddParticipantAge</elementReference>
+                <elementReference>adjustfor100</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_existing</targetReference>
+            <targetReference>varAlertAddedAge</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>addAge1</name>
         <label>addAge</label>
-        <locationX>1040</locationX>
+        <locationX>1172</locationX>
         <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
@@ -52,7 +52,7 @@
     <assignments>
         <name>addAge2</name>
         <label>addAge</label>
-        <locationX>776</locationX>
+        <locationX>644</locationX>
         <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
@@ -63,6 +63,23 @@
         </assignmentItems>
         <connector>
             <targetReference>Get_existing</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addAge4</name>
+        <label>addAge</label>
+        <locationX>908</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>varParticipantAge</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varAddParticipantAge</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>varAlertAddedAge</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -125,26 +142,23 @@
             <name>isAgeUnder18</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varAddParticipantAge</leftValueReference>
+                <leftValueReference>adjustfor100</leftValueReference>
                 <operator>LessThan</operator>
                 <rightValue>
                     <numberValue>18.0</numberValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>participantsAge</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
+                <leftValueReference>adjustfor100</leftValueReference>
+                <operator>GreaterThan</operator>
             </conditions>
             <connector>
-                <targetReference>varAlertAddedAge</targetReference>
+                <targetReference>AddAge</targetReference>
             </connector>
             <label>isAgeUnder18</label>
         </rules>
         <rules>
-            <name>IsAgeOver18AndAdded</name>
+            <name>isAge18AndAdded</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>participantsAge</leftValueReference>
@@ -163,7 +177,29 @@
             <connector>
                 <targetReference>addAge2</targetReference>
             </connector>
-            <label>IsAgeOver18AndAdded</label>
+            <label>isAge18AndAdded</label>
+        </rules>
+        <rules>
+            <name>isAgeUnder18AndAdded</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>participantsAge</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>varAddParticipantAge</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>18.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addAge4</targetReference>
+            </connector>
+            <label>isAgeUnder18AndAdded</label>
         </rules>
     </decisions>
     <decisions>
@@ -363,12 +399,6 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
         <inputAssignments>
-            <field>IPS_Consent__c</field>
-            <value>
-                <elementReference>varConsent</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>IPS_Participant_age__c</field>
             <value>
                 <elementReference>varParticipantAge</elementReference>
@@ -430,12 +460,6 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <faultConnector>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
-        <inputAssignments>
-            <field>IPS_Consent__c</field>
-            <value>
-                <elementReference>varConsent</elementReference>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>IPS_Participant_age__c</field>
             <value>
@@ -640,7 +664,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         </fields>
         <fields>
             <name>isExisting</name>
-            <fieldText>&lt;p&gt;Deltaker er allerede registrert med ett aktivt jobbspor.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;Deltaker er allerede registrert med ett aktivt jobbspor.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -661,7 +685,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         </fields>
         <fields>
             <name>displaytxt</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet konfidensialitet.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 17, 0);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet konfidensialitet.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -840,7 +864,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
                     <fieldType>InputField</fieldType>
                     <isRequired>true</isRequired>
                     <validationRule>
-                        <errorMessage>&lt;p&gt;Du må verifisere at dette er riktig deltaker.&lt;/p&gt;</errorMessage>
+                        <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at dette er riktig deltaker.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                         <formulaExpression>{!Er_dette_riktig_deltaker}</formulaExpression>
                     </validationRule>
                 </fields>
@@ -896,59 +920,6 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             </visibilityRule>
         </fields>
         <fields>
-            <name>Participant_Detail_Section3</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>Participant_Detail_Section3_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>toYoung</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Deltaker er under 18 år.&lt;/strong&gt;&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <fields>
-                    <name>consentParentParticipant</name>
-                    <dataType>Boolean</dataType>
-                    <defaultValue>
-                        <booleanValue>false</booleanValue>
-                    </defaultValue>
-                    <fieldText>Skriftlig samtykke fra foresatt(e) foreligger</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>true</isRequired>
-                    <validationRule>
-                        <errorMessage>&lt;p&gt;Du må verifisere at skriftlig samtykke foreligger.&lt;/p&gt;</errorMessage>
-                        <formulaExpression>{!consentParentParticipant}</formulaExpression>
-                    </validationRule>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>adjustfor100</leftValueReference>
-                    <operator>LessThan</operator>
-                    <rightValue>
-                        <numberValue>18.0</numberValue>
-                    </rightValue>
-                </conditions>
-                <conditions>
-                    <leftValueReference>adjustfor100</leftValueReference>
-                    <operator>GreaterThan</operator>
-                    <rightValue>
-                        <numberValue>0.0</numberValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
-        </fields>
-        <fields>
             <name>IPS_Ung</name>
             <dataType>Boolean</dataType>
             <fieldText>IPS Ung</fieldText>
@@ -991,7 +962,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(3, 45, 96);&quot;&gt;Du må verifisere at deltaker er informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Du må verifisere at deltaker er informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Er_bruker_infomert}</formulaExpression>
             </validationRule>
         </fields>
@@ -1033,13 +1004,13 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <screens>
         <name>varAlertAddedAge</name>
         <label>varAlertAddedAge</label>
-        <locationX>512</locationX>
-        <locationY>998</locationY>
+        <locationX>380</locationX>
+        <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>AddAge</targetReference>
+            <targetReference>Get_existing</targetReference>
         </connector>
         <fields>
             <name>displayTxtAlertAge</name>
@@ -1061,7 +1032,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;Du må verifisere at skriftlig samtykke foreligger.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at skriftlig samtykke foreligger.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!addedUnderAge}</formulaExpression>
             </validationRule>
         </fields>
@@ -1125,7 +1096,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>Opprett nytt jobbspor for deltaker i IPS</stringValue>
+            <stringValue>Opprett nytt jobbspor</stringValue>
         </value>
     </variables>
     <variables>
