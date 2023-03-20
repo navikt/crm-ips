@@ -631,7 +631,7 @@
         </rules>
         <rules>
             <name>isNoShow</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>iterateEmplMeetingsUO.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -1049,7 +1049,7 @@ CASE({!iterateTasks.Status},
         <connector>
             <targetReference>addParticipantShowMeeting</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND 3</filterLogic>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -1142,15 +1142,15 @@ CASE({!iterateTasks.Status},
             </value>
         </filters>
         <filters>
-            <field>IsClosed</field>
+            <field>Status</field>
             <operator>EqualTo</operator>
             <value>
-                <booleanValue>true</booleanValue>
+                <stringValue>Completed</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Task</object>
-        <sortField>ActivityDate</sortField>
+        <sortField>ips_Due_Date_Time__c</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
@@ -1229,7 +1229,7 @@ CASE({!iterateTasks.Status},
         </inputAssignments>
         <object>ips_report__c</object>
     </recordUpdates>
-    <runInMode>SystemModeWithoutSharing</runInMode>
+    <runInMode>DefaultMode</runInMode>
     <screens>
         <name>workTrailEndReportUO</name>
         <label>Slutt rapport</label>
