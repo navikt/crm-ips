@@ -1,0 +1,42 @@
+<apex:page standardController="ips_report__c"
+		extensions="IPS_viewReportPDFController" 
+        showHeader="false"
+        renderAs="PDF" >
+    <html>
+       
+        <head>
+           <style type="text/css">
+                @page {
+                    margin-top: 70px;
+                    padding:0px;
+                    margin-bottom: 70px;
+                    
+                    @top-left {
+                        content: element(header);
+                    }                           
+                    @bottom-left {   
+                        content: element(footer);
+                    } 
+                }
+           </style>
+       </head>
+       
+       <body style="font-family:SansSerif !important;margin-left:12px;margin-right:12px;">
+           <!-- NAV logo -->
+           <center>
+            <apex:image id="theImage" value="{!$Resource.logo}" width="115px" height="80px" alt="NAV logo"/>
+           </center>
+           
+           <!-- Check if report is intervall or end report -->
+          
+           <!-- is intervall report -->
+           <apex:outputPanel rendered="{!isIntervallReport}">
+               <apex:outputText value="{!currentRecord.IPS_intervallReport__c}" escape="false"></apex:outputText> 
+           </apex:outputPanel>
+           <!-- is end report -->
+           <apex:outputPanel rendered="{!isEndReport}">
+              <apex:outputText value="{!currentRecord.IPS_endReport__c}" escape="false"></apex:outputText>  
+           </apex:outputPanel>        
+       </body>
+    </html>
+</apex:page>

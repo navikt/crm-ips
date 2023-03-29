@@ -127,4 +127,20 @@ public with sharing class IPS_TestDataFactory {
         );
         return createJob;
     }
+    
+    public static ips_report__c createEndReport(){
+        ips_report__c endReport = new ips_report__c(
+            IPS_endReport__c = 'Avslutningsnotat IPS',
+            IPS_report_Type__c = 'End report'
+        );
+            return endReport;
+    }
+    
+    public static ips_report__c createIntervallReport(){
+        ips_report__c intervallReport = new ips_report__c(
+            IPS_intervallReport__c = 'Underveisnotat',
+            IPS_report_Type__c = 'Intervall'
+        );
+            return intervallReport;
+    }
 }
