@@ -1328,14 +1328,7 @@
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isShowCompleted</name>
-            <conditionLogic>1 AND 2 AND 3 AND (4 OR 5)</conditionLogic>
-            <conditions>
-                <leftValueReference>iterateParticipantMeetingShow.IPS_No_Show__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>iterateParticipantMeetingShow.ActivityDate</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
@@ -1348,13 +1341,6 @@
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToDate</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iterateParticipantMeetingShow.ips_Completed__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -1373,13 +1359,6 @@
             <name>isNoShowCompleted</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>iterateParticipantMeetingShow.IPS_No_Show__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
                 <leftValueReference>iterateParticipantMeetingShow.ActivityDate</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
@@ -1394,10 +1373,10 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>iterateParticipantMeetingShow.ips_Completed__c</leftValueReference>
+                <leftValueReference>iterateParticipantMeetingShow.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Participant Absent</stringValue>
                 </rightValue>
             </conditions>
             <connector>
