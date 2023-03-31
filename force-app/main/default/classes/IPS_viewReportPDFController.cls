@@ -1,6 +1,6 @@
 public class IPS_viewReportPDFController {
     
-    public String currentRecordId {get; set;}
+    public Id currentRecordId {get; set;}
     public ips_report__c currentRecord {get; set;}
     public boolean isIPS {get; set;}
     public boolean isUO {get; set;}
@@ -8,7 +8,8 @@ public class IPS_viewReportPDFController {
     public boolean isIntervallReport {get; set;}
     
     public IPS_viewReportPDFController(ApexPages.StandardController sc){
-        this.currentRecordId = ApexPages.CurrentPage().getparameters().get('id');
+        //this.currentRecordId = ApexPages.CurrentPage().getparameters().get('id');
+        this.currentRecordId = sc.getRecord().Id;
         this.isEndReport = false;
         this.isIntervallReport = true;
         this.isIPS = false;

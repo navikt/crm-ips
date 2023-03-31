@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Generate_Document</name>
         <label>Generate Document</label>
-        <locationX>50</locationX>
-        <locationY>1214</locationY>
+        <locationX>578</locationX>
+        <locationY>1430</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -12,37 +12,9 @@
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>documentString</name>
+            <name>visualForceReference</name>
             <value>
-                <elementReference>Get_Necessary_Record_Info.IPS_endReport__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>requestType</name>
-            <value>
-                <stringValue>GENERATE_DOCUMENT</stringValue>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>PDF_DOCUMENT</assignToReference>
-            <name>documentString</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
-        <name>Generate_Document1</name>
-        <label>Generate Document</label>
-        <locationX>314</locationX>
-        <locationY>1214</locationY>
-        <actionName>CRM_JournalUtilities</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Document_Variant_Assignment</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>documentString</name>
-            <value>
-                <elementReference>Get_Necessary_Record_Info.IPS_intervallReport__c</elementReference>
+                <stringValue>/apex/IPS_viewReportPDF?Id={!recordId}</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -60,8 +32,8 @@
         <description>Calls journal utils to perform the API post action</description>
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
-        <locationX>314</locationX>
-        <locationY>1790</locationY>
+        <locationX>578</locationX>
+        <locationY>1910</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -109,12 +81,12 @@
             <name>success</name>
         </outputParameters>
     </actionCalls>
-    <apiVersion>55.0</apiVersion>
+    <apiVersion>57.0</apiVersion>
     <assignments>
         <name>addEndAssignment</name>
         <label>addEndAssignment</label>
-        <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationX>578</locationX>
+        <locationY>518</locationY>
         <assignmentItems>
             <assignToReference>varEnd</assignToReference>
             <operator>Assign</operator>
@@ -123,14 +95,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>DisplayScrren</targetReference>
+            <targetReference>displayOverviewOfReport</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>addIntervallAssignment</name>
         <label>addIntervallAssignment</label>
-        <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
         <assignmentItems>
             <assignToReference>varIntervall</assignToReference>
             <operator>Assign</operator>
@@ -139,15 +111,15 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>DisplayScrren</targetReference>
+            <targetReference>displayOverviewOfReport</targetReference>
         </connector>
     </assignments>
     <assignments>
         <description>Add document variants to document list and assign document title</description>
         <name>Assign_Journal_Documents</name>
         <label>Assign Journal Documents</label>
-        <locationX>314</locationX>
-        <locationY>1550</locationY>
+        <locationX>578</locationX>
+        <locationY>1670</locationY>
         <assignmentItems>
             <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
             <operator>Add</operator>
@@ -169,8 +141,8 @@
     <assignments>
         <name>Assign_Journal_Entry_Default_data</name>
         <label>Assign Journal Entry Default data</label>
-        <locationX>182</locationX>
-        <locationY>2150</locationY>
+        <locationX>446</locationX>
+        <locationY>2270</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.CRM_Journal_Date__c</assignToReference>
             <operator>Assign</operator>
@@ -186,8 +158,8 @@
         <description>Assigns needed values to document variant wrapper</description>
         <name>Document_Variant_Assignment</name>
         <label>Document Variant Assignment</label>
-        <locationX>314</locationX>
-        <locationY>1430</locationY>
+        <locationX>578</locationX>
+        <locationY>1550</locationY>
         <assignmentItems>
             <assignToReference>Document_Variant_PDF.filtype</assignToReference>
             <operator>Assign</operator>
@@ -217,27 +189,13 @@
         <description>Assigns needed values to the journal requests and adds the document list.</description>
         <name>Journal_Request_Assignment</name>
         <label>Journal Request Assignment</label>
-        <locationX>314</locationX>
-        <locationY>1670</locationY>
+        <locationX>578</locationX>
+        <locationY>1790</locationY>
         <assignmentItems>
             <assignToReference>Journal_Request.tittel</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>varDocumentTitle</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.kanal</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>NAV_NO</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.sak</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Sak</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -262,20 +220,6 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Journal_Request.bruker.idType</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>FNR</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.bruker.id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Get_Account_Info.INT_PersonIdent__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>Journal_Request.avsenderMottaker.idType</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -296,20 +240,6 @@
                 <elementReference>Person_Full_Name</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.tema</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Theme_Code</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Request.behandlingstema</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Subtheme_Code</elementReference>
-            </value>
-        </assignmentItems>
         <connector>
             <targetReference>Post_Journal_Request</targetReference>
         </connector>
@@ -317,8 +247,8 @@
     <assignments>
         <name>Set_Post_Completed</name>
         <label>Set Post Completed</label>
-        <locationX>182</locationX>
-        <locationY>2030</locationY>
+        <locationX>446</locationX>
+        <locationY>2150</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -340,8 +270,8 @@
     <assignments>
         <name>Set_Post_Failed</name>
         <label>Set Post Failed</label>
-        <locationX>446</locationX>
-        <locationY>2030</locationY>
+        <locationX>710</locationX>
+        <locationY>2150</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -353,8 +283,8 @@
     <assignments>
         <name>setTypeEndReport</name>
         <label>setTypeEndReport</label>
-        <locationX>50</locationX>
-        <locationY>1094</locationY>
+        <locationX>314</locationX>
+        <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>varReportType</assignToReference>
             <operator>Assign</operator>
@@ -369,8 +299,8 @@
     <assignments>
         <name>setTypeIntervall</name>
         <label>setTypeIntervall</label>
-        <locationX>314</locationX>
-        <locationY>1094</locationY>
+        <locationX>578</locationX>
+        <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>varReportType</assignToReference>
             <operator>Assign</operator>
@@ -379,7 +309,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Generate_Document1</targetReference>
+            <targetReference>Generate_Document</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -395,8 +325,8 @@
     <decisions>
         <name>Check_Post_State</name>
         <label>Check Post State</label>
-        <locationX>314</locationX>
-        <locationY>1910</locationY>
+        <locationX>578</locationX>
+        <locationY>2030</locationY>
         <defaultConnector>
             <targetReference>Set_Post_Failed</targetReference>
         </defaultConnector>
@@ -420,8 +350,8 @@
     <decisions>
         <name>checkReportType</name>
         <label>checkReportType</label>
-        <locationX>314</locationX>
-        <locationY>974</locationY>
+        <locationX>578</locationX>
+        <locationY>1094</locationY>
         <defaultConnectorLabel>Nothing</defaultConnectorLabel>
         <rules>
             <name>isEndReport</name>
@@ -457,14 +387,14 @@
     <decisions>
         <name>checkTypeOfReport</name>
         <label>checkTypeOfReport</label>
-        <locationX>314</locationX>
-        <locationY>278</locationY>
+        <locationX>578</locationX>
+        <locationY>398</locationY>
         <defaultConnectorLabel>None</defaultConnectorLabel>
         <rules>
             <name>isIntervall</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Necessary_Record_Info.IPS_report_Type__c</leftValueReference>
+                <leftValueReference>getReport.IPS_report_Type__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Intervall</stringValue>
@@ -479,7 +409,7 @@
             <name>isEnd</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Necessary_Record_Info.IPS_report_Type__c</leftValueReference>
+                <leftValueReference>getReport.IPS_report_Type__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>End report</stringValue>
@@ -489,6 +419,32 @@
                 <targetReference>addEndAssignment</targetReference>
             </connector>
             <label>isEnd</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if user has informed participants about sharing report</description>
+        <name>isParticipantInformed</name>
+        <label>isParticipantInformed</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>checkTypeOfReport</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isInformed</defaultConnectorLabel>
+        <rules>
+            <name>IsNotInformed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getReport.isInformed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>displayWarningText</targetReference>
+            </connector>
+            <label>IsNotInformed</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -544,8 +500,8 @@ IF({!varIntervall}==true,
         <description>Get necessary account information to post a journal entry</description>
         <name>Get_Account_Info</name>
         <label>Get Account Info</label>
-        <locationX>314</locationX>
-        <locationY>854</locationY>
+        <locationX>578</locationX>
+        <locationY>974</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkReportType</targetReference>
@@ -564,13 +520,13 @@ IF({!varIntervall}==true,
     </recordLookups>
     <recordLookups>
         <description>Query the info needed from record and relations to submit a journal entry</description>
-        <name>Get_Necessary_Record_Info</name>
-        <label>Get Necessary Record Info</label>
+        <name>getReport</name>
+        <label>getReport</label>
         <locationX>314</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>checkTypeOfReport</targetReference>
+            <targetReference>isParticipantInformed</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -582,13 +538,20 @@ IF({!varIntervall}==true,
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>ips_report__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>CreatedById</queriedFields>
+        <queriedFields>IPS_status__c</queriedFields>
+        <queriedFields>IPS_workTrailName__c</queriedFields>
+        <queriedFields>isInformed__c</queriedFields>
+        <queriedFields>IPS_report_Type__c</queriedFields>
+        <queriedFields>IPS_participantName__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>getWorkTrailParticipantsInfo</name>
         <label>getWorkTrailParticipantsInfo</label>
-        <locationX>314</locationX>
-        <locationY>734</locationY>
+        <locationX>578</locationX>
+        <locationY>854</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Account_Info</targetReference>
@@ -598,7 +561,7 @@ IF({!varIntervall}==true,
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Necessary_Record_Info.IPS_workTrailName__c</elementReference>
+                <elementReference>getReport.IPS_workTrailName__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -610,8 +573,8 @@ IF({!varIntervall}==true,
     <recordUpdates>
         <name>Update_Journal_Entry</name>
         <label>Update Journal Entry</label>
-        <locationX>182</locationX>
-        <locationY>2270</locationY>
+        <locationX>446</locationX>
+        <locationY>2390</locationY>
         <connector>
             <targetReference>UpdateReport</targetReference>
         </connector>
@@ -620,8 +583,8 @@ IF({!varIntervall}==true,
     <recordUpdates>
         <name>UpdateReport</name>
         <label>UpdateReport</label>
-        <locationX>182</locationX>
-        <locationY>2390</locationY>
+        <locationX>446</locationX>
+        <locationY>2510</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -646,35 +609,75 @@ IF({!varIntervall}==true,
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
-        <name>DisplayScrren</name>
-        <label>DisplayScrren</label>
-        <locationX>314</locationX>
-        <locationY>614</locationY>
-        <allowBack>true</allowBack>
+        <name>displayOverviewOfReport</name>
+        <label>displayOverviewOfReport</label>
+        <locationX>578</locationX>
+        <locationY>734</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
             <targetReference>getWorkTrailParticipantsInfo</targetReference>
         </connector>
         <fields>
-            <name>DisplayTxt1</name>
-            <fieldText>&lt;p&gt;Du har valgt å arkivere en underveisrapport.&lt;/p&gt;</fieldText>
+            <name>displayTitle2</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-size: 18px; font-family: sans-serif;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>varIntervall</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <booleanValue>true</booleanValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
         </fields>
         <fields>
-            <name>DisplayTxt3</name>
-            <fieldText>&lt;p&gt;Du har valgt å arkivere en sluttrapport/sluttnotat&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
+            <name>displayOverviewOfReport_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>displayOverviewOfReport_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayInformationIntervall</name>
+                    <extensionName>c:crmAlertBanner</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>message</name>
+                        <value>
+                            <stringValue>Du har valgt å arkivere en underveisrapport/-notat</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>varIntervall</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>displayInformationEnd</name>
+            <extensionName>c:crmAlertBanner</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Du har valgt å arkivere en sluttrapport/-notat</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
@@ -687,9 +690,72 @@ IF({!varIntervall}==true,
             </visibilityRule>
         </fields>
         <fields>
-            <name>text</name>
-            <fieldText>&lt;p&gt;{!recordId}&lt;/p&gt;</fieldText>
+            <name>displayOverviewOfReport_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>displayOverviewOfReport_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayNameTxt</name>
+                    <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-family: sans-serif; font-size: 14px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Deltakers navn:&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>displayOverviewOfReport_Section2_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displaySummarize</name>
+                    <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-family: sans-serif; font-size: 14px;&quot;&gt;{!getReport.IPS_participantName__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>displayWarningText</name>
+        <label>displayWarningText</label>
+        <locationX>50</locationX>
+        <locationY>398</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>displayTittle1</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>participantIsNotInformed</name>
+            <extensionName>c:crmAlertBanner</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Husk å huke av for at deltaker er informert om deling av rapporten.</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -698,10 +764,10 @@ IF({!varIntervall}==true,
         <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Necessary_Record_Info</targetReference>
+            <targetReference>getReport</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>bolSuccess</name>
         <dataType>Boolean</dataType>
@@ -858,5 +924,15 @@ IF({!varIntervall}==true,
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varTitle</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Arkivere rapport</stringValue>
+        </value>
     </variables>
 </Flow>
