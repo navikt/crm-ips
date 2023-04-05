@@ -5,7 +5,7 @@
         <name>Generate_Document</name>
         <label>Generate Document</label>
         <locationX>314</locationX>
-        <locationY>1094</locationY>
+        <locationY>1214</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -33,7 +33,7 @@
         <name>Log_Journal_Entry_Error</name>
         <label>Log Journal Entry Error</label>
         <locationX>314</locationX>
-        <locationY>2294</locationY>
+        <locationY>2414</locationY>
         <actionName>LoggerUtility</actionName>
         <actionType>apex</actionType>
         <dataTypeMappings>
@@ -77,7 +77,7 @@
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
         <locationX>314</locationX>
-        <locationY>1574</locationY>
+        <locationY>1694</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -130,19 +130,12 @@
         <name>addEndAssignment</name>
         <label>addEndAssignment</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>758</locationY>
         <assignmentItems>
             <assignToReference>varEnd</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varReportType</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>End report</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -153,19 +146,12 @@
         <name>addIntervallAssignment</name>
         <label>addIntervallAssignment</label>
         <locationX>50</locationX>
-        <locationY>518</locationY>
+        <locationY>758</locationY>
         <assignmentItems>
             <assignToReference>varIntervall</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varReportType</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Intervall</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -177,7 +163,7 @@
         <name>Assign_Journal_Documents</name>
         <label>Assign Journal Documents</label>
         <locationX>314</locationX>
-        <locationY>1334</locationY>
+        <locationY>1454</locationY>
         <assignmentItems>
             <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
             <operator>Add</operator>
@@ -200,7 +186,7 @@
         <name>Assign_Journal_Entry_Values</name>
         <label>Assign Journal Entry Values</label>
         <locationX>50</locationX>
-        <locationY>2054</locationY>
+        <locationY>2174</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -273,7 +259,7 @@
         <name>Document_Variant_Assignment</name>
         <label>Document Variant Assignment</label>
         <locationX>314</locationX>
-        <locationY>1214</locationY>
+        <locationY>1334</locationY>
         <assignmentItems>
             <assignToReference>Document_Variant_PDF.filtype</assignToReference>
             <operator>Assign</operator>
@@ -305,7 +291,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Journal_Request_Assignment</name>
         <label>Journal Request Assignment</label>
         <locationX>314</locationX>
-        <locationY>1454</locationY>
+        <locationY>1574</locationY>
         <assignmentItems>
             <assignToReference>Journal_Request.tittel</assignToReference>
             <operator>Assign</operator>
@@ -384,7 +370,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Set_Post_Failed</name>
         <label>Set Post Failed</label>
         <locationX>578</locationX>
-        <locationY>1934</locationY>
+        <locationY>2054</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -407,7 +393,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Check_Post_State</name>
         <label>Check Post State</label>
         <locationX>314</locationX>
-        <locationY>1694</locationY>
+        <locationY>1814</locationY>
         <defaultConnector>
             <targetReference>displayError</targetReference>
         </defaultConnector>
@@ -433,7 +419,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>checkTypeOfReport</name>
         <label>checkTypeOfReport</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>638</locationY>
         <defaultConnectorLabel>None</defaultConnectorLabel>
         <rules>
             <name>isIntervall</name>
@@ -487,7 +473,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>checkTypeOfReport</targetReference>
+                <targetReference>getWorkTrailParticipantsInfo</targetReference>
             </connector>
             <label>participantInformed</label>
         </rules>
@@ -506,13 +492,19 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <expression>{!Get_Account_Info.CRM_Person__r.INT_LastName__c} &amp; &apos;, &apos; &amp; {!Get_Account_Info.CRM_Person__r.INT_FirstName__c} &amp; &apos; &apos; &amp;{!Get_Account_Info.CRM_Person__r.INT_MiddleName__c}</expression>
     </formulas>
     <formulas>
+        <description>Tester på om rapport er en sluttrapport, hvis ikke er antagelsen at det er en underveisrapport.
+Case setter tittel basert på om det er IPS eller UO</description>
         <name>varDocumentTitle</name>
         <dataType>String</dataType>
-        <expression>IF({!varEnd}==true,
-&apos;Sluttrapport jobbsporet - &apos;+{!getWorkTrailParticipantsInfo.ips_Participant__r.INT_PersonIdent__c},
-IF({!varIntervall}==true,
-&apos;Underveisrapport jobbsporet - &apos;+{!getWorkTrailParticipantsInfo.ips_Participant__r.INT_PersonIdent__c},&apos; &apos;)
-)</expression>
+        <expression>IF({!varEnd},
+CASE({!varRecordTypeName},
+&quot;ips_Supported_Employment&quot;,&quot;Sluttrapport Utvidet oppfølging - &quot;+{!getWorkTrailParticipantsInfo.ips_Participant__r.INT_PersonIdent__c},
+&quot;IPS&quot;,&quot;Sluttnotat IPS - &quot;+{!getWorkTrailParticipantsInfo.ips_Participant__r.INT_PersonIdent__c},
+&quot;&quot;),
+CASE({!varRecordTypeName},
+&quot;ips_Supported_Employment&quot;,&quot;Underveisrapport Utvidet oppfølging - &quot;+{!getWorkTrailParticipantsInfo.ips_Participant__r.INT_PersonIdent__c},
+&quot;IPS&quot;,&quot;Underveisnotat IPS - &quot;+{!getWorkTrailParticipantsInfo.ips_Participant__r.INT_PersonIdent__c},
+&quot;&quot;))</expression>
     </formulas>
     <formulas>
         <name>varUserNavIdent</name>
@@ -545,7 +537,7 @@ IF({!varIntervall}==true,
         <name>createJournalEntry</name>
         <label>createJournalEntry</label>
         <locationX>50</locationX>
-        <locationY>2174</locationY>
+        <locationY>2294</locationY>
         <connector>
             <targetReference>UpdateReport</targetReference>
         </connector>
@@ -559,7 +551,7 @@ IF({!varIntervall}==true,
         <name>Get_Account_Info</name>
         <label>Get Account Info</label>
         <locationX>314</locationX>
-        <locationY>974</locationY>
+        <locationY>1094</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Generate_Document</targetReference>
@@ -577,10 +569,10 @@ IF({!varIntervall}==true,
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>getRecordType</name>
-        <label>getRecordType</label>
+        <name>getRecordTypeJournalEntry</name>
+        <label>getRecordTypeJournalEntry</label>
         <locationX>50</locationX>
-        <locationY>1934</locationY>
+        <locationY>2054</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Journal_Entry_Values</targetReference>
@@ -597,6 +589,29 @@ IF({!varIntervall}==true,
         <outputAssignments>
             <assignToReference>varRecordTypeId</assignToReference>
             <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>getRecordTypeWorkTrail</name>
+        <label>getRecordTypeWorkTrail</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkTypeOfReport</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorkTrailParticipantsInfo.RecordTypeId</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varRecordTypeName</assignToReference>
+            <field>DeveloperName</field>
         </outputAssignments>
     </recordLookups>
     <recordLookups>
@@ -633,10 +648,10 @@ IF({!varIntervall}==true,
         <name>getWorkTrailParticipantsInfo</name>
         <label>getWorkTrailParticipantsInfo</label>
         <locationX>314</locationX>
-        <locationY>854</locationY>
+        <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Account_Info</targetReference>
+            <targetReference>getRecordTypeWorkTrail</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -650,13 +665,14 @@ IF({!varIntervall}==true,
         <object>Work_Trail__c</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>ips_Participant__c</queriedFields>
+        <queriedFields>RecordTypeId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
         <name>UpdateReport</name>
         <label>UpdateReport</label>
         <locationX>50</locationX>
-        <locationY>2294</locationY>
+        <locationY>2414</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -684,7 +700,7 @@ IF({!varIntervall}==true,
         <name>displayError</name>
         <label>displayError</label>
         <locationX>578</locationX>
-        <locationY>1814</locationY>
+        <locationY>1934</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -709,12 +725,12 @@ IF({!varIntervall}==true,
         <name>displayOverviewOfReport</name>
         <label>displayOverviewOfReport</label>
         <locationX>314</locationX>
-        <locationY>734</locationY>
+        <locationY>974</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>getWorkTrailParticipantsInfo</targetReference>
+            <targetReference>Get_Account_Info</targetReference>
         </connector>
         <fields>
             <name>displayTitle2</name>
@@ -853,12 +869,12 @@ IF({!varIntervall}==true,
         <name>displaySuccess</name>
         <label>displaySuccess</label>
         <locationX>50</locationX>
-        <locationY>1814</locationY>
+        <locationY>1934</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>getRecordType</targetReference>
+            <targetReference>getRecordTypeJournalEntry</targetReference>
         </connector>
         <fields>
             <name>displaySuccessTxt</name>
@@ -1073,7 +1089,7 @@ IF({!varIntervall}==true,
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>varReportType</name>
+        <name>varRecordTypeName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
