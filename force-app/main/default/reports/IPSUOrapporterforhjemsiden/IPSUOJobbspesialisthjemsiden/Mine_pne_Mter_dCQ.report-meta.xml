@@ -28,13 +28,13 @@
         <titleSize>18</titleSize>
     </chart>
     <columns>
+        <field>SUBJECT</field>
+    </columns>
+    <columns>
         <field>WHAT_NAME</field>
     </columns>
     <columns>
         <field>WHO_NAME</field>
-    </columns>
-    <columns>
-        <field>SUBJECT</field>
     </columns>
     <columns>
         <field>Activity.RelatedToAccount__c</field>
@@ -61,7 +61,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Event.IPS_Event,Event.Ips_uo_Deltakermote,Event.ips_UO_m_ter</value>
+            <value>Event.IPS_Event,Event.IPS_UO_Arbeidsgiver,Event.Ips_uo_Deltakermote,Event.ips_UO_m_ter</value>
         </criteriaItems>
         <criteriaItems>
             <column>SUBJECT</column>
@@ -76,6 +76,13 @@
             <isUnlocked>true</isUnlocked>
             <operator>lessThan</operator>
             <value>TODAY</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Activity.IPS_Status1__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Open</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
@@ -92,7 +99,7 @@
     <name>Mine Åpne Møter</name>
     <params>
         <name>closed</name>
-        <value>open</value>
+        <value>all</value>
     </params>
     <params>
         <name>type</name>
