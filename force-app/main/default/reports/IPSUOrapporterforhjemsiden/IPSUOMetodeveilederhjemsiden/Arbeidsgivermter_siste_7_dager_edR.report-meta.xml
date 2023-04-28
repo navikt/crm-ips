@@ -41,23 +41,20 @@
     <columns>
         <field>SUBJECT</field>
     </columns>
-    <columns>
-        <field>ASSIGNED</field>
-    </columns>
     <filter>
         <criteriaItems>
             <column>RECORDTYPE</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Event.IPS_Event,Event.ips_UO_m_ter</value>
+            <value>Event.IPS_Event,Event.IPS_UO_Arbeidsgiver,Event.ips_UO_m_ter</value>
         </criteriaItems>
         <criteriaItems>
             <column>Activity.IPS_Type__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Meeting with Employer,First Meeting with Employer</value>
+            <value>Meeting with Employer,First Meeting with Employer,Arbeidsgivermøte</value>
         </criteriaItems>
         <criteriaItems>
             <column>Activity.ips_uo_Subject__c</column>
@@ -66,21 +63,28 @@
             <operator>notEqual</operator>
             <value>Reisetid</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Activity.IPS_Status1__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Completed</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Activity.IPS_Status1__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <field>DUE_DATE</field>
+        <field>ASSIGNED</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>Activity.RelatedToAccount__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <field>DUE_DATE</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Arbeidsgivermøter siste 7 dager</name>

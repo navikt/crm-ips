@@ -44,16 +44,16 @@
         <titleSize>18</titleSize>
     </chart>
     <columns>
-        <field>WHAT_NAME</field>
+        <field>SUBJECT</field>
     </columns>
     <columns>
         <field>WHO_NAME</field>
     </columns>
     <columns>
-        <field>SUBJECT</field>
+        <field>Activity.Konto_kontakt__c</field>
     </columns>
     <columns>
-        <field>Activity.IPS_Type__c</field>
+        <field>CONTACT</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -79,9 +79,40 @@
             <operator>equals</operator>
             <value>1</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Activity.IPS_Status1__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Completed,Participant Absent</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Activity.ips_uo_Kanal__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Fysisk</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Event.IPS_Event,Event.IPS_UO_Arbeidsgiver,Event.Ips_uo_Deltakermote,Event.ips_UO_m_ter</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>WHAT_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.RelatedToAccount__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
     <groupingsDown>
         <field>DUE_DATE</field>
         <sortOrder>Asc</sortOrder>
@@ -89,7 +120,7 @@
     <name>Utetid forrige uke i %</name>
     <params>
         <name>closed</name>
-        <value>closed</value>
+        <value>all</value>
     </params>
     <params>
         <name>type</name>

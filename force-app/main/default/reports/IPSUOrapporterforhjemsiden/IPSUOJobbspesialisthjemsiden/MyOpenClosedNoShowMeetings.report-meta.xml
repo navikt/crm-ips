@@ -5,9 +5,8 @@
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
-            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>Activity.IPS_No_Show__c</column>
+            <column>RowCount</column>
         </chartSummaries>
         <chartType>HorizontalBar</chartType>
         <enableHoverLabels>false</enableHoverLabels>
@@ -32,14 +31,13 @@
         <field>Activity.Konto_kontakt__c</field>
     </columns>
     <columns>
+        <field>CONTACT</field>
+    </columns>
+    <columns>
         <field>START_DATE_TIME</field>
     </columns>
     <columns>
         <field>END_DATE_TIME</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Activity.IPS_No_Show__c</field>
     </columns>
     <filter>
         <criteriaItems>
@@ -68,12 +66,17 @@
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
+        <field>Activity.IPS_Type__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
         <field>WHAT_NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Activity.IPS_Type__c</field>
+        <field>Activity.RelatedToAccount__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Møter - Deltaker ikke møtt</name>
@@ -87,7 +90,7 @@
     </params>
     <params>
         <name>co</name>
-        <value>0</value>
+        <value>1</value>
     </params>
     <reportType>Activity</reportType>
     <scope>user</scope>
