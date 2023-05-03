@@ -3,8 +3,8 @@
     <actionCalls>
         <name>createTravelTime</name>
         <label>createTravelTime</label>
-        <locationX>279</locationX>
-        <locationY>959</locationY>
+        <locationX>314</locationX>
+        <locationY>1247</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -36,6 +36,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>recordtypeId</name>
+            <value>
+                <elementReference>getEvents.RecordTypeId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>startDate</name>
             <value>
                 <elementReference>getEvents.StartDateTime</elementReference>
@@ -57,8 +63,8 @@
     <actionCalls>
         <name>createTravelTime_0_0</name>
         <label>createTravelTime</label>
-        <locationX>939</locationX>
-        <locationY>743</locationY>
+        <locationX>974</locationX>
+        <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -87,6 +93,12 @@
             <name>ownerId</name>
             <value>
                 <elementReference>getEvents.OwnerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordtypeId</name>
+            <value>
+                <elementReference>getEvents.RecordTypeId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -111,8 +123,8 @@
     <actionCalls>
         <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
-        <locationX>1203</locationX>
-        <locationY>743</locationY>
+        <locationX>1238</locationX>
+        <locationY>695</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -144,6 +156,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>recordtypeId</name>
+            <value>
+                <elementReference>getEvents.RecordTypeId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>startDate</name>
             <value>
                 <elementReference>getEvents.StartDateTime</elementReference>
@@ -164,10 +182,26 @@
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>addAccountId</name>
+        <label>addAccountId</label>
+        <locationX>182</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>varRelatedToAccount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getEvents.WhatId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>checkMeetingCriteria</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addPublicTrue</name>
         <label>addPublicTrue</label>
-        <locationX>147</locationX>
-        <locationY>1319</locationY>
+        <locationX>182</locationX>
+        <locationY>1607</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -180,10 +214,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Copy_1_of_addAccountId</name>
+        <label>addAccountId</label>
+        <locationX>446</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>varRelatedToAccount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getEvents.RelatedToAccount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>checkMeetingCriteria</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Copy_1_of_addPublicFalse</name>
         <label>Copy 1 of addPublicFalse</label>
-        <locationX>965</locationX>
-        <locationY>1600</locationY>
+        <locationX>1106</locationX>
+        <locationY>1367</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -199,14 +249,15 @@
             </value>
         </assignmentItems>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Update_meeting_with_Id1</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Copy_1_of_addPublicTrue</name>
         <label>addPublicTrue</label>
-        <locationX>807</locationX>
-        <locationY>1535</locationY>
+        <locationX>842</locationX>
+        <locationY>1487</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -221,8 +272,8 @@
     <decisions>
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
-        <locationX>279</locationX>
-        <locationY>623</locationY>
+        <locationX>314</locationX>
+        <locationY>911</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
             <name>isMeetingWithEmployerJobbstotte</name>
@@ -273,8 +324,8 @@
         <description>check if changes is added travel or updates</description>
         <name>checkpoint1</name>
         <label>checkpoint1</label>
-        <locationX>1071</locationX>
-        <locationY>623</locationY>
+        <locationX>1106</locationX>
+        <locationY>575</locationY>
         <defaultConnector>
             <targetReference>updateTravelTime_0</targetReference>
         </defaultConnector>
@@ -319,8 +370,8 @@
     <decisions>
         <name>checkRelatedTo</name>
         <label>checkRelatedTo</label>
-        <locationX>279</locationX>
-        <locationY>1079</locationY>
+        <locationX>314</locationX>
+        <locationY>1367</locationY>
         <defaultConnector>
             <targetReference>updateMeetingWithId</targetReference>
         </defaultConnector>
@@ -342,10 +393,36 @@
         </rules>
     </decisions>
     <decisions>
+        <description>check type of meeting</description>
+        <name>checkType</name>
+        <label>checkType</label>
+        <locationX>314</locationX>
+        <locationY>575</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_addAccountId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>anything else</defaultConnectorLabel>
+        <rules>
+            <name>isArbeidsgiver</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEvents.IPS_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Arbeidsgivermøte</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addAccountId</targetReference>
+            </connector>
+            <label>isArbeidsgiver</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
-        <locationX>1071</locationX>
-        <locationY>959</locationY>
+        <locationX>1106</locationX>
+        <locationY>911</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_checkRelatedTo</targetReference>
         </defaultConnector>
@@ -383,8 +460,8 @@
     <decisions>
         <name>Copy_1_of_checkRelatedTo</name>
         <label>Copy 1 of checkRelatedTo</label>
-        <locationX>1071</locationX>
-        <locationY>1295</locationY>
+        <locationX>1106</locationX>
+        <locationY>1247</locationY>
         <defaultConnector>
             <targetReference>updateTask</targetReference>
         </defaultConnector>
@@ -437,8 +514,8 @@
     <decisions>
         <name>isEventNew</name>
         <label>isEventNew</label>
-        <locationX>675</locationX>
-        <locationY>503</locationY>
+        <locationX>710</locationX>
+        <locationY>455</locationY>
         <defaultConnector>
             <targetReference>checkpoint1</targetReference>
         </defaultConnector>
@@ -454,7 +531,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>checkMeetingCriteria</targetReference>
+                <targetReference>checkType</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -465,6 +542,7 @@
 - create/update traveltime
 - update startdate
 - set public true</description>
+    <environments>Default</environments>
     <formulas>
         <name>isDateTimeChanged</name>
         <dataType>Boolean</dataType>
@@ -486,7 +564,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -499,8 +577,8 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>675</locationX>
-        <locationY>383</locationY>
+        <locationX>710</locationX>
+        <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>isEventNew</targetReference>
@@ -520,8 +598,8 @@
     <recordUpdates>
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
-        <locationX>808</locationX>
-        <locationY>1742</locationY>
+        <locationX>842</locationX>
+        <locationY>1607</locationY>
         <connector>
             <targetReference>updateTask</targetReference>
         </connector>
@@ -548,8 +626,8 @@
     <recordUpdates>
         <name>updateFirstEmployeeMeeting</name>
         <label>updateFirstEmployeeMeeting</label>
-        <locationX>939</locationX>
-        <locationY>1079</locationY>
+        <locationX>974</locationX>
+        <locationY>1031</locationY>
         <connector>
             <targetReference>Copy_1_of_checkRelatedTo</targetReference>
         </connector>
@@ -572,8 +650,8 @@
     <recordUpdates>
         <name>updateMeetingWithId</name>
         <label>Update meeting with Id</label>
-        <locationX>279</locationX>
-        <locationY>1535</locationY>
+        <locationX>314</locationX>
+        <locationY>1823</locationY>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
@@ -597,8 +675,8 @@
     <recordUpdates>
         <name>updateTask</name>
         <label>updateTask</label>
-        <locationX>1028</locationX>
-        <locationY>1954</locationY>
+        <locationX>1106</locationX>
+        <locationY>1823</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -616,12 +694,12 @@
         <object>Task</object>
     </recordUpdates>
     <start>
-        <locationX>549</locationX>
-        <locationY>48</locationY>
+        <locationX>584</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND (2 OR 3 OR 4)</filterLogic>
         <filters>
             <field>Subject</field>
             <operator>NotEqualTo</operator>
@@ -636,6 +714,20 @@
                 <stringValue>Meeting with Employer</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Arbeidsgivermøte</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>First Meeting with Employer</stringValue>
+            </value>
+        </filters>
         <object>Event</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
@@ -644,8 +736,8 @@
     <subflows>
         <name>Add_contactid_into_event</name>
         <label>Add contactid into event</label>
-        <locationX>147</locationX>
-        <locationY>1199</locationY>
+        <locationX>182</locationX>
+        <locationY>1487</locationY>
         <connector>
             <targetReference>addPublicTrue</targetReference>
         </connector>
@@ -664,8 +756,8 @@
     <subflows>
         <name>Copy_1_of_Add_contactid_into_event</name>
         <label>Copy 1 of Add contactid into event</label>
-        <locationX>807</locationX>
-        <locationY>1415</locationY>
+        <locationX>842</locationX>
+        <locationY>1367</locationY>
         <connector>
             <targetReference>Copy_1_of_addPublicTrue</targetReference>
         </connector>
@@ -684,8 +776,8 @@
     <subflows>
         <name>IPS_createTaskBasedOnMeetingJobbstotte</name>
         <label>Create task based on meeting - jobbstotte</label>
-        <locationX>15</locationX>
-        <locationY>743</locationY>
+        <locationX>50</locationX>
+        <locationY>1031</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
@@ -729,7 +821,7 @@
         <inputAssignments>
             <name>varRelatedToAccount</name>
             <value>
-                <elementReference>getEvents.RelatedToAccount__c</elementReference>
+                <elementReference>varRelatedToAccount</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -752,8 +844,8 @@
     <subflows>
         <name>IPS_createTaskBasedOnMeetingJobbutvikling</name>
         <label>Create task based on meeting - jobbutvikling</label>
-        <locationX>279</locationX>
-        <locationY>743</locationY>
+        <locationX>314</locationX>
+        <locationY>1031</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
@@ -797,7 +889,7 @@
         <inputAssignments>
             <name>varRelatedToAccount</name>
             <value>
-                <elementReference>getEvents.RelatedToAccount__c</elementReference>
+                <elementReference>varRelatedToAccount</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>

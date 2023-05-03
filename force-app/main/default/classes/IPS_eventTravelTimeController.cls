@@ -16,12 +16,14 @@ public class IPS_eventTravelTimeController {
             eventTraveltimeAfter = 0;
         }
 
-        Id eventRelatedTo = request.get(0).relatedTo;
+        //Id eventRelatedTo = request.get(0).relatedTo;
         Id eventOwnerId = request.get(0).ownerId;
-        Id recordTypeId = Schema.SObjectType.Event.getRecordTypeInfosByDeveloperName()
+        Id recordTypeId = request.get(0).recordtypeId;
+        
+        /*Schema.SObjectType.Event.getRecordTypeInfosByDeveloperName()
             .get('IPS_Event')
             .getRecordTypeId();
-
+*/
         //create travel time
         if (isEventUpdate == false) {
             createTravelTime(
@@ -30,7 +32,6 @@ public class IPS_eventTravelTimeController {
                 currentEventId,
                 eventTraveltimeBefore,
                 eventTraveltimeAfter,
-                eventRelatedTo,
                 recordTypeId,
                 eventOwnerId
             );
@@ -66,8 +67,8 @@ public class IPS_eventTravelTimeController {
         @InvocableVariable(required=true)
         public Id ownerId;
 
-        @InvocableVariable
-        public Id relatedTo;
+        @InvocableVariable(required=true)
+        public Id recordtypeId;
     }
 
     @TestVisible
@@ -77,7 +78,6 @@ public class IPS_eventTravelTimeController {
         id currentRecord,
         Integer travelTimeBefore,
         Integer travelTimeAfter,
-        Id eventRelatedTo,
         Id recordTypeId,
         id ownerId
     ) {
