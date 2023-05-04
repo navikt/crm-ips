@@ -3,7 +3,7 @@
     <actionCalls>
         <name>createTravelTime</name>
         <label>createTravelTime</label>
-        <locationX>314</locationX>
+        <locationX>182</locationX>
         <locationY>575</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -48,6 +48,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>status</name>
+            <value>
+                <elementReference>getEvents.IPS_Status1__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>travelTimeAfter</name>
             <value>
                 <elementReference>getEvents.IPS_travelTimeFrom__c</elementReference>
@@ -63,8 +69,8 @@
     <actionCalls>
         <name>createTravelTime_0</name>
         <label>createTravelTime</label>
-        <locationX>578</locationX>
-        <locationY>695</locationY>
+        <locationX>622</locationX>
+        <locationY>1031</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -105,6 +111,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>status</name>
+            <value>
+                <elementReference>getEvents.IPS_Status1__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>travelTimeAfter</name>
             <value>
                 <elementReference>getEvents.IPS_travelTimeFrom__c</elementReference>
@@ -120,8 +132,8 @@
     <actionCalls>
         <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
-        <locationX>842</locationX>
-        <locationY>695</locationY>
+        <locationX>1062</locationX>
+        <locationY>1031</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -162,6 +174,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>status</name>
+            <value>
+                <elementReference>getEvents.IPS_Status1__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>travelTimeAfter</name>
             <value>
                 <elementReference>getEvents.IPS_travelTimeFrom__c</elementReference>
@@ -178,7 +196,7 @@
     <assignments>
         <name>setPublic</name>
         <label>setPublic</label>
-        <locationX>314</locationX>
+        <locationX>182</locationX>
         <locationY>815</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
@@ -188,40 +206,18 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateEvent</targetReference>
+            <targetReference>IsEventClosed</targetReference>
         </connector>
     </assignments>
     <decisions>
         <name>checkCriteria</name>
         <label>checkCriteria</label>
-        <locationX>380</locationX>
+        <locationX>512</locationX>
         <locationY>455</locationY>
         <defaultConnector>
             <targetReference>checkUpdate</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isCompleted</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ips_Completed__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_Type__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Start up meeting</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateStartUpDate</targetReference>
-            </connector>
-            <label>isCompleted</label>
-        </rules>
+        <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>isNewEvent</name>
             <conditionLogic>and</conditionLogic>
@@ -230,20 +226,6 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getEvents.ips_Completed__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getEvents.IPS_Type__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Start up meeting</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -255,10 +237,10 @@
     <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
-        <locationX>710</locationX>
+        <locationX>842</locationX>
         <locationY>575</locationY>
         <defaultConnector>
-            <targetReference>updateTravelTime_0</targetReference>
+            <targetReference>isEventClosed2</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
@@ -293,9 +275,84 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>createTravelTime_0</targetReference>
+                <targetReference>IsEventClosed1</targetReference>
             </connector>
             <label>isTravelTimeAdded</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsEventClosed</name>
+        <label>IsEventClosed</label>
+        <locationX>182</locationX>
+        <locationY>935</locationY>
+        <defaultConnector>
+            <targetReference>UpdateEvent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
+        <rules>
+            <name>IsClosed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEvents.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateStartUpDate</targetReference>
+            </connector>
+            <label>IsClosed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsEventClosed1</name>
+        <label>IsEventClosed</label>
+        <locationX>622</locationX>
+        <locationY>695</locationY>
+        <defaultConnector>
+            <targetReference>createTravelTime_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
+        <rules>
+            <name>isClosed1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEvents.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_updateStartUpDate</targetReference>
+            </connector>
+            <label>isClosed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isEventClosed2</name>
+        <label>isEventClosed</label>
+        <locationX>1062</locationX>
+        <locationY>695</locationY>
+        <defaultConnector>
+            <targetReference>updateTravelTime_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
+        <rules>
+            <name>isClosed2</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getEvents.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_2_of_updateStartUpDate</targetReference>
+            </connector>
+            <label>isClosed</label>
         </rules>
     </decisions>
     <description>creation or updates on startup meetings
@@ -337,7 +394,7 @@
     <recordLookups>
         <name>getEvents</name>
         <label>getEvents</label>
-        <locationX>380</locationX>
+        <locationX>512</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -356,10 +413,70 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Copy_1_of_updateStartUpDate</name>
+        <label>updateStartUpDate</label>
+        <locationX>490</locationX>
+        <locationY>815</locationY>
+        <connector>
+            <targetReference>createTravelTime_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Oppstartsdato__c</field>
+            <value>
+                <elementReference>$Record.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Start_up_meeting_completed__c</field>
+            <value>
+                <elementReference>$Record.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_2_of_updateStartUpDate</name>
+        <label>updateStartUpDate</label>
+        <locationX>930</locationX>
+        <locationY>815</locationY>
+        <connector>
+            <targetReference>updateTravelTime_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Oppstartsdato__c</field>
+            <value>
+                <elementReference>$Record.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Start_up_meeting_completed__c</field>
+            <value>
+                <elementReference>$Record.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>UpdateEvent</name>
         <label>UpdateEvent</label>
-        <locationX>314</locationX>
-        <locationY>935</locationY>
+        <locationX>182</locationX>
+        <locationY>1271</locationY>
         <inputAssignments>
             <field>IsVisibleInSelfService__c</field>
             <value>
@@ -378,7 +495,10 @@
         <name>updateStartUpDate</name>
         <label>updateStartUpDate</label>
         <locationX>50</locationX>
-        <locationY>575</locationY>
+        <locationY>1055</locationY>
+        <connector>
+            <targetReference>UpdateEvent</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -402,20 +522,12 @@
         <object>Work_Trail__c</object>
     </recordUpdates>
     <start>
-        <locationX>254</locationX>
+        <locationX>386</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getEvents</targetReference>
         </connector>
-        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
-        <filterLogic>or</filterLogic>
-        <filters>
-            <field>ips_Completed__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>IPS_Type__c</field>
             <operator>EqualTo</operator>
@@ -431,7 +543,7 @@
     <subflows>
         <name>Add_contactId_to_event</name>
         <label>Add contactId to event</label>
-        <locationX>314</locationX>
+        <locationX>182</locationX>
         <locationY>695</locationY>
         <connector>
             <targetReference>setPublic</targetReference>

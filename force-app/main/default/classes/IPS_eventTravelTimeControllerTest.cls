@@ -49,7 +49,7 @@ public class IPS_eventTravelTimeControllerTest {
           ips_Subcategory_Type__c ='Job support',
           IPS_Subcategory_Type_UO__c='Follow-up',
           F_rste_arbeidsgiverm_te__c='Nei',
-          ips_Completed__c =true);
+          IPS_Status1__c ='Completed');
           insert createEvent;
         
         Event createEvent2 = new Event(
@@ -66,7 +66,7 @@ public class IPS_eventTravelTimeControllerTest {
           ips_Subcategory_Type__c ='Job support',
           IPS_Subcategory_Type_UO__c='Follow-up',
           F_rste_arbeidsgiverm_te__c='Nei',
-          ips_Completed__c =true);
+          IPS_Status1__c ='Open');
           insert createEvent2; 
     }
     
@@ -85,7 +85,7 @@ public class IPS_eventTravelTimeControllerTest {
 @isTest
     static void createwithOutTravelTime(){
   
-     List<Event> noEventTravel = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c FROM Event WHERE IPS_eventId__c=null AND ips_Travel_time__c<=0];
+     List<Event> noEventTravel = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c,IPS_Status1__c FROM Event WHERE IPS_eventId__c=null AND ips_Travel_time__c<=0];
         for(Event j:noEventTravel){
             System.assertEquals(j.ips_Travel_time__c, 0, 'No travel time before');     
     		System.assertEquals(j.IPS_travelTimeFrom__c, 0, 'No travel time after');
@@ -95,7 +95,7 @@ public class IPS_eventTravelTimeControllerTest {
     
 @isTest
     static void updateEventTravelTime(){
-        List<Event> updateEvent = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c FROM Event WHERE IPS_eventId__c=null AND ips_Travel_time__c>0];
+        List<Event> updateEvent = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c,IPS_Status1__c FROM Event WHERE IPS_eventId__c=null AND ips_Travel_time__c>0];
         for(Event i:updateEvent){
             i.StartDateTime.addMinutes(120);
             i.EndDateTime.addMinutes(120);
@@ -110,7 +110,7 @@ public class IPS_eventTravelTimeControllerTest {
     static void updateEventTravelTime1(){
    	IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
         
-        List<Event> updateEvent = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c FROM Event WHERE IPS_eventId__c!=null];
+        List<Event> updateEvent = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c,IPS_Status1__c FROM Event WHERE IPS_eventId__c!=null];
         for(Event i:updateEvent){
             firstInput.isUpdate = true;
             firstInput.startDate = i.StartDateTime;
