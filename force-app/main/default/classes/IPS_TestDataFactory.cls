@@ -13,6 +13,44 @@ public with sharing class IPS_TestDataFactory {
 
         return person;
     }
+    
+    public static User getStandardUser(String firstname,String lastname) {
+    Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'Standard User' LIMIT 1];
+    User user = new User(
+      FirstName = firstname,
+      LastName = lastname,
+      Email = firstname+'.'+lastname+'@nav.no',
+      Username = firstname+'.'+lastname+'@nav.no',
+      Alias = firstname.substring(0,2) + lastname.substring(0,2),
+      LanguageLocaleKey = 'no',
+      LocaleSidKey = 'no_NO',
+      TimeZoneSidKey = 'Europe/Paris',
+      EmailEncodingKey = 'UTF-8',
+      ProfileId = profile.Id,
+      Department = '1',
+      CRM_NAV_Ident__c = firstname.substring(0,2) + lastname.substring(0,2) +'123'
+    );
+    return user;
+  }
+    
+  public static User getAdminUser(String firstname,String lastname) {
+    Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'System administrator' LIMIT 1];
+    User user = new User(
+      FirstName = firstname,
+      LastName = lastname,
+      Email = firstname+'.'+lastname+'@nav.no',
+      Username = firstname+'.'+lastname+'@nav.no',
+      Alias = firstname.substring(0,2) + lastname.substring(0,2),
+      LanguageLocaleKey = 'no',
+      LocaleSidKey = 'no_NO',
+      TimeZoneSidKey = 'Europe/Paris',
+      EmailEncodingKey = 'UTF-8',
+      ProfileId = profile.Id,
+      Department = '1',
+      CRM_NAV_Ident__c = firstname.substring(0,2) + lastname.substring(0,2) +'123'
+    );
+    return user;
+  }
 
     public static Account createEmployerAccount() {
         Account acct = new Account();
@@ -46,18 +84,32 @@ public with sharing class IPS_TestDataFactory {
             ips_Subcategory_Type__c = 'Job support',
             IPS_Subcategory_Type_UO__c = 'Follow-up',
             F_rste_arbeidsgiverm_te__c = 'Nei',
-            ips_Completed__c = true
+            IPS_Status1__c  = 'Open'
         );
         return createEvent;
     }
+    
+    public static Task creategoal(String jobbsporId) {
+        Id devRecordTypeId1 = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
 
-    public static Event createEmployerEventWithParticipant(String employerId, String participantId, String jobbsporId) {
+        Task taskGoal = new Task(
+            WhatId = jobbsporId,
+            RecordTypeId = devRecordTypeId1,
+            Type_of_Task_IPSUO__c ='Delmål (av hovedmål)', 
+            Subject = 'Ett delmål',
+            IPS_Status1__c  = 'Open'
+        );
+        return taskGoal;
+    }
+
+    public static Event createEmployerEventWithParticipant(String employerId, String contactId, String jobbsporId) {
         Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
-            whoId = participantId,
+            IPS_participant_related_to_meeting__c = true,
             WhatId = jobbsporId,
+            RelatedToAccount__c = employerId,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
             StartDateTime = system.Datetime.now(),
@@ -68,17 +120,17 @@ public with sharing class IPS_TestDataFactory {
             ips_Subcategory_Type__c = 'Job support',
             IPS_Subcategory_Type_UO__c = 'Follow-up',
             F_rste_arbeidsgiverm_te__c = 'Nei',
-            ips_Completed__c = true
+            IPS_Status1__c  = 'Open'
         );
         return createEvent;
     }
 
-    public static Event createParticipantEvent(String participantId, String jobbsporId) {
+    public static Event createParticipantEvent(String contactId, String jobbsporId) {
         Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
-            whoId = participantId,
+            whoId = contactId,
             WhatId = jobbsporId,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
@@ -87,7 +139,7 @@ public with sharing class IPS_TestDataFactory {
             Subject = 'Møte med deltaker',
             Description = 'Møte',
             IPS_Type__c = 'Meeting with Participant',
-            ips_Completed__c = false
+            IPS_Status1__c  = 'Open'
         );
         return createEvent;
     }
