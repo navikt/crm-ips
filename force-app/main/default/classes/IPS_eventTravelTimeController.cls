@@ -8,6 +8,7 @@ public class IPS_eventTravelTimeController {
         Id currentEventId = request.get(0).currentRecord;
         Integer eventTraveltimeBefore = request.get(0).travelTimeBefore;
         Integer eventTraveltimeAfter = request.get(0).travelTimeAfter;
+        String eventStatus = request.get(0).status;
         if (eventTraveltimeBefore <= 0 || eventTraveltimeBefore == null) {
             eventTraveltimeBefore = 0;
         }
@@ -33,13 +34,14 @@ public class IPS_eventTravelTimeController {
                 eventTraveltimeBefore,
                 eventTraveltimeAfter,
                 recordTypeId,
+                eventStatus,
                 eventOwnerId
             );
         }
 
         //update travel time
         if (isEventUpdate == true) {
-            updateTravelTime(eventStartDate, eventEndDate, currentEventId, eventTraveltimeBefore, eventTraveltimeAfter);
+            updateTravelTime(eventStartDate, eventEndDate, currentEventId, eventTraveltimeBefore, eventTraveltimeAfter,eventStatus);
         }
     }
 
@@ -69,6 +71,9 @@ public class IPS_eventTravelTimeController {
 
         @InvocableVariable(required=true)
         public Id recordtypeId;
+
+        @InvocableVariable(required=true)
+        public String status;
     }
 
     @TestVisible
@@ -79,6 +84,7 @@ public class IPS_eventTravelTimeController {
         Integer travelTimeBefore,
         Integer travelTimeAfter,
         Id recordTypeId,
+        String eventStatus,
         id ownerId
     ) {
         dateTime startTimeBefore = startDate.addMinutes(-travelTimeBefore);
@@ -91,14 +97,13 @@ public class IPS_eventTravelTimeController {
             Event eBefore = new Event();
             eBefore.StartDateTime = startTimeBefore;
             eBefore.EndDateTime = startTimeAfter;
-            //eBefore.WhatId = eventRelatedTo;
             eBefore.Subject = 'Reisetid';
             eBefore.Description = 'Traveltime before';
             eBefore.TAG_NoPersonInformation__c = true;
             eBefore.OwnerId = ownerId;
             eBefore.RecordTypeId = recordTypeId;
             eBefore.IPS_eventId__c = currentRecord;
-            eBefore.ips_Completed__c =true;
+            eBefore.IPS_Status1__c = eventStatus;
             insert eBefore;
         }
 
@@ -107,14 +112,13 @@ public class IPS_eventTravelTimeController {
             Event eAfter = new Event();
             eAfter.StartDateTime = endTimeBefore;
             eAfter.EndDateTime = endTimeAfter;
-            //eAfter.WhatId = eventRelatedTo;
             eAfter.Subject = 'Reisetid';
             eAfter.Description = 'Traveltime after';
             eAfter.TAG_NoPersonInformation__c = true;
             eAfter.OwnerId = ownerId;
             eAfter.RecordTypeId = recordTypeId;
             eAfter.IPS_eventId__c = currentRecord;
-            eAfter.ips_Completed__c =true;
+            eAfter.IPS_Status1__c = eventStatus;
             insert eAfter;
         }
     }
@@ -124,7 +128,8 @@ public class IPS_eventTravelTimeController {
         dateTime endDate,
         id currentRecord,
         Integer travelTimeBefore,
-        Integer travelTimeAfter
+        Integer travelTimeAfter,
+        String eventStatus
     ) {
         dateTime startTimeBefore = startDate.addMinutes(-travelTimeBefore);
         dateTime startTimeAfter = startDate;
@@ -140,11 +145,13 @@ public class IPS_eventTravelTimeController {
             if (l.Description == 'Traveltime before') {
                 l.StartDateTime = startTimeBefore;
                 l.EndDateTime = startTimeAfter;
+                l.IPS_Status1__c = eventStatus;
                 update l;
             }
             if (l.Description == 'Traveltime after') {
                 l.StartDateTime = endTimeBefore;
                 l.EndDateTime = endTimeAfter;
+                l.IPS_Status1__c = eventStatus;
                 update l;
             }
         }
