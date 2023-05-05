@@ -3,6 +3,7 @@
     <apiVersion>56.0</apiVersion>
     <description>Setter sluttdato når status = sluttet
 Gjelder både for UO og IPS</description>
+    <environments>Default</environments>
     <interviewLabel>IPS_Sett dato for sluttet i Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS_Sett dato for sluttet i Jobbspor</label>
     <processMetadataValues>
@@ -26,7 +27,7 @@ Gjelder både for UO og IPS</description>
         <inputAssignments>
             <field>ips_End_Date__c</field>
             <value>
-                <elementReference>$Record.LastModifiedDate</elementReference>
+                <elementReference>$Flow.CurrentDate</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
