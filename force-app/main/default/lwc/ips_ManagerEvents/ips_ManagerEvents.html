@@ -1,0 +1,81 @@
+<template>
+    <div class="container container-col-main">
+        <h1>Leaderboard</h1>
+    </div>
+    <div class="container container-col-main">
+        <h2>Aktiviteter med jobbspor de neste 7 dager</h2>
+
+        <!-- All users related to manager -->
+        <template if:true={optionsLoaded}>
+            <lightning-combobox
+                name="selectOwner"
+                label="Filtrer aktivitet på NAV ansatt."
+                value={value}
+                options={userOptions}
+                onchange={handleUserChange} >
+            </lightning-combobox>
+        </template>
+        <br>
+        <br>
+       
+
+        <template if:true={eventList}>
+            <lightning-datatable 
+                data={eventList} 
+                hide-checkbox-column="true" 
+                columns={columns} 
+                key-field="eventId"
+                >
+            </lightning-datatable>
+        </template>
+    </div>
+
+    <div class="container container-col-main">
+
+        <h2>Antall jobbspor pr jobbspesialist og status</h2>
+
+        <template if:true={trailOwnerList}>
+            <lightning-datatable 
+                data={trailOwnerList}
+                key-field="employeeName"
+                hide-checkbox-column="true"
+                columns={columnstrailOwner} 
+                >
+            </lightning-datatable>
+        </template>
+    </div>
+
+    <div class="container container-col-main">
+        <h2>Antall jobbspor pr status/fase</h2>
+
+        <template if:true={trailStatusList}> 
+                   
+            <lightning-datatable 
+                data={trailStatusList}
+                key-field="trailStatus"
+                hide-checkbox-column="true"
+                columns={columnstrailStatus} 
+                >
+            </lightning-datatable>
+        </template>
+    </div>
+
+    <div class="container container-col-main">
+        <h2>Avsluttede jobbspor pr år, måned og årsak</h2>
+        
+
+        <template if:true={trailEndedList}>
+            <lightning-datatable 
+                data={trailEndedList}
+                key-field="year"
+                hide-checkbox-column="true"
+                columns={columnstrailEnded} 
+                >
+            </lightning-datatable>
+        </template>
+    </div>
+   
+    <template if:true={error}>
+       <p>Det er en eller annen feil i rapporten</p> {error}
+    </template>
+</template>
