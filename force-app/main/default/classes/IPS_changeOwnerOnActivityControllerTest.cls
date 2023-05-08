@@ -19,9 +19,9 @@ public class IPS_changeOwnerOnActivityControllerTest {
             Work_Trail__c jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
         	insert jobbspor;
             
-            Event meetEmp1 = IPS_TestDataFactory.createEmployerEventWithParticipant(employerAccount.id,contactId,jobbspor.id);
+            Event meetEmp1 = IPS_TestDataFactory.createEmployerEventWithParticipant(employerAccount.id,u.id,jobbspor.id);
             insert meetEmp1;
-        	Event meetEmp2 = IPS_TestDataFactory.createEmployerEventWithParticipant(employerAccount.id,contactId,jobbspor.id);
+        	Event meetEmp2 = IPS_TestDataFactory.createEmployerEventWithParticipant(employerAccount.id,u.id,jobbspor.id);
             insert meetEmp2;
             
             Task tgoal = IPS_TestDataFactory.createGoal(jobbspor.id);
