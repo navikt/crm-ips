@@ -6,7 +6,9 @@
     <errorConditionFormula>AND(
 RecordType.DeveloperName = &quot;IPS_UO_Arbeidsgiver&quot;,
 $Profile.Name = &quot;NAV UO Jobbspesialist&quot;,
-ISBLANK(TEXT(IPS_Subcategory_Type_UO__c))
+$Profile.Name = &quot;NAV UO Metodeveileder&quot;,
+ISPICKVAL(IPS_Subcategory_Type_UO__c, &quot;&quot;),
+(Subject != &apos;Reisetid&apos;)
 )</errorConditionFormula>
-    <errorMessage>Husk å sette på underkategori på arbeidsgivermøte</errorMessage>
+    <errorMessage>Husk å sette på &quot;Relasjonsbygging&quot; som underkategori på arbeidsgivermøte</errorMessage>
 </ValidationRule>
