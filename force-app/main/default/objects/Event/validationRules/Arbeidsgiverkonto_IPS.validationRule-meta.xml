@@ -5,8 +5,10 @@
     <description>Når man oppretter et møte på arbeidsgiverkontoen så skal underkategori være fylt ut</description>
     <errorConditionFormula>AND(
 RecordType.DeveloperName = &quot;IPS_UO_Arbeidsgiver&quot;,
-$Profile.Name = &quot;NAV IPS Jobbspesialist&quot;,
-ISBLANK(TEXT(ips_Subcategory_Type__c))
+$Profile.Name = &quot;NAV IPS Jobbspesialist&quot;, 
+$Profile.Name = &quot;NAV IPS Metodeveileder&quot;,
+ISPICKVAL(ips_Subcategory_Type__c, &quot;&quot;),
+(Subject != &apos;Reisetid&apos;)
 )</errorConditionFormula>
-    <errorMessage>Husk å sette på underkategori på arbeidsgivermøte</errorMessage>
+    <errorMessage>Husk å sette på &quot;Jobbutvikling&quot; underkategori på arbeidsgivermøte</errorMessage>
 </ValidationRule>
