@@ -10,4 +10,12 @@ public without sharing class IPS_Utility {
         }
         return userList;
     }
+
+    public static List<Id> getMyEmployeesUserId(){
+        List<Id> userIds=new List<Id>();
+        for(User u:[SELECT Id FROM USER Where ManagerId=:UserInfo.getUserId() AND IsActive=true]){
+            userIds.add(u.Id);
+        }
+        return userIds;
+    }
 }

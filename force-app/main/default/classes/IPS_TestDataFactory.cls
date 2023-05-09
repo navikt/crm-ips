@@ -9,7 +9,7 @@ public with sharing class IPS_TestDataFactory {
         person.INT_Confidential__c = 'UGRADERT';
         person.Name = ident;
         person.INT_LastName__c = 'Last';
-        person.INT_FirstName__c = 'First';
+        person.INT_FirstName__c = 'First'+ident;
 
         return person;
     }
@@ -53,8 +53,9 @@ public with sharing class IPS_TestDataFactory {
   }
 
     public static Account createEmployerAccount() {
+        Integer IntrandomNumber = Integer.valueof((Math.random() * 1000));
         Account acct = new Account();
-        acct.Name = 'Røre Pinne';
+        acct.Name = 'Røre Pinne'+IntrandomNumber;
         acct.RecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Employer').getRecordTypeId();
         return acct;
     }
@@ -65,6 +66,7 @@ public with sharing class IPS_TestDataFactory {
         trail.ips_Status__c = 'Referred';
         trail.ips_Passive__c = false;
         trail.IPS_Partticipant_phone_number__c = '987 65 432';
+        trail.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
         return trail;
     }
 
@@ -102,7 +104,7 @@ public with sharing class IPS_TestDataFactory {
         return taskGoal;
     }
 
-    public static Event createEmployerEventWithParticipant(String employerId, String contactId, String jobbsporId) {
+    public static Event createEmployerEventWithParticipant(String employerId, Id ownerId, String jobbsporId) {
         Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
 
         Event createEvent = new Event(
@@ -120,7 +122,9 @@ public with sharing class IPS_TestDataFactory {
             ips_Subcategory_Type__c = 'Job support',
             IPS_Subcategory_Type_UO__c = 'Follow-up',
             F_rste_arbeidsgiverm_te__c = 'Nei',
-            IPS_Status1__c  = 'Open'
+            IPS_Status1__c  = 'Open',
+            OwnerId=ownerId,
+            Location='Kontoret'
         );
         return createEvent;
     }
@@ -195,4 +199,30 @@ public with sharing class IPS_TestDataFactory {
         );
             return intervallReport;
     }
+    
+    public static User createInternalUserWithManager(String username, Id managerId){
+        
+        Profile platformProfile=[SELECT Id FROM Profile WHERE Name='System administrator' LIMIT 1];
+
+        User platformUser=new User();
+        platformUser.FirstName='User';
+        platformUser.LastName='Test';
+        platformUser.Email=username;
+        platformUser.UserName=username;
+        platformUser.ProfileId=platformProfile.Id;
+        platformUser.CRM_Nav_Ident__c='A123456';
+        platformUser.Alias='plattest';
+        platformUser.TimeZoneSidKey='Europe/Paris';
+        platformUser.LocaleSidKey='no_NO';
+        platformUser.EmailEncodingKey='ISO-8859-1';
+        platformUser.LanguageLocaleKey='no';
+        platformUser.ManagerId=managerId;
+        return platformUser;
+    }
+    
+   public static void addPermissionsetUser(String userId){
+        PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'IPS_Jobbspesialist'];
+		insert new PermissionSetAssignment(AssigneeId = userId, PermissionSetId = ps.Id);
+    }
+    
 }
