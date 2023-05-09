@@ -4,11 +4,11 @@
     <active>true</active>
     <description>Når man oppretter et møte på arbeidsgiverkontoen så skal underkategori være fylt ut</description>
     <errorConditionFormula>AND(
+OR($Profile.Name = &quot;NAV UO Jobbspesialist&quot;,
+$Profile.Name = &quot;NAV UO Metodeveileder&quot;),
 RecordType.DeveloperName = &quot;IPS_UO_Arbeidsgiver&quot;,
-$Profile.Name = &quot;NAV UO Jobbspesialist&quot;,
-$Profile.Name = &quot;NAV UO Metodeveileder&quot;,
 ISPICKVAL(IPS_Subcategory_Type_UO__c, &quot;&quot;),
-(Subject != &apos;Reisetid&apos;)
+Subject != &apos;Reisetid&apos;
 )</errorConditionFormula>
     <errorMessage>Husk å sette på &quot;Relasjonsbygging&quot; som underkategori på arbeidsgivermøte</errorMessage>
 </ValidationRule>
