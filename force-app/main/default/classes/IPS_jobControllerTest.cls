@@ -4,15 +4,22 @@ public class IPS_jobControllerTest {
     static void makeData(){
         Person__c participant = IPS_TestDataFactory.createPerson();
         insert participant;
+        
+        User jobUser=IPS_TestDataFactory.createInternalUserWithManager('test.jobs@nav.no',UserInfo.getUserId());
+        insert jobUser;
 
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name='12069755555']?.CRM_Account__c;
 
         Account employerAccount = IPS_TestDataFactory.createEmployerAccount();
         insert employerAccount;
-
-        Work_Trail__c jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
-        insert jobbspor;
-
+        
+        Work_Trail__c jobbspor = new Work_Trail__c();
+        
+        System.runAs(jobUser){
+            jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
+        	insert jobbspor;
+        }
+        
         ips_Job__c completedJob = IPS_TestDataFactory.createJob(employerAccount.id,jobbspor.id,'Completed');
         insert completedJob;
         
@@ -35,7 +42,7 @@ public class IPS_jobControllerTest {
         jobs = IPS_jobController.getCompletedUserJobs(worktrail.id);
         Test.stopTest();
 
-        System.assertEquals(2, jobs.size(),'Confirm that there is 1 completed job');
+        System.assertEquals(1, jobs.size(),'Confirm that there is 1 completed job');
     }
 
     @isTest
@@ -47,7 +54,7 @@ public class IPS_jobControllerTest {
         jobs = IPS_jobController.getCompletedUserWorkTrainings(worktrail.id);
         Test.stopTest();
 
-        System.assertEquals(2, jobs.size(),'Confirm that there is 1 completed worktraining');
+        System.assertEquals(1, jobs.size(),'Confirm that there is 1 completed worktraining');
     }
     
     @isTest
@@ -59,7 +66,7 @@ public class IPS_jobControllerTest {
         jobs = IPS_jobController.getActiveUserJobs(worktrail.id);
         Test.stopTest();
 
-        System.assertEquals(0, jobs.size(),'Confirm that there is 1 active job');
+        System.assertEquals(1, jobs.size(),'Confirm that there is 1 active job');
     }
 
     @isTest
@@ -71,7 +78,7 @@ public class IPS_jobControllerTest {
         jobs = IPS_jobController.getActiveUserWorkTrainings(worktrail.id);
         Test.stopTest();
 
-        System.assertEquals(0, jobs.size(),'Confirm that there is 1 active worktraining');
+        System.assertEquals(1, jobs.size(),'Confirm that there is 1 active worktraining');
     }
     
     @isTest
@@ -84,6 +91,30 @@ public class IPS_jobControllerTest {
         Test.stopTest();
 
         System.assertEquals(1, jobs.size(),'Confirm that there is 1 detail job');
+    }
+    
+    @isTest
+    static void getaggregatedJobTraining(){
+        ips_Job__c job = [SELECT Id FROM ips_Job__c WHERE ips_Status__c ='Ongoing' AND ips_Form_of_Employment__c = 'work training'];
+        List<IPS_job> jobs = new List<IPS_job>();
+        
+        Test.startTest();
+        jobs = IPS_jobController.totalJobTraining();
+        Test.stopTest();
+
+        System.assertEquals(1, jobs.size(),'Confirm that there is 1 work training');
+    }
+    
+    @isTest
+    static void getaggregatedJobCategory(){
+        ips_Job__c job = [SELECT Id FROM ips_Job__c WHERE ips_Status__c ='Ongoing' AND ips_Form_of_Employment__c = 'Permanent employment'];
+        List<IPS_job> jobs = new List<IPS_job>();
+        
+        Test.startTest();
+        jobs = IPS_jobController.totalJobsByCategory();
+        Test.stopTest();
+
+        System.assertEquals(1, jobs.size(),'Confirm that there i 1 active jobs');
     }
     
     
