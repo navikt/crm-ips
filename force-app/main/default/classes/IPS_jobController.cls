@@ -162,4 +162,59 @@ public without sharing class IPS_jobController {
             throw new AuraHandledException(e.getMessage());
         }
     }
+    
+    @AuraEnabled(cacheable = true)
+    public static List<IPS_job> totalJobsByCategory(){
+        try {
+            List<IPS_job> jobCategoryList = new List<IPS_job>();
+            List<AggregateResult> aggList = new List<AggregateResult>();
+
+            aggList =[
+                SELECT Count(Id)Antall, toLabel(ips_Form_of_Employment__c) Ansettelsesform 
+                FROM ips_Job__c 
+                WHERE ips_status__c ='Ongoing' AND ips_Form_of_Employment__c !='work training'  AND ips_Work_Trail__r.OwnerId in: IPS_Utility.getMyEmployeesUserId()
+                GROUP BY ips_form_of_employment__c 
+                ];
+
+                if(aggList.size()>0){
+                    for(AggregateResult agg:aggList){
+                        IPS_job jobCategory= new IPS_job();
+                        jobCategory.totalNumber = (Integer)agg.get('Antall');
+                        jobCategory.typeOfEmployment = (String)agg.get('Ansettelsesform');
+
+                        jobCategoryList.add(jobCategory);
+                    }
+                }
+                return jobCategoryList;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled(cacheable = true)
+    public static List<IPS_job> totalJobTraining(){
+        try {
+            List<IPS_job> jobTrainingList = new List<IPS_job>();
+            List<AggregateResult> aggList = new List<AggregateResult>();
+
+            aggList =[
+                SELECT Count(Id)Antall
+                FROM ips_Job__c 
+                WHERE ips_status__c ='Ongoing' AND ips_Form_of_Employment__c ='work training'  AND ips_Work_Trail__r.OwnerId in: IPS_Utility.getMyEmployeesUserId()
+                GROUP BY ips_form_of_employment__c 
+                ];
+
+                if(aggList.size()>0){
+                    for(AggregateResult agg:aggList){
+                        IPS_job jobTraining= new IPS_job();
+                        jobTraining.totalNumber = (Integer)agg.get('Antall');
+
+                        jobTrainingList.add(jobTraining);
+                    }
+                }
+                return jobTrainingList;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
 }

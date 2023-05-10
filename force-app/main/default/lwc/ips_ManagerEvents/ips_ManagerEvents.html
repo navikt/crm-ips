@@ -1,8 +1,9 @@
 <template>
     <div class="container container-col-main">
-        <h1>Leaderboard</h1>
+        <h1>Leaderboard - {currentUserName}</h1>
     </div>
     <div class="container container-col-main">
+        <h1>Møteaktivitet fremover</h1>
         <h2>Aktiviteter med jobbspor de neste 7 dager</h2>
 
         <!-- All users related to manager -->
@@ -31,6 +32,7 @@
     </div>
 
     <div class="container container-col-main">
+        <h1>Jobbspor</h1>
 
         <h2>Antall jobbspor pr jobbspesialist og status</h2>
 
@@ -43,9 +45,7 @@
                 >
             </lightning-datatable>
         </template>
-    </div>
 
-    <div class="container container-col-main">
         <h2>Antall jobbspor pr status/fase</h2>
 
         <template if:true={trailStatusList}> 
@@ -58,12 +58,8 @@
                 >
             </lightning-datatable>
         </template>
-    </div>
 
-    <div class="container container-col-main">
         <h2>Avsluttede jobbspor pr år, måned og årsak</h2>
-        
-
         <template if:true={trailEndedList}>
             <lightning-datatable 
                 data={trailEndedList}
@@ -73,6 +69,43 @@
                 >
             </lightning-datatable>
         </template>
+    </div>
+
+    <div class="container container-col-main">
+        <h1>Deltakere og jobb/undervisning</h1>
+        <!-- Total job pr employment form -->
+        <template if:true={jobCategoryList}>
+            <h2>Pågående jobber pr ansettelsesform</h2>
+            <lightning-datatable
+                data={jobCategoryList}
+                key-field="totalNumber"
+                hide-checkbox-column="true"
+                columns={columnstotalCategory}
+                >
+            </lightning-datatable>
+        </template>
+
+        <!-- Total job trainings -->
+
+        <table>
+            <tr>
+                <th><h2>Antall i arbeidstrening</h2></th>
+                <th><h2>Antall i lønnet arbeid</h2></th>
+                <th><h2>Antall i yrkesopplæring UO</h2></th>
+                <th><h2>Antall i utdanning IPS</h2></th>
+            </tr>
+            <tr>
+                <td>
+                    <template if:true={jobTrainingNumber}>
+                                {jobTrainingNumber}
+
+                    </template>
+                </td>
+                <td> 4</td>
+                <td> 10</td>
+                <td> 78</td>
+            </tr>
+        </table>
     </div>
    
     <template if:true={error}>

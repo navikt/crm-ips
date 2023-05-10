@@ -1,9 +1,15 @@
 import { LightningElement ,api, wire, track} from 'lwc';
+import { getRecord } from 'lightning/uiRecordApi';
+import Id from '@salesforce/user/Id';
 import getEventList from '@salesforce/apex/ips_ManagerEventController.getEventsForCurrentWeek';
 import getTrailStatus from '@salesforce/apex/IPS_ManagerTrailController.getAggregatedTrailStatus';
 import getTrailJobbspesialist from '@salesforce/apex/IPS_ManagerTrailController.getAggregatedTrailJobbspesialist';
 import getManagerUsers from '@salesforce/apex/IPS_ManagerTrailController.getManagerUsers';
+import getJobCategory from '@salesforce/apex/IPS_jobController.totalJobsByCategory';
+import getJobTraining from '@salesforce/apex/IPS_jobController.totalJobTraining';
 import getEndedTrail from '@salesforce/apex/IPS_ManagerTrailController.getAggregatedEndedTrail';
+import UserNameFIELD from '@salesforce/schema/User.Name';
+
 
 export default class Ips_ManagerEvents extends LightningElement {
 
@@ -35,19 +41,28 @@ export default class Ips_ManagerEvents extends LightningElement {
         { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' },
     ];
 
+    @track columnstotalCategory =[
+        { label: 'Ansettelsesform', fieldName: 'typeOfEmployment', type: 'text'},
+        { label: 'Antall', fieldName: 'totalNumber', type: 'Number'},
+    ];
+
     defaultSortDirection = 'asc';
     sortDirection = 'asc';
     sortedBy;
     @track error;
     @track eventList ;
+    @track currentUserName;
     @track trailStatusList;
     @track trailOwnerList;
     @track trailEndedList;
+    @track jobCategoryList;
+    @track jobTrainingList;
     @track userOptions=[];
     @track value='- Alle -';
     @track optionsLoaded = false;
     initialRecordOwnerList;
     initialRecordEventList;
+    jobTrainingNumber;
 
     connectedCallback(){
         getManagerUsers()
@@ -63,13 +78,17 @@ export default class Ips_ManagerEvents extends LightningElement {
         })
 
     }
+    @wire(getRecord, { recordId: Id, fields: [UserNameFIELD]}) 
+    currentUserInfo({error, data}){
+        if(data){
+            this.currentUserName = data.fields.Name.value;
+        }
+    }
+
     
     /* get all events the next 7 days */
     @wire(getEventList)
-    wiredAEvents({
-        error,
-        data
-    }) {
+    wiredAEvents({error,data}) {
         if (data) {
             this.eventList = data;
             this.eventList = data;
@@ -109,6 +128,25 @@ export default class Ips_ManagerEvents extends LightningElement {
                 this.error = error;
             }  
         }
+
+    @wire(getJobCategory)
+    wiredCategory({error,data}){
+        if(data){
+            this.jobCategoryList = data;
+        }else if(error){
+            this.error = error;
+        }  
+    }
+
+    @wire(getJobTraining)
+    wiredTraining({error,data}){
+        if(data){
+            this.jobTrainingList = data[0];
+            this.jobTrainingNumber = this.jobTrainingList?.totalNumber;
+        }else if(error){
+            this.error = error;
+        }  
+    }
 
     handleUserChange(event){
         console.log(event.detail.value);
