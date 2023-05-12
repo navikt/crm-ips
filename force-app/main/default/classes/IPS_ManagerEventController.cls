@@ -5,8 +5,8 @@ public without sharing class IPS_ManagerEventController {
     public static List<IPS_ManagerEvent> getEventsForCurrentWeek(){
         List<IPS_ManagerEvent> managerEvents=new List<IPS_ManagerEvent>();
         Set<Id> workTrailIds=new Set<Id>();
-        DateTime startTime=getWeekStart(date.today());
-        DateTime endTime=getWeekStart(date.today().addDays(7));
+        DateTime startTime=date.today();
+        DateTime endTime=date.today().addDays(7);
         for(Event employeeEvent:[SELECT Id, WhatId, Subject, Owner.Name, Location, StartDateTime FROM Event WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND StartDateTime>:startTime AND StartDateTime<:endTime AND WhatID!=null ORDER BY StartDateTime, OwnerId ]){
             if(employeeEvent.WhatID.getSObjectType().getDescribe().getName()=='Work_Trail__c'){
                 IPS_ManagerEvent managerEvent=new IPS_ManagerEvent();
