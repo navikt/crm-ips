@@ -134,7 +134,28 @@ public with sharing class IPS_TestDataFactory {
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
-            whoId = contactId,
+            IPS_participant_related_to_meeting__c = true,
+            WhatId = jobbsporId,
+            WhoId = contactId,
+            RecordTypeId = devRecordTypeId,
+            IPS_travelTimeFrom__c = 20,
+            StartDateTime = system.Datetime.now(),
+            EndDateTime = system.Datetime.now().addHours(1),
+            Subject = 'Møte med deltaker',
+            Description = 'Møte',
+            IPS_Type__c = 'Meeting with Participant',
+            IPS_Status1__c  = 'Open',
+            Location='Kontoret'
+        );
+        return createEvent;
+    }
+
+    public static Event createParticipantEventWithOwner(String ownerId, String jobbsporId) {
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+
+        Event createEvent = new Event(
+            ips_Travel_time__c = 15,
+            IPS_participant_related_to_meeting__c = true,
             WhatId = jobbsporId,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
@@ -143,7 +164,9 @@ public with sharing class IPS_TestDataFactory {
             Subject = 'Møte med deltaker',
             Description = 'Møte',
             IPS_Type__c = 'Meeting with Participant',
-            IPS_Status1__c  = 'Open'
+            IPS_Status1__c  = 'Open',
+            OwnerId=ownerId,
+            Location='Kontoret'
         );
         return createEvent;
     }
