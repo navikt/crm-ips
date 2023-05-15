@@ -24,7 +24,7 @@ private class IPS_ManagerEventControllerTest {
         Event eventAssignedToOtherUser=IPS_TestDataFactory.createEmployerEventWithParticipant(employer.Id,UserInfo.getUserId(),trail.Id);
         events.add(eventAssignedToOtherUser);
 
-        Event eventAssignedParticipant=IPS_TestDataFactory.createParticipantEvent(employeeUser.Id,trail.Id);
+        Event eventAssignedParticipant=IPS_TestDataFactory.createParticipantEventWithOwner(employeeUser.Id,trail.Id);
         events.add(eventAssignedParticipant);
 
         insert events;
