@@ -30,7 +30,6 @@ export default class Ips_ManagerEvents extends LightningElement {
 
     @track columnstrailOwner = [
         { label: 'Jobbspesialist', fieldName: 'employeeName', type: 'text'},
-        { label: 'Status/fase', fieldName: 'trailStatus', type: 'text'},
         { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' },
     ];
 

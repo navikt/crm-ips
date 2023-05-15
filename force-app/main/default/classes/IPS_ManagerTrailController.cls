@@ -20,14 +20,14 @@ public without sharing class IPS_ManagerTrailController {
         
         aggList =[SELECT count(id)Antall, toLabel(ips_Status__c) Status 
                   FROM work_trail__c 
-                  WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId()
+                  WHERE ips_status__c!='Ended' AND OwnerId in: IPS_Utility.getMyEmployeesUserId()
                   GROUP BY ips_status__c];
         
         if(aggList.size()>0){
             for(AggregateResult agg : aggList){
                 IPS_ManagerTrail trailStatus = new IPS_ManagerTrail();
                 trailStatus.numberOfTrail = (Integer)agg.get('Antall');
-                trailStatus.trailStatus = convertStatus((String)agg.get('Status'));
+                trailStatus.trailStatus = (String)agg.get('Status');
                 trailStatuses.add(trailStatus);
         	}
             return trailStatuses;
@@ -72,10 +72,10 @@ public without sharing class IPS_ManagerTrailController {
         List<IPS_ManagerTrail> trailOwners = new List<IPS_ManagerTrail>();
          List<AggregateResult> aggList = new List<AggregateResult>();
         
-        aggList =[SELECT count(id)Antall, owner.name OwnerName,toLabel(ips_Status__c) Status 
+        aggList =[SELECT count(id)Antall, owner.name OwnerName
                   FROM work_trail__c 
                   WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_Status__c!='Ended'
-                  GROUP BY owner.name,ips_Status__c];
+                  GROUP BY owner.name];
 
         
         if(aggList.size()>0){
@@ -83,7 +83,6 @@ public without sharing class IPS_ManagerTrailController {
                 IPS_ManagerTrail trailOwner = new IPS_ManagerTrail();
                 trailOwner.numberOfTrail = (Integer)agg.get('Antall');
             	trailOwner.employeeName = (String)agg.get('OwnerName');
-                trailOwner.trailStatus = convertStatus((String)agg.get('Status'));
                 trailOwners.add(trailOwner);
         	}
             return trailOwners;
