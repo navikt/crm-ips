@@ -8,6 +8,7 @@ public without sharing class IPS_ManagerEventController {
         DateTime startTime=date.today();
         DateTime endTime=date.today().addDays(7);
         for(Event employeeEvent:[SELECT Id, WhatId, Subject, Owner.Name, Location, StartDateTime, toLabel(IPS_Type__c) FROM Event WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND StartDateTime>:startTime AND StartDateTime<:endTime AND IPS_Type__c ='Meeting with Participant' AND WhatID!=null ORDER BY StartDateTime, OwnerId ]){
+
             if(employeeEvent.WhatID.getSObjectType().getDescribe().getName()=='Work_Trail__c'){
                 IPS_ManagerEvent managerEvent=new IPS_ManagerEvent();
                 managerEvent.eventId=employeeEvent.Id;

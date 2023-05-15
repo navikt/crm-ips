@@ -151,13 +151,19 @@ public with sharing class IPS_TestDataFactory {
     }
     
     public static ips_Job__c createJob(ID employerId, ID worktrailId, String status){
+        Date endDate;
+        if(status=='Ongoing'){
+            endDate = Date.newInstance(2050, 12, 17);
+        }else {
+            endDate = Date.newInstance(2022, 12, 17);
+        }
 
         ips_Job__c createJob = new ips_Job__c(
             Name = 'Jobb nr 1',
             ips_Employer__c = employerId,
             ips_Work_Trail__c = worktrailId,
             ips_Start_Date__c = Date.newInstance(2022, 10, 17), 
-            ips_End_Date__c = Date.newInstance(2022, 12, 17), 
+            ips_End_Date__c = endDate, 
             ips_Form_of_Employment__c = 'Permanent employment' , 
             ips_Job_Support__c ='Dette er jobbstøtte', 
             ips_Number_of_hours__c = 40, 
@@ -169,13 +175,19 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static ips_Job__c createWorkTraining(ID employerId, ID worktrailId,String status){
+        Date endDate;
+        if(status=='Ongoing'){
+            endDate = Date.newInstance(2050, 12, 17);
+        }else {
+            endDate = Date.newInstance(2022, 12, 17);
+        }
 
         ips_Job__c createJob = new ips_Job__c(
             Name = 'Arbeidstrening nr 1',
             ips_Employer__c = employerId,
             ips_Work_Trail__c = worktrailId,
             ips_Start_Date__c = Date.newInstance(2022, 10, 17), 
-            ips_End_Date__c = Date.newInstance(2022, 12, 17), 
+            ips_End_Date__c = endDate, 
             ips_Form_of_Employment__c = 'work training' , 
             ips_Job_Support__c ='Dette er jobbstøtte', 
             ips_Number_of_hours__c = 40, 
