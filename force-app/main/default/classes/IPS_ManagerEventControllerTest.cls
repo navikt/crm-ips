@@ -24,11 +24,14 @@ private class IPS_ManagerEventControllerTest {
         Event eventAssignedToOtherUser=IPS_TestDataFactory.createEmployerEventWithParticipant(employer.Id,UserInfo.getUserId(),trail.Id);
         events.add(eventAssignedToOtherUser);
 
+        Event eventAssignedParticipant=IPS_TestDataFactory.createParticipantEvent(employeeUser.Id,trail.Id);
+        events.add(eventAssignedParticipant);
+
         insert events;
     }
 
     @IsTest
-    private static void testGetEventsForCurrentWeek(){
+    private static void testGetEventsForCurrentWeekEmployer(){
         List<IPS_ManagerEvent> events=IPS_ManagerEventController.getEventsForCurrentWeekEmployer();
         System.assertEquals(1, events.size(), 'Expect only event assigned to managers employee to be retuned');
 
@@ -37,5 +40,14 @@ private class IPS_ManagerEventControllerTest {
         System.assertEquals('Kontoret', events[0].location);
         System.assertEquals('12047823564', events[0].participantIdent);
         System.assertEquals('First12047823564 Last', events[0].participantName);
-    }    
+    }  
+    
+    @IsTest
+    private static void testGetEventsForCurrentWeek(){
+        List<IPS_ManagerEvent> events=IPS_ManagerEventController.getEventsForCurrentWeek();
+        System.assertEquals(1, events.size(), 'Expect only event assigned to managers employee to be retuned');
+
+        //verify properties are set
+        System.assertEquals('Møte med deltaker', events[0].subject);
+    }  
 }

@@ -129,12 +129,12 @@ public with sharing class IPS_TestDataFactory {
         return createEvent;
     }
 
-    public static Event createParticipantEvent(String contactId, String jobbsporId) {
+    public static Event createParticipantEvent(String ownerId, String jobbsporId) {
         Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
-            whoId = contactId,
+            IPS_participant_related_to_meeting__c = true,
             WhatId = jobbsporId,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
@@ -143,7 +143,9 @@ public with sharing class IPS_TestDataFactory {
             Subject = 'Møte med deltaker',
             Description = 'Møte',
             IPS_Type__c = 'Meeting with Participant',
-            IPS_Status1__c  = 'Open'
+            IPS_Status1__c  = 'Open',
+            OwnerId=ownerId,
+            Location='Kontoret'
         );
         return createEvent;
     }
