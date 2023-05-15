@@ -21,6 +21,9 @@ public with sharing class IPS_ManagerEvent {
     public String startTime;
 
     @AuraEnabled
+    public String meetingCategory;
+
+    @AuraEnabled
     public Id eventId;
     
     public Id workTrailId;
