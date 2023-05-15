@@ -29,7 +29,7 @@ private class IPS_ManagerEventControllerTest {
 
     @IsTest
     private static void testGetEventsForCurrentWeek(){
-        List<IPS_ManagerEvent> events=IPS_ManagerEventController.getEventsForCurrentWeek();
+        List<IPS_ManagerEvent> events=IPS_ManagerEventController.getEventsForCurrentWeekEmployer();
         System.assertEquals(1, events.size(), 'Expect only event assigned to managers employee to be retuned');
 
         //verify properties are set

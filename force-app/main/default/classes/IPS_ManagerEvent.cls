@@ -22,11 +22,13 @@ public with sharing class IPS_ManagerEvent {
 
     @AuraEnabled
     public String meetingCategory;
-
+   
     @AuraEnabled
     public Id eventId;
+
+    @AuraEnabled
+    public Boolean isParticipantAttending;
     
     public Id workTrailId;
-
 
 }
