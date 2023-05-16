@@ -18,10 +18,12 @@ public class IPS_MangagerTrailControllerTest {
         insert employeeUser;
         
         Work_Trail__c trail = new Work_Trail__c();
+        Work_Trail__c uoTrail = new Work_Trail__c();
         
         System.runAs(employeeUser){
             trail=IPS_TestDataFactory.createJobbspor(accountId);
         	insert trail;
+            uoTrail = IPS_TestDataFactory.createUOJobbspor(accountId);
         }  
     }
     
@@ -36,6 +38,13 @@ public class IPS_MangagerTrailControllerTest {
     private static void getAggregatedTrailJobbspesialist(){
         List<IPS_ManagerTrail> allTrails=IPS_ManagerTrailController.getAggregatedTrailJobbspesialist();
         System.assertEquals(1, allTrails.size(), 'Expect only trail assigned to managers employee to be retuned');
+    }
+    
+    
+    @IsTest
+    private static void getUOTraining(){
+        List<IPS_ManagerTrail> allTrails=IPS_ManagerTrailController.getUOTraining();
+        System.assertEquals(1, allTrails.size(), 'Expect trail in UO training');
     }
     
     @IsTest

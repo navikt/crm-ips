@@ -108,6 +108,30 @@ public without sharing class IPS_ManagerTrailController {
         
     }
 
+    @AuraEnabled(cacheable=true)
+    /* Aggregerte data - antall i opplæringsløp UO */
+    public static List<IPS_ManagerTrail> getUOTraining(){
+        List<IPS_ManagerTrail> trainingUO = new List<IPS_ManagerTrail>();
+         List<AggregateResult> aggList = new List<AggregateResult>();
+        
+        aggList =[SELECT count(id)Antall
+                  FROM work_trail__c 
+                  WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_UO_Service__c='UO Training' AND ips_status__c NOT IN('Ended','Referred')];
+
+        
+        if(aggList.size()>0){
+            for(AggregateResult agg : aggList){
+                IPS_ManagerTrail trailUO = new IPS_ManagerTrail();
+                trailUO.numberOfTrail = (Integer)agg.get('Antall');
+                trainingUO.add(trailUO);
+        	}
+            return trainingUO;
+        }else{
+            return null;
+        }
+        
+    }
+
     public static String getSubCause(String work,String another){
 
         if(!String.isBlank(work)){

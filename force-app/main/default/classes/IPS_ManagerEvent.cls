@@ -1,4 +1,7 @@
 public with sharing class IPS_ManagerEvent {
+   @AuraEnabled
+   public Id employeeId;
+   
     @AuraEnabled
     public String employeeName;
 
