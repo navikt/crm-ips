@@ -1,26 +1,15 @@
 public without sharing class IPS_ManagerTrailController {
 
-    @AuraEnabled
-    /* Henter alle jobbspesialister tilhørende leder*/
-    public static List<IPS_ManagerTrail> getManagerUsers(){
-        List<IPS_ManagerTrail> usersList = new List<IPS_ManagerTrail>();
-        for(User u:[SELECT Id,Name FROM User WHERE id in:IPS_Utility.getMyEmployeesUserId()]){
-            IPS_ManagerTrail userList = new IPS_ManagerTrail();
-            userList.employeeId = u.Id;
-            userList.employeeName = u.Name;
-            usersList.add(userList);
-        }
-        return usersList;
-    }
+
     @AuraEnabled(cacheable=true)
-    /* Aggregerte data - antall jobbspor pr status */
+    /* Aggregerte data - antall jobbspor pr status, not ended and referred*/
     public static List<IPS_ManagerTrail> getAggregatedTrailStatus(){
         List<IPS_ManagerTrail> trailStatuses = new List<IPS_ManagerTrail>();
          List<AggregateResult> aggList = new List<AggregateResult>();
         
         aggList =[SELECT count(id)Antall, toLabel(ips_Status__c) Status 
                   FROM work_trail__c 
-                  WHERE ips_status__c!='Ended' AND OwnerId in: IPS_Utility.getMyEmployeesUserId()
+                  WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_status__c NOT IN('Ended','Referred')
                   GROUP BY ips_status__c];
         
         if(aggList.size()>0){
@@ -35,6 +24,30 @@ public without sharing class IPS_ManagerTrailController {
             return null;
         }  
     }
+
+    /* Aggregerte data - referred/ended*/
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ManagerTrail> getReferredTrails(){
+        List<IPS_ManagerTrail> trailReferreds = new List<IPS_ManagerTrail>();
+        List<AggregateResult> aggList = new List<AggregateResult>();
+
+        aggList =[SELECT count(id)Antall,toLabel(ips_status__c)Status
+                  FROM work_trail__c 
+                  WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_status__c IN('Ended','Referred')
+                  GROUP BY ips_status__c];
+
+        if(aggList.size()>0){
+            for(AggregateResult agg : aggList){
+                IPS_ManagerTrail trailReferred = new IPS_ManagerTrail();
+                trailReferred.numberOfTrail = (Integer)agg.get('Antall');
+                trailReferred.trailStatus =(String)agg.get('Status');
+                trailReferreds.add(trailReferred);
+        	}
+            return trailReferreds;
+        }else {
+            return null;
+        } 
+    }
     
     @AuraEnabled(cacheable=true)
     /* Aggregerte data - antall sluttet pr år og måned */
@@ -46,7 +59,9 @@ public without sharing class IPS_ManagerTrailController {
                     count(id)Antall, 
                     CALENDAR_YEAR(ips_End_Date__c)Year, 
                     CALENDAR_MONTH(ips_End_Date__c)Month,
-                    toLabel(End_Cause__c) Cause
+                    toLabel(End_Cause__c) Cause,
+                    toLabel(ips_Work__c ) toWork,
+                    toLabel(ips_Other_end_cases__c) toAnother
                    FROM work_trail__c 
                    WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_Status__c='Ended' 
                    GROUP BY CALENDAR_YEAR(ips_End_Date__c),CALENDAR_MONTH(ips_End_Date__c),End_Cause__c
@@ -60,6 +75,7 @@ public without sharing class IPS_ManagerTrailController {
                 trailEnded.year = (Integer)agg.get('Year');
                 trailEnded.month = convertMonthNumberToString((Integer)agg.get('Month'));
                 trailEnded.cause = (String)agg.get('Cause');
+                trailEnded.subCause = getSubCause((String)agg.get('toWork'),(String)agg.get('toAnother'));
                 trailEnds.add(trailEnded);
             }
         }
@@ -74,7 +90,7 @@ public without sharing class IPS_ManagerTrailController {
         
         aggList =[SELECT count(id)Antall, owner.name OwnerName
                   FROM work_trail__c 
-                  WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_Status__c!='Ended'
+                  WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_status__c NOT IN('Ended','Referred')
                   GROUP BY owner.name];
 
         
@@ -90,6 +106,17 @@ public without sharing class IPS_ManagerTrailController {
             return null;
         }
         
+    }
+
+    public static String getSubCause(String work,String another){
+
+        if(!String.isBlank(work)){
+            return work;
+        }else if (!String.isBlank(another)) {
+            return another;
+        }else {
+            return null;
+        }
     }
     
     public static String convertMonthNumberToString(Integer month){

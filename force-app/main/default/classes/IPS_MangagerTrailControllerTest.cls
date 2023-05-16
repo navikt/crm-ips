@@ -25,11 +25,6 @@ public class IPS_MangagerTrailControllerTest {
         }  
     }
     
-    @IsTest
-    private static void getManagerUsers(){
-        List<IPS_ManagerTrail> allTrails=IPS_ManagerTrailController.getManagerUsers();
-        System.assertEquals(allTrails.size(), allTrails.size(), 'Expect only users that is connected to manager');
-    }  
     
     @IsTest
     private static void getUserTrails(){
@@ -51,6 +46,20 @@ public class IPS_MangagerTrailControllerTest {
         
         List<IPS_ManagerTrail> allTrails=IPS_ManagerTrailController.getAggregatedEndedTrail();
         System.assertEquals(1, allTrails.size(), 'Expect only trail assigned to managers employee to be retuned');
+
+        List<IPS_ManagerTrail> endedTrail=IPS_ManagerTrailController.getReferredTrails();
+        System.assertEquals(1, endedTrail.size(),'Expect only ended trail');
+    }
+    
+    @isTest
+    private static void testSubCategory(){
+        String work;
+        String other;
+        work = IPS_ManagerTrailController.getSubCause('work', null);
+        other = IPS_ManagerTrailController.getSubCause(null, 'other');
+        
+        System.assertEquals('work', work,'Expect work as output');
+        System.assertEquals('other', other,'Expect other as output');
     }
     
     @isTest

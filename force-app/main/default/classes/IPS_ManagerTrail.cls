@@ -23,4 +23,10 @@ public class IPS_ManagerTrail {
     
     @AuraEnabled
     public String cause;
+
+    @AuraEnabled
+    public String subCause;
+
+    @AuraEnabled
+    public Integer totalEnded;
 }
