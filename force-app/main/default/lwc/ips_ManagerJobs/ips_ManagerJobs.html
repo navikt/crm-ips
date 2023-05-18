@@ -1,0 +1,49 @@
+<template>
+    <div class="container container-col-main">
+        <!-- Total job pr employment form -->
+        <template if:true={jobCategoryList}>
+            <h1>Fordeling av pågående jobber pr ansettelsesform</h1>
+            <lightning-datatable
+                data={jobCategoryList}
+                key-field="totalNumber"
+                hide-checkbox-column="true"
+                columns={columnstotalCategory}
+                >
+            </lightning-datatable>
+        </template>
+    </div>
+
+    <div class="container container-col-main">
+        <!-- Total job trainings -->
+        <h1>Fordeling mellom arbeidstrening og lønnet arbeid</h1>
+        <table>
+            <tr>
+                <th><h2>Antall i arbeidstrening</h2></th>
+                <th><h2>Antall i lønnet arbeid</h2></th>
+            </tr>
+            <tr>
+                <td>{jobTrainingNumber}</td>
+                <td>{jobPaidNumber}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container container-col-main">
+        <!-- Total training/education -->
+        <h1>Fordeling mellom yrkesopplæring og utdanning</h1>
+        <table>
+            <tr>
+                <th><h2>Antall i yrkesopplæring UO </h2></th>
+                <th><h2>Antall i utdanning IPS</h2></th>
+            </tr>
+            <tr>
+                <td>{uoTrainingNumber}</td>
+                <td>{ipsTrainingNumber}</td>
+            </tr>
+        </table>
+    </div>
+
+    
+
+</div>
+</template>

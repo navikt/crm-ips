@@ -29,11 +29,17 @@ private class IPS_ManagerEventControllerTest {
 
         insert events;
     }
+    
+    @isTest
+    private static void testGetManagerUser(){
+        List<IPS_ManagerEvent> events=IPS_ManagerEventController.getManagerUsers();
+        System.assertEquals(1, events.size(), 'Expect users connected with manager');
+    }
 
     @IsTest
     private static void testGetEventsForCurrentWeekEmployer(){
         List<IPS_ManagerEvent> events=IPS_ManagerEventController.getEventsForCurrentWeekEmployer();
-        System.assertEquals(1, events.size(), 'Expect only event assigned to managers employee to be retuned');
+        System.assertEquals(2, events.size(), 'Expect only event assigned to managers employee to be retuned');
 
         //verify properties are set
         System.assertEquals('Møte med Arbeidsgiver', events[0].subject);
@@ -45,9 +51,9 @@ private class IPS_ManagerEventControllerTest {
     @IsTest
     private static void testGetEventsForCurrentWeek(){
         List<IPS_ManagerEvent> events=IPS_ManagerEventController.getEventsForCurrentWeek();
-        System.assertEquals(1, events.size(), 'Expect only event assigned to managers employee to be retuned');
+        System.assertEquals(2, events.size(), 'Expect only event assigned to managers employee to be retuned');
 
         //verify properties are set
-        System.assertEquals('Møte med deltaker', events[0].subject);
+        System.assertEquals('Møte med Arbeidsgiver', events[0].subject);
     }  
 }

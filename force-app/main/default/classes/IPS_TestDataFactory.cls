@@ -63,11 +63,21 @@ public with sharing class IPS_TestDataFactory {
     public static Work_Trail__c createJobbspor(String participantId) {
         Work_Trail__c trail = new Work_Trail__c();
         trail.ips_Participant__c = participantId;
-        trail.ips_Status__c = 'Referred';
+        trail.ips_Status__c = 'In Education';
         trail.ips_Passive__c = false;
         trail.IPS_Partticipant_phone_number__c = '987 65 432';
         trail.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
         return trail;
+    }
+    
+    public static Work_Trail__c createUOJobbspor(String participantId) {
+        Work_Trail__c trailUO = new Work_Trail__c();
+        trailUO.ips_Participant__c = participantId;
+        trailUO.ips_Status__c = 'Initial contact';
+        trailUO.ips_UO_Service__c	='UO Training';
+        trailUO.IPS_Partticipant_phone_number__c = '987 65 432';
+        trailUO.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('ips_Supported_Employment').getRecordTypeId();
+        return trailUO;
     }
 
     public static Event createEmployerEventWithoutParticipant(String employerId) {
