@@ -30,6 +30,12 @@ public with sharing class IPS_ManagerEvent {
     public Id eventId;
 
     @AuraEnabled
+    public Id accountId;
+
+    @AuraEnabled
+    public String accountName;
+
+    @AuraEnabled
     public Boolean isParticipantAttending;
     
     public Id workTrailId;
