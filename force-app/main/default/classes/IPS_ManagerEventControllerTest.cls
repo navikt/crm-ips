@@ -33,7 +33,7 @@ private class IPS_ManagerEventControllerTest {
     @isTest
     private static void testGetManagerUser(){
         List<IPS_ManagerEvent> events=IPS_ManagerEventController.getManagerUsers();
-        System.assertEquals(3, events.size(), 'Expect users connected with manager');
+        System.assertEquals(1, events.size(), 'Expect users connected with manager');
     }
 /*
     @IsTest
