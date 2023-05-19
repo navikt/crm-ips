@@ -3,19 +3,26 @@ import { getRecord } from 'lightning/uiRecordApi';
 import Id from '@salesforce/user/Id';
 import getManagerUsers from '@salesforce/apex/IPS_ManagerEventController.getManagerUsers';
 import getEventList from '@salesforce/apex/ips_ManagerEventController.getEventsForCurrentWeek';
-import getJobCategory from '@salesforce/apex/IPS_jobController.totalJobsByCategory';
-import getJobTraining from '@salesforce/apex/IPS_jobController.totalJobTraining';
 import UserNameFIELD from '@salesforce/schema/User.Name';
 
 
 export default class Ips_ManagerEvents extends LightningElement {
 
-    @track columns = [
+    @track columnsPart = [
         { label: 'Jobbspesialist', fieldName: 'employeeName', type: 'text'},
         { label: 'Tid', fieldName: 'startTime', type: 'text'},
         { label: 'Emne', fieldName: 'subject', type: 'text' },
         { label: 'Sted', fieldName: 'location', type: 'text'},
-        { label: 'Møtetype', fieldName: 'meetingCategory', type: 'text'},
+        { label: 'Deltaker', fieldName: 'participantName', type: 'text'},
+        { label: 'Fødselsnr', fieldName: 'participantIdent', type: 'text' },
+    ];
+
+    @track columnsEmpl = [
+        { label: 'Jobbspesialist', fieldName: 'employeeName', type: 'text'},
+        { label: 'Tid', fieldName: 'startTime', type: 'text'},
+        { label: 'Emne', fieldName: 'subject', type: 'text' },
+        { label: 'Sted', fieldName: 'location', type: 'text'},
+        { label: 'Arbeidsgiver', fieldName: 'accountName', type: 'text'},
         { label: 'Deltaker', fieldName: 'participantName', type: 'text'},
         { label: 'Fødselsnr', fieldName: 'participantIdent', type: 'text' },
     ];
@@ -32,6 +39,9 @@ export default class Ips_ManagerEvents extends LightningElement {
     @track userOptions=[];
     @track value='- Alle -';
     @track optionsLoaded = false;
+
+    @track emplMeeting;
+    @track partMeeting;
     initialRecordOwnerList;
     initialRecordEventList;
     
@@ -63,11 +73,25 @@ export default class Ips_ManagerEvents extends LightningElement {
     /* get all events the next 7 days */
     @wire(getEventList)
     wiredAEvents({error,data}) {
-        if (data) {
-            this.eventList = data;
-        } else if (error) {
+        
+        if(data){
+            var tempEmpl =[];
+                var tempPart =[];
+                
+            for(var i=0;i<data.length;i++){
+                
+                if(data[i].meetingCategory ==='Meeting with Employer'){
+                    tempEmpl.push(data[i]);
+                }
+                if(data[i].meetingCategory ==='Meeting with Participant'){
+                    tempPart.push(data[i]);
+                }
+            }
+            this.emplMeeting = tempEmpl;
+            this.partMeeting = tempPart;
+        }else if(error){
             this.error = error;
-        }
+        }  
     } 
 
    

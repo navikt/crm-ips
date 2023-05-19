@@ -4,9 +4,10 @@
     </div>
     <div class="container container-col-main">
         <h1>Møteaktivitet fremover</h1>
-        <h2>Planlagte møterAktiviteter med jobbspor de neste 7 dager</h2>
+        <h2>Planlagte møter med jobbspor de neste 7 dager</h2>
 
         <!-- All users related to manager -->
+        <!--
         <template if:true={optionsLoaded}>
             <lightning-combobox
                 name="selectOwner"
@@ -18,13 +19,29 @@
         </template>
         <br>
         <br>
+        -->
        
-
-        <template if:true={eventList}>
+        
+        <template if:true={partMeeting}>
+            <h2>Planlagte møter med deltager</h2>
             <lightning-datatable 
-                data={eventList} 
+                data={partMeeting} 
                 hide-checkbox-column="true" 
-                columns={columns} 
+                columns={columnsPart} 
+                key-field="eventId"
+                >
+            </lightning-datatable>
+        </template>
+
+        <br>
+        <br>
+
+        <template if:true={emplMeeting}>
+            <h2>Planlagte møter med arbeidsgiver og deltager</h2>
+            <lightning-datatable 
+                data={emplMeeting} 
+                hide-checkbox-column="true" 
+                columns={columnsEmpl} 
                 key-field="eventId"
                 >
             </lightning-datatable>
