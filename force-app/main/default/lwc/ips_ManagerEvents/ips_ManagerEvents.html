@@ -2,12 +2,13 @@
     <div class="container container-col-main">
         <h1>Leaderboard - {currentUserName}</h1>
     </div>
+   
     <div class="container container-col-main">
         <h1>Møteaktivitet fremover</h1>
-        <h2>Planlagte møter med jobbspor de neste 7 dager</h2>
+        <h2>Planlagte møter på vegne av eller med deltaker de neste 7 dager</h2>
 
         <!-- All users related to manager -->
-        <!--
+        
         <template if:true={optionsLoaded}>
             <lightning-combobox
                 name="selectOwner"
@@ -19,11 +20,10 @@
         </template>
         <br>
         <br>
-        -->
        
         
         <template if:true={partMeeting}>
-            <h2>Planlagte møter med deltager</h2>
+            <h2>Alle planlagte møter hvor deltaker deltar.</h2>
             <lightning-datatable 
                 data={partMeeting} 
                 hide-checkbox-column="true" 
@@ -37,7 +37,7 @@
         <br>
 
         <template if:true={emplMeeting}>
-            <h2>Planlagte møter med arbeidsgiver og deltager</h2>
+            <h2>Planlagte møter med arbeidsgiver på vegne av deltaker.</h2>
             <lightning-datatable 
                 data={emplMeeting} 
                 hide-checkbox-column="true" 
@@ -48,10 +48,6 @@
         </template>
     </div>
 
-    
-
-    
-   
     <template if:true={error}>
        <p>Det er en eller annen feil i rapporten</p> {error}
     </template>

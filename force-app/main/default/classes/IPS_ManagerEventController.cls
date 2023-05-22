@@ -2,10 +2,10 @@ public without sharing class IPS_ManagerEventController {
 
     @AuraEnabled(cacheable=true)
     /* Henter alle jobbspesialister tilhørende leder*/
-    public static List<IPS_ManagerEvent> getManagerUsers(){
-        List<IPS_ManagerEvent> usersList = new List<IPS_ManagerEvent>();
+    public static List<IPS_ManagerUsers> getManagerUsers(){
+        List<IPS_ManagerUsers> usersList = new List<IPS_ManagerUsers>();
         for(User u:[SELECT Id,Name FROM User WHERE id in:IPS_Utility.getMyEmployeesUserId()]){
-            IPS_ManagerEvent userList = new IPS_ManagerEvent();
+            IPS_ManagerUsers userList = new IPS_ManagerUsers();
             userList.employeeId = u.Id;
             userList.employeeName = u.Name;
             usersList.add(userList);
@@ -20,7 +20,23 @@ public without sharing class IPS_ManagerEventController {
         Set<Id> workTrailIds=new Set<Id>();
         DateTime startTime=date.today();
         DateTime endTime=date.today().addDays(7);
-        for(Event employeeEvent:[SELECT Id, WhatId, Subject, Owner.Name, Location, StartDateTime, toLabel(IPS_Type__c),IPS_employerName__c  FROM Event WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND StartDateTime>:startTime AND StartDateTime<:endTime AND WhatID!=null ORDER BY StartDateTime, OwnerId ]){
+        for(Event employeeEvent:[SELECT 
+                                    Id, 
+                                    WhatId, 
+                                    Subject, 
+                                    Owner.Name, 
+                                    Location, 
+                                    StartDateTime, 
+                                    toLabel(IPS_Type__c),
+                                    IPS_employerName__c,
+                                    Konto_kontakt__r.name,
+                                    IPS_participant_related_to_meeting__c   
+                                FROM Event 
+                                WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() 
+                                AND StartDateTime>:startTime 
+                                AND StartDateTime<:endTime 
+                                AND WhatID!=null 
+                                ORDER BY StartDateTime, OwnerId ]){
 
             if(employeeEvent.WhatID.getSObjectType().getDescribe().getName()=='Work_Trail__c'){
                 IPS_ManagerEvent managerEvent=new IPS_ManagerEvent();
@@ -30,6 +46,8 @@ public without sharing class IPS_ManagerEventController {
                 managerEvent.location=employeeEvent.Location;
                 managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
                 managerEvent.accountName = employeeEvent.IPS_employerName__c;
+                managerEvent.accountContactName = employeeEvent.Konto_kontakt__r.name;
+                managerEvent.isParticipantAttending = employeeEvent.IPS_participant_related_to_meeting__c;
                 managerEvent.workTrailId=employeeEvent.WhatId;
                 Datetime eventTime=employeeEvent.StartDateTime;
                 managerEvent.startTime=eventTime.format('dd') + '.' + eventTime.format('MM') + '.' + eventTime.format('yyyy')  + ' ' + eventTime.format('HH') + ':' + eventTime.format('mm');
