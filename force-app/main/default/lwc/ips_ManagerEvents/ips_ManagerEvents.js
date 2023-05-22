@@ -15,6 +15,9 @@ export default class Ips_ManagerEvents extends LightningElement {
         { label: 'Sted', fieldName: 'location', type: 'text'},
         { label: 'Deltaker', fieldName: 'participantName', type: 'text'},
         { label: 'Fødselsnr', fieldName: 'participantIdent', type: 'text' },
+        { label: 'Arbeidsgiver', fieldName: 'accountName', type: 'text'},
+        { label: 'Kontaktperson', fieldName: 'accountContactName', type: 'text'},
+        { label: 'Type', fieldName: 'meetingCategory', type: 'text' },
     ];
 
     @track columnsEmpl = [
@@ -23,8 +26,7 @@ export default class Ips_ManagerEvents extends LightningElement {
         { label: 'Emne', fieldName: 'subject', type: 'text' },
         { label: 'Sted', fieldName: 'location', type: 'text'},
         { label: 'Arbeidsgiver', fieldName: 'accountName', type: 'text'},
-        { label: 'Deltaker', fieldName: 'participantName', type: 'text'},
-        { label: 'Fødselsnr', fieldName: 'participantIdent', type: 'text' },
+        { label: 'Kontaktperson', fieldName: 'accountContactName', type: 'text'},
     ];
 
 
@@ -39,11 +41,13 @@ export default class Ips_ManagerEvents extends LightningElement {
     @track userOptions=[];
     @track value='- Alle -';
     @track optionsLoaded = false;
-
+    @track initialRecords;
+    @track initialPartMeeting;
+    @track initialEmplMeeting
     @track emplMeeting;
+    @track data;
     @track partMeeting;
-    initialRecordOwnerList;
-    initialRecordEventList;
+    @track partData;
     
 
     connectedCallback(){
@@ -51,7 +55,7 @@ export default class Ips_ManagerEvents extends LightningElement {
         .then(result=>{
             this.userOptions.push({label:this.value, value:this.value});
             for(var i=0; i<result.length; i++){
-                this.userOptions.push({label:result[i].employeeName, value:result[i].employeeId});
+                this.userOptions.push({label:result[i].employeeName, value:result[i].employeeName});
             }
             this.optionsLoaded = true;
         })
@@ -60,6 +64,8 @@ export default class Ips_ManagerEvents extends LightningElement {
         })
 
     }
+
+    /* Get leaders name */
     @wire(getRecord, { recordId: Id, fields: [UserNameFIELD]}) 
     currentUserInfo({error, data}){
         if(data){
@@ -68,27 +74,29 @@ export default class Ips_ManagerEvents extends LightningElement {
     }
 
    
-
-    
     /* get all events the next 7 days */
     @wire(getEventList)
     wiredAEvents({error,data}) {
+
+        this.data = data;
+        this.initialRecords = data;
         
-        if(data){
+        if(this.data){
             var tempEmpl =[];
-                var tempPart =[];
+            var tempPart =[];
                 
-            for(var i=0;i<data.length;i++){
+            for(var i=0;i<this.data.length;i++){
                 
-                if(data[i].meetingCategory ==='Meeting with Employer'){
-                    tempEmpl.push(data[i]);
-                }
-                if(data[i].meetingCategory ==='Meeting with Participant'){
-                    tempPart.push(data[i]);
+                if(this.data[i].isParticipantAttending === true){
+                    tempPart.push(this.data[i]);
+                }else{
+                    tempEmpl.push(this.data[i]);
                 }
             }
             this.emplMeeting = tempEmpl;
+            this.initialEmplMeeting = tempEmpl;
             this.partMeeting = tempPart;
+            this.initialPartMeeting = tempPart;
         }else if(error){
             this.error = error;
         }  
@@ -100,23 +108,63 @@ export default class Ips_ManagerEvents extends LightningElement {
         console.log(event.detail.value);
         this.value = event.detail.value;
         const searchKey = event.target.value;
-        if(searchKey){
+        if(searchKey !=='- Alle -'){
+            this.emplMeeting =this.initialEmplMeeting;
+            this.partMeeting =this.initialPartMeeting;
+            this.data = this.initialRecords;
 
-            this.eventList = this.initialRecordEventList;
-            this.trailOwnerList = this.initialRecordOwnerList;
+            if(this.data){
+                let searchRecords = [];
+                for(let record of this.data) {
+                    let valuesArray = Object.values(record);
 
-            if(this.eventList){
-                let recEvent =[];
-                for(let recE of this.eventList){
+                    for(let val of valuesArray){
+                        console.log('val is ' + val);
+                        let strVal = String(val);
 
+                        if(strVal){
+                           if(strVal.includes(searchKey)){
+                            searchRecords.push(record);
+                            break;
+                           } 
+                        }
+                    }
+                }
+                this.data = searchRecords;
+                
+                if(this.data){
+                    var tempEmpl =[];
+                    var tempPart =[];
+                        
+                    for(var i=0;i<this.data.length;i++){
+                        
+                        if(this.data[i].isParticipantAttending === true){
+                            tempPart.push(this.data[i]);
+                        }else{
+                            tempEmpl.push(this.data[i]);
+                        }
+                    }
+                    this.emplMeeting = tempEmpl;
+                    this.partMeeting = tempPart;
                 }
             }
-
-            let records = [];
-            for(let rec of this.trailList){
-
-            }
-
+        }else{
+            this.data = this.initialRecords;
+                var tempEmpl =[];
+                var tempPart =[];
+                    
+                for(var i=0;i<this.data.length;i++){
+                    
+                    if(this.data[i].isParticipantAttending === true){
+                        tempPart.push(this.data[i]);
+                    }else{
+                        tempEmpl.push(this.data[i]);
+                    }
+                }
+                this.emplMeeting = tempEmpl;
+                this.partMeeting = tempPart;
         }
     }
 }
+
+
