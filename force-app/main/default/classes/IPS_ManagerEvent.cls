@@ -1,4 +1,7 @@
 public with sharing class IPS_ManagerEvent {
+   @AuraEnabled
+   public Id employeeId;
+   
     @AuraEnabled
     public String employeeName;
 
@@ -21,9 +24,23 @@ public with sharing class IPS_ManagerEvent {
     public String startTime;
 
     @AuraEnabled
+    public String meetingCategory;
+   
+    @AuraEnabled
     public Id eventId;
+
+    @AuraEnabled
+    public Id accountId;
+
+    @AuraEnabled
+    public String accountName;
+
+    @AuraEnabled
+    public String accountContactName;
+
+    @AuraEnabled
+    public Boolean isParticipantAttending;
     
     public Id workTrailId;
-
 
 }

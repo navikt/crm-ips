@@ -1,7 +1,9 @@
 public without sharing class IPS_jobController {
 
     /******************************** Work *******************************************/
-    /* All completed jobs for participants */
+    /* All completed jobs for participants
+        used in experience cloud
+     */
     @AuraEnabled(cacheable = true)
     public static List<ips_Job__c> getCompletedUserJobs(String workTrailId){
         try {
@@ -34,7 +36,9 @@ public without sharing class IPS_jobController {
         }
     }
 
-    /* All ongoing jobs for participants */
+    /* All ongoing jobs for participants 
+        used in experience cloud
+    */
     @AuraEnabled(cacheable = true)
     public static List<ips_Job__c> getActiveUserJobs(String workTrailId){
         try {
@@ -66,7 +70,9 @@ public without sharing class IPS_jobController {
             throw new AuraHandledException(e.getMessage());
         }
     }
-    /* All ongoing worktrainings for participants */
+    /* All ongoing worktrainings for participants 
+        used in experience cloud
+    */
     @AuraEnabled(cacheable = true)
     public static List<ips_Job__c> getActiveUserWorkTrainings(String workTrailId){
         try {
@@ -99,7 +105,9 @@ public without sharing class IPS_jobController {
         }
     }
 
-    /* All completed worktrainings for participants */
+    /* All completed worktrainings for participants 
+        used in experience cloud
+    */
     @AuraEnabled(cacheable = true)
     public static List<ips_Job__c> getCompletedUserWorkTrainings(String workTrailId){
         try {
@@ -132,6 +140,7 @@ public without sharing class IPS_jobController {
         }
     }
 
+    /* used in experience cloud */
     @AuraEnabled(cacheable = true)
     public static List<ips_Job__c> getUserWorkDetail(String recId){
         try {
@@ -162,4 +171,60 @@ public without sharing class IPS_jobController {
             throw new AuraHandledException(e.getMessage());
         }
     }
+    
+    /* Used in Manager report */
+    @AuraEnabled(cacheable = true)
+    public static List<IPS_job> totalJobsByCategory(){
+        try {
+            List<IPS_job> jobCategoryList = new List<IPS_job>();
+            List<AggregateResult> aggList = new List<AggregateResult>();
+
+            aggList =[
+                SELECT Count(Id)Antall, toLabel(ips_Form_of_Employment__c) Ansettelsesform 
+                FROM ips_Job__c 
+                WHERE ips_status__c ='Ongoing' AND ips_Form_of_Employment__c !='work training'  AND ips_Work_Trail__r.OwnerId in: IPS_Utility.getMyEmployeesUserId()
+                GROUP BY ips_form_of_employment__c 
+                ];
+
+                if(aggList.size()>0){
+                    for(AggregateResult agg:aggList){
+                        IPS_job jobCategory= new IPS_job();
+                        jobCategory.totalNumber = (Integer)agg.get('Antall');
+                        jobCategory.typeOfEmployment = (String)agg.get('Ansettelsesform');
+
+                        jobCategoryList.add(jobCategory);
+                    }
+                }
+                return jobCategoryList;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    /* Used in Manager report */
+    @AuraEnabled(cacheable = true)
+    public static List<IPS_job> totalJobTraining(){
+        try {
+            List<IPS_job> jobTrainingList = new List<IPS_job>();
+            List<AggregateResult> aggList = new List<AggregateResult>();
+
+            aggList =[
+                SELECT Count(Id)Antall
+                FROM ips_Job__c 
+                WHERE ips_status__c ='Ongoing' AND ips_Form_of_Employment__c ='work training'  AND ips_Work_Trail__r.OwnerId in: IPS_Utility.getMyEmployeesUserId()];
+
+                if(aggList.size()>0){
+                    for(AggregateResult agg:aggList){
+                        IPS_job jobTraining= new IPS_job();
+                        jobTraining.totalNumber = (Integer)agg.get('Antall');
+
+                        jobTrainingList.add(jobTraining);
+                    }
+                }
+                return jobTrainingList;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
 }

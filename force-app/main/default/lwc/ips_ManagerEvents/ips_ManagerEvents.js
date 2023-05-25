@@ -1,60 +1,61 @@
 import { LightningElement ,api, wire, track} from 'lwc';
+import { getRecord } from 'lightning/uiRecordApi';
+import Id from '@salesforce/user/Id';
+import getManagerUsers from '@salesforce/apex/IPS_ManagerEventController.getManagerUsers';
 import getEventList from '@salesforce/apex/ips_ManagerEventController.getEventsForCurrentWeek';
-import getTrailStatus from '@salesforce/apex/IPS_ManagerTrailController.getAggregatedTrailStatus';
-import getTrailJobbspesialist from '@salesforce/apex/IPS_ManagerTrailController.getAggregatedTrailJobbspesialist';
-import getManagerUsers from '@salesforce/apex/IPS_ManagerTrailController.getManagerUsers';
-import getEndedTrail from '@salesforce/apex/IPS_ManagerTrailController.getAggregatedEndedTrail';
+import UserNameFIELD from '@salesforce/schema/User.Name';
+
 
 export default class Ips_ManagerEvents extends LightningElement {
 
-    @track columns = [
+    @track columnsPart = [
         { label: 'Jobbspesialist', fieldName: 'employeeName', type: 'text'},
         { label: 'Tid', fieldName: 'startTime', type: 'text'},
         { label: 'Emne', fieldName: 'subject', type: 'text' },
         { label: 'Sted', fieldName: 'location', type: 'text'},
         { label: 'Deltaker', fieldName: 'participantName', type: 'text'},
         { label: 'Fødselsnr', fieldName: 'participantIdent', type: 'text' },
-        { label: 'Hjemmeadresse', fieldName: 'participantAddress', type: 'text' },
+        { label: 'Arbeidsgiver', fieldName: 'accountName', type: 'text'},
+        { label: 'Kontaktperson', fieldName: 'accountContactName', type: 'text'},
+        { label: 'Type', fieldName: 'meetingCategory', type: 'text' },
     ];
 
-    @track columnstrailStatus = [
-        { label: 'Status/fase', fieldName: 'trailStatus', type: 'text'},
-        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' },
-    ];
-
-    @track columnstrailOwner = [
+    @track columnsEmpl = [
         { label: 'Jobbspesialist', fieldName: 'employeeName', type: 'text'},
-        { label: 'Status/fase', fieldName: 'trailStatus', type: 'text'},
-        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' },
+        { label: 'Tid', fieldName: 'startTime', type: 'text'},
+        { label: 'Emne', fieldName: 'subject', type: 'text' },
+        { label: 'Sted', fieldName: 'location', type: 'text'},
+        { label: 'Arbeidsgiver', fieldName: 'accountName', type: 'text'},
+        { label: 'Kontaktperson', fieldName: 'accountContactName', type: 'text'},
     ];
 
-    @track columnstrailEnded =[
-        { label: 'År', fieldName: 'year', type: 'text'},
-        { label: 'Måned', fieldName: 'month', type: 'text'},
-        { label: 'Årsak', fieldName: 'cause', type: 'text' },
-        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' },
-    ];
+
 
     defaultSortDirection = 'asc';
     sortDirection = 'asc';
     sortedBy;
     @track error;
     @track eventList ;
-    @track trailStatusList;
-    @track trailOwnerList;
-    @track trailEndedList;
+    @track currentUserName;
+    
     @track userOptions=[];
     @track value='- Alle -';
     @track optionsLoaded = false;
-    initialRecordOwnerList;
-    initialRecordEventList;
+    @track initialRecords;
+    @track initialPartMeeting;
+    @track initialEmplMeeting
+    @track emplMeeting;
+    @track data;
+    @track partMeeting;
+    @track partData;
+    
 
     connectedCallback(){
         getManagerUsers()
         .then(result=>{
             this.userOptions.push({label:this.value, value:this.value});
             for(var i=0; i<result.length; i++){
-                this.userOptions.push({label:result[i].employeeName, value:result[i].employeeId});
+                this.userOptions.push({label:result[i].employeeName, value:result[i].employeeName});
             }
             this.optionsLoaded = true;
         })
@@ -63,74 +64,107 @@ export default class Ips_ManagerEvents extends LightningElement {
         })
 
     }
-    
-    /* get all events the next 7 days */
-    @wire(getEventList)
-    wiredAEvents({
-        error,
-        data
-    }) {
-        if (data) {
-            this.eventList = data;
-            this.eventList = data;
-        } else if (error) {
-            this.error = error;
-            console.log(error);
+
+    /* Get leaders name */
+    @wire(getRecord, { recordId: Id, fields: [UserNameFIELD]}) 
+    currentUserInfo({error, data}){
+        if(data){
+            this.currentUserName = data.fields.Name.value;
         }
     }
 
-    /* get all trails pr status */
-    @wire(getTrailStatus)
-        wiredStatuses({error, data}){
-            if(data){
-                this.trailStatusList = data;
-            }else if(error){
-                this.error = error;
-            }
-        }
+   
+    /* get all events the next 7 days */
+    @wire(getEventList)
+    wiredAEvents({error,data}) {
 
-    /* get all trails pr jobbspesialist */
-    @wire(getTrailJobbspesialist)
-        wiredOwners({error, data}){
-            if(data){
-                this.trailOwnerList = data;
-                this.initialRecordOwnerList = data;
-            }else if(error){
-                this.error = error;
+        this.data = data;
+        this.initialRecords = data;
+        
+        if(this.data){
+            var tempEmpl =[];
+            var tempPart =[];
+                
+            for(var i=0;i<this.data.length;i++){
+                
+                if(this.data[i].isParticipantAttending === true){
+                    tempPart.push(this.data[i]);
+                }else{
+                    tempEmpl.push(this.data[i]);
+                }
             }
-        }
+            this.emplMeeting = tempEmpl;
+            this.initialEmplMeeting = tempEmpl;
+            this.partMeeting = tempPart;
+            this.initialPartMeeting = tempPart;
+        }else if(error){
+            this.error = error;
+        }  
+    } 
 
-    /* get all ended aggregated pr year,month,cause */
-    @wire(getEndedTrail)
-        wiredEnds({error,data}){
-            if(data){
-                this.trailEndedList = data;
-            }else if(error){
-                this.error = error;
-            }  
-        }
+   
 
     handleUserChange(event){
         console.log(event.detail.value);
         this.value = event.detail.value;
         const searchKey = event.target.value;
-        if(searchKey){
+        if(searchKey !=='- Alle -'){
+            this.emplMeeting =this.initialEmplMeeting;
+            this.partMeeting =this.initialPartMeeting;
+            this.data = this.initialRecords;
 
-            this.eventList = this.initialRecordEventList;
-            this.trailOwnerList = this.initialRecordOwnerList;
+            if(this.data){
+                let searchRecords = [];
+                for(let record of this.data) {
+                    let valuesArray = Object.values(record);
 
-            if(this.eventList){
-                let recEvent =[];
-                for(let recE of this.eventList){
+                    for(let val of valuesArray){
+                        console.log('val is ' + val);
+                        let strVal = String(val);
 
+                        if(strVal){
+                           if(strVal.includes(searchKey)){
+                            searchRecords.push(record);
+                            break;
+                           } 
+                        }
+                    }
+                }
+                this.data = searchRecords;
+                
+                if(this.data){
+                    var tempEmpl =[];
+                    var tempPart =[];
+                        
+                    for(var i=0;i<this.data.length;i++){
+                        
+                        if(this.data[i].isParticipantAttending === true){
+                            tempPart.push(this.data[i]);
+                        }else{
+                            tempEmpl.push(this.data[i]);
+                        }
+                    }
+                    this.emplMeeting = tempEmpl;
+                    this.partMeeting = tempPart;
                 }
             }
-
-            let records = [];
-            for(let rec of this.trailList){
-
-            }
-
+        }else{
+            this.data = this.initialRecords;
+                var tempEmpl =[];
+                var tempPart =[];
+                    
+                for(var i=0;i<this.data.length;i++){
+                    
+                    if(this.data[i].isParticipantAttending === true){
+                        tempPart.push(this.data[i]);
+                    }else{
+                        tempEmpl.push(this.data[i]);
+                    }
+                }
+                this.emplMeeting = tempEmpl;
+                this.partMeeting = tempPart;
         }
     }
 }
+
+

@@ -1,0 +1,75 @@
+<template>
+    <!-- ************************ JOBBSPOR **************************-->
+    <template if:true={trailOwnerList}>
+        <div class="container container-col-main">
+            <h1>Porteføljestørrelse pr medarbeider</h1>
+
+            <lightning-datatable 
+                data={trailOwnerList}
+                key-field="employeeName"
+                hide-checkbox-column="true"
+                columns={columnstrailOwner} 
+                >
+            </lightning-datatable>
+        </div>
+    </template>
+    
+    <div class="container container-col-main">
+        <h1>Fordeling av henviste og sluttede jobbspor</h1>
+
+        <table>
+            <tr>
+                <th><h2>Antall i henvist</h2></th>
+                <th><h2>Antall i sluttet</h2></th>                
+            </tr>
+            <tr>
+                <td>{referredNumber}</td>
+                <td>{endedNumber}</td>
+            </tr>
+        </table>
+    </div>
+
+    <template if:true={trailStatusList}>
+        <div class="container container-col-main"> 
+            <h1>Fordeling av aktive deltakere på fase/status</h1>
+            <!--
+            <table>
+                <tbody>
+                    <template for:each={trailStatusList} for:item="stat">
+                        <tr key={stat.trailstatus}>
+                            <th><h2>{stat.trailStatus}</h2></th>
+                            <td>{stat.numberOfTrail}</td>
+                        </tr>
+                    </template>
+                </tbody>  
+            </table>
+            -->
+
+
+            <lightning-datatable 
+            data={trailStatusList}
+            key-field="trailStatus"
+            hide-checkbox-column="true"
+            columns={columnstrailStatus} 
+            >
+        </lightning-datatable>
+
+        </div>
+    </template>
+       
+       
+    <template if:true={trailEndedList}>
+        <div class="container container-col-main">
+            <h1>Avsluttete deltakere, med sluttårsak, per måned og år</h1>
+
+            <lightning-datatable 
+                data={trailEndedList}
+                key-field="year"
+                hide-checkbox-column="true"
+                columns={columnstrailEnded} 
+                >
+            </lightning-datatable>
+        </div>
+    </template>
+
+</template>

@@ -63,11 +63,21 @@ public with sharing class IPS_TestDataFactory {
     public static Work_Trail__c createJobbspor(String participantId) {
         Work_Trail__c trail = new Work_Trail__c();
         trail.ips_Participant__c = participantId;
-        trail.ips_Status__c = 'Referred';
+        trail.ips_Status__c = 'In Education';
         trail.ips_Passive__c = false;
         trail.IPS_Partticipant_phone_number__c = '987 65 432';
         trail.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
         return trail;
+    }
+    
+    public static Work_Trail__c createUOJobbspor(String participantId) {
+        Work_Trail__c trailUO = new Work_Trail__c();
+        trailUO.ips_Participant__c = participantId;
+        trailUO.ips_Status__c = 'Initial contact';
+        trailUO.ips_UO_Service__c	='UO Training';
+        trailUO.IPS_Partticipant_phone_number__c = '987 65 432';
+        trailUO.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('ips_Supported_Employment').getRecordTypeId();
+        return trailUO;
     }
 
     public static Event createEmployerEventWithoutParticipant(String employerId) {
@@ -134,7 +144,28 @@ public with sharing class IPS_TestDataFactory {
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
-            whoId = contactId,
+            IPS_participant_related_to_meeting__c = true,
+            WhatId = jobbsporId,
+            WhoId = contactId,
+            RecordTypeId = devRecordTypeId,
+            IPS_travelTimeFrom__c = 20,
+            StartDateTime = system.Datetime.now(),
+            EndDateTime = system.Datetime.now().addHours(1),
+            Subject = 'Møte med deltaker',
+            Description = 'Møte',
+            IPS_Type__c = 'Meeting with Participant',
+            IPS_Status1__c  = 'Open',
+            Location='Kontoret'
+        );
+        return createEvent;
+    }
+
+    public static Event createParticipantEventWithOwner(String ownerId, String jobbsporId) {
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+
+        Event createEvent = new Event(
+            ips_Travel_time__c = 15,
+            IPS_participant_related_to_meeting__c = true,
             WhatId = jobbsporId,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
@@ -143,19 +174,27 @@ public with sharing class IPS_TestDataFactory {
             Subject = 'Møte med deltaker',
             Description = 'Møte',
             IPS_Type__c = 'Meeting with Participant',
-            IPS_Status1__c  = 'Open'
+            IPS_Status1__c  = 'Open',
+            OwnerId=ownerId,
+            Location='Kontoret'
         );
         return createEvent;
     }
     
     public static ips_Job__c createJob(ID employerId, ID worktrailId, String status){
+        Date endDate;
+        if(status=='Ongoing'){
+            endDate = Date.newInstance(2050, 12, 17);
+        }else {
+            endDate = Date.newInstance(2022, 12, 17);
+        }
 
         ips_Job__c createJob = new ips_Job__c(
             Name = 'Jobb nr 1',
             ips_Employer__c = employerId,
             ips_Work_Trail__c = worktrailId,
             ips_Start_Date__c = Date.newInstance(2022, 10, 17), 
-            ips_End_Date__c = Date.newInstance(2022, 12, 17), 
+            ips_End_Date__c = endDate, 
             ips_Form_of_Employment__c = 'Permanent employment' , 
             ips_Job_Support__c ='Dette er jobbstøtte', 
             ips_Number_of_hours__c = 40, 
@@ -167,13 +206,19 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static ips_Job__c createWorkTraining(ID employerId, ID worktrailId,String status){
+        Date endDate;
+        if(status=='Ongoing'){
+            endDate = Date.newInstance(2050, 12, 17);
+        }else {
+            endDate = Date.newInstance(2022, 12, 17);
+        }
 
         ips_Job__c createJob = new ips_Job__c(
             Name = 'Arbeidstrening nr 1',
             ips_Employer__c = employerId,
             ips_Work_Trail__c = worktrailId,
             ips_Start_Date__c = Date.newInstance(2022, 10, 17), 
-            ips_End_Date__c = Date.newInstance(2022, 12, 17), 
+            ips_End_Date__c = endDate, 
             ips_Form_of_Employment__c = 'work training' , 
             ips_Job_Support__c ='Dette er jobbstøtte', 
             ips_Number_of_hours__c = 40, 
