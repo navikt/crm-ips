@@ -7,16 +7,18 @@ public without sharing class IPS_ManagerTrailController {
         List<IPS_ManagerTrail> trailStatuses = new List<IPS_ManagerTrail>();
          List<AggregateResult> aggList = new List<AggregateResult>();
         
-        aggList =[SELECT count(id)Antall, toLabel(ips_Status__c) Status 
+        aggList =[SELECT count(id)Antall, toLabel(ips_Status__c) Status,recordtype.name Tjeneste
                   FROM work_trail__c 
                   WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_status__c NOT IN('Ended','Referred')
-                  GROUP BY ips_status__c];
+                  GROUP BY ips_status__c,recordtype.name
+                  ORDER BY recordtype.name];
         
         if(aggList.size()>0){
             for(AggregateResult agg : aggList){
                 IPS_ManagerTrail trailStatus = new IPS_ManagerTrail();
                 trailStatus.numberOfTrail = (Integer)agg.get('Antall');
                 trailStatus.trailStatus = (String)agg.get('Status');
+                trailStatus.service = (String)agg.get('Tjeneste');
                 trailStatuses.add(trailStatus);
         	}
             return trailStatuses;
@@ -25,22 +27,25 @@ public without sharing class IPS_ManagerTrailController {
         }  
     }
 
-    /* Aggregerte data - referred/ended*/
+    /* Aggregerte data - referred/ended pr service*/
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerTrail> getReferredTrails(){
         List<IPS_ManagerTrail> trailReferreds = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
 
-        aggList =[SELECT count(id)Antall,toLabel(ips_status__c)Status
+        aggList =[SELECT count(id)Antall,toLabel(ips_status__c)Status,recordtype.name Tjeneste,End_Cause__c Cause
                   FROM work_trail__c 
                   WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_status__c IN('Ended','Referred')
-                  GROUP BY ips_status__c];
+                  GROUP BY ips_status__c,recordtype.name,End_Cause__c
+                  ORDER BY recordtype.name];
 
         if(aggList.size()>0){
             for(AggregateResult agg : aggList){
                 IPS_ManagerTrail trailReferred = new IPS_ManagerTrail();
                 trailReferred.numberOfTrail = (Integer)agg.get('Antall');
                 trailReferred.trailStatus =(String)agg.get('Status');
+                trailReferred.service = (String)agg.get('Tjeneste');
+                trailReferred.cause =(String)agg.get('Cause');
                 trailReferreds.add(trailReferred);
         	}
             return trailReferreds;

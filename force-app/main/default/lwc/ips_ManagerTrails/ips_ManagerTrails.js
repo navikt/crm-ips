@@ -7,15 +7,26 @@ import getEndedTrail from '@salesforce/apex/IPS_ManagerTrailController.getAggreg
 
 export default class Ips_ManagerTrails extends LightningElement {
     @track error;
-    @track trailStatusList;
+    @track trailStatusIPS=[];
+    isIPS = false;
+    isSE = false;
+    @track trailStatusSE=[];
     @track trailReferredList;
     @track trailOwnerList;
     @track trailEndedList;
+
   
     initialRecordOwnerList;
     initialRecordEventList;
-    @track referredNumber = 0;
-    @track endedNumber = 0;
+
+    isIPSReferred = false;
+    isSEReferred = false;
+    @track referredNumberIPS = 0;
+    @track endedNumberIPS = 0;
+    @track endedToWorkIPS = 0;
+    @track referredNumberSE = 0;
+    @track endedNumberSE = 0;
+    @track endedToWorkSE = 0;
 
     @track columnstrailStatus = [
         { label: 'Status/fase', fieldName: 'trailStatus', type: 'text'},
@@ -40,20 +51,47 @@ export default class Ips_ManagerTrails extends LightningElement {
      @wire(getReferred)
      wiredReferred({error, data}){
          if(data){
-            var tempEndedList =0;
-            var tempReferredList =0;
+            let tempEndedListIPS =0;
+            let tempReferredListIPS =0;
+            let tempCauseIPS = 0;
+            let tempEndedListSE =0;
+            let tempReferredListSE =0;
+            let tempCauseSE = 0;
             
             for(var i=0;i<data.length;i++){
-                if(data[i].trailStatus=='Ended'){
-                    tempEndedList = data[i].numberOfTrail;
+                if(data[i].service==='IPS'){
+                    if(data[i].trailStatus==='Ended'){
+                        tempEndedListIPS = data[i].numberOfTrail;
+                        this.isIPSReferred = true;
+                        if(data[i].cause==='Work'){
+                            tempCauseIPS ++;
+                        }
+                    }
+                    if(data[i].trailStatus==='Referred'){
+                        tempReferredListIPS = data[i].numberOfTrail;
+                        this.isIPSReferred = true;
+                    }
                 }
-                if(data[i].trailStatus=='Referred'){
-                    tempReferredList = data[i].numberOfTrail;;
+                if(data[i].service==='Supported Employment'){
+                    if(data[i].trailStatus==='Ended'){
+                        tempEndedListSE = data[i].numberOfTrail;
+                        this.isSEReferred = true;
+                        if(data[i].cause==='Work'){
+                            tempCauseSE ++;
+                        }
+                    }
+                    if(data[i].trailStatus==='Referred'){
+                        tempReferredListSE = data[i].numberOfTrail;
+                        this.isSEReferred = true;
+                    }
                 }
             }
-
-            this.referredNumber = tempReferredList;
-            this.endedNumber = tempEndedList;
+            this.referredNumberIPS = tempReferredListIPS;
+            this.endedNumberIPS = tempEndedListIPS;
+            this.referredNumberSE = tempReferredListSE;
+            this.endedNumberSE = tempEndedListSE;
+            this.endedToWorkIPS = tempCauseIPS;
+            this.endedToWorkSE = tempCauseSE;
          }else if(error){
              this.error = error;
          }
@@ -63,7 +101,22 @@ export default class Ips_ManagerTrails extends LightningElement {
     @wire(getTrailStatus)
     wiredStatuses({error, data}){
         if(data){
-            this.trailStatusList = data;
+            console.log(JSON.stringify(data));
+            let tempIPS =[];
+            let tempSE = [];
+
+            for(var i=0; i<data.length; i++){
+                if(data[i].service==='IPS'){
+                    tempIPS.push(data[i]);
+                    this.isIPS = true;
+                }
+                if(data[i].service==='Supported Employment'){
+                    tempSE.push(data[i]);
+                    this.isSE = true;
+                }
+            }
+            this.trailStatusIPS = tempIPS;
+            this.trailStatusSE = tempSE;
         }else if(error){
             this.error = error;
         }
