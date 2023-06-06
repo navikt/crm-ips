@@ -1,6 +1,48 @@
 <template>
     <!-- ************************ JOBBSPOR **************************-->
-    <template if:true={trailOwnerList}>
+        <!-- Total active participants pr service -->
+        <div class="container container-col-main">
+            <h1>Fordeling av aktive deltakere på tjeneste</h1>
+            <template if:true={isIPS}>
+                <h2>IPS</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><h2>Status/fase</h2></th>
+                            <th><h2>Antall</h2></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={trailStatusIPS} for:item="statIPS">
+                            <tr class="textformats" key={statIPS.trailStatus}>
+                                <td>{statIPS.trailStatus}</td>
+                                <td class="td-formats">{statIPS.numberOfTrail}</td>
+                            </tr>
+                        </template>
+                    </tbody>  
+                </table>
+            </template>
+            <template if:true={isSE}>
+                <h2>Utvidet oppfølging</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><h2>Status/fase</h2></th>
+                            <th><h2>Antall</h2></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={trailStatusSE} for:item="statSE">
+                            <tr class="textformats" key={statSE.trailstatus}>
+                                <td>{statSE.trailStatus}</td>
+                                <td class="td-formats">{statSE.numberOfTrail}</td>
+                            </tr>
+                        </template>
+                    </tbody>  
+                </table>
+            </template>
+        </div>
+        <!-- Total trail pr employee -->
         <div class="container container-col-main">
             <h1>Porteføljestørrelse pr medarbeider</h1>
 
@@ -12,52 +54,50 @@
                 >
             </lightning-datatable>
         </div>
-    </template>
-    
-    <div class="container container-col-main">
-        <h1>Fordeling av henviste og sluttede jobbspor</h1>
 
-        <table>
-            <tr>
-                <th><h2>Antall i henvist</h2></th>
-                <th><h2>Antall i sluttet</h2></th>                
-            </tr>
-            <tr>
-                <td>{referredNumber}</td>
-                <td>{endedNumber}</td>
-            </tr>
-        </table>
-    </div>
-
-    <template if:true={trailStatusList}>
-        <div class="container container-col-main"> 
-            <h1>Fordeling av aktive deltakere på fase/status</h1>
-            <!--
-            <table>
-                <tbody>
-                    <template for:each={trailStatusList} for:item="stat">
-                        <tr key={stat.trailstatus}>
-                            <th><h2>{stat.trailStatus}</h2></th>
-                            <td>{stat.numberOfTrail}</td>
+        <!-- Total ended/referred participants pr service -->
+        <div class="container container-col-main">
+            <h1>Fordeling av henviste og sluttede jobbspor</h1>
+            <template if:true={isIPSReferred}>
+                <h2>IPS</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><h2>Antall i henvist</h2></th>
+                            <th><h2>Antall i sluttet</h2></th>
+                            <th><h2>Antall i sluttet til arbeid</h2></th>
                         </tr>
-                    </template>
-                </tbody>  
-            </table>
-            -->
-
-
-            <lightning-datatable 
-            data={trailStatusList}
-            key-field="trailStatus"
-            hide-checkbox-column="true"
-            columns={columnstrailStatus} 
-            >
-        </lightning-datatable>
-
+                    </thead>
+                    <tbody>
+                        <tr class="textformats">
+                            <td class="td-formats">{referredNumberIPS}</td>
+                            <td class="td-formats">{endedNumberIPS}</td>
+                            <td class="td-formats">{endedToWorkIPS}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
+            <template if:true={isSEReferred}>
+                <h2>Utvidet oppfølging</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><h2>Antall i henvist</h2></th>
+                            <th><h2>Antall i sluttet</h2></th>
+                            <th><h2>Antall i sluttet til arbeid</h2></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="textformats">
+                            <td class="td-formats">{referredNumberSE}</td>
+                            <td class="td-formats">{endedNumberSE}</td>
+                            <td class="td-formats">{endedToWorkSE}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
         </div>
-    </template>
-       
-       
+        
     <template if:true={trailEndedList}>
         <div class="container container-col-main">
             <h1>Avsluttete deltakere, med sluttårsak, per måned og år</h1>

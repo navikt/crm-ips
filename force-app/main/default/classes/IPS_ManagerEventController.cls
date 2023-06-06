@@ -4,7 +4,7 @@ public without sharing class IPS_ManagerEventController {
     /* Henter alle jobbspesialister tilhørende leder*/
     public static List<IPS_ManagerUsers> getManagerUsers(){
         List<IPS_ManagerUsers> usersList = new List<IPS_ManagerUsers>();
-        for(User u:[SELECT Id,Name FROM User WHERE id in:IPS_Utility.getMyEmployeesUserId()]){
+        for(User u:[SELECT Id,Name FROM User WHERE isActive = true AND id in:IPS_Utility.getMyEmployeesUserId()]){
             IPS_ManagerUsers userList = new IPS_ManagerUsers();
             userList.employeeId = u.Id;
             userList.employeeName = u.Name;
