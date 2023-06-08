@@ -3,6 +3,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
     public static void invokeChangeOwner(List<eventRequest> request){
         //parse input and variables
         Id currentId = request.get(0).currentRecord;
+        Id oldOwnerId = request.get(0).oldOwnerRecord;
         Id ownerId = request.get(0).ownerRecord;
         String objectName = request.get(0).sObjectName;
         
@@ -10,7 +11,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
             updateRelatedOwnerTask(currentId,ownerId);
         }
         IF(objectName == 'Event'){
-            updateRelatedOwnerEvent(currentId,ownerId);
+            updateRelatedOwnerEvent(currentId,ownerId,oldOwnerId);
         }
     }
         
@@ -31,12 +32,13 @@ public without sharing class IPS_changeOwnerOnActivityController {
     }
     
     @TestVisible
-    private static void updateRelatedOwnerEvent(Id currentId,Id ownerId){
+    private static void updateRelatedOwnerEvent(Id currentId,Id ownerId,Id oldOwnerId){
         List<Event> allevents = [SELECT 
                                  id,OwnerId 
                                  FROM Event 
                                  WHERE IPS_Type__c in ('Meeting with Participant','Meeting with Employer','First Meeting with Employer','Start up meeting') 
-                                 AND IPS_Status1__c in ('Open') 
+                                 AND IPS_Status1__c in ('Open')
+                                 AND OwnerId =:oldOwnerId
                                  AND whatId =:currentId];
         if(!allevents.isEmpty()){
             for(Event e:allevents){
@@ -56,5 +58,9 @@ public without sharing class IPS_changeOwnerOnActivityController {
             
             @InvocableVariable(required=true)
             public String sObjectName;
+
+            @InvocableVariable
+            public Id oldOwnerRecord;
+            
 		}
 }
