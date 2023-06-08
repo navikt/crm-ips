@@ -5,7 +5,7 @@
         <name>Change_owner_on_event</name>
         <label>Change owner on event</label>
         <locationX>176</locationX>
-        <locationY>575</locationY>
+        <locationY>695</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -13,6 +13,12 @@
             <name>currentRecord</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>oldOwnerRecord</name>
+            <value>
+                <elementReference>varOldOwner</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -33,7 +39,7 @@
         <name>Change_owner_on_task</name>
         <label>Change owner on task</label>
         <locationX>176</locationX>
-        <locationY>455</locationY>
+        <locationY>575</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -60,6 +66,22 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
+    <assignments>
+        <name>setOldOwner</name>
+        <label>setOldOwner</label>
+        <locationX>176</locationX>
+        <locationY>455</locationY>
+        <assignmentItems>
+            <assignToReference>varOldOwner</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record__Prior.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Change_owner_on_task</targetReference>
+        </connector>
+    </assignments>
     <description>Update owner on related object when work trail owner changes.</description>
     <environments>Default</environments>
     <interviewLabel>IPS - update owner on related objects {!$Flow.CurrentDateTime}</interviewLabel>
@@ -90,7 +112,7 @@
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Change_owner_on_task</targetReference>
+            <targetReference>setOldOwner</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -138,6 +160,13 @@
     <status>Active</status>
     <variables>
         <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varOldOwner</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
