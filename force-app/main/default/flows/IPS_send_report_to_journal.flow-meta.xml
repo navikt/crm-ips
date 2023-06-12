@@ -5,7 +5,7 @@
         <name>Generate_Document</name>
         <label>Generate Document</label>
         <locationX>314</locationX>
-        <locationY>1214</locationY>
+        <locationY>1082</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -33,7 +33,7 @@
         <name>Log_Journal_Entry_Error</name>
         <label>Log Journal Entry Error</label>
         <locationX>314</locationX>
-        <locationY>2654</locationY>
+        <locationY>2378</locationY>
         <actionName>LoggerUtility</actionName>
         <actionType>apex</actionType>
         <dataTypeMappings>
@@ -77,7 +77,7 @@
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
         <locationX>314</locationX>
-        <locationY>1814</locationY>
+        <locationY>1622</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -130,7 +130,7 @@
         <name>addEndAssignment</name>
         <label>addEndAssignment</label>
         <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>varEnd</assignToReference>
             <operator>Assign</operator>
@@ -139,14 +139,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>displayOverviewOfReport</targetReference>
+            <targetReference>Get_Account_Info</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>addIntervallAssignment</name>
         <label>addIntervallAssignment</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>varIntervall</assignToReference>
             <operator>Assign</operator>
@@ -155,7 +155,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>displayOverviewOfReport</targetReference>
+            <targetReference>Get_Account_Info</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -163,7 +163,7 @@
         <name>Assign_Journal_Documents</name>
         <label>Assign Journal Documents</label>
         <locationX>314</locationX>
-        <locationY>1454</locationY>
+        <locationY>1298</locationY>
         <assignmentItems>
             <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
             <operator>Add</operator>
@@ -186,7 +186,7 @@
         <name>Assign_Journal_Entry_Values</name>
         <label>Assign Journal Entry Values</label>
         <locationX>50</locationX>
-        <locationY>2414</locationY>
+        <locationY>2162</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -259,7 +259,7 @@
         <name>Document_Variant_Assignment</name>
         <label>Document Variant Assignment</label>
         <locationX>314</locationX>
-        <locationY>1334</locationY>
+        <locationY>1190</locationY>
         <assignmentItems>
             <assignToReference>Document_Variant_PDF.filtype</assignToReference>
             <operator>Assign</operator>
@@ -291,7 +291,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Journal_Request_Assignment</name>
         <label>Journal Request Assignment</label>
         <locationX>314</locationX>
-        <locationY>1694</locationY>
+        <locationY>1514</locationY>
         <assignmentItems>
             <assignToReference>Journal_Request.tittel</assignToReference>
             <operator>Assign</operator>
@@ -385,7 +385,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Journal_Sak_Assignment</name>
         <label>Journal Sak Assignment</label>
         <locationX>314</locationX>
-        <locationY>1574</locationY>
+        <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>Journal_Sak.sakstype</assignToReference>
             <operator>Assign</operator>
@@ -401,7 +401,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Set_Post_Failed</name>
         <label>Set Post Failed</label>
         <locationX>578</locationX>
-        <locationY>2174</locationY>
+        <locationY>1946</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -424,7 +424,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Check_Post_State</name>
         <label>Check Post State</label>
         <locationX>314</locationX>
-        <locationY>1934</locationY>
+        <locationY>1730</locationY>
         <defaultConnector>
             <targetReference>displayError</targetReference>
         </defaultConnector>
@@ -450,7 +450,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>checkTypeOfReport</name>
         <label>checkTypeOfReport</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>566</locationY>
         <defaultConnectorLabel>None</defaultConnectorLabel>
         <rules>
             <name>isIntervall</name>
@@ -488,7 +488,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>isParticipantInformed</name>
         <label>isParticipantInformed</label>
         <locationX>578</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <defaultConnector>
             <targetReference>displayWarningText</targetReference>
         </defaultConnector>
@@ -568,7 +568,7 @@ CASE({!varRecordTypeName},
         <name>createJournalEntry</name>
         <label>createJournalEntry</label>
         <locationX>50</locationX>
-        <locationY>2534</locationY>
+        <locationY>2270</locationY>
         <faultConnector>
             <targetReference>Log_Journal_Entry_Error</targetReference>
         </faultConnector>
@@ -579,10 +579,10 @@ CASE({!varRecordTypeName},
         <name>Get_Account_Info</name>
         <label>Get Account Info</label>
         <locationX>314</locationX>
-        <locationY>1094</locationY>
+        <locationY>866</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Generate_Document</targetReference>
+            <targetReference>displayOverviewOfReport</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -600,7 +600,7 @@ CASE({!varRecordTypeName},
         <name>getRecordTypeJournalEntry</name>
         <label>getRecordTypeJournalEntry</label>
         <locationX>50</locationX>
-        <locationY>2294</locationY>
+        <locationY>2054</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Journal_Entry_Values</targetReference>
@@ -623,7 +623,7 @@ CASE({!varRecordTypeName},
         <name>getRecordTypeWorkTrail</name>
         <label>getRecordTypeWorkTrail</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTypeOfReport</targetReference>
@@ -647,7 +647,7 @@ CASE({!varRecordTypeName},
         <name>getReport</name>
         <label>getReport</label>
         <locationX>578</locationX>
-        <locationY>158</locationY>
+        <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>isParticipantInformed</targetReference>
@@ -676,7 +676,7 @@ CASE({!varRecordTypeName},
         <name>getWorkTrailParticipantsInfo</name>
         <label>getWorkTrailParticipantsInfo</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getRecordTypeWorkTrail</targetReference>
@@ -700,7 +700,7 @@ CASE({!varRecordTypeName},
         <name>UpdateReport</name>
         <label>UpdateReport</label>
         <locationX>50</locationX>
-        <locationY>2174</locationY>
+        <locationY>1946</locationY>
         <connector>
             <targetReference>getRecordTypeJournalEntry</targetReference>
         </connector>
@@ -731,7 +731,7 @@ CASE({!varRecordTypeName},
         <name>displayError</name>
         <label>displayError</label>
         <locationX>578</locationX>
-        <locationY>2054</locationY>
+        <locationY>1838</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -761,7 +761,7 @@ CASE({!varRecordTypeName},
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Get_Account_Info</targetReference>
+            <targetReference>Generate_Document</targetReference>
         </connector>
         <fields>
             <name>displayTitle2</name>
@@ -893,6 +893,26 @@ CASE({!varRecordTypeName},
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
+        <fields>
+            <name>Journal_Case_Overview</name>
+            <extensionName>c:crmPersonCaseOverview</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>FAGSAK_ONLY</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>actorId</name>
+                <value>
+                    <elementReference>Get_Account_Info.CRM_Person__r.INT_ActorId__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -900,7 +920,7 @@ CASE({!varRecordTypeName},
         <name>displaySuccess</name>
         <label>displaySuccess</label>
         <locationX>50</locationX>
-        <locationY>2054</locationY>
+        <locationY>1838</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -925,7 +945,7 @@ CASE({!varRecordTypeName},
         <name>displayWarningText</name>
         <label>displayWarningText</label>
         <locationX>842</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
