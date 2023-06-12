@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>when_status_is_set_to_other_end_causes</fullName>
+    <active>true</active>
+    <description>When status is set to Other end causes more detail is needed</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(End_Cause__c, &quot;Other end causes&quot;),
+ISBLANK(TEXT(ips_Other_end_cases__c))
+)</errorConditionFormula>
+    <errorDisplayField>ips_Other_end_cases__c</errorDisplayField>
+    <errorMessage>Detaljert sluttårsak må oppgis for å lagre!</errorMessage>
+</ValidationRule>

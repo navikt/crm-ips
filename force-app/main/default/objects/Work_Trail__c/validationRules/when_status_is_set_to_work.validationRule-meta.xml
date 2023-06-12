@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>when_status_is_set_to_work</fullName>
+    <active>true</active>
+    <description>When status is set to ended, End Causes must be entered out</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(End_Cause__c, &quot;Work&quot;),
+ISBLANK(TEXT(ips_Work__c))
+)</errorConditionFormula>
+    <errorDisplayField>ips_Work__c</errorDisplayField>
+    <errorMessage>Detaljert sluttårsak må oppgis for å lagre!</errorMessage>
+</ValidationRule>
