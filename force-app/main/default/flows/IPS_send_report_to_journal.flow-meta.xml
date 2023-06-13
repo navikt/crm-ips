@@ -495,9 +495,16 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <defaultConnectorLabel>participantNotInformed</defaultConnectorLabel>
         <rules>
             <name>participantInformed</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>getReport.isInformed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getReport.IPS_participantInformed__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -669,6 +676,7 @@ CASE({!varRecordTypeName},
         <queriedFields>isInformed__c</queriedFields>
         <queriedFields>IPS_report_Type__c</queriedFields>
         <queriedFields>IPS_participantName__c</queriedFields>
+        <queriedFields>IPS_participantInformed__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
