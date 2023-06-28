@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IPS_subject__c</fullName>
+    <deprecated>false</deprecated>
     <externalId>false</externalId>
-    <formula>CASE( IPS_report_Type__c,
-&quot;Intervall&quot;,&quot;Underveis notat/rapport&quot; ,
-&quot;End report&quot;,&quot;Slutt notat/rapport&quot;
-,null
+    <formula>if(ISPICKVAL(IPS_report_Type__c,&apos;Intervall&apos;) &amp;&amp;  IPS_worktrail_Type__c ==&apos;IPS&apos;,&apos;Underveisnotat&apos;,
+if(ISPICKVAL(IPS_report_Type__c,&apos;Intervall&apos;) &amp;&amp;  IPS_worktrail_Type__c ==&apos;Utvidet oppfølging&apos;,&apos;Underveisrapport&apos;,
+if(ISPICKVAL(IPS_report_Type__c,&apos;End report&apos;) &amp;&amp; IPS_worktrail_Type__c ==&apos;IPS&apos;,&apos;Sluttnotat&apos;,
+if(ISPICKVAL(IPS_report_Type__c,&apos;End report&apos;) &amp;&amp; IPS_worktrail_Type__c ==&apos;Utvidet oppfølging&apos;,&apos;Sluttrapport&apos;,null)
+)
+)
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>IPS_subject</label>
