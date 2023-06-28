@@ -229,18 +229,23 @@ public with sharing class IPS_TestDataFactory {
         return createJob;
     }
     
-    public static ips_report__c createEndReport(){
+    public static ips_report__c createEndReport(ID workTrailId){
         ips_report__c endReport = new ips_report__c(
             IPS_endReport__c = 'Avslutningsnotat IPS',
-            IPS_report_Type__c = 'End report'
+            IPS_report_Type__c = 'End report',
+            IPS_workTrailName__c = workTrailId
         );
             return endReport;
     }
     
-    public static ips_report__c createIntervallReport(){
+    public static ips_report__c createIntervallReport(ID workTrailId){
         ips_report__c intervallReport = new ips_report__c(
             IPS_intervallReport__c = 'Underveisnotat',
-            IPS_report_Type__c = 'Intervall'
+            IPS_report_Type__c = 'Intervall',
+            IPS_workTrailName__c = workTrailId,
+            IPS_intervallDateFrom__c = System.today(),
+            IPS_intervallDateTo__c = System.today().addDays(7)
+            
         );
             return intervallReport;
     }

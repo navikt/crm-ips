@@ -1,4 +1,4 @@
-public class IPS_viewReportPDFController {
+public with sharing class IPS_viewReportPDFController {
     
     public Id currentRecordId {get; set;}
     public ips_report__c currentRecord {get; set;}
@@ -6,38 +6,355 @@ public class IPS_viewReportPDFController {
     public boolean isUO {get; set;}
     public boolean isEndReport {get; set;}
     public boolean isIntervallReport {get; set;}
+    public String pdfTitle {get; set;}
+    public Date intervallToDate {get; set;}
+    public Date intervallFromDate {get; set;}
+
+    public Work_Trail__c currentTrail {get; set;}
+    public String startDatoText {get; set;}
+    public String sluttDatoText {get; set;}
+    public String sluttAarsak {get; set;}
+    public String underAarsak {get; set;}
+    public String workTrailId {get; set;}
+    
+    public list<Task> closedIntervallGoal {get; set;}
+    public list<Task> openIntervallGoal {get; set;}
+    public list<Event> completedIntervallEmplMeeting {get; set;}
+    public list<Event> notAttendedIntervallEmplMeeting {get; set;}
+    public list<Event> openIntervallMeeting {get; set;}
+    public list<Event> completedIntervallPartMeeting {get; set;}
+    public list<Event> notAttendedIntervallPartMeeting {get; set;}
+    public list<Event> openIntervallPartMeeting {get; set;}
+    
+    public list<Event> emplCompleteJobDevelopment {get; set;}
+    public list<Event> emplCompleteRelationship {get; set;}
+    public list<Event> emplCompleteFollowUp {get; set;}
+    
+    public list<ips_Job__c> activeParticipantsJobs {get; set;}
+    public list<ips_Education__c> activeParticipantsEducations {get; set;}
+    
     
     public IPS_viewReportPDFController(ApexPages.StandardController sc){
         //this.currentRecordId = ApexPages.CurrentPage().getparameters().get('id');
         this.currentRecordId = sc.getRecord().Id;
         this.isEndReport = false;
-        this.isIntervallReport = true;
+        this.isIntervallReport = false;
         this.isIPS = false;
         this.isUO = false;
         
-        //Apexpages.currentPage().getHeaders().put('content-disposition', 'attachment; filename=Rapportering_deltaker.pdf');
-        
         this.currentRecord = getReport(this.currentRecordId);
+        this.currentTrail = getWorkTrail(this.currentRecordId);
+
+            this.closedIntervallGoal = getCompletedGoals();
+            this.openIntervallGoal = getopenGoals();
+            getIntervallEmployerActivity(intervallFromDate,intervallToDate);
+            getIntervallParticipantActivity(intervallFromDate,intervallToDate);
+            this.openIntervallMeeting = getOpenIntervallActivity(intervallToDate);
+            this.activeParticipantsJobs = getActiveJobs();
+            this.activeParticipantsEducations = getActiveEducations(); 
+        
+        Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+this.pdfTitle+'.pdf');
+        
   }
-    
-    public ips_report__c getReport(string currRecordId){
+	/*********************** current report *******************************/
+    private ips_report__c getReport(string currRecordId){
         ips_report__c reportingParticipant =  [SELECT
-                                                IPS_endReport__c,
-                                                IPS_report_Type__c,
-                                                IPS_intervallReport__c
-                                                FROM ips_report__c
-                                                WHERE id = :currRecordId
+                                                   IPS_subject__c,
+                                                   IPS_endReport__c,
+                                                   IPS_report_Type__c,
+                                                   IPS_intervallReport__c,
+                                                   IPS_intervallDateFrom__c,
+                                                   IPS_intervallDateTo__c,
+                                                   IPS_summarizeIntervallPeriode__c,
+                                               	IPS_summarizeIntervallNextPeriode__c,
+                                               IPS_endReportSumm1__c,
+                                               IPS_endReportSumm2__c,
+                                               IPS_endReportSumm3__c,
+                                               IPS_endReportSumm4__c,
+                                               IPS_endReportSumm5__c
+                                               FROM ips_report__c
+                                               WHERE id = :currRecordId
                                               ];
         If(reportingParticipant.IPS_report_Type__c == 'Intervall'){
             this.isIntervallReport = true;
-            reportingParticipant.IPS_intervallReport__c = reportingParticipant.IPS_intervallReport__c.replace('font-size: 14px;','font-size: 18px;');
+            this.startDatoText = formatDate(reportingParticipant.IPS_intervallDateFrom__c,null);
+            this.intervallFromDate = reportingParticipant.IPS_intervallDateFrom__c;
+        	this.sluttDatoText = formatDate(reportingParticipant.IPS_intervallDateTo__c,null);
+            this.intervallToDate = reportingParticipant.IPS_intervallDateTo__c;
         }
         
         IF(reportingParticipant.IPS_report_Type__c == 'End report'){
-            this.isEndReport = true;
-            reportingParticipant.IPS_endReport__c = reportingParticipant.IPS_endReport__c.replace('font-size: 12px;','font-size: 18px;');
-            
+            this.isEndReport = true;            
         } 
+        this.pdfTitle = reportingParticipant.IPS_subject__c;
         return reportingParticipant;
     }
+
+    /************************** jobbspor *****************************/
+    private Work_Trail__c getWorkTrail(String currRecordId){
+        Work_Trail__c reportingTrail = [SELECT 
+                                            Id, 
+                                            recordType.DeveloperName,  
+                                            IPS_ownerName__c, 
+                                            ips_Participant__r.name, 
+                                            ips_Behandlingsteam__c,
+                                            ips_Applying_Department__c, 
+                                            ips_NAV_supervisor__c,
+                                        	Oppstartsdato__c,
+                                            ips_Start_Date__c, 
+                                            ips_End_Date__c, 
+                                            toLabel(End_Cause__c), 
+                                            toLabel(ips_Other_end_cases__c), 
+                                            toLabel(ips_Work__c), 
+                                            ips_Main_Goal_list__c,
+                                        	ips_Priority_career_wishes__c,
+                                        ips_Desired_profession_industry_career__c,
+                                            ips_UO_Service__c,  
+                                            ips_Main_goal__c 
+                                        FROM Work_Trail__c 
+                                        WHERE id IN (SELECT IPS_workTrailName__c FROM  ips_report__c WHERE id =:currRecordId)
+                                        ];
+        IF(reportingTrail.recordType.DeveloperName =='IPS'){ 
+            this.isIPS = true;
+        }
+
+        IF(reportingTrail.recordType.DeveloperName =='ips_Supported_Employment'){
+            this.isUO = true;
+        }
+
+        IF(reportingTrail.End_Cause__c=='Work'){    
+            this.underAarsak = reportingTrail.ips_Work__c;
+        }
+
+        IF(reportingTrail.End_Cause__c=='Other end causes'){
+            this.underAarsak = reportingTrail.ips_Other_end_cases__c;
+        }
+
+        this.sluttAarsak = reportingTrail.End_Cause__c;
+        this.workTrailId = reportingTrail.id;
+
+        return reportingTrail;
+    }
+    
+    /****************** Goals ***************************/
+    private list<Task> getCompletedGoals(){
+        
+        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
+        String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
+        String goalId = ' AND WhatId = :workTrailId';
+        String goalFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
+        String goalSort = ' ORDER BY ActivityDate DESC';
+        String query = '';
+        
+        if(isEndReport){
+          query = goalSelect + goalWhere+goalId+goalSort;  
+        }
+        if(isIntervallReport){
+          query = goalSelect + goalWhere+goalId+goalFilter+goalSort;
+        }
+
+        list<Task> userGoal = new list<Task>();
+        userGoal = Database.query(query);
+     
+        return userGoal;
+        
+        }
+    
+    private list<Task> getopenGoals(){
+        
+        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
+        String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Open\' ';
+        String goalId = ' AND WhatId = :workTrailId';
+        String goalFilter = ' AND ActivityDate > :intervallToDate';
+        String goalSort = ' ORDER BY ActivityDate ASC';
+        String query = goalSelect + goalWhere+goalId+goalFilter+goalSort;
+        
+        list<Task> userGoal = new list<Task>();
+        userGoal = Database.query(query);
+     
+        return userGoal;
+        
+        }
+    
+    /********************** Meetings *********************************/
+    private void getIntervallEmployerActivity(Date startDato, Date sluttDato){
+        List<Event> tempJobDev = new List<Event>();
+        List<Event> tempRelation = new List<Event>();
+        List<Event> tempFollow = new List<Event>();
+        List<Event> tempCompleted = new List<Event>();
+        List<Event> tempNotAttended = new List<Event>();
+        List<Event> emplActivity = new List<Event>();
+        emplActivity =[
+            SELECT 
+                id,
+                Subject,
+                CreatedDate,
+                IPS_subjectAndDate__c, 
+                ActivityDate,
+                Description,
+                IPS_employerName__c,
+            	Konto_kontakt__r.Name,
+                IPS_Type__c,
+            	toLabel(ips_Subcategory_Type_IPS__c),
+            	toLabel(IPS_Subcategory_Type_UO__c),
+                IPS_Status1__c 
+            FROM event 
+            WHERE 
+                IPS_participant_related_to_meeting__c = true
+                AND IPS_Type__c ='Meeting with Employer'
+                AND ActivityDate >= :startDato
+            	AND ActivityDate <= :sluttDato 
+                AND WhatId = :workTrailId 
+                AND IPS_participant_related_to_meeting__c = true
+                AND IPS_Status1__c IN ('Completed','Participant Absent')
+            ORDER BY ActivityDate DESC
+        ];
+        
+        for(Event e:emplActivity){
+            if(e.IPS_Status1__c == 'Completed'){
+                if(e.ips_Subcategory_Type_IPS__c=='Job development'||e.ips_Subcategory_Type_IPS__c=='Job support'){
+                    tempJobDev.add(e);
+                }
+                if(e.IPS_Subcategory_Type_UO__c	=='Relationship building'){
+                    tempRelation.add(e);
+                }
+                if(e.IPS_Subcategory_Type_UO__c	=='	Follow-up'){
+                    tempFollow.add(e);
+                }
+            }
+            this.emplCompleteJobDevelopment = tempJobDev;
+            this.emplCompleteRelationship = tempRelation;
+            this.emplCompleteFollowUp = tempFollow;
+            
+            if(e.IPS_Status1__c == 'Participant Absent'){
+                tempNotAttended.add(e);
+            }
+        }
+        this.completedIntervallEmplMeeting = tempCompleted;
+        this.notAttendedIntervallEmplMeeting = tempNotAttended;
+    }
+    
+     private list<Event> getOpenIntervallActivity(Date sluttDato){
+        List<Event> emplActivity = new List<Event>();
+        emplActivity =[
+            SELECT 
+                id,
+                Subject,
+                CreatedDate,
+                IPS_subjectAndDate__c, 
+                ActivityDate,
+                Description,
+                IPS_employerName__c,
+            	Konto_kontakt__r.Name,
+                toLabel(IPS_Type__c),
+                IPS_Status1__c 
+            FROM event 
+            WHERE 
+                IPS_participant_related_to_meeting__c = true
+                AND IPS_Type__c IN ('Meeting with Employer','Meeting with Participant')
+            	AND ActivityDate > :sluttDato 
+                AND WhatId = :workTrailId 
+                AND IPS_Status1__c IN ('Open')
+            ORDER BY ActivityDate ASC
+        ];
+        
+		return emplActivity;
+    }
+    
+    private void getIntervallParticipantActivity(Date startDato, Date sluttDato){
+        List<Event> tempCompleted = new List<Event>();
+        List<Event> tempNotAttended = new List<Event>();
+        List<Event> partActivity = new List<Event>();
+        partActivity =[
+            SELECT 
+                id,
+                Subject,
+                CreatedDate,
+                IPS_subjectAndDate__c, 
+                ActivityDate,
+                Description,
+                IPS_Type__c,
+                IPS_Status1__c 
+            FROM event 
+            WHERE 
+                IPS_participant_related_to_meeting__c = true
+                AND IPS_Type__c ='Meeting with Participant'
+                AND ActivityDate >= :startDato
+            	AND ActivityDate <= :sluttDato 
+                AND WhatId = :workTrailId 
+                AND IPS_Status1__c IN ('Completed','Participant Absent')
+            ORDER BY ActivityDate DESC
+        ];
+        
+        for(Event epart:partActivity){
+            if(epart.IPS_Status1__c == 'Completed'){
+                tempCompleted.add(epart);
+            }
+            if(epart.IPS_Status1__c == 'Participant Absent'){
+                tempNotAttended.add(epart);
+            }
+        }
+        this.completedIntervallPartMeeting = tempCompleted;
+        this.notAttendedIntervallPartMeeting = tempNotAttended;
+    }
+    
+    /****************** jobb **************************/
+    private list<ips_Job__c> getActiveJobs(){
+        List<ips_Job__c> activeJobs = new List<ips_Job__c >();
+        activeJobs =[
+            SELECT 
+            id,
+            Name,
+            ips_Work_Trail__c,
+            ips_Employer__r.Name,
+            toLabel(ips_Form_of_Employment__c),
+            ips_Start_Date__c,
+            IPS_UO_Stillingsbeskrivelse__c,
+            ips_Job_Support__c,
+            ips_End_Date__c,
+            ips_Status__c,
+            ips_Job__c.ips_What_did_not_work_at_the_workplace__c,
+            ips_What_did_work_at_the_workplace__c,
+            IPS_jobSubject__c
+            FROM ips_Job__c
+            WHERE ips_Work_Trail__c = :workTrailId 
+        ];
+        return activeJobs;
+    }
+    
+    /****************** Utdanning *************************/
+     
+    private list<ips_Education__c> getActiveEducations(){
+        List<ips_Education__c> activeEdu = new List<ips_Education__c >();
+        activeEdu =[
+            SELECT 
+            id,
+            Name,
+            ips_Work_Trail__c,
+            ips_Name_of_the_Education_Institution__c,
+            toLabel(ips_Form_of_Education__c),
+            ips_Start_Date__c,
+            ips_Status__c
+            FROM ips_Education__c
+            WHERE ips_Work_Trail__c = :workTrailId
+            AND ips_Status__c ='Ongoing'   
+        ];
+        return activeEdu;
+    }
+    
+    
+    
+    /*********************** **************************/    
+    public static String formatDate(Date d,DateTime dt) {
+ 	String returnedDate;
+        if(d==null){
+            returnedDate = dt.day()+ '.' +dt.month()+ '.' + dt.year();
+        }
+        if(dt==null){
+            returnedDate =   d.day()+ '.' +d.month()+ '.' + d.year();
+        }
+           
+        return returnedDate;
+
+	}
 }
