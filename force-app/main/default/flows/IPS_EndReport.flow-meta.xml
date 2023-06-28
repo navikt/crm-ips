@@ -13,7 +13,7 @@
         <name>checkRecordType</name>
         <label>checkRecordType</label>
         <locationX>974</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <defaultConnector>
             <targetReference>noWorkTrail_0</targetReference>
         </defaultConnector>
@@ -54,7 +54,7 @@
         <name>checkReportType</name>
         <label>checkReportType</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>566</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isEndReportUO</name>
@@ -92,7 +92,7 @@
         <name>checkReportType_0</name>
         <label>checkReportType</label>
         <locationX>1106</locationX>
-        <locationY>638</locationY>
+        <locationY>566</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isEndReportIPS</name>
@@ -126,6 +126,7 @@
         </rules>
     </decisions>
     <description>End report for IPS/UO</description>
+    <environments>Default</environments>
     <formulas>
         <name>varTaskRowHeading</name>
         <dataType>String</dataType>
@@ -164,7 +165,7 @@
         <name>getRecordtypeName</name>
         <label>getRecordtypeName</label>
         <locationX>974</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>selectReportType</targetReference>
@@ -187,7 +188,7 @@
         <name>getWorktrailRecordTypeId</name>
         <label>getWorktrailRecordTypeId</label>
         <locationX>974</locationX>
-        <locationY>158</locationY>
+        <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getRecordtypeName</targetReference>
@@ -214,7 +215,7 @@
         <name>noWorkTrail_0</name>
         <label>Not a worktrail</label>
         <locationX>1634</locationX>
-        <locationY>638</locationY>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -231,7 +232,7 @@
         <name>selectReportType</name>
         <label>Select report type</label>
         <locationX>974</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -321,7 +322,7 @@
         <name>RunEndReporting</name>
         <label>RunEndReporting</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>674</locationY>
         <flowName>IPS_subflowEndReportUO</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -335,7 +336,7 @@
         <name>runEndReportingIPS</name>
         <label>runEndReportingIPS</label>
         <locationX>842</locationX>
-        <locationY>758</locationY>
+        <locationY>674</locationY>
         <flowName>IPS_subflowEndReportIPS</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -354,7 +355,7 @@
         <name>runIntervallReportIPS</name>
         <label>runIntervallReportIPS</label>
         <locationX>1106</locationX>
-        <locationY>758</locationY>
+        <locationY>674</locationY>
         <flowName>IPS_subflow_intervall_report_IPS</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -362,13 +363,18 @@
                 <elementReference>recordId</elementReference>
             </value>
         </inputAssignments>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <inputAssignments>
+            <name>recordTypeName</name>
+            <value>
+                <elementReference>viewRecordTypeName</elementReference>
+            </value>
+        </inputAssignments>
     </subflows>
     <subflows>
         <name>runIntervallReportUO</name>
         <label>runIntervallReportUO</label>
         <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationY>674</locationY>
         <flowName>IPS_subflowIntervallReportUO</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -376,7 +382,12 @@
                 <elementReference>recordId</elementReference>
             </value>
         </inputAssignments>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <inputAssignments>
+            <name>recordTypeName</name>
+            <value>
+                <elementReference>recordTypeName</elementReference>
+            </value>
+        </inputAssignments>
     </subflows>
     <textTemplates>
         <name>newLine</name>
