@@ -20,8 +20,10 @@ public with sharing class IPS_viewReportPDFController {
     public list<Task> closedGoal {get; set;}
     public list<Task> openGoal {get; set;}
     
-    public list<Event> completedIntervallEmplMeeting {get; set;}
-    public list<Event> notAttendedIntervallEmplMeeting {get; set;}
+    public list<Event> completedEmplMeeting {get; set;}
+    public list<Event> notAttendedEmplMeeting {get; set;}
+    public Integer completedEmplMeetingNumber {get; set;}
+    public Integer notAttendedEmplMeetingNumber {get; set;}
     
     public list<Event> completedPartMeeting {get; set;}
     public list<Event> notAttendedPartMeeting {get; set;}
@@ -29,13 +31,7 @@ public with sharing class IPS_viewReportPDFController {
     public Integer notAttendedPartMeetingNumber {get; set;}
     
     public list<Event> openIntervallMeeting {get; set;}
-    
-    
     public list<Event> openIntervallPartMeeting {get; set;}
-    
-    public list<Event> emplCompleteJobDevelopment {get; set;}
-    public list<Event> emplCompleteRelationship {get; set;}
-    public list<Event> emplCompleteFollowUp {get; set;}
     
     public list<ips_Job__c> activeParticipantsJobs {get; set;}
     public list<ips_Education__c> activeParticipantsEducations {get; set;}
@@ -54,7 +50,7 @@ public with sharing class IPS_viewReportPDFController {
 
             this.closedGoal = getCompletedGoals();
             this.openGoal = getopenGoals();
-            getIntervallEmployerActivity(intervallFromDate,intervallToDate);
+            getEmployerActivity();
             getParticipantActivity();
             this.openIntervallMeeting = getOpenIntervallActivity(intervallToDate);
             this.activeParticipantsJobs = getActiveJobs();
@@ -149,7 +145,7 @@ public with sharing class IPS_viewReportPDFController {
         String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
         String goalId = ' AND WhatId = :workTrailId';
-        String goalFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
+        String goalFilter = ' AND DAY_ONLY(CompletedDateTime) >= :intervallFromDate AND DAY_ONLY(CompletedDateTime) <= :intervallToDate';
         String goalSort = ' ORDER BY ActivityDate DESC';
         String query = '';
         
@@ -180,60 +176,38 @@ public with sharing class IPS_viewReportPDFController {
         }
     
     /********************** Meetings *********************************/
-    private void getIntervallEmployerActivity(Date startDato, Date sluttDato){
-        List<Event> tempJobDev = new List<Event>();
-        List<Event> tempRelation = new List<Event>();
-        List<Event> tempFollow = new List<Event>();
-        List<Event> tempCompleted = new List<Event>();
-        List<Event> tempNotAttended = new List<Event>();
-        List<Event> emplActivity = new List<Event>();
-        emplActivity =[
-            SELECT 
-                id,
-                Subject,
-                CreatedDate,
-                IPS_subjectAndDate__c, 
-                ActivityDate,
-                Description,
-                IPS_employerName__c,
-            	Konto_kontakt__r.Name,
-                IPS_Type__c,
-            	toLabel(ips_Subcategory_Type_IPS__c),
-            	toLabel(IPS_Subcategory_Type_UO__c),
-                IPS_Status1__c 
-            FROM event 
-            WHERE 
-                IPS_participant_related_to_meeting__c = true
-                AND IPS_Type__c ='Meeting with Employer'
-                AND ActivityDate >= :startDato
-            	AND ActivityDate <= :sluttDato 
-                AND WhatId = :workTrailId 
-                AND IPS_Status1__c IN ('Completed','Participant Absent')
-            ORDER BY ActivityDate DESC
-        ];
+    private void getEmployerActivity(){
         
-        for(Event e:emplActivity){
+        String emplSelect = 'SELECT id,Subject,ActivityDate,IPS_employerName__c,Konto_kontakt__r.Name,IPS_Type__c,toLabel(ips_Subcategory_Type_IPS__c),toLabel(IPS_Subcategory_Type_UO__c),IPS_Status1__c,IPS_participant_related_to_meeting__c FROM event';
+        String emplWhere = ' WHERE IPS_Type__c IN (\'Meeting with Employer\',\'First Meeting with Employer\')';
+        String emplId = ' AND WhatId = :workTrailId';
+        String emplFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
+        String emplSort = ' ORDER BY ActivityDate DESC';
+        String query = emplSelect + emplWhere + emplId + emplFilter + emplSort;
+        
+        List<Event> tempCompletedEmplMeeting = new List<Event>();
+        Integer tempCompletedNumber=0;
+        List<Event> tempNotAttended = new List<Event>();
+        Integer tempNotAttendedNumber=0;
+        
+        list<Event> userEvent = new list<Event>();
+        userEvent = Database.query(query);
+
+        for(Event e:userEvent){
             if(e.IPS_Status1__c == 'Completed'){
-                if(e.ips_Subcategory_Type_IPS__c=='Job development'||e.ips_Subcategory_Type_IPS__c=='Job support'){
-                    tempJobDev.add(e);
-                }
-                if(e.IPS_Subcategory_Type_UO__c	=='Relationship building'){
-                    tempRelation.add(e);
-                }
-                if(e.IPS_Subcategory_Type_UO__c	=='Follow-up'){
-                    tempFollow.add(e);
-                }
+                if(isEndReport){tempCompletedNumber++;}
+                if(isIntervallReport){tempCompletedEmplMeeting.add(e);}     
             }
-            this.emplCompleteJobDevelopment = tempJobDev;
-            this.emplCompleteRelationship = tempRelation;
-            this.emplCompleteFollowUp = tempFollow;
             
             if(e.IPS_Status1__c == 'Participant Absent'){
-                tempNotAttended.add(e);
+                if(isEndReport){tempNotAttendedNumber++;}
+                if(isIntervallReport){tempNotAttended.add(e);}
             }
         }
-        this.completedIntervallEmplMeeting = tempCompleted;
-        this.notAttendedIntervallEmplMeeting = tempNotAttended;
+        this.completedEmplMeeting = tempCompletedEmplMeeting;
+        this.completedEmplMeetingNumber = tempCompletedNumber;
+        this.notAttendedEmplMeeting = tempNotAttended;
+        this.notAttendedEmplMeetingNumber = tempNotAttendedNumber;
     }
     
     private list<Event> getOpenIntervallActivity(Date sluttDato){
@@ -266,10 +240,10 @@ public with sharing class IPS_viewReportPDFController {
     private void getParticipantActivity(){
         
         String partSelect = 'SELECT id,Subject,CreatedDate,IPS_subjectAndDate__c, ActivityDate,Description,IPS_Type__c,IPS_Status1__c FROM event';
-        String partWhere = ' WHERE IPS_participant_related_to_meeting__c = true AND IPS_Type__c IN (\'Meeting with Participant\',\'Start up meeting\') AND IPS_Status1__c IN (\'Completed\',\'Participant Absent\')';
+        String partWhere = ' WHERE IPS_Type__c IN (\'Meeting with Participant\',\'Start up meeting\') AND IPS_Status1__c IN (\'Completed\',\'Participant Absent\')';
         String partId = ' AND WhatId = :workTrailId';
         String partFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
-        String partSort = ' ORDER BY ActivityDate ASC';
+        String partSort = ' ORDER BY ActivityDate DESC';
         String query = '';
         
         List<Event> tempCompleted = new List<Event>();
