@@ -13,6 +13,8 @@ public with sharing class IPS_viewReportPDFController {
     public Work_Trail__c currentTrail {get; set;}
     public String startDatoText {get; set;}
     public String sluttDatoText {get; set;}
+    public String startDatoTrail {get; set;}
+    public String sluttDatoTrail {get; set;}
     public String sluttAarsak {get; set;}
     public String underAarsak {get; set;}
     public String workTrailId {get; set;}
@@ -29,6 +31,7 @@ public with sharing class IPS_viewReportPDFController {
     public list<Event> notAttendedPartMeeting {get; set;}
     public Integer completedPartMeetingNumber {get; set;}
     public Integer notAttendedPartMeetingNumber {get; set;}
+    public Set<String> accountNames {get; set;}
     
     public list<Event> openIntervallMeeting {get; set;}
     public list<Event> openIntervallPartMeeting {get; set;}
@@ -74,7 +77,9 @@ public with sharing class IPS_viewReportPDFController {
                                                    IPS_endReportSumm2__c,
                                                    IPS_endReportSumm3__c,
                                                    IPS_endReportSumm4__c,
-                                                   IPS_endReportSumm5__c
+                                                   IPS_endReportSumm5__c,
+                                               IPS_endReportSumm6__c,
+                                               IPS_endReportSumm7__c
                                                FROM ips_report__c
                                                WHERE id = :currRecordId
                                               ];
@@ -87,7 +92,7 @@ public with sharing class IPS_viewReportPDFController {
         }
         
         IF(reportingParticipant.IPS_report_Type__c == 'End report'){
-            this.isEndReport = true;            
+            this.isEndReport = true;
         } 
         this.pdfTitle = reportingParticipant.IPS_subject__c;
         return reportingParticipant;
@@ -104,6 +109,7 @@ public with sharing class IPS_viewReportPDFController {
                                             ips_Applying_Department__c, 
                                             ips_NAV_supervisor__c,
                                         	Oppstartsdato__c,
+                                        	ips_Referred_date__c,
                                             ips_Start_Date__c, 
                                             ips_End_Date__c, 
                                             toLabel(End_Cause__c), 
@@ -119,6 +125,7 @@ public with sharing class IPS_viewReportPDFController {
                                         ];
         IF(reportingTrail.recordType.DeveloperName =='IPS'){ 
             this.isIPS = true;
+            
         }
 
         IF(reportingTrail.recordType.DeveloperName =='ips_Supported_Employment'){
@@ -135,6 +142,13 @@ public with sharing class IPS_viewReportPDFController {
 
         this.sluttAarsak = reportingTrail.End_Cause__c;
         this.workTrailId = reportingTrail.id;
+        if(reportingTrail.Oppstartsdato__c!=null){
+           this.startDatoTrail = formatDate(null,reportingTrail.Oppstartsdato__c); 
+        }
+        if(reportingTrail.ips_End_Date__c!=null){
+          this.sluttDatoTrail = formatDate(reportingTrail.ips_End_Date__c,null);  
+        }
+        
 
         return reportingTrail;
     }
@@ -146,7 +160,7 @@ public with sharing class IPS_viewReportPDFController {
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
         String goalId = ' AND WhatId = :workTrailId';
         String goalFilter = ' AND DAY_ONLY(CompletedDateTime) >= :intervallFromDate AND DAY_ONLY(CompletedDateTime) <= :intervallToDate';
-        String goalSort = ' ORDER BY ActivityDate DESC';
+        String goalSort = ' ORDER BY CompletedDateTime DESC';
         String query = '';
         
             if(isEndReport){
@@ -178,7 +192,7 @@ public with sharing class IPS_viewReportPDFController {
     /********************** Meetings *********************************/
     private void getEmployerActivity(){
         
-        String emplSelect = 'SELECT id,Subject,ActivityDate,IPS_employerName__c,Konto_kontakt__r.Name,IPS_Type__c,toLabel(ips_Subcategory_Type_IPS__c),toLabel(IPS_Subcategory_Type_UO__c),IPS_Status1__c,IPS_participant_related_to_meeting__c FROM event';
+        String emplSelect = 'SELECT id,Subject,ActivityDate,RelatedToAccount__r.name,IPS_employerName__c,Konto_kontakt__r.Name,IPS_Type__c,toLabel(ips_Subcategory_Type_IPS__c),toLabel(IPS_Subcategory_Type_UO__c),IPS_Status1__c,IPS_participant_related_to_meeting__c FROM event';
         String emplWhere = ' WHERE IPS_Type__c IN (\'Meeting with Employer\',\'First Meeting with Employer\')';
         String emplId = ' AND WhatId = :workTrailId';
         String emplFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
@@ -189,21 +203,26 @@ public with sharing class IPS_viewReportPDFController {
         Integer tempCompletedNumber=0;
         List<Event> tempNotAttended = new List<Event>();
         Integer tempNotAttendedNumber=0;
+        Set<String> tempAccountName = new Set<String>();
         
         list<Event> userEvent = new list<Event>();
         userEvent = Database.query(query);
 
         for(Event e:userEvent){
             if(e.IPS_Status1__c == 'Completed'){
-                if(isEndReport){tempCompletedNumber++;}
+                if(isEndReport && e.IPS_participant_related_to_meeting__c==true){
+                    tempCompletedNumber++;
+					tempAccountName.add(e.RelatedToAccount__r.name);
+                }
                 if(isIntervallReport){tempCompletedEmplMeeting.add(e);}     
             }
             
             if(e.IPS_Status1__c == 'Participant Absent'){
-                if(isEndReport){tempNotAttendedNumber++;}
+                if(isEndReport && e.IPS_participant_related_to_meeting__c==true){tempNotAttendedNumber++;}
                 if(isIntervallReport){tempNotAttended.add(e);}
             }
         }
+        this.accountNames = tempAccountName;
         this.completedEmplMeeting = tempCompletedEmplMeeting;
         this.completedEmplMeetingNumber = tempCompletedNumber;
         this.notAttendedEmplMeeting = tempNotAttended;

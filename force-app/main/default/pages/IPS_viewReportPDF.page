@@ -171,7 +171,7 @@
                             </tr>
                             <apex:repeat value="{!completedEmplMeeting}" var="rel" >
                                 <tr style="vertical-align:top;border:1px solid #FF0000;">
-                                    <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!rel.IPS_employerName__c}"/></td>
+                                    <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!rel.RelatedToAccount__r.name}"/></td>
                                     <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!rel.Konto_kontakt__r.Name}"/></td>
                                     <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!rel.IPS_participant_related_to_meeting__c}"/></td>
                                     <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!rel.Subject}"/></td>
@@ -197,11 +197,11 @@
                     <apex:outputText ><h4>Stilling som - {!jobs.Name} </h4></apex:outputText>
                     <table style="width: 100%;border:1px solid #262626">
                     <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Arbeidsgiver</th>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Arbeidsgiver</th>
                         <td style="border:1px solid #F1F1F1;" ><apex:outputField value="{!jobs.ips_Employer__r.Name}"/></td>
                     </tr>
                     <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Startdato</th>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Startdato</th>
                         <td style="border:1px solid #F1F1F1;">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!jobs.ips_Start_Date__c}"/>
@@ -209,7 +209,7 @@
                             </td>
                     </tr>
                     <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Sluttdato</th>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Sluttdato</th>
                         <td style="border:1px solid #F1F1F1;">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!jobs.ips_End_Date__c}"/>
@@ -217,15 +217,15 @@
                             </td>
                     </tr>
                     <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Jobbtype</th>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Jobbtype</th>
                         <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!jobs.ips_Form_of_Employment__c}"/></td>
                     </tr>
                      <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Stillingsbeskrivelse</th>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Stillingsbeskrivelse</th>
                         <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!jobs.IPS_UO_Stillingsbeskrivelse__c}"/></td>
                     </tr>
                      <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Plan for jobbstøtte</th>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Plan for jobbstøtte</th>
                         <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!jobs.ips_Job_Support__c}"/></td>
                     </tr>
                 	<tr>
@@ -251,17 +251,13 @@
                     <div style="page-break-inside: avoid;">
                         <apex:repeat value="{!activeParticipantsEducations}" var="edu" >
                         <apex:outputText ><h4>Utdanning - {!edu.Name} </h4></apex:outputText>
-                        <table style="width: 100%;border:1px solid #262626">
-                       <tr>
-                            <th style="width: 20%;background-color: #F1F1F1;">Utdanning</th>
-                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.Name}"/></td>
-                        </tr>
+                        <table style="vertical-align:top;width: 100%;border:1px solid #262626">
                         <tr>
-                            <th style="width: 20%;background-color: #F1F1F1;">Institusjon</th>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Institusjon</th>
                             <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_Name_of_the_Education_Institution__c}"/></td>
                         </tr>
                         <tr>
-                            <th style="width: 20%;background-color: #F1F1F1;">Startdato</th>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Startdato</th>
                             <td style="border:1px solid #F1F1F1;"> 
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                         <apex:param value="{!edu.ips_Start_Date__c}"/>
@@ -269,7 +265,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th style="width: 20%;background-color: #F1F1F1;">Sluttdato</th>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Sluttdato</th>
                             <td style="border:1px solid #F1F1F1;">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                         <apex:param value="{!edu.ips_End_Date__c}"/>
@@ -277,19 +273,19 @@
                             </td>
                         </tr>
                             <tr>
-                            <th style="width: 20%;background-color: #F1F1F1;">Type</th>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Type</th>
                             <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_Form_of_Education__c}"/></td>
                         </tr>
                             <tr>
-                            <th style="width: 20%;background-color: #F1F1F1;">Plan for støtte</th>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Plan for støtte</th>
                             <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_Education_Support_Plan__c}"/></td>
                         </tr>
                             <tr>
-                            <th style="width: 20%;background-color: #F1F1F1;">Hva fungerte?</th>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Hva fungerte?</th>
                             <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_What_did_work_with_this_education__c}"/></td>
                         </tr>
                             <tr>
-                            <th style="width: 20%;background-color: #F1F1F1;">Hva fungerte ikke?</th>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Hva fungerte ikke?</th>
                             <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_What_did_not_work_with_thiseducation__c}"/></td>
                         </tr>
                         </table>
@@ -363,128 +359,197 @@
             
             <!---------------------- End -------------------------------------------------------->
             <apex:outputPanel rendered="{!isEndReport}" layout="block">
-                <apex:outputText rendered="{!isIPS}"><h2>Deltakers mål med IPS</h2></apex:outputText>
+                <apex:outputText rendered="{!isIPS}"><p>{!currentTrail.ips_Participant__r.name} ble henvist til Individuell jobbstøtte (IPS) den {!currentTrail.ips_Referred_date__c}. Deltaker har vært med i perioden {!startDatoTrail} - {!sluttDatoTrail}. </p></apex:outputText>      
                 
+                <apex:outputText rendered="{!isIPS}"><h2>Deltakers mål med IPS</h2></apex:outputText>
                 <apex:outputText rendered="{!isIPS}"><h3>Prioriterte yrkesønsker:</h3></apex:outputText>
+                <apex:outputField rendered="{!isIPS}" value="{!currentTrail.ips_Priority_career_wishes__c}"></apex:outputField>
                 
                 <apex:outputText rendered="{!isUO}"><h2>Yrkeskartlegging og karriereplanlegging</h2></apex:outputText>
                 <apex:outputText rendered="{!isUO}"><h3>Ønsket yrke/bransje/karriere</h3></apex:outputText>
                 <apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_Desired_profession_industry_career__c }"></apex:outputField>
                 <div style ="padding-bottom: 5px;"></div>
-                <apex:outputField value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
+                
                 
                 <apex:outputText rendered="{!isUO}"><h2>Handlingsplan</h2></apex:outputText>
-                <apex:outputText rendered="{!isUO}"><h3>Hovedmål</h3></apex:outputText>
-                <apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_Main_goal__c }"></apex:outputField>
+                <apex:outputText ><h3>Hovedmål</h3></apex:outputText>
+                <apex:outputField value="{!currentTrail.ips_Main_goal__c }"></apex:outputField>
                 
-                <apex:outputText ><h3>Delmål</h3></apex:outputText>
-                <table style="width: 100%;border:1px solid #262626">
-                    <tr style="background-color: #F1F1F1;">
-                        <th style="width: 15%;">Emne</th>
-                        <th style="width: 15%;">Opprettet dato</th>
-                        <th style="width: 15%;">Frist</th>
-                        <th style="width: 15%;">Fullført dato</th>
-                        <th style="width: 40%;">Beskrivelse av målet</th>
+               
+               <div style="page-break-inside: avoid;">
+                     <apex:outputText ><h3>Delmål</h3></apex:outputText>
+                    <apex:outputpanel rendered="{!closedGoal.size != 0}">
+                    <div style ="padding-bottom: 10px;"></div>
+                    <table  style="width: 100%;border:1px solid #262626">
+                    <tr style=" vertical-align:top;background-color: #F1F1F1;">
+                        <th style="width: 20%;">Emne</th>
+                        <th style="width: 10%;">Opprettet dato</th>
+                        <th style="width: 10%;">Frist</th>
+                        <th style="width: 10%;">Fullført dato</th>
+                        <th style="width: 50%;">Beskrivelse av målet</th>
                     </tr>
                     <apex:repeat value="{!closedGoal}" var="goal" >
                         <tr style="vertical-align:top;border:1px solid #FF0000;">
-                            <td style="border:1px solid #ffd399;"><apex:outputField value="{!goal.Subject}"/></td>
-                            <td style="border:1px solid #ffd399;">
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!goal.Subject}"/></td>
+                            <td style="border:1px solid #F1F1F1;">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!goal.CreatedDate}"/>
                                 </apex:outputText>
                             </td>
-                            <td style="border:1px solid #ffd399;">
+                            <td style="border:1px solid #F1F1F1;">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!goal.ActivityDate}"/>
                                 </apex:outputText>
                             </td>
-                            <td style="border:1px solid #ffd399;">
+                            <td style="border:1px solid #F1F1F1;">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!goal.CompletedDateTime}"/>
                                 </apex:outputText>
                             </td>
                             <!--<td style="border:1px solid #FF0000;"><apex:outputField /></td>-->
-                            <td style="border:1px solid #ffd399;"><apex:outputField value="{!goal.Description}"/></td>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!goal.Description}"/></td>
                         </tr>
                     </apex:repeat>
                 </table>
+                </apex:outputpanel>
+                </div>
                 
-                <apex:outputText rendered="{!isUO}"><h3>Deltagermøter</h3></apex:outputText>
+                <apex:outputText ><h3>Deltakermøter</h3></apex:outputText>
+                <apex:outputText ><p>Det er gjennomført {!completedPartMeetingNumber} deltakermøte(r) med deltaker tilstede.</p></apex:outputText>
+                <apex:outputText ><p>Det er {!notAttendedPartMeetingNumber} deltakermøte(r) hvor deltaker ikke har møtt.</p></apex:outputText>
                 
-                <apex:outputText rendered="{!isUO}"><h3>Oppsummering av samarbeid mellom deltaker og jobbspesialist</h3></apex:outputText>
-                <apex:outputField value="{!currentRecord.IPS_endReportSumm2__c}"></apex:outputField>
-                
-                <apex:outputText rendered="{!isUO}"><h3>Samarbeid med arbeidsgivere</h3></apex:outputText>
-                <apex:outputText rendered="{!isUO}">Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:</apex:outputText>
-                
-               	<apex:outputText rendered="{!isUO}"><h3>Oppsummering av samarbeid med arbeidsgivere</h3></apex:outputText>
-                <apex:outputField value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField> 
-                
-                <apex:outputText rendered="{!isUO}"><h3>Deltagelse i jobb/arbeidstrening</h3></apex:outputText>
-                <table style="width: 100%;border:1px solid #262626">
-                        <tr style="background-color: ##FFFFFF;height:10px">
-                        <th></th>
-                        <td></td>
-                    </tr>
-                    <apex:repeat value="{!activeParticipantsJobs}" var="jobs" >
-                    <tr >
-                        <th style="width: 20%;background-color: #F1F1F1;">Stilling som</th>
-                        <td style="border:1px solid #ffd399;"><apex:outputField value="{!jobs.Name}"/></td>
+                <apex:outputText ><h3>Deltagelse i jobb/arbeidstrening</h3></apex:outputText>
+                <apex:repeat value="{!activeParticipantsJobs}" var="jobs" >
+                	<div style="page-break-inside: avoid;">
+                    <apex:outputText ><h4>Stilling som - {!jobs.Name} </h4></apex:outputText>
+                    <table style="width: 100%;border:1px solid #262626">
+                    <tr>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Arbeidsgiver</th>
+                        <td style="border:1px solid #F1F1F1;" ><apex:outputField value="{!jobs.ips_Employer__r.Name}"/></td>
                     </tr>
                     <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Arbeidsgiver</th>
-                        <td style="border:1px solid #ffd399;"><apex:outputField value="{!jobs.ips_Employer__r.Name}"/></td>
-                    </tr>
-                    <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Startdato</th>
-                        <td style="border:1px solid #ffd399;">
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Startdato</th>
+                        <td style="border:1px solid #F1F1F1;">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!jobs.ips_Start_Date__c}"/>
                                 </apex:outputText>
                             </td>
                     </tr>
                     <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Sluttdato</th>
-                        <td style="border:1px solid #ffd399;">
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Sluttdato</th>
+                        <td style="border:1px solid #F1F1F1;">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!jobs.ips_End_Date__c}"/>
                                 </apex:outputText>
                             </td>
                     </tr>
                     <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Jobbtype</th>
-                        <td style="border:1px solid #ffd399;"><apex:outputField value="{!jobs.ips_Form_of_Employment__c}"/></td>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Jobbtype</th>
+                        <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!jobs.ips_Form_of_Employment__c}"/></td>
                     </tr>
                      <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Stillingsinstruks</th>
-                        <td style="border:1px solid #ffd399;"><apex:outputField value="{!jobs.IPS_UO_Stillingsbeskrivelse__c}"/></td>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Stillingsbeskrivelse</th>
+                        <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!jobs.IPS_UO_Stillingsbeskrivelse__c}"/></td>
                     </tr>
                      <tr>
-                        <th style="width: 20%;background-color: #F1F1F1;">Jobbstøtte</th>
-                        <td style="border:1px solid #ffd399;"><apex:outputField value="{!jobs.ips_Job_Support__c}"/></td>
+                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Plan for jobbstøtte</th>
+                        <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!jobs.ips_Job_Support__c}"/></td>
                     </tr>
                 	<tr>
                         <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Hva fungerte?</th>
-                        <td style="border:1px solid #ffd399;"><apex:outputField value="{!jobs.ips_What_did_work_at_the_workplace__c}"/></td>
-                        
-                        
+                        <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!jobs.ips_What_did_work_at_the_workplace__c}"/></td>  
                     </tr>
-                        <th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Hva fungerte ikke?</th>
-                        <td style="border:1px solid #ffd399;"><apex:outputField value="{!jobs.ips_What_did_not_work_at_the_workplace__c}"/></td>
                     <tr>
+                    	<th style="vertical-align:top;width: 20%;background-color: #F1F1F1;">Hva fungerte ikke?</th>
+                        <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!jobs.ips_What_did_not_work_at_the_workplace__c}"/></td>
                     </tr>
-                        <tr style="background-color: ##FFFFFF;height:10px">
-                        <th></th>
-                        <td></td>
-                    </tr>
-                    </apex:repeat>
                 </table>
+                    <div style ="padding-bottom: 15px;"></div>
+                 </div>  
+                </apex:repeat>
+                
+                
+                 <apex:outputpanel rendered="{!activeParticipantsEducations.size != 0}">
+                    <div style="page-break-inside: avoid;">
+                        <apex:outputText ><h3>Deltagelse i utdanning</h3></apex:outputText>
+                        <apex:repeat value="{!activeParticipantsEducations}" var="edu" >
+                        <apex:outputText ><h4>Utdanning - {!edu.Name} </h4></apex:outputText>
+                        <table style="vertical-align:top;width: 100%;border:1px solid #262626">
+                        <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Institusjon</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_Name_of_the_Education_Institution__c}"/></td>
+                        </tr>
+                        <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Startdato</th>
+                            <td style="border:1px solid #F1F1F1;"> 
+                                <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                        <apex:param value="{!edu.ips_Start_Date__c}"/>
+                                    </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Sluttdato</th>
+                            <td style="border:1px solid #F1F1F1;">
+                                <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                        <apex:param value="{!edu.ips_End_Date__c}"/>
+                                    </apex:outputText>
+                            </td>
+                        </tr>
+                            <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Type</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_Form_of_Education__c}"/></td>
+                        </tr>
+                            <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Plan for støtte</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_Education_Support_Plan__c}"/></td>
+                        </tr>
+                            <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Hva fungerte?</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_What_did_work_with_this_education__c}"/></td>
+                        </tr>
+                            <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Hva fungerte ikke?</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!edu.ips_What_did_not_work_with_thiseducation__c}"/></td>
+                        </tr>
+                        </table>
+                    </apex:repeat>
+                    </div>
+                </apex:outputpanel>
+                
+                <apex:outputText rendered="{!isIPS}"><h3>Beskriv forhold som har påvirket jobbutviklingsprosessen vesentlig. Hva har vært positivt og hva har vært utfordrende.</h3></apex:outputText>
+                <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm6__c}"></apex:outputField>
+                
+                <apex:outputText rendered="{!isIPS}"><h3>Behov for tilrettelegging</h3></apex:outputText>
+                <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm7__c}"></apex:outputField>
+                
+                <apex:outputText ><h3>Samarbeid med arbeidsgivere</h3></apex:outputText>
+                <apex:outputText >Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:</apex:outputText>
+               <div style ="padding-bottom: 5px;"></div>
+                <div style="page-break-inside: avoid;">
+                   <apex:repeat value="{!accountNames}" var="acc">
+                       <apex:outputText >{!acc} ,</apex:outputText>
+                	</apex:repeat>
+                </div>
+                    
+                <apex:outputText ><p>Det er gjennomført {!completedEmplMeetingNumber} arbeidsgivermøte(r) med deltager tilstede.</p></apex:outputText>
+                <apex:outputText ><p>Det er {!notAttendedEmplMeetingNumber} arbeidsgivermøte(r) hvor deltager ikke har møtt.</p></apex:outputText>
+                
+                <apex:outputField value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
+
+
+                <apex:outputText rendered="{!isUO}"><h3>Oppsummering av samarbeid mellom deltaker og jobbspesialist</h3></apex:outputText>
+                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm2__c}"></apex:outputField>
+                
+   
+               	<apex:outputText rendered="{!isUO}"><h3>Oppsummering av samarbeid med arbeidsgivere</h3></apex:outputText>
+                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField> 
+                
                 
                 <apex:outputText rendered="{!isUO}"><h3>Oppsummering av jobbdeltakelse</h3></apex:outputText>
-                <apex:outputField value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
+                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
                 
                 <apex:outputText rendered="{!isUO}"><h3>Avsluttende Oppsummering</h3></apex:outputText>
+                <apex:outputText rendered="{!isIPS}"><h3>Avslutning</h3></apex:outputText>
                 <apex:outputField value="{!currentRecord.IPS_endReportSumm5__c}"></apex:outputField>
                 
             </apex:outputPanel>
