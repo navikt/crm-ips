@@ -9,6 +9,7 @@ public with sharing class IPS_viewReportPDFController {
     public String pdfTitle {get; set;}
     public Date intervallToDate {get; set;}
     public Date intervallFromDate {get; set;}
+    public boolean participantComment {get; set;}
 
     public Work_Trail__c currentTrail {get; set;}
     public String startDatoText {get; set;}
@@ -47,6 +48,7 @@ public with sharing class IPS_viewReportPDFController {
         this.isIntervallReport = false;
         this.isIPS = false;
         this.isUO = false;
+        this.participantComment = false;
         
         this.currentRecord = getReport(this.currentRecordId);
         this.currentTrail = getWorkTrail(this.currentRecordId);
@@ -79,7 +81,8 @@ public with sharing class IPS_viewReportPDFController {
                                                    IPS_endReportSumm4__c,
                                                    IPS_endReportSumm5__c,
                                                IPS_endReportSumm6__c,
-                                               IPS_endReportSumm7__c
+                                               IPS_endReportSumm7__c,
+                                               IPS_participantsComment__c
                                                FROM ips_report__c
                                                WHERE id = :currRecordId
                                               ];
@@ -93,6 +96,10 @@ public with sharing class IPS_viewReportPDFController {
         
         IF(reportingParticipant.IPS_report_Type__c == 'End report'){
             this.isEndReport = true;
+            if(reportingParticipant.IPS_participantsComment__c!=null||reportingParticipant.IPS_participantsComment__c!=''){
+                this.participantComment = true;
+            }
+            
         } 
         this.pdfTitle = reportingParticipant.IPS_subject__c;
         return reportingParticipant;
@@ -132,11 +139,11 @@ public with sharing class IPS_viewReportPDFController {
             this.isUO = true;
         }
 
-        IF(reportingTrail.End_Cause__c=='Work'){    
+        IF(reportingTrail.End_Cause__c=='Work'||reportingTrail.End_Cause__c=='Arbeid'){    
             this.underAarsak = reportingTrail.ips_Work__c;
         }
 
-        IF(reportingTrail.End_Cause__c=='Other end causes'){
+        IF(reportingTrail.End_Cause__c=='Other end causes'||reportingTrail.End_Cause__c=='Andre sluttårsaker'){
             this.underAarsak = reportingTrail.ips_Other_end_cases__c;
         }
 

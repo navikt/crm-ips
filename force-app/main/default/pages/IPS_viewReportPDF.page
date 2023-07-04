@@ -10,10 +10,10 @@
         </center>
         
         <!-------------------------------- Heading --------------------------------------------->
-        <h1 style="background-color: #F1F1F1; !important;">{!currentRecord.IPS_subject__c} - {!currentTrail.ips_Participant__r.name}</h1>
+        <h1 style="background-color: #F1F1F1; !important;">{!currentRecord.IPS_subject__c}</h1>
                
         <!-------------------------------- Innledning ------------------------------------------>
-        <h2>Innledning</h2>
+        <apex:outputText rendered="{!isIntervallReport}"><h2>Innledning</h2></apex:outputText>
         <apex:panelGrid columns="2" id="innledning" width="60%">
             <apex:outputLabel >Deltaker :</apex:outputLabel>
             <apex:outputField label="Deltaker" value="{!currentTrail.ips_Participant__r.name}"></apex:outputField>
@@ -369,9 +369,10 @@
                 <apex:outputText rendered="{!isUO}"><h3>Ønsket yrke/bransje/karriere</h3></apex:outputText>
                 <apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_Desired_profession_industry_career__c }"></apex:outputField>
                 <div style ="padding-bottom: 5px;"></div>
+                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
                 
                 
-                <apex:outputText rendered="{!isUO}"><h2>Handlingsplan</h2></apex:outputText>
+                <apex:outputText rendered="{!isUO}"><h2>Oppsummering av tiltaksgjennomføringen</h2></apex:outputText>
                 <apex:outputText ><h3>Hovedmål</h3></apex:outputText>
                 <apex:outputField value="{!currentTrail.ips_Main_goal__c }"></apex:outputField>
                 
@@ -417,6 +418,28 @@
                 <apex:outputText ><h3>Deltakermøter</h3></apex:outputText>
                 <apex:outputText ><p>Det er gjennomført {!completedPartMeetingNumber} deltakermøte(r) med deltaker tilstede.</p></apex:outputText>
                 <apex:outputText ><p>Det er {!notAttendedPartMeetingNumber} deltakermøte(r) hvor deltaker ikke har møtt.</p></apex:outputText>
+                <div style ="padding-bottom: 5px;"></div>
+                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm2__c}"></apex:outputField>
+                
+                
+				<apex:outputText ><h3>Samarbeid med arbeidsgivere</h3></apex:outputText>
+                <apex:outputText >Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:</apex:outputText>
+               <div style ="padding-bottom: 5px;"></div>
+                <div style="page-break-inside: avoid;">
+                   <apex:repeat value="{!accountNames}" var="acc">
+                       <apex:outputText >
+                           <ul>
+                           	<li>{!acc}</li>
+                           </ul>
+                       </apex:outputText>
+                	</apex:repeat>
+                </div>
+                                    
+                <apex:outputText ><p>Det er gjennomført {!completedEmplMeetingNumber} arbeidsgivermøte(r) med deltager tilstede.</p></apex:outputText>
+                <apex:outputText ><p>Det er {!notAttendedEmplMeetingNumber} arbeidsgivermøte(r) hvor deltager ikke har møtt.</p></apex:outputText>
+                <div style ="padding-bottom: 5px;"></div>
+                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField>
+                
                 
                 <apex:outputText ><h3>Deltagelse i jobb/arbeidstrening</h3></apex:outputText>
                 <apex:repeat value="{!activeParticipantsJobs}" var="jobs" >
@@ -467,8 +490,7 @@
                     <div style ="padding-bottom: 15px;"></div>
                  </div>  
                 </apex:repeat>
-                
-                
+
                  <apex:outputpanel rendered="{!activeParticipantsEducations.size != 0}">
                     <div style="page-break-inside: avoid;">
                         <apex:outputText ><h3>Deltagelse i utdanning</h3></apex:outputText>
@@ -515,43 +537,34 @@
                     </apex:repeat>
                     </div>
                 </apex:outputpanel>
+                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
                 
                 <apex:outputText rendered="{!isIPS}"><h3>Beskriv forhold som har påvirket jobbutviklingsprosessen vesentlig. Hva har vært positivt og hva har vært utfordrende.</h3></apex:outputText>
                 <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm6__c}"></apex:outputField>
                 
                 <apex:outputText rendered="{!isIPS}"><h3>Behov for tilrettelegging</h3></apex:outputText>
                 <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm7__c}"></apex:outputField>
-                
-                <apex:outputText ><h3>Samarbeid med arbeidsgivere</h3></apex:outputText>
-                <apex:outputText >Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske mulighetene for arbeid:</apex:outputText>
-               <div style ="padding-bottom: 5px;"></div>
-                <div style="page-break-inside: avoid;">
-                   <apex:repeat value="{!accountNames}" var="acc">
-                       <apex:outputText >{!acc} ,</apex:outputText>
-                	</apex:repeat>
-                </div>
-                    
-                <apex:outputText ><p>Det er gjennomført {!completedEmplMeetingNumber} arbeidsgivermøte(r) med deltager tilstede.</p></apex:outputText>
-                <apex:outputText ><p>Det er {!notAttendedEmplMeetingNumber} arbeidsgivermøte(r) hvor deltager ikke har møtt.</p></apex:outputText>
-                
-                <apex:outputField value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
 
 
-                <apex:outputText rendered="{!isUO}"><h3>Oppsummering av samarbeid mellom deltaker og jobbspesialist</h3></apex:outputText>
-                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm2__c}"></apex:outputField>
+                <apex:outputText rendered="{!isIPS}"><h3>Oppsummering av samarbeid mellom deltaker og jobbspesialist</h3></apex:outputText>
+                <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm2__c}"></apex:outputField>
                 
    
-               	<apex:outputText rendered="{!isUO}"><h3>Oppsummering av samarbeid med arbeidsgivere</h3></apex:outputText>
-                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField> 
+               	<apex:outputText rendered="{!isIPS}"><h3>Oppsummering av samarbeid med arbeidsgivere</h3></apex:outputText>
+                <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField> 
                 
                 
-                <apex:outputText rendered="{!isUO}"><h3>Oppsummering av jobbdeltakelse</h3></apex:outputText>
-                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
+                <apex:outputText rendered="{!isIPS}"><h3>Oppsummering av jobbdeltakelse</h3></apex:outputText>
+                <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
                 
                 <apex:outputText rendered="{!isUO}"><h3>Avsluttende Oppsummering</h3></apex:outputText>
                 <apex:outputText rendered="{!isIPS}"><h3>Avslutning</h3></apex:outputText>
                 <apex:outputField value="{!currentRecord.IPS_endReportSumm5__c}"></apex:outputField>
-                
+                    
             </apex:outputPanel>
+        	<apex:outputpanel rendered="{!currentRecord.IPS_participantsComment__c!=''}">
+                <apex:outputText ><h3>Deltakers kommentar</h3></apex:outputText>
+                <apex:outputField value="{!currentRecord.IPS_participantsComment__c}"></apex:outputField>
+        </apex:outputpanel>
     </div>
 </apex:page>
