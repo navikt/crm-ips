@@ -19,6 +19,46 @@
                 <label tabindex="0">Beskrivelse av ditt mål</label>
                 <p tabindex="0">{mainGoal}</p>
 
+                <template if:true={isMessage}>
+                    <div class="container container-col-light container-col-edu skjema-max-width">
+                    <form class="form-control">
+                        <h2>
+                            <img class="illustrasjon"
+                            src={myGoalImg}
+                            alt="Viser ikon for liste"
+                            />Meldinger
+                        </h2>
+                        <p tabindex="0">Du har ny(e) rapporter for innsyn og kommentar.</p>
+                        <template for:each={reportRecord} for:item="report" >
+                            <c-readmore key={report.Id} label={report.IPS_subject__c} >                                
+                                <label tabindex="0">Frist til å kommentere på rapport</label>
+                                <p tabindex="0">
+                                    <lightning-formatted-date-time 
+                                            value={report.IPS_dueDateBack__c}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit"
+                                            weekday="short">
+                                    </lightning-formatted-date-time>
+                                </p>
+                                <p tabindex="0">
+                                    <lightning-button 
+                                    variant="Brand Outline"
+                                    id={report.Id} 
+                                    label="Se rapport" 
+                                    title="Se på rapport og kommenter" 
+                                    onclick={handleClick}
+                                    value={report.Id}
+                                    class="slds-m-left_x-small">
+                                </lightning-button>
+                                </p>
+                               
+                            </c-readmore>
+                        </template>
+                    </form>
+                    </div>
+                </template>
+
                 <template if:true={isGoal}>
                     <div class="container container-col-light container-col-meeting skjema-max-width">
                     <form class="form-control">

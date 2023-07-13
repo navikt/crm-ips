@@ -1,0 +1,111 @@
+<template>
+    <div class="container container-">
+        <div>
+            <img class="illustrasjon"
+                src={navLogo}
+                alt="NAV logo"
+                />
+        </div>
+        <template if:true={isIPS}>
+            <h1>Avslutningsnotat - IPS</h1> <!-- her skal IPS_subject komme-->
+        </template>
+        <template if:true={isUO}>
+            <h1>Avslutningsrapport - UO</h1> <!-- her skal IPS_subject komme-->
+        </template>
+        <!-- Innledning -->
+        <div>
+            <table>
+                <tr>
+                    <th>Deltaker</th>
+                    <td>Kake</td>
+                </tr>
+                <tr>
+                    <th>Jobbspesialist</th>
+                    <td>Maria Anders</td>
+                </tr>
+            </table>
+            <template if:true={isIPS}>
+                <table>
+                    <tr>
+                        <th>Behandlingsteam</th>
+                        <td>Maria Anders</td>
+                    </tr>
+                </table>
+                
+            </template>
+            <tr>
+                <th>NAV veileder</th>
+                <td>Maria Anders</td>
+            </tr>
+            <tr>
+                <th>Startdato</th>
+                <td>dato</td>
+            </tr>
+            <tr>
+                <th>Sluttdato</th>
+                <td>Maria Anders</td>
+            </tr>
+            <tr>
+                <th>Sluttårsak</th>
+                <td>Maria Anders</td>
+            </tr>
+            <tr>
+                <th>Underårsak</th>
+                <td>Maria Anders</td>
+            </tr>
+    
+            </table>
+        </div>
+
+        <template if:true={isIPS}>
+            <p>Kake ble henvist til individuell jobbstøtte(IPS) den .... . Deltaker har vært med i perioden ... - ...</p>
+            <h2>Deltakers mål med IPS</h2>
+            <h3>Prioriterte yrkesønsker</h3>
+            <p></p>
+            
+        </template>
+        <div>
+            <h3>Hovedmål</h3>
+            <p></p>
+        </div>
+    </div>
+    
+
+
+
+
+
+    <lightning-record-edit-form
+        id="commentFromParticipant"
+        record-id="a0d1w00000JJgI7AAL"
+        object-api-name="ips_report__c"
+        onsuccess= {handleSuccess}
+        >
+        <div>
+            <p>Kommentar</p>
+            <p>
+                <lightning-input-field 
+                    label="Kommentar fra deltaker" 
+                    field-name="IPS_participantsComment__c" 
+                    variant="label-hidden"
+                    >
+                </lightning-input-field>
+                <lightning-output-field 
+                label="Sluttrapport" 
+                field-name="IPS_endReport__c" 
+                variant="label-hidden"
+                >
+            </lightning-output-field>
+
+            </p>
+            <div class="slds-m-top_medium">
+                <lightning-button
+                    variant="brand-outline"
+                    type="submit"
+                    name="save"
+                    label="Lagre kommentar"
+                ></lightning-button>
+            </div>
+        </div>
+    </lightning-record-edit-form>
+</template>
