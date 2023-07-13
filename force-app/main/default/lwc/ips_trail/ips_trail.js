@@ -69,6 +69,9 @@ import getEducations from '@salesforce/apex/IPS_myWorkTrailController.getUserEdu
 import getUserJob from '@salesforce/apex/IPS_jobController.getActiveUserJobs';
 import getTraining from '@salesforce/apex/IPS_jobController.getActiveUserWorkTrainings';
 
+/* Reports */
+import getReports from '@salesforce/apex/IPS_ParticipantsReportsController.getAllReports';
+
 /* Worktrail fields */
 const WORKTRAIL_FIELDS = [
     FIELD_NAME,
@@ -126,17 +129,19 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     myActivityImg = IPS_HOME_LOGOS + '/CalenderFilled.svg';
     myGoalImg = IPS_HOME_LOGOS + '/TaskFilled.svg';
     myPlanImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
-    currentUser = Id;
-    //currentUser ='0053O000007R0NUQA0' ;
+    //currentUser = Id;
+    currentUser ='0051w000009WVWGAA4' ;
     recordId;
     @track recordtypename;
     ownerIds;
+    @track recordIdVal;
     @track record;
     @track workTrailOwner;
     @track workTrailWire;
     @track activityPartRecord;
     @track activityEmplRecord;
     @track participantGoalRecord;
+    @track reportRecord;
     educationRecord;
     jobsRecord;
     trainingRecord;
@@ -149,8 +154,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     isMeeting = false;
     goal;
     isTwelveHours = false;
-
-
+    isMessage = false;
 
     get isMobile() {
         return window.screen.width < 576;
@@ -273,6 +277,19 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
             if(data.length>0){
                 this.educationRecord = data;
                 this.isEducation = true;
+            }
+        }else if(error){
+            console.log('An error has ocurred');
+            console.log(error);
+        }
+    }
+
+    @wire(getReports,{workTrailId:'$recordId'})
+    userReports({error,data}){
+        if(data){
+            if(data.length>0){
+                this.reportRecord = data;
+                this.isMessage = true;
             }
         }else if(error){
             console.log('An error has ocurred');
@@ -477,16 +494,16 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
 
     }
 
-    handleButtonClick(event) {
-        console.log('eventId: '+ event.detail.row.Id);
-        /*const row = event.detail.row;
-        this[NavigationMixin.Navigate]({
-            type: 'standard__recordPage',
-            attributes: {
-              recordId: row.Id,
-              actionName: 'view'
-            }
-          });*/
+    handleClick(event) {
+        const rowId = event.target.value;
+        console.log('Hv med denne da: '+rowId);
+    this[NavigationMixin.Navigate]({
+        type: 'standard__recordPage',
+        attributes: {
+            recordId: rowId,
+            actionName: 'view'
+        }
+       });
       }
 
 
