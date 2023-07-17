@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Go_to_report_page</name>
         <label>Go to report page</label>
-        <locationX>1084</locationX>
-        <locationY>6830</locationY>
+        <locationX>446</locationX>
+        <locationY>1730</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -16,138 +16,11 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>54.0</apiVersion>
-    <assignments>
-        <name>addEducation</name>
-        <label>addEducation</label>
-        <locationX>1064</locationX>
-        <locationY>6446</locationY>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Tittel: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEducation.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Type utdanning: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varEducationType</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Dato: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEducation.ips_Start_Date__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue> - </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEducation.ips_End_Date__c</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iterateEducation</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addEducationEmptytext</name>
-        <label>addEducationEmptytext</label>
-        <locationX>1192</locationX>
-        <locationY>6338</locationY>
-        <assignmentItems>
-            <assignToReference>varEducationList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Ingen utdanning registrert.</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>updateReportRecord</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addPeriodTekst</name>
-        <label>addPeriodTekst</label>
-        <locationX>798</locationX>
-        <locationY>3554</locationY>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Deltaker har ingen fullførte delmål i perioden.</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>istaskListEmptyForward</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addPeriodTekst_0</name>
-        <label>addPeriodTekst</label>
-        <locationX>798</locationX>
-        <locationY>4946</locationY>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Det har ikke vært noen telefonsamtaler med arbeidsgiver i perioden</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>isTaskListConvoForwardEmpty</targetReference>
-        </connector>
-    </assignments>
+    <apiVersion>58.0</apiVersion>
     <assignments>
         <name>addReportId</name>
         <label>addReportId</label>
-        <locationX>1434</locationX>
+        <locationX>776</locationX>
         <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>varReportId</assignToReference>
@@ -168,894 +41,9 @@
         </connector>
     </assignments>
     <assignments>
-        <name>addTaskForwardRange</name>
-        <label>addTaskForwardRange</label>
-        <locationX>1282</locationX>
-        <locationY>3170</locationY>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Emne: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateTasksIPSIntervall.Subject</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Frist:</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateTasksIPSIntervall.ActivityDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iterateTasksIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addTaskForwardRange_0</name>
-        <label>addTaskForwardRange</label>
-        <locationX>1282</locationX>
-        <locationY>4562</locationY>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Samtaletema: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iteratePhoneTasksIPSIntervall.Subject</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Forfallsdato: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iteratePhoneTasksIPSIntervall.ActivityDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Beskrivelse av samtale: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iteratePhoneTasksIPSIntervall.Description</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iteratePhoneTasksIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addTaskWithinRange</name>
-        <label>addTaskWithinRange</label>
-        <locationX>1018</locationX>
-        <locationY>3170</locationY>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Emne: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateTasksIPSIntervall.Subject</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Frist: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varActivityDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Fullført dato: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varCompletedDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iterateTasksIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addTaskWithinRange_0</name>
-        <label>addTaskWithinRange</label>
-        <locationX>1018</locationX>
-        <locationY>4562</locationY>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Samtaletema: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iteratePhoneTasksIPSIntervall.Subject</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Opprettet dato: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varCreatedDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Fullført dato: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varCompletedDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Beskrivelse samtalen: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iteratePhoneTasksIPSIntervall.Description</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>taskListConversations</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iteratePhoneTasksIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addText_0</name>
-        <label>addText</label>
-        <locationX>952</locationX>
-        <locationY>2246</locationY>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Ingen møter i perioden</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>isMeetingEmptyForward</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addText_0_0</name>
-        <label>addText</label>
-        <locationX>952</locationX>
-        <locationY>2546</locationY>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Ingen planlagte arbeidsgivermøter</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>getTasksIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addTextJobEmpty</name>
-        <label>addTextJobEmpty</label>
-        <locationX>1192</locationX>
-        <locationY>5738</locationY>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Ingen jobber registrert.</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>getEducationInfoIPS</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addTextTaskConvosForward</name>
-        <label>addTextTaskConvosForward</label>
-        <locationX>798</locationX>
-        <locationY>5246</locationY>
-        <assignmentItems>
-            <assignToReference>taskListConversationsForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Det er ikke planlagt noen telefonsamtaler med arbeidsgiver i perioden</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>getJobs</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addTextTaskListForward</name>
-        <label>addTextTaskListForward</label>
-        <locationX>798</locationX>
-        <locationY>3854</locationY>
-        <assignmentItems>
-            <assignToReference>taskListForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Deltaker har ingen åpne delmål fremover.</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>getPhoneTasksIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>setEmployerName</name>
-        <label>setEmployerName</label>
-        <locationX>1172</locationX>
-        <locationY>1862</locationY>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Arbeidsgiver: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.RelatedToAccount__r.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Møtedeltagere: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.Konto_kontakt__r.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>, </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varParticipantName</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Emne: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.Subject</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Dato: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.ActivityDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Status: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varEventStatus</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Kategori: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varEmploymentCategory</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployerMeeting</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iterateEmplMeetingsIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>setEmployerNameNextPeriod</name>
-        <label>setEmployerNameNextPeriod</label>
-        <locationX>1436</locationX>
-        <locationY>1862</locationY>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Arbeidsgiver: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.RelatedToAccount__r.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Møtedeltagere: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.Konto_kontakt__r.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>, </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varParticipantName</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Emne: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.Subject</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Dato: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateEmplMeetingsIPSIntervall.ActivityDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Kategori:</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varEmploymentCategory</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varEmployeeMeetingForward</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iterateEmplMeetingsIPSIntervall</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>setJobtext</name>
-        <label>setJobtext</label>
-        <locationX>1064</locationX>
-        <locationY>5846</locationY>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Stilling som: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateJobs.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Arbeidsgiver: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateJobs.ips_Employer__r.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Jobbtype: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varJobType</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Dato: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateJobs.ips_Start_Date__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue> - </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateJobs.ips_End_Date__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Status: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varJobStatus</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Antall timer i uka: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>iterateJobs.ips_Number_of_hours__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Avsluttende kommentar: </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varClosingArgument</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varJobList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;br&gt;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>iterateJobs</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>setScreenVariablesNew</name>
         <label>setScreenVariablesNew</label>
-        <locationX>1084</locationX>
+        <locationX>314</locationX>
         <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>varToDate</assignToReference>
@@ -1071,22 +59,8 @@
                 <elementReference>fromDateNew</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varsummarizePeriode</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>summarizePeriodeNew</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSummarizeNextPeriode</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>SummarizeNextPeriodeNew</elementReference>
-            </value>
-        </assignmentItems>
         <connector>
-            <targetReference>getEmplMeetingsIntervall</targetReference>
+            <targetReference>updateReportRecord</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -1108,23 +82,8 @@
                 <elementReference>fromDateOld</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varsummarizePeriode</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>summarizePeriodeOld</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSummarizeNextPeriode</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>SummarizeNextPeriodeOld</elementReference>
-            </value>
-        </assignmentItems>
         <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>getEmplMeetingsIntervall</targetReference>
+            <targetReference>updateReportRecord</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -1177,7 +136,7 @@
     <decisions>
         <name>checkDecision</name>
         <label>checkDecision</label>
-        <locationX>885</locationX>
+        <locationX>446</locationX>
         <locationY>890</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -1248,242 +207,9 @@
         </rules>
     </decisions>
     <decisions>
-        <name>checkEducationList</name>
-        <label>checkEducationList</label>
-        <locationX>1084</locationX>
-        <locationY>6230</locationY>
-        <defaultConnector>
-            <targetReference>addEducationEmptytext</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isEducationListEmpty</defaultConnectorLabel>
-        <rules>
-            <name>isEducationListNotEmpty</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getEducationInfoIPS</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>iterateEducation</targetReference>
-            </connector>
-            <label>isEducationListNotEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkEmployeeMeeting</name>
-        <label>checkEmployeeMeeting</label>
-        <locationX>1436</locationX>
-        <locationY>1754</locationY>
-        <defaultConnector>
-            <targetReference>iterateEmplMeetingsIPSIntervall</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isWithinRangeEmployeeMeeting</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5)</conditionLogic>
-            <conditions>
-                <leftValueReference>iterateEmplMeetingsIPSIntervall.ActivityDate</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>varFromDate</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iterateEmplMeetingsIPSIntervall.ActivityDate</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>varToDate</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iterateEmplMeetingsIPSIntervall.ips_Completed__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iterateEmplMeetingsIPSIntervall.IPS_Status1__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iterateEmplMeetingsIPSIntervall.IPS_Status1__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Participant Absent</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>setEmployerName</targetReference>
-            </connector>
-            <label>isWithinRangeEmployeeMeeting</label>
-        </rules>
-        <rules>
-            <name>isForward</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>iterateEmplMeetingsIPSIntervall.ActivityDate</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <elementReference>varToDate</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>setEmployerNameNextPeriod</targetReference>
-            </connector>
-            <label>isForward</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkIntervall</name>
-        <label>checkIntervall</label>
-        <locationX>1282</locationX>
-        <locationY>3062</locationY>
-        <defaultConnector>
-            <targetReference>iterateTasksIPSIntervall</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isWithinRange</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varDueDate</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>varFromDate</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iterateTasksIPSIntervall.IsClosed</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addTaskWithinRange</targetReference>
-            </connector>
-            <label>isWithinRange</label>
-        </rules>
-        <rules>
-            <name>isForwardRange</name>
-            <conditionLogic>1 OR (2 AND 3)</conditionLogic>
-            <conditions>
-                <leftValueReference>varDueDate</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <elementReference>varToDate</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varDueDate</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iterateTasksIPSIntervall.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Open</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addTaskForwardRange</targetReference>
-            </connector>
-            <label>isForwardRange</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkJobList</name>
-        <label>checkJobList</label>
-        <locationX>1084</locationX>
-        <locationY>5630</locationY>
-        <defaultConnector>
-            <targetReference>addTextJobEmpty</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isJobListEmpty</defaultConnectorLabel>
-        <rules>
-            <name>isJobListNotEmpty</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getJobs</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>iterateJobs</targetReference>
-            </connector>
-            <label>isJobListNotEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkPhoneIntervall</name>
-        <label>checkPhoneIntervall</label>
-        <locationX>1282</locationX>
-        <locationY>4454</locationY>
-        <defaultConnector>
-            <targetReference>iteratePhoneTasksIPSIntervall</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isWithinRange_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>iteratePhoneTasksIPSIntervall.ActivityDate</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>varFromDate</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iteratePhoneTasksIPSIntervall.CompletedDateTime</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>varToDate</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>iteratePhoneTasksIPSIntervall.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addTaskWithinRange_0</targetReference>
-            </connector>
-            <label>isWithinRange</label>
-        </rules>
-        <rules>
-            <name>isForwardRange_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>iteratePhoneTasksIPSIntervall.ActivityDate</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <elementReference>varToDate</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addTaskForwardRange_0</targetReference>
-            </connector>
-            <label>isForwardRange</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>checkReportType</name>
         <label>checkReportType</label>
-        <locationX>1434</locationX>
+        <locationX>776</locationX>
         <locationY>674</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -1506,310 +232,11 @@
             <label>isNotReportingNull</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>checkTask_0_0</name>
-        <label>checkTask</label>
-        <locationX>1084</locationX>
-        <locationY>2846</locationY>
-        <defaultConnector>
-            <targetReference>getPhoneTasksIPSIntervall</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>IsNull</defaultConnectorLabel>
-        <rules>
-            <name>IsNotTaskNull</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getTasksIPSIntervall</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>iterateTasksIPSIntervall</targetReference>
-            </connector>
-            <label>IsNotTaskNull</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkTaskPhone</name>
-        <label>checkTaskPhone</label>
-        <locationX>1084</locationX>
-        <locationY>4238</locationY>
-        <defaultConnector>
-            <targetReference>getJobs</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>IsNull</defaultConnectorLabel>
-        <rules>
-            <name>IsNotTaskNull_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getPhoneTasksIPSIntervall</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>iteratePhoneTasksIPSIntervall</targetReference>
-            </connector>
-            <label>IsNotTaskNull</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>isEmployerListEmpty</name>
-        <label>isEmployerListEmpty</label>
-        <locationX>1084</locationX>
-        <locationY>2138</locationY>
-        <defaultConnector>
-            <targetReference>isMeetingEmptyForward</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>isEmptymeeting</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varEmployerMeeting</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addText_0</targetReference>
-            </connector>
-            <label>isEmptymeeting</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>isMeetingEmptyForward</name>
-        <label>isMeetingEmptyForward</label>
-        <locationX>1084</locationX>
-        <locationY>2438</locationY>
-        <defaultConnector>
-            <targetReference>getTasksIPSIntervall</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>isEmpty</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varEmployeeMeetingForward</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addText_0_0</targetReference>
-            </connector>
-            <label>isEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>istaskListConversationsEmpty</name>
-        <label>istaskListConversationsEmpty</label>
-        <locationX>930</locationX>
-        <locationY>4838</locationY>
-        <defaultConnector>
-            <targetReference>isTaskListConvoForwardEmpty</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isTaskListConversationsEmpty_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>taskListConversations</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addPeriodTekst_0</targetReference>
-            </connector>
-            <label>isTaskListConversationsEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>isTaskListConvoForwardEmpty</name>
-        <label>isTaskListConvoForwardEmpty</label>
-        <locationX>930</locationX>
-        <locationY>5138</locationY>
-        <defaultConnector>
-            <targetReference>getJobs</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>IsEmptyTaskListConvo</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>taskListConversationsForward</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addTextTaskConvosForward</targetReference>
-            </connector>
-            <label>IsEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>istaskListEmpty</name>
-        <label>istaskListEmpty</label>
-        <locationX>930</locationX>
-        <locationY>3446</locationY>
-        <defaultConnector>
-            <targetReference>istaskListEmptyForward</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isPeriodTaskEmpty</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>taskList</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addPeriodTekst</targetReference>
-            </connector>
-            <label>isPeriodTaskEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>istaskListEmptyForward</name>
-        <label>istaskListEmptyForward</label>
-        <locationX>930</locationX>
-        <locationY>3746</locationY>
-        <defaultConnector>
-            <targetReference>getPhoneTasksIPSIntervall</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isNextPeriodEmpty</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>taskListForward</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addTextTaskListForward</targetReference>
-            </connector>
-            <label>isNextPeriodEmpty</label>
-        </rules>
-    </decisions>
     <environments>Default</environments>
-    <formulas>
-        <name>taskRowIntervall</name>
-        <dataType>String</dataType>
-        <expression>{!iterateTasksIPSIntervall.Subject}
-&amp;&apos;, &apos;&amp;
-TEXT(DAY(DATEVALUE({!iterateTasksIPSIntervall.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(MONTH(DATEVALUE({!iterateTasksIPSIntervall.CompletedDateTime})))&amp;&quot;.&quot;&amp;TEXT(YEAR(DATEVALUE({!iterateTasksIPSIntervall.CompletedDateTime})))</expression>
-    </formulas>
-    <formulas>
-        <name>varActivityDate</name>
-        <dataType>Date</dataType>
-        <expression>{!iterateTasksIPSIntervall.ActivityDate}</expression>
-    </formulas>
-    <formulas>
-        <name>varClosingArgument</name>
-        <dataType>String</dataType>
-        <expression>if(TEXT({!iterateJobs.ips_Status__c})==&apos;Completed&apos;,
-&apos;Hva fungerte ikke: &apos; &amp;BR()&amp;{!iterateJobs.ips_What_did_not_work_at_the_workplace__c} &amp; BR() &amp; BR() &amp;
-&apos;Hva fungerte: &apos;&amp; BR() &amp; {!iterateJobs.ips_What_did_work_at_the_workplace__c},
-&apos;Jobb er ikke avsluttet&apos;
-)</expression>
-    </formulas>
-    <formulas>
-        <name>varCompletedDate</name>
-        <dataType>Date</dataType>
-        <expression>DATEVALUE({!iterateTasksIPSIntervall.CompletedDateTime})</expression>
-    </formulas>
-    <formulas>
-        <name>varCreatedDate</name>
-        <dataType>Date</dataType>
-        <expression>DATEVALUE({!iterateTasksIPSIntervall.CreatedDate})</expression>
-    </formulas>
     <formulas>
         <name>varDescription</name>
         <dataType>String</dataType>
         <expression>&apos;Det er 3 måneder siden siste underveisrapport for: &apos; &amp; {!getWorktrailIPS.Name}</expression>
-    </formulas>
-    <formulas>
-        <name>varDueDate</name>
-        <dataType>Date</dataType>
-        <expression>DATEVALUE({!iterateTasksIPSIntervall.ips_Due_Date_Time__c})</expression>
-    </formulas>
-    <formulas>
-        <name>varEducationType</name>
-        <dataType>String</dataType>
-        <expression>CASE({!iterateEducation.ips_Form_of_Education__c},
-&apos;Certificate of Apprenticeship&apos;,&apos;Lærling&apos;,
-&apos;Full-time Study&apos;,&apos;Heltidsstudie&apos;,
-&apos;Part-time Study&apos;,&apos;Deltidsstudie&apos;,
-&apos;Evening Course&apos;,&apos;Kveldskurs&apos;,
-&apos;Day Cource&apos;,&apos;Kurs på dagtid&apos;,
-&apos;&apos;
-)</expression>
-    </formulas>
-    <formulas>
-        <name>varEmployeeMeetingRange</name>
-        <dataType>String</dataType>
-        <expression>{!iterateEmplMeetingsIPSIntervall.Subject}
-&amp;&apos;, &apos;&amp;
-TEXT(DAY({!iterateEmplMeetingsIPSIntervall.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(MONTH({!iterateEmplMeetingsIPSIntervall.ActivityDate}))&amp;&quot;.&quot;&amp;TEXT(YEAR({!iterateEmplMeetingsIPSIntervall.ActivityDate}))
-&amp;&apos;, &apos;&amp;
-{!iterateEmplMeetingsIPSIntervall.RelatedToAccount__r.Name}
-&amp;&apos;, &apos;&amp;
-TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression>
-    </formulas>
-    <formulas>
-        <name>varEmploymentCategory</name>
-        <dataType>String</dataType>
-        <expression>CASE(TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c}),
-&apos;Job development&apos;,&apos;Jobbutvikling&apos;,
-&apos;Job support&apos;,&apos;Jobbstøtte&apos;,
-&apos; &apos;)</expression>
-    </formulas>
-    <formulas>
-        <name>varEventStatus</name>
-        <dataType>String</dataType>
-        <expression>CASE({!iterateEmplMeetingsIPSIntervall.IPS_Status1__c},
-&apos;Open&apos;,&apos;Åpen&apos;,
-&apos;Completed&apos;,&apos;Fullført&apos;,
-&apos;Participant Absent&apos;,&apos;Deltaker møtte ikke&apos;,
-&apos;Cancelled&apos;,&apos;Avlyst&apos;,
-&apos;&apos;
-)</expression>
-    </formulas>
-    <formulas>
-        <name>varJobStatus</name>
-        <dataType>String</dataType>
-        <expression>CASE(TEXT({!iterateJobs.ips_Status__c}),
-&apos;Ongoing&apos;,&apos;Pågående&apos;,
-&apos;Planned&apos;,&apos;Planlagt&apos;,
-&apos;Completed&apos;,&apos;Avsluttet&apos;,
-&apos; &apos;)</expression>
-    </formulas>
-    <formulas>
-        <name>varJobType</name>
-        <dataType>String</dataType>
-        <expression>CASE(TEXT({!iterateJobs.ips_Form_of_Employment__c}),
-&apos;Freelance / self-employed&apos;,&apos;Freelance/selvstendig næringsdrivende&apos;,
-&apos;Job taster&apos;,&apos;Jobbsmak&apos;,
-&apos;Permanent employment&apos;,&apos;Fast ansettelse&apos;,
-&apos;Temporary employment&apos;,&apos;Tidsbegrenset ansettelse&apos;,
-&apos;work training&apos;,&apos;Arbeidstrening&apos;,
-&apos;Zero hours contrac&apos;,&apos;Tilkalling ekstrajobb&apos;,
-&apos; &apos;)</expression>
     </formulas>
     <formulas>
         <name>varParticipantName</name>
@@ -1841,77 +268,6 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     </formulas>
     <interviewLabel>IPS - subflow intervall report IPS {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - subflow intervall report IPS</label>
-    <loops>
-        <name>iterateEducation</name>
-        <label>iterateEducation</label>
-        <locationX>976</locationX>
-        <locationY>6338</locationY>
-        <collectionReference>getEducationInfoIPS</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>addEducation</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>updateReportRecord</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <description>Loop over all meetings with employers</description>
-        <name>iterateEmplMeetingsIPSIntervall</name>
-        <label>iterateEmplMeetingsIPSIntervall</label>
-        <locationX>1084</locationX>
-        <locationY>1646</locationY>
-        <collectionReference>getEmplMeetingsIntervall</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>checkEmployeeMeeting</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>isEmployerListEmpty</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>iterateJobs</name>
-        <label>iterateJobs</label>
-        <locationX>976</locationX>
-        <locationY>5738</locationY>
-        <collectionReference>getJobs</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>setJobtext</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>getEducationInfoIPS</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>iteratePhoneTasksIPSIntervall</name>
-        <label>iteratePhoneTasksIPSIntervall</label>
-        <locationX>930</locationX>
-        <locationY>4346</locationY>
-        <collectionReference>getPhoneTasksIPSIntervall</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>checkPhoneIntervall</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>istaskListConversationsEmpty</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>iterateTasksIPSIntervall</name>
-        <label>iterateTasksIPSIntervall</label>
-        <locationX>930</locationX>
-        <locationY>2954</locationY>
-        <collectionReference>getTasksIPSIntervall</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>checkIntervall</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>istaskListEmpty</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -1934,7 +290,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordCreates>
         <name>createReportingRecord</name>
         <label>createReportingRecord</label>
-        <locationX>1084</locationX>
+        <locationX>314</locationX>
         <locationY>1106</locationY>
         <assignRecordIdToReference>varReportId</assignRecordIdToReference>
         <connector>
@@ -1961,87 +317,10 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <object>ips_report__c</object>
     </recordCreates>
     <recordLookups>
-        <name>getEducationInfoIPS</name>
-        <label>getEducationInfoIPS</label>
-        <locationX>1084</locationX>
-        <locationY>6122</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkEducationList</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ips_Work_Trail__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>ips_Education__c</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Name</queriedFields>
-        <queriedFields>ips_Form_of_Education__c</queriedFields>
-        <queriedFields>ips_Start_Date__c</queriedFields>
-        <queriedFields>ips_End_Date__c</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>getEmplMeetingsIntervall</name>
-        <label>getEmplMeetingsIntervall</label>
-        <locationX>1084</locationX>
-        <locationY>1538</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>iterateEmplMeetingsIPSIntervall</targetReference>
-        </connector>
-        <filterLogic>1 AND 2 AND (3 OR 4 OR 5)</filterLogic>
-        <filters>
-            <field>WhatId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>IPS_Type__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Meeting with Employer</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>WhoId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>getParticipantDetailsIPS.PersonContactId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_Subcategory_Type_IPS__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Job development</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_Subcategory_Type_IPS__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Job support</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Event</object>
-        <sortField>ActivityDate</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <description>Get all intervall reports if it exists - only the ones that is open. Archived reports should not be altered.</description>
         <name>getIntervallReports</name>
         <label>getIntervallReports</label>
-        <locationX>1434</locationX>
+        <locationX>776</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2076,32 +355,9 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>getJobs</name>
-        <label>getJobs</label>
-        <locationX>1084</locationX>
-        <locationY>5522</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkJobList</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ips_Work_Trail__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>ips_Job__c</object>
-        <sortField>CreatedDate</sortField>
-        <sortOrder>Asc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>getOwnerIPS</name>
         <label>getOwnerIPS</label>
-        <locationX>1434</locationX>
+        <locationX>776</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2127,7 +383,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <description>Get the name of the person account connected to the worktrail</description>
         <name>getParticipantDetailsIPS</name>
         <label>getParticipantDetailsIPS</label>
-        <locationX>1434</locationX>
+        <locationX>776</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2151,44 +407,9 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>getPhoneTasksIPSIntervall</name>
-        <label>getPhoneTasksIPSIntervall</label>
-        <locationX>1084</locationX>
-        <locationY>4130</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkTaskPhone</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>WhatId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Loggfør Samtale Arb.giver</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Task</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Subject</queriedFields>
-        <queriedFields>Description</queriedFields>
-        <queriedFields>ActivityDate</queriedFields>
-        <queriedFields>Status</queriedFields>
-        <queriedFields>CompletedDateTime</queriedFields>
-        <queriedFields>CreatedDate</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>getRecordType_0</name>
         <label>getRecordType</label>
-        <locationX>1084</locationX>
+        <locationX>314</locationX>
         <locationY>1214</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2209,48 +430,9 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>getTasksIPSIntervall</name>
-        <label>getTasksIPSIntervall</label>
-        <locationX>1084</locationX>
-        <locationY>2738</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkTask_0_0</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>WhatId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Type_of_Task_IPSUO__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Delmål (av hovedmål)</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Task</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Subject</queriedFields>
-        <queriedFields>Description</queriedFields>
-        <queriedFields>ActivityDate</queriedFields>
-        <queriedFields>CompletedDateTime</queriedFields>
-        <queriedFields>CreatedDate</queriedFields>
-        <queriedFields>Status</queriedFields>
-        <queriedFields>IsClosed</queriedFields>
-        <queriedFields>ips_Due_Date_Time__c</queriedFields>
-        <sortField>ips_Due_Date_Time__c</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>getWorktrailIPS</name>
         <label>getWorktrailIPS</label>
-        <locationX>1434</locationX>
+        <locationX>776</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2271,7 +453,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordUpdates>
         <name>updateOldReportToClosed</name>
         <label>updateOldReportToClosed</label>
-        <locationX>1084</locationX>
+        <locationX>314</locationX>
         <locationY>998</locationY>
         <connector>
             <targetReference>createReportingRecord</targetReference>
@@ -2295,8 +477,8 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <recordUpdates>
         <name>updateReportRecord</name>
         <label>updateReportRecord</label>
-        <locationX>1084</locationX>
-        <locationY>6722</locationY>
+        <locationX>446</locationX>
+        <locationY>1622</locationY>
         <connector>
             <targetReference>Go_to_report_page</targetReference>
         </connector>
@@ -2327,18 +509,6 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>IPS_summarizeIntervallNextPeriode__c</field>
-            <value>
-                <elementReference>varSummarizeNextPeriode</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>IPS_summarizeIntervallPeriode__c</field>
-            <value>
-                <elementReference>varsummarizePeriode</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>IPS_worktrail_Type__c</field>
             <value>
                 <elementReference>viewRecordTypeName</elementReference>
@@ -2346,22 +516,37 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
         </inputAssignments>
         <object>ips_report__c</object>
     </recordUpdates>
+    <runInMode>DefaultMode</runInMode>
     <screens>
         <description>Du har huket av for både ny rapport og eksisterende rapport.</description>
         <name>displayWarningBoth</name>
         <label>displayWarningBoth</label>
-        <locationX>1456</locationX>
+        <locationX>578</locationX>
         <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <fields>
+            <name>displayAlert</name>
+            <extensionName>c:crmAlertBanner</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Du har huket av for både ny rapport og eksisterende rapport.</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>screenChoices</name>
         <label>Valg av mulighet</label>
-        <locationX>885</locationX>
+        <locationX>446</locationX>
         <locationY>782</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -2431,7 +616,7 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
     <screens>
         <name>workTrailIntervallNew</name>
         <label>IntervallNew</label>
-        <locationX>1084</locationX>
+        <locationX>314</locationX>
         <locationY>1322</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -2575,64 +760,6 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <fields>
                 <name>workTrailIntervallNew_Section4_Column1</name>
                 <fieldType>Region</fieldType>
-                <fields>
-                    <name>summarizePeriodeNew</name>
-                    <fieldText>Oppsummering av tiltaksperioden</fieldText>
-                    <fieldType>LargeTextArea</fieldType>
-                    <helpText>&lt;p&gt;Hva har skjedd i samarbeidet mellom deg og deltaker i den foregående perioden?&lt;/p&gt;&lt;p&gt;Eksempler: oppsøkt bedrifter sammen, jobbsmak, gjennomgått karriereveiledning, arbeidet med CV og/eller jobbsøkerferdigheter m.m.&lt;/p&gt;&lt;p&gt;Har jobbutviklingen og retningen endret seg underveis, i så fall hvordan og hvorfor?&amp;nbsp;&lt;/p&gt;&lt;p&gt;Oppsummering av den jobben jobbspesialist har gjort ut mot arbeidsgivere i den hensikt å skaffe jobbmuligheter.&lt;/p&gt;&lt;p&gt;Har du og/eller deltaker vært i kontakt med arbeidsgivere, hvis ja: beskriv. Dersom deltaker har vært i jobb bør dette beskrives, inkludert hvordan samarbeidet har vært med arbeidsgiver.&amp;nbsp;&lt;/p&gt;</helpText>
-                    <isRequired>false</isRequired>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-        </fields>
-        <fields>
-            <name>workTrailIntervallNew_Section5</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailIntervallNew_Section5_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxtSummarizePeriodeNew</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Her hentes følgende opp fra Jobbsporet:&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;fullførte delmål i perioden&lt;/li&gt;&lt;li&gt;samarbeid med arbeidsgivere i perioden (oversikt over møter med arbeidsgivere, deltakere i møtet, møtekategori etc.)&lt;/li&gt;&lt;li&gt;oversikt over jobber/arbeidstreninger deltaker har hatt i perioden&lt;/li&gt;&lt;/ul&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-        </fields>
-        <fields>
-            <name>SummarizeNextPeriodeNew</name>
-            <fieldText>Plan kommende periode</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Kort beskrivelse av hva som er planlagt fremover.&lt;/span&gt;&lt;/p&gt;</helpText>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>workTrailIntervallNew_Section6</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailIntervallNew_Section6_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxtUpcomingPeriodeNew</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Her hentes følgende opp fra deltakers &lt;/strong&gt;jobbspor:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Delmål som står med status åpen&lt;/li&gt;&lt;li&gt;Møter som står med status åpen&lt;/li&gt;&lt;/ul&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -2806,98 +933,17 @@ TEXT({!iterateEmplMeetingsIPSIntervall.ips_Subcategory_Type_IPS__c})</expression
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
-        <fields>
-            <name>workTrailIntervallOld_Section5</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailIntervallOld_Section5_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>summarizePeriodeOld</name>
-                    <defaultValue>
-                        <stringValue>{!getIntervallReports.IPS_summarizeIntervallPeriode__c}</stringValue>
-                    </defaultValue>
-                    <fieldText>Oppsummering av tiltaksperioden</fieldText>
-                    <fieldType>LargeTextArea</fieldType>
-                    <helpText>&lt;p&gt;Hva har skjedd i samarbeidet mellom deg og deltaker i den foregående perioden?&lt;/p&gt;&lt;p&gt;Eksempler: oppsøkt bedrifter sammen, jobbsmak, gjennomgått karriereveiledning, arbeidet med CV og/eller jobbsøkerferdigheter m.m. &lt;/p&gt;&lt;p&gt;Har jobbutviklingen og retningen endret seg underveis, i så fall hvordan og hvorfor?&amp;nbsp;&lt;/p&gt;&lt;p&gt;Oppsummering av den jobben jobbspesialist har gjort ut mot arbeidsgivere i den hensikt å skaffe jobbmuligheter. &lt;/p&gt;&lt;p&gt;Har du og/eller deltaker vært i kontakt med arbeidsgivere, hvis ja: beskriv. Dersom deltaker har vært i jobb bør dette beskrives, inkludert hvordan samarbeidet har vært med arbeidsgiver.&amp;nbsp;&lt;/p&gt;</helpText>
-                    <isRequired>false</isRequired>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-        </fields>
-        <fields>
-            <name>workTrailIntervallOld_Section6</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailIntervallOld_Section6_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxtSummarizePeriodeOld</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Her hentes følgende opp fra Jobbsporet:&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;fullførte delmål i perioden&lt;/li&gt;&lt;li&gt;samarbeid med arbeidsgivere i perioden (oversikt over møter med arbeidsgivere, deltakere i møtet, møtekategori etc.)&lt;/li&gt;&lt;li&gt;oversikt over jobber/arbeidstreninger deltaker har hatt i perioden&lt;/li&gt;&lt;/ul&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-        </fields>
-        <fields>
-            <name>SummarizeNextPeriodeOld</name>
-            <defaultValue>
-                <stringValue>{!getIntervallReports.IPS_summarizeIntervallNextPeriode__c}</stringValue>
-            </defaultValue>
-            <fieldText>Plan kommende periode</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <helpText>&lt;p&gt;Kort beskrivelse av hva som er planlagt fremover.&lt;/p&gt;</helpText>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>workTrailIntervallOld_Section7</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>workTrailIntervallOld_Section7_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayTxtUpcomingPeriodeOld</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Her hentes følgende opp fra deltakers &lt;/strong&gt;jobbspor:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Delmål som står med status åpen&lt;/li&gt;&lt;li&gt;Møter som står med status åpen&lt;/li&gt;&lt;/ul&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1308</locationX>
+        <locationX>650</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailIPS</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>newLine</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
