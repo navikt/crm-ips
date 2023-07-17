@@ -12,6 +12,7 @@ This package is dependant on the following packages
 - [crm-thread-view](https://github.com/navikt/crm-thread-view)
 - [crm-shared-timeline](https://github.com/navikt/crm-shared-timeline)
 - [crm-shared-base](https://github.com/navikt/crm-shared-base)
+- [crm-shared-flowComponents](https://github.com/navikt/crm-shared-flowComponents)
 - [crm-platform-integration](https://github.com/navikt/crm-platform-integration)
 - [crm-arbeidsgiver-base](https://github.com/navikt/crm-arbeidsgiver-base)
 - [crm-community-base](https://github.com/navikt/crm-community-base)
