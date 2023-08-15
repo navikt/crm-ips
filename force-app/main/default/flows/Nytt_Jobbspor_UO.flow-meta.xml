@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>1238</locationX>
-        <locationY>2054</locationY>
+        <locationX>1502</locationX>
+        <locationY>1838</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -16,12 +16,12 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>57.0</apiVersion>
+    <apiVersion>58.0</apiVersion>
     <assignments>
         <name>addAgeAdded</name>
         <label>addAgeAdded</label>
-        <locationX>842</locationX>
-        <locationY>998</locationY>
+        <locationX>1106</locationX>
+        <locationY>890</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
             <operator>Add</operator>
@@ -36,8 +36,8 @@
     <assignments>
         <name>addAgeNotAdded</name>
         <label>addAgeNotAdded</label>
-        <locationX>314</locationX>
-        <locationY>998</locationY>
+        <locationX>578</locationX>
+        <locationY>890</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
             <operator>Add</operator>
@@ -52,8 +52,8 @@
     <assignments>
         <name>addAgeOK</name>
         <label>addAgeOK</label>
-        <locationX>1106</locationX>
-        <locationY>998</locationY>
+        <locationX>1370</locationX>
+        <locationY>890</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
             <operator>Add</operator>
@@ -68,8 +68,8 @@
     <assignments>
         <name>addAgeUnderAndAdded</name>
         <label>addAgeUnderAndAdded</label>
-        <locationX>578</locationX>
-        <locationY>998</locationY>
+        <locationX>842</locationX>
+        <locationY>890</locationY>
         <assignmentItems>
             <assignToReference>varParticipantAge</assignToReference>
             <operator>Add</operator>
@@ -86,8 +86,8 @@
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
-        <locationX>380</locationX>
-        <locationY>638</locationY>
+        <locationX>644</locationX>
+        <locationY>566</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
         </defaultConnector>
@@ -124,7 +124,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>newWorktrail</targetReference>
+                <targetReference>confidentialScreen</targetReference>
             </connector>
             <label>IsConfidential</label>
         </rules>
@@ -132,8 +132,8 @@
     <decisions>
         <name>checkIfAddedAge</name>
         <label>checkIfAddedAge</label>
-        <locationX>710</locationX>
-        <locationY>878</locationY>
+        <locationX>974</locationX>
+        <locationY>782</locationY>
         <defaultConnector>
             <targetReference>addAgeOK</targetReference>
         </defaultConnector>
@@ -206,10 +206,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkIfEmpty</name>
+        <label>checkIfEmpty</label>
+        <locationX>347</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>checkForConfidential</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>notEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getPersonDetails</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>screenIsEmpty</targetReference>
+            </connector>
+            <label>isEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>710</locationX>
-        <locationY>1454</locationY>
+        <locationX>974</locationX>
+        <locationY>1298</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -233,8 +258,8 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>974</locationX>
-        <locationY>1694</locationY>
+        <locationX>1238</locationX>
+        <locationY>1514</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -271,11 +296,11 @@
     <formulas>
         <name>participantDOB</name>
         <dataType>Date</dataType>
-        <expression>IF(NOT(ISBLANK({!Get_Participant_Details.INT_PersonIdent__c})),
+        <expression>IF(NOT(ISBLANK({!getPersonDetails.Name})),
 DATE(
-VALUE(&quot;20&quot;&amp;MID({!Get_Participant_Details.INT_PersonIdent__c},5,2)),
-VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},3,2)),
-VALUE(MID({!Get_Participant_Details.INT_PersonIdent__c},1,2))
+VALUE(&quot;20&quot;&amp;MID({!getPersonDetails.Name},5,2)),
+VALUE(MID({!getPersonDetails.Name},3,2)),
+VALUE(MID({!getPersonDetails.Name},1,2))
 ),null)</expression>
     </formulas>
     <formulas>
@@ -310,7 +335,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <formulas>
         <name>varWorkTrailName</name>
         <dataType>String</dataType>
-        <expression>&apos;Jobbsporet - &apos;&amp;{!Get_Participant_Details.FirstName}&amp;&apos; &apos;&amp;{!Get_Participant_Details.LastName}</expression>
+        <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetails.INT_FirstName__c}&amp;&apos; &apos;&amp;{!getPersonDetails.INT_LastName__c}</expression>
     </formulas>
     <interviewLabel>Nytt Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - opprett nytt jobbspor for deltaker UO</label>
@@ -336,8 +361,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>974</locationX>
-        <locationY>2054</locationY>
+        <locationX>1238</locationX>
+        <locationY>1838</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -368,8 +393,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1238</locationX>
-        <locationY>1814</locationY>
+        <locationX>1502</locationX>
+        <locationY>1622</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorktrailName1</targetReference>
@@ -411,7 +436,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
-                <elementReference>Participant.recordId</elementReference>
+                <elementReference>getPersonDetails.CRM_Account__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -425,8 +450,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>710</locationX>
-        <locationY>1814</locationY>
+        <locationX>974</locationX>
+        <locationY>1622</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>Opprettet</targetReference>
@@ -473,7 +498,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
-                <elementReference>Participant.recordId</elementReference>
+                <elementReference>getPersonDetails.CRM_Account__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -487,8 +512,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>710</locationX>
-        <locationY>1334</locationY>
+        <locationX>974</locationX>
+        <locationY>1190</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -498,7 +523,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <field>ips_Participant__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Participant.recordId</elementReference>
+                <elementReference>getPersonDetails.CRM_Account__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -513,31 +538,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_Participant_Details</name>
-        <label>Get Participant Details</label>
-        <locationX>380</locationX>
-        <locationY>398</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>getPersonDetails</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Participant.recordId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Account</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>380</locationX>
-        <locationY>158</locationY>
+        <locationX>347</locationX>
+        <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>New_Worktrail</targetReference>
@@ -559,18 +563,18 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>getPersonDetails</name>
         <label>getPersonDetails</label>
-        <locationX>380</locationX>
-        <locationY>518</locationY>
+        <locationX>347</locationX>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>checkForConfidential</targetReference>
+            <targetReference>checkIfEmpty</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Participant_Details.INT_PersonIdent__c</elementReference>
+                <elementReference>ips_participants_scn</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -580,8 +584,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordUpdates>
         <name>updateWorktrailName</name>
         <label>updateWorktrailName</label>
-        <locationX>710</locationX>
-        <locationY>2054</locationY>
+        <locationX>974</locationX>
+        <locationY>1838</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -601,8 +605,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordUpdates>
         <name>updateWorktrailName1</name>
         <label>updateWorktrailName</label>
-        <locationX>1238</locationX>
-        <locationY>1934</locationY>
+        <locationX>1502</locationX>
+        <locationY>1730</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -626,8 +630,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>alertIsExisting</name>
         <label>alertIsExisting</label>
-        <locationX>446</locationX>
-        <locationY>1574</locationY>
+        <locationX>710</locationX>
+        <locationY>1406</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -647,8 +651,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>alertUnder18</name>
         <label>alertUnder18</label>
-        <locationX>314</locationX>
-        <locationY>1118</locationY>
+        <locationX>578</locationX>
+        <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -683,61 +687,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>New_Worktrail</name>
-        <label>Nytt Jobbspor</label>
-        <locationX>380</locationX>
-        <locationY>278</locationY>
-        <allowBack>false</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Get_Participant_Details</targetReference>
-        </connector>
-        <fields>
-            <name>DisplayTxtTitle1</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Participant</name>
-            <extensionName>flowruntime:lookup</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>fieldApiName</name>
-                <value>
-                    <stringValue>ips_Participant__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Deltaker</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>objectApiName</name>
-                <value>
-                    <stringValue>Work_Trail__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>newWorktrail</name>
-        <label>newWorktrail</label>
-        <locationX>50</locationX>
-        <locationY>758</locationY>
+        <name>confidentialScreen</name>
+        <label>confidentialScreen</label>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -755,10 +708,43 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>New_Worktrail</name>
+        <label>Nytt Jobbspor</label>
+        <locationX>347</locationX>
+        <locationY>242</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>getPersonDetails</targetReference>
+        </connector>
+        <fields>
+            <name>DisplayTxtTitle1</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ips_participants_scn</name>
+            <dataType>String</dataType>
+            <fieldText>Deltakers fødselsnummer</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: var(--slds-g-color-neutral-base-100, var(--lwc-colorBackgroundInput,rgb(255, 255, 255))); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, Helvetica, Arial, sans-serif, &apos;Apple Color Emoji&apos;, &apos;Segoe UI Emoji&apos;, &apos;Segoe UI Symbol&apos;);&quot;&gt;Fødselsnummer kan kun inneholde 11 numeriske verdier uten mellomrom og spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>AND(
+NOT(REGEX( {!ips_participants_scn},&quot;^[a-z A-Z]*$&quot;)), 
+LEN( {!ips_participants_scn}) == 11 
+)</formulaExpression>
+            </validationRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>974</locationX>
-        <locationY>1934</locationY>
+        <locationX>1238</locationX>
+        <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -781,8 +767,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>710</locationX>
-        <locationY>1934</locationY>
+        <locationX>974</locationX>
+        <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -805,8 +791,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>710</locationX>
-        <locationY>758</locationY>
+        <locationX>974</locationX>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -863,7 +849,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Name</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!Get_Participant_Details.FirstName}        {!Get_Participant_Details.LastName}&lt;/p&gt;&lt;p&gt;Personnummer: {!Get_Participant_Details.INT_PersonIdent__c}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetails.INT_FirstName__c} {!getPersonDetails.INT_LastName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetails.Name}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -974,8 +960,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>974</locationX>
-        <locationY>1574</locationY>
+        <locationX>1238</locationX>
+        <locationY>1406</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -984,6 +970,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         </connector>
         <fields>
             <name>display</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1035,8 +1022,29 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
+    <screens>
+        <name>screenIsEmpty</name>
+        <label>screenIsEmpty</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Copy_1_of_DisplayTitle2</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>displaytxtEmpty</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Det finnes ingen forekomst med dette fødselsnummer {!ips_participants_scn}.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <start>
-        <locationX>254</locationX>
+        <locationX>221</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
