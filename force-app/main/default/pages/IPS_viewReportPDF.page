@@ -26,8 +26,8 @@
             <apex:outputLabel rendered="{!isUO}">Innsøkende avdeling :</apex:outputLabel>
             <apex:outputField rendered="{!isUO}" label="Team" value="{!currentTrail.ips_Applying_Department__c}"></apex:outputField>
             
-            <apex:outputLabel rendered="{!isIPS}">NAV veileder :</apex:outputLabel>
-            <apex:outputField rendered="{!isIPS}" label="veileder" value="{!currentTrail.ips_NAV_supervisor__c}"></apex:outputField>
+            <apex:outputLabel>NAV veileder :</apex:outputLabel>
+            <apex:outputField label="veileder" value="{!currentTrail.ips_NAV_supervisor__c}"></apex:outputField>
             
             <apex:outputLabel >Startdato :</apex:outputLabel>
             <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
@@ -241,13 +241,8 @@
                  </div>  
                 </apex:repeat>
                 </apex:outputpanel>
-     
-
-                <apex:outputText ><h3>Opplæringsløp </h3></apex:outputText>
-                <apex:outputpanel rendered="{!activeParticipantsEducations.size == 0}">
-                    <apex:outputText ><p>Ingen utdanningsløp registrert.</p></apex:outputText>
-                </apex:outputpanel>
                 <apex:outputpanel rendered="{!activeParticipantsEducations.size != 0}">
+                <apex:outputText ><h3>Opplæringsløp </h3></apex:outputText>
                     <div style="page-break-inside: avoid;">
                         <apex:repeat value="{!activeParticipantsEducations}" var="edu" >
                         <apex:outputText ><h4>Utdanning - {!edu.Name} </h4></apex:outputText>
@@ -297,7 +292,7 @@
                 <apex:outputField value="{!currentRecord.IPS_summarizeIntervallNextPeriode__c}"></apex:outputField>
 				
                 <div style="page-break-inside: avoid;">
-                <apex:outputText ><h4>Planlagte delmål:</h4></apex:outputText>
+                <apex:outputText ><h4>Delmål:</h4></apex:outputText>
                 <apex:outputpanel rendered="{!openGoal.size == 0}">
                     <apex:outputText ><p>Deltaker har ingen planlagte delmål.</p></apex:outputText>
                 </apex:outputpanel>
@@ -328,7 +323,7 @@
                 </div>
                 
                 <div style="page-break-inside: avoid;">
-                <apex:outputText ><h4>Planlagte møter:</h4></apex:outputText>
+                <apex:outputText ><h4>Møter:</h4></apex:outputText>
                 <apex:outputpanel rendered="{!openIntervallMeeting.size == 0}">
                     <apex:outputText ><p>Det er ingen planlagte møter med deltaker fremover.</p></apex:outputText>
                 </apex:outputpanel>
@@ -361,11 +356,12 @@
             <apex:outputPanel rendered="{!isEndReport}" layout="block">
                 <apex:outputText rendered="{!isIPS}"><p>{!currentTrail.ips_Participant__r.name} ble henvist til Individuell jobbstøtte (IPS) den {!currentTrail.ips_Referred_date__c}. Deltaker har vært med i perioden {!startDatoTrail} - {!sluttDatoTrail}. </p></apex:outputText>      
                 
+                <apex:outputText ><h3>Avsluttende oppsummering</h3></apex:outputText>
+                <apex:outputField value="{!currentRecord.IPS_endReportSumm5__c}"></apex:outputField>
                 <apex:outputText rendered="{!isIPS}"><h2>Deltakers mål med IPS</h2></apex:outputText>
                 <apex:outputText rendered="{!isIPS}"><h3>Prioriterte yrkesønsker:</h3></apex:outputText>
                 <apex:outputField rendered="{!isIPS}" value="{!currentTrail.ips_Priority_career_wishes__c}"></apex:outputField>
                 
-                <apex:outputText rendered="{!isUO}"><h2>Yrkeskartlegging og karriereplanlegging</h2></apex:outputText>
                 <apex:outputText rendered="{!isUO}"><h3>Ønsket yrke/bransje/karriere</h3></apex:outputText>
                 <apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_Desired_profession_industry_career__c }"></apex:outputField>
                 <div style ="padding-bottom: 5px;"></div>
@@ -550,10 +546,6 @@
                 
                 <apex:outputText rendered="{!isIPS}"><h3>Oppsummering av jobb/arbeidstrening</h3></apex:outputText>
                 <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
-               
-                     
-                <apex:outputText ><h3>Avsluttende oppsummering</h3></apex:outputText>
-                <apex:outputField value="{!currentRecord.IPS_endReportSumm5__c}"></apex:outputField>
                     
             </apex:outputPanel>
         	<apex:outputpanel rendered="{!currentRecord.IPS_participantsComment__c!=''}">
