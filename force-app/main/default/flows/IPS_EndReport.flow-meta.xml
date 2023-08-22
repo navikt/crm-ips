@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
+    <choices>
+        <name>Sluttrapport</name>
+        <choiceText>Sluttrapport</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Sluttrapport</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Underveisrapport</name>
+        <choiceText>Underveisrapport</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Underveisrapport</stringValue>
+        </value>
+    </choices>
     <constants>
         <name>conGES</name>
         <dataType>String</dataType>
@@ -13,7 +29,7 @@
         <name>checkRecordType</name>
         <label>checkRecordType</label>
         <locationX>974</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <defaultConnector>
             <targetReference>noWorkTrail_0</targetReference>
         </defaultConnector>
@@ -54,7 +70,7 @@
         <name>checkReportType</name>
         <label>checkReportType</label>
         <locationX>314</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isEndReportUO</name>
@@ -92,7 +108,7 @@
         <name>checkReportType_0</name>
         <label>checkReportType</label>
         <locationX>1106</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isEndReportIPS</name>
@@ -168,7 +184,7 @@
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>selectReportType</targetReference>
+            <targetReference>createReportDisplay</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -203,19 +219,34 @@
         </filters>
         <object>Work_Trail__c</object>
         <outputAssignments>
-            <assignToReference>recordId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-        <outputAssignments>
             <assignToReference>recordTypeId</assignToReference>
             <field>RecordTypeId</field>
         </outputAssignments>
     </recordLookups>
     <screens>
+        <name>createReportDisplay</name>
+        <label>createReportDisplay</label>
+        <locationX>974</locationX>
+        <locationY>350</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>selectReportType</targetReference>
+        </connector>
+        <fields>
+            <name>displayStartTxt</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;Trykk neste for å opprette rapport.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>noWorkTrail_0</name>
         <label>Not a worktrail</label>
         <locationX>1634</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -232,7 +263,7 @@
         <name>selectReportType</name>
         <label>Select report type</label>
         <locationX>974</locationX>
-        <locationY>350</locationY>
+        <locationY>458</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -242,7 +273,7 @@
         <fields>
             <name>varReportIntervall</name>
             <dataType>Boolean</dataType>
-            <fieldText>Underveisrapport</fieldText>
+            <fieldText>Opprett underveisrapport</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <visibilityRule>
@@ -259,7 +290,7 @@
         <fields>
             <name>varReportEnd</name>
             <dataType>Boolean</dataType>
-            <fieldText>Sluttrapport</fieldText>
+            <fieldText>Opprett sluttrapport</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <visibilityRule>
@@ -276,7 +307,7 @@
         <fields>
             <name>varReportIntervallIPS</name>
             <dataType>Boolean</dataType>
-            <fieldText>Underveisnotat</fieldText>
+            <fieldText>Opprett underveisnotat</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <visibilityRule>
@@ -293,7 +324,7 @@
         <fields>
             <name>varReportEndIPS</name>
             <dataType>Boolean</dataType>
-            <fieldText>Avslutningsnotat</fieldText>
+            <fieldText>Opprett avslutningsnotat</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <visibilityRule>
@@ -307,8 +338,18 @@
                 </conditions>
             </visibilityRule>
         </fields>
+        <fields>
+            <name>createReportCmb</name>
+            <choiceReferences>Underveisrapport</choiceReferences>
+            <choiceReferences>Sluttrapport</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Underveisrapport</defaultSelectedChoiceReference>
+            <fieldText>Opprett rapport</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>848</locationX>
@@ -317,12 +358,12 @@
             <targetReference>getWorktrailRecordTypeId</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <subflows>
         <name>RunEndReporting</name>
         <label>RunEndReporting</label>
         <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <flowName>IPS_subflowEndReportUO</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -336,7 +377,7 @@
         <name>runEndReportingIPS</name>
         <label>runEndReportingIPS</label>
         <locationX>842</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <flowName>IPS_subflowEndReportIPS</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -355,7 +396,7 @@
         <name>runIntervallReportIPS</name>
         <label>runIntervallReportIPS</label>
         <locationX>1106</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <flowName>IPS_subflow_intervall_report_IPS</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -374,7 +415,7 @@
         <name>runIntervallReportUO</name>
         <label>runIntervallReportUO</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <flowName>IPS_subflowIntervallReportUO</flowName>
         <inputAssignments>
             <name>recordId</name>
@@ -476,7 +517,7 @@
         <name>recordTypeName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
