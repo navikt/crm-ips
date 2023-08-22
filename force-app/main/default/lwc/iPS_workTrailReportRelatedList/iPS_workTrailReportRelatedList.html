@@ -1,0 +1,70 @@
+<template>
+    <template if:true={isIPS}>
+        <div class="slds-clearfix">
+            <lightning-button-group class="slds-float_right">
+                <lightning-button 
+                    variant="neutral" 
+                    label='Opprett Underveisnotat'
+                    onclick={handleButtonClick}
+                >
+                </lightning-button>
+                <lightning-button 
+                    variant="neutral" 
+                    label='Opprett Avslutningsnotat'
+                    onclick={submitEnd}
+                >
+                </lightning-button>
+            </lightning-button-group> 
+        </div>
+    </template>
+    <template if:false={isIPS}>
+        <div class="slds-clearfix">
+            <lightning-button-group class="slds-float_right">
+                <lightning-button 
+                    variant="neutral" 
+                    label='Opprett Underveisrapport'
+                    onclick={handleButtonClick}
+                >
+                </lightning-button>
+                <lightning-button 
+                    variant="neutral" 
+                    label='Opprett Sluttrapport' 
+                    onclick={submitEnd}
+                >
+                </lightning-button>
+            </lightning-button-group>
+        </div>
+        <br>
+    </template>
+    <template if:true={isIntervall}>
+        <lightning-layout-item size="5">
+            <div class="slds-m-around_large,">
+                <lightning-input type="date" name="intervallDateFrom" label="Velg dato fra: " required="true" ></lightning-input>
+                <lightning-input type="date" name="intervallDateTo" label="Velg dato til: " required="true" ></lightning-input>
+            </div>
+        </lightning-layout-item>
+        
+        <br>
+        <div class="slds-clearfix">
+            <lightning-button 
+                        variant="brand" 
+                        label='Lagre'
+                        onclick={submitIntervall}
+                        class="slds-float_right"
+                    >
+            </lightning-button>
+        </div>
+       
+    </template>
+
+        <lightning-card title="Rapportoversikt">
+            <lightning-datatable
+                key-field="Id"
+                data={records}
+                columns={columns}
+                hide-checkbox-column="true"
+                onrowaction={navigateToRecordViewPage}>
+            </lightning-datatable>
+        </lightning-card>
+
+</template>
