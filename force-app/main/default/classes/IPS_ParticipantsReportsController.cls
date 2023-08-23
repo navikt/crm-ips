@@ -46,9 +46,9 @@ public with sharing class IPS_ParticipantsReportsController {
         reportLists = [
             SELECT  Id,
                     Name,
-                    IPS_report_Type__c,
+                    toLabel(IPS_report_Type__c),
                     CreatedDate,
-                    IPS_status__c,
+                    toLabel(IPS_status__c),
                     IPS_intervallDateFrom__c, 
                     IPS_intervallDateTo__c
             FROM ips_report__c 
@@ -57,45 +57,5 @@ public with sharing class IPS_ParticipantsReportsController {
             ORDER BY CreatedDate DESC];
 
         return reportLists;
-    }
-
-    @AuraEnabled
-    public static void createIntervallReport(Date dateTo, Date dateFrom, String recTrail,String userId,String workTrailId){
-        String status = 'Open';
-        String type = 'Intervall';
-        try {
-            ips_report__c report = new ips_report__c(
-                IPS_intervallDateFrom__c = dateFrom,
-                IPS_intervallDateTo__c = dateTo,
-                IPS_status__c = status,
-                IPS_report_Type__c = type,
-                IPS_workTrailName__c = workTrailId,
-                IPS_worktrail_Type__c =recTrail,
-                OwnerId = userId
-    );
-    insert report;
-            
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
-    }
-
-    @AuraEnabled
-    public static void createEndReport(String recTrail,String userId,String workTrailId){
-        String status = 'Open';
-        String type = 'End report';
-        try {
-            ips_report__c report = new ips_report__c(
-                IPS_status__c = status,
-                IPS_report_Type__c = type,
-                IPS_workTrailName__c = workTrailId,
-                IPS_worktrail_Type__c =recTrail,
-                OwnerId = userId
-    );
-    insert report;
-            
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
     }
 }
