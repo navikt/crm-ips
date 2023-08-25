@@ -58,8 +58,8 @@ public with sharing class IPS_viewReportPDFController {
             getEmployerActivity();
             getParticipantActivity();
             this.openIntervallMeeting = getOpenIntervallActivity(intervallToDate);
-            this.activeParticipantsJobs = getActiveJobs();
-            this.activeParticipantsEducations = getActiveEducations(); 
+            this.activeParticipantsJobs = getActiveJobs(intervallFromDate,intervallToDate);
+            this.activeParticipantsEducations = getActiveEducations(intervallFromDate,intervallToDate); 
         
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+this.pdfTitle+'.pdf');
         
@@ -304,7 +304,10 @@ public with sharing class IPS_viewReportPDFController {
     }
     
     /****************** jobb **************************/
-    private list<ips_Job__c> getActiveJobs(){
+    private list<ips_Job__c> getActiveJobs(Date startDate, Date endDate){
+
+        List<ips_Job__c> jobList = new List<ips_Job__c>();
+
         List<ips_Job__c> activeJobs = new List<ips_Job__c >();
         activeJobs =[
             SELECT 
@@ -322,14 +325,48 @@ public with sharing class IPS_viewReportPDFController {
             ips_What_did_work_at_the_workplace__c,
             IPS_jobSubject__c
             FROM ips_Job__c
-            WHERE ips_Work_Trail__c = :workTrailId 
+            WHERE ips_Work_Trail__c = :workTrailId
+            AND ips_Status__c = 'Ongoing'
+            ORDER BY ips_Start_Date__c DESC
         ];
-        return activeJobs;
+
+        List<ips_Job__c> closedJobs = new List<ips_Job__c >();
+        closedJobs =[
+            SELECT 
+            id,
+            Name,
+            ips_Work_Trail__c,
+            ips_Employer__r.Name,
+            toLabel(ips_Form_of_Employment__c),
+            ips_Start_Date__c,
+            IPS_UO_Stillingsbeskrivelse__c,
+            ips_Job_Support__c,
+            ips_End_Date__c,
+            ips_Status__c,
+            ips_Job__c.ips_What_did_not_work_at_the_workplace__c,
+            ips_What_did_work_at_the_workplace__c,
+            IPS_jobSubject__c
+            FROM ips_Job__c
+            WHERE ips_Work_Trail__c = :workTrailId
+            AND ips_Status__c = 'Completed'
+            AND (ips_End_Date__c >=: startDate OR ips_End_Date__c >=: endDate)
+            ORDER BY ips_Start_Date__c DESC
+        ];
+       
+        if(!activeJobs.isEmpty()){
+            jobList.addAll(activeJobs);
+        }
+        if(!closedJobs.isEmpty()){
+            jobList.addAll(closedJobs);
+        }
+        return jobList;
     }
     
     /****************** Utdanning *************************/
      
-    private list<ips_Education__c> getActiveEducations(){
+    private list<ips_Education__c> getActiveEducations(Date startDate, Date endDate){
+        List<ips_Education__c> eduList = new List<ips_Education__c >();
+
         List<ips_Education__c> activeEdu = new List<ips_Education__c >();
         activeEdu =[
             SELECT 
@@ -348,7 +385,34 @@ public with sharing class IPS_viewReportPDFController {
             WHERE ips_Work_Trail__c = :workTrailId
             AND ips_Status__c ='Ongoing'   
         ];
-        return activeEdu;
+
+        List<ips_Education__c> closedEdu = new List<ips_Education__c >();
+        closedEdu =[
+            SELECT 
+            id,
+            Name,
+            ips_Work_Trail__c,
+            ips_Name_of_the_Education_Institution__c,
+            toLabel(ips_Form_of_Education__c),
+            ips_Start_Date__c,
+            ips_End_Date__c,
+            ips_What_did_not_work_with_thiseducation__c,
+            ips_What_did_work_with_this_education__c,
+            ips_Education_Support_Plan__c,
+            ips_Status__c
+            FROM ips_Education__c
+            WHERE ips_Work_Trail__c = :workTrailId
+            AND (ips_End_Date__c >=: startDate OR ips_End_Date__c >=: endDate)
+            AND ips_Status__c ='Completed'   
+        ];
+
+        if(!activeEdu.isEmpty()){
+            eduList.addAll(activeEdu);
+        }
+        if(!closedEdu.isEmpty()){
+            eduList.addAll(closedEdu);
+        }
+        return eduList;
     }
     
     
