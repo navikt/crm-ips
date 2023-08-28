@@ -5,7 +5,7 @@
         <name>Generate_Document</name>
         <label>Generate Document</label>
         <locationX>314</locationX>
-        <locationY>1082</locationY>
+        <locationY>974</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -24,16 +24,18 @@
                 <stringValue>GENERATE_DOCUMENT</stringValue>
             </value>
         </inputParameters>
+        <nameSegment>CRM_JournalUtilities</nameSegment>
         <outputParameters>
             <assignToReference>PDF_DOCUMENT</assignToReference>
             <name>documentString</name>
         </outputParameters>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Log_Journal_Entry_Error</name>
         <label>Log Journal Entry Error</label>
         <locationX>314</locationX>
-        <locationY>2378</locationY>
+        <locationY>2270</locationY>
         <actionName>LoggerUtility</actionName>
         <actionType>apex</actionType>
         <dataTypeMappings>
@@ -71,13 +73,15 @@
                 <stringValue>IPS - send report to journal</stringValue>
             </value>
         </inputParameters>
+        <nameSegment>LoggerUtility</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <description>Calls journal utils to perform the API post action</description>
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
         <locationX>314</locationX>
-        <locationY>1622</locationY>
+        <locationY>1514</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -108,6 +112,7 @@
                 <stringValue>POST_JOURNAL</stringValue>
             </value>
         </inputParameters>
+        <nameSegment>CRM_JournalUtilities</nameSegment>
         <outputParameters>
             <assignToReference>varErrorMessage</assignToReference>
             <name>errorMessage</name>
@@ -124,13 +129,14 @@
             <assignToReference>bolSuccess</assignToReference>
             <name>success</name>
         </outputParameters>
+        <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>57.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <assignments>
         <name>addEndAssignment</name>
         <label>addEndAssignment</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>varEnd</assignToReference>
             <operator>Assign</operator>
@@ -146,7 +152,7 @@
         <name>addIntervallAssignment</name>
         <label>addIntervallAssignment</label>
         <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>varIntervall</assignToReference>
             <operator>Assign</operator>
@@ -163,7 +169,7 @@
         <name>Assign_Journal_Documents</name>
         <label>Assign Journal Documents</label>
         <locationX>314</locationX>
-        <locationY>1298</locationY>
+        <locationY>1190</locationY>
         <assignmentItems>
             <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
             <operator>Add</operator>
@@ -186,7 +192,7 @@
         <name>Assign_Journal_Entry_Values</name>
         <label>Assign Journal Entry Values</label>
         <locationX>50</locationX>
-        <locationY>2162</locationY>
+        <locationY>2054</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -259,7 +265,7 @@
         <name>Document_Variant_Assignment</name>
         <label>Document Variant Assignment</label>
         <locationX>314</locationX>
-        <locationY>1190</locationY>
+        <locationY>1082</locationY>
         <assignmentItems>
             <assignToReference>Document_Variant_PDF.filtype</assignToReference>
             <operator>Assign</operator>
@@ -291,7 +297,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Journal_Request_Assignment</name>
         <label>Journal Request Assignment</label>
         <locationX>314</locationX>
-        <locationY>1514</locationY>
+        <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>Journal_Request.tittel</assignToReference>
             <operator>Assign</operator>
@@ -385,7 +391,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Journal_Sak_Assignment</name>
         <label>Journal Sak Assignment</label>
         <locationX>314</locationX>
-        <locationY>1406</locationY>
+        <locationY>1298</locationY>
         <assignmentItems>
             <assignToReference>Journal_Sak.sakstype</assignToReference>
             <operator>Assign</operator>
@@ -401,7 +407,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Set_Post_Failed</name>
         <label>Set Post Failed</label>
         <locationX>578</locationX>
-        <locationY>1946</locationY>
+        <locationY>1838</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -424,7 +430,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>Check_Post_State</name>
         <label>Check Post State</label>
         <locationX>314</locationX>
-        <locationY>1730</locationY>
+        <locationY>1622</locationY>
         <defaultConnector>
             <targetReference>displayError</targetReference>
         </defaultConnector>
@@ -450,7 +456,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <name>checkTypeOfReport</name>
         <label>checkTypeOfReport</label>
         <locationX>314</locationX>
-        <locationY>566</locationY>
+        <locationY>458</locationY>
         <defaultConnectorLabel>None</defaultConnectorLabel>
         <rules>
             <name>isIntervall</name>
@@ -516,6 +522,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
             <label>participantInformed</label>
         </rules>
     </decisions>
+    <description>Send IPS/SE report to Joark</description>
     <environments>Default</environments>
     <formulas>
         <description>Formula to define the journal case type (Sakstype). If no Journal Case ID has been input, default is GENERELL_SAK</description>
@@ -575,7 +582,7 @@ CASE({!varRecordTypeName},
         <name>createJournalEntry</name>
         <label>createJournalEntry</label>
         <locationX>50</locationX>
-        <locationY>2270</locationY>
+        <locationY>2162</locationY>
         <faultConnector>
             <targetReference>Log_Journal_Entry_Error</targetReference>
         </faultConnector>
@@ -586,7 +593,7 @@ CASE({!varRecordTypeName},
         <name>Get_Account_Info</name>
         <label>Get Account Info</label>
         <locationX>314</locationX>
-        <locationY>866</locationY>
+        <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>displayOverviewOfReport</targetReference>
@@ -607,7 +614,7 @@ CASE({!varRecordTypeName},
         <name>getRecordTypeJournalEntry</name>
         <label>getRecordTypeJournalEntry</label>
         <locationX>50</locationX>
-        <locationY>2054</locationY>
+        <locationY>1946</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Journal_Entry_Values</targetReference>
@@ -624,29 +631,6 @@ CASE({!varRecordTypeName},
         <outputAssignments>
             <assignToReference>varRecordTypeId</assignToReference>
             <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>getRecordTypeWorkTrail</name>
-        <label>getRecordTypeWorkTrail</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkTypeOfReport</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>getWorkTrailParticipantsInfo.RecordTypeId</elementReference>
-            </value>
-        </filters>
-        <object>RecordType</object>
-        <outputAssignments>
-            <assignToReference>varRecordTypeName</assignToReference>
-            <field>DeveloperName</field>
         </outputAssignments>
     </recordLookups>
     <recordLookups>
@@ -677,6 +661,7 @@ CASE({!varRecordTypeName},
         <queriedFields>IPS_report_Type__c</queriedFields>
         <queriedFields>IPS_participantName__c</queriedFields>
         <queriedFields>IPS_participantInformed__c</queriedFields>
+        <queriedFields>IPS_worktrail_Type__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -687,7 +672,7 @@ CASE({!varRecordTypeName},
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getRecordTypeWorkTrail</targetReference>
+            <targetReference>checkTypeOfReport</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -701,14 +686,13 @@ CASE({!varRecordTypeName},
         <object>Work_Trail__c</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>ips_Participant__c</queriedFields>
-        <queriedFields>RecordTypeId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
         <name>UpdateReport</name>
         <label>UpdateReport</label>
         <locationX>50</locationX>
-        <locationY>1946</locationY>
+        <locationY>1838</locationY>
         <connector>
             <targetReference>getRecordTypeJournalEntry</targetReference>
         </connector>
@@ -739,7 +723,7 @@ CASE({!varRecordTypeName},
         <name>displayError</name>
         <label>displayError</label>
         <locationX>578</locationX>
-        <locationY>1838</locationY>
+        <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -764,7 +748,7 @@ CASE({!varRecordTypeName},
         <name>displayOverviewOfReport</name>
         <label>displayOverviewOfReport</label>
         <locationX>314</locationX>
-        <locationY>974</locationY>
+        <locationY>866</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -783,13 +767,13 @@ CASE({!varRecordTypeName},
                 <name>displayOverviewOfReport_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>displayInformationIntervall</name>
+                    <name>displayInformationIntervallIPS</name>
                     <extensionName>c:crmAlertBanner</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
                         <name>message</name>
                         <value>
-                            <stringValue>Du har valgt å arkivere en underveisrapport/-notat</stringValue>
+                            <stringValue>Du har valgt å arkivere ett underveisnotat.</stringValue>
                         </value>
                     </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -802,6 +786,13 @@ CASE({!varRecordTypeName},
                             <operator>EqualTo</operator>
                             <rightValue>
                                 <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                        <conditions>
+                            <leftValueReference>getReport.IPS_worktrail_Type__c</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <stringValue>IPS</stringValue>
                             </rightValue>
                         </conditions>
                     </visibilityRule>
@@ -818,13 +809,44 @@ CASE({!varRecordTypeName},
             <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
         <fields>
-            <name>displayInformationEnd</name>
+            <name>displayInformationIntervallSE</name>
             <extensionName>c:crmAlertBanner</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>message</name>
                 <value>
-                    <stringValue>Du har valgt å arkivere en sluttrapport/-notat</stringValue>
+                    <stringValue>Du har valgt å arkivere en underveisrapport</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>varIntervall</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>getReport.IPS_worktrail_Type__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Supported Employment</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>displayInformationEndIPS</name>
+            <extensionName>c:crmAlertBanner</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Du har valgt å arkivere ett sluttnotat.</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -837,6 +859,44 @@ CASE({!varRecordTypeName},
                     <operator>EqualTo</operator>
                     <rightValue>
                         <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>getReport.IPS_worktrail_Type__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>IPS</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>displayInformationEndSE</name>
+            <extensionName>c:crmAlertBanner</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Du har valgt å arkivere en sluttrapport.</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>varEnd</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>getReport.IPS_worktrail_Type__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Supported Employment</stringValue>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -940,7 +1000,7 @@ CASE({!varRecordTypeName},
         <name>displaySuccess</name>
         <label>displaySuccess</label>
         <locationX>50</locationX>
-        <locationY>1838</locationY>
+        <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
