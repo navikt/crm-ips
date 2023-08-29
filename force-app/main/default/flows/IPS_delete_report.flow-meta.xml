@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Give a message to user if try to delete report in archive and completed</description>
+        <name>Do_not_delete</name>
+        <label>Do not delete</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <actionName>IPS_invocableCrashController</actionName>
+        <actionType>apex</actionType>
+        <faultConnector>
+            <targetReference>giveAErrorMessage</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>errorMessages</name>
+        </inputParameters>
+        <nameSegment>IPS_invocableCrashController</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>58.0</apiVersion>
+    <description>Runs when JS delete an report to set isDeleted = true, then used in validation</description>
+    <environments>Default</environments>
+    <interviewLabel>IPS - delete report {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - delete report</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Do_not_delete</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>IPS_status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Archived</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <object>ips_report__c</object>
+        <recordTriggerType>Delete</recordTriggerType>
+        <triggerType>RecordBeforeDelete</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>varErrorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Kan ikke slette en rapport i status fullført eller journalført</stringValue>
+        </value>
+    </variables>
+</Flow>
