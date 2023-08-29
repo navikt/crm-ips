@@ -82,7 +82,8 @@ public with sharing class IPS_viewReportPDFController {
                                                    IPS_endReportSumm5__c,
                                                IPS_endReportSumm6__c,
                                                IPS_endReportSumm7__c,
-                                               IPS_participantsComment__c
+                                               IPS_participantsComment__c,
+                                               IPS_participantsOnBehalf__c
                                                FROM ips_report__c
                                                WHERE id = :currRecordId
                                               ];
