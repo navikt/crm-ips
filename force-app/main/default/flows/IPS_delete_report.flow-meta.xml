@@ -1,23 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionCalls>
-        <description>Give a message to user if try to delete report in archive and completed</description>
-        <name>Do_not_delete</name>
-        <label>Do not delete</label>
-        <locationX>176</locationX>
-        <locationY>287</locationY>
-        <actionName>IPS_invocableCrashController</actionName>
-        <actionType>apex</actionType>
-        <faultConnector>
-            <targetReference>giveAErrorMessage</targetReference>
-        </faultConnector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>errorMessages</name>
-        </inputParameters>
-        <nameSegment>IPS_invocableCrashController</nameSegment>
-        <versionSegment>1</versionSegment>
-    </actionCalls>
     <apiVersion>58.0</apiVersion>
     <description>Runs when JS delete an report to set isDeleted = true, then used in validation</description>
     <environments>Default</environments>
@@ -46,7 +28,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Do_not_delete</targetReference>
+            <targetReference>showErrorMessage</targetReference>
         </connector>
         <filterLogic>or</filterLogic>
         <filters>
