@@ -2,6 +2,7 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
     <assignments>
+        <description>Add todays date and user and add previous text in field</description>
         <name>setAssignment</name>
         <label>setAssignment</label>
         <locationX>176</locationX>
@@ -74,7 +75,7 @@
         <expression>&apos;Kommentar lagt inn på vegne av deltaker, &apos;+ TEXT(TODAY()) +&apos; av bruker &apos;+ {!$User.FirstName} +&apos; &apos;+{!$User.LastName}</expression>
     </formulas>
     <interviewLabel>IPS_addCommentInReport {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - add comment in report</label>
+    <label>IPS - report add comment</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -140,6 +141,7 @@
         <object>ips_report__c</object>
     </recordUpdates>
     <screens>
+        <description>Jobbspesialist adds comment from participant</description>
         <name>IPS_sceenCommentParticipant</name>
         <label>sceenCommentParticipant</label>
         <locationX>176</locationX>
@@ -151,8 +153,13 @@
             <targetReference>setAssignment</targetReference>
         </connector>
         <fields>
+            <name>displayInformationText</name>
+            <fieldText>&lt;p&gt;{!varInformationText}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>IPS_commentFromParticipant</name>
-            <fieldText>Legg til kommentar fra deltaker</fieldText>
+            <fieldText>&lt;strong style=&quot;font-family: sans-serif; font-size: 1rem;font-weight: 600;&quot;&gt;Legg til kommentar fra deltaker&lt;/strong&gt;</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -180,6 +187,16 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varInformationText</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>&lt;span style= &quot;font-family:sans-serif;font-size: 1rem;&quot;&gt;Tekst som legges inn her kommer med i rapporten som blir journalført i Gosys, og kan brukes når deltaker ønsker å tilføye sin kommentar til rapporten.&lt;/span style&gt;</stringValue>
+        </value>
     </variables>
     <variables>
         <name>varStar</name>

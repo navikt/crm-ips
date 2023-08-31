@@ -14,7 +14,7 @@ const COLUMNS = [
             disabled: false,
             value: 'Åpne',
             iconPosition: 'left',
-            iconName:'action:edit',
+            iconName:'utility:preview',
         }
     },
     { label: 'RapportNr', fieldName: 'Name' },
