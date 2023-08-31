@@ -59,7 +59,6 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
 
     @wire(allReports,{workTrailId: '$recordId'})
     wiredReports({data, error}){
-        console.log('Data: '+JSON.stringify(data));
         if(data){
             this.records = data;
             this.error = undefined;
@@ -67,6 +66,16 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
             this.error = error;
             this.records = undefined;
         }
+    }
+
+    defaultStartDate(){
+        var startDate = new Date(new Date().getTime());
+        return startDate.toISOString();
+    }
+
+    defaultEndDate(){
+        var endDate = new Date(new Date().getTime());
+        return endDate.toISOString();
     }
 
     get isIPS(){
@@ -107,7 +116,7 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     }
 
     submitEnd(event){
-        this.intervallDateFrom = null;
+        this.intervallDateFrom =null;
         this.intervallDateTo = null;
         this.reportType = 'End report';
 
@@ -122,7 +131,6 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                 "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
                 "OwnerId":this.userId
             } };
-        console.log(recordInput);
         createRecord(recordInput)
         .then((ips_report_c) =>{
             this.reportId = ips_report_c.id;
@@ -133,7 +141,6 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                   actionName: 'view'
                 }
               });
-            console.log('Rapport id er: '+this.reportId);
         })
         .catch(error => {
             console.log(error);
@@ -161,7 +168,6 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                 "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
                 "OwnerId":this.userId
             } };
-        console.log(recordInput);
         createRecord(recordInput)
         .then((ips_report_c) =>{
             this.reportId = ips_report_c.id;
@@ -172,11 +178,14 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                   actionName: 'view'
                 }
               });
-            console.log('Rapport id er: '+this.reportId);
         })
         .catch(error => {
             console.log(error);
         })
+    }
+
+    handleCancel(event){
+        this.isIntervall = false;
     }
 
     navigateToRecordViewPage(event){
