@@ -541,15 +541,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
 Case setter tittel basert på om det er IPS eller UO</description>
         <name>varDocumentTitle</name>
         <dataType>String</dataType>
-        <expression>IF({!varEnd},
-CASE({!varRecordTypeName},
-&quot;ips_Supported_Employment&quot;,&quot;Sluttrapport Utvidet oppfølging&quot;,
-&quot;IPS&quot;,&quot;Sluttnotat IPS&quot;,
-&quot;&quot;),
-CASE({!varRecordTypeName},
-&quot;ips_Supported_Employment&quot;,&quot;Underveisrapport Utvidet oppfølging&quot;,
-&quot;IPS&quot;,&quot;Underveisnotat IPS&quot;,
-&quot;&quot;))</expression>
+        <expression>{!getReport.IPS_subject__c}</expression>
     </formulas>
     <formulas>
         <name>varUserNavIdent</name>
@@ -1240,7 +1232,7 @@ CASE({!varRecordTypeName},
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>Arkivere rapport</stringValue>
+            <stringValue>Journalføre rapport</stringValue>
         </value>
     </variables>
 </Flow>
