@@ -37,6 +37,7 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     @track intervallDateTo;
     @track isIntervall = false;
     @track isEnd = false;
+    @track isDatesNull = false;
     reportType;
     reportStatus ='Open';
     columns = COLUMNS;
@@ -99,17 +100,6 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                 this.isEnd = false;
                 this.reportType = 'Intervall';
                 break;
-            case 'Opprett Avslutningsnotat':
-                this.isIntervall = false;
-                this.isEnd = true;
-                this.reportType = 'End report';
-
-                break;
-            case 'Opprett Sluttrapport':
-                this.isEnd = true;    
-                this.isIntervall = false;
-                this.reportType = 'End report';
-                break;
             default:
               return;
           }
@@ -157,31 +147,35 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                 this.intervallDateTo = element.value;
         },this);
 
-        const recordInput= { 
-            "apiName": "ips_report__c",
-            "fields" :{
-                "IPS_intervallDateTo__c":this.intervallDateTo,
-                "IPS_intervallDateFrom__c":this.intervallDateFrom,
-                "IPS_report_Type__c":this.reportType,
-                "IPS_status__c":this.reportStatus,
-                "IPS_workTrailName__c":this.recordId,
-                "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
-                "OwnerId":this.userId
-            } };
-        createRecord(recordInput)
-        .then((ips_report_c) =>{
-            this.reportId = ips_report_c.id;
-            this[NavigationMixin.Navigate]({
-                type: 'standard__recordPage',
-                attributes: {
-                  recordId: this.reportId,
-                  actionName: 'view'
-                }
-              });
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if(this.intervallDateFrom && this.intervallDateTo){
+            const recordInput= { 
+                "apiName": "ips_report__c",
+                "fields" :{
+                    "IPS_intervallDateTo__c":this.intervallDateTo,
+                    "IPS_intervallDateFrom__c":this.intervallDateFrom,
+                    "IPS_report_Type__c":this.reportType,
+                    "IPS_status__c":this.reportStatus,
+                    "IPS_workTrailName__c":this.recordId,
+                    "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
+                    "OwnerId":this.userId
+                } };
+            createRecord(recordInput)
+            .then((ips_report_c) =>{
+                this.reportId = ips_report_c.id;
+                this[NavigationMixin.Navigate]({
+                    type: 'standard__recordPage',
+                    attributes: {
+                      recordId: this.reportId,
+                      actionName: 'view'
+                    }
+                  });
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }else{
+            this.isDatesNull = true;  
+        }     
     }
 
     handleCancel(event){
