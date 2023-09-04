@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <description>Genererer pdf dokument av rapport</description>
+        <description>Genererer pdf dokument til veilederapport</description>
         <name>Generate_Document</name>
         <label>Generate Document</label>
         <locationX>314</locationX>
@@ -244,8 +244,8 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Legger til verdier for request. 
-Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</description>
+        <description>Legger til verdier for request.
+            Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</description>
         <name>Journal_Request_Assignment</name>
         <label>Journal Request Assignment</label>
         <locationX>314</locationX>
@@ -477,7 +477,8 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
     <description>Send IPS/SE report to Joark</description>
     <environments>Default</environments>
     <formulas>
-        <description>Formula to define the journal case type (Sakstype). If no Journal Case ID has been input, default is GENERELL_SAK</description>
+        <description>Formula to define the journal case type (Sakstype). If no Journal Case ID has
+            been input, default is GENERELL_SAK</description>
         <name>Journal_Case_Type</name>
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!Journal_Case_ID}), &apos;GENERELL_SAK&apos;, &apos;FAGSAK&apos;)</expression>
@@ -486,11 +487,14 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
         <description>Formula to generate name convention on journal required format (For persons)</description>
         <name>Person_Full_Name</name>
         <dataType>String</dataType>
-        <expression>{!Get_Account_Info.CRM_Person__r.INT_LastName__c} &amp; &apos;, &apos; &amp; {!Get_Account_Info.CRM_Person__r.INT_FirstName__c} &amp; &apos; &apos; &amp;{!Get_Account_Info.CRM_Person__r.INT_MiddleName__c}</expression>
+        <expression>{!Get_Account_Info.CRM_Person__r.INT_LastName__c} &amp; &apos;, &apos; &amp;
+            {!Get_Account_Info.CRM_Person__r.INT_FirstName__c} &amp; &apos; &apos;
+            &amp;{!Get_Account_Info.CRM_Person__r.INT_MiddleName__c}</expression>
     </formulas>
     <formulas>
-        <description>Tester på om rapport er en sluttrapport, hvis ikke er antagelsen at det er en underveisrapport.
-Case setter tittel basert på om det er IPS eller UO</description>
+        <description>Tester på om rapport er en sluttrapport, hvis ikke er antagelsen at det er en
+            underveisrapport.
+            Case setter tittel basert på om det er IPS eller UO</description>
         <name>varDocumentTitle</name>
         <dataType>String</dataType>
         <expression>{!getReport.IPS_subject__c}</expression>
@@ -667,19 +671,25 @@ Case setter tittel basert på om det er IPS eller UO</description>
         </connector>
         <fields>
             <name>displayErrorScreen</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-family: sans-serif; font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong
+                style=&quot;font-family: sans-serif; font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>displayErrorTxt</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: sans-serif; font-size: 14px;&quot;&gt;Noe gikk galt. Kontakt din administrator med følgende referanse: {!varErrorMessage}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span
+                style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);
+                font-family: sans-serif; font-size: 14px;&quot;&gt;Noe gikk galt. Kontakt din
+                administrator med følgende referanse: {!varErrorMessage}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <description>Gir bruker en melding om type rapport og deltaker som det sendes en arkivering på</description>
+        <description>Gir bruker en melding om type rapport og deltaker som det sendes en arkivering
+            på</description>
         <name>displayOverviewOfReport</name>
         <label>displayOverviewOfReport</label>
         <locationX>314</locationX>
@@ -692,7 +702,9 @@ Case setter tittel basert på om det er IPS eller UO</description>
         </connector>
         <fields>
             <name>displayTitle2</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-size: 18px; font-family: sans-serif;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong
+                style=&quot;font-size: 18px; font-family:
+                sans-serif;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -855,7 +867,10 @@ Case setter tittel basert på om det er IPS eller UO</description>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayNameTxt</name>
-                    <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-family: sans-serif; font-size: 14px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Deltakers navn:&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span
+                        style=&quot;font-family: sans-serif; font-size: 14px;&quot;&gt;&lt;span
+                        class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Deltakers
+                        navn:&lt;/span&gt;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -871,7 +886,9 @@ Case setter tittel basert på om det er IPS eller UO</description>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displaySummarize</name>
-                    <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-family: sans-serif; font-size: 14px;&quot;&gt;{!getReport.IPS_participantName__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span
+                        style=&quot;font-family: sans-serif; font-size:
+                        14px;&quot;&gt;{!getReport.IPS_participantName__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -944,12 +961,16 @@ Case setter tittel basert på om det er IPS eller UO</description>
         </connector>
         <fields>
             <name>displaySuccessTxt</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-family: sans-serif; font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong
+                style=&quot;font-family: sans-serif; font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>displayTxt4</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px; font-family: sans-serif;&quot;&gt;Rapport er journalført: {!varJournalId}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span
+                style=&quot;font-size: 14px; font-family: sans-serif;&quot;&gt;Rapport er
+                journalført: {!varJournalId}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -966,7 +987,8 @@ Case setter tittel basert på om det er IPS eller UO</description>
         <allowPause>false</allowPause>
         <fields>
             <name>displayTittle1</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong
+                style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1014,7 +1036,8 @@ Case setter tittel basert på om det er IPS eller UO</description>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <description>Unique reference to the case in NAVs fagsystem that the journal post should relate to.</description>
+        <description>Unique reference to the case in NAVs fagsystem that the journal post should
+            relate to.</description>
         <name>Journal_Case_ID</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
