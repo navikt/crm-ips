@@ -32,51 +32,6 @@
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
-        <name>Log_Journal_Entry_Error</name>
-        <label>Log Journal Entry Error</label>
-        <locationX>314</locationX>
-        <locationY>2270</locationY>
-        <actionName>LoggerUtility</actionName>
-        <actionType>apex</actionType>
-        <dataTypeMappings>
-            <typeName>T__refRecord</typeName>
-            <typeValue>Journal_Entry__c</typeValue>
-        </dataTypeMappings>
-        <flowTransactionModel>Automatic</flowTransactionModel>
-        <inputParameters>
-            <name>domain</name>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>logLevel</name>
-            <value>
-                <stringValue>ERROR</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>logMessage</name>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>refRecord</name>
-            <value>
-                <elementReference>Journal_Entry_SF</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>source</name>
-            <value>
-                <stringValue>IPS - send report to journal</stringValue>
-            </value>
-        </inputParameters>
-        <nameSegment>LoggerUtility</nameSegment>
-        <versionSegment>1</versionSegment>
-    </actionCalls>
-    <actionCalls>
         <description>Calls journal utils to perform the API post action</description>
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
@@ -191,7 +146,7 @@
     <assignments>
         <name>Assign_Journal_Entry_Values</name>
         <label>Assign Journal Entry Values</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>2054</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
@@ -256,9 +211,6 @@
                 <elementReference>varRecordTypeId</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>createJournalEntry</targetReference>
-        </connector>
     </assignments>
     <assignments>
         <description>Assigns needed values to document variant wrapper</description>
@@ -406,7 +358,7 @@ Tema er lagt til verdien generell = GEN og alle journaltyper er inngående</desc
     <assignments>
         <name>Set_Post_Failed</name>
         <label>Set Post Failed</label>
-        <locationX>578</locationX>
+        <locationX>446</locationX>
         <locationY>1838</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
@@ -570,16 +522,6 @@ Case setter tittel basert på om det er IPS eller UO</description>
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <recordCreates>
-        <name>createJournalEntry</name>
-        <label>createJournalEntry</label>
-        <locationX>50</locationX>
-        <locationY>2162</locationY>
-        <faultConnector>
-            <targetReference>Log_Journal_Entry_Error</targetReference>
-        </faultConnector>
-        <inputReference>Journal_Entry_SF</inputReference>
-    </recordCreates>
     <recordLookups>
         <description>Henter informasjon om deltaker for arkivering</description>
         <name>Get_Account_Info</name>
@@ -605,7 +547,7 @@ Case setter tittel basert på om det er IPS eller UO</description>
     <recordLookups>
         <name>getRecordTypeJournalEntry</name>
         <label>getRecordTypeJournalEntry</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>1946</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -684,7 +626,7 @@ Case setter tittel basert på om det er IPS eller UO</description>
     <recordUpdates>
         <name>UpdateReport</name>
         <label>UpdateReport</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>1838</locationY>
         <connector>
             <targetReference>getRecordTypeJournalEntry</targetReference>
@@ -715,7 +657,7 @@ Case setter tittel basert på om det er IPS eller UO</description>
     <screens>
         <name>displayError</name>
         <label>displayError</label>
-        <locationX>578</locationX>
+        <locationX>446</locationX>
         <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -992,7 +934,7 @@ Case setter tittel basert på om det er IPS eller UO</description>
     <screens>
         <name>displaySuccess</name>
         <label>displaySuccess</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1051,7 +993,7 @@ Case setter tittel basert på om det er IPS eller UO</description>
             <targetReference>getReport</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>bolSuccess</name>
         <dataType>Boolean</dataType>
