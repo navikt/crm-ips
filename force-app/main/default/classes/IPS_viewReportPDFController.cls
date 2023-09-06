@@ -219,10 +219,12 @@ public with sharing class IPS_viewReportPDFController {
         for(Event e:userEvent){
             if(e.IPS_Status1__c == 'Completed'){
                 if(isEndReport && e.IPS_participant_related_to_meeting__c==true){
-                    tempCompletedNumber++;
-					tempAccountName.add(e.RelatedToAccount__r.name);
+                    tempCompletedNumber++;	
                 }
                 if(isIntervallReport){tempCompletedEmplMeeting.add(e);}     
+            }
+            if(e.ips_Subcategory_Type_IPS__c =='Job development'||e.ips_Subcategory_Type_IPS__c =='Job support' || e.IPS_Subcategory_Type_UO__c =='Relationship building'){
+                tempAccountName.add(e.RelatedToAccount__r.name);
             }
             
             if(e.IPS_Status1__c == 'Participant Absent'){
@@ -254,7 +256,7 @@ public with sharing class IPS_viewReportPDFController {
             FROM event 
             WHERE 
                 IPS_participant_related_to_meeting__c = true
-                AND IPS_Type__c IN ('Meeting with Employer','Meeting with Participant')
+                AND IPS_Type__c IN ('Meeting with Employer','Meeting with Participant','Start up meeting','First Meeting with Employer')
             	AND ActivityDate > :sluttDato 
                 AND WhatId = :workTrailId 
                 AND IPS_Status1__c IN ('Open')
