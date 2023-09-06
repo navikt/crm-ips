@@ -3,17 +3,24 @@
     <fullName>IPS_subject__c</fullName>
     <deprecated>false</deprecated>
     <externalId>false</externalId>
-    <formula>if(ISPICKVAL(IPS_report_Type__c,&apos;Intervall&apos;) &amp;&amp;  IPS_worktrail_Type__c ==&apos;IPS&apos;,&apos;Underveisnotat - IPS&apos;,
-if(ISPICKVAL(IPS_report_Type__c,&apos;Intervall&apos;) &amp;&amp;  IPS_worktrail_Type__c ==&apos;Supported Employment&apos;,&apos;Underveisrapport - Arbeid med støtte&apos;,
-if(ISPICKVAL(IPS_report_Type__c,&apos;Intervall&apos;) &amp;&amp;  IPS_worktrail_Type__c ==&apos;Utvidet Oppfølging&apos;,&apos;Underveisrapport - Arbeid med støtte&apos;,
-if(ISPICKVAL(IPS_report_Type__c,&apos;Intervall&apos;) &amp;&amp;  IPS_worktrail_Type__c ==&apos;Utvidet Oppfølging&apos;,&apos;Sluttrapport - Arbeid med støtte&apos;,
-if(ISPICKVAL(IPS_report_Type__c,&apos;End report&apos;) &amp;&amp; IPS_worktrail_Type__c ==&apos;IPS&apos;,&apos;Avslutningsnotat - IPS&apos;,
-if(ISPICKVAL(IPS_report_Type__c,&apos;End report&apos;) &amp;&amp; IPS_worktrail_Type__c ==&apos;Supported Employment&apos;,&apos;Sluttrapport - Arbeid med støtte&apos;,null)
+    <formula>IF(IPS_worktrail_Type__c ==&apos;IPS&apos;,
+CASE(IPS_report_Type__c,
+&apos;Intervall&apos;,&apos;Underveisnotat - IPS&apos;,
+&apos;End report&apos;,&apos;Avslutningsnotat - IPS&apos;,
+&apos;Ingen emne&apos;
 )
+,IF(IPS_worktrail_Type__c ==&apos;Utvidet Oppfølging&apos;,
+CASE(IPS_report_Type__c,
+&apos;Intervall&apos;,&apos;Underveisrapport - Arbeid med støtte&apos;,
+&apos;End report&apos;,&apos;Sluttrapport - Arbeid med støtte&apos;,
+&apos;Ingen emne&apos;
 )
-)
-)
-)</formula>
+,IF(IPS_worktrail_Type__c ==&apos;Supported Employment&apos;,
+CASE(IPS_report_Type__c,
+&apos;Intervall&apos;,&apos;Underveisrapport - Arbeid med støtte&apos;,
+&apos;End report&apos;,&apos;Sluttrapport - Arbeid med støtte&apos;,
+&apos;Ingen emne&apos;)
+,&apos;Ingen emne&apos;)))</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>IPS_subject</label>
     <required>false</required>
