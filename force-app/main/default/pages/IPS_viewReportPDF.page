@@ -390,13 +390,13 @@
                     <apex:outputpanel rendered="{!closedGoal.size != 0}">
                         <apex:outputText ><h3>Delmål</h3></apex:outputText>
                             <div style ="padding-bottom: 10px;"></div>
-                            <table  style="width: 100%;border:1px solid #262626">
+                            <table  style="width: 100%;border:1px solid #262626;border-collapse: collapse;table-layout: fixed;">
                                 <tr style=" vertical-align:top;background-color: #F1F1F1;">
                                     <th style="width: 20%;">Emne</th>
                                     <th style="width: 10%;">Opprettet dato</th>
                                     <th style="width: 10%;">Frist</th>
                                     <th style="width: 10%;">Fullført dato</th>
-                                    <th style="width: 50%;">Beskrivelse av målet</th>
+                                    <th >Beskrivelse av målet</th>
                                 </tr>
                                 <apex:repeat value="{!closedGoal}" var="goal" >
                                     <tr style="vertical-align:top;border:1px solid #FF0000;">
@@ -416,7 +416,7 @@
                                                 <apex:param value="{!goal.CompletedDateTime}"/>
                                             </apex:outputText>
                                         </td>
-                                        <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!goal.Description}"/></td>
+                                        <td style="border:1px solid #F1F1F1; word-wrap: break-word;"><apex:outputField value="{!goal.Description}"/></td>
                                     </tr>
                                 </apex:repeat>
                             </table>
