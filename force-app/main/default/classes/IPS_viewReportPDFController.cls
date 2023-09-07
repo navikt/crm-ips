@@ -120,9 +120,9 @@ public with sharing class IPS_viewReportPDFController {
                                         	ips_Referred_date__c,
                                             ips_Start_Date__c, 
                                             ips_End_Date__c, 
-                                            toLabel(End_Cause__c), 
-                                            toLabel(ips_Other_end_cases__c), 
-                                            toLabel(ips_Work__c), 
+                                            End_Cause__c, 
+                                            ips_Other_end_cases__c, 
+                                            ips_Work__c, 
                                             ips_Main_Goal_list__c,
                                         	ips_Priority_career_wishes__c,
                                         	ips_Desired_profession_industry_career__c,
@@ -200,7 +200,7 @@ public with sharing class IPS_viewReportPDFController {
     /********************** Meetings *********************************/
     private void getEmployerActivity(){
         
-        String emplSelect = 'SELECT id,Subject,ActivityDate,RelatedToAccount__r.name,IPS_employerName__c,Konto_kontakt__r.Name,IPS_Type__c,toLabel(ips_Subcategory_Type_IPS__c),toLabel(IPS_Subcategory_Type_UO__c),IPS_Status1__c,IPS_participant_related_to_meeting__c FROM event';
+        String emplSelect = 'SELECT id,Subject,ActivityDate,RelatedToAccount__r.name,IPS_employerName__c,Konto_kontakt__r.Name,IPS_Type__c,ips_Subcategory_Type_IPS__c,IPS_Subcategory_Type_UO__c,IPS_Status1__c,IPS_participant_related_to_meeting__c FROM event';
         String emplWhere = ' WHERE IPS_Type__c IN (\'Meeting with Employer\',\'First Meeting with Employer\')';
         String emplId = ' AND WhatId = :workTrailId';
         String emplFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
@@ -251,7 +251,7 @@ public with sharing class IPS_viewReportPDFController {
                 Description,
                 IPS_employerName__c,
             	Konto_kontakt__r.Name,
-                toLabel(IPS_Type__c),
+                IPS_Type__c,
                 IPS_Status1__c 
             FROM event 
             WHERE 
@@ -318,7 +318,7 @@ public with sharing class IPS_viewReportPDFController {
             Name,
             ips_Work_Trail__c,
             ips_Employer__r.Name,
-            toLabel(ips_Form_of_Employment__c),
+            ips_Form_of_Employment__c,
             ips_Start_Date__c,
             IPS_UO_Stillingsbeskrivelse__c,
             ips_Job_Support__c,
@@ -340,7 +340,7 @@ public with sharing class IPS_viewReportPDFController {
             Name,
             ips_Work_Trail__c,
             ips_Employer__r.Name,
-            toLabel(ips_Form_of_Employment__c),
+            ips_Form_of_Employment__c,
             ips_Start_Date__c,
             IPS_UO_Stillingsbeskrivelse__c,
             ips_Job_Support__c,
@@ -377,7 +377,7 @@ public with sharing class IPS_viewReportPDFController {
             Name,
             ips_Work_Trail__c,
             ips_Name_of_the_Education_Institution__c,
-            toLabel(ips_Form_of_Education__c),
+            ips_Form_of_Education__c,
             ips_Start_Date__c,
             ips_End_Date__c,
             ips_What_did_not_work_with_thiseducation__c,
@@ -396,7 +396,7 @@ public with sharing class IPS_viewReportPDFController {
             Name,
             ips_Work_Trail__c,
             ips_Name_of_the_Education_Institution__c,
-            toLabel(ips_Form_of_Education__c),
+            ips_Form_of_Education__c,
             ips_Start_Date__c,
             ips_End_Date__c,
             ips_What_did_not_work_with_thiseducation__c,
