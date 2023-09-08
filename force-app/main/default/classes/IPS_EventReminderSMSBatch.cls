@@ -11,7 +11,7 @@ public without sharing class IPS_EventReminderSMSBatch implements Database.Batch
             horizonDate = Date.today().addDays(4);
         }
         String query = 'SELECT ';
-        query += 'Id, WhatId, WhoId, StartDateTime, EndDateTime ';
+        query += 'Id, WhatId, WhoId, StartDateTime, EndDateTime, ips_uo_Kanal__c';
         query += 'FROM Event ';
         query += 'WHERE StartDateTime < :horizonDate ';
         query += 'AND StartDateTime > :now ';

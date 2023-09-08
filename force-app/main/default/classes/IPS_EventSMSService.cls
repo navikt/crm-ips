@@ -60,7 +60,7 @@ public without sharing class IPS_EventSMSService {
     }
 
     private static String constructCreatedMessage(Event event) {
-        String message = 'Det er satt opp et møte med jobbspesialisten din.';
+        String message = 'Det er satt opp et '+event.ips_uo_Kanal__c +' møte med jobbspesialisten din.';
         message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
         message += '\n\nLogg inn på nav.no for detaljer. Du kan ikke svare på denne meldingen.';
         return message;
@@ -96,7 +96,7 @@ public without sharing class IPS_EventSMSService {
     }
 
     private static String constructReminderMessage(Event event) {
-        String message = 'Husk møte med jobbspesialisten din.';
+        String message = 'Husk '+ event.ips_uo_Kanal__c + ' møte med jobbspesialisten din.';
         message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
         message += '\n\nDu kan ikke svare på denne meldingen.';
         return message;
@@ -132,7 +132,7 @@ public without sharing class IPS_EventSMSService {
     }
 
     private static String construcChangedMessage(Event event) {
-        String message = 'Møte er endret. Ny tid for møte med jobbspesialisten din.';
+        String message = 'Møte er endret. Ny tid for'+ event.ips_uo_Kanal__c + ' møte med jobbspesialisten din.';
         message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
         message += '\n\nDu kan ikke svare på denne meldingen.';
         return message;
