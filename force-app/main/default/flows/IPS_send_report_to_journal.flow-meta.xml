@@ -144,75 +144,6 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Assign_Journal_Entry_Values</name>
-        <label>Assign Journal Entry Values</label>
-        <locationX>182</locationX>
-        <locationY>2054</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.Journal_Entry_ID__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>varJournalId</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.CreatedDate</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.CurrentDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.CRM_Created_By_Ident__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$User.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.CRM_Journal_Date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.CurrentDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.Journal_Entry_ID__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>varJournalId</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.CRM_Created_By_NAV_Unit__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$User.Department</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.Theme__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>varIPSTema</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.RecordTypeId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>varRecordTypeId</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
         <description>Assigns needed values to document variant wrapper</description>
         <name>Document_Variant_Assignment</name>
         <label>Document Variant Assignment</label>
@@ -355,29 +286,6 @@
             <targetReference>Journal_Request_Assignment</targetReference>
         </connector>
     </assignments>
-    <assignments>
-        <name>Set_Post_Failed</name>
-        <label>Set Post Failed</label>
-        <locationX>446</locationX>
-        <locationY>1838</locationY>
-        <assignmentItems>
-            <assignToReference>Journal_Entry_SF.Journal_Entry_Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Failed</stringValue>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <choices>
-        <name>Endreport</name>
-        <choiceText>Sluttrapport/Avslutningsnotat</choiceText>
-        <dataType>String</dataType>
-    </choices>
-    <choices>
-        <name>Intervallreport</name>
-        <choiceText>Underveisrapport</choiceText>
-        <dataType>String</dataType>
-    </choices>
     <decisions>
         <name>Check_Post_State</name>
         <label>Check Post State</label>
@@ -549,29 +457,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>getRecordTypeJournalEntry</name>
-        <label>getRecordTypeJournalEntry</label>
-        <locationX>182</locationX>
-        <locationY>1946</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Assign_Journal_Entry_Values</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>IPS_Journal_Entry</stringValue>
-            </value>
-        </filters>
-        <object>RecordType</object>
-        <outputAssignments>
-            <assignToReference>varRecordTypeId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
         <description>Henter nødvendig rapport informasjon fra Jobbspor rapport</description>
         <name>getReport</name>
         <label>getReport</label>
@@ -632,9 +517,6 @@
         <label>UpdateReport</label>
         <locationX>182</locationX>
         <locationY>1838</locationY>
-        <connector>
-            <targetReference>getRecordTypeJournalEntry</targetReference>
-        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -666,9 +548,6 @@
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Set_Post_Failed</targetReference>
-        </connector>
         <fields>
             <name>displayErrorScreen</name>
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong
@@ -1015,7 +894,7 @@
             <targetReference>getReport</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>bolSuccess</name>
         <dataType>Boolean</dataType>
