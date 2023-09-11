@@ -223,7 +223,7 @@ public with sharing class IPS_viewReportPDFController {
                 }
                 if(isIntervallReport){tempCompletedEmplMeeting.add(e);}     
             }
-            if(e.ips_Subcategory_Type_IPS__c =='Job development'||e.ips_Subcategory_Type_IPS__c =='Job support' || e.IPS_Subcategory_Type_UO__c =='Relationship building'){
+            if((e.ips_Subcategory_Type_IPS__c =='Job development'||e.ips_Subcategory_Type_IPS__c =='Job support' || e.IPS_Subcategory_Type_UO__c =='Relationship building')&& e.IPS_Status1__c!='Cancelled' ){
                 tempAccountName.add(e.RelatedToAccount__r.name);
             }
             
