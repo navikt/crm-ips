@@ -7,7 +7,7 @@ public without sharing class IPS_EventChangedSMSBatch implements Database.Batcha
     public Database.QueryLocator start(Database.BatchableContext bc) {
         Datetime now = Datetime.now();
         String query = 'SELECT ';
-        query += 'Id, WhatId, WhoId, StartDateTime, EndDateTime ';
+        query += 'Id, WhatId, WhoId, StartDateTime, EndDateTime, ips_uo_Kanal__c ';
         query += 'FROM Event ';
         query += 'WHERE StartDateTime > :now ';
         query += 'AND (RecordType.DeveloperName = \'IPS_Event\' OR RecordType.DeveloperName = \'Ips_uo_Deltakermote\' OR RecordType.DeveloperName = \'ips_UO_m_ter\') ';
