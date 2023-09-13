@@ -1,92 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
-    <assignments>
-        <name>addRemoveAssignment</name>
-        <label>addRemoveAssignment</label>
-        <locationX>50</locationX>
-        <locationY>566</locationY>
-        <assignmentItems>
-            <assignToReference>varChoice</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>updatePersonSMSReservation</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addReserveAssignmnet</name>
-        <label>addReserveAssignmnet</label>
-        <locationX>314</locationX>
-        <locationY>566</locationY>
-        <assignmentItems>
-            <assignToReference>varChoice</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>updatePersonSMSReservation</targetReference>
-        </connector>
-    </assignments>
-    <decisions>
-        <name>checkSelectedBox</name>
-        <label>checkSelectedBox</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
-        <defaultConnector>
-            <targetReference>displayWarningTxt</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>noChoice</defaultConnectorLabel>
-        <rules>
-            <name>isRemove</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>chkRemoveReserv</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getPerson.IPS_IsReservationAgainstSMS__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addRemoveAssignment</targetReference>
-            </connector>
-            <label>isRemove</label>
-        </rules>
-        <rules>
-            <name>isReserve</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>chkReserv</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getPerson.IPS_IsReservationAgainstSMS__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addReserveAssignmnet</targetReference>
-            </connector>
-            <label>isReserve</label>
-        </rules>
-    </decisions>
     <description>Jobbspesialist kan reservere deltaker på jobbsporet mot sms fra jobbsporet, eller oppheve reservasjonen</description>
     <environments>Default</environments>
     <interviewLabel>IPS_sms_reserv_participant {!$Flow.CurrentDateTime}</interviewLabel>
@@ -113,7 +27,7 @@
     <recordLookups>
         <name>getPerson</name>
         <label>getPerson</label>
-        <locationX>314</locationX>
+        <locationX>176</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -137,7 +51,7 @@
         <description>Get worktrail data that triggered flow</description>
         <name>getWorkTrail</name>
         <label>getWorkTrail</label>
-        <locationX>314</locationX>
+        <locationX>176</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -161,8 +75,8 @@
     <recordUpdates>
         <name>update_workTrail</name>
         <label>update workTrail</label>
-        <locationX>314</locationX>
-        <locationY>974</locationY>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -174,7 +88,7 @@
         <inputAssignments>
             <field>IPS_isSMSReserved__c</field>
             <value>
-                <elementReference>varChoice</elementReference>
+                <elementReference>displayToggle.value</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -182,8 +96,8 @@
     <recordUpdates>
         <name>updatePersonSMSReservation</name>
         <label>updatePersonSMSReservation</label>
-        <locationX>314</locationX>
-        <locationY>866</locationY>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
         <connector>
             <targetReference>update_workTrail</targetReference>
         </connector>
@@ -198,148 +112,71 @@
         <inputAssignments>
             <field>IPS_IsReservationAgainstSMS__c</field>
             <value>
-                <elementReference>varChoice</elementReference>
+                <elementReference>displayToggle.value</elementReference>
             </value>
         </inputAssignments>
         <object>Person__c</object>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
-        <name>displayWarningTxt</name>
-        <label>displayWarningTxt</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <fields>
-            <name>displayWarning</name>
-            <fieldText>&lt;p&gt;{!varWarningTxt}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
         <name>SMSDisplayMain</name>
         <label>SMSDisplayMain</label>
-        <locationX>314</locationX>
+        <locationX>176</locationX>
         <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>checkSelectedBox</targetReference>
+            <targetReference>updatePersonSMSReservation</targetReference>
         </connector>
         <fields>
-            <name>SMSDisplayMain_Section1</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>SMSDisplayMain_Section1_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>chkReserv</name>
-                    <dataType>Boolean</dataType>
-                    <defaultValue>
-                        <booleanValue>false</booleanValue>
-                    </defaultValue>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>true</isRequired>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>1</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>SMSDisplayMain_Section1_Column2</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayReserveTxt</name>
-                    <fieldText>&lt;p&gt;{!varReservTxt}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>11</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>getPerson.IPS_IsReservationAgainstSMS__c</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <booleanValue>false</booleanValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
+            <name>displayTitle</name>
+            <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>SMSDisplayMain_Section2</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>SMSDisplayMain_Section2_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>chkRemoveReserv</name>
-                    <dataType>Boolean</dataType>
-                    <defaultValue>
-                        <booleanValue>true</booleanValue>
-                    </defaultValue>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>true</isRequired>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>1</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>SMSDisplayMain_Section2_Column2</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayRemoveReserveTxt</name>
-                    <fieldText>&lt;p&gt;{!varRemoveReserveTxt}&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>11</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>getPerson.IPS_IsReservationAgainstSMS__c</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <booleanValue>true</booleanValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
+            <name>displayToggle</name>
+            <extensionName>flowruntime:toggle</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>disabled</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>messageToggleActive</name>
+                <value>
+                    <stringValue>reservasjon på</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>messageToggleInactive</name>
+                <value>
+                    <stringValue>reservasjon av</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>SMS reservasjon</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>getPerson.IPS_IsReservationAgainstSMS__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>188</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorkTrail</targetReference>
@@ -354,36 +191,6 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>varChoice</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
-    </variables>
-    <variables>
-        <name>varRemoveReserveTxt</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>&lt;span style= &quot;font-family:sans-serif;font-size: 1rem;&quot;&gt;Fjern reservasjon av sms for deltaker fra jobbsporet.&lt;/span style&gt;</stringValue>
-        </value>
-    </variables>
-    <variables>
-        <name>varReservTxt</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>&lt;span style= &quot;font-family:sans-serif;font-size: 1rem;&quot;&gt;Reserver deltaker mot sms fra jobbsporet.&lt;/span style&gt;</stringValue>
-        </value>
-    </variables>
-    <variables>
         <name>varTitle</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -391,16 +198,6 @@
         <isOutput>false</isOutput>
         <value>
             <stringValue>&lt;span style= &quot;font-family:sans-serif;font-size: 1.5rem;&quot;&gt;SMS reservasjon av deltaker i jobbsporet&lt;/span style&gt;</stringValue>
-        </value>
-    </variables>
-    <variables>
-        <name>varWarningTxt</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>&lt;span style= &quot;font-family:sans-serif;font-size: 1rem;&quot;&gt;Det er ikke samsvar mellom reservasjonen på deltaker og jobbsporet. Meld sak i porten.&lt;/span style&gt;</stringValue>
         </value>
     </variables>
 </Flow>
