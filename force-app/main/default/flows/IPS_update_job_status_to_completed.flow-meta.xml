@@ -5,7 +5,7 @@
         <name>assignJobCompleted</name>
         <label>assignJobCompleted</label>
         <locationX>50</locationX>
-        <locationY>360</locationY>
+        <locationY>660</locationY>
         <assignmentItems>
             <assignToReference>varJobStatus</assignToReference>
             <operator>Assign</operator>
@@ -14,13 +14,13 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateJobStatus</targetReference>
+            <targetReference>checkIfStatusIsNotEmpty</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>assignJobOngoing</name>
         <label>assignJobOngoing</label>
-        <locationX>314</locationX>
+        <locationX>50</locationX>
         <locationY>360</locationY>
         <assignmentItems>
             <assignToReference>varJobStatus</assignToReference>
@@ -30,54 +30,44 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateJobStatus</targetReference>
+            <targetReference>isNothingcheckIsCompleted</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <name>checkDateAndStatus</name>
-        <label>checkDateAndStatus</label>
-        <locationX>314</locationX>
-        <locationY>252</locationY>
+        <name>checkIfStatusIsNotEmpty</name>
+        <label>checkIfStatusIsNotEmpty</label>
+        <locationX>182</locationX>
+        <locationY>852</locationY>
         <defaultConnectorLabel>isNothing</defaultConnectorLabel>
         <rules>
-            <name>isJobCompleted</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
+            <name>isNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <leftValueReference>varToday</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <elementReference>varToday</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Planned</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Ongoing</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>assignJobCompleted</targetReference>
+                <targetReference>updateJobStatus</targetReference>
             </connector>
-            <label>isJobCompleted</label>
+            <label>isNotEmpty</label>
         </rules>
+    </decisions>
+    <decisions>
+        <description>Test if there is any planned jobs - that should be set to ongoing</description>
+        <name>checkIsOngoing</name>
+        <label>checkIsOngoing</label>
+        <locationX>182</locationX>
+        <locationY>252</locationY>
+        <defaultConnector>
+            <targetReference>isNothingcheckIsCompleted</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isNothing</defaultConnectorLabel>
         <rules>
             <name>isJobOngoing</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 4 AND ((2 AND 3) OR (5 AND 6))</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
                 <operator>IsNull</operator>
@@ -106,10 +96,70 @@
                     <stringValue>Planned</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>assignJobOngoing</targetReference>
             </connector>
             <label>isJobOngoing</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isNothingcheckIsCompleted</name>
+        <label>checkIsCompleted</label>
+        <locationX>182</locationX>
+        <locationY>552</locationY>
+        <defaultConnector>
+            <targetReference>checkIfStatusIsNotEmpty</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isNothing</defaultConnectorLabel>
+        <rules>
+            <name>isJobCompleted</name>
+            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ongoing</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Planned</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assignJobCompleted</targetReference>
+            </connector>
+            <label>isJobCompleted</label>
         </rules>
     </decisions>
     <description>Scheduled flow, to update job status to completed after enddate is passed or ongoing based on startdate</description>
@@ -143,8 +193,8 @@
     <recordUpdates>
         <name>updateJobStatus</name>
         <label>updateJobStatus</label>
-        <locationX>314</locationX>
-        <locationY>552</locationY>
+        <locationX>50</locationX>
+        <locationY>960</locationY>
         <inputAssignments>
             <field>ips_Status__c</field>
             <value>
@@ -154,10 +204,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>checkDateAndStatus</targetReference>
+            <targetReference>checkIsOngoing</targetReference>
         </connector>
         <filterLogic>or</filterLogic>
         <filters>
@@ -177,7 +227,7 @@
         <object>ips_Job__c</object>
         <schedule>
             <frequency>Daily</frequency>
-            <startDate>2023-07-19</startDate>
+            <startDate>2023-09-27</startDate>
             <startTime>06:00:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
