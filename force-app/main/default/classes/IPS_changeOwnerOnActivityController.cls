@@ -16,6 +16,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
     }
         
     @TestVisible
+    @future
     private static void updateRelatedOwnerTask(Id currentId,Id ownerId){
         List<Task> alltasks = [SELECT 
                                id,OwnerId 
@@ -27,11 +28,15 @@ public without sharing class IPS_changeOwnerOnActivityController {
             for(Task t:alltasks){
             	t.OwnerId = ownerId;
         	}
-        	update alltasks; 
+            /*Set EmailHeader.triggerUserEmail to false, this disables send Email notification. Try to prevent email sendt when task changes owner.
+             * https://help.salesforce.com/s/articleView?id=000385933&type=1
+             * */
+            Database.DMLOptions dmlo = new Database.DMLOptions();
+            dmlo.EmailHeader.triggerUserEmail = false;
+            database.update(alltasks, dmlo);
         }    
     }
     
-    @TestVisible
     private static void updateRelatedOwnerEvent(Id currentId,Id ownerId,Id oldOwnerId){
         List<Event> allevents = [SELECT 
                                  id,OwnerId 
