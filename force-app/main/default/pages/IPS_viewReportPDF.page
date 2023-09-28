@@ -431,7 +431,7 @@
                 <apex:outputpanel rendered="{!notAttendedPartMeetingNumber > 0}">
                 <apex:outputText ><p>Det er {!notAttendedPartMeetingNumber} deltakermøte(r) hvor deltaker ikke har møtt.</p></apex:outputText>
                 </apex:outputpanel>
-                <div style ="padding-bottom: 5px;"></div>
+                <div style ="padding-bottom: 10px;"></div>
                 <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm2__c}"></apex:outputField>
                 
                 
@@ -460,6 +460,7 @@
                 
                 <apex:outputText rendered="{!isUO}"><h3>Deltakelse i jobb/arbeidstrening</h3></apex:outputText>
                 <apex:outputText rendered="{!isUO}"><h3>Oppsummering av jobb/arbeidstrening</h3></apex:outputText>
+                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
                 <apex:repeat value="{!activeParticipantsJobs}" var="jobs" >
                 	<div style="page-break-inside: avoid;">
                         <apex:outputText ><h4>Stilling som - {!jobs.Name} </h4></apex:outputText>
@@ -556,8 +557,6 @@
                         </apex:repeat>
                     </div>
                 </apex:outputpanel>
-                
-                <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
                 
                 <apex:outputText rendered="{!isIPS}"><h3>Beskriv jobbutviklingsprosessen</h3></apex:outputText>
                 <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm7__c}"></apex:outputField>
