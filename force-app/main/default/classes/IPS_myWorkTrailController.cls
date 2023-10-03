@@ -11,9 +11,10 @@ public without sharing class IPS_myWorkTrailController {
             String accountId = userList[0]?.AccountId;
             List<Work_Trail__c> mytrail = new List<Work_Trail__c>();
             mytrail = [
-                SELECT id,ips_Participant__r.PersonContactId,RecordType.DeveloperName
+                SELECT id,ips_Participant__r.PersonContactId,RecordType.DeveloperName,ips_End_Date__c
                 FROM Work_Trail__c 
-                WHERE ips_Participant__c = :accountId AND ips_Status__c !='Ended'
+                WHERE ips_Participant__c = :accountId AND (ips_End_Date__c = LAST_N_DAYS:365 OR ips_End_Date__c =NULL)
+                ORDER BY CreatedDate DESC 
                 LIMIT 1];
             
             return mytrail;
