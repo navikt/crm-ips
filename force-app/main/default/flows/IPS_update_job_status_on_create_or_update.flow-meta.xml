@@ -31,7 +31,7 @@
         </rules>
         <rules>
             <name>isOngoing</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3) AND 4</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
@@ -44,6 +44,13 @@
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -73,6 +80,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
