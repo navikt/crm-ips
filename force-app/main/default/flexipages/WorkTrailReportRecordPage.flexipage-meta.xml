@@ -42,6 +42,76 @@
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>force_highlightsPanel2</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2 OR 3</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Open</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>With comment</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Without comment</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>CustomButton.ips_report__c.IPS_printReport</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>collapsed</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>enableActionsConfiguration</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>enableActionsInNative</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideChatterActions</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>numVisibleActions</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentName>force:highlightsPanel</componentName>
+                <identifier>force_highlightsPanel</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2 OR 3</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Archived</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Completed</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Shared report</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>header</name>
@@ -56,7 +126,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Forhåndsvisning av rapport</value>
+                    <value>{!$Label.IPS_previewReport}</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>pageName</name>
@@ -174,6 +244,64 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_intervallDateFrom__c</fieldItem>
+                <identifier>RecordIPS_intervallDateFrom_cField3</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_intervallDateTo__c</fieldItem>
+                <identifier>RecordIPS_intervallDateTo_cField3</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_summarizeIntervallPeriode__c</fieldItem>
+                <identifier>RecordIPS_summarizeIntervallPeriode_cField3</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_summarizeIntervallNextPeriode__c</fieldItem>
+                <identifier>RecordIPS_summarizeIntervallNextPeriode_cField3</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-e29ae740-8bc6-4f21-99a4-1e3597690ae4</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-e29ae740-8bc6-4f21-99a4-1e3597690ae4</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column8</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-15838634-b583-4d42-9560-6495bc8cd1b6</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
                     <value>required</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.IPS_intervallDateFrom__c</fieldItem>
@@ -232,6 +360,64 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_intervallDateFrom__c</fieldItem>
+                <identifier>RecordIPS_intervallDateFrom_cField4</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_intervallDateTo__c</fieldItem>
+                <identifier>RecordIPS_intervallDateTo_cField4</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_summarizeIntervallPeriode__c</fieldItem>
+                <identifier>RecordIPS_summarizeIntervallPeriode_cField4</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_summarizeIntervallNextPeriode__c</fieldItem>
+                <identifier>RecordIPS_summarizeIntervallNextPeriode_cField4</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-0084538d-b2c8-4bdd-a118-cb3d2703c263</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-0084538d-b2c8-4bdd-a118-cb3d2703c263</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column9</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-f1b9d6e6-af97-430f-b39d-dd9c994f9d6f</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.IPS_endReportSumm6__c</fieldItem>
@@ -283,6 +469,64 @@
             </componentInstance>
         </itemInstances>
         <name>Facet-c9f6b6c1-ff94-4b0b-9f8b-5aeb2a6343eb</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_endReportSumm6__c</fieldItem>
+                <identifier>RecordIPS_endReportSumm6_cField2</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_endReportSumm7__c</fieldItem>
+                <identifier>RecordIPS_endReportSumm7_cField2</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_endReportSumm4__c</fieldItem>
+                <identifier>RecordIPS_endReportSumm4_cField3</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_endReportSumm5__c</fieldItem>
+                <identifier>RecordIPS_endReportSumm5_cField3</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-df68fd25-dc91-464c-b901-d57906a8adfa</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-df68fd25-dc91-464c-b901-d57906a8adfa</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column10</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-b6d691af-7c56-4a9b-9e93-b6cf0505c804</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -354,6 +598,24 @@
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <name>Facet-b47c040d-e6f2-4d10-8aea-adc1c91b2bb5</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-b47c040d-e6f2-4d10-8aea-adc1c91b2bb5</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column11</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-08d7f41d-8dda-4a33-b658-82360a003b35</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
@@ -372,6 +634,16 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.IPS_participantsOnBehalf__c</fieldItem>
                 <identifier>RecordIPS_participantsOnBehalf_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_participantsComment__c</fieldItem>
+                <identifier>RecordIPS_participantsComment_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-d8f482d6-09c0-449d-911e-bf9201d58d27</name>
@@ -456,7 +728,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Detaljer</value>
+                    <value>{!$Label.IPS_detail_section}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection2</identifier>
@@ -474,12 +746,12 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Underveisnotat</value>
+                    <value>{!$Label.IPS_shortNote}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection5</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 AND 2</booleanFilter>
+                    <booleanFilter>1 AND 2 AND (3 OR 4 OR 5)</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.IPS_report_Type__c}</leftValue>
                         <operator>EQUAL</operator>
@@ -489,6 +761,67 @@
                         <leftValue>{!Record.IPS_worktrail_Type__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>IPS</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>With comment</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Open</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Without comment</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-15838634-b583-4d42-9560-6495bc8cd1b6</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>{!$Label.IPS_shortNote}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection8</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2 AND (3 OR 4 OR 5)</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IPS_report_Type__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Intervall</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_worktrail_Type__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>IPS</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Archived</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Completed</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Shared report</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -505,12 +838,12 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Underveisrapport</value>
+                    <value>{!$Label.IPS_shortReport}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 AND 2</booleanFilter>
+                    <booleanFilter>1 AND 2 AND (3 OR 4 OR 5)</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.IPS_report_Type__c}</leftValue>
                         <operator>EQUAL</operator>
@@ -520,6 +853,67 @@
                         <leftValue>{!Record.IPS_worktrail_Type__c}</leftValue>
                         <operator>NE</operator>
                         <rightValue>IPS</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Open</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>With comment</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Without comment</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-f1b9d6e6-af97-430f-b39d-dd9c994f9d6f</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>{!$Label.IPS_shortReport}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection9</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2 AND (3 OR 4 OR 5)</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IPS_report_Type__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Intervall</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_worktrail_Type__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>IPS</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Archived</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Completed</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Shared report</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -536,12 +930,12 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Sluttnotat</value>
+                    <value>{!$Label.IPS_endNote}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection4</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 AND 2</booleanFilter>
+                    <booleanFilter>1 AND 2 AND (3 OR 4 OR 5)</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.IPS_report_Type__c}</leftValue>
                         <operator>EQUAL</operator>
@@ -551,6 +945,67 @@
                         <leftValue>{!Record.IPS_worktrail_Type__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>IPS</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Open</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>With comment</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Without comment</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-b6d691af-7c56-4a9b-9e93-b6cf0505c804</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>{!$Label.IPS_endNote}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection10</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2 AND (3 OR 4 OR 5)</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IPS_report_Type__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>End report</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_worktrail_Type__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>IPS</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Archived</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Completed</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Shared report</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -567,12 +1022,12 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Sluttrapport</value>
+                    <value>{!$Label.IPS_endReport}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection3</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 AND 2</booleanFilter>
+                    <booleanFilter>1 AND 2 AND (3 OR 4 OR 5)</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.IPS_report_Type__c}</leftValue>
                         <operator>EQUAL</operator>
@@ -582,6 +1037,67 @@
                         <leftValue>{!Record.IPS_worktrail_Type__c}</leftValue>
                         <operator>NE</operator>
                         <rightValue>IPS</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Open</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>With comment</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Without comment</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-08d7f41d-8dda-4a33-b658-82360a003b35</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>{!$Label.IPS_endReport}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection11</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2 AND (3 OR 4 OR 5)</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IPS_report_Type__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>End report</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_worktrail_Type__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>IPS</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Archived</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Completed</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Shared report</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -598,7 +1114,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Deltakers medvirkning</value>
+                    <value>{!$Label.IPS_participation}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection6</identifier>
