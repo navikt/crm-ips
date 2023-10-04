@@ -2,26 +2,91 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
     <decisions>
-        <name>checkStatusCompleted</name>
-        <label>checkStatusCompleted</label>
-        <locationX>336</locationX>
-        <locationY>1331</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <name>checkStatus</name>
+        <label>checkStatus</label>
+        <locationX>578</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>isNot</defaultConnectorLabel>
+        <rules>
+            <name>isPlanned</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Planned</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateStatusPlanned</targetReference>
+            </connector>
+            <label>isPlanned</label>
+        </rules>
+        <rules>
+            <name>isOngoing</name>
+            <conditionLogic>1 AND (2 OR 3) AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ongoing</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateStatusOngoing</targetReference>
+            </connector>
+            <label>isOngoing</label>
+        </rules>
         <rules>
             <name>isCompleted</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
-                <operator>IsNull</operator>
+                <operator>LessThan</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
-                <operator>LessThan</operator>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <elementReference>varToday</elementReference>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -31,78 +96,11 @@
         </rules>
     </decisions>
     <decisions>
-        <name>checkStatusOngoing</name>
-        <label>checkStatusOngoing</label>
-        <locationX>336</locationX>
-        <locationY>623</locationY>
-        <defaultConnector>
-            <targetReference>checkStatusCompleted</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isNot</defaultConnectorLabel>
-        <rules>
-            <name>isOngoing</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ips_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Planned</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>varToday</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateStatus</targetReference>
-            </connector>
-            <label>isOngoing</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkStatusPlanned</name>
-        <label>checkStatusPlanned</label>
-        <locationX>336</locationX>
-        <locationY>323</locationY>
-        <defaultConnector>
-            <targetReference>checkStatusOngoing</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isNot</defaultConnectorLabel>
-        <rules>
-            <name>isPlanned</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ips_Status__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Planned</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <elementReference>varToday</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateStatusPlanned</targetReference>
-            </connector>
-            <label>isPlanned</label>
-        </rules>
-    </decisions>
-    <decisions>
         <description>If related worktrail is IPS - update to working</description>
         <name>checkWorktrail</name>
         <label>checkWorktrail</label>
-        <locationX>182</locationX>
-        <locationY>947</locationY>
-        <defaultConnector>
-            <targetReference>checkStatusCompleted</targetReference>
-        </defaultConnector>
+        <locationX>446</locationX>
+        <locationY>647</locationY>
         <defaultConnectorLabel>isNot</defaultConnectorLabel>
         <rules>
             <name>isIPS</name>
@@ -114,8 +112,15 @@
                     <elementReference>varRecordTypeId</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Work_Trail_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ended</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>updateIPSWorkTrailStatus</targetReference>
+                <targetReference>update_worktrail_status</targetReference>
             </connector>
             <label>isIPS</label>
         </rules>
@@ -149,10 +154,11 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <description>Get IPS recordtype id.</description>
         <name>getRecordType</name>
         <label>getRecordType</label>
-        <locationX>182</locationX>
-        <locationY>839</locationY>
+        <locationX>446</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkWorktrail</targetReference>
@@ -172,35 +178,23 @@
         </outputAssignments>
     </recordLookups>
     <recordUpdates>
-        <description>Updates IPS work trail to working</description>
-        <name>updateIPSWorkTrailStatus</name>
-        <label>updateIPSWorkTrailStatus</label>
-        <locationX>50</locationX>
-        <locationY>1055</locationY>
-        <connector>
-            <targetReference>checkStatusCompleted</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.ips_Work_Trail__c</elementReference>
-            </value>
-        </filters>
+        <name>updateStatusCompleted</name>
+        <label>updateStatusCompleted</label>
+        <locationX>842</locationX>
+        <locationY>431</locationY>
         <inputAssignments>
             <field>ips_Status__c</field>
             <value>
-                <stringValue>Working</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </inputAssignments>
-        <object>Work_Trail__c</object>
+        <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>updateStatus</name>
-        <label>updateStatus</label>
-        <locationX>182</locationX>
-        <locationY>731</locationY>
+        <name>updateStatusOngoing</name>
+        <label>updateStatusOngoing</label>
+        <locationX>446</locationX>
+        <locationY>431</locationY>
         <connector>
             <targetReference>getRecordType</targetReference>
         </connector>
@@ -213,26 +207,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>updateStatusCompleted</name>
-        <label>updateStatus</label>
-        <locationX>204</locationX>
-        <locationY>1439</locationY>
-        <inputAssignments>
-            <field>ips_Status__c</field>
-            <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <name>updateStatusPlanned</name>
-        <label>updateStatus</label>
-        <locationX>204</locationX>
+        <label>updateStatusPlanned</label>
+        <locationX>50</locationX>
         <locationY>431</locationY>
-        <connector>
-            <targetReference>checkStatusOngoing</targetReference>
-        </connector>
         <inputAssignments>
             <field>ips_Status__c</field>
             <value>
@@ -242,10 +220,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>210</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>checkStatusPlanned</targetReference>
+            <targetReference>checkStatus</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -260,6 +238,20 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <description>Updates worktrail status for IPS recordtype to working</description>
+        <name>update_worktrail_status</name>
+        <label>update worktrail status</label>
+        <locationX>314</locationX>
+        <locationY>755</locationY>
+        <flowName>IPS_subflow_update_worktrail_status</flowName>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.ips_Work_Trail__c</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>varRecordTypeId</name>
         <dataType>String</dataType>
