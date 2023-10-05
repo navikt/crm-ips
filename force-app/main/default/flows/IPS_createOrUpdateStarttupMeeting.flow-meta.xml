@@ -4,7 +4,7 @@
         <name>createTravelTime</name>
         <label>createTravelTime</label>
         <locationX>182</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -65,12 +65,14 @@
                 <elementReference>getEvents.ips_Travel_time__c</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>createTravelTime_0</name>
         <label>createTravelTime</label>
         <locationX>622</locationX>
-        <locationY>1031</locationY>
+        <locationY>947</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -128,12 +130,14 @@
                 <elementReference>getEvents.ips_Travel_time__c</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
         <locationX>1062</locationX>
-        <locationY>1031</locationY>
+        <locationY>947</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -191,13 +195,15 @@
                 <elementReference>getEvents.ips_Travel_time__c</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
         <name>setPublic</name>
         <label>setPublic</label>
         <locationX>182</locationX>
-        <locationY>815</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -213,7 +219,7 @@
         <name>checkCriteria</name>
         <label>checkCriteria</label>
         <locationX>512</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>checkUpdate</targetReference>
         </defaultConnector>
@@ -238,7 +244,7 @@
         <name>checkUpdate</name>
         <label>checkUpdate</label>
         <locationX>842</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>isEventClosed2</targetReference>
         </defaultConnector>
@@ -284,7 +290,7 @@
         <name>IsEventClosed</name>
         <label>IsEventClosed</label>
         <locationX>182</locationX>
-        <locationY>935</locationY>
+        <locationY>863</locationY>
         <defaultConnector>
             <targetReference>UpdateEvent</targetReference>
         </defaultConnector>
@@ -309,7 +315,7 @@
         <name>IsEventClosed1</name>
         <label>IsEventClosed</label>
         <locationX>622</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>createTravelTime_0</targetReference>
         </defaultConnector>
@@ -334,7 +340,7 @@
         <name>isEventClosed2</name>
         <label>isEventClosed</label>
         <locationX>1062</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>updateTravelTime_0</targetReference>
         </defaultConnector>
@@ -395,7 +401,7 @@
         <name>getEvents</name>
         <label>getEvents</label>
         <locationX>512</locationX>
-        <locationY>335</locationY>
+        <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkCriteria</targetReference>
@@ -416,7 +422,7 @@
         <name>Copy_1_of_updateStartUpDate</name>
         <label>updateStartUpDate</label>
         <locationX>490</locationX>
-        <locationY>815</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>createTravelTime_0</targetReference>
         </connector>
@@ -446,7 +452,7 @@
         <name>Copy_2_of_updateStartUpDate</name>
         <label>updateStartUpDate</label>
         <locationX>930</locationX>
-        <locationY>815</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>updateTravelTime_0</targetReference>
         </connector>
@@ -476,7 +482,13 @@
         <name>UpdateEvent</name>
         <label>UpdateEvent</label>
         <locationX>182</locationX>
-        <locationY>1271</locationY>
+        <locationY>1163</locationY>
+        <inputAssignments>
+            <field>IPS_participant_related_to_meeting__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>IsVisibleInSelfService__c</field>
             <value>
@@ -495,7 +507,7 @@
         <name>updateStartUpDate</name>
         <label>updateStartUpDate</label>
         <locationX>50</locationX>
-        <locationY>1055</locationY>
+        <locationY>971</locationY>
         <connector>
             <targetReference>UpdateEvent</targetReference>
         </connector>
@@ -544,7 +556,7 @@
         <name>Add_contactId_to_event</name>
         <label>Add contactId to event</label>
         <locationX>182</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>setPublic</targetReference>
         </connector>
