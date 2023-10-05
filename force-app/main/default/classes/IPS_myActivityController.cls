@@ -155,7 +155,7 @@ public without sharing class IPS_myActivityController {
                 WhatId = :workTrailId
                 AND WhoId= :contactId
                 AND IPS_Status1__c ='Completed'
-                AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
+                AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer' OR IPS_Type__c='First Meeting with Employer' OR IPS_Type__c='Start up meeting')
                 ORDER BY ActivityDate DESC
         ];
         return userActivity;
