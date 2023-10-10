@@ -3,8 +3,8 @@
     <actionCalls>
         <name>SendReportNotifications</name>
         <label>SendReportNotifications</label>
-        <locationX>50</locationX>
-        <locationY>684</locationY>
+        <locationX>176</locationX>
+        <locationY>876</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -45,8 +45,8 @@
     <assignments>
         <name>addOwnerId</name>
         <label>addOwnerId</label>
-        <locationX>50</locationX>
-        <locationY>468</locationY>
+        <locationX>176</locationX>
+        <locationY>660</locationY>
         <assignmentItems>
             <assignToReference>varOwnerIds</assignToReference>
             <operator>Add</operator>
@@ -61,23 +61,38 @@
     <decisions>
         <name>checkDueDate</name>
         <label>checkDueDate</label>
-        <locationX>182</locationX>
+        <locationX>176</locationX>
         <locationY>360</locationY>
         <defaultConnectorLabel>isNotDue</defaultConnectorLabel>
         <rules>
-            <name>isDue</name>
+            <name>isDueMonth</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>getIntervallRecords.IPS_notificationDueDate__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>varToday</elementReference>
+                    <stringValue>Month</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>addOwnerId</targetReference>
             </connector>
-            <label>isDue</label>
+            <label>isDueMonth</label>
+        </rules>
+        <rules>
+            <name>isDueWeek</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getIntervallRecords.IPS_notificationDueDate__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Week</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addOwnerId</targetReference>
+            </connector>
+            <label>isDueWeek</label>
         </rules>
     </decisions>
     <description>Sjekker antall dager siden siste intervallrapport pr jobbspor og sender en notifikasjon når det er en måned og en uke igjen til neste.</description>
@@ -116,7 +131,7 @@
     <recordLookups>
         <name>getIntervallRecords</name>
         <label>getIntervallRecords</label>
-        <locationX>182</locationX>
+        <locationX>176</locationX>
         <locationY>252</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -146,8 +161,8 @@
     <recordLookups>
         <name>getNotifications</name>
         <label>getNotifications</label>
-        <locationX>50</locationX>
-        <locationY>576</locationY>
+        <locationX>176</locationX>
+        <locationY>768</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SendReportNotifications</targetReference>
@@ -167,7 +182,7 @@
         </outputAssignments>
     </recordLookups>
     <start>
-        <locationX>56</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getIntervallRecords</targetReference>
