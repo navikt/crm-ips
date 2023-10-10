@@ -3,8 +3,8 @@
     <actionCalls>
         <name>SendReportNotifications</name>
         <label>SendReportNotifications</label>
-        <locationX>176</locationX>
-        <locationY>876</locationY>
+        <locationX>50</locationX>
+        <locationY>684</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -45,8 +45,8 @@
     <assignments>
         <name>addOwnerId</name>
         <label>addOwnerId</label>
-        <locationX>176</locationX>
-        <locationY>660</locationY>
+        <locationX>50</locationX>
+        <locationY>468</locationY>
         <assignmentItems>
             <assignToReference>varOwnerIds</assignToReference>
             <operator>Add</operator>
@@ -61,38 +61,23 @@
     <decisions>
         <name>checkDueDate</name>
         <label>checkDueDate</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>360</locationY>
         <defaultConnectorLabel>isNotDue</defaultConnectorLabel>
         <rules>
-            <name>isDueMonth</name>
+            <name>isDueTwoWeek</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>getIntervallRecords.IPS_notificationDueDate__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Month</stringValue>
+                    <stringValue>TwoWeek</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>addOwnerId</targetReference>
             </connector>
-            <label>isDueMonth</label>
-        </rules>
-        <rules>
-            <name>isDueWeek</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getIntervallRecords.IPS_notificationDueDate__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Week</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addOwnerId</targetReference>
-            </connector>
-            <label>isDueWeek</label>
+            <label>isDueTwoWeek</label>
         </rules>
     </decisions>
     <description>Sjekker antall dager siden siste intervallrapport pr jobbspor og sender en notifikasjon når det er en måned og en uke igjen til neste.</description>
@@ -100,7 +85,7 @@
     <formulas>
         <name>varNotificationBody</name>
         <dataType>String</dataType>
-        <expression>&apos;Påminnelse om at det snart har gått 3 måneder siden siste rapport - &apos;&amp;{!getIntervallRecords.IPS_workTrailName__r.Name}</expression>
+        <expression>&apos;Påminnelse - det har snart gått 3 måneder siden siste rapport - &apos;&amp;{!getIntervallRecords.IPS_workTrailName__r.Name}</expression>
     </formulas>
     <formulas>
         <name>varToday</name>
@@ -131,7 +116,7 @@
     <recordLookups>
         <name>getIntervallRecords</name>
         <label>getIntervallRecords</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>252</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -161,8 +146,8 @@
     <recordLookups>
         <name>getNotifications</name>
         <label>getNotifications</label>
-        <locationX>176</locationX>
-        <locationY>768</locationY>
+        <locationX>50</locationX>
+        <locationY>576</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SendReportNotifications</targetReference>
@@ -182,7 +167,7 @@
         </outputAssignments>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getIntervallRecords</targetReference>
