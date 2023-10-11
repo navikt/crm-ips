@@ -4,7 +4,7 @@
         <name>SendReportNotifications</name>
         <label>SendReportNotifications</label>
         <locationX>50</locationX>
-        <locationY>684</locationY>
+        <locationY>900</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -55,7 +55,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getNotifications</targetReference>
+            <targetReference>getRecordTypeId</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -65,27 +65,32 @@
         <locationY>360</locationY>
         <defaultConnectorLabel>isNotDue</defaultConnectorLabel>
         <rules>
-            <name>isDue</name>
+            <name>isDueTwoWeek</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>getIntervallRecords.IPS_notificationDueDate__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>varToday</elementReference>
+                    <stringValue>TwoWeek</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>addOwnerId</targetReference>
             </connector>
-            <label>isDue</label>
+            <label>isDueTwoWeek</label>
         </rules>
     </decisions>
     <description>Sjekker antall dager siden siste intervallrapport pr jobbspor og sender en notifikasjon når det er en måned og en uke igjen til neste.</description>
     <environments>Default</environments>
     <formulas>
+        <name>varDueDate</name>
+        <dataType>Date</dataType>
+        <expression>{!getIntervallRecords.IPS_intervallDateTo__c}+90</expression>
+    </formulas>
+    <formulas>
         <name>varNotificationBody</name>
         <dataType>String</dataType>
-        <expression>&apos;Påminnelse om at det snart har gått 3 måneder siden siste rapport - &apos;&amp;{!getIntervallRecords.IPS_workTrailName__r.Name}</expression>
+        <expression>&apos;Påminnelse - det har snart gått 3 måneder siden siste rapport - &apos;&amp;{!getIntervallRecords.IPS_workTrailName__r.Name}</expression>
     </formulas>
     <formulas>
         <name>varToday</name>
@@ -113,6 +118,53 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>create_notification_task</name>
+        <label>create notification task</label>
+        <locationX>50</locationX>
+        <locationY>684</locationY>
+        <connector>
+            <targetReference>getNotifications</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>varDueDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>varDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>getIntervallRecords.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>varRecordTypeId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>getIntervallRecords.IPS_subject__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>getIntervallRecords.IPS_workTrailName__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>getIntervallRecords</name>
         <label>getIntervallRecords</label>
@@ -147,7 +199,7 @@
         <name>getNotifications</name>
         <label>getNotifications</label>
         <locationX>50</locationX>
-        <locationY>576</locationY>
+        <locationY>792</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SendReportNotifications</targetReference>
@@ -163,6 +215,29 @@
         <object>CustomNotificationType</object>
         <outputAssignments>
             <assignToReference>varNotificationId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>getRecordTypeId</name>
+        <label>getRecordTypeId</label>
+        <locationX>50</locationX>
+        <locationY>576</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>create_notification_task</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varRecordTypeId</assignToReference>
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
@@ -198,11 +273,21 @@
         <schedule>
             <frequency>Daily</frequency>
             <startDate>2023-09-29</startDate>
-            <startTime>03:45:00.000Z</startTime>
+            <startTime>03:15:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>varDescription</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Påminnelse - det er snart gått 3 måneder siden siste rapport</stringValue>
+        </value>
+    </variables>
     <variables>
         <name>varNotificationId</name>
         <dataType>String</dataType>
@@ -214,6 +299,13 @@
         <name>varOwnerIds</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
