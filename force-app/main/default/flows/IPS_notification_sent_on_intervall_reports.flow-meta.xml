@@ -51,7 +51,7 @@
             <assignToReference>varOwnerIds</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>getIntervallRecords.OwnerId</elementReference>
+                <elementReference>getIntervallRecords.IPS_workTrailName__r.OwnerId</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -80,7 +80,7 @@
             <label>isDueTwoWeek</label>
         </rules>
     </decisions>
-    <description>Sjekker antall dager siden siste intervallrapport pr jobbspor og sender en notifikasjon når det er en måned og en uke igjen til neste.</description>
+    <description>Sjekker antall dager siden siste intervallrapport pr jobbspor og sender en notifikasjon når det er 2 uker igjen til neste.</description>
     <environments>Default</environments>
     <formulas>
         <name>varDueDate</name>
@@ -141,7 +141,7 @@
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>getIntervallRecords.OwnerId</elementReference>
+                <elementReference>getIntervallRecords.IPS_workTrailName__r.OwnerId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -187,6 +187,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Intervall</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_worktrail_Type__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>IPS</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
