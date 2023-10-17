@@ -316,9 +316,11 @@
                     <apex:outputText ><h4>Delmål:</h4></apex:outputText>
                         <table style="width: 100%;border:1px solid #262626">
                         <tr style="background-color: #F1F1F1;">
-                            <th style="vertical-align:top; width: 70%;">Emne</th>
-                            <th style="vertical-align:top; width: 15%;">Opprettet dato</th>
-                            <th style="vertical-align:top; width: 15%;">Frist</th>
+                            <th style="width: 20%;">Emne</th>
+                            <th style="width: 10%;">Opprettet dato</th>
+                            <th style="width: 10%;">Frist</th>
+                            <th style="width: 10%;">Fullført dato</th>
+                            <th style="width: 50%;">Beskrivelse av målet</th>
                         </tr>
                         <apex:repeat value="{!openGoal}" var="plangoal" >
                             <tr style="vertical-align:top;border:1px solid #FF0000;">
@@ -333,6 +335,12 @@
                                         <apex:param value="{!plangoal.ActivityDate}"/>
                                     </apex:outputText>
                                 </td>
+                                 <td style="border:1px solid #F1F1F1;">
+                                        <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                            <apex:param value="{!plangoal.CompletedDateTime}"/>
+                                        </apex:outputText>
+                                    </td>
+                                    <td style="border:1px solid #F1F1F1; word-wrap: break-word;"><apex:outputField value="{!plangoal.Description}"/></td>
                             </tr>
                         </apex:repeat>
                     </table>
