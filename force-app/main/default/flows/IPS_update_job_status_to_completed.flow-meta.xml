@@ -33,7 +33,7 @@
         <name>updateStatusToClosed</name>
         <label>updateStatusToClosed</label>
         <locationX>176</locationX>
-        <locationY>252</locationY>
+        <locationY>360</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>ips_End_Date__c</field>
@@ -64,11 +64,63 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>updateStatusToOngoing</name>
+        <label>updateStatusToOngoing</label>
+        <locationX>176</locationX>
+        <locationY>252</locationY>
+        <connector>
+            <targetReference>updateStatusToClosed</targetReference>
+        </connector>
+        <filterLogic>1 AND 2 AND 3 AND( 4 OR 5)</filterLogic>
+        <filters>
+            <field>IPS_Work_Trail_Status__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Ended</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Planned</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Start_Date__c</field>
+            <operator>LessThan</operator>
+            <value>
+                <elementReference>varToday</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_End_Date__c</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <elementReference>varToday</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_End_Date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ips_Status__c</field>
+            <value>
+                <stringValue>Ongoing</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>updateStatusToClosed</targetReference>
+            <targetReference>updateStatusToOngoing</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
