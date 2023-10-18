@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>When_cloning_a_work_trail</fullName>
+    <active>true</active>
+    <description>Validation rule to prevent users to clone a work trail in other status than Ended</description>
+    <errorConditionFormula>AND(ISNEW(), NOT(ISPICKVAL(ips_Status__c, &quot;Ended&quot;)))</errorConditionFormula>
+    <errorMessage>Jobbspor kan bare klones i status &quot;Avsluttet&quot;</errorMessage>
+</ValidationRule>
