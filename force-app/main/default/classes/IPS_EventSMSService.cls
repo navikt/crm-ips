@@ -62,7 +62,7 @@ public without sharing class IPS_EventSMSService {
     private static String constructCreatedMessage(Event event) {
         String message = 'Det er satt opp et '+ event.ips_uo_Kanal__c.toLowerCase() +' møte med jobbspesialisten din.';
         message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
-        message += '\n\nLogg inn på nav.no for detaljer. Du kan ikke svare på denne meldingen.';
+        message += '\n\nLogg inn på NAV for detaljer. Du kan ikke svare på denne meldingen.';
         return message;
     }
 
