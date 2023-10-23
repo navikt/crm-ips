@@ -71,7 +71,7 @@
                 <leftValueReference>getIntervallRecords.IPS_notificationDueDate__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>TwoWeek</stringValue>
+                    <elementReference>varToday</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -157,9 +157,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Type_of_Task_IPSUO__c</field>
+            <value>
+                <stringValue>Veilederrapport</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>WhatId</field>
             <value>
                 <elementReference>getIntervallRecords.IPS_workTrailName__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Due_Date_Time__c</field>
+            <value>
+                <elementReference>varDueDate</elementReference>
             </value>
         </inputAssignments>
         <object>Task</object>
@@ -267,13 +279,6 @@
             <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Ended</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_Status__c</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Downsizing</stringValue>
             </value>
         </filters>
         <object>Work_Trail__c</object>
