@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ips_Work_Trail_Status__c</fullName>
+    <deprecated>false</deprecated>
     <externalId>false</externalId>
-    <formula>TEXT(ips_Work_Trail__r.ips_Status__c)</formula>
+    <formula>CASE(ips_Work_Trail__r.ips_Status__c, 
+&apos;Referred&apos;,&apos;Henvist&apos;,
+&apos;Initial contact&apos;,&apos;Innledende kontakt&apos;,
+&apos;Mapping&apos;,&apos;Kartlegging&apos;,
+&apos;Job development&apos;,&apos;Jobbutvikling&apos;,
+&apos;In Education&apos;,&apos;I utdannelse&apos;,
+&apos;Working&apos;,&apos;Jobber&apos;,
+&apos;Downsizing&apos;,&apos;Nedtrapping&apos;,
+&apos;Career mapping and career planning&apos;,&apos;Yrkeskartlegging og karriereplanlegging&apos;,
+&apos;Find a suitable job / Collaborate with AG&apos;,&apos;Finne en passende jobb / samarbeid med arb.g&apos;,
+&apos;Education and training in and / or outside the workplace&apos;,&apos;Opplæring og trening på og/eller utenom arbeidsplassen&apos;,
+&apos;Ended&apos;,&apos;Sluttet&apos;,
+&apos;Ingen status&apos;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Work Trail Status</label>
     <required>false</required>
