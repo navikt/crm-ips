@@ -14,7 +14,9 @@
                 <elementReference>varWorkTrailId</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>c:IPS_redirect</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>58.0</apiVersion>
     <assignments>
@@ -462,13 +464,19 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <inputAssignments>
             <field>ips_NAV_supervisor__c</field>
             <value>
-                <elementReference>Behandlingsteam_Innsatsteam</elementReference>
+                <elementReference>IPS_nav_supervisor</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
                 <elementReference>getPersonDetail.CRM_Account__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Referred_date__c</field>
+            <value>
+                <elementReference>IPS_referred_date</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -528,9 +536,21 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>ips_NAV_supervisor__c</field>
+            <value>
+                <elementReference>IPS_nav_supervisor</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
                 <elementReference>getPersonDetail.CRM_Account__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Referred_date__c</field>
+            <value>
+                <elementReference>IPS_referred_date</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -917,6 +937,21 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>String</dataType>
             <fieldText>Behandlingsteam/Innsøkende avdeling</fieldText>
             <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>IPS_nav_supervisor</name>
+            <dataType>String</dataType>
+            <fieldText>Nav veileder</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>IPS_referred_date</name>
+            <dataType>Date</dataType>
+            <fieldText>Henvist dato</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;Henvist dato skal samsvare med vedtaksdato i Arena.&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
