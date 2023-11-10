@@ -13,9 +13,6 @@
                             <value>Work_Trail__c.IPS_setParticipantPassive</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>ChangeOwnerOne</value>
-                        </valueListItems>
-                        <valueListItems>
                             <value>PrintableView</value>
                         </valueListItems>
                         <valueListItems>
@@ -335,6 +332,13 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.End_Cause__c</fieldItem>
                 <identifier>field8</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -379,6 +383,13 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_End_Date__c</fieldItem>
                 <identifier>field9</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
