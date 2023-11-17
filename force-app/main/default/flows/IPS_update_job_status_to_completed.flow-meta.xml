@@ -1,7 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
-    <description>Scheduled flow, to update job status to completed after enddate is passed</description>
+    <assignments>
+        <name>setAssignmentCompleted</name>
+        <label>setAssignmentCompleted</label>
+        <locationX>314</locationX>
+        <locationY>360</locationY>
+        <assignmentItems>
+            <assignToReference>varStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateJobStatus</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setAssignmentOngoing</name>
+        <label>setAssignmentOngoing</label>
+        <locationX>50</locationX>
+        <locationY>360</locationY>
+        <assignmentItems>
+            <assignToReference>varStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Ongoing</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateJobStatus</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>checkStatus</name>
+        <label>checkStatus</label>
+        <locationX>314</locationX>
+        <locationY>252</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isOngoing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Planned</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Work_Trail_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Sluttet</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setAssignmentOngoing</targetReference>
+            </connector>
+            <label>isOngoing</label>
+        </rules>
+        <rules>
+            <name>isCompleted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ongoing</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setAssignmentCompleted</targetReference>
+            </connector>
+            <label>isCompleted</label>
+        </rules>
+    </decisions>
+    <description>Scheduled flow, to update job status to ongoing or completed</description>
     <environments>Default</environments>
     <formulas>
         <name>varToday</name>
@@ -9,7 +113,7 @@
         <expression>TODAY()</expression>
     </formulas>
     <interviewLabel>IPS - update job status to completed {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - job update status to completed</label>
+    <label>IPS - job update status to ongoing or completed</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -30,104 +134,30 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>updateStatusToClosed</name>
-        <label>updateStatusToClosed</label>
-        <locationX>176</locationX>
-        <locationY>360</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ips_End_Date__c</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_End_Date__c</field>
-            <operator>LessThan</operator>
-            <value>
-                <elementReference>varToday</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_Status__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Ongoing</stringValue>
-            </value>
-        </filters>
+        <name>updateJobStatus</name>
+        <label>updateJobStatus</label>
+        <locationX>314</locationX>
+        <locationY>552</locationY>
         <inputAssignments>
             <field>ips_Status__c</field>
             <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>updateStatusToOngoing</name>
-        <label>updateStatusToOngoing</label>
-        <locationX>176</locationX>
-        <locationY>252</locationY>
-        <connector>
-            <targetReference>updateStatusToClosed</targetReference>
-        </connector>
-        <filterLogic>1 AND 2 AND 3 AND( 4 OR 5)</filterLogic>
-        <filters>
-            <field>IPS_Work_Trail_Status__c</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Ended</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_Status__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Planned</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_Start_Date__c</field>
-            <operator>LessThan</operator>
-            <value>
-                <elementReference>varToday</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_End_Date__c</field>
-            <operator>GreaterThan</operator>
-            <value>
-                <elementReference>varToday</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>ips_End_Date__c</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>ips_Status__c</field>
-            <value>
-                <stringValue>Ongoing</stringValue>
+                <elementReference>varStatus</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>updateStatusToOngoing</targetReference>
+            <targetReference>checkStatus</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
-            <field>ips_End_Date__c</field>
-            <operator>IsNull</operator>
+            <field>ips_Status__c</field>
+            <operator>EqualTo</operator>
             <value>
-                <booleanValue>false</booleanValue>
+                <stringValue>Planned</stringValue>
             </value>
         </filters>
         <filters>
@@ -146,4 +176,11 @@
         <triggerType>Scheduled</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>varStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
