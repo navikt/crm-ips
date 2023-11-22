@@ -1,8 +1,8 @@
-import { LightningElement,wire,track } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import templateIPS from './ips_trailIPS.html';
 import templateUO from './ips_trailUO.html';
-import { getFieldDisplayValue, getFieldValue, getRecord} from 'lightning/uiRecordApi';
+import { getFieldDisplayValue, getFieldValue, getRecord } from 'lightning/uiRecordApi';
 import Id from '@salesforce/user/Id';
 /* all logos related to IPS/UO portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
@@ -133,7 +133,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     //currentUser ='0051w000009WVWGAA4' ;
     recordId;
     @track recordtypename;
-    ownerIds;
+    ownerId;
     @track recordIdVal;
     @track record;
     @track workTrailOwner;
@@ -147,7 +147,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     trainingRecord;
     isActivity = false;
     isEmployer = false;
-    isGoal=false;
+    isGoal = false;
     isEducation = false;
     isJob = false;
     isTraining = false;
@@ -158,354 +158,352 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
 
     get isMobile() {
         return window.screen.width < 576;
-      }
-    
-    get currentUserId(){
+    }
+
+    get currentUserId() {
         return this.currentUser;
     }
 
     /* Fetch recordId from logged in user */
-    @wire(getUserWorkTrailId,{userId: '$currentUser'})
+    @wire(getUserWorkTrailId, { userId: '$currentUser' })
     wiredtrail({ error, data }) {
-            if (data) {
-                this.record = data[0];
-                this.recordId = this.record?.Id;
-                this.ownerIds = this.record?.OwnerId;
-                this.contactId = this.record?.ips_Participant__r.PersonContactId;
-            } else if (error) {
-                console.log('Something went wrong:', error);
-            }
+        if (data) {
+            this.record = data[0];
+            this.recordId = this.record?.Id;
+            this.ownerId = this.record?.OwnerId;
+            this.contactId = this.record?.ips_Participant__r.PersonContactId;
+        } else if (error) {
+            console.log('Something went wrong:', error);
         }
-
+    }
 
     /* Fetch all worktrail fields by getrecord */
     @wire(getRecord, { recordId: '$recordId', fields: WORKTRAIL_FIELDS })
-    workTrail({error,data}){
-        if(data){
+    workTrail({ error, data }) {
+        if (data) {
             this.workTrailWire = data;
-        }else if(error){
+        } else if (error) {
             console.log(error);
         }
     }
 
-    get isIPS(){
-        this.recordtypename = getFieldValue(this.workTrailWire,FIELD_RECORDTYPENAME);
-        if(this.recordtypename === 'IPS'){
-            return true;
+    get isIPS() {
+        this.recordtypename = getFieldValue(this.workTrailWire, FIELD_RECORDTYPENAME);
+        let isType = false;
+        if (this.recordtypename === 'IPS') {
+            isType = true;
         }
-        if(this.recortypename === 'ips_Supported_Employment'){
-            return false;
+        if (this.recortypename === 'ips_Supported_Employment') {
+            isType = false;
         }
+        return isType;
     }
-    
-    render(){
+
+    render() {
         return this.isIPS ? templateIPS : templateUO;
     }
 
-    @wire(getParticipantActivity, {workTrailId:'$recordId'})
-    userPartActivity({error,data}){
-       if(data){
-        console.log(data);
-        if(data.length >0){
-            this.activityPartRecord = data;
-            this.isActivity = true;
-            this.isMeeting = true;
+    @wire(getParticipantActivity, { workTrailId: '$recordId' })
+    userPartActivity({ error, data }) {
+        if (data) {
+            console.log(data);
+            if (data.length > 0) {
+                this.activityPartRecord = data;
+                this.isActivity = true;
+                this.isMeeting = true;
+            }
+        } else if (error) {
+            console.log('An error has ocurred');
+            console.log(error);
         }
-       }else if(error){
-           console.log('An error has ocurred');
-           console.log(error);
-       }
     }
 
-    @wire(getEmployerActivity, {workTrailId:'$recordId',contactId: '$contactId'})
-    userEmpActivity({error,data}){
+    @wire(getEmployerActivity, { workTrailId: '$recordId', contactId: '$contactId' })
+    userEmpActivity({ error, data }) {
         console.log(data);
-       if(data){
-        if(data.length>0){
-            this.activityEmplRecord = data;
-            this.isEmployer = true;
-            this.isMeeting = true;
+        if (data) {
+            if (data.length > 0) {
+                this.activityEmplRecord = data;
+                this.isEmployer = true;
+                this.isMeeting = true;
+            }
+        } else if (error) {
+            console.log('An error has ocurred');
+            console.log(error);
         }
-       }else if(error){
-           console.log('An error has ocurred');
-           console.log(error);
-       }
     }
 
-    @wire(getParticipantGoals,{workTrailId:'$recordId'})
-    userParGoal({error,data}){
-        if(data){
-            if(data.length>0){
+    @wire(getParticipantGoals, { workTrailId: '$recordId' })
+    userParGoal({ error, data }) {
+        if (data) {
+            if (data.length > 0) {
                 this.participantGoalRecord = data;
                 this.isGoal = true;
             }
-        }else if(error){
+        } else if (error) {
             console.log('An error has ocurred');
             console.log(error);
         }
     }
 
-    @wire(getTraining,{workTrailId:'$recordId'})
-    userTraining({error,data}){
-        if(data){
-            if(data.length>0){
+    @wire(getTraining, { workTrailId: '$recordId' })
+    userTraining({ error, data }) {
+        if (data) {
+            if (data.length > 0) {
                 this.trainingRecord = data;
                 this.isTraining = true;
             }
-        }else if(error){
+        } else if (error) {
             console.log('An error has ocurred');
             console.log(error);
         }
     }
 
-    @wire(getUserJob,{workTrailId:'$recordId'})
-    userJob({error,data}){
-        if(data){
-            if(data.length>0){
+    @wire(getUserJob, { workTrailId: '$recordId' })
+    userJob({ error, data }) {
+        if (data) {
+            if (data.length > 0) {
                 this.jobsRecord = data;
                 this.isJob = true;
             }
-        }else if(error){
+        } else if (error) {
             console.log('An error has ocurred');
             console.log(error);
         }
     }
 
-    @wire(getEducations,{workTrailId:'$recordId'})
-    userEducation({error,data}){
-        if(data){
-            if(data.length>0){
+    @wire(getEducations, { workTrailId: '$recordId' })
+    userEducation({ error, data }) {
+        if (data) {
+            if (data.length > 0) {
                 this.educationRecord = data;
                 this.isEducation = true;
             }
-        }else if(error){
+        } else if (error) {
             console.log('An error has ocurred');
             console.log(error);
         }
     }
 
-    @wire(getReports,{workTrailId:'$recordId'})
-    userReports({error,data}){
-        if(data){
-            if(data.length>0){
+    @wire(getReports, { workTrailId: '$recordId' })
+    userReports({ error, data }) {
+        if (data) {
+            if (data.length > 0) {
                 this.reportRecord = data;
                 this.isMessage = true;
             }
-        }else if(error){
+        } else if (error) {
             console.log('An error has ocurred');
             console.log(error);
         }
     }
 
-   
-
     /* UO and IPS fields */
-    get ownerIds(){
-        return getFieldValue(this.workTrailWire,FIELD_OWNERID);
+    get ownerIds() {
+        return getFieldValue(this.workTrailWire, FIELD_OWNERID);
     }
 
-    get ownerName(){
-        return getFieldValue(this.workTrailWire,FIELD_OWNERNAME);
-    }
-    
-    get namefield(){
-        return getFieldValue(this.workTrailWire,FIELD_NAME);
+    get ownerName() {
+        return getFieldValue(this.workTrailWire, FIELD_OWNERNAME);
     }
 
-    get participantname(){
-        return getFieldValue(this.workTrailWire,FIELD_PARTNAME);
+    get namefield() {
+        return getFieldValue(this.workTrailWire, FIELD_NAME);
+    }
+
+    get participantname() {
+        return getFieldValue(this.workTrailWire, FIELD_PARTNAME);
     }
 
     get mainGoal() {
-        return getFieldValue(this.workTrailWire,FIELD_MAINGOAL);
+        return getFieldValue(this.workTrailWire, FIELD_MAINGOAL);
     }
 
-    get treatmentteam(){
-        return getFieldValue(this.workTrailWire,FIELD_TREATMENTTEAM);
+    get treatmentteam() {
+        return getFieldValue(this.workTrailWire, FIELD_TREATMENTTEAM);
     }
-
 
     /* IPS fields */
-    get geography(){
-        return getFieldValue(this.workTrailWire,FIELD_GEOGRAPHY);
+    get geography() {
+        return getFieldValue(this.workTrailWire, FIELD_GEOGRAPHY);
     }
 
-    get ipsnetwork(){
-        return getFieldValue(this.workTrailWire,FIELD_NETWORK);
+    get ipsnetwork() {
+        return getFieldValue(this.workTrailWire, FIELD_NETWORK);
     }
 
-    get networkPartner(){
-        return getFieldValue(this.workTrailWire,FIELD_NETWORKPARTNER);
+    get networkPartner() {
+        return getFieldValue(this.workTrailWire, FIELD_NETWORKPARTNER);
     }
 
-    get prefferedworkinghours(){
-        return getFieldValue(this.workTrailWire,FIELD_PREFERREDWORKINGHOURS);
+    get prefferedworkinghours() {
+        return getFieldValue(this.workTrailWire, FIELD_PREFERREDWORKINGHOURS);
     }
 
-    get frameworkjobdevelopment(){
-        return getFieldValue(this.workTrailWire,FIELD_FRAMEWORKJOBSEARCH);
+    get frameworkjobdevelopment() {
+        return getFieldValue(this.workTrailWire, FIELD_FRAMEWORKJOBSEARCH);
     }
 
-    get careerwishes(){
-        return getFieldValue(this.workTrailWire,FIELD_CAREERWISHES);
+    get careerwishes() {
+        return getFieldValue(this.workTrailWire, FIELD_CAREERWISHES);
     }
 
-    get IPSung(){
-        return getFieldValue(this.workTrailWire,FIELD_IPSUNG);
+    get IPSung() {
+        return getFieldValue(this.workTrailWire, FIELD_IPSUNG);
     }
 
-    get referredDate(){
-        return this.formatDate(getFieldValue(this.workTrailWire,FIELD_REFFEREDDATE));
+    get referredDate() {
+        return this.formatDate(getFieldValue(this.workTrailWire, FIELD_REFFEREDDATE));
     }
 
-    get startDate(){
-        return this.formatDate(getFieldDisplayValue(this.workTrailWire,FIELD_STARTDATE));
+    get startDate() {
+        return this.formatDate(getFieldDisplayValue(this.workTrailWire, FIELD_STARTDATE));
     }
 
-    get contNoShow(){
-        return getFieldValue(this.workTrailWire,FIELD_CONTACTNOSHOW);
+    get contNoShow() {
+        return getFieldValue(this.workTrailWire, FIELD_CONTACTNOSHOW);
     }
 
-    get interestHobbies(){
-        return getFieldValue(this.workTrailWire,FIELD_HOBBIES);
+    get interestHobbies() {
+        return getFieldValue(this.workTrailWire, FIELD_HOBBIES);
     }
 
-    get personalQualities(){
-        return getFieldValue(this.workTrailWire,FIELD_PERSQUALITY);
+    get personalQualities() {
+        return getFieldValue(this.workTrailWire, FIELD_PERSQUALITY);
     }
 
-    get culturalBackground(){
-        return getFieldValue(this.workTrailWire,FIELD_CULTURALBACKGROUND);
+    get culturalBackground() {
+        return getFieldValue(this.workTrailWire, FIELD_CULTURALBACKGROUND);
     }
 
-    get environmentalConditions(){
-        return getFieldValue(this.workTrailWire,FIELD_ENVIRONMENTALCON);
+    get environmentalConditions() {
+        return getFieldValue(this.workTrailWire, FIELD_ENVIRONMENTALCON);
     }
 
-    get economy(){
-        return getFieldValue(this.workTrailWire,FIELD_ECONOMY);
+    get economy() {
+        return getFieldValue(this.workTrailWire, FIELD_ECONOMY);
     }
 
-    get health(){
-        return getFieldValue(this.workTrailWire,FIELD_HEALTH);
+    get health() {
+        return getFieldValue(this.workTrailWire, FIELD_HEALTH);
     }
 
-    get education(){
-        return getFieldValue(this.workTrailWire,FIELD_EDUCATION);
+    get education() {
+        return getFieldValue(this.workTrailWire, FIELD_EDUCATION);
     }
 
-    get workExperiance(){
-        return getFieldValue(this.workTrailWire,FIELD_WORKEXPERIANCE);
+    get workExperiance() {
+        return getFieldValue(this.workTrailWire, FIELD_WORKEXPERIANCE);
     }
 
-    get conversationPreviousEmployer(){
-        return getFieldValue(this.workTrailWire,FIELD_CONVERSATIONPREVIOUS);
+    get conversationPreviousEmployer() {
+        return getFieldValue(this.workTrailWire, FIELD_CONVERSATIONPREVIOUS);
     }
 
-    get transparencyDate(){
-        return this.formatDate(getFieldDisplayValue(this.workTrailWire,FIELD_TRANSPARENCYDATE));
+    get transparencyDate() {
+        return this.formatDate(getFieldDisplayValue(this.workTrailWire, FIELD_TRANSPARENCYDATE));
     }
 
-    get transparencyEmployerContact(){
-        return getFieldValue(this.workTrailWire,FIELD_TRANSPARENCYCONTACT);
+    get transparencyEmployerContact() {
+        return getFieldValue(this.workTrailWire, FIELD_TRANSPARENCYCONTACT);
     }
 
-    get transparencyEmployerShare(){
-        return getFieldValue(this.workTrailWire,FIELD_TRANSPARENCYEMPLOYERSHARE);
+    get transparencyEmployerShare() {
+        return getFieldValue(this.workTrailWire, FIELD_TRANSPARENCYEMPLOYERSHARE);
     }
 
-    get transparencyEmployerNotShare(){
-        return getFieldValue(this.workTrailWire,FIELD_TRANSPARENCYEMPLOYERNOTSHARE);
+    get transparencyEmployerNotShare() {
+        return getFieldValue(this.workTrailWire, FIELD_TRANSPARENCYEMPLOYERNOTSHARE);
     }
 
-    get navSupervisor(){
-        return getFieldValue(this.workTrailWire,FIELD_SUPERVISOR);
+    get navSupervisor() {
+        return getFieldValue(this.workTrailWire, FIELD_SUPERVISOR);
     }
 
-    get framesBeforeWork(){
-        return getFieldValue(this.workTrailWire,FIELD_FRAMEWORKBEFORE);
+    get framesBeforeWork() {
+        return getFieldValue(this.workTrailWire, FIELD_FRAMEWORKBEFORE);
     }
 
-    get planWhenWork(){
-        return getFieldValue(this.workTrailWire,FIELD_PLANWHENWORK);
+    get planWhenWork() {
+        return getFieldValue(this.workTrailWire, FIELD_PLANWHENWORK);
     }
 
-    get transitionToWork(){
-        return getFieldValue(this.workTrailWire,FIELD_TRANSITIONTOWORK);
+    get transitionToWork() {
+        return getFieldValue(this.workTrailWire, FIELD_TRANSITIONTOWORK);
     }
 
-    get applyingDepartment(){
-        return getFieldValue(this.workTrailWire,FIELD_APPLYINGDEPARTMENT);
+    get applyingDepartment() {
+        return getFieldValue(this.workTrailWire, FIELD_APPLYINGDEPARTMENT);
     }
 
-    get desiredProfession(){
-        return getFieldValue(this.workTrailWire,FIELD_DESIREDPROFESSION);
+    get desiredProfession() {
+        return getFieldValue(this.workTrailWire, FIELD_DESIREDPROFESSION);
     }
 
-    get desiredWorkingEnvironment(){
-        return getFieldValue(this.workTrailWire,FIELD_DESIREDWORKINGENVIRONMENT);
+    get desiredWorkingEnvironment() {
+        return getFieldValue(this.workTrailWire, FIELD_DESIREDWORKINGENVIRONMENT);
     }
 
-    get desiredWorkTask(){
-        return getFieldValue(this.workTrailWire,FIELD_DESIREDWORKTASK);
+    get desiredWorkTask() {
+        return getFieldValue(this.workTrailWire, FIELD_DESIREDWORKTASK);
     }
 
-    get ipsMobility(){
-        return getFieldValue(this.workTrailWire,FIELD_MOBILITY);
+    get ipsMobility() {
+        return getFieldValue(this.workTrailWire, FIELD_MOBILITY);
     }
 
-    get economicCondition(){
-        return getFieldValue(this.workTrailWire,FIELD_ECONOMYCONDITION);
+    get economicCondition() {
+        return getFieldValue(this.workTrailWire, FIELD_ECONOMYCONDITION);
     }
 
-    get socialCondition(){
-        return getFieldValue(this.workTrailWire,FIELD_SOCIALCONDITION);
+    get socialCondition() {
+        return getFieldValue(this.workTrailWire, FIELD_SOCIALCONDITION);
     }
 
-    get other(){
-        return getFieldValue(this.workTrailWire,FIELD_OTHER);
+    get other() {
+        return getFieldValue(this.workTrailWire, FIELD_OTHER);
     }
 
-    get workStrategy(){
-        return getFieldValue(this.workTrailWire,FIELD_STRATEGY);
+    get workStrategy() {
+        return getFieldValue(this.workTrailWire, FIELD_STRATEGY);
     }
 
-    get workFacility(){
-        return getFieldValue(this.workTrailWire,FIELD_FACILITY) ;
+    get workFacility() {
+        return getFieldValue(this.workTrailWire, FIELD_FACILITY);
     }
 
-    get earlySigns(){
-        return getFieldValue(this.workTrailWire,FIELD_EARLYSIGNS);
+    get earlySigns() {
+        return getFieldValue(this.workTrailWire, FIELD_EARLYSIGNS);
     }
 
-    get copingStrategy(){
-       return getFieldValue(this.workTrailWire,FIELD_COPINGSTRATEGY);
+    get copingStrategy() {
+        return getFieldValue(this.workTrailWire, FIELD_COPINGSTRATEGY);
     }
 
-    get mainGoalList(){
-        this.goal = getFieldValue(this.workTrailWire,FIELD_MAINGOALLIST);
-        if(this.goal === 'Work'){
-            return 'Jobb.';
+    get mainGoalList() {
+        this.goal = getFieldValue(this.workTrailWire, FIELD_MAINGOALLIST);
+        let returnValue;
+        if (this.goal === 'Work') {
+            returnValue = 'Jobb.';
+        } else if (this.goal === 'Education/Apprentice') {
+            returnValue = 'Utdanning.';
+        } else {
+            returnValue = 'Ingen mål valgt.';
         }
-        else if(this.goal === 'Education/Apprentice'){
-            return 'Utdanning.';
-        }
-        else{return 'Ingen mål valgt.'}
-
+        return returnValue;
     }
 
     handleClick(event) {
         const rowId = event.target.value;
-        console.log('Hv med denne da: '+rowId);
-    this[NavigationMixin.Navigate]({
-        type: 'standard__recordPage',
-        attributes: {
-            recordId: rowId,
-            actionName: 'view'
-        }
-       });
-      }
-
+        console.log('Hv med denne da: ' + rowId);
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: rowId,
+                actionName: 'view'
+            }
+        });
+    }
 
     formatDate(initialDate) {
         if (initialDate === undefined) {
@@ -513,5 +511,5 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
         }
         let date = new Date(initialDate);
         return date.toLocaleDateString();
-     }
+    }
 }

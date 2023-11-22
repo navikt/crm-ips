@@ -1,4 +1,4 @@
-import { LightningElement ,api, wire, track} from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 
 import getTrailStatus from '@salesforce/apex/IPS_ManagerTrailController.getAggregatedTrailStatus';
 import getReferred from '@salesforce/apex/IPS_ManagerTrailController.getReferredTrails';
@@ -7,15 +7,14 @@ import getEndedTrail from '@salesforce/apex/IPS_ManagerTrailController.getAggreg
 
 export default class Ips_ManagerTrails extends LightningElement {
     @track error;
-    @track trailStatusIPS=[];
+    @track trailStatusIPS = [];
     isIPS = false;
     isSE = false;
-    @track trailStatusSE=[];
+    @track trailStatusSE = [];
     @track trailReferredList;
     @track trailOwnerList;
     @track trailEndedList;
 
-  
     initialRecordOwnerList;
     initialRecordEventList;
 
@@ -29,58 +28,57 @@ export default class Ips_ManagerTrails extends LightningElement {
     @track endedToWorkSE = 0;
 
     @track columnstrailStatus = [
-        { label: 'Status/fase', fieldName: 'trailStatus', type: 'text'},
-        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' },
+        { label: 'Status/fase', fieldName: 'trailStatus', type: 'text' },
+        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' }
     ];
 
     @track columnstrailOwner = [
-        { label: 'Medarbeider', fieldName: 'employeeName', type: 'text'},
-        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' },
+        { label: 'Medarbeider', fieldName: 'employeeName', type: 'text' },
+        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' }
     ];
 
-    @track columnstrailEnded =[
-        { label: 'År', fieldName: 'year', type: 'text'},
-        { label: 'Måned', fieldName: 'month', type: 'text'},
+    @track columnstrailEnded = [
+        { label: 'År', fieldName: 'year', type: 'text' },
+        { label: 'Måned', fieldName: 'month', type: 'text' },
         { label: 'Årsak', fieldName: 'cause', type: 'text' },
-        { label: 'Underårsak', fieldName: 'subCause',type: 'text'},
-        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' },
-    ]; 
+        { label: 'Underårsak', fieldName: 'subCause', type: 'text' },
+        { label: 'Antall', fieldName: 'numberOfTrail', type: 'Number' }
+    ];
 
-
-     /* get total ended trails */
-     @wire(getReferred)
-     wiredReferred({error, data}){
-         if(data){
-            let tempEndedListIPS =0;
-            let tempReferredListIPS =0;
+    /* get total ended trails */
+    @wire(getReferred)
+    wiredReferred({ error, data }) {
+        if (data) {
+            let tempEndedListIPS = 0;
+            let tempReferredListIPS = 0;
             let tempCauseIPS = 0;
-            let tempEndedListSE =0;
-            let tempReferredListSE =0;
+            let tempEndedListSE = 0;
+            let tempReferredListSE = 0;
             let tempCauseSE = 0;
-            
-            for(var i=0;i<data.length;i++){
-                if(data[i].service==='IPS'){
-                    if(data[i].trailStatus==='Ended'){
+
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].service === 'IPS') {
+                    if (data[i].trailStatus === 'Ended') {
                         tempEndedListIPS = data[i].numberOfTrail;
                         this.isIPSReferred = true;
-                        if(data[i].cause==='Work'){
-                            tempCauseIPS ++;
+                        if (data[i].cause === 'Work') {
+                            tempCauseIPS++;
                         }
                     }
-                    if(data[i].trailStatus==='Referred'){
+                    if (data[i].trailStatus === 'Referred') {
                         tempReferredListIPS = data[i].numberOfTrail;
                         this.isIPSReferred = true;
                     }
                 }
-                if(data[i].service==='Supported Employment'){
-                    if(data[i].trailStatus==='Ended'){
+                if (data[i].service === 'Supported Employment') {
+                    if (data[i].trailStatus === 'Ended') {
                         tempEndedListSE = data[i].numberOfTrail;
                         this.isSEReferred = true;
-                        if(data[i].cause==='Work'){
-                            tempCauseSE ++;
+                        if (data[i].cause === 'Work') {
+                            tempCauseSE++;
                         }
                     }
-                    if(data[i].trailStatus==='Referred'){
+                    if (data[i].trailStatus === 'Referred') {
                         tempReferredListSE = data[i].numberOfTrail;
                         this.isSEReferred = true;
                     }
@@ -92,54 +90,54 @@ export default class Ips_ManagerTrails extends LightningElement {
             this.endedNumberSE = tempEndedListSE;
             this.endedToWorkIPS = tempCauseIPS;
             this.endedToWorkSE = tempCauseSE;
-         }else if(error){
-             this.error = error;
-         }
-     }
+        } else if (error) {
+            this.error = error;
+        }
+    }
 
-     /* get all trails pr status */
+    /* get all trails pr status */
     @wire(getTrailStatus)
-    wiredStatuses({error, data}){
-        if(data){
+    wiredStatuses({ error, data }) {
+        if (data) {
             console.log(JSON.stringify(data));
-            let tempIPS =[];
+            let tempIPS = [];
             let tempSE = [];
 
-            for(var i=0; i<data.length; i++){
-                if(data[i].service==='IPS'){
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].service === 'IPS') {
                     tempIPS.push(data[i]);
                     this.isIPS = true;
                 }
-                if(data[i].service==='Supported Employment'){
+                if (data[i].service === 'Supported Employment') {
                     tempSE.push(data[i]);
                     this.isSE = true;
                 }
             }
             this.trailStatusIPS = tempIPS;
             this.trailStatusSE = tempSE;
-        }else if(error){
+        } else if (error) {
             this.error = error;
         }
     }
 
     /* get all trails pr jobbspesialist */
     @wire(getTrailJobbspesialist)
-        wiredOwners({error, data}){
-            if(data){
-                this.trailOwnerList = data;
-                this.initialRecordOwnerList = data;
-            }else if(error){
-                this.error = error;
-            }
+    wiredOwners({ error, data }) {
+        if (data) {
+            this.trailOwnerList = data;
+            this.initialRecordOwnerList = data;
+        } else if (error) {
+            this.error = error;
         }
+    }
 
     /* get all ended aggregated pr year,month,cause */
     @wire(getEndedTrail)
-        wiredEnds({error,data}){
-            if(data){
-                this.trailEndedList = data;
-            }else if(error){
-                this.error = error;
-            }  
+    wiredEnds({ error, data }) {
+        if (data) {
+            this.trailEndedList = data;
+        } else if (error) {
+            this.error = error;
         }
+    }
 }
