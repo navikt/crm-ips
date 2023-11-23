@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Arbeidsgivermøte - Inkludert &quot;Ingen personopplysning&quot;bekreftelse</description>
+    <description>Møte i Jobbspor - ikke inkludert &quot;Ingen personopplysninger&quot;-avhuking</description>
     <fieldOverrides>
         <field>ips_Completed__c</field>
-        <formula>true</formula>
+        <formula>True</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>IPS_Status1__c</field>
+        <formula>(&quot;&quot;)</formula>
     </fieldOverrides>
     <fieldOverrides>
         <field>TAG_NoPersonInformation__c</field>
         <formula>False</formula>
     </fieldOverrides>
-    <label>Lukk møte</label>
+    <label>Lukk møte!</label>
     <optionsCreateFeedItem>false</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
@@ -21,17 +25,12 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>TAG_NoPersonInformation__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>Description</field>
+                <field>IPS_Status1__c</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>IPS_Status1__c</field>
+                <field>Description</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -62,6 +61,6 @@
         </quickActionLayoutColumns>
         <quickActionLayoutColumns/>
     </quickActionLayout>
-    <successMessage>Møtet er nå lukket</successMessage>
+    <successMessage>Møtet er nå lukket!</successMessage>
     <type>Update</type>
 </QuickAction>
