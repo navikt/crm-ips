@@ -4,7 +4,7 @@
         <name>createTravelTime</name>
         <label>createTravelTime</label>
         <locationX>314</locationX>
-        <locationY>1247</locationY>
+        <locationY>1139</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -65,12 +65,14 @@
                 <elementReference>getEvents.ips_Travel_time__c</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>createTravelTime_0_0</name>
         <label>createTravelTime</label>
         <locationX>1238</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -131,12 +133,14 @@
                 <elementReference>getEvents.ips_Travel_time__c</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>updateTravelTime_0</name>
         <label>updateTravelTime</label>
         <locationX>1502</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -197,15 +201,24 @@
                 <elementReference>getEvents.ips_Travel_time__c</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
         <name>addAccountId</name>
         <label>addAccountId</label>
         <locationX>50</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>varRelatedToAccount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getEvents.WhatId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varWhatId</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>getEvents.WhatId</elementReference>
@@ -219,7 +232,7 @@
         <name>addPublicTrue</name>
         <label>addPublicTrue</label>
         <locationX>182</locationX>
-        <locationY>1607</locationY>
+        <locationY>1463</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -235,12 +248,19 @@
         <name>Copy_1_of_addAccountId</name>
         <label>addAccountId</label>
         <locationX>578</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>varRelatedToAccount</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>getEvents.RelatedToAccount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varWhatId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getEvents.WhatId</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -251,7 +271,7 @@
         <name>Copy_1_of_addPublicFalse</name>
         <label>addPublicFalse</label>
         <locationX>1370</locationX>
-        <locationY>1367</locationY>
+        <locationY>1247</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -274,7 +294,7 @@
         <name>Copy_1_of_addPublicTrue</name>
         <label>addPublicTrue</label>
         <locationX>1106</locationX>
-        <locationY>1487</locationY>
+        <locationY>1355</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -291,7 +311,7 @@
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
         <locationX>578</locationX>
-        <locationY>815</locationY>
+        <locationY>755</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
             <name>isMeetingWithEmployerJobbstotte</name>
@@ -343,7 +363,7 @@
         <name>checkpoint1</name>
         <label>checkpoint1</label>
         <locationX>1370</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>updateTravelTime_0</targetReference>
         </defaultConnector>
@@ -389,7 +409,7 @@
         <name>checkRelatedTo</name>
         <label>checkRelatedTo</label>
         <locationX>314</locationX>
-        <locationY>1367</locationY>
+        <locationY>1247</locationY>
         <defaultConnector>
             <targetReference>updateMeetingWithId</targetReference>
         </defaultConnector>
@@ -415,7 +435,7 @@
         <name>checkType</name>
         <label>checkType</label>
         <locationX>314</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_addAccountId</targetReference>
         </defaultConnector>
@@ -440,7 +460,7 @@
         <name>checkUpdate</name>
         <label>checkUpdate</label>
         <locationX>1370</locationX>
-        <locationY>911</locationY>
+        <locationY>839</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_checkRelatedTo</targetReference>
         </defaultConnector>
@@ -479,7 +499,7 @@
         <name>Copy_1_of_checkRelatedTo</name>
         <label>Copy 1 of checkRelatedTo</label>
         <locationX>1370</locationX>
-        <locationY>1247</locationY>
+        <locationY>1139</locationY>
         <defaultConnector>
             <targetReference>updateTask</targetReference>
         </defaultConnector>
@@ -533,7 +553,7 @@
         <name>isEventNew</name>
         <label>isEventNew</label>
         <locationX>842</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>checkpoint1</targetReference>
         </defaultConnector>
@@ -596,7 +616,7 @@
         <name>getEvents</name>
         <label>getEvents</label>
         <locationX>842</locationX>
-        <locationY>335</locationY>
+        <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>isEventNew</targetReference>
@@ -617,7 +637,7 @@
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
         <locationX>1370</locationX>
-        <locationY>1487</locationY>
+        <locationY>1355</locationY>
         <connector>
             <targetReference>updateTask</targetReference>
         </connector>
@@ -634,6 +654,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>RelatedToAccount__c</field>
+            <value>
+                <elementReference>varRelatedToAccount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>WhoId</field>
             <value>
                 <elementReference>varContactId</elementReference>
@@ -645,7 +671,7 @@
         <name>updateFirstEmployeeMeeting</name>
         <label>updateFirstEmployeeMeeting</label>
         <locationX>1238</locationX>
-        <locationY>1031</locationY>
+        <locationY>947</locationY>
         <connector>
             <targetReference>Copy_1_of_checkRelatedTo</targetReference>
         </connector>
@@ -669,7 +695,7 @@
         <name>updateMeetingWithId</name>
         <label>Update meeting with Id</label>
         <locationX>314</locationX>
-        <locationY>1823</locationY>
+        <locationY>1655</locationY>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
@@ -680,6 +706,18 @@
             <field>IsVisibleInSelfService__c</field>
             <value>
                 <elementReference>varPublicTrue</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelatedToAccount__c</field>
+            <value>
+                <elementReference>varRelatedToAccount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>varWhatId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -694,7 +732,7 @@
         <name>updateTask</name>
         <label>updateTask</label>
         <locationX>1370</locationX>
-        <locationY>1763</locationY>
+        <locationY>1613</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -755,7 +793,7 @@
         <name>Add_contactid_into_event</name>
         <label>Add contactid into event</label>
         <locationX>182</locationX>
-        <locationY>1487</locationY>
+        <locationY>1355</locationY>
         <connector>
             <targetReference>addPublicTrue</targetReference>
         </connector>
@@ -775,7 +813,7 @@
         <name>Copy_1_of_Add_contactid_into_event</name>
         <label>Copy 1 of Add contactid into event</label>
         <locationX>1106</locationX>
-        <locationY>1367</locationY>
+        <locationY>1247</locationY>
         <connector>
             <targetReference>Copy_1_of_addPublicTrue</targetReference>
         </connector>
@@ -795,7 +833,7 @@
         <name>IPS_createTaskBasedOnMeetingJobbstotte</name>
         <label>Create task based on meeting - jobbstotte</label>
         <locationX>314</locationX>
-        <locationY>935</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
@@ -851,7 +889,13 @@
         <inputAssignments>
             <name>varSubject</name>
             <value>
-                <stringValue>IPS/UO Møte</stringValue>
+                <stringValue>IPS/AMS Møte</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varRelatedToAccount</elementReference>
             </value>
         </inputAssignments>
         <outputAssignments>
@@ -863,7 +907,7 @@
         <name>IPS_createTaskBasedOnMeetingJobbutvikling</name>
         <label>Create task based on meeting - jobbutvikling</label>
         <locationX>578</locationX>
-        <locationY>935</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
@@ -919,7 +963,13 @@
         <inputAssignments>
             <name>varSubject</name>
             <value>
-                <stringValue>IPS/UO Møte</stringValue>
+                <stringValue>IPS/AMS Møte</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varRelatedToAccount</elementReference>
             </value>
         </inputAssignments>
         <outputAssignments>
@@ -1023,6 +1073,13 @@
     </variables>
     <variables>
         <name>varRelatedToId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varWhatId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
