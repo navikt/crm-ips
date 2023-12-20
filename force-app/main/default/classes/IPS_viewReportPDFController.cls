@@ -140,15 +140,8 @@ public with sharing class IPS_viewReportPDFController {
             this.isUO = true;
         }
 
-        IF(reportingTrail.End_Cause__c=='Work'||reportingTrail.End_Cause__c=='Arbeid'){    
-            this.underAarsak = reportingTrail.ips_Other_end_cases__c;
-        }
-
-        IF(reportingTrail.End_Cause__c=='Other end causes'||reportingTrail.End_Cause__c=='Andre sluttårsaker'){
-            this.underAarsak = reportingTrail.ips_Other_end_cases__c;
-        }
-
         this.sluttAarsak = reportingTrail.End_Cause__c;
+        this.underAarsak = reportingTrail.ips_Other_end_cases__c;
         this.workTrailId = reportingTrail.id;
         if(reportingTrail.Oppstartsdato__c!=null){
            this.startDatoTrail = formatDate(null,reportingTrail.Oppstartsdato__c); 
