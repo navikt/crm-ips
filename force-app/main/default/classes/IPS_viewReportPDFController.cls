@@ -141,7 +141,7 @@ public with sharing class IPS_viewReportPDFController {
         }
 
         IF(reportingTrail.End_Cause__c=='Work'||reportingTrail.End_Cause__c=='Arbeid'){    
-            this.underAarsak = reportingTrail.ips_Work__c;
+            this.underAarsak = reportingTrail.ips_Other_end_cases__c;
         }
 
         IF(reportingTrail.End_Cause__c=='Other end causes'||reportingTrail.End_Cause__c=='Andre sluttårsaker'){
