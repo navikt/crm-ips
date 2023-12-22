@@ -229,6 +229,29 @@
         </connector>
     </assignments>
     <assignments>
+        <name>addAssignmentsFromRecord</name>
+        <label>addAssignmentsFromRecord</label>
+        <locationX>1370</locationX>
+        <locationY>1139</locationY>
+        <assignmentItems>
+            <assignToReference>varRelatedToAccount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getEvents.RelatedToAccount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varWhatId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getEvents.WhatId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>isParticipantsAdded</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addPublicTrue</name>
         <label>addPublicTrue</label>
         <locationX>182</locationX>
@@ -271,7 +294,7 @@
         <name>Copy_1_of_addPublicFalse</name>
         <label>addPublicFalse</label>
         <locationX>1370</locationX>
-        <locationY>1247</locationY>
+        <locationY>1355</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -294,7 +317,7 @@
         <name>Copy_1_of_addPublicTrue</name>
         <label>addPublicTrue</label>
         <locationX>1106</locationX>
-        <locationY>1355</locationY>
+        <locationY>1463</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -462,11 +485,11 @@
         <locationX>1370</locationX>
         <locationY>839</locationY>
         <defaultConnector>
-            <targetReference>Copy_1_of_checkRelatedTo</targetReference>
+            <targetReference>addAssignmentsFromRecord</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>toFinishLine</defaultConnectorLabel>
         <rules>
-            <name>IsEmployeerMeetingFinished</name>
+            <name>IsFirstMeetingFinished</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>getEvents.IPS_Status1__c</leftValueReference>
@@ -492,14 +515,39 @@
             <connector>
                 <targetReference>updateFirstEmployeeMeeting</targetReference>
             </connector>
-            <label>IsEmployeerMeetingFinished</label>
+            <label>IsFirstMeetingFinished</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Copy_1_of_checkRelatedTo</name>
-        <label>Copy 1 of checkRelatedTo</label>
+        <name>isEventNew</name>
+        <label>isEventNew</label>
+        <locationX>842</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>checkpoint1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>checkType</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isParticipantsAdded</name>
+        <label>isParticipantsAdded</label>
         <locationX>1370</locationX>
-        <locationY>1139</locationY>
+        <locationY>1247</locationY>
         <defaultConnector>
             <targetReference>updateTask</targetReference>
         </defaultConnector>
@@ -547,31 +595,6 @@
                 <targetReference>Copy_1_of_addPublicFalse</targetReference>
             </connector>
             <label>isFalse</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>isEventNew</name>
-        <label>isEventNew</label>
-        <locationX>842</locationX>
-        <locationY>431</locationY>
-        <defaultConnector>
-            <targetReference>checkpoint1</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
-        <rules>
-            <name>Yes</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>isNew</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>checkType</targetReference>
-            </connector>
-            <label>Yes</label>
         </rules>
     </decisions>
     <description>Create or update when using employee meeting or calendar
@@ -637,7 +660,7 @@
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
         <locationX>1370</locationX>
-        <locationY>1355</locationY>
+        <locationY>1463</locationY>
         <connector>
             <targetReference>updateTask</targetReference>
         </connector>
@@ -673,7 +696,7 @@
         <locationX>1238</locationX>
         <locationY>947</locationY>
         <connector>
-            <targetReference>Copy_1_of_checkRelatedTo</targetReference>
+            <targetReference>addAssignmentsFromRecord</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -732,7 +755,7 @@
         <name>updateTask</name>
         <label>updateTask</label>
         <locationX>1370</locationX>
-        <locationY>1613</locationY>
+        <locationY>1721</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -813,7 +836,7 @@
         <name>Copy_1_of_Add_contactid_into_event</name>
         <label>Copy 1 of Add contactid into event</label>
         <locationX>1106</locationX>
-        <locationY>1247</locationY>
+        <locationY>1355</locationY>
         <connector>
             <targetReference>Copy_1_of_addPublicTrue</targetReference>
         </connector>
