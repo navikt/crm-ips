@@ -3,10 +3,13 @@
     <actionCalls>
         <name>SendReportNotifications</name>
         <label>SendReportNotifications</label>
-        <locationX>50</locationX>
-        <locationY>900</locationY>
+        <locationX>660</locationX>
+        <locationY>1716</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>loopThroughWorkTrail</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
@@ -23,7 +26,7 @@
         <inputParameters>
             <name>title</name>
             <value>
-                <elementReference>getIntervallRecords.IPS_subject__c</elementReference>
+                <elementReference>varNotificationTitle</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -35,7 +38,7 @@
         <inputParameters>
             <name>targetId</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <elementReference>varWorkTrailId</elementReference>
             </value>
         </inputParameters>
         <nameSegment>customNotificationAction</nameSegment>
@@ -43,41 +46,232 @@
     </actionCalls>
     <apiVersion>58.0</apiVersion>
     <assignments>
-        <name>addOwnerId</name>
-        <label>addOwnerId</label>
-        <locationX>50</locationX>
-        <locationY>468</locationY>
+        <description>Adds value to task</description>
+        <name>addAssigmentToSingleTask</name>
+        <label>addAssigmentToSingleTask</label>
+        <locationX>660</locationX>
+        <locationY>1392</locationY>
+        <assignmentItems>
+            <assignToReference>singleTask.ActivityDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varDueDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>singleTask.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varDescription</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>singleTask.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loopThroughWorkTrail.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>singleTask.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varReportRecordTypeId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>singleTask.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varNotificationTitle</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>singleTask.Type_of_Task_IPSUO__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Veilederrapport</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>singleTask.WhatId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>singleTask.ips_Due_Date_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varDueDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>singleTask.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>addSingleIntoCollection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addAssignments</name>
+        <label>addAssignments</label>
+        <locationX>792</locationX>
+        <locationY>1008</locationY>
         <assignmentItems>
             <assignToReference>varOwnerIds</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>getIntervallRecords.IPS_workTrailName__r.OwnerId</elementReference>
+                <elementReference>loopThroughWorkTrail.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNotificationTitle</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Første veilederrapport</stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getRecordTypeId</targetReference>
+            <targetReference>getReportRecordTypeId</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addAssignments1</name>
+        <label>addAssignments</label>
+        <locationX>264</locationX>
+        <locationY>1008</locationY>
+        <assignmentItems>
+            <assignToReference>varOwnerIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>getReports.IPS_workTrailName__r.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNotificationTitle</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getReports.IPS_subject__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getReportRecordTypeId</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addSingleIntoCollection</name>
+        <label>addSingleIntoCollection</label>
+        <locationX>660</locationX>
+        <locationY>1500</locationY>
+        <assignmentItems>
+            <assignToReference>collectionTask</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>singleTask</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getNotifications</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assignWorkTrailId</name>
+        <label>assignWorkTrailId</label>
+        <locationX>660</locationX>
+        <locationY>576</locationY>
+        <assignmentItems>
+            <assignToReference>varWorkTrailId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loopThroughWorkTrail.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getReports</targetReference>
         </connector>
     </assignments>
     <decisions>
         <name>checkDueDate</name>
         <label>checkDueDate</label>
-        <locationX>182</locationX>
-        <locationY>360</locationY>
+        <locationX>396</locationX>
+        <locationY>900</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>loopThroughWorkTrail</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>isNotDue</defaultConnectorLabel>
         <rules>
-            <name>isDueTwoWeek</name>
+            <name>isDueToday</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getIntervallRecords.IPS_notificationDueDate__c</leftValueReference>
+                <leftValueReference>getReports.IPS_notificationDueDate__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>varToday</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>addOwnerId</targetReference>
+                <targetReference>addAssignments1</targetReference>
             </connector>
-            <label>isDueTwoWeek</label>
+            <label>isDueToday</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check to see if it time to send a first time intervall report</description>
+        <name>checkIfFirstTime</name>
+        <label>checkIfFirstTime</label>
+        <locationX>924</locationX>
+        <locationY>900</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>loopThroughWorkTrail</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Nothing</defaultConnectorLabel>
+        <rules>
+            <name>isFirst</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varStartUpDate</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>varToday</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addAssignments</targetReference>
+            </connector>
+            <label>isFirst</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkIfReportExists</name>
+        <label>checkIfReportExists</label>
+        <locationX>660</locationX>
+        <locationY>792</locationY>
+        <defaultConnector>
+            <targetReference>checkIfFirstTime</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Nothing</defaultConnectorLabel>
+        <rules>
+            <name>isNotNull</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getReports</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>checkDueDate</targetReference>
+            </connector>
+            <label>isNotNull</label>
         </rules>
     </decisions>
     <description>Sjekker antall dager siden siste intervallrapport pr jobbspor og sender en notifikasjon når det er 2 uker igjen til neste.</description>
@@ -85,12 +279,18 @@
     <formulas>
         <name>varDueDate</name>
         <dataType>Date</dataType>
-        <expression>{!getIntervallRecords.IPS_intervallDateTo__c}+90</expression>
+        <expression>IF({!getReports.IPS_intervallDateTo__c}!=null, {!getReports.IPS_intervallDateTo__c}+90
+,DATEVALUE({!loopThroughWorkTrail.Oppstartsdato__c})+90)</expression>
     </formulas>
     <formulas>
         <name>varNotificationBody</name>
         <dataType>String</dataType>
-        <expression>&apos;Påminnelse - det har snart gått 3 måneder siden siste rapport - &apos;&amp;{!getIntervallRecords.IPS_workTrailName__r.Name}</expression>
+        <expression>&apos;Påminnelse om veilederrapport - det har snart gått 3 måneder - &apos;&amp;{!loopThroughWorkTrail.Name}</expression>
+    </formulas>
+    <formulas>
+        <name>varStartUpDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!loopThroughWorkTrail.Oppstartsdato__c}) +75</expression>
     </formulas>
     <formulas>
         <name>varToday</name>
@@ -99,6 +299,20 @@
     </formulas>
     <interviewLabel>IPS - notification sent on intervall reports {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - notification sent on intervall reports</label>
+    <loops>
+        <name>loopThroughWorkTrail</name>
+        <label>loopThroughWorkTrail</label>
+        <locationX>176</locationX>
+        <locationY>468</locationY>
+        <collectionReference>getWorkTrails</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>assignWorkTrailId</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>createNotificationTask</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -119,106 +333,17 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <name>create_notification_task</name>
-        <label>create notification task</label>
-        <locationX>50</locationX>
-        <locationY>684</locationY>
-        <connector>
-            <targetReference>getNotifications</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>varDueDate</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Description</field>
-            <value>
-                <elementReference>varDescription</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>getIntervallRecords.IPS_workTrailName__r.OwnerId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>RecordTypeId</field>
-            <value>
-                <elementReference>varRecordTypeId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subject</field>
-            <value>
-                <elementReference>getIntervallRecords.IPS_subject__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type_of_Task_IPSUO__c</field>
-            <value>
-                <stringValue>Veilederrapport</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WhatId</field>
-            <value>
-                <elementReference>getIntervallRecords.IPS_workTrailName__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ips_Due_Date_Time__c</field>
-            <value>
-                <elementReference>varDueDate</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <name>createNotificationTask</name>
+        <label>createNotificationTask</label>
+        <locationX>176</locationX>
+        <locationY>1908</locationY>
+        <inputReference>collectionTask</inputReference>
     </recordCreates>
-    <recordLookups>
-        <name>getIntervallRecords</name>
-        <label>getIntervallRecords</label>
-        <locationX>182</locationX>
-        <locationY>252</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkDueDate</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>IPS_workTrailName__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>IPS_report_Type__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Intervall</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>IPS_worktrail_Type__c</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>ips_report__c</object>
-        <sortField>IPS_intervallDateTo__c</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <name>getNotifications</name>
         <label>getNotifications</label>
-        <locationX>50</locationX>
-        <locationY>792</locationY>
+        <locationX>660</locationX>
+        <locationY>1608</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SendReportNotifications</targetReference>
@@ -238,13 +363,37 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>getRecordTypeId</name>
-        <label>getRecordTypeId</label>
-        <locationX>50</locationX>
-        <locationY>576</locationY>
+        <description>Get recordtype id for AMS recordtype</description>
+        <name>getRecordType</name>
+        <label>getRecordType</label>
+        <locationX>176</locationX>
+        <locationY>252</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>create_notification_task</targetReference>
+            <targetReference>getWorkTrails</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>ips_Supported_Employment</stringValue>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varRecordTypeId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>getReportRecordTypeId</name>
+        <label>getReportRecordTypeId</label>
+        <locationX>660</locationX>
+        <locationY>1284</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>addAssigmentToSingleTask</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -256,17 +405,58 @@
         </filters>
         <object>RecordType</object>
         <outputAssignments>
-            <assignToReference>varRecordTypeId</assignToReference>
+            <assignToReference>varReportRecordTypeId</assignToReference>
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
-    <start>
-        <locationX>56</locationX>
-        <locationY>0</locationY>
+    <recordLookups>
+        <name>getReports</name>
+        <label>getReports</label>
+        <locationX>660</locationX>
+        <locationY>684</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getIntervallRecords</targetReference>
+            <targetReference>checkIfReportExists</targetReference>
         </connector>
-        <filterLogic>or</filterLogic>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IPS_workTrailName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_report_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Intervall</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ips_report__c</object>
+        <sortField>IPS_intervallDateTo__c</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get AMS worktrails that is not ended or referred</description>
+        <name>getWorkTrails</name>
+        <label>getWorkTrails</label>
+        <locationX>176</locationX>
+        <locationY>360</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>loopThroughWorkTrail</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Status__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Referred</stringValue>
+            </value>
+        </filters>
         <filters>
             <field>ips_Status__c</field>
             <operator>NotEqualTo</operator>
@@ -274,7 +464,25 @@
                 <stringValue>Ended</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varRecordTypeId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Work_Trail__c</object>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>getRecordType</targetReference>
+        </connector>
         <schedule>
             <frequency>Daily</frequency>
             <startDate>2023-09-29</startDate>
@@ -283,6 +491,22 @@
         <triggerType>Scheduled</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>collectionTask</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
+    </variables>
+    <variables>
+        <name>singleTask</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
+    </variables>
     <variables>
         <name>varDescription</name>
         <dataType>String</dataType>
@@ -301,6 +525,13 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>varNotificationTitle</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varOwnerIds</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
@@ -309,6 +540,20 @@
     </variables>
     <variables>
         <name>varRecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varReportRecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varWorkTrailId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
