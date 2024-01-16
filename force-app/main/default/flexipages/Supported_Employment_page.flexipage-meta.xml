@@ -608,6 +608,84 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>actionNames</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>maxRecordsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>Work_Trail__c.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>Professional_and_vocational_trainings__r</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListDisplayType</name>
+                    <value>ADVGRID</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListFieldAliases</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>NAME</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>AMS_Name_of_the_Education_institution__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>AMS_Education_title__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>AMS_Status__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>AMS_Start_Date__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>AMS_End_Date__c</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListLabel</name>
+                    <value>Professional and vocational trainings</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sortFieldAlias</name>
+                    <value>__DEFAULT__</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sortFieldOrder</name>
+                    <value>Default</value>
+                </componentInstanceProperties>
+                <componentName>lst:dynamicRelatedList</componentName>
+                <identifier>lst_dynamicRelatedList</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-90aa2d90-e63f-4380-90b7-0362f184b57f</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>iPS_workTrailReportRelatedList</componentName>
+                <identifier>c_iPS_workTrailReportRelatedList</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-80d7ab85-e9f7-4375-9173-ddd2208f8bce</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>amountOfMonths</name>
                     <value>12</value>
                 </componentInstanceProperties>
@@ -684,16 +762,6 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>iPS_workTrailReportRelatedList</componentName>
-                <identifier>c_iPS_workTrailReportRelatedList</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-80d7ab85-e9f7-4375-9173-ddd2208f8bce</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
                 <componentInstanceProperties>
                     <name>active</name>
                     <value>true</value>
@@ -714,14 +782,14 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
-                    <value>Facet-e3e877eb-00cb-46e1-bfcc-ca68d23dab3b</value>
+                    <value>Facet-90aa2d90-e63f-4380-90b7-0362f184b57f</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Historikk</value>
+                    <value>Professional and vocational training</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>tab4</identifier>
+                <identifier>flexipage_tab2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -736,6 +804,20 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-e3e877eb-00cb-46e1-bfcc-ca68d23dab3b</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Historikk</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>tab4</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-8066d9b0-d6f2-45d3-bf98-ba9ee5af0f5d</name>
@@ -902,13 +984,30 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
+                <fieldItem>Record.ips_Work__c</fieldItem>
+                <identifier>Recordips_Work_cField</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.End_Cause__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Work</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.ips_Other_end_cases__c</fieldItem>
                 <identifier>Recordips_Other_end_cases_cField1</identifier>
                 <visibilityRule>
                     <criteria>
-                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <leftValue>{!Record.End_Cause__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Ended</rightValue>
+                        <rightValue>Other end causes</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
