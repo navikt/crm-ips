@@ -19,7 +19,8 @@ public with sharing class IPS_viewReportPDFController {
     public String sluttAarsak {get; set;}
     public String underAarsak {get; set;}
     public String workTrailId {get; set;}
-    
+    public String ownerName {get;set;}
+        
     public list<Task> closedGoal {get; set;}
     public list<Task> openGoal {get; set;}
     
@@ -39,6 +40,7 @@ public with sharing class IPS_viewReportPDFController {
     
     public list<ips_Job__c> activeParticipantsJobs {get; set;}
     public list<ips_Education__c> activeParticipantsEducations {get; set;}
+   public list<ips_Education__c> plannedParticipantsEducations {get; set;}
     
     
     public IPS_viewReportPDFController(ApexPages.StandardController sc){
@@ -59,7 +61,8 @@ public with sharing class IPS_viewReportPDFController {
             getParticipantActivity();
             this.openIntervallMeeting = getOpenIntervallActivity(intervallToDate);
             this.activeParticipantsJobs = getActiveJobs(intervallFromDate,intervallToDate);
-            this.activeParticipantsEducations = getActiveEducations(intervallFromDate,intervallToDate); 
+            this.activeParticipantsEducations = getActiveEducations(intervallFromDate,intervallToDate);
+        	this.plannedParticipantsEducations = getPlannedEducations(intervallFromDate);
         
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+this.pdfTitle+'.pdf');
         
@@ -83,7 +86,8 @@ public with sharing class IPS_viewReportPDFController {
                                                IPS_endReportSumm6__c,
                                                IPS_endReportSumm7__c,
                                                IPS_participantsComment__c,
-                                               IPS_participantsOnBehalf__c
+                                               IPS_participantsOnBehalf__c,
+                                               IPS_workTrailOwner__c
                                                FROM ips_report__c
                                                WHERE id = :currRecordId
                                               ];
@@ -103,6 +107,7 @@ public with sharing class IPS_viewReportPDFController {
             
         } 
         this.pdfTitle = reportingParticipant.IPS_subject__c;
+        this.ownerName = reportingParticipant.IPS_workTrailOwner__c;
         return reportingParticipant;
     }
 
@@ -359,6 +364,35 @@ public with sharing class IPS_viewReportPDFController {
     }
     
     /****************** Utdanning *************************/
+    
+    private list<ips_Education__c> getPlannedEducations(Date endDate){
+         List<ips_Education__c> eduList = new List<ips_Education__c >();
+
+        List<ips_Education__c> plannedEdu = new List<ips_Education__c >();
+        plannedEdu =[
+            SELECT 
+            id,
+            Name,
+            ips_Work_Trail__c,
+            ips_Name_of_the_Education_Institution__c,
+            ips_Form_of_Education__c,
+            ips_Start_Date__c,
+            ips_End_Date__c,
+            ips_What_did_not_work_with_thiseducation__c,
+            ips_What_did_work_with_this_education__c,
+            ips_Education_Support_Plan__c,
+            ips_Status__c
+            FROM ips_Education__c
+            WHERE ips_Work_Trail__c = :workTrailId
+            AND ips_Status__c ='Planned'   
+            AND ips_Start_Date__c >: endDate
+        ];
+        
+        if(!plannedEdu.isEmpty()){
+            eduList.addAll(plannedEdu);
+        }
+        return eduList;
+    }
      
     private list<ips_Education__c> getActiveEducations(Date startDate, Date endDate){
         List<ips_Education__c> eduList = new List<ips_Education__c >();
@@ -379,7 +413,7 @@ public with sharing class IPS_viewReportPDFController {
             ips_Status__c
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :workTrailId
-            AND ips_Status__c ='Ongoing'   
+            AND ips_Status__c ='Ongoing'
         ];
 
         List<ips_Education__c> closedEdu = new List<ips_Education__c >();
@@ -399,7 +433,7 @@ public with sharing class IPS_viewReportPDFController {
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :workTrailId
             AND (ips_End_Date__c >=: startDate OR ips_End_Date__c >=: endDate)
-            AND ips_Status__c ='Completed'   
+            AND ips_Status__c IN ('Completed','Canceled')
         ];
 
         if(!activeEdu.isEmpty()){
