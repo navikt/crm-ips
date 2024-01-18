@@ -2,9 +2,14 @@ import { LightningElement,api,wire,track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { createRecord } from 'lightning/uiRecordApi';
 import Id from "@salesforce/user/Id";
-import { getRecord } from 'lightning/uiRecordApi'; 
+import STATUS_FIELD from "@salesforce/schema/Work_Trail__c.ips_Status__c";
+import NAME_FIELD from "@salesforce/schema/Work_Trail__c.Name";
+import OWNERNAME_FIELD from "@salesforce/schema/Work_Trail__c.IPS_ownerName__c";
+import RECORDTYPENAME_FIELD from "@salesforce/schema/Work_Trail__c.RecordType.Name";
+import { getRecord,getFieldValue } from 'lightning/uiRecordApi'; 
 import allReports from '@salesforce/apex/IPS_ParticipantsReportsController.allReports';
 
+const fields =[STATUS_FIELD,NAME_FIELD,OWNERNAME_FIELD,RECORDTYPENAME_FIELD];
 
 const COLUMNS = [
     {
@@ -26,7 +31,6 @@ const COLUMNS = [
     
 ];
 
-
 export default class IPS_workTrailReportRelatedList extends NavigationMixin(LightningElement) {
 
     @api recordId;
@@ -45,18 +49,10 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     trail;
     error;
     isLoading = false;
+    trail;
 
-    @wire(getRecord, { recordId: '$recordId', fields: ['Work_Trail__c.Name'] })
-    wiredtrail({ error, data }) {
-        if (data) {
-            this.trail = data;
-            this.recordTypeNameWorkTrail = data.recordTypeInfo.name;
-            this.error = undefined;
-        } else if (error) {
-            this.error = error;
-            this.trail = undefined;
-        }
-    }
+    @wire(getRecord, { recordId: '$recordId', fields })
+    wiredtrail;
 
     @wire(allReports,{workTrailId: '$recordId'})
     wiredReports({data, error}){
@@ -80,12 +76,24 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     }
 
     get isIPS(){
+        this.recordTypeNameWorkTrail = getFieldValue(this.wiredtrail.data,RECORDTYPENAME_FIELD);
         if(this.recordTypeNameWorkTrail === 'IPS'){
             return true;
         }
         if(this.recordTypeNameWorkTrail === 'Supported Employment'){
             return false;
         }
+    }
+
+    get isDisabled(){
+        this.recordStatus = getFieldValue(this.wiredtrail.data, STATUS_FIELD);
+        if(this.recordStatus ==='Ended'){
+            return false ;
+        }else{return true;}
+    }
+
+    get ownername(){
+        return getFieldValue(this.wiredtrail.data, OWNERNAME_FIELD);
     }
     
     handleButtonClick(event) {
@@ -119,7 +127,8 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                 "IPS_status__c":this.reportStatus,
                 "IPS_workTrailName__c":this.recordId,
                 "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
-                "OwnerId":this.userId
+                "OwnerId":this.userId,
+                "IPS_workTrailOwner__c":this.ownername
             } };
         createRecord(recordInput)
         .then((ips_report_c) =>{
@@ -157,7 +166,8 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                     "IPS_status__c":this.reportStatus,
                     "IPS_workTrailName__c":this.recordId,
                     "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
-                    "OwnerId":this.userId
+                    "OwnerId":this.userId,
+                    "IPS_workTrailOwner__c":this.ownername
                 } };
             createRecord(recordInput)
             .then((ips_report_c) =>{
