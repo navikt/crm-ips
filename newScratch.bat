@@ -20,8 +20,8 @@ call sf force:package:install --package 04t7U000000TqvIQAS -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-shared-timeline 1.22.0.."
-call sf force:package:install --package 04t7U000000Y2OEQA0 -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-shared-timeline 1.21.0.."
+call sf force:package:install --package 04t7U0000004dytQAA -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
