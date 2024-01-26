@@ -21,7 +21,6 @@ import FIELD_NETWORK from '@salesforce/schema/Work_Trail__c.ips_Network__c';
 import FIELD_NETWORKPARTNER from '@salesforce/schema/Work_Trail__c.ips_Network_partner__c';
 import FIELD_GEOGRAPHY from '@salesforce/schema/Work_Trail__c.ips_Geography__c';
 import FIELD_TREATMENTTEAM from '@salesforce/schema/Work_Trail__c.ips_Behandlingsteam__c';
-import FIELD_IPSUNG from '@salesforce/schema/Work_Trail__c.IPS_Ung__c';
 import FIELD_REFFEREDDATE from '@salesforce/schema/Work_Trail__c.ips_Referred_date__c';
 import FIELD_STARTDATE from '@salesforce/schema/Work_Trail__c.Oppstartsdato__c';
 import FIELD_CONTACTNOSHOW from '@salesforce/schema/Work_Trail__c.ips_Contact_when_not_showing__c';
@@ -84,7 +83,6 @@ const WORKTRAIL_FIELDS = [
     FIELD_NETWORK,
     FIELD_GEOGRAPHY,
     FIELD_TREATMENTTEAM,
-    FIELD_IPSUNG,
     FIELD_REFFEREDDATE,
     FIELD_STARTDATE,
     FIELD_CONTACTNOSHOW,
@@ -346,10 +344,6 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
 
     get careerwishes() {
         return getFieldValue(this.workTrailWire, FIELD_CAREERWISHES);
-    }
-
-    get IPSung() {
-        return getFieldValue(this.workTrailWire, FIELD_IPSUNG);
     }
 
     get referredDate() {
