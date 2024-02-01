@@ -92,6 +92,8 @@ public with sharing class IPS_TestDataFactory {
             EndDateTime = system.Datetime.now().addHours(1),
             Subject = 'Møte med Arbeidsgiver',
             IPS_Type__c = 'Meeting with Employer',
+            ips_uo_Kanal__c ='Fysisk',
+            Location ='Møte ett sted',
             ips_Subcategory_Type_IPS__c = 'Job support',
             ips_Subcategory_Type__c = 'Job support',
             IPS_Subcategory_Type_UO__c = 'Follow-up',
@@ -128,6 +130,7 @@ public with sharing class IPS_TestDataFactory {
             EndDateTime = system.Datetime.now().addHours(1),
             Subject = 'Møte med Arbeidsgiver',
             IPS_Type__c = 'Meeting with Employer',
+            ips_uo_Kanal__c ='Fysisk',
             ips_Subcategory_Type_IPS__c = 'Job support',
             ips_Subcategory_Type__c = 'Job support',
             IPS_Subcategory_Type_UO__c = 'Follow-up',
@@ -155,6 +158,7 @@ public with sharing class IPS_TestDataFactory {
             Description = 'Møte',
             IPS_Type__c = 'Meeting with Participant',
             IPS_Status1__c  = 'Open',
+            ips_uo_Kanal__c ='Fysisk',
             Location='Kontoret'
         );
         return createEvent;
@@ -176,6 +180,7 @@ public with sharing class IPS_TestDataFactory {
             IPS_Type__c = 'Meeting with Participant',
             IPS_Status1__c  = 'Open',
             OwnerId=ownerId,
+            ips_uo_Kanal__c ='Fysisk',
             Location='Kontoret'
         );
         return createEvent;
