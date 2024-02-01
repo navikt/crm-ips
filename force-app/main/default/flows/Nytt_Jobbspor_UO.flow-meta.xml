@@ -784,9 +784,26 @@ LEN( {!ips_participants_scn}) == 11
             <defaultValue>
                 <booleanValue>false</booleanValue>
             </defaultValue>
-            <fieldText>Utvidet oppfølging i opplæring</fieldText>
+            <fieldText>Arbeid for støtte i opplæring</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>IPS_Ung</name>
+            <dataType>Boolean</dataType>
+            <fieldText>IPS ung</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>isAlwaysFalse</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>Behandlingsteam_Innsatsteam</name>
