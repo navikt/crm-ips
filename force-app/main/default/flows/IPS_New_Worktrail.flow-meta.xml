@@ -750,7 +750,7 @@ LEN( {!ips_participants_scn}) == 11
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Name</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetail.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetail.Name}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetail.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetail.Name}&lt;/p&gt;&lt;p&gt;Alder: {!getPersonDetail.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -777,38 +777,6 @@ LEN( {!ips_participants_scn}) == 11
             </fields>
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
-        </fields>
-        <fields>
-            <name>Participant_Detail_Section2</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>Participant_Detail_Section2_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>diplayLeapYearTxt</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Kan ikke kalkulere alder på deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker kan være født i skuddår eller ha ett D-nummer.&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>getPersonDetail.CRM_AgeNumber__c</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <numberValue>0.0</numberValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
         </fields>
         <fields>
             <name>Behandlingsteam_Innsatsteam</name>
@@ -952,7 +920,7 @@ LEN( {!ips_participants_scn}) == 11
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at skriftlig samtykke foreligger eller at deltaker er over 18.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at skriftlig samtykke foreligger når deltaker er under 18.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>OR(
 {!addedUnderAge},{!ageOver18}
 )</formulaExpression>
@@ -961,9 +929,26 @@ LEN( {!ips_participants_scn}) == 11
         <fields>
             <name>ageOver18</name>
             <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
             <fieldText>Deltaker er over 18, alder ikke tilgjengelig fra systemet</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>or</conditionLogic>
+                <conditions>
+                    <leftValueReference>getPersonDetail.CRM_AgeNumber__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <numberValue>0.0</numberValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>getPersonDetail.CRM_AgeNumber__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
