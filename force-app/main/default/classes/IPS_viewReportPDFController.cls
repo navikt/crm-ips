@@ -353,7 +353,7 @@ public with sharing class IPS_viewReportPDFController {
             WHERE ips_Work_Trail__c = :workTrailId
             AND ips_Status__c = 'Completed'
             AND (ips_End_Date__c >=: startDate OR ips_End_Date__c >=: endDate)
-            ORDER BY ips_Start_Date__c DESC
+            ORDER BY ips_End_Date__c DESC
         ];
        
         if(!activeJobs.isEmpty()){
@@ -417,10 +417,11 @@ public with sharing class IPS_viewReportPDFController {
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :workTrailId
             AND ips_Status__c ='Ongoing'
+            ORDER BY ips_Start_Date__c DESC
         ];
         
            
-        if(startDate==null && endDate==null){
+        if(this.isEndReport==true){
             closedEdu =[
                 SELECT 
                 id,
@@ -437,8 +438,10 @@ public with sharing class IPS_viewReportPDFController {
                 FROM ips_Education__c
                 WHERE ips_Work_Trail__c = :workTrailId
                 AND ips_Status__c IN ('Completed','Canceled')
+                ORDER BY ips_End_Date__c DESC
             ];
-        }else{
+        }
+        if(this.isIntervallReport==true){
             closedEdu =[
                 SELECT 
                 id,
@@ -456,6 +459,7 @@ public with sharing class IPS_viewReportPDFController {
                 WHERE ips_Work_Trail__c = :workTrailId
                 AND (ips_End_Date__c >=: startDate OR ips_End_Date__c >=: endDate)
                 AND ips_Status__c IN ('Completed','Canceled')
+                ORDER BY ips_End_Date__c DESC
             ];
         }
 
@@ -493,9 +497,10 @@ public with sharing class IPS_viewReportPDFController {
             FROM AMS_Vocational_education_and_training__c
             WHERE AMS_Work_Trail__c = :workTrailId
             AND AMS_Status__c IN ('Ongoing')
+            ORDER BY AMS_Start_Date__c DESC
             ];
          
-         if(startDate==null && endDate==null){
+         if(this.isEndReport==true){
              closedAmsEdu =[
                 SELECT 
                 Id, 
@@ -514,8 +519,10 @@ public with sharing class IPS_viewReportPDFController {
                 FROM AMS_Vocational_education_and_training__c
                 WHERE AMS_Work_Trail__c = :workTrailId
                 AND AMS_Status__c IN ('Completed','Canceled')
+                ORDER BY AMS_End_Date__c DESC
                 ];
-         }else{
+         }
+         if(isIntervallReport==true){
              closedAmsEdu =[
                 SELECT 
                 Id, 
@@ -535,6 +542,7 @@ public with sharing class IPS_viewReportPDFController {
                 WHERE AMS_Work_Trail__c = :workTrailId
                 AND (AMS_End_Date__c >=: startDate OR AMS_End_Date__c >=: endDate)
                 AND AMS_Status__c IN ('Completed','Canceled')
+                ORDER BY AMS_End_Date__c DESC
                 ];
          }
          
