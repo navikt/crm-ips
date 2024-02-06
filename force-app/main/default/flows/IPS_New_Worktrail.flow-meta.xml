@@ -4,7 +4,7 @@
         <name>Redirect</name>
         <label>Redirect</label>
         <locationX>1370</locationX>
-        <locationY>1838</locationY>
+        <locationY>1730</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -22,7 +22,7 @@
     <decisions>
         <name>checkAge</name>
         <label>checkAge</label>
-        <locationX>1040</locationX>
+        <locationX>842</locationX>
         <locationY>782</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
@@ -48,7 +48,7 @@
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
-        <locationX>677</locationX>
+        <locationX>578</locationX>
         <locationY>566</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
@@ -95,7 +95,7 @@
         <description>Hvis sjekk er tom - betyr det at det er feil fødselsnummer eller person ikke eksisterer</description>
         <name>checkIfEmpty</name>
         <label>checkIfEmpty</label>
-        <locationX>363</locationX>
+        <locationX>314</locationX>
         <locationY>458</locationY>
         <defaultConnector>
             <targetReference>checkForConfidential</targetReference>
@@ -120,7 +120,7 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>1040</locationX>
+        <locationX>842</locationX>
         <locationY>1190</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
@@ -143,32 +143,10 @@
         </rules>
     </decisions>
     <decisions>
-        <name>isUserInformed</name>
-        <label>isUserInformed</label>
-        <locationX>1502</locationX>
-        <locationY>1406</locationY>
-        <defaultConnectorLabel>isNotInformed</defaultConnectorLabel>
-        <rules>
-            <name>isInformed</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Er_bruker_infomert</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Owner_Selected</targetReference>
-            </connector>
-            <label>isInformed</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
         <locationX>1106</locationX>
-        <locationY>1514</locationY>
+        <locationY>1406</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -277,7 +255,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>Create_Error_log</name>
         <label>Create Error log</label>
         <locationX>1106</locationX>
-        <locationY>1838</locationY>
+        <locationY>1730</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -309,7 +287,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>1370</locationX>
-        <locationY>1622</locationY>
+        <locationY>1514</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorkTrailName_0_0</targetReference>
@@ -378,7 +356,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>842</locationX>
-        <locationY>1622</locationY>
+        <locationY>1514</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>Opprettet</targetReference>
@@ -451,7 +429,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>1040</locationX>
+        <locationX>842</locationX>
         <locationY>1082</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -479,7 +457,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>363</locationX>
+        <locationX>314</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -502,7 +480,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordLookups>
         <name>getPersonDetail</name>
         <label>getPersonDetail</label>
-        <locationX>363</locationX>
+        <locationX>314</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -524,7 +502,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>updateWorkTrailName_0</name>
         <label>updateWorkTrailName</label>
         <locationX>842</locationX>
-        <locationY>1838</locationY>
+        <locationY>1730</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -545,7 +523,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>updateWorkTrailName_0_0</name>
         <label>updateWorkTrailName</label>
         <locationX>1370</locationX>
-        <locationY>1730</locationY>
+        <locationY>1622</locationY>
         <connector>
             <targetReference>Redirect</targetReference>
         </connector>
@@ -611,7 +589,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt jobbspor</label>
-        <locationX>363</locationX>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -645,7 +623,7 @@ LEN( {!ips_participants_scn}) == 11
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
         <locationX>1106</locationX>
-        <locationY>1730</locationY>
+        <locationY>1622</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -669,7 +647,7 @@ LEN( {!ips_participants_scn}) == 11
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>842</locationX>
-        <locationY>1730</locationY>
+        <locationY>1622</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -692,7 +670,7 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>1040</locationX>
+        <locationX>842</locationX>
         <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -750,7 +728,7 @@ LEN( {!ips_participants_scn}) == 11
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Name</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetail.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetail.Name}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetail.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetail.Name}&lt;/p&gt;&lt;p&gt;Alder: {!getPersonDetail.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -777,38 +755,6 @@ LEN( {!ips_participants_scn}) == 11
             </fields>
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
-        </fields>
-        <fields>
-            <name>Participant_Detail_Section2</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>Participant_Detail_Section2_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>diplayLeapYearTxt</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Kan ikke kalkulere alder på deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker kan være født i skuddår eller ha ett D-nummer.&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>getPersonDetail.CRM_AgeNumber__c</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <numberValue>0.0</numberValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
         </fields>
         <fields>
             <name>Behandlingsteam_Innsatsteam</name>
@@ -838,13 +784,13 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>1502</locationX>
+        <locationX>1106</locationX>
         <locationY>1298</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>isUserInformed</targetReference>
+            <targetReference>Owner_Selected</targetReference>
         </connector>
         <fields>
             <name>displayTxtUserInformed</name>
@@ -924,7 +870,7 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>varAlertAddedAge</name>
         <label>varAlertAddedAge</label>
-        <locationX>908</locationX>
+        <locationX>710</locationX>
         <locationY>890</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -952,24 +898,15 @@ LEN( {!ips_participants_scn}) == 11
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at skriftlig samtykke foreligger eller at deltaker er over 18.&lt;/span&gt;&lt;/p&gt;</errorMessage>
-                <formulaExpression>OR(
-{!addedUnderAge},{!ageOver18}
-)</formulaExpression>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at skriftlig samtykke foreligger når deltaker er under 18 år&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!addedUnderAge}</formulaExpression>
             </validationRule>
-        </fields>
-        <fields>
-            <name>ageOver18</name>
-            <dataType>Boolean</dataType>
-            <fieldText>Deltaker er over 18, alder ikke tilgjengelig fra systemet</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>237</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
