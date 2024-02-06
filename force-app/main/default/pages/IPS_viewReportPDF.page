@@ -18,7 +18,7 @@
             <apex:outputField label="Deltaker" value="{!currentTrail.ips_Participant__r.name}"></apex:outputField>
             
             <apex:outputLabel >Jobbspesialist :</apex:outputLabel>
-            <apex:outputText>{!ownerName}</apex:outputText>
+            <apex:outputText >{!ownerName}</apex:outputText>
             
             <apex:outputLabel rendered="{!isIPS}">Behandlingsteam :</apex:outputLabel>
             <apex:outputField rendered="{!isIPS}" label="Team" value="{!currentTrail.ips_Behandlingsteam__c}"></apex:outputField>
@@ -294,8 +294,8 @@
                             <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!amsedu.AMS_Form_of_Study__c}"/></td>
                         </tr>
                         <tr>
-                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Plan for støtte</th>
-                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!amsedu.AMS_Education_Support_Plan__c}"/></td>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Detaljer om opplæring</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!amsedu.AMS_Description__c}"/></td>
                         </tr>
                         </table>
                         </apex:repeat>
@@ -455,11 +455,19 @@
                 <apex:outputText ><h3>Hovedmål</h3></apex:outputText>
                 <apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_UO_Service__c}"></apex:outputField>
                 <div style ="padding-bottom: 10px;"></div>
-                <apex:outputField  value="{!currentTrail.ips_Main_goal__c }"></apex:outputField>
+                <apex:outputField value="{!currentTrail.ips_Main_goal__c }"></apex:outputField>
                 
                 <apex:outputText rendered="{!isUO}"><h3>Yrkeskartlegging og karriere planlegging</h3></apex:outputText>
                 <table  style="width: 100%;border:1px solid #262626;table-layout: fixed;">
-                    <td><apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_Desired_profession_industry_career__c }"></apex:outputField></td>
+                    <tr style=" vertical-align:top;background-color: #F1F1F1;">
+                                    <th>Ønsket yrke/bransje/karriere</th>
+                    </tr>
+                    <tr>
+                         <td>
+                        	<apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_Desired_profession_industry_career__c }"></apex:outputField>
+                    	</td>
+                    </tr>
+                   
                 </table>
                 <div style ="padding-bottom: 10px;"></div>
                 <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
@@ -622,8 +630,8 @@
                             <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!amsedu.AMS_Form_of_Study__c}"/></td>
                         </tr>
                         <tr>
-                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Plan for støtte</th>
-                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!amsedu.AMS_Education_Support_Plan__c}"/></td>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Detaljer om opplæring</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!amsedu.AMS_Description__c}"/></td>
                         </tr>
                         </table>
                         </apex:repeat>
