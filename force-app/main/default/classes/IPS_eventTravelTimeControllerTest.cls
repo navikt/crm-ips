@@ -49,8 +49,7 @@ public class IPS_eventTravelTimeControllerTest {
           ips_Subcategory_Type__c ='Job support',
           IPS_Subcategory_Type_UO__c='Follow-up',
           F_rste_arbeidsgiverm_te__c='Nei',
-          ips_uo_Kanal__c ='Fysisk',
-          Location ='Møte ett sted',
+          Location ='Fysisk oppmøte',
           IPS_Status1__c ='Completed');
           insert createEvent;
         
@@ -68,8 +67,7 @@ public class IPS_eventTravelTimeControllerTest {
           ips_Subcategory_Type__c ='Job support',
           IPS_Subcategory_Type_UO__c='Follow-up',
           F_rste_arbeidsgiverm_te__c='Nei',
-          ips_uo_Kanal__c ='Fysisk',
-          Location ='Møte ett sted',
+          Location ='Fysisk oppmøte',
           IPS_Status1__c ='Open');
           insert createEvent2; 
     }
@@ -127,4 +125,5 @@ public class IPS_eventTravelTimeControllerTest {
         IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{firstInput});
         Test.stopTest(); 
     }
+    
 }
