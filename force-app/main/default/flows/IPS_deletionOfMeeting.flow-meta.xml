@@ -2,16 +2,41 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <decisions>
+        <name>checkIfTaskIsNotEmpty</name>
+        <label>checkIfTaskIsNotEmpty</label>
+        <locationX>182</locationX>
+        <locationY>503</locationY>
+        <defaultConnector>
+            <targetReference>getTravelTimeRecords</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getTaskOnEmployer</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>slettTask</targetReference>
+            </connector>
+            <label>isNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkIfTravelExixts</name>
         <label>checkIfTravelExixts</label>
-        <locationX>182</locationX>
-        <locationY>887</locationY>
+        <locationX>336</locationX>
+        <locationY>995</locationY>
         <defaultConnectorLabel>notExists</defaultConnectorLabel>
         <rules>
             <name>travelExists</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getTravelPosts</leftValueReference>
+                <leftValueReference>getTravelTimeRecords</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -27,9 +52,9 @@
         <name>checkMeetingType</name>
         <label>checkMeetingType</label>
         <locationX>336</locationX>
-        <locationY>311</locationY>
+        <locationY>287</locationY>
         <defaultConnector>
-            <targetReference>checkTravelTime</targetReference>
+            <targetReference>getTravelTimeRecords</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>allOtherMeetings</defaultConnectorLabel>
         <rules>
@@ -42,48 +67,13 @@
                     <stringValue>Meeting with Employer</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_taskId__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>slettTask</targetReference>
+                <targetReference>getTaskOnEmployer</targetReference>
             </connector>
             <label>isEmployeeMeeting</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>checkTravelTime</name>
-        <label>checkTravelTime</label>
-        <locationX>336</locationX>
-        <locationY>647</locationY>
-        <defaultConnectorLabel>Njet</defaultConnectorLabel>
-        <rules>
-            <name>isTravelTime</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>getTravelPosts</targetReference>
-            </connector>
-            <label>isTravelTime</label>
-        </rules>
-    </decisions>
+    <environments>Default</environments>
     <interviewLabel>IPS - deletion of meeting {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - deletion of meeting</label>
     <processMetadataValues>
@@ -108,25 +98,28 @@
     <recordDeletes>
         <name>deleteTravelTime</name>
         <label>deleteTravelTime</label>
-        <locationX>50</locationX>
-        <locationY>1007</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>IPS_eventId__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
-        <object>Event</object>
+        <locationX>204</locationX>
+        <locationY>1103</locationY>
+        <inputReference>getTravelTimeRecords</inputReference>
     </recordDeletes>
     <recordDeletes>
         <name>slettTask</name>
         <label>slettTask</label>
-        <locationX>204</locationX>
-        <locationY>431</locationY>
+        <locationX>50</locationX>
+        <locationY>611</locationY>
         <connector>
-            <targetReference>checkTravelTime</targetReference>
+            <targetReference>getTravelTimeRecords</targetReference>
+        </connector>
+        <inputReference>getTaskOnEmployer</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <name>getTaskOnEmployer</name>
+        <label>getTaskOnEmployer</label>
+        <locationX>182</locationX>
+        <locationY>395</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkIfTaskIsNotEmpty</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -136,13 +129,15 @@
                 <elementReference>$Record.IPS_taskId__c</elementReference>
             </value>
         </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Task</object>
-    </recordDeletes>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
-        <name>getTravelPosts</name>
-        <label>getTravelPosts</label>
-        <locationX>182</locationX>
-        <locationY>767</locationY>
+        <name>getTravelTimeRecords</name>
+        <label>getTravelTimeRecords</label>
+        <locationX>336</locationX>
+        <locationY>887</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkIfTravelExixts</targetReference>
@@ -188,10 +183,10 @@
             </value>
         </filters>
         <filters>
-            <field>ips_Completed__c</field>
-            <operator>EqualTo</operator>
+            <field>IPS_Status1__c</field>
+            <operator>NotEqualTo</operator>
             <value>
-                <booleanValue>false</booleanValue>
+                <stringValue>Completed</stringValue>
             </value>
         </filters>
         <object>Event</object>
