@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>1502</locationX>
-        <locationY>1838</locationY>
+        <locationX>1370</locationX>
+        <locationY>1730</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -19,76 +19,11 @@
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>58.0</apiVersion>
-    <assignments>
-        <name>addAgeAdded</name>
-        <label>addAgeAdded</label>
-        <locationX>1106</locationX>
-        <locationY>890</locationY>
-        <assignmentItems>
-            <assignToReference>varParticipantAge</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varAddParticipantAge</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Get_existing</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addAgeNotAdded</name>
-        <label>addAgeNotAdded</label>
-        <locationX>578</locationX>
-        <locationY>890</locationY>
-        <assignmentItems>
-            <assignToReference>varParticipantAge</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>adjustfor100</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>alertUnder18</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addAgeOK</name>
-        <label>addAgeOK</label>
-        <locationX>1370</locationX>
-        <locationY>890</locationY>
-        <assignmentItems>
-            <assignToReference>varParticipantAge</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>adjustfor100</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Get_existing</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addAgeUnderAndAdded</name>
-        <label>addAgeUnderAndAdded</label>
-        <locationX>842</locationX>
-        <locationY>890</locationY>
-        <assignmentItems>
-            <assignToReference>varParticipantAge</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varAddParticipantAge</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>alertUnder18</targetReference>
-        </connector>
-    </assignments>
     <decisions>
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
-        <locationX>644</locationX>
+        <locationX>578</locationX>
         <locationY>566</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
@@ -134,83 +69,32 @@
     <decisions>
         <name>checkIfAddedAge</name>
         <label>checkIfAddedAge</label>
-        <locationX>974</locationX>
+        <locationX>842</locationX>
         <locationY>782</locationY>
         <defaultConnector>
-            <targetReference>addAgeOK</targetReference>
+            <targetReference>Get_existing</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>ageOK</defaultConnectorLabel>
         <rules>
             <name>isAgeUnder18</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>adjustfor100</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>adjustfor100</leftValueReference>
+                <leftValueReference>getPersonDetails.CRM_AgeNumber__c</leftValueReference>
                 <operator>LessThan</operator>
                 <rightValue>
                     <numberValue>18.0</numberValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>addAgeNotAdded</targetReference>
+                <targetReference>alertUnder18</targetReference>
             </connector>
             <label>isAgeUnder18</label>
-        </rules>
-        <rules>
-            <name>isAgeUnder18AndAdded</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>participantsAge</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varAddParticipantAge</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <numberValue>18.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addAgeUnderAndAdded</targetReference>
-            </connector>
-            <label>isAgeUnder18AndAdded</label>
-        </rules>
-        <rules>
-            <name>isAge18AndAdded</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>participantsAge</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varAddParticipantAge</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>18.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addAgeAdded</targetReference>
-            </connector>
-            <label>isAge18AndAdded</label>
         </rules>
     </decisions>
     <decisions>
         <name>checkIfEmpty</name>
         <label>checkIfEmpty</label>
-        <locationX>347</locationX>
+        <locationX>314</locationX>
         <locationY>458</locationY>
         <defaultConnector>
             <targetReference>checkForConfidential</targetReference>
@@ -235,8 +119,8 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>974</locationX>
-        <locationY>1298</locationY>
+        <locationX>842</locationX>
+        <locationY>1190</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -260,8 +144,8 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>1238</locationX>
-        <locationY>1514</locationY>
+        <locationX>1106</locationX>
+        <locationY>1406</locationY>
         <defaultConnector>
             <targetReference>Create_Worktrail_0</targetReference>
         </defaultConnector>
@@ -270,7 +154,7 @@
             <name>ownerIsNotUser</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>EierCheckbox.recordId</leftValueReference>
+                <leftValueReference>varOwnerSelected</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <elementReference>$User.Id</elementReference>
@@ -285,40 +169,14 @@
     <description>Opprettelse av nytt Jobbspor for Utvidet Oppfølging</description>
     <environments>Default</environments>
     <formulas>
-        <name>adjustfor100</name>
-        <dataType>Number</dataType>
-        <expression>if({!participantsAge}&lt;0,{!participantsAge}+100,{!participantsAge})</expression>
-        <scale>0</scale>
-    </formulas>
-    <formulas>
-        <name>isUOorUOO</name>
-        <dataType>String</dataType>
-        <expression>IF({!UOOCheckbox}, &quot;UO Training&quot;, &quot;UO&quot;)</expression>
-    </formulas>
-    <formulas>
-        <name>participantDOB</name>
-        <dataType>Date</dataType>
-        <expression>IF(NOT(ISBLANK({!getPersonDetails.Name})),
-DATE(
-VALUE(&quot;20&quot;&amp;MID({!getPersonDetails.Name},5,2)),
-VALUE(MID({!getPersonDetails.Name},3,2)),
-VALUE(MID({!getPersonDetails.Name},1,2))
-),null)</expression>
-    </formulas>
-    <formulas>
-        <name>participantsAge</name>
-        <dataType>Number</dataType>
-        <expression>IF(NOT(ISBLANK({!participantDOB} )) ,
-IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;= DATE( YEAR(TODAY()) , MONTH( TODAY() ) , DAY( TODAY() ) ),
-     YEAR (Today()) - YEAR ( {!participantDOB}),
-     YEAR (Today()) - YEAR ( {!participantDOB}) -1 ),
-  0)</expression>
-        <scale>0</scale>
-    </formulas>
-    <formulas>
         <name>UserId</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>varOwnerSelected</name>
+        <dataType>String</dataType>
+        <expression>left({!EierCheckbox.recordId},15)</expression>
     </formulas>
     <formulas>
         <name>varParticipantAddress</name>
@@ -363,8 +221,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>1238</locationX>
-        <locationY>1838</locationY>
+        <locationX>1106</locationX>
+        <locationY>1730</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -395,8 +253,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1502</locationX>
-        <locationY>1622</locationY>
+        <locationX>1370</locationX>
+        <locationY>1514</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorktrailName1</targetReference>
@@ -414,7 +272,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <inputAssignments>
             <field>IPS_Participant_age__c</field>
             <value>
-                <elementReference>varParticipantAge</elementReference>
+                <elementReference>getPersonDetails.CRM_AgeNumber__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -459,19 +317,13 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                 <elementReference>IPS_referred_date</elementReference>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>ips_UO_Service__c</field>
-            <value>
-                <elementReference>isUOorUOO</elementReference>
-            </value>
-        </inputAssignments>
         <object>Work_Trail__c</object>
     </recordCreates>
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>974</locationX>
-        <locationY>1622</locationY>
+        <locationX>842</locationX>
+        <locationY>1514</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>Opprettet</targetReference>
@@ -488,7 +340,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <inputAssignments>
             <field>IPS_Participant_age__c</field>
             <value>
-                <elementReference>varParticipantAge</elementReference>
+                <elementReference>getPersonDetails.CRM_AgeNumber__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -539,19 +391,13 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                 <elementReference>IPS_referred_date</elementReference>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>ips_UO_Service__c</field>
-            <value>
-                <elementReference>isUOorUOO</elementReference>
-            </value>
-        </inputAssignments>
         <object>Work_Trail__c</object>
     </recordCreates>
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>974</locationX>
-        <locationY>1190</locationY>
+        <locationX>842</locationX>
+        <locationY>1082</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -578,7 +424,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>347</locationX>
+        <locationX>314</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -601,7 +447,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>getPersonDetails</name>
         <label>getPersonDetails</label>
-        <locationX>347</locationX>
+        <locationX>314</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -622,8 +468,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordUpdates>
         <name>updateWorktrailName</name>
         <label>updateWorktrailName</label>
-        <locationX>974</locationX>
-        <locationY>1838</locationY>
+        <locationX>842</locationX>
+        <locationY>1730</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -643,8 +489,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordUpdates>
         <name>updateWorktrailName1</name>
         <label>updateWorktrailName</label>
-        <locationX>1502</locationX>
-        <locationY>1730</locationY>
+        <locationX>1370</locationX>
+        <locationY>1622</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -668,8 +514,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>alertIsExisting</name>
         <label>alertIsExisting</label>
-        <locationX>710</locationX>
-        <locationY>1406</locationY>
+        <locationX>578</locationX>
+        <locationY>1298</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -689,8 +535,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>alertUnder18</name>
         <label>alertUnder18</label>
-        <locationX>578</locationX>
-        <locationY>998</locationY>
+        <locationX>710</locationX>
+        <locationY>890</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -717,7 +563,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du må verifisere at skriftlig samtykke foreligger.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;Du må verifisere at skriftlig samtykke foreligger når deltaker er under 18 år.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!consentParent}</formulaExpression>
             </validationRule>
         </fields>
@@ -748,7 +594,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt Jobbspor</label>
-        <locationX>347</locationX>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -781,8 +627,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>1238</locationX>
-        <locationY>1730</locationY>
+        <locationX>1106</locationX>
+        <locationY>1622</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -805,8 +651,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>974</locationX>
-        <locationY>1730</locationY>
+        <locationX>842</locationX>
+        <locationY>1622</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -829,7 +675,7 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>974</locationX>
+        <locationX>842</locationX>
         <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -887,7 +733,7 @@ LEN( {!ips_participants_scn}) == 11
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Name</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetails.INT_FirstName__c} {!getPersonDetails.INT_LastName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetails.Name}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetails.INT_FirstName__c} {!getPersonDetails.INT_LastName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetails.Name}&lt;/p&gt;&lt;p&gt;Alder: {!getPersonDetails.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -916,62 +762,9 @@ LEN( {!ips_participants_scn}) == 11
             <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
         <fields>
-            <name>Participant_Detail_Section2</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>Participant_Detail_Section2_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>displayLeapYearTxt</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Kan ikke kalkulere alder på deltaker &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Deltaker kan være født i skuddår eller ha ett D-nummer.&lt;/span&gt;&lt;/p&gt;</fieldText>
-                    <fieldType>DisplayText</fieldType>
-                </fields>
-                <fields>
-                    <name>varAddParticipantAge</name>
-                    <dataType>Number</dataType>
-                    <fieldText>Legg inn alder på deltaker</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>true</isRequired>
-                    <scale>0</scale>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
-            <regionContainerType>SectionWithoutHeader</regionContainerType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>participantsAge</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <numberValue>0.0</numberValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
-        </fields>
-        <fields>
-            <name>UOOCheckbox</name>
-            <dataType>Boolean</dataType>
-            <defaultValue>
-                <booleanValue>false</booleanValue>
-            </defaultValue>
-            <fieldText>Utvidet oppfølging i opplæring</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
             <name>IPS_Ung</name>
             <dataType>Boolean</dataType>
-            <defaultValue>
-                <booleanValue>false</booleanValue>
-            </defaultValue>
-            <fieldText>IPS Ung</fieldText>
+            <fieldText>IPS ung</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <visibilityRule>
@@ -1013,8 +806,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>1238</locationX>
-        <locationY>1406</locationY>
+        <locationX>1106</locationX>
+        <locationY>1298</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1097,7 +890,7 @@ LEN( {!ips_participants_scn}) == 11
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>221</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
