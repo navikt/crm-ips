@@ -40,11 +40,12 @@ public with sharing class IPS_viewReportPDFController {
     
     public list<ips_Job__c> activeParticipantsJobs {get; set;}
     public list<ips_Education__c> activeParticipantsEducations {get; set;}
-   public list<ips_Education__c> plannedParticipantsEducations {get; set;}
+    public list<ips_Education__c> plannedParticipantsEducations {get; set;}
+    public list<AMS_Vocational_education_and_training__c> activeAmsEducations {get; set;}
+    public list<AMS_Vocational_education_and_training__c> plannedAmsEductions {get; set;}
     
     
     public IPS_viewReportPDFController(ApexPages.StandardController sc){
-        //this.currentRecordId = ApexPages.CurrentPage().getparameters().get('id');
         this.currentRecordId = sc.getRecord().Id;
         this.isEndReport = false;
         this.isIntervallReport = false;
@@ -63,6 +64,7 @@ public with sharing class IPS_viewReportPDFController {
             this.activeParticipantsJobs = getActiveJobs(intervallFromDate,intervallToDate);
             this.activeParticipantsEducations = getActiveEducations(intervallFromDate,intervallToDate);
         	this.plannedParticipantsEducations = getPlannedEducations(intervallFromDate);
+        	this.activeAmsEducations = getAMSEducation(intervallFromDate,intervallToDate);
         
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+this.pdfTitle+'.pdf');
         
@@ -351,7 +353,7 @@ public with sharing class IPS_viewReportPDFController {
             WHERE ips_Work_Trail__c = :workTrailId
             AND ips_Status__c = 'Completed'
             AND (ips_End_Date__c >=: startDate OR ips_End_Date__c >=: endDate)
-            ORDER BY ips_Start_Date__c DESC
+            ORDER BY ips_End_Date__c DESC
         ];
        
         if(!activeJobs.isEmpty()){
@@ -396,8 +398,9 @@ public with sharing class IPS_viewReportPDFController {
      
     private list<ips_Education__c> getActiveEducations(Date startDate, Date endDate){
         List<ips_Education__c> eduList = new List<ips_Education__c >();
-
+        List<ips_Education__c> closedEdu = new List<ips_Education__c >();
         List<ips_Education__c> activeEdu = new List<ips_Education__c >();
+        
         activeEdu =[
             SELECT 
             id,
@@ -414,27 +417,52 @@ public with sharing class IPS_viewReportPDFController {
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :workTrailId
             AND ips_Status__c ='Ongoing'
+            ORDER BY ips_Start_Date__c DESC
         ];
+        
+           
+        if(this.isEndReport==true){
+            closedEdu =[
+                SELECT 
+                id,
+                Name,
+                ips_Work_Trail__c,
+                ips_Name_of_the_Education_Institution__c,
+                ips_Form_of_Education__c,
+                ips_Start_Date__c,
+                ips_End_Date__c,
+                ips_What_did_not_work_with_thiseducation__c,
+                ips_What_did_work_with_this_education__c,
+                ips_Education_Support_Plan__c,
+                ips_Status__c
+                FROM ips_Education__c
+                WHERE ips_Work_Trail__c = :workTrailId
+                AND ips_Status__c IN ('Completed','Canceled')
+                ORDER BY ips_End_Date__c DESC
+            ];
+        }
+        if(this.isIntervallReport==true){
+            closedEdu =[
+                SELECT 
+                id,
+                Name,
+                ips_Work_Trail__c,
+                ips_Name_of_the_Education_Institution__c,
+                ips_Form_of_Education__c,
+                ips_Start_Date__c,
+                ips_End_Date__c,
+                ips_What_did_not_work_with_thiseducation__c,
+                ips_What_did_work_with_this_education__c,
+                ips_Education_Support_Plan__c,
+                ips_Status__c
+                FROM ips_Education__c
+                WHERE ips_Work_Trail__c = :workTrailId
+                AND (ips_End_Date__c >=: startDate OR ips_End_Date__c >=: endDate)
+                AND ips_Status__c IN ('Completed','Canceled')
+                ORDER BY ips_End_Date__c DESC
+            ];
+        }
 
-        List<ips_Education__c> closedEdu = new List<ips_Education__c >();
-        closedEdu =[
-            SELECT 
-            id,
-            Name,
-            ips_Work_Trail__c,
-            ips_Name_of_the_Education_Institution__c,
-            ips_Form_of_Education__c,
-            ips_Start_Date__c,
-            ips_End_Date__c,
-            ips_What_did_not_work_with_thiseducation__c,
-            ips_What_did_work_with_this_education__c,
-            ips_Education_Support_Plan__c,
-            ips_Status__c
-            FROM ips_Education__c
-            WHERE ips_Work_Trail__c = :workTrailId
-            AND (ips_End_Date__c >=: startDate OR ips_End_Date__c >=: endDate)
-            AND ips_Status__c IN ('Completed','Canceled')
-        ];
 
         if(!activeEdu.isEmpty()){
             eduList.addAll(activeEdu);
@@ -443,6 +471,88 @@ public with sharing class IPS_viewReportPDFController {
             eduList.addAll(closedEdu);
         }
         return eduList;
+    }
+    
+     private List<AMS_Vocational_education_and_training__c> getAMSEducation(Date startDate, Date endDate){
+         
+		List<AMS_Vocational_education_and_training__c> amsEduList = new List<AMS_Vocational_education_and_training__c>();
+        List<AMS_Vocational_education_and_training__c> activeAmsEdu = new List<AMS_Vocational_education_and_training__c>();
+        List<AMS_Vocational_education_and_training__c> closedAmsEdu = new List<AMS_Vocational_education_and_training__c>();
+         
+        activeAmsEdu =[
+            SELECT 
+            Id, 
+            Name,
+            CreatedDate,
+            AMS_Work_Trail__c, 
+            AMS_Description__c, 
+            AMS_Education_Support_Plan__c, 
+            AMS_Education_title__c, 
+            AMS_Educational_program__c, 
+            AMS_End_Date__c, 
+            AMS_Form_of_Study__c, 
+            AMS_Name_of_the_Education_institution__c, 
+            AMS_Start_Date__c, 
+            AMS_Status__c
+            FROM AMS_Vocational_education_and_training__c
+            WHERE AMS_Work_Trail__c = :workTrailId
+            AND AMS_Status__c IN ('Ongoing')
+            ORDER BY AMS_Start_Date__c DESC
+            ];
+         
+         if(this.isEndReport==true){
+             closedAmsEdu =[
+                SELECT 
+                Id, 
+                Name,
+                CreatedDate,
+                AMS_Work_Trail__c, 
+                AMS_Description__c, 
+                AMS_Education_Support_Plan__c, 
+                AMS_Education_title__c, 
+                AMS_Educational_program__c, 
+                AMS_End_Date__c, 
+                AMS_Form_of_Study__c, 
+                AMS_Name_of_the_Education_institution__c, 
+                AMS_Start_Date__c, 
+                AMS_Status__c
+                FROM AMS_Vocational_education_and_training__c
+                WHERE AMS_Work_Trail__c = :workTrailId
+                AND AMS_Status__c IN ('Completed','Canceled')
+                ORDER BY AMS_End_Date__c DESC
+                ];
+         }
+         if(isIntervallReport==true){
+             closedAmsEdu =[
+                SELECT 
+                Id, 
+                Name,
+                CreatedDate,
+                AMS_Work_Trail__c, 
+                AMS_Description__c, 
+                AMS_Education_Support_Plan__c, 
+                AMS_Education_title__c, 
+                AMS_Educational_program__c, 
+                AMS_End_Date__c, 
+                AMS_Form_of_Study__c, 
+                AMS_Name_of_the_Education_institution__c, 
+                AMS_Start_Date__c, 
+                AMS_Status__c
+                FROM AMS_Vocational_education_and_training__c
+                WHERE AMS_Work_Trail__c = :workTrailId
+                AND (AMS_End_Date__c >=: startDate OR AMS_End_Date__c >=: endDate)
+                AND AMS_Status__c IN ('Completed','Canceled')
+                ORDER BY AMS_End_Date__c DESC
+                ];
+         }
+         
+          if(!activeAmsEdu.isEmpty()){
+            amsEduList.addAll(activeAmsEdu);
+        }
+        if(!closedAmsEdu.isEmpty()){
+            amsEduList.addAll(closedAmsEdu);
+        }
+        return amsEduList;
     }
     
     
