@@ -9,6 +9,7 @@ public class IPS_eventTravelTimeController {
         Integer eventTraveltimeBefore = request.get(0).travelTimeBefore;
         Integer eventTraveltimeAfter = request.get(0).travelTimeAfter;
         String eventStatus = request.get(0).status;
+        String beforeOrAfter;
         if (eventTraveltimeBefore <= 0 || eventTraveltimeBefore == null) {
             eventTraveltimeBefore = 0;
         }
@@ -21,10 +22,6 @@ public class IPS_eventTravelTimeController {
         Id eventOwnerId = request.get(0).ownerId;
         Id recordTypeId = request.get(0).recordtypeId;
         
-        /*Schema.SObjectType.Event.getRecordTypeInfosByDeveloperName()
-            .get('IPS_Event')
-            .getRecordTypeId();
-*/
         //create travel time
         if (isEventUpdate == false) {
             createTravelTime(
@@ -41,8 +38,8 @@ public class IPS_eventTravelTimeController {
 
         //update travel time
         if (isEventUpdate == true) {
-            updateTravelTime(eventStartDate, eventEndDate, currentEventId, eventTraveltimeBefore, eventTraveltimeAfter,eventStatus);
-        }
+                updateTravelTime(beforeOrAfter,eventStartDate, eventEndDate, currentEventId, eventTraveltimeBefore, eventTraveltimeAfter,eventStatus);
+            }
     }
 
     //Input variables from flow
@@ -124,6 +121,7 @@ public class IPS_eventTravelTimeController {
     }
 
     private static void updateTravelTime(
+        String beforeOrAfter,
         dateTime startDate,
         dateTime endDate,
         id currentRecord,
@@ -131,6 +129,7 @@ public class IPS_eventTravelTimeController {
         Integer travelTimeAfter,
         String eventStatus
     ) {
+    
         dateTime startTimeBefore = startDate.addMinutes(-travelTimeBefore);
         dateTime startTimeAfter = startDate;
         dateTime endTimeBefore = endDate;
@@ -154,6 +153,36 @@ public class IPS_eventTravelTimeController {
                 l.IPS_Status1__c = eventStatus;
                 update l;
             }
+
+            if(travelTimeBefore==0){
+                beforeOrAfter = 'Traveltime before';
+                deleteTravelTime(currentRecord,beforeOrAfter);
+            }
+            if(travelTimeAfter==0){
+                beforeOrAfter ='Traveltime after';
+                deleteTravelTime(currentRecord,beforeOrAfter);
+            }
+        }
+    }
+    
+    private static void deleteTravelTime(
+        id currentRecord,
+        String beforeOrAfter
+    ){
+        Datetime startDateTime = [SELECT StartDateTime FROM Event WHERE id=:currentRecord].StartDateTime;
+        Datetime endDateTime = [SELECT EndDateTime FROM Event WHERE id=:currentRecord].EndDateTime;
+        List<SObject> deleteTravelTime = new List<Event>();
+            if(beforeOrAfter =='Traveltime before'){
+                List<sObject> beforeList = Database.query('SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord AND EndDateTime= :startDateTime');
+                deleteTravelTime.addAll(beforeList);
+            }
+            if(beforeOrAfter =='Traveltime after'){
+                List<sObject> afterList = Database.query('SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord AND StartDateTime = :endDateTime');
+                deleteTravelTime.addAll(afterList);
+            }
+        
+        if(deleteTravelTime.size()>0){
+            delete deleteTravelTime;
         }
     }
 }

@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Activity.Total_Duration__c:SUM/60</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Utetid i timer</masterLabel>
+        <scale>1</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>((Activity.Total_Duration__c:SUM/6000)*100/450)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Utetid for et kvartal</description>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Kvartalsvis Utetid i %</masterLabel>
+        <scale>2</scale>
+    </aggregates>
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
             <axisBinding>y</axisBinding>
-            <column>RowCount</column>
+            <column>FORMULA2</column>
         </chartSummaries>
-        <chartType>VerticalColumnGrouped</chartType>
+        <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>Activity.Date__c</groupingColumn>
+        <groupingColumn>DUE_DATE</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>Activity.IPS_Type__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
-        <showTotal>false</showTotal>
+        <showTotal>true</showTotal>
         <showValues>false</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
-        <title>Åpne møter</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
@@ -31,31 +48,52 @@
         <field>SUBJECT</field>
     </columns>
     <columns>
-        <field>WHAT_NAME</field>
-    </columns>
-    <columns>
         <field>WHO_NAME</field>
-    </columns>
-    <columns>
-        <field>Activity.RelatedToAccount__c</field>
     </columns>
     <columns>
         <field>Activity.Konto_kontakt__c</field>
     </columns>
     <columns>
-        <field>END_DATE_TIME</field>
-    </columns>
-    <columns>
-        <field>START_DATE_TIME</field>
+        <field>CONTACT</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Activity.ips_Is_the_employer_decision_maker__c</field>
+        <field>DURATION</field>
     </columns>
     <columns>
-        <field>Activity.IPS_Status1__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Activity.ips_Travel_time__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Activity.IPS_travelTimeFrom__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Activity.Total_Duration__c</field>
     </columns>
     <filter>
+        <criteriaItems>
+            <column>Activity.ips_Out_in_the_field__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Activity.IPS_Status1__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Completed,Participant Absent</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Activity.ips_uo_Kanal__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Fysisk</value>
+        </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
             <columnToColumn>false</columnToColumn>
@@ -63,40 +101,24 @@
             <operator>equals</operator>
             <value>Event.IPS_Event,Event.IPS_UO_Arbeidsgiver,Event.Ips_uo_Deltakermote,Event.ips_UO_m_ter</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>SUBJECT</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value>Reisetid</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Activity.Date__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>lessThan</operator>
-            <value>TODAY</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Activity.IPS_Status1__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Open</value>
-        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
-        <field>Activity.Date__c</field>
+        <dateGranularity>Day</dateGranularity>
+        <field>WHAT_NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Activity.IPS_Type__c</field>
+        <field>Activity.RelatedToAccount__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Mine åpne møter</name>
+    <groupingsDown>
+        <field>DUE_DATE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Utetid forrige kvartal i %</name>
     <params>
         <name>closed</name>
         <value>all</value>
@@ -116,6 +138,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
-        <interval>INTERVAL_CURY</interval>
+        <interval>INTERVAL_PREVQ</interval>
     </timeFrameFilter>
 </Report>
