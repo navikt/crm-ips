@@ -104,6 +104,7 @@ public class IPS_eventTravelTimeController {
             eBefore.RecordTypeId = recordTypeId;
             eBefore.IPS_eventId__c = currentRecord;
             eBefore.IPS_Status1__c = eventStatus;
+            eBefore.Location ='Reisetid';
             insert eBefore;
         }
 
@@ -119,6 +120,7 @@ public class IPS_eventTravelTimeController {
             eAfter.RecordTypeId = recordTypeId;
             eAfter.IPS_eventId__c = currentRecord;
             eAfter.IPS_Status1__c = eventStatus;
+            eAfter.Location ='Reisetid';
             insert eAfter;
         }
     }
