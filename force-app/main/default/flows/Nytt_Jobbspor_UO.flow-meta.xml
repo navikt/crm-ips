@@ -179,28 +179,27 @@
         <expression>left({!EierCheckbox.recordId},15)</expression>
     </formulas>
     <formulas>
-        <name>varOwnerSelected</name>
-        <dataType>String</dataType>
-        <expression>left({!EierCheckbox.recordId},15)</expression>
-    </formulas>
-    <formulas>
         <name>varParticipantAddress</name>
         <dataType>String</dataType>
         <expression>IF(
-ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
-&apos;&apos;,
-{!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c}
-)</expression>
+            ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
+            &apos;&apos;,
+            {!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos;
+            ,&apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos;
+            ,&apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c}
+            )</expression>
     </formulas>
     <formulas>
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
-        <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;,{!getPersonDetails.INT_Phone1__c})</expression>
+        <expression>
+            IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;,{!getPersonDetails.INT_Phone1__c})</expression>
     </formulas>
     <formulas>
         <name>varWorkTrailName</name>
         <dataType>String</dataType>
-        <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetails.INT_FirstName__c}&amp;&apos; &apos;&amp;{!getPersonDetails.INT_LastName__c}</expression>
+        <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetails.INT_FirstName__c}&amp;&apos;
+            &apos;&amp;{!getPersonDetails.INT_LastName__c}</expression>
     </formulas>
     <interviewLabel>Nytt Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - opprett nytt jobbspor for deltaker UO</label>
@@ -526,12 +525,14 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <allowPause>false</allowPause>
         <fields>
             <name>displayTitle5</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>isExisting</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;Deltaker er allerede registrert med ett aktivt jobbspor.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;Deltaker er
+                allerede registrert med ett aktivt jobbspor.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -550,12 +551,15 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         </connector>
         <fields>
             <name>displayTxtAlertAge</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>displayUnderAge</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Du har registrert deltaker med en alder under 18 år.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color:
+                rgb(68, 68, 68);&quot;&gt;Du har registrert deltaker med en alder under 18
+                år.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -568,7 +572,9 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;Du må verifisere at skriftlig samtykke foreligger når deltaker er under 18 år.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);
+                    color: rgb(255, 0, 0);&quot;&gt;Du må verifisere at skriftlig samtykke
+                    foreligger når deltaker er under 18 år.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!consentParent}</formulaExpression>
             </validationRule>
         </fields>
@@ -585,12 +591,15 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <allowPause>false</allowPause>
         <fields>
             <name>DisplayTitle2</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>displaytxt</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 17, 0);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet konfidensialitet.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color:
+                rgb(255, 17, 0);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet
+                konfidensialitet.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -609,7 +618,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         </connector>
         <fields>
             <name>DisplayTxtTitle1</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -619,11 +629,18 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: var(--slds-g-color-neutral-base-100, var(--lwc-colorBackgroundInput,rgb(255, 255, 255))); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, Helvetica, Arial, sans-serif, &apos;Apple Color Emoji&apos;, &apos;Segoe UI Emoji&apos;, &apos;Segoe UI Symbol&apos;);&quot;&gt;Fødselsnummer kan kun inneholde 11 numeriske verdier uten mellomrom og spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color:
+                    var(--slds-g-color-neutral-base-100, var(--lwc-colorBackgroundInput,rgb(255,
+                    255, 255))); font-size: var(--lwc-fontSize3,0.8125rem); font-family:
+                    var(--lwc-fontFamily,-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;,
+                    Roboto, Helvetica, Arial, sans-serif, &apos;Apple Color Emoji&apos;, &apos;Segoe
+                    UI Emoji&apos;, &apos;Segoe UI Symbol&apos;);&quot;&gt;Fødselsnummer kan kun
+                    inneholde 11 numeriske verdier uten mellomrom og
+                    spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>AND(
-NOT(REGEX( {!ips_participants_scn},&quot;^[a-z A-Z]*$&quot;)), 
-LEN( {!ips_participants_scn}) == 11 
-)</formulaExpression>
+                    NOT(REGEX( {!ips_participants_scn},&quot;^[a-z A-Z]*$&quot;)),
+                    LEN( {!ips_participants_scn}) == 11
+                    )</formulaExpression>
             </validationRule>
         </fields>
         <showFooter>true</showFooter>
@@ -642,12 +659,15 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
         <fields>
             <name>displayTitle7</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>Errormessage</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Kunne ikke opprettes. Kontakt din administrator&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span
+                class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Kunne ikke opprettes. Kontakt din
+                administrator&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -666,7 +686,8 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
         <fields>
             <name>displayTitle6</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -690,7 +711,8 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
         <fields>
             <name>DisplayTitle3</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -738,7 +760,12 @@ LEN( {!ips_participants_scn}) == 11
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Name</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetails.INT_FirstName__c} {!getPersonDetails.INT_LastName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetails.Name}&lt;/p&gt;&lt;p&gt;Alder: {!getPersonDetails.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt
+                        Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker:
+                        {!getPersonDetails.INT_FirstName__c}
+                        {!getPersonDetails.INT_LastName__c}&lt;/p&gt;&lt;p&gt;Personnummer:
+                        {!getPersonDetails.Name}&lt;/p&gt;&lt;p&gt;Alder:
+                        {!getPersonDetails.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -751,7 +778,9 @@ LEN( {!ips_participants_scn}) == 11
                     <fieldType>InputField</fieldType>
                     <isRequired>true</isRequired>
                     <validationRule>
-                        <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du må verifisere at dette er riktig deltaker.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                        <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);
+                            background-color: rgb(255, 255, 255);&quot;&gt;Du må verifisere at dette
+                            er riktig deltaker.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                         <formulaExpression>{!Er_dette_riktig_deltaker}</formulaExpression>
                     </validationRule>
                 </fields>
@@ -802,7 +831,12 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>Date</dataType>
             <fieldText>Henvist dato</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;Henvist dato skal samsvare med vedtaksdato i Arena.&lt;/span&gt;&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size:
+                14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;,
+                Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid
+                Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43,
+                77);&quot;&gt;Henvist dato skal samsvare med vedtaksdato i
+                Arena.&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -821,7 +855,8 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
         <fields>
             <name>display</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255,
+                255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -834,7 +869,9 @@ LEN( {!ips_participants_scn}) == 11
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du må verifisere at deltaker er informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color:
+                    rgb(255, 255, 255);&quot;&gt;Du må verifisere at deltaker er
+                    informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Er_bruker_infomert}</formulaExpression>
             </validationRule>
         </fields>
@@ -883,12 +920,15 @@ LEN( {!ips_participants_scn}) == 11
         <allowPause>false</allowPause>
         <fields>
             <name>Copy_1_of_DisplayTitle2</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size:
+                18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>displaytxtEmpty</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Det finnes ingen forekomst med dette fødselsnummer {!ips_participants_scn}.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color:
+                rgb(255, 255, 255);&quot;&gt;Det finnes ingen forekomst med dette fødselsnummer
+                {!ips_participants_scn}.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
