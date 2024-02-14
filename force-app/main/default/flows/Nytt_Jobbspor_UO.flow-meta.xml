@@ -169,11 +169,6 @@
     <description>Opprettelse av nytt Jobbspor for Utvidet Oppfølging</description>
     <environments>Default</environments>
     <formulas>
-        <name>isUOorUOO</name>
-        <dataType>String</dataType>
-        <expression>IF({!UOOCheckbox}, &quot;Vocational education and training&quot;, &quot;AMS&quot;)</expression>
-    </formulas>
-    <formulas>
         <name>UserId</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
@@ -322,12 +317,6 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
                 <elementReference>IPS_referred_date</elementReference>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>ips_UO_Service__c</field>
-            <value>
-                <elementReference>isUOorUOO</elementReference>
-            </value>
-        </inputAssignments>
         <object>Work_Trail__c</object>
     </recordCreates>
     <recordCreates>
@@ -400,12 +389,6 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <field>ips_Referred_date__c</field>
             <value>
                 <elementReference>IPS_referred_date</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ips_UO_Service__c</field>
-            <value>
-                <elementReference>isUOorUOO</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
@@ -779,16 +762,6 @@ LEN( {!ips_participants_scn}) == 11
             <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
         <fields>
-            <name>UOOCheckbox</name>
-            <dataType>Boolean</dataType>
-            <defaultValue>
-                <booleanValue>false</booleanValue>
-            </defaultValue>
-            <fieldText>Arbeid for støtte i opplæring</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
             <name>IPS_Ung</name>
             <dataType>Boolean</dataType>
             <fieldText>IPS ung</fieldText>
@@ -923,7 +896,7 @@ LEN( {!ips_participants_scn}) == 11
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>isAlwaysFalse</name>
         <dataType>Boolean</dataType>
