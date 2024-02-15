@@ -423,13 +423,13 @@
         <locationY>647</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
-            <name>isMeetingWithEmployerJobbstotte</name>
+            <name>isMeetingWithUO</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.ips_Subcategory_Type_IPS__c</leftValueReference>
+                <leftValueReference>$Record.IPS_Subcategory_Type_UO__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Job support</stringValue>
+                    <stringValue>Relationship building</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -440,12 +440,12 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IPS_createTaskBasedOnMeetingJobbstotte</targetReference>
+                <targetReference>IPS_createTaskBasedOnMeetingAMS</targetReference>
             </connector>
-            <label>isMeetingWithJobbstotte</label>
+            <label>isMeetingWithUO</label>
         </rules>
         <rules>
-            <name>isMeetingWithEmployerJobbutvikling</name>
+            <name>isMeetingWithIPS</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ips_Subcategory_Type_IPS__c</leftValueReference>
@@ -455,16 +455,16 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.IPS_Subcategory_Type_UO__c</leftValueReference>
+                <leftValueReference>$Record.ips_Subcategory_Type_IPS__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Relationship building</stringValue>
+                    <stringValue>Job support</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IPS_createTaskBasedOnMeetingJobbutvikling</targetReference>
+                <targetReference>IPS_createTaskBasedOnMeetingIPS</targetReference>
             </connector>
-            <label>isMeetingWithJobbutvikling</label>
+            <label>isMeetingWithIPS</label>
         </rules>
     </decisions>
     <decisions>
@@ -909,8 +909,8 @@
         </outputAssignments>
     </subflows>
     <subflows>
-        <name>IPS_createTaskBasedOnMeetingJobbstotte</name>
-        <label>Create task based on meeting - jobbstotte</label>
+        <name>IPS_createTaskBasedOnMeetingAMS</name>
+        <label>Create task based on meeting - AMS</label>
         <locationX>314</locationX>
         <locationY>755</locationY>
         <connector>
@@ -921,6 +921,12 @@
             <name>varActivityType</name>
             <value>
                 <stringValue>Rekruttere og inkludere</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varAMSSubtype</name>
+            <value>
+                <elementReference>$Record.IPS_Subcategory_Type_UO__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -962,7 +968,7 @@
         <inputAssignments>
             <name>varService</name>
             <value>
-                <stringValue>Jobbstøtte (Jobbspesialist)</stringValue>
+                <stringValue>Jobbspesialist</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -983,8 +989,8 @@
         </outputAssignments>
     </subflows>
     <subflows>
-        <name>IPS_createTaskBasedOnMeetingJobbutvikling</name>
-        <label>Create task based on meeting - jobbutvikling</label>
+        <name>IPS_createTaskBasedOnMeetingIPS</name>
+        <label>Create task based on meeting - IPS</label>
         <locationX>578</locationX>
         <locationY>755</locationY>
         <connector>
@@ -1001,6 +1007,12 @@
             <name>varDueDate</name>
             <value>
                 <elementReference>$Record.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varIPSSubtype</name>
+            <value>
+                <elementReference>$Record.ips_Subcategory_Type_IPS__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1036,7 +1048,7 @@
         <inputAssignments>
             <name>varService</name>
             <value>
-                <stringValue>Jobbutvikling (Jobbspesialist)</stringValue>
+                <stringValue>Jobbspesialist</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
