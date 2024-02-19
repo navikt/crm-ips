@@ -186,7 +186,7 @@
         <inputParameters>
             <name>status</name>
             <value>
-                <elementReference>$Record.IPS_Status1__c</elementReference>
+                <elementReference>varRecordStatus</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -355,6 +355,14 @@
         <name>isNew</name>
         <dataType>Boolean</dataType>
         <expression>IsNew()</expression>
+    </formulas>
+    <formulas>
+        <name>varRecordStatus</name>
+        <dataType>String</dataType>
+        <expression>CASE({!$Record.IPS_Status1__c}, 
+&apos;Cancelled&apos;, &apos;Completed&apos;, 
+&apos;Participant Absent&apos;, &apos;Completed&apos;,
+&apos;Completed&apos;, &apos;Completed&apos;, &apos;Open&apos;)</expression>
     </formulas>
     <interviewLabel>IPS - create or update starttup meeting {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - create or update starttup meeting</label>
