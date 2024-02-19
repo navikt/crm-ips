@@ -183,7 +183,7 @@
         <inputParameters>
             <name>status</name>
             <value>
-                <elementReference>$Record.IPS_Status1__c</elementReference>
+                <elementReference>varRecordStatus</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -301,6 +301,13 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>updateTravelTime</targetReference>
             </connector>
@@ -342,6 +349,14 @@
         <name>isNew</name>
         <dataType>Boolean</dataType>
         <expression>IsNew()</expression>
+    </formulas>
+    <formulas>
+        <name>varRecordStatus</name>
+        <dataType>String</dataType>
+        <expression>CASE({!$Record.IPS_Status1__c}, 
+&apos;Cancelled&apos;, &apos;Completed&apos;, 
+&apos;Participant Absent&apos;, &apos;Completed&apos;,
+&apos;Completed&apos;, &apos;Completed&apos;, &apos;Open&apos;)</expression>
     </formulas>
     <interviewLabel>IPS - create or update participant meeting {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - create or update participant meeting</label>
