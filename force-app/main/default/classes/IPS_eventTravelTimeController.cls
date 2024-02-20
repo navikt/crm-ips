@@ -10,6 +10,7 @@ public class IPS_eventTravelTimeController {
         Integer eventTraveltimeAfter = request.get(0).travelTimeAfter;
         String eventStatus = request.get(0).status;
         String beforeOrAfter;
+        
         if (eventTraveltimeBefore <= 0 || eventTraveltimeBefore == null) {
             eventTraveltimeBefore = 0;
         }
@@ -137,26 +138,29 @@ public class IPS_eventTravelTimeController {
         dateTime endTimeBefore = endDate;
         dateTime endTimeAfter = endDate.addMinutes(travelTimeAfter);
 
+        List<Event> updateList = new List<Event>();
         List<Event> travelList = [
             SELECT id, ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime, Subject, description
             FROM Event
             WHERE IPS_eventId__c = :currentRecord
         ];
         for (Event l : travelList) {
-            if (l.Description == 'Traveltime before') {
+       
+            if (l.Description == 'Traveltime before' && travelTimeBefore>0) {
                 l.StartDateTime = startTimeBefore;
                 l.EndDateTime = startTimeAfter;
                 l.IPS_Status1__c = eventStatus;
-                update l;
+                l.Location ='Reisetid'; //added to prevent validation fault on old meetings.
+                updateList.add(l);
             }
-            if (l.Description == 'Traveltime after') {
+            if (l.Description == 'Traveltime after' && travelTimeAfter>0) {
                 l.StartDateTime = endTimeBefore;
                 l.EndDateTime = endTimeAfter;
                 l.IPS_Status1__c = eventStatus;
-                update l;
+                l.Location ='Reisetid'; //added to prevent validation fault on old meetings.
+                updateList.add(l);
             }
-
-            if(travelTimeBefore==0){
+             if(travelTimeBefore==0){
                 beforeOrAfter = 'Traveltime before';
                 deleteTravelTime(currentRecord,beforeOrAfter);
             }
@@ -165,6 +169,9 @@ public class IPS_eventTravelTimeController {
                 deleteTravelTime(currentRecord,beforeOrAfter);
             }
         }
+        if(updateList.size()>0){
+                update updateList;
+            }
     }
     
     private static void deleteTravelTime(
@@ -184,7 +191,7 @@ public class IPS_eventTravelTimeController {
             }
         
         if(deleteTravelTime.size()>0){
-            delete deleteTravelTime;
+            Database.delete(deleteTravelTime, true);
         }
     }
 }

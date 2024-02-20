@@ -229,7 +229,7 @@
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>isTravelTimeAdded</name>
-            <conditionLogic>(1 AND 2) OR (3 AND 4)</conditionLogic>
+            <conditionLogic>(1 AND 2) OR (3 AND 4) OR (5 AND 6) OR (7 AND 8)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
                 <operator>GreaterThan</operator>
@@ -254,6 +254,28 @@
             <conditions>
                 <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
                 <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.IPS_travelTimeFrom__c</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
+                <operator>GreaterThan</operator>
                 <rightValue>
                     <numberValue>0.0</numberValue>
                 </rightValue>
@@ -306,6 +328,20 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Participant Absent</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
                 </rightValue>
             </conditions>
             <connector>
