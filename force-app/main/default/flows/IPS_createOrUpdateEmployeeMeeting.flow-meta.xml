@@ -342,7 +342,7 @@
         <defaultConnectorLabel>anything else</defaultConnectorLabel>
         <rules>
             <name>addTravel</name>
-            <conditionLogic>(1 AND 2) OR (3 AND 4)</conditionLogic>
+            <conditionLogic>(1 AND 2) OR (3 AND 4) OR (5 AND 6) OR (7 AND 8)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -363,6 +363,28 @@
                 <rightValue>
                     <numberValue>0.0</numberValue>
                 </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.IPS_travelTimeFrom__c</leftValueReference>
+                <operator>EqualTo</operator>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
@@ -392,13 +414,6 @@
             <conditions>
                 <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
                 <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.IPS_Status1__c</leftValueReference>
-                <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Completed</stringValue>
                 </rightValue>
@@ -749,12 +764,6 @@
         <connector>
             <targetReference>getTasksid</targetReference>
         </connector>
-        <inputAssignments>
-            <field>IPS_taskId__c</field>
-            <value>
-                <elementReference>varOutputTaskId</elementReference>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>IsVisibleInSelfService__c</field>
             <value>
