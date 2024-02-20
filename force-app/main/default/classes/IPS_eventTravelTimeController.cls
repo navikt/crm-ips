@@ -143,27 +143,28 @@ public class IPS_eventTravelTimeController {
             WHERE IPS_eventId__c = :currentRecord
         ];
         for (Event l : travelList) {
-            if (l.Description == 'Traveltime before') {
+       
+            if (l.Description == 'Traveltime before' && travelTimeBefore>0) {
                 l.StartDateTime = startTimeBefore;
                 l.EndDateTime = startTimeAfter;
                 l.IPS_Status1__c = eventStatus;
                 update l;
             }
-            if (l.Description == 'Traveltime after') {
+            if (l.Description == 'Traveltime after' && travelTimeAfter>0) {
                 l.StartDateTime = endTimeBefore;
                 l.EndDateTime = endTimeAfter;
                 l.IPS_Status1__c = eventStatus;
                 update l;
             }
 
-            if(travelTimeBefore==0){
+             if(travelTimeBefore==0){
                 beforeOrAfter = 'Traveltime before';
                 deleteTravelTime(currentRecord,beforeOrAfter);
             }
             if(travelTimeAfter==0){
                 beforeOrAfter ='Traveltime after';
                 deleteTravelTime(currentRecord,beforeOrAfter);
-            }
+            }         
         }
     }
     
@@ -184,7 +185,7 @@ public class IPS_eventTravelTimeController {
             }
         
         if(deleteTravelTime.size()>0){
-            delete deleteTravelTime;
+            Database.delete(deleteTravelTime, true);
         }
     }
 }
