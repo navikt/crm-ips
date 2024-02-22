@@ -146,19 +146,19 @@ public class IPS_eventTravelTimeController {
         ];
         for (Event l : travelList) {
        
-            if (l.Description == 'Traveltime before' && travelTimeBefore>0) {
+            if (l.Description == 'Traveltime before') {
                 l.StartDateTime = startTimeBefore;
                 l.EndDateTime = startTimeAfter;
                 l.IPS_Status1__c = eventStatus;
                 l.Location ='Reisetid'; //added to prevent validation fault on old meetings.
-                updateList.add(l);
+                update l;
             }
-            if (l.Description == 'Traveltime after' && travelTimeAfter>0) {
+            if (l.Description == 'Traveltime after') {
                 l.StartDateTime = endTimeBefore;
                 l.EndDateTime = endTimeAfter;
                 l.IPS_Status1__c = eventStatus;
                 l.Location ='Reisetid'; //added to prevent validation fault on old meetings.
-                updateList.add(l);
+                update l;
             }
              if(travelTimeBefore==0){
                 beforeOrAfter = 'Traveltime before';
@@ -169,9 +169,6 @@ public class IPS_eventTravelTimeController {
                 deleteTravelTime(currentRecord,beforeOrAfter);
             }
         }
-        if(updateList.size()>0){
-                update updateList;
-            }
     }
     
     private static void deleteTravelTime(
