@@ -76,7 +76,7 @@
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>IsEventClosed1</targetReference>
+            <targetReference>checkTravelTimeUpdate</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -139,8 +139,8 @@
     <actionCalls>
         <name>updateTravelTime</name>
         <label>updateTravelTime</label>
-        <locationX>754</locationX>
-        <locationY>539</locationY>
+        <locationX>490</locationX>
+        <locationY>839</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -247,31 +247,84 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkTravelTimeUpdate</name>
+        <label>checkTravelTimeUpdate</label>
+        <locationX>622</locationX>
+        <locationY>731</locationY>
+        <defaultConnector>
+            <targetReference>IsEventClosed1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isTravelTimeUpdate</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StartDateTime</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.EndDateTime</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Participant Absent</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateTravelTime</targetReference>
+            </connector>
+            <label>isTravelTimeUpdate</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkUpdate</name>
         <label>checkUpdate</label>
         <locationX>622</locationX>
         <locationY>431</locationY>
         <defaultConnector>
-            <targetReference>updateTravelTime</targetReference>
+            <targetReference>checkTravelTimeUpdate</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>isTravelTimeAdded</name>
-            <conditionLogic>(1 AND 3) OR (2 AND 4) OR (5 AND 6) OR (7 AND 8)</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
+            <conditionLogic>(1 AND 2) OR (3 AND 4) OR (5 AND 6) OR (7 AND 8)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -280,8 +333,22 @@
                 </rightValue>
             </conditions>
             <conditions>
+                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
                 <leftValueReference>$Record__Prior.IPS_travelTimeFrom__c</leftValueReference>
                 <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
+                <operator>GreaterThan</operator>
                 <rightValue>
                     <numberValue>0.0</numberValue>
                 </rightValue>
@@ -344,7 +411,7 @@
         <name>IsEventClosed1</name>
         <label>IsEventClosed</label>
         <locationX>622</locationX>
-        <locationY>731</locationY>
+        <locationY>1031</locationY>
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>isClosed1</name>
@@ -411,7 +478,7 @@
         <name>Copy_1_of_updateStartUpDate</name>
         <label>updateStartUpDate</label>
         <locationX>490</locationX>
-        <locationY>839</locationY>
+        <locationY>1139</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
