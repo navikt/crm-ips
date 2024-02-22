@@ -4,7 +4,7 @@
     <decisions>
         <name>checkStatus</name>
         <label>checkStatus</label>
-        <locationX>578</locationX>
+        <locationX>446</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>isNot</defaultConnectorLabel>
         <rules>
@@ -95,36 +95,6 @@
             <label>isCompleted</label>
         </rules>
     </decisions>
-    <decisions>
-        <description>If related worktrail is IPS - update to working</description>
-        <name>checkWorktrail</name>
-        <label>checkWorktrail</label>
-        <locationX>446</locationX>
-        <locationY>647</locationY>
-        <defaultConnectorLabel>isNot</defaultConnectorLabel>
-        <rules>
-            <name>isIPS</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ips_Work_Trail__r.RecordTypeId</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>varRecordTypeId</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_Work_Trail_Status__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Ended</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>update_worktrail_status</targetReference>
-            </connector>
-            <label>isIPS</label>
-        </rules>
-    </decisions>
     <description>Oppdaterer jobbspor status og jobb status basert på start og slutt dato på jobb</description>
     <environments>Default</environments>
     <formulas>
@@ -153,34 +123,10 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordLookups>
-        <description>Get IPS recordtype id.</description>
-        <name>getRecordType</name>
-        <label>getRecordType</label>
-        <locationX>446</locationX>
-        <locationY>539</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkWorktrail</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </filters>
-        <object>RecordType</object>
-        <outputAssignments>
-            <assignToReference>varRecordTypeId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
     <recordUpdates>
         <name>updateStatusCompleted</name>
         <label>updateStatusCompleted</label>
-        <locationX>842</locationX>
+        <locationX>578</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>ips_Status__c</field>
@@ -193,11 +139,8 @@
     <recordUpdates>
         <name>updateStatusOngoing</name>
         <label>updateStatusOngoing</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>431</locationY>
-        <connector>
-            <targetReference>getRecordType</targetReference>
-        </connector>
         <inputAssignments>
             <field>ips_Status__c</field>
             <value>
@@ -220,7 +163,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>452</locationX>
+        <locationX>320</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>checkStatus</targetReference>
@@ -238,20 +181,6 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
-    <subflows>
-        <description>Updates worktrail status for IPS recordtype to working</description>
-        <name>update_worktrail_status</name>
-        <label>update worktrail status</label>
-        <locationX>314</locationX>
-        <locationY>755</locationY>
-        <flowName>IPS_subflow_update_worktrail_status</flowName>
-        <inputAssignments>
-            <name>recordId</name>
-            <value>
-                <elementReference>$Record.ips_Work_Trail__c</elementReference>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <name>varRecordTypeId</name>
         <dataType>String</dataType>
