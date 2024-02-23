@@ -24,12 +24,6 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>isUpdate</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>ownerId</name>
             <value>
                 <elementReference>$Record.OwnerId</elementReference>
@@ -69,15 +63,12 @@
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
-        <name>createTravelTime1</name>
-        <label>createTravelTime</label>
+        <name>createUpdateTravelTime</name>
+        <label>createUpdateTravelTime</label>
         <locationX>314</locationX>
-        <locationY>539</locationY>
+        <locationY>431</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
-        <connector>
-            <targetReference>checkTravelTimeUpdate</targetReference>
-        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>currentRecord</name>
@@ -89,12 +80,6 @@
             <name>endDate</name>
             <value>
                 <elementReference>$Record.EndDateTime</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>isUpdate</name>
-            <value>
-                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -119,71 +104,6 @@
             <name>status</name>
             <value>
                 <elementReference>$Record.IPS_Status1__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>travelTimeAfter</name>
-            <value>
-                <elementReference>$Record.IPS_travelTimeFrom__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>travelTimeBefore</name>
-            <value>
-                <elementReference>$Record.ips_Travel_time__c</elementReference>
-            </value>
-        </inputParameters>
-        <nameSegment>IPS_eventTravelTimeController</nameSegment>
-        <versionSegment>1</versionSegment>
-    </actionCalls>
-    <actionCalls>
-        <name>updateTravelTime</name>
-        <label>updateTravelTime</label>
-        <locationX>314</locationX>
-        <locationY>839</locationY>
-        <actionName>IPS_eventTravelTimeController</actionName>
-        <actionType>apex</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>currentRecord</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>endDate</name>
-            <value>
-                <elementReference>$Record.EndDateTime</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>isUpdate</name>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>ownerId</name>
-            <value>
-                <elementReference>$Record.OwnerId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recordtypeId</name>
-            <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>startDate</name>
-            <value>
-                <elementReference>$Record.StartDateTime</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>status</name>
-            <value>
-                <elementReference>varRecordStatus</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -219,144 +139,12 @@
         </connector>
     </assignments>
     <decisions>
-        <name>checkAddTravelTime</name>
-        <label>checkAddTravelTime</label>
-        <locationX>446</locationX>
-        <locationY>431</locationY>
-        <defaultConnector>
-            <targetReference>checkTravelTimeUpdate</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
-        <rules>
-            <name>isTravelTimeAdded</name>
-            <conditionLogic>(1 AND 2) OR (3 AND 4) OR (5 AND 6) OR (7 AND 8)</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>EqualTo</operator>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.ips_Travel_time__c</leftValueReference>
-                <operator>EqualTo</operator>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>createTravelTime1</targetReference>
-            </connector>
-            <label>isTravelTimeAdded</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkTravelTimeUpdate</name>
-        <label>checkTravelTimeUpdate</label>
-        <locationX>446</locationX>
-        <locationY>731</locationY>
-        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
-        <rules>
-            <name>isTravelTimeUpdate</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.IPS_travelTimeFrom__c</leftValueReference>
-                <operator>IsChanged</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
-                <operator>IsChanged</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.StartDateTime</leftValueReference>
-                <operator>IsChanged</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.EndDateTime</leftValueReference>
-                <operator>IsChanged</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Participant Absent</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Cancelled</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateTravelTime</targetReference>
-            </connector>
-            <label>isTravelTimeUpdate</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>createOrUpdate</name>
         <label>createOrUpdate</label>
-        <locationX>248</locationX>
+        <locationX>182</locationX>
         <locationY>323</locationY>
         <defaultConnector>
-            <targetReference>checkAddTravelTime</targetReference>
+            <targetReference>createUpdateTravelTime</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
@@ -441,7 +229,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>122</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>createOrUpdate</targetReference>

@@ -114,7 +114,6 @@ public class IPS_eventTravelTimeControllerTest {
         
         List<Event> updateEvent = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c,IPS_Status1__c FROM Event WHERE IPS_eventId__c!=null];
         for(Event i:updateEvent){
-            firstInput.isUpdate = true;
             firstInput.startDate = i.StartDateTime;
         	firstInput.endDate = i.EndDateTime;
         	firstInput.currentRecord= i.Id;
