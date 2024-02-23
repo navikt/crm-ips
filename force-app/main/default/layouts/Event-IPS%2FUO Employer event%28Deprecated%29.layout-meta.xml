@@ -6,7 +6,6 @@
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>Clone</excludeButtons>
     <excludeButtons>Decline</excludeButtons>
-    <excludeButtons>Delete</excludeButtons>
     <excludeButtons>DeleteFromThisEventOnwards</excludeButtons>
     <excludeButtons>DeleteSeries</excludeButtons>
     <excludeButtons>FollowupEvent</excludeButtons>
@@ -18,34 +17,38 @@
         <label>Møtedetaljer</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Required</behavior>
                 <field>WhatId</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Edit</behavior>
                 <field>WhoId</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>IPS_Status1__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>IPS_Type__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>ips_uo_Kanal__c</field>
+                <behavior>Edit</behavior>
+                <field>ips_Is_the_employer_decision_maker__c</field>
             </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>OwnerId</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>IPS_Subcategory_Type_UO__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>ips_Subcategory_Type_IPS__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>IPS_Status1__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -56,6 +59,10 @@
         <editHeading>true</editHeading>
         <label>Møteferat</label>
         <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>TAG_NoPersonInformation__c</field>
+            </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Subject</field>
@@ -71,7 +78,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Tidspunkt</label>
+        <label>Tid og sted</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -89,15 +96,15 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>ips_Out_in_the_field__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>ips_Travel_time__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>IPS_travelTimeFrom__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ips_Out_in_the_field__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -130,9 +137,19 @@
             <sortOrder>2</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Clone</actionName>
+            <actionName>Delete</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>3</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>DeleteSeries</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>4</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Clone</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>5</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <relatedContent>
@@ -149,7 +166,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h7Y000004LoSS</masterLabel>
+        <masterLabel>00h7Y0000047sL8</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
