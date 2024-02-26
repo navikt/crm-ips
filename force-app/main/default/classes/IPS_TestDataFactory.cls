@@ -111,7 +111,8 @@ public with sharing class IPS_TestDataFactory {
             RecordTypeId = devRecordTypeId1,
             Type_of_Task_IPSUO__c ='Delmål (av hovedmål)', 
             Subject = 'Ett delmål',
-            IPS_Status1__c  = 'Open'
+            IPS_Status1__c  = 'Open',
+        	Status ='Open'
         );
         return taskGoal;
     }
