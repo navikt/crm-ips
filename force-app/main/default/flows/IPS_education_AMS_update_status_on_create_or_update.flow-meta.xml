@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>addStatusCompleted</name>
+        <label>addStatusCompleted</label>
+        <locationX>578</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>varStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateEducationStatus</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addStatusOngoing</name>
+        <label>addStatusOngoing</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>varStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Ongoing</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateEducationStatus</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addStatusPlanned</name>
+        <label>addStatusPlanned</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>varStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Planned</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateEducationStatus</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>checkStatus</name>
         <label>checkStatus</label>
@@ -11,21 +59,21 @@
             <name>isPlanned</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
+                <leftValueReference>$Record.AMS_Start_Date__c</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToday</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <leftValueReference>$Record.AMS_Status__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Planned</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>updateStatusPlanned</targetReference>
+                <targetReference>addStatusPlanned</targetReference>
             </connector>
             <label>isPlanned</label>
         </rules>
@@ -33,35 +81,35 @@
             <name>isOngoing</name>
             <conditionLogic>1 AND (2 OR 3) AND 4</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
+                <leftValueReference>$Record.AMS_Start_Date__c</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToday</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <leftValueReference>$Record.AMS_End_Date__c</leftValueReference>
                 <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>varToday</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <leftValueReference>$Record.AMS_End_Date__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <leftValueReference>$Record.AMS_Status__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Ongoing</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>updateStatusOngoing</targetReference>
+                <targetReference>addStatusOngoing</targetReference>
             </connector>
             <label>isOngoing</label>
         </rules>
@@ -69,41 +117,40 @@
             <name>isCompleted</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <leftValueReference>$Record.AMS_End_Date__c</leftValueReference>
                 <operator>LessThan</operator>
                 <rightValue>
                     <elementReference>varToday</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <leftValueReference>$Record.AMS_Status__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
+                <leftValueReference>$Record.AMS_End_Date__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>updateStatusCompleted</targetReference>
+                <targetReference>addStatusCompleted</targetReference>
             </connector>
             <label>isCompleted</label>
         </rules>
     </decisions>
-    <description>Oppdaterer jobbspor status og jobb status basert på start og slutt dato på jobb</description>
     <environments>Default</environments>
     <formulas>
         <name>varToday</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
-    <interviewLabel>IPS - update job status on create or update {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - job update status on create or update</label>
+    <interviewLabel>IPS - education AMS update status on create or update {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - education AMS update status on create or update</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -124,40 +171,14 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>updateStatusCompleted</name>
-        <label>updateStatusCompleted</label>
-        <locationX>578</locationX>
-        <locationY>431</locationY>
+        <name>updateEducationStatus</name>
+        <label>updateEducationStatus</label>
+        <locationX>446</locationX>
+        <locationY>623</locationY>
         <inputAssignments>
-            <field>ips_Status__c</field>
+            <field>AMS_Status__c</field>
             <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>updateStatusOngoing</name>
-        <label>updateStatusOngoing</label>
-        <locationX>314</locationX>
-        <locationY>431</locationY>
-        <inputAssignments>
-            <field>ips_Status__c</field>
-            <value>
-                <stringValue>Ongoing</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>updateStatusPlanned</name>
-        <label>updateStatusPlanned</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
-        <inputAssignments>
-            <field>ips_Status__c</field>
-            <value>
-                <stringValue>Planned</stringValue>
+                <elementReference>varStatus</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -170,19 +191,26 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>ips_Start_Date__c</field>
+            <field>AMS_Start_Date__c</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>false</booleanValue>
             </value>
         </filters>
-        <object>ips_Job__c</object>
+        <object>AMS_Vocational_education_and_training__c</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>varRecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varStatus</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
