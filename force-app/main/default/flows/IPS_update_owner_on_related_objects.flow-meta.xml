@@ -5,9 +5,12 @@
         <name>Change_owner_on_event</name>
         <label>Change owner on event</label>
         <locationX>176</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>change_owner_on_reports</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>currentRecord</name>
@@ -33,13 +36,44 @@
                 <stringValue>Event</stringValue>
             </value>
         </inputParameters>
+        <nameSegment>IPS_changeOwnerOnActivityController</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>change_owner_on_reports</name>
+        <label>change owner on reports</label>
+        <locationX>176</locationX>
+        <locationY>755</locationY>
+        <actionName>IPS_changeOwnerOnActivityController</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>currentRecord</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ownerRecord</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sObjectName</name>
+            <value>
+                <stringValue>ips_report__c</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_changeOwnerOnActivityController</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <description>Changes owner on all open task (delmål) that is open, assigns it to new work trail owner</description>
         <name>Change_owner_on_task</name>
         <label>Change owner on task</label>
         <locationX>176</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -64,13 +98,15 @@
                 <stringValue>Task</stringValue>
             </value>
         </inputParameters>
+        <nameSegment>IPS_changeOwnerOnActivityController</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>
         <name>setOldOwner</name>
         <label>setOldOwner</label>
         <locationX>176</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <assignmentItems>
             <assignToReference>varOldOwner</assignToReference>
             <operator>Assign</operator>
@@ -109,7 +145,7 @@
         <name>getWorkTrailDetails</name>
         <label>getWorkTrailDetails</label>
         <locationX>176</locationX>
-        <locationY>335</locationY>
+        <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>setOldOwner</targetReference>
