@@ -13,33 +13,36 @@
             <columnIndex>0</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartAxisRange>Manual</chartAxisRange>
-                <chartAxisRangeMax>15.0</chartAxisRangeMax>
+                <chartAxisRange>Auto</chartAxisRange>
                 <chartSummary>
                     <axisBinding>y</axisBinding>
                     <column>RowCount</column>
                 </chartSummary>
-                <componentType>Column</componentType>
-                <decimalPrecision>0</decimalPrecision>
-                <displayUnits>Integer</displayUnits>
+                <componentType>BarGrouped</componentType>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>CUST_CREATED_DATE</groupingColumn>
+                <groupingColumn>Work_Trail__c.ips_Main_Goal_list__c</groupingColumn>
+                <groupingColumn>Work_Trail__c.ips_UO_Service__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
+                    <groupingSorts>
+                        <groupingLevel>g2</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
                 </groupingSortProperties>
                 <header>Mine henviste jobbspor</header>
-                <legendPosition>Bottom</legendPosition>
-                <report>IPSUOJobbspesialisthjemsiden/Mine_henviste_jobbspor_9Jq</report>
+                <legendPosition>Right</legendPosition>
+                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_henviste_jobbspor_9Jq</report>
                 <showPercentage>false</showPercentage>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
-                <title>Henvist basert på opprettelsesdato</title>
                 <useReportChart>false</useReportChart>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -71,7 +74,7 @@
                 </groupingSortProperties>
                 <header>Mine aktive jobbspor</header>
                 <legendPosition>Right</legendPosition>
-                <report>IPSUOJobbspesialisthjemsiden/Mine_aktive_jobbspor_V68</report>
+                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_aktive_jobbspor_V68</report>
                 <showPercentage>false</showPercentage>
                 <showTotal>true</showTotal>
                 <showValues>true</showValues>
@@ -88,32 +91,29 @@
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartAxisRange>Auto</chartAxisRange>
                 <chartSummary>
+                    <aggregate>Sum</aggregate>
                     <axisBinding>y</axisBinding>
-                    <column>RowCount</column>
+                    <column>Work_Trail__c.IPS_participants_age__c</column>
                 </chartSummary>
-                <componentType>ColumnGrouped</componentType>
+                <componentType>Donut</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingColumn>Work_Trail__c.ips_Other_end_cases__c</groupingColumn>
-                <groupingColumn>Work_Trail__c.ips_Work__c</groupingColumn>
+                <expandOthers>true</expandOthers>
+                <groupingColumn>Work_Trail__c.ips_UO_Service__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
-                    <groupingSorts>
-                        <groupingLevel>g2</groupingLevel>
-                        <sortOrder>a</sortOrder>
-                    </groupingSorts>
                 </groupingSortProperties>
-                <header>Mine avsluttede jobbspor i år</header>
+                <header>Mine aktive jobbspor</header>
                 <legendPosition>Right</legendPosition>
-                <report>IPSUOJobbspesialisthjemsiden/Mine_avsluttede_jobbspor_8vW</report>
+                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_aktive_jobbspor_V68</report>
                 <showPercentage>false</showPercentage>
+                <showTotal>true</showTotal>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>false</useReportChart>
@@ -159,13 +159,14 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>Antall deltakere i aktiv jobb</header>
+                <header>Antall deltakere i aktiv</header>
                 <indicatorBreakpoint1>3.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>5.0</indicatorBreakpoint2>
                 <indicatorHighColor>#007045</indicatorHighColor>
                 <indicatorLowColor>#FFBF75</indicatorLowColor>
                 <indicatorMiddleColor>#DEEE68</indicatorMiddleColor>
-                <report>IPSUOJobbspesialisthjemsiden/Deltakere_i_aktiv_jobb_SkW</report>
+                <metricLabel>Jobb/arbeidstrening</metricLabel>
+                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Deltakere_i_aktiv_jobb_SkW</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -293,38 +294,23 @@
             <columnIndex>8</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
                 <chartSummary>
                     <axisBinding>y</axisBinding>
                     <column>RowCount</column>
                 </chartSummary>
-                <componentType>BarStacked</componentType>
+                <componentType>Metric</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingColumn>Activity.IPS_Type__c</groupingColumn>
-                <groupingColumn>Activity.Date__c</groupingColumn>
-                <groupingSortProperties>
-                    <groupingSorts>
-                        <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
-                    </groupingSorts>
-                    <groupingSorts>
-                        <groupingLevel>g2</groupingLevel>
-                        <sortOrder>a</sortOrder>
-                    </groupingSorts>
-                </groupingSortProperties>
-                <header>Mine åpne møter - eldre enn i dag</header>
-                <legendPosition>Right</legendPosition>
+                <groupingSortProperties/>
+                <header>Mine møter i status Åpen</header>
+                <indicatorBreakpoint1>3.0</indicatorBreakpoint1>
+                <indicatorBreakpoint2>8.0</indicatorBreakpoint2>
+                <indicatorHighColor>#E11C0E</indicatorHighColor>
+                <indicatorLowColor>#228752</indicatorLowColor>
+                <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
+                <metricLabel>passert på dato</metricLabel>
                 <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_pne_Mter_dCQ</report>
-                <showPercentage>false</showPercentage>
-                <showValues>false</showValues>
-                <sortBy>RowLabelDescending</sortBy>
-                <title>som ikke er lukket</title>
-                <useReportChart>false</useReportChart>
+                <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
             <rowSpan>8</rowSpan>
@@ -380,7 +366,7 @@
                 <indicatorHighColor>#00716B</indicatorHighColor>
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Utetid_forrige_kvartal_i_Kra</report>
+                <report>IPSUOJobbspesialisthjemsiden/Utetid_forrige_kvartal_i_Kra</report>
                 <showPercentage>false</showPercentage>
                 <showRange>true</showRange>
                 <showTotal>true</showTotal>
