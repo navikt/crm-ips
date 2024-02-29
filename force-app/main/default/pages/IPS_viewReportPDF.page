@@ -457,18 +457,21 @@
                 <div style ="padding-bottom: 10px;"></div>
                 <apex:outputField value="{!currentTrail.ips_Main_goal__c }"></apex:outputField>
                 
-                <apex:outputText rendered="{!isUO}"><h3>Yrkeskartlegging og karriere planlegging</h3></apex:outputText>
-                <table  style="width: 100%;border:1px solid #262626;table-layout: fixed;">
-                    <tr style=" vertical-align:top;background-color: #F1F1F1;">
-                                    <th>Ønsket yrke/bransje/karriere</th>
-                    </tr>
-                    <tr>
-                         <td>
-                        	<apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_Desired_profession_industry_career__c }"></apex:outputField>
-                    	</td>
-                    </tr>
-                   
-                </table>
+                
+                <apex:outputpanel rendered="{!isUO}">
+                    <apex:outputText><h3>Yrkeskartlegging og karriere planlegging</h3></apex:outputText>
+                    <table  style="width: 100%;border:1px solid #262626;table-layout: fixed;">
+                        <tr style=" vertical-align:top;background-color: #F1F1F1;">
+                                        <th>Ønsket yrke/bransje/karriere</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:outputField rendered="{!isUO}" value="{!currentTrail.ips_Desired_profession_industry_career__c }"></apex:outputField>
+                            </td>
+                        </tr>
+                    
+                    </table>
+                </apex:outputpanel>
                 <div style ="padding-bottom: 10px;"></div>
                 <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
                 
