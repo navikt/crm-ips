@@ -270,12 +270,6 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>IPS_Participant_age__c</field>
-            <value>
-                <elementReference>getPersonDetails.CRM_AgeNumber__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>IPS_Participants_home_address__c</field>
             <value>
                 <elementReference>varParticipantAddress</elementReference>
@@ -335,12 +329,6 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <field>IPS_DOB__c</field>
             <value>
                 <elementReference>getPersonDetails.INT_DateOfBirth__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>IPS_Participant_age__c</field>
-            <value>
-                <elementReference>getPersonDetails.CRM_AgeNumber__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -561,6 +549,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </defaultValue>
             <fieldText>Skriftlig samtykke fra foresatt(e) foreligger</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;Du må verifisere at skriftlig samtykke foreligger når deltaker er under 18 år.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -612,6 +601,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             <dataType>String</dataType>
             <fieldText>Deltakers fødselsnummer</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: var(--slds-g-color-neutral-base-100, var(--lwc-colorBackgroundInput,rgb(255, 255, 255))); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, Helvetica, Arial, sans-serif, &apos;Apple Color Emoji&apos;, &apos;Segoe UI Emoji&apos;, &apos;Segoe UI Symbol&apos;);&quot;&gt;Fødselsnummer kan kun inneholde 11 numeriske verdier uten mellomrom og spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -744,6 +734,7 @@ LEN( {!ips_participants_scn}) == 11
                     </defaultValue>
                     <fieldText>Er dette riktig deltaker?</fieldText>
                     <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <validationRule>
                         <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du må verifisere at dette er riktig deltaker.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -766,6 +757,7 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>Boolean</dataType>
             <fieldText>IPS ung</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -783,6 +775,7 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>String</dataType>
             <fieldText>Innsøkende avdeling</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -790,6 +783,7 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>String</dataType>
             <fieldText>Nav veileder</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -798,6 +792,7 @@ LEN( {!ips_participants_scn}) == 11
             <fieldText>Henvist dato</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;Henvist dato skal samsvare med vedtaksdato i Arena.&lt;/span&gt;&lt;/p&gt;</helpText>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -827,6 +822,7 @@ LEN( {!ips_participants_scn}) == 11
             </defaultValue>
             <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjonen</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du må verifisere at deltaker er informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -896,7 +892,7 @@ LEN( {!ips_participants_scn}) == 11
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>isAlwaysFalse</name>
         <dataType>Boolean</dataType>
