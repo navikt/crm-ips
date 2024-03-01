@@ -5,11 +5,12 @@ import Id from "@salesforce/user/Id";
 import STATUS_FIELD from "@salesforce/schema/Work_Trail__c.ips_Status__c";
 import NAME_FIELD from "@salesforce/schema/Work_Trail__c.Name";
 import OWNERNAME_FIELD from "@salesforce/schema/Work_Trail__c.IPS_ownerName__c";
+import OWNERID_FIELD from "@salesforce/schema/Work_Trail__c.OwnerId";
 import RECORDTYPENAME_FIELD from "@salesforce/schema/Work_Trail__c.RecordType.Name";
 import { getRecord,getFieldValue } from 'lightning/uiRecordApi'; 
 import allReports from '@salesforce/apex/IPS_ParticipantsReportsController.allReports';
 
-const fields =[STATUS_FIELD,NAME_FIELD,OWNERNAME_FIELD,RECORDTYPENAME_FIELD];
+const fields =[STATUS_FIELD,NAME_FIELD,OWNERNAME_FIELD,RECORDTYPENAME_FIELD,OWNERID_FIELD];
 
 const COLUMNS = [
     {
@@ -95,6 +96,10 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     get ownername(){
         return getFieldValue(this.wiredtrail.data, OWNERNAME_FIELD);
     }
+
+    get ownerid(){
+        return getFieldValue(this.wiredtrail.data, OWNERID_FIELD);
+    }
     
     handleButtonClick(event) {
         switch (event.target.label) {
@@ -127,7 +132,7 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                 "IPS_status__c":this.reportStatus,
                 "IPS_workTrailName__c":this.recordId,
                 "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
-                "OwnerId":this.userId,
+                "OwnerId":this.ownerid,
                 "IPS_workTrailOwner__c":this.ownername
             } };
         createRecord(recordInput)
@@ -166,7 +171,7 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                     "IPS_status__c":this.reportStatus,
                     "IPS_workTrailName__c":this.recordId,
                     "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
-                    "OwnerId":this.userId,
+                    "OwnerId":this.ownerid,
                     "IPS_workTrailOwner__c":this.ownername
                 } };
             createRecord(recordInput)
