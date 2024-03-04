@@ -15,6 +15,23 @@
     <columns>
         <field>CUST_OWNER_NAME</field>
     </columns>
+    <filter>
+        <criteriaItems>
+            <column>AMS_Vocational_education_and_training__c.AMS_Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Ongoing</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Work_Trail__c.ips_Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Ended</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
     <format>Summary</format>
     <groupingsDown>
         <field>Work_Trail__c.ips_Start_Date__c</field>
@@ -31,12 +48,12 @@
         <value>1</value>
     </params>
     <reportType>CustomEntityCustomEntity$Work_Trail__c$AMS_Vocational_education_and_training__c</reportType>
-    <scope>user</scope>
+    <scope>team</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>Work_Trail__c.ips_End_Date__c</dateColumn>
+        <dateColumn>CUST_CREATED_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>
