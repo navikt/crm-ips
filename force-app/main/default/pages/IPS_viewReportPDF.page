@@ -438,6 +438,33 @@
                     </div>
                 </apex:outputpanel>
                 
+                <apex:outputpanel rendered="{!plannedAmsEductions.size !=0}">
+                     <apex:outputText ><h3>Opplæringsløp </h3></apex:outputText>
+                    <div style="page-break-inside: avoid;">
+                        <apex:repeat value="{!plannedAmsEductions}" var="plan" >
+                        <apex:outputText ><h4>Utdanning - {!plan.Name} </h4></apex:outputText>
+                        <table style="vertical-align:top;width: 100%;border:1px solid #262626">
+                        <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Institusjon</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!plan.AMS_Name_of_the_Education_institution__c}"/></td>
+                        </tr>
+                        <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Startdato</th>
+                            <td style="border:1px solid #F1F1F1;"> 
+                                <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                        <apex:param value="{!plan.AMS_Start_Date__c}"/>
+                                    </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="vertical-align:top; width: 20%;background-color: #F1F1F1;">Type</th>
+                            <td style="border:1px solid #F1F1F1;"><apex:outputField value="{!plan.AMS_Form_of_Study__c}"/></td>
+                        </tr>
+                        </table>
+                    </apex:repeat>
+                    </div>
+                </apex:outputpanel>
+                
             </apex:outputPanel>
             
             <!---------------------- End -------------------------------------------------------->
