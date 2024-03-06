@@ -191,7 +191,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>AMS</metricLabel>
-                <report>IPSUOrapporterforhjemsiden/IPSUOMetodeveilederhjemsiden/Deltakere_i_aktiv_utdanningoppl_AMS_fGz</report>
+                <report>IPSUOMetodeveilederhjemsiden/Deltakere_i_aktiv_utdanningoppl_AMS_fGz</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -243,7 +243,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>IPS</metricLabel>
-                <report>IPSUOrapporterforhjemsiden/IPSUOMetodeveilederhjemsiden/Deltakere_i_aktiv_utdanningopplring_uFU</report>
+                <report>IPSUOMetodeveilederhjemsiden/Deltakere_i_aktiv_utdanningopplring_uFU</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>4</rowIndex>
@@ -254,21 +254,58 @@
             <columnIndex>0</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <chartSummary>
-                    <axisBinding>y</axisBinding>
-                    <column>RowCount</column>
-                </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
-                <componentType>BarGrouped</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingColumn>Work_Trail__c.ips_Main_Goal_list__c</groupingColumn>
-                <groupingColumn>Work_Trail__c.ips_UO_Service__c</groupingColumn>
+                <componentType>FlexTable</componentType>
+                <flexComponentProperties>
+                    <decimalPrecision>-1</decimalPrecision>
+                    <flexTableColumn>
+                        <reportColumn>Work_Trail__c.ips_Referred_date__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>detail</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>CUST_NAME</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>detail</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>Work_Trail__c.IPS_participants_age__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>detail</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>Work_Trail__c.ips_UO_Service__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>detail</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>Work_Trail__c.ips_Main_Goal_list__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>detail</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>Work_Trail__c.ips_Applying_Department__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>detail</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>Work_Trail__c.ips_Behandlingsteam__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>detail</type>
+                    </flexTableColumn>
+                    <flexTableSortInfo>
+                        <sortColumn>CUST_NAME</sortColumn>
+                        <sortOrder>1</sortOrder>
+                    </flexTableSortInfo>
+                    <hideChatterPhotos>true</hideChatterPhotos>
+                </flexComponentProperties>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
@@ -280,12 +317,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Mine henviste jobbspor</header>
-                <legendPosition>Right</legendPosition>
-                <report>IPSUOJobbspesialisthjemsiden/Mine_henviste_jobbspor_9Jq</report>
-                <showPercentage>false</showPercentage>
-                <showValues>true</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <useReportChart>false</useReportChart>
+                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_henviste_jobbspor_9Jq</report>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
             <rowSpan>8</rowSpan>
@@ -301,22 +333,17 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
-                <componentType>BarGrouped</componentType>
+                <componentType>Donut</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingColumn>Work_Trail__c.ips_UO_Service__c</groupingColumn>
-                <groupingColumn>Work_Trail__c.ips_Applying_Department__c</groupingColumn>
+                <expandOthers>true</expandOthers>
+                <groupingColumn>Work_Trail__c.ips_Status__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
-                    </groupingSorts>
-                    <groupingSorts>
-                        <groupingLevel>g2</groupingLevel>
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
@@ -324,6 +351,7 @@
                 <legendPosition>Right</legendPosition>
                 <report>IPSUOJobbspesialisthjemsiden/Mine_aktive_jobbspor_V68</report>
                 <showPercentage>false</showPercentage>
+                <showTotal>true</showTotal>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>false</useReportChart>
@@ -415,7 +443,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>AMS</metricLabel>
-                <report>IPSUOrapporterforhjemsiden/IPSUOJobbspesialisthjemsiden/Mine_deltakere_i_aktiv_utdanningoppl_AM_U6D</report>
+                <report>IPSUOJobbspesialisthjemsiden/Mine_deltakere_i_aktiv_utdanningoppl_AM_U6D</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
