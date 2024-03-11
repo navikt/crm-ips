@@ -656,7 +656,7 @@
         <connector>
             <targetReference>isEventNew</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3 OR 4)</filterLogic>
+        <filterLogic>1 AND 5 AND (2 OR 3 OR 4)</filterLogic>
         <filters>
             <field>Subject</field>
             <operator>NotEqualTo</operator>
@@ -683,6 +683,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>First Meeting with Employer</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_isFromTimeline__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>Event</object>
