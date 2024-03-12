@@ -7,7 +7,7 @@
         <locationX>578</locationX>
         <locationY>395</locationY>
         <customErrorMessages>
-            <errorMessage>Custom error</errorMessage>
+            <errorMessage>Du kan kun relatere møte til en konto.</errorMessage>
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>
@@ -54,6 +54,13 @@
                     <stringValue>Meeting with Participant</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.WhatId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Meeting_with_participant_error</targetReference>
             </connector>
@@ -76,6 +83,13 @@
                     <stringValue>Meeting with Employer</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.WhatId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Meeting_with_Employer</targetReference>
             </connector>
@@ -91,6 +105,13 @@
                     <stringValue>Arbeidsgivermøte</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>varAccountId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Kopi_3_av_Custom_Error_Message_3</targetReference>
             </connector>
@@ -98,6 +119,11 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>varAccountId</name>
+        <dataType>Boolean</dataType>
+        <expression>BEGINS({!$Record.WhatId}, &apos;001&apos;)</expression>
+    </formulas>
     <interviewLabel>IPS_Meeting_Error_Message {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS_Meeting_Error_Message</label>
     <processMetadataValues>
