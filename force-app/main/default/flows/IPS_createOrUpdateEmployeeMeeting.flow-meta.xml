@@ -184,7 +184,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateMeetingWithId</targetReference>
+            <targetReference>checkTasks1</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -339,7 +339,7 @@
         <locationX>314</locationX>
         <locationY>1139</locationY>
         <defaultConnector>
-            <targetReference>updateMeetingWithId</targetReference>
+            <targetReference>checkTasks1</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>isFalse</defaultConnectorLabel>
         <rules>
@@ -376,6 +376,28 @@
             </conditions>
             <connector>
                 <targetReference>UpdateTask</targetReference>
+            </connector>
+            <label>isNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkTasks1</name>
+        <label>checkTasks</label>
+        <locationX>314</locationX>
+        <locationY>1547</locationY>
+        <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isNotEmpty1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varOutputTaskId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateMeetingWithId</targetReference>
             </connector>
             <label>isNotEmpty</label>
         </rules>
@@ -571,8 +593,8 @@
     <recordUpdates>
         <name>updateMeetingWithId</name>
         <label>Update meeting with Id</label>
-        <locationX>314</locationX>
-        <locationY>1547</locationY>
+        <locationX>182</locationX>
+        <locationY>1655</locationY>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
