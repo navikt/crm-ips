@@ -98,7 +98,7 @@ public class IPS_myWorkTrailControllerTest {
             );
         insert trailIPS;
 
-        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event eventEmployer = new Event(
                     Subject = 'Event ',
@@ -205,7 +205,7 @@ public class IPS_myWorkTrailControllerTest {
             );
         insert trailIPS;
 
-        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event allEvent = new Event(
                     Subject = 'Event ',
