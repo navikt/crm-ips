@@ -146,7 +146,7 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static Event createParticipantEvent(String contactId, String jobbsporId) {
-        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
@@ -169,7 +169,7 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static Event createParticipantEventWithOwner(String ownerId, String jobbsporId) {
-        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
