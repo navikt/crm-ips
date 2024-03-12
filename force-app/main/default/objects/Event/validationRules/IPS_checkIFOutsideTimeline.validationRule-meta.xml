@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_checkIFOutsideTimeline</fullName>
+    <active>false</active>
+    <description>Give an error message if user try to create a meeting outside of timeline and work trail</description>
+    <errorConditionFormula>AND(
+CASE(IPS_Type__c,
+&quot;Meeting with Employer&quot;, 1,
+&quot;Meeting with Participant&quot;, 1,
+&quot;Start up meeting&quot;, 1,
+&quot;First Meeting with Employer&quot;, 1,
+&quot;Arbeidsgivermøte&quot;, 1,
+0
+)=1,
+IPS_isFromTimeline__c = false
+)</errorConditionFormula>
+    <errorMessage>Møter fra kalenderen kan ikke opprettes</errorMessage>
+</ValidationRule>

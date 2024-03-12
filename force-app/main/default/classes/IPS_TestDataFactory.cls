@@ -91,6 +91,7 @@ public with sharing class IPS_TestDataFactory {
             StartDateTime = system.Datetime.now(),
             EndDateTime = system.Datetime.now().addHours(1),
             Subject = 'Møte med Arbeidsgiver',
+            IPS_isFromTimeline__c = true,
             IPS_Type__c = 'Meeting with Employer',
             ips_uo_Kanal__c ='Fysisk',
             Location ='Møte ett sted',
@@ -130,6 +131,7 @@ public with sharing class IPS_TestDataFactory {
             StartDateTime = system.Datetime.now(),
             EndDateTime = system.Datetime.now().addHours(1),
             Subject = 'Møte med Arbeidsgiver',
+            IPS_isFromTimeline__c = true,
             IPS_Type__c = 'Meeting with Employer',
             ips_uo_Kanal__c ='Fysisk',
             ips_Subcategory_Type_IPS__c = 'Job support',
@@ -144,7 +146,7 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static Event createParticipantEvent(String contactId, String jobbsporId) {
-        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
@@ -156,6 +158,7 @@ public with sharing class IPS_TestDataFactory {
             StartDateTime = system.Datetime.now(),
             EndDateTime = system.Datetime.now().addHours(1),
             Subject = 'Møte med deltaker',
+            IPS_isFromTimeline__c = true,
             Description = 'Møte',
             IPS_Type__c = 'Meeting with Participant',
             IPS_Status1__c  = 'Open',
@@ -166,7 +169,7 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static Event createParticipantEventWithOwner(String ownerId, String jobbsporId) {
-        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
@@ -177,6 +180,7 @@ public with sharing class IPS_TestDataFactory {
             StartDateTime = system.Datetime.now(),
             EndDateTime = system.Datetime.now().addHours(1),
             Subject = 'Møte med deltaker',
+            IPS_isFromTimeline__c = true,
             Description = 'Møte',
             IPS_Type__c = 'Meeting with Participant',
             IPS_Status1__c  = 'Open',

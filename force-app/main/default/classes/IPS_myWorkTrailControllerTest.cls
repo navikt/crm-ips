@@ -59,6 +59,7 @@ public class IPS_myWorkTrailControllerTest {
                     EndDateTime = System.today()+1,
                     Description = 'Møte handler om event ',
                     IPS_Type__c = 'Meeting with Employer',
+                    IPS_isFromTimeline__c = true,
                     ips_Completed__c = false,
                     ips_uo_Kanal__c ='Fysisk',
                     Location ='Møte ett sted',
@@ -97,7 +98,7 @@ public class IPS_myWorkTrailControllerTest {
             );
         insert trailIPS;
 
-        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event eventEmployer = new Event(
                     Subject = 'Event ',
@@ -105,6 +106,7 @@ public class IPS_myWorkTrailControllerTest {
                     EndDateTime = System.today()+1,
                     Description = 'Møte handler om event ',
                     IPS_Type__c = 'Meeting with Participant',
+                    IPS_isFromTimeline__c = true,
                     ips_uo_Kanal__c ='Fysisk',
                     Location ='Møte ett sted',
                     ips_Completed__c = false,
@@ -203,7 +205,7 @@ public class IPS_myWorkTrailControllerTest {
             );
         insert trailIPS;
 
-        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event allEvent = new Event(
                     Subject = 'Event ',
@@ -211,6 +213,7 @@ public class IPS_myWorkTrailControllerTest {
                     EndDateTime = System.today()+1,
                     Description = 'Møte handler om event ',
                     IPS_Type__c = 'Meeting with Participant',
+                    IPS_isFromTimeline__c = true,
                     ips_uo_Kanal__c ='Fysisk',
                     Location ='Møte ett sted',
                     ips_Completed__c = false,
