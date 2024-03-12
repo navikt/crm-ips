@@ -126,14 +126,15 @@
             <targetReference>checkMeetingType</targetReference>
         </connector>
         <filterFormula>AND(
-{!$Record.IPS_isFromTimeline__c} = false,
-OR(
- {!$Profile.Name}=&apos;System Administrator&apos;,
- {!$Profile.Name}=&apos;System Administrator&apos;,
- {!$Profile.Name}=&apos;System Administrator&apos;,
- {!$Profile.Name}=&apos;System Administrator&apos;
-
-  )
+CASE({!$Record.IPS_Type__c},
+&quot;Meeting with Employer&quot;, 1,
+&quot;Meeting with Participant&quot;, 1,
+&quot;Start up meeting&quot;, 1,
+&quot;First Meeting with Employer&quot;, 1,
+&quot;Arbeidsgivermøte&quot;, 1,
+0
+)=1,
+{!$Record.IPS_isFromTimeline__c} = false
 )</filterFormula>
         <object>Event</object>
         <recordTriggerType>Create</recordTriggerType>
