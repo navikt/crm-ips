@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IPS_checkIFOutsideTimeline</fullName>
-    <active>false</active>
+    <active>true</active>
     <description>Give an error message if user try to create a meeting outside of timeline and work trail</description>
     <errorConditionFormula>AND(
 CASE(IPS_Type__c,
@@ -10,6 +10,13 @@ CASE(IPS_Type__c,
 &quot;Start up meeting&quot;, 1,
 &quot;First Meeting with Employer&quot;, 1,
 &quot;Arbeidsgivermøte&quot;, 1,
+0
+)=1,
+CASE( Owner:User.Profile.Name,
+&quot;NAV IPS Jobbspesialist&quot;,1,
+&quot;NAV IPS Metodeveileder&quot;,1,
+&quot;NAV UO Jobbspesialist&quot;,1,
+&quot;NAV UO Metodeveileder&quot;,1,
 0
 )=1,
 IPS_isFromTimeline__c = false
