@@ -92,6 +92,7 @@ public class IPS_eventTravelTimeController {
             eBefore.IPS_eventId__c = currentRecord;
             eBefore.IPS_Status1__c = eventStatus;
             eBefore.Location ='Reisetid';
+            eBefore.IPS_isFromTimeline__c = true;
             insert eBefore;
         }
 
@@ -108,6 +109,7 @@ public class IPS_eventTravelTimeController {
             eAfter.IPS_eventId__c = currentRecord;
             eAfter.IPS_Status1__c = eventStatus;
             eAfter.Location ='Reisetid';
+            eAfter.IPS_isFromTimeline__c = true;
             insert eAfter;
         }
     }
