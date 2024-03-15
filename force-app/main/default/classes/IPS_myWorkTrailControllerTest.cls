@@ -41,6 +41,9 @@ public class IPS_myWorkTrailControllerTest {
         );
         insert account;
 
+        Account employer=IPS_TestDataFactory.createEmployerAccount();
+        insert employer;
+        
         ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
             
         Work_Trail__c trailIPS = new Work_Trail__c(
@@ -65,6 +68,7 @@ public class IPS_myWorkTrailControllerTest {
                     Location ='Møte ett sted',
                     IsVisibleInSelfService__c =true,
                     WhatId = trailIPS.id,
+                    RelatedToAccount__c = employer.id,
                     RecordTypeId = recTypeIdEvent
         );
         insert eventEmployer;
