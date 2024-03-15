@@ -97,8 +97,6 @@ public with sharing class IPS_TestDataFactory {
             ips_uo_Kanal__c ='Fysisk',
             Location ='Møte ett sted',
             ips_Subcategory_Type_IPS__c = 'Job support',
-            ips_Subcategory_Type__c = 'Job support',
-            IPS_Subcategory_Type_UO__c = 'Follow-up',
             F_rste_arbeidsgiverm_te__c = 'Nei',
             IPS_Status1__c  = 'Open'
         );
@@ -137,8 +135,6 @@ public with sharing class IPS_TestDataFactory {
             IPS_Type__c = 'Meeting with Employer',
             ips_uo_Kanal__c ='Fysisk',
             ips_Subcategory_Type_IPS__c = 'Job support',
-            ips_Subcategory_Type__c = 'Job support',
-            IPS_Subcategory_Type_UO__c = 'Follow-up',
             F_rste_arbeidsgiverm_te__c = 'Nei',
             IPS_Status1__c  = 'Open',
             OwnerId=ownerId,
