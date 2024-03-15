@@ -51,6 +51,7 @@ public class IPS_eventTravelTimeControllerTest {
           IPS_Subcategory_Type_UO__c='Follow-up',
           F_rste_arbeidsgiverm_te__c='Nei',
           Location ='Fysisk oppmøte',
+          Description = 'Møte',
           IPS_Status1__c ='Completed');
           insert createEvent;
         
@@ -70,6 +71,7 @@ public class IPS_eventTravelTimeControllerTest {
           IPS_Subcategory_Type_UO__c='Follow-up',
           F_rste_arbeidsgiverm_te__c='Nei',
           Location ='Fysisk oppmøte',
+          Description = 'Møte',
           IPS_Status1__c ='Open');
           insert createEvent2; 
     }
