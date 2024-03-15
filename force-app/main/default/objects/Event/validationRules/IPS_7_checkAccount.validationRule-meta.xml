@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IPS_7_checkAccount</fullName>
-    <active>true</active>
+    <active>false</active>
     <errorConditionFormula>AND(
-  CASE(RecordType.DeveloperName,
-  &quot;IPS_Event&quot;, 1,
-  &quot;ips_UO_m_ter&quot;, 1,
-  0
-  )=1,
- ISBLANK(RelatedToAccount__c)
-)</errorConditionFormula>
+        CASE(RecordType.DeveloperName,
+        &quot;IPS_Event&quot;, 1,
+        &quot;ips_UO_m_ter&quot;, 1,
+        0
+        )=1,
+        ISBLANK(RelatedToAccount__c)
+        )</errorConditionFormula>
     <errorDisplayField>RelatedToAccount__c</errorDisplayField>
     <errorMessage>Konto må fylles ut.</errorMessage>
 </ValidationRule>
