@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>IPS_checkLocation</fullName>
+    <fullName>IPS_3_checkLocation</fullName>
     <active>true</active>
     <description>Sjekk at lokasjon er fylt ut hvis møtet er fysisk - ved digitalt/telefon ikke nødvendig å fylle ut</description>
     <errorConditionFormula>AND(
@@ -14,7 +14,8 @@ CASE(IPS_Type__c ,
 0
 )=1,
  ISPICKVAL(ips_uo_Kanal__c ,&apos;Fysisk&apos;),
- ISBLANK(Location)
+ ISBLANK(Location),
+ IPS_isFromTimeline__c = true
 )</errorConditionFormula>
     <errorDisplayField>Location</errorDisplayField>
     <errorMessage>Fyll inn lokasjon ved fysisk møte.</errorMessage>
