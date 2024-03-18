@@ -4,7 +4,7 @@
         <name>createTravelTime</name>
         <label>createTravelTime</label>
         <locationX>314</locationX>
-        <locationY>1031</locationY>
+        <locationY>1139</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -32,7 +32,7 @@
         <inputParameters>
             <name>recordtypeId</name>
             <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeIdTravelTime</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -66,7 +66,7 @@
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
         <locationX>1370</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -94,7 +94,7 @@
         <inputParameters>
             <name>recordtypeId</name>
             <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeIdTravelTime</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -129,7 +129,7 @@
         <name>addAccountId</name>
         <label>addAccountId</label>
         <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>varRelatedToAccount</assignToReference>
             <operator>Assign</operator>
@@ -152,7 +152,7 @@
         <name>addAssignmentsFromRecord</name>
         <label>addAssignmentsFromRecord</label>
         <locationX>1370</locationX>
-        <locationY>839</locationY>
+        <locationY>947</locationY>
         <assignmentItems>
             <assignToReference>varRelatedToAccount</assignToReference>
             <operator>Assign</operator>
@@ -175,7 +175,7 @@
         <name>addPublicTrue</name>
         <label>addPublicTrue</label>
         <locationX>182</locationX>
-        <locationY>1355</locationY>
+        <locationY>1463</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -191,7 +191,7 @@
         <name>Copy_1_of_addAccountId</name>
         <label>addAccountId</label>
         <locationX>578</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>varRelatedToAccount</assignToReference>
             <operator>Assign</operator>
@@ -214,7 +214,7 @@
         <name>Copy_1_of_addPublicFalse</name>
         <label>addPublicFalse</label>
         <locationX>1370</locationX>
-        <locationY>1055</locationY>
+        <locationY>1163</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -237,7 +237,7 @@
         <name>Copy_1_of_addPublicTrue</name>
         <label>addPublicTrue</label>
         <locationX>1106</locationX>
-        <locationY>1163</locationY>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -254,7 +254,7 @@
         <name>checkIfFirstMeeting</name>
         <label>checkIfFirstMeeting</label>
         <locationX>1370</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>addAssignmentsFromRecord</targetReference>
         </defaultConnector>
@@ -286,7 +286,7 @@
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
         <locationX>578</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
             <name>isMeetingWithUO</name>
@@ -337,7 +337,7 @@
         <name>checkRelatedTo</name>
         <label>checkRelatedTo</label>
         <locationX>314</locationX>
-        <locationY>1139</locationY>
+        <locationY>1247</locationY>
         <defaultConnector>
             <targetReference>checkTasks1</targetReference>
         </defaultConnector>
@@ -362,7 +362,7 @@
         <name>checkTasks</name>
         <label>checkTasks</label>
         <locationX>1370</locationX>
-        <locationY>1529</locationY>
+        <locationY>1637</locationY>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
             <name>isNotEmpty</name>
@@ -384,7 +384,7 @@
         <name>checkTasks1</name>
         <label>checkTasks</label>
         <locationX>314</locationX>
-        <locationY>1547</locationY>
+        <locationY>1655</locationY>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
             <name>isNotEmpty1</name>
@@ -407,7 +407,7 @@
         <name>checkType</name>
         <label>checkType</label>
         <locationX>314</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_addAccountId</targetReference>
         </defaultConnector>
@@ -432,7 +432,7 @@
         <name>isEventNew</name>
         <label>isEventNew</label>
         <locationX>842</locationX>
-        <locationY>323</locationY>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
         </defaultConnector>
@@ -457,7 +457,7 @@
         <name>isParticipantsAdded</name>
         <label>isParticipantsAdded</label>
         <locationX>1370</locationX>
-        <locationY>947</locationY>
+        <locationY>1055</locationY>
         <defaultConnector>
             <targetReference>getTasksid</targetReference>
         </defaultConnector>
@@ -542,10 +542,33 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <name>getRecordTypeTravelTime</name>
+        <label>getRecordTypeTravelTime</label>
+        <locationX>842</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>isEventNew</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varRecordTypeNameTravelTime</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varRecordTypeIdTravelTime</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>getTasksid</name>
         <label>getTasksid</label>
         <locationX>1370</locationX>
-        <locationY>1421</locationY>
+        <locationY>1529</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTasks</targetReference>
@@ -566,7 +589,7 @@
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
         <locationX>1370</locationX>
-        <locationY>1163</locationY>
+        <locationY>1271</locationY>
         <connector>
             <targetReference>getTasksid</targetReference>
         </connector>
@@ -594,7 +617,7 @@
         <name>updateMeetingWithId</name>
         <label>Update meeting with Id</label>
         <locationX>182</locationX>
-        <locationY>1655</locationY>
+        <locationY>1763</locationY>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
@@ -631,7 +654,7 @@
         <name>UpdateTask</name>
         <label>UpdateTask</label>
         <locationX>1238</locationX>
-        <locationY>1637</locationY>
+        <locationY>1745</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -652,7 +675,7 @@
         <name>updateWorkTrail</name>
         <label>updateWorkTrail</label>
         <locationX>1238</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>addAssignmentsFromRecord</targetReference>
         </connector>
@@ -676,7 +699,7 @@
         <locationX>716</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>isEventNew</targetReference>
+            <targetReference>getRecordTypeTravelTime</targetReference>
         </connector>
         <filterLogic>1 AND 5 AND (2 OR 3 OR 4)</filterLogic>
         <filters>
@@ -723,7 +746,7 @@
         <name>Add_contactid_into_event</name>
         <label>Add contactid into event</label>
         <locationX>182</locationX>
-        <locationY>1247</locationY>
+        <locationY>1355</locationY>
         <connector>
             <targetReference>addPublicTrue</targetReference>
         </connector>
@@ -743,7 +766,7 @@
         <name>Add_contactid_into_event1</name>
         <label>Add contactid into event</label>
         <locationX>1106</locationX>
-        <locationY>1055</locationY>
+        <locationY>1163</locationY>
         <connector>
             <targetReference>Copy_1_of_addPublicTrue</targetReference>
         </connector>
@@ -763,7 +786,7 @@
         <name>IPS_createTaskBasedOnMeetingAMS</name>
         <label>Create task based on meeting - AMS</label>
         <locationX>314</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
@@ -843,7 +866,7 @@
         <name>IPS_createTaskBasedOnMeetingIPS</name>
         <label>Create task based on meeting - IPS</label>
         <locationX>578</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
@@ -998,6 +1021,23 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordTypeIdTravelTime</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordTypeNameTravelTime</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>IPS_Traveltime</stringValue>
+        </value>
     </variables>
     <variables>
         <name>varRelatedToAccount</name>
