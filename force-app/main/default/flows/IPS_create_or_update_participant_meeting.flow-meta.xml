@@ -4,7 +4,7 @@
         <name>createTravelTime</name>
         <label>createTravelTime</label>
         <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -32,7 +32,7 @@
         <inputParameters>
             <name>recordtypeId</name>
             <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeIdTravelTime</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -66,7 +66,7 @@
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
         <locationX>314</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -91,7 +91,7 @@
         <inputParameters>
             <name>recordtypeId</name>
             <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeIdTravelTime</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -126,7 +126,7 @@
         <name>setPublic</name>
         <label>setPublic</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -142,7 +142,7 @@
         <name>createOrUpdate</name>
         <label>createOrUpdate</label>
         <locationX>182</locationX>
-        <locationY>323</locationY>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
         </defaultConnector>
@@ -203,11 +203,34 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>getRecordTypeNameTravelTime</name>
+        <label>getRecordTypeNameTravelTime</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>createOrUpdate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varRecordTypeNameTravelTime</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varRecordTypeIdTravelTime</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <recordUpdates>
         <name>UpdateEvent</name>
         <label>UpdateEvent</label>
         <locationX>50</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <inputAssignments>
             <field>IPS_participant_related_to_meeting__c</field>
             <value>
@@ -232,7 +255,7 @@
         <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>createOrUpdate</targetReference>
+            <targetReference>getRecordTypeNameTravelTime</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -258,7 +281,7 @@
         <name>Add_contactId_to_event</name>
         <label>Add contactId to event</label>
         <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>setPublic</targetReference>
         </connector>
@@ -289,6 +312,23 @@
         <isOutput>false</isOutput>
         <value>
             <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varRecordTypeIdTravelTime</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordTypeNameTravelTime</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>IPS_Traveltime</stringValue>
         </value>
     </variables>
 </Flow>

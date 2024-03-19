@@ -4,7 +4,7 @@
         <name>createTravelTime</name>
         <label>createTravelTime</label>
         <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -32,7 +32,7 @@
         <inputParameters>
             <name>recordtypeId</name>
             <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeIdTraveltime</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -66,7 +66,7 @@
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
         <locationX>622</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -94,7 +94,7 @@
         <inputParameters>
             <name>recordtypeId</name>
             <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeIdTraveltime</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -129,7 +129,7 @@
         <name>setPublic</name>
         <label>setPublic</label>
         <locationX>182</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -145,7 +145,7 @@
         <name>checkCriteria</name>
         <label>checkCriteria</label>
         <locationX>402</locationX>
-        <locationY>323</locationY>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
         </defaultConnector>
@@ -170,7 +170,7 @@
         <name>IsEventClosed</name>
         <label>IsEventClosed</label>
         <locationX>182</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <defaultConnector>
             <targetReference>UpdateEvent</targetReference>
         </defaultConnector>
@@ -196,7 +196,7 @@
         <name>IsEventClosed1</name>
         <label>IsEventClosed</label>
         <locationX>622</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>isClosed1</name>
@@ -259,11 +259,34 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>getRecordTypeNameTravelTime</name>
+        <label>getRecordTypeNameTravelTime</label>
+        <locationX>402</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkCriteria</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varRecordtypeNameTraveltime</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varRecordTypeIdTraveltime</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <recordUpdates>
         <name>Copy_1_of_updateStartUpDate</name>
         <label>updateStartUpDate</label>
         <locationX>490</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -290,7 +313,7 @@
         <name>UpdateEvent</name>
         <label>UpdateEvent</label>
         <locationX>182</locationX>
-        <locationY>1055</locationY>
+        <locationY>1163</locationY>
         <inputAssignments>
             <field>IPS_participant_related_to_meeting__c</field>
             <value>
@@ -316,7 +339,7 @@
         <name>updateStartUpDate</name>
         <label>updateStartUpDate</label>
         <locationX>50</locationX>
-        <locationY>863</locationY>
+        <locationY>971</locationY>
         <connector>
             <targetReference>UpdateEvent</targetReference>
         </connector>
@@ -346,7 +369,7 @@
         <locationX>276</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>checkCriteria</targetReference>
+            <targetReference>getRecordTypeNameTravelTime</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -365,7 +388,7 @@
         <name>Add_contactId_to_event</name>
         <label>Add contactId to event</label>
         <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>setPublic</targetReference>
         </connector>
@@ -396,6 +419,23 @@
         <isOutput>false</isOutput>
         <value>
             <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varRecordTypeIdTraveltime</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordtypeNameTraveltime</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>IPS_Traveltime</stringValue>
         </value>
     </variables>
 </Flow>
