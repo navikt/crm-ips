@@ -8,23 +8,29 @@
         <locationY>252</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>is2022</name>
+            <name>checkCreatedDate</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varCreatedDateYear</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>varCreatedDate</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
                 <rightValue>
-                    <numberValue>2022.0</numberValue>
+                    <elementReference>$Record.CreatedDate</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>deleteTravelTime</targetReference>
             </connector>
-            <label>is2022</label>
+            <label>checkCreatedDate</label>
         </rules>
     </decisions>
     <description>Skedulert til å fjerne reisetid. Disse er kun dummy møter som allokerer tid i kalenderen og bør fjernes over tid for ikke å fylle opp orgen, med data som ikke har noen verdi</description>
     <environments>Default</environments>
+    <formulas>
+        <description>Createddate on meetings - 3 months</description>
+        <name>varCreatedDate</name>
+        <dataType>DateTime</dataType>
+        <expression>ADDMONTHS({!$Record.CreatedDate},-3)</expression>
+    </formulas>
     <formulas>
         <name>varCreatedDateYear</name>
         <dataType>Number</dataType>
@@ -81,20 +87,6 @@
                 <stringValue>Reisetid</stringValue>
             </value>
         </filters>
-        <filters>
-            <field>CreatedDate</field>
-            <operator>GreaterThan</operator>
-            <value>
-                <dateTimeValue>2021-12-30T23:00:00.000Z</dateTimeValue>
-            </value>
-        </filters>
-        <filters>
-            <field>CreatedDate</field>
-            <operator>LessThan</operator>
-            <value>
-                <dateTimeValue>2022-12-31T23:00:00.000Z</dateTimeValue>
-            </value>
-        </filters>
         <object>Event</object>
         <schedule>
             <frequency>Daily</frequency>
@@ -103,5 +95,5 @@
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>
