@@ -27,6 +27,9 @@ public class IPS_changeOwnerOnActivityControllerTest {
             Task tgoal = IPS_TestDataFactory.createGoal(jobbspor.id);
             insert tgoal;
             
+            Task thistory = IPS_TestDataFactory.createhistory(jobbspor.id);
+            insert thistory;
+            
             ips_report__c report = IPS_TestDataFactory.createIntervallReport(jobbspor.id);
             insert report;
             
