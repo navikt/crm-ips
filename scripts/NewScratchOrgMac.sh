@@ -1,49 +1,92 @@
  #!/bin/bash
 
-# Oppretter scratch org
-sfdx force:org:create -f config/project-scratch-def.json --setalias $1 --durationdays $2 --setdefaultusername --json --loglevel fatal  --wait 10
+echo "Oppretter scratch org"
+sf org create scratch --alias $1 --set-default --definition-file ../config/project-scratch-def.json --duration-days $2 --wait 10
 
-# Installer crm-platform-base ver. 0.173
-sfdx force:package:install --package 04t7U000000TqfeQAC -r -k $3 --wait 10 --publishwait 10
+sf force:org:open --target-org $1
 
-# Installer crm-platform-access-control ver. 0.104
-sfdx force:package:install --package 04t7U000000TqXkQAK -r -k $3 --wait 10 --publishwait 10
+echo "INSTALLERER"
+echo "Installerer platform-base 0.217.0"
+sf force:package:install --package 04t7U000000Y3VbQAK -r --installation-key $3 --wait 4 --publish-wait 4
 
-#Installer crm-thread-view 0.1.0
-sfdx force:package:install --package 04t7U000000TqVFQA0 -r -k $3 --wait 10 --publishwait 10
+echo ""
+echo "INSTALLERER"
+echo "Installerer platform-access-controll 125.."
+sf force:package:install --package 04t7U000000Y3V7QAK -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Installer crm-shared-timeline 1.18.0
-sfdx force:package:install --package 04t7U000000TqbDQAS -r -k $3 --wait 10 --publishwait 10
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-thread-view 0.2.0.."
+sf force:package:install --package 04t7U000000TqvIQAS -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Installer crm-shared-base1.1.0
-sfdx force:package:install --package 04t2o000000ySqpAAE -r -k $3 --wait 10 --publishwait 10
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-platform-reporting 0.38.0.." 
+sf force:package:install --package 04t7U000000Y3EKQA0 -r --installation-key $3 --wait 4 --publish-wait 8
 
-# Installer crm-platform-integration ver. 0.86
-sfdx force:package:install --package 04t7U000000TqfjQAC -r -k $3 --wait 10 --publishwait 10
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-shared-timeline 1.22.0.."
+sf force:package:install --package 04t7U000000Y2OEQA0 -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Installer crm-arbeidsgiver-base 1.266.0
-sfdx force:package:install --package 04t7U000000TqgrQAC -r -k $3 --wait 10 --publishwait 10
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-shared-base 1.1.0.."
+ sf force:package:install --package 04t2o000000ySqpAAE -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Installer crm-community-base ver. 0.75
-sfdx force:package:install --package 04t7U000000TqevQAC -r -k $3 --wait 10 --publishwait 10
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-henvendelse base 0.18.0.."
+sf force:package:install --package 04t7U000000LPPAQA4 -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Installer crm-journal-utilities 0.17.0
-sfdx force:package:install --package 04t7U000000Tq8BQAS -r -k $3 --wait 10 --publishwait 10
+echo ""
+echo "INSTALLERER"
+echo "Installerer platform-integrasjon 109.."
+sf force:package:install --package 04t7U000000Y36BQAS -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Installer crm-ips 0.279.0
-sfdx force:package:install --package 04t7U0000008qUBQAY -r -k $3 --wait 10 --publishwait 10
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-shared-flowComponents 0.4.0.."
+sf force:package:install --package 04t7U0000008qz4QAA -r --installation-key $3 --wait 4 --publish-wait 4
 
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-journal-utilities 0.26.0.."
+ sf force:package:install --package 04t7U0000000RlpQAE -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Dytt kildekoden til scratch org'en
-sfdx force:source:push
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-platform-oppgave 0.50-0.."
+ sf force:package:install --package 04t7U000000Y2mGQAS -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Tildel tilatelsessett til brukeren
-sfdx force:user:permset:assign --permsetname IPS_management
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-arbeidsgiver-base 1.401.0"
+sf force:package:install --package 04t7U000000Y3WKQA0 -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Tildel tilatelsessett til brukeren
-sfdx force:user:permset:assign --permsetname IPS_Utvidet_oppf_lging_management
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-community-base 0.101.0"
+sf force:package:install --package 04t7U000000Y3I7QAK -r --installation-key $3 --wait 4 --publish-wait 4
 
-# Opprett testdata
-# må gjøres en gang
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-ips 0.442.0.."
+sf force:package:install --package 04t7U000000Y3kHQAS -r --installation-key $3 --wait 10 --publish-wait 10
 
-# Ferdig
+echo ""
+echo "TILDELER"
+echo "Tildel tilatelsessett til brukeren - IPS_management.."
+ sfdx force:user:permset:assign --perm-set-name IPS_management
+
+echo ""
+echo "TILDELER"
+echo "Tildel tilatelsessett til brukeren IPS_Utvidet_oppf_lging_management.."
+sfdx force:user:permset:assign --perm-set-name IPS_Utvidet_oppf_lging_management
+
+echo ""
+echo "TILDELER"
+echo "Tildel tilatelsessett til brukeren IPS_Config.."
+sfdx force:user:permset:assign --perm-set-name IPS_Config
+
+echo "************************* FERDIG *********************************"
