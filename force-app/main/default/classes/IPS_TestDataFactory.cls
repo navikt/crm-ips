@@ -116,6 +116,19 @@ public with sharing class IPS_TestDataFactory {
         );
         return taskGoal;
     }
+    
+     public static Task createhistory(String jobbsporId) {
+        Id devRecordTypeId1 = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
+
+        Task taskGoal = new Task(
+            WhatId = jobbsporId,
+            RecordTypeId = devRecordTypeId1,
+            Type_of_Task_IPSUO__c ='Historikk', 
+            Subject = 'Endre eier',
+        	Status ='Completed'
+        );
+        return taskGoal;
+    }
 
     public static Event createEmployerEventWithParticipant(String employerId, Id ownerId, String jobbsporId) {
         Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();

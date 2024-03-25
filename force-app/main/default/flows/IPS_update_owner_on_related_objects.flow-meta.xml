@@ -5,7 +5,7 @@
         <name>Change_owner_on_event</name>
         <label>Change owner on event</label>
         <locationX>176</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -43,9 +43,12 @@
         <name>change_owner_on_reports</name>
         <label>change owner on reports</label>
         <locationX>176</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>create_owner_history</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>currentRecord</name>
@@ -73,7 +76,7 @@
         <name>Change_owner_on_task</name>
         <label>Change owner on task</label>
         <locationX>176</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -101,7 +104,7 @@
         <nameSegment>IPS_changeOwnerOnActivityController</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>57.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <assignments>
         <name>setOldOwner</name>
         <label>setOldOwner</label>
@@ -114,12 +117,24 @@
                 <elementReference>$Record__Prior.OwnerId</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOldOwnerRole</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record__Prior.Owner:User.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Change_owner_on_task</targetReference>
+            <targetReference>getOldUserName</targetReference>
         </connector>
     </assignments>
     <description>Update owner on related object when work trail owner changes.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>varDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Endrer eier fra &apos; &amp;{!varOldOwnerName} &amp; &apos; , team &apos;&amp; {!varOldOwnerRole}</expression>
+    </formulas>
     <interviewLabel>IPS - update owner on related objects {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - update owner on related objects</label>
     <processMetadataValues>
@@ -141,6 +156,29 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>getOldUserName</name>
+        <label>getOldUserName</label>
+        <locationX>176</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Change_owner_on_task</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varOldOwner</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputAssignments>
+            <assignToReference>varOldOwnerName</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+    </recordLookups>
     <recordLookups>
         <name>getWorkTrailDetails</name>
         <label>getWorkTrailDetails</label>
@@ -194,6 +232,44 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>create_owner_history</name>
+        <label>create owner history</label>
+        <locationX>176</locationX>
+        <locationY>971</locationY>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varSubject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
@@ -209,10 +285,41 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>varOldOwnerName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varOldOwnerRole</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varOwnerId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varSubject</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Endring av eier</stringValue>
+        </value>
     </variables>
 </Flow>

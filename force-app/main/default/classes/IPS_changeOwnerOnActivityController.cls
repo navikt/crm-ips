@@ -9,6 +9,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
         
         IF(objectName =='Task'){
             updateRelatedOwnerTask(currentId,ownerId);
+            updateRelatedOwnerHistory(currentId,ownerId);
         }
         IF(objectName == 'Event'){
             updateRelatedOwnerEvent(currentId,ownerId,oldOwnerId);
@@ -19,7 +20,6 @@ public without sharing class IPS_changeOwnerOnActivityController {
     }
         
     @TestVisible
-    @future
     private static void updateRelatedOwnerTask(Id currentId,Id ownerId){
         List<Task> alltasks = [SELECT 
                                id,OwnerId 
@@ -37,6 +37,25 @@ public without sharing class IPS_changeOwnerOnActivityController {
             Database.DMLOptions dmlo = new Database.DMLOptions();
             dmlo.EmailHeader.triggerUserEmail = false;
             database.update(alltasks, dmlo);
+        }    
+    }
+    
+    private static void updateRelatedOwnerHistory(Id currentId,Id ownerId){
+        List<Task> allhistory = [SELECT 
+                               id,OwnerId 
+                               FROM Task 
+                               WHERE Type_of_Task_IPSUO__c in('Historikk') 
+                               AND whatId =:currentId];
+        if(!allhistory.isEmpty()){
+            for(Task t:allhistory){
+                t.OwnerId = ownerId;
+            }
+            /*Set EmailHeader.triggerUserEmail to false, this disables send Email notification. Try to prevent email sendt when task changes owner.
+            * https://help.salesforce.com/s/articleView?id=000385933&type=1
+            * */
+            Database.DMLOptions dmlo = new Database.DMLOptions();
+            dmlo.EmailHeader.triggerUserEmail = false;
+            database.update(allhistory, dmlo);
         }    
     }
     
@@ -65,7 +84,12 @@ public without sharing class IPS_changeOwnerOnActivityController {
             for(ips_report__c r:allreport){ 
                 r.OwnerId = ownerId;
             }
-            update allreport;
+            /*Set EmailHeader.triggerUserEmail to false, this disables send Email notification. Try to prevent email sendt when report changes owner.
+             * https://help.salesforce.com/s/articleView?id=000385933&type=1
+             * */
+            Database.DMLOptions dmlo = new Database.DMLOptions();
+            dmlo.EmailHeader.triggerUserEmail = false;
+            database.update(allreport, dmlo);
         }
     }
 
