@@ -66,6 +66,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
                                  WHERE IPS_Type__c in ('Meeting with Participant','Meeting with Employer','First Meeting with Employer','Start up meeting') 
                                  AND IPS_Status1__c in ('Open')
                                  AND OwnerId =:oldOwnerId
+                                 AND Owner.IsActive =true
                                  AND whatId =:currentId];
         if(!allevents.isEmpty()){
             for(Event e:allevents){
