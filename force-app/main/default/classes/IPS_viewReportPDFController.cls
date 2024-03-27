@@ -427,14 +427,17 @@ public with sharing class IPS_viewReportPDFController {
         if(this.isIntervallReport==true){
            
             for(ips_Education__c i:allEdu){
-                if(i.ips_End_Date__c!=null && (i.ips_End_Date__c>= startDate || i.ips_End_Date__c>=endDate)){
+                if(i.ips_Status__c=='Ongoing'){
                     eduList.add(i);
-                }
-                if(i.ips_End_Date__c==null && i.ips_Start_Date__c>= startDate && i.ips_Start_Date__c <= endDate ){
-                    eduList.add(i);
+                }else{
+                    if(i.ips_End_Date__c!=null && (i.ips_End_Date__c>= startDate || i.ips_End_Date__c>=endDate)){
+                        eduList.add(i);
+                    }
+                    if(i.ips_End_Date__c==null && i.ips_Start_Date__c>= startDate && i.ips_Start_Date__c <= endDate ){
+                        eduList.add(i);
+                    }
                 }
             }
-
         }
         return eduList;
     }
@@ -473,12 +476,17 @@ public with sharing class IPS_viewReportPDFController {
          }
          if(isIntervallReport==true){
             for(AMS_Vocational_education_and_training__c a:allAmsEdu){
-                if(a.AMS_End_Date__c!=null && (a.AMS_End_Date__c>= startDate || a.AMS_End_Date__c>=endDate)){
+                if(a.AMS_Status__c=='Ongoing'){
                     amsEduList.add(a);
+                }else{
+                    if(a.AMS_End_Date__c!=null && (a.AMS_End_Date__c>= startDate || a.AMS_End_Date__c>=endDate)){
+                        amsEduList.add(a);
+                    }
+                    if(a.AMS_End_Date__c==null && a.AMS_Start_Date__c>= startDate && a.AMS_Start_Date__c <= endDate ){
+                        amsEduList.add(a);
+                    }
                 }
-                if(a.AMS_End_Date__c==null && a.AMS_Start_Date__c>= startDate && a.AMS_Start_Date__c <= endDate ){
-                    amsEduList.add(a);
-                }
+                
             }
          }
         return amsEduList;
