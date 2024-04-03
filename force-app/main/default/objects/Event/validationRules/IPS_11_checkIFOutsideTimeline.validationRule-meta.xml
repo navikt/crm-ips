@@ -2,25 +2,27 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IPS_11_checkIFOutsideTimeline</fullName>
     <active>true</active>
-    <description>Give an error message if user try to create a meeting outside of timeline and work trail</description>
+    <description>Give an error message if user try to create a meeting outside of timeline and work
+        trail</description>
     <errorConditionFormula>AND(
-CASE(RecordType.DeveloperName,
-&quot;ArbeidsgiverEvent&quot;, 1,
-&quot;IPS_Event&quot;, 1,
-&quot;IPS_UO_Arbeidsgiver&quot;, 1,
-&quot;ips_UO_m_ter&quot;, 1,
-&quot;Ips_uo_Deltakermote&quot;, 1,
-0
-)=1,
-CASE( Owner:User.Profile.Name,
-&quot;NAV IPS Jobbspesialist&quot;,1,
-&quot;NAV IPS Metodeveileder&quot;,1,
-&quot;NAV UO Jobbspesialist&quot;,1,
-&quot;NAV UO Metodeveileder&quot;,1,
-&quot;System Administrator&quot;,1,
-0
-)=1,
-IPS_isFromTimeline__c = false
-)</errorConditionFormula>
+        CASE(RecordType.DeveloperName,
+        &quot;ArbeidsgiverEvent&quot;, 1,
+        &quot;IPS_Event&quot;, 1,
+        &quot;IPS_UO_Arbeidsgiver&quot;, 1,
+        &quot;ips_UO_m_ter&quot;, 1,
+        &quot;Ips_uo_Deltakermote&quot;, 1,
+        0
+        )=1,
+        CASE( Owner:User.Profile.Name,
+        &quot;NAV IPS Jobbspesialist&quot;,1,
+        &quot;NAV IPS Metodeveileder&quot;,1,
+        &quot;NAV UO Jobbspesialist&quot;,1,
+        &quot;NAV UO Metodeveileder&quot;,1,
+        &quot;System Administrator&quot;,1,
+        &quot;Systemadministrator&quot;,1,
+        0
+        )=1,
+        IPS_isFromTimeline__c = false
+        )</errorConditionFormula>
     <errorMessage>Opprett møte fra tidslinjen i jobbsporet eller på konto</errorMessage>
 </ValidationRule>
