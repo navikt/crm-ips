@@ -4,9 +4,12 @@
         <name>Redirect</name>
         <label>Redirect</label>
         <locationX>1370</locationX>
-        <locationY>1730</locationY>
+        <locationY>1838</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
+        <connector>
+            <targetReference>createCreatorhistory</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
@@ -19,6 +22,52 @@
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>58.0</apiVersion>
+    <assignments>
+        <name>AddOwnerId</name>
+        <label>AddOwnerId</label>
+        <locationX>1370</locationX>
+        <locationY>1514</locationY>
+        <assignmentItems>
+            <assignToReference>varOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOwnerName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.NKS_FullName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Worktrail_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addOwnerId1</name>
+        <label>addOwnerId</label>
+        <locationX>842</locationX>
+        <locationY>1514</locationY>
+        <assignmentItems>
+            <assignToReference>varOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EierCheckbox.recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOwnerName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EierCheckbox.recordName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Worktrail_0_0</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>checkAge</name>
         <label>checkAge</label>
@@ -148,7 +197,7 @@
         <locationX>1106</locationX>
         <locationY>1406</locationY>
         <defaultConnector>
-            <targetReference>Create_Worktrail_0</targetReference>
+            <targetReference>AddOwnerId</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Owner is user</defaultConnectorLabel>
         <rules>
@@ -162,7 +211,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Worktrail_0_0</targetReference>
+                <targetReference>addOwnerId1</targetReference>
             </connector>
             <label>ownerIsNotUser</label>
         </rules>
@@ -198,9 +247,14 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <scale>0</scale>
     </formulas>
     <formulas>
-        <name>UserId</name>
+        <name>varCreateHistoryDescription</name>
         <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
+        <expression>&apos;Jobbsporet opprettet av &apos;&amp;{!$User.NKS_FullName__c}</expression>
+    </formulas>
+    <formulas>
+        <name>varOwnerHistoryDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Eier av jobbsporet - &apos;&amp;{!varOwnerName}</expression>
     </formulas>
     <formulas>
         <name>varOwnerSelected</name>
@@ -224,6 +278,11 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
 ,&apos;&apos;,
 {!getPersonDetail.INT_Phone1__c}
 )</expression>
+    </formulas>
+    <formulas>
+        <name>varStatusHistoryDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Status - Henvist&apos;</expression>
     </formulas>
     <formulas>
         <name>varWorkTrailName</name>
@@ -255,7 +314,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>Create_Error_log</name>
         <label>Create Error log</label>
         <locationX>1106</locationX>
-        <locationY>1730</locationY>
+        <locationY>1838</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -287,7 +346,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>1370</locationX>
-        <locationY>1514</locationY>
+        <locationY>1622</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorkTrailName_0_0</targetReference>
@@ -318,6 +377,12 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             <field>IPS_Partticipant_phone_number__c</field>
             <value>
                 <elementReference>varParticipantsPhone</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>varOwnerId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -356,10 +421,10 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>842</locationX>
-        <locationY>1514</locationY>
+        <locationY>1622</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>Opprettet</targetReference>
+            <targetReference>updateWorkTrailName_0</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Noe_gikk_galt</targetReference>
@@ -391,7 +456,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>EierCheckbox.recordId</elementReference>
+                <elementReference>varOwnerId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -503,6 +568,9 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <label>updateWorkTrailName</label>
         <locationX>842</locationX>
         <locationY>1730</locationY>
+        <connector>
+            <targetReference>Opprettet</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -523,7 +591,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <name>updateWorkTrailName_0_0</name>
         <label>updateWorkTrailName</label>
         <locationX>1370</locationX>
-        <locationY>1622</locationY>
+        <locationY>1730</locationY>
         <connector>
             <targetReference>Redirect</targetReference>
         </connector>
@@ -607,6 +675,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             <dataType>String</dataType>
             <fieldText>Deltakers fødselsnummer</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;Fødselsnummer kan kun inneholde 11 numeriske verdier uten mellomrom og spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -623,7 +692,7 @@ LEN( {!ips_participants_scn}) == 11
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
         <locationX>1106</locationX>
-        <locationY>1622</locationY>
+        <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -647,12 +716,12 @@ LEN( {!ips_participants_scn}) == 11
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>842</locationX>
-        <locationY>1622</locationY>
+        <locationY>1838</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>updateWorkTrailName_0</targetReference>
+            <targetReference>createCreatorhistory</targetReference>
         </connector>
         <fields>
             <name>displayTxtCreated</name>
@@ -739,6 +808,7 @@ LEN( {!ips_participants_scn}) == 11
                     </defaultValue>
                     <fieldText>Er dette riktig deltaker?</fieldText>
                     <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <validationRule>
                         <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at dette er riktig deltaker.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -761,6 +831,7 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>String</dataType>
             <fieldText>Behandlingsteam/Innsøkende avdeling</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -768,6 +839,7 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>String</dataType>
             <fieldText>Nav veileder</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -776,6 +848,7 @@ LEN( {!ips_participants_scn}) == 11
             <fieldText>Henvist dato</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;Henvist dato skal samsvare med vedtaksdato i Arena.&lt;/span&gt;&lt;/p&gt;</helpText>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -805,6 +878,7 @@ LEN( {!ips_participants_scn}) == 11
             </defaultValue>
             <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjonen</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Du må verifisere at deltaker er informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -896,6 +970,7 @@ LEN( {!ips_participants_scn}) == 11
             </defaultValue>
             <fieldText>Skriftlig samtykke fra foresatt(e) foreligger</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at skriftlig samtykke foreligger når deltaker er under 18 år&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -913,6 +988,126 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>createCreatorhistory</name>
+        <label>createCreatorhistory</label>
+        <locationX>1106</locationX>
+        <locationY>2162</locationY>
+        <connector>
+            <targetReference>createOwnerHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varCreateHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varCreateHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>createHistoryStatus</name>
+        <label>createHistoryStatus</label>
+        <locationX>1106</locationX>
+        <locationY>2378</locationY>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varStatusHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varStatusHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>createOwnerHistory</name>
+        <label>createOwnerHistory</label>
+        <locationX>1106</locationX>
+        <locationY>2270</locationY>
+        <connector>
+            <targetReference>createHistoryStatus</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varOwnerHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varOwnerHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>RecordTypeId</name>
         <dataType>String</dataType>
@@ -946,6 +1141,20 @@ LEN( {!ips_participants_scn}) == 11
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>varOwnerId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varOwnerName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>varParticipantAge</name>

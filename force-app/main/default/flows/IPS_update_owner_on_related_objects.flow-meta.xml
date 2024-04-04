@@ -133,7 +133,7 @@
     <formulas>
         <name>varDescription</name>
         <dataType>String</dataType>
-        <expression>&apos;Endrer eier fra &apos; &amp;{!varOldOwnerName} &amp; &apos; , team &apos;&amp; {!varOldOwnerRole}</expression>
+        <expression>&apos;Endrer eier til &apos;&amp; {!varNewOwnerName}</expression>
     </formulas>
     <interviewLabel>IPS - update owner on related objects {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - update owner on related objects</label>
@@ -198,6 +198,10 @@
         </filters>
         <object>Work_Trail__c</object>
         <outputAssignments>
+            <assignToReference>varNewOwnerName</assignToReference>
+            <field>IPS_ownerName__c</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>recordId</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -259,7 +263,7 @@
         <inputAssignments>
             <name>varSubject</name>
             <value>
-                <elementReference>varSubject</elementReference>
+                <elementReference>varDescription</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -272,6 +276,13 @@
     </subflows>
     <variables>
         <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varNewOwnerName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

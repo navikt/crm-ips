@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_checkIFTaskIsHistory</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+!ISNEW(),
+ISPICKVAL(Type_of_Task_IPSUO__c,&apos;Historikk&apos;)
+)</errorConditionFormula>
+    <errorMessage>Du kan ikke endre en historisk hendelse</errorMessage>
+</ValidationRule>
