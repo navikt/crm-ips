@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <decisions>
+        <name>checkIfStatusChanged</name>
+        <label>checkIfStatusChanged</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isChanged</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>statusHistory</targetReference>
+            </connector>
+            <label>isChanged</label>
+        </rules>
+    </decisions>
+    <description>Logger en historikk hendelse ved endring av status i jobbsporet</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>varStatusDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Status er endret til - &apos;&amp;
+CASE({!$Record.ips_Status__c}, 
+&apos;Referred&apos;,&apos;Henvist&apos;,
+&apos;Initial contact&apos;, &apos;Innledende kontakt&apos;,
+&apos;Mapping&apos;, &apos;Kartlegging&apos;,
+&apos;Job development&apos;, &apos;Jobbutvikling&apos;,
+&apos;In Education&apos;,&apos;I utdannelse&apos;,
+&apos;Working&apos;, &apos;Jobber&apos;,
+&apos;Downsizing&apos;,&apos;Nedtrapping&apos;,
+&apos;Career mapping and career planning&apos;, &apos;Yrkeskartlegging og karriereplanlegging&apos;,
+&apos;Find a suitable job / Collaborate with AG&apos;, &apos;Finne en passende jobb/samarbeid med arbeidsgiver&apos;,
+&apos;Education and training in and / or outside the workplace&apos;,&apos;Opplæring og trening på og/eller utenom arbeidsplassen&apos;,
+&apos;Ended&apos;,&apos;Sluttet&apos;,
+&apos;Ingen status&apos;)</expression>
+    </formulas>
+    <interviewLabel>IPS - worktrailChangeStatusHistory {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - worktrailChangeStatusHistory</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>checkIfStatusChanged</targetReference>
+        </connector>
+        <object>Work_Trail__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <name>statusHistory</name>
+        <label>statusHistory</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varStatusDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varStatusDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+</Flow>
