@@ -4,9 +4,12 @@
         <name>Redirect_0_0</name>
         <label>Redirect</label>
         <locationX>1370</locationX>
-        <locationY>1730</locationY>
+        <locationY>1838</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
+        <connector>
+            <targetReference>createCreatorHistory</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
@@ -18,7 +21,53 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
         <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>58.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>addOwnerId</name>
+        <label>addOwnerId</label>
+        <locationX>842</locationX>
+        <locationY>1514</locationY>
+        <assignmentItems>
+            <assignToReference>varOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EierCheckbox.recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOwnerName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EierCheckbox.recordName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Worktrail_0_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addOwnerId1</name>
+        <label>addOwnerId</label>
+        <locationX>1370</locationX>
+        <locationY>1514</locationY>
+        <assignmentItems>
+            <assignToReference>varOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EierCheckbox.recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOwnerName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EierCheckbox.recordName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Worktrail_0</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
@@ -147,7 +196,7 @@
         <locationX>1106</locationX>
         <locationY>1406</locationY>
         <defaultConnector>
-            <targetReference>Create_Worktrail_0</targetReference>
+            <targetReference>addOwnerId1</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Owner is user</defaultConnectorLabel>
         <rules>
@@ -161,7 +210,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Worktrail_0_0</targetReference>
+                <targetReference>addOwnerId</targetReference>
             </connector>
             <label>ownerIsNotUser</label>
         </rules>
@@ -172,6 +221,16 @@
         <name>UserId</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>varCreateHistoryDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Jobbsporet opprettet av &apos;&amp;{!$User.NKS_FullName__c}</expression>
+    </formulas>
+    <formulas>
+        <name>varOwnerHistoryDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Eier av jobbsporet - &apos;&amp;{!varOwnerName}</expression>
     </formulas>
     <formulas>
         <name>varOwnerSelected</name>
@@ -191,6 +250,11 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;,{!getPersonDetails.INT_Phone1__c})</expression>
+    </formulas>
+    <formulas>
+        <name>varStatusDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Status - Henvist&apos;</expression>
     </formulas>
     <formulas>
         <name>varWorkTrailName</name>
@@ -222,7 +286,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Error_log</name>
         <label>Create Error log</label>
         <locationX>1106</locationX>
-        <locationY>1730</locationY>
+        <locationY>1838</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -254,7 +318,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>1370</locationX>
-        <locationY>1514</locationY>
+        <locationY>1622</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorktrailName1</targetReference>
@@ -317,10 +381,10 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
         <locationX>842</locationX>
-        <locationY>1514</locationY>
+        <locationY>1622</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>Opprettet</targetReference>
+            <targetReference>updateWorktrailName</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Noe_gikk_galt</targetReference>
@@ -346,7 +410,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>EierCheckbox.recordId</elementReference>
+                <elementReference>varOwnerId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -458,6 +522,9 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <label>updateWorktrailName</label>
         <locationX>842</locationX>
         <locationY>1730</locationY>
+        <connector>
+            <targetReference>Opprettet</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -478,7 +545,7 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <name>updateWorktrailName1</name>
         <label>updateWorktrailName</label>
         <locationX>1370</locationX>
-        <locationY>1622</locationY>
+        <locationY>1730</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -618,7 +685,7 @@ LEN( {!ips_participants_scn}) == 11
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
         <locationX>1106</locationX>
-        <locationY>1622</locationY>
+        <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -642,12 +709,12 @@ LEN( {!ips_participants_scn}) == 11
         <name>Opprettet</name>
         <label>Opprettet</label>
         <locationX>842</locationX>
-        <locationY>1622</locationY>
+        <locationY>1838</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>updateWorktrailName</targetReference>
+            <targetReference>createCreatorHistory</targetReference>
         </connector>
         <fields>
             <name>displayTitle6</name>
@@ -893,6 +960,126 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>createCreatorHistory</name>
+        <label>createCreatorHistory</label>
+        <locationX>1106</locationX>
+        <locationY>2162</locationY>
+        <connector>
+            <targetReference>createOwnerHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varCreateHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varCreateHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>createOwnerHistory</name>
+        <label>createOwnerHistory</label>
+        <locationX>1106</locationX>
+        <locationY>2270</locationY>
+        <connector>
+            <targetReference>createStatusHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varOwnerHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varOwnerHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>createStatusHistory</name>
+        <label>createStatusHistory</label>
+        <locationX>1106</locationX>
+        <locationY>2378</locationY>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varStatusDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varStatusDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>isAlwaysFalse</name>
         <dataType>Boolean</dataType>
@@ -936,6 +1123,20 @@ LEN( {!ips_participants_scn}) == 11
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>varOwnerId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varOwnerName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>varParticipantAge</name>
