@@ -324,7 +324,7 @@ public with sharing class IPS_viewReportPDFController {
             IPS_UO_Stillingsbeskrivelse__c,
             ips_Job_Support__c,
             ips_End_Date__c,
-            ips_Status__c,
+            toLabel(ips_Status__c),
             ips_Job__c.ips_What_did_not_work_at_the_workplace__c,
             ips_What_did_work_at_the_workplace__c,
             IPS_jobSubject__c
@@ -346,7 +346,7 @@ public with sharing class IPS_viewReportPDFController {
             IPS_UO_Stillingsbeskrivelse__c,
             ips_Job_Support__c,
             ips_End_Date__c,
-            ips_Status__c,
+            toLabel(ips_Status__c),
             ips_Job__c.ips_What_did_not_work_at_the_workplace__c,
             ips_What_did_work_at_the_workplace__c,
             IPS_jobSubject__c
@@ -384,7 +384,7 @@ public with sharing class IPS_viewReportPDFController {
             ips_What_did_not_work_with_thiseducation__c,
             ips_What_did_work_with_this_education__c,
             ips_Education_Support_Plan__c,
-            ips_Status__c
+            toLabel(ips_Status__c)
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :workTrailId
             AND ips_Status__c ='Planned'   
@@ -413,7 +413,7 @@ public with sharing class IPS_viewReportPDFController {
             ips_What_did_not_work_with_thiseducation__c,
             ips_What_did_work_with_this_education__c,
             ips_Education_Support_Plan__c,
-            ips_Status__c
+            toLabel(ips_Status__c)
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :workTrailId
             AND ips_Status__c IN ('Ongoing','Completed','Canceled')
@@ -464,7 +464,7 @@ public with sharing class IPS_viewReportPDFController {
             AMS_Form_of_Study__c, 
             AMS_Name_of_the_Education_institution__c, 
             AMS_Start_Date__c, 
-            AMS_Status__c
+            toLabel(AMS_Status__c)
             FROM AMS_Vocational_education_and_training__c
             WHERE AMS_Work_Trail__c = :workTrailId
             AND AMS_Status__c IN ('Ongoing','Completed','Canceled')
@@ -509,7 +509,7 @@ public with sharing class IPS_viewReportPDFController {
                             AMS_Form_of_Study__c, 
                             AMS_Name_of_the_Education_institution__c, 
                             AMS_Start_Date__c, 
-                            AMS_Status__c
+                            toLabel(AMS_Status__c)
                             FROM AMS_Vocational_education_and_training__c
                             WHERE AMS_Work_Trail__c = :workTrailId
                             AND AMS_Status__c ='Planned' 
