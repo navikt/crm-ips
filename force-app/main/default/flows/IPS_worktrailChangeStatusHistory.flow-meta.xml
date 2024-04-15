@@ -2,10 +2,74 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>60.0</apiVersion>
     <decisions>
+        <name>checkIfMainGoalChanged</name>
+        <label>checkIfMainGoalChanged</label>
+        <locationX>182</locationX>
+        <locationY>923</locationY>
+        <defaultConnector>
+            <targetReference>checkIfServiceChanged</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isGoalChanged</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_Main_Goal_list__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>IPS</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>mainGoalHistory</targetReference>
+            </connector>
+            <label>isGoalChanged</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkIfServiceChanged</name>
+        <label>checkIfServiceChanged</label>
+        <locationX>182</locationX>
+        <locationY>1223</locationY>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isServiceChanged</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_UO_Service__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ips_Supported_Employment</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>serviceHistory</targetReference>
+            </connector>
+            <label>isServiceChanged</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkIfStatusChanged</name>
         <label>checkIfStatusChanged</label>
         <locationX>182</locationX>
         <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>checkIfSupervisorChanged</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
         <rules>
             <name>isChanged</name>
@@ -23,8 +87,53 @@
             <label>isChanged</label>
         </rules>
     </decisions>
-    <description>Logger en historikk hendelse ved endring av status i jobbsporet</description>
+    <decisions>
+        <name>checkIfSupervisorChanged</name>
+        <label>checkIfSupervisorChanged</label>
+        <locationX>182</locationX>
+        <locationY>623</locationY>
+        <defaultConnector>
+            <targetReference>checkIfMainGoalChanged</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standardutfall</defaultConnectorLabel>
+        <rules>
+            <name>isChangedSupervisor</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_NAV_supervisor__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>supervisorHistory</targetReference>
+            </connector>
+            <label>isChangedSupervisor</label>
+        </rules>
+    </decisions>
+    <description>Logger en historikk hendelse ved endring av status, veileder og hovedmål i jobbsporet</description>
     <environments>Default</environments>
+    <formulas>
+        <name>varGoalDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Hovedmål endret til - &apos;&amp;
+CASE({!$Record.ips_Main_Goal_list__c},
+&apos;Education/Apprentice&apos;, &apos;Utdanning&apos;,
+&apos;Work&apos;, &apos;Jobb&apos;,
+&apos;Ingen hovedmål&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>varServiceDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Hovedmål endret til - &apos;&amp;
+CASE({!$Record.ips_UO_Service__c},
+&apos;AMS&apos;, &apos;Arbeid&apos;,
+&apos;Vocational education and training&apos;, &apos;Arbeid via fag- og yrkesopplæring&apos;,
+&apos;Ingen hovedmål&apos;
+)</expression>
+    </formulas>
     <formulas>
         <name>varStatusDescription</name>
         <dataType>String</dataType>
@@ -43,8 +152,13 @@ CASE({!$Record.ips_Status__c},
 &apos;Ended&apos;,&apos;Sluttet&apos;,
 &apos;Ingen status&apos;)</expression>
     </formulas>
+    <formulas>
+        <name>varSupervisorDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Veileder endret til - &apos;&amp;{!$Record.ips_NAV_supervisor__c}</expression>
+    </formulas>
     <interviewLabel>IPS - worktrailChangeStatusHistory {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - worktrailChangeStatusHistory</label>
+    <label>IPS - worktrail update history</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -76,10 +190,92 @@ CASE({!$Record.ips_Status__c},
     </start>
     <status>Active</status>
     <subflows>
+        <name>mainGoalHistory</name>
+        <label>mainGoalHistory</label>
+        <locationX>50</locationX>
+        <locationY>1031</locationY>
+        <connector>
+            <targetReference>checkIfServiceChanged</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varGoalDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varGoalDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>serviceHistory</name>
+        <label>serviceHistory</label>
+        <locationX>50</locationX>
+        <locationY>1331</locationY>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varServiceDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varServiceDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
         <name>statusHistory</name>
         <label>statusHistory</label>
         <locationX>50</locationX>
         <locationY>431</locationY>
+        <connector>
+            <targetReference>checkIfSupervisorChanged</targetReference>
+        </connector>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
             <name>varDescription</name>
@@ -103,6 +299,47 @@ CASE({!$Record.ips_Status__c},
             <name>varSubject</name>
             <value>
                 <elementReference>varStatusDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>supervisorHistory</name>
+        <label>supervisorHistory</label>
+        <locationX>50</locationX>
+        <locationY>731</locationY>
+        <connector>
+            <targetReference>checkIfMainGoalChanged</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varSupervisorDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varSupervisorDescription</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
