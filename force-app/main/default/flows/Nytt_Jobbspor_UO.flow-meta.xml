@@ -257,6 +257,11 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
         <expression>&apos;Status - Henvist&apos;</expression>
     </formulas>
     <formulas>
+        <name>varSupervisorDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Veileder er endret til - &apos;&amp;{!IPS_nav_veileder}</expression>
+    </formulas>
+    <formulas>
         <name>varWorkTrailName</name>
         <dataType>String</dataType>
         <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetails.INT_FirstName__c}&amp;&apos; &apos;&amp;{!getPersonDetails.INT_LastName__c}</expression>
@@ -1007,7 +1012,7 @@ LEN( {!ips_participants_scn}) == 11
         <locationX>1106</locationX>
         <locationY>2270</locationY>
         <connector>
-            <targetReference>createStatusHistory</targetReference>
+            <targetReference>createSupervisorHistory</targetReference>
         </connector>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
@@ -1046,7 +1051,7 @@ LEN( {!ips_participants_scn}) == 11
         <name>createStatusHistory</name>
         <label>createStatusHistory</label>
         <locationX>1106</locationX>
-        <locationY>2378</locationY>
+        <locationY>2486</locationY>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
             <name>varDescription</name>
@@ -1070,6 +1075,47 @@ LEN( {!ips_participants_scn}) == 11
             <name>varSubject</name>
             <value>
                 <elementReference>varStatusDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>createSupervisorHistory</name>
+        <label>createSupervisorHistory</label>
+        <locationX>1106</locationX>
+        <locationY>2378</locationY>
+        <connector>
+            <targetReference>createStatusHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varSupervisorDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varSupervisorDescription</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
