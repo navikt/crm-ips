@@ -1,10 +1,321 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>generateDocument</name>
+        <label>generateDocument</label>
+        <locationX>182</locationX>
+        <locationY>890</locationY>
+        <actionName>CRM_JournalUtilities</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>PDF_Variant_Assignment</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>requestType</name>
+            <value>
+                <stringValue>GENERATE_DOCUMENT</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>visualForceReference</name>
+            <value>
+                <stringValue>/apex/IPS_viewReportPDF?Id={!recordId}</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>CRM_JournalUtilities</nameSegment>
+        <outputParameters>
+            <assignToReference>PDF_DOCUMENT</assignToReference>
+            <name>documentString</name>
+        </outputParameters>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Post_Journal_Request</name>
+        <label>Post Journal Request</label>
+        <locationX>182</locationX>
+        <locationY>1322</locationY>
+        <actionName>CRM_JournalUtilities</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>checkPostStatus</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>journalRequest</name>
+            <value>
+                <elementReference>JournalRequest</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>navIdent</name>
+            <value>
+                <elementReference>$User.CRM_NAV_Ident__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>referenceId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>requestType</name>
+            <value>
+                <stringValue>POST_JOURNAL</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>CRM_JournalUtilities</nameSegment>
+        <outputParameters>
+            <assignToReference>varErrorMessage</assignToReference>
+            <name>errorMessage</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varJournalId</assignToReference>
+            <name>journalpostId</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varJournalPostStatus</assignToReference>
+            <name>journalPostStatus</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varbolSuccess</assignToReference>
+            <name>success</name>
+        </outputParameters>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>60.0</apiVersion>
+    <assignments>
+        <name>addJournalEntryData</name>
+        <label>addJournalEntryData</label>
+        <locationX>182</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.CRM_Journal_Post_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>INNGAAENDE</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varRecordTypeId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.CRM_NAV_Case_Legacy_System__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>AO01</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.Journal_Entry_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.NAV_Case_Reference__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getReport.IPS_uniqueReportId__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>create_journal_entry</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Journal_Documents</name>
+        <label>Assign Journal Documents</label>
+        <locationX>182</locationX>
+        <locationY>1106</locationY>
+        <assignmentItems>
+            <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Document_Variant_PDF</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Documents.tittel</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varReportTitle</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Journal_Entry_Wrapper</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Journal_Entry_Wrapper</name>
+        <label>Journal Entry Wrapper</label>
+        <locationX>182</locationX>
+        <locationY>1214</locationY>
+        <assignmentItems>
+            <assignToReference>JournalRequest.tittel</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varReportTitle</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.kanal</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>NAV_NO</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.sak.fagsakId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Journal_Case_Overview.selectedCaseId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.journalpostType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>INNGAAENDE</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.dokumenter</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Journal_Documents</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.journalfoerendeEnhet</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.Department</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.bruker.idType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>FNR</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.bruker.id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getAccountInfo.INT_PersonIdent__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.avsenderMottaker.idType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>ORGNR</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.avsenderMottaker.id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>12345678</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.avsenderMottaker.navn</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>nav</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.tema</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Journal_Case_Overview.selectedCaseTheme</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.behandlingstema</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Journal_Case_Overview.selectedSubtheme</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JournalRequest.sak.sakstype</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Journal_Case_Overview.navCaseType</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Post_Journal_Request</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>PDF_Variant_Assignment</name>
+        <label>PDF Variant Assignment</label>
+        <locationX>182</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>Document_Variant_PDF.filtype</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>PDF</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Document_Variant_PDF.variantformat</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>ARKIV</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Document_Variant_PDF.fysiskDokument</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>PDF_DOCUMENT</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Journal_Documents</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setReportValues</name>
+        <label>setReportValues</label>
+        <locationX>50</locationX>
+        <locationY>1538</locationY>
+        <assignmentItems>
+            <assignToReference>getReport.IPS_status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Archived</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getReport.ips_journalId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varJournalId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateReport</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>checkIfParticipantIsInformed</name>
         <label>checkIfParticipantIsInformed</label>
-        <locationX>182</locationX>
+        <locationX>336</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>displayWarningText</targetReference>
@@ -14,19 +325,46 @@
             <name>isInformed</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getReport.isInformed__c</leftValueReference>
+                <leftValueReference>getReport.IPS_participantInformed__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>getParticipantId</targetReference>
+                <targetReference>getAccountInfo</targetReference>
             </connector>
             <label>isInformed</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>checkPostStatus</name>
+        <label>checkPostStatus</label>
+        <locationX>182</locationX>
+        <locationY>1430</locationY>
+        <defaultConnectorLabel>isFail</defaultConnectorLabel>
+        <rules>
+            <name>isSuccess</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varbolSuccess</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setReportValues</targetReference>
+            </connector>
+            <label>isSuccess</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>varReportTitle</name>
+        <dataType>String</dataType>
+        <expression>{!getReport.IPS_subject__c}</expression>
+    </formulas>
     <interviewLabel>IPS - report send to Joark {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - report send to Joark</label>
     <processMetadataValues>
@@ -48,35 +386,65 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordCreates>
+        <name>create_journal_entry</name>
+        <label>create journal entry</label>
+        <locationX>182</locationX>
+        <locationY>674</locationY>
+        <connector>
+            <targetReference>displayOverview</targetReference>
+        </connector>
+        <inputReference>Journal_Entry</inputReference>
+    </recordCreates>
     <recordLookups>
-        <description>Henter fødselsnummer fra deltaker knyttet til jobbsporet</description>
-        <name>getParticipantId</name>
-        <label>getParticipantId</label>
-        <locationX>50</locationX>
+        <name>getAccountInfo</name>
+        <label>getAccountInfo</label>
+        <locationX>182</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>displayOverview</targetReference>
+            <targetReference>getRecordTypeId</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>getReport.IPS_workTrailName__c</elementReference>
+                <elementReference>getReport.IPS_workTrailName__r.ips_Participant__c</elementReference>
             </value>
         </filters>
-        <object>Work_Trail__c</object>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getRecordTypeId</name>
+        <label>getRecordTypeId</label>
+        <locationX>182</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>addJournalEntryData</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IPS_Journal_Entry</stringValue>
+            </value>
+        </filters>
+        <object>RecordType</object>
         <outputAssignments>
-            <assignToReference>participantIdent</assignToReference>
-            <field>IPS_Personnummer__c</field>
+            <assignToReference>varRecordTypeId</assignToReference>
+            <field>Id</field>
         </outputAssignments>
     </recordLookups>
     <recordLookups>
         <description>Henter rapport informasjon fra jobbspor rapport</description>
         <name>getReport</name>
         <label>getReport</label>
-        <locationX>182</locationX>
+        <locationX>336</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -94,18 +462,29 @@
         <object>ips_report__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>updateReport</name>
+        <label>updateReport</label>
+        <locationX>50</locationX>
+        <locationY>1646</locationY>
+        <inputReference>getReport</inputReference>
+    </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <description>Henter saksid&apos;er fra Joark basert på deltakers id</description>
         <name>displayOverview</name>
         <label>displayJournals</label>
-        <locationX>50</locationX>
-        <locationY>458</locationY>
-        <allowBack>true</allowBack>
+        <locationX>182</locationX>
+        <locationY>782</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>generateDocument</targetReference>
+        </connector>
         <fields>
             <name>displayTitle2</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;                style=&quot;font-size: 18px; font-family:&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;                style=&quot;font-size: 18px; font-family: sans-serif;&quot;&amp;gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -314,6 +693,12 @@
                     <stringValue>THEME</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>actorId</name>
+                <value>
+                    <elementReference>getAccountInfo.CRM_Person__r.INT_ActorId__c</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -324,27 +709,59 @@
     <screens>
         <name>displayWarningText</name>
         <label>displayWarningText</label>
-        <locationX>314</locationX>
+        <locationX>490</locationX>
         <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>displayWarningTitle</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;style=&quot;font-size: 18px;&quot;&amp;gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;                style=&quot;font-size: 18px; font-family: sans-serif;&quot;&amp;gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>210</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getReport</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
+    <variables>
+        <name>Document_Variant_PDF</name>
+        <apexClass>CRM_Dokumentvarianter</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Journal_Documents</name>
+        <apexClass>CRM_Dokumenter</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Journal_Entry</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Journal_Entry__c</objectType>
+    </variables>
+    <variables>
+        <name>JournalRequest</name>
+        <apexClass>CRM_JournalEntryWrapper</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>participantIdent</name>
         <dataType>String</dataType>
@@ -353,7 +770,52 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>PDF_DOCUMENT</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varbolSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varErrorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varJournalId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varJournalPostStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordTypeId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
