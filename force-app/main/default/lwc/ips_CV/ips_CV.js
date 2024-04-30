@@ -2,7 +2,7 @@ import { LightningElement,api,track,wire } from 'lwc';
 import getCV from '@salesforce/apex/IPS_CVController.getCV';
 
 export default class Ips_CV extends LightningElement {
-    @api fodselsnummer;
+    @api recordId;
     @api actorId;
 
     @track cv;
@@ -13,7 +13,7 @@ export default class Ips_CV extends LightningElement {
     error = false;
     isExpanded = true;
 
-    @wire(getCV, { fodselsnummer: '$fodselsnummer' })
+    @wire(getCV, { recordId: '$recordId' })
     wiredCV({ data, error }) {
         if (data) {
             this.cv = data;
