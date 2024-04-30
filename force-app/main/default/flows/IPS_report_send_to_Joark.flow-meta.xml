@@ -31,6 +31,48 @@
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
+        <name>logFailure</name>
+        <label>logFailure</label>
+        <locationX>314</locationX>
+        <locationY>1646</locationY>
+        <actionName>LoggerUtility</actionName>
+        <actionType>apex</actionType>
+        <dataTypeMappings>
+            <typeName>T__refRecord</typeName>
+            <typeValue>Application_Log__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>domain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>logLevel</name>
+            <value>
+                <stringValue>ERROR</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>logMessage</name>
+            <value>
+                <elementReference>varErrorMessage</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>refRecord</name>
+        </inputParameters>
+        <inputParameters>
+            <name>source</name>
+            <value>
+                <elementReference>$Flow.CurrentRecord</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>LoggerUtility</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
         <locationX>182</locationX>
@@ -123,6 +165,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>getReport.IPS_uniqueReportId__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.CRM_Theme_Code__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>OPP</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -290,6 +339,38 @@
         </connector>
     </assignments>
     <assignments>
+        <name>setJournalEntryFailedValues</name>
+        <label>setJournalEntryFailedValues</label>
+        <locationX>314</locationX>
+        <locationY>1538</locationY>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.Journal_Entry_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>logFailure</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setJournalEntryValues</name>
+        <label>setJournalEntryValues</label>
+        <locationX>50</locationX>
+        <locationY>1646</locationY>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.Journal_Entry_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateJournalEntry</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>setReportValues</name>
         <label>setReportValues</label>
         <locationX>50</locationX>
@@ -309,13 +390,13 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateReport</targetReference>
+            <targetReference>setJournalEntryValues</targetReference>
         </connector>
     </assignments>
     <decisions>
         <name>checkIfParticipantIsInformed</name>
         <label>checkIfParticipantIsInformed</label>
-        <locationX>336</locationX>
+        <locationX>380</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>displayWarningText</targetReference>
@@ -342,6 +423,9 @@
         <label>checkPostStatus</label>
         <locationX>182</locationX>
         <locationY>1430</locationY>
+        <defaultConnector>
+            <targetReference>setJournalEntryFailedValues</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>isFail</defaultConnectorLabel>
         <rules>
             <name>isSuccess</name>
@@ -444,7 +528,7 @@
         <description>Henter rapport informasjon fra jobbspor rapport</description>
         <name>getReport</name>
         <label>getReport</label>
-        <locationX>336</locationX>
+        <locationX>380</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -463,10 +547,20 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>updateJournalEntry</name>
+        <label>updateJournalEntry</label>
+        <locationX>50</locationX>
+        <locationY>1754</locationY>
+        <connector>
+            <targetReference>updateReport</targetReference>
+        </connector>
+        <inputReference>Journal_Entry</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>updateReport</name>
         <label>updateReport</label>
         <locationX>50</locationX>
-        <locationY>1646</locationY>
+        <locationY>1862</locationY>
         <inputReference>getReport</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
@@ -484,7 +578,7 @@
         </connector>
         <fields>
             <name>displayTitle2</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;                style=&quot;font-size: 18px; font-family: sans-serif;&quot;&amp;gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -709,21 +803,21 @@
     <screens>
         <name>displayWarningText</name>
         <label>displayWarningText</label>
-        <locationX>490</locationX>
+        <locationX>578</locationX>
         <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>displayWarningTitle</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;                style=&quot;font-size: 18px; font-family: sans-serif;&quot;&amp;gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>210</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getReport</targetReference>
