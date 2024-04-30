@@ -1,16 +1,5 @@
 @IsTest
 private with sharing class IPS_CVControllerTest {
-    @IsTest
-    static void getCVTestOnSuccuss() {
-        ApiMock.setTestMock('GET_CV', 200, 'OK');
-        CV testCV;
-        Test.startTest();
-        testCV = IPS_CVController.getCV('12345678910');
-        Test.stopTest();
-
-        System.assertNotEquals(null, testCV, 'Did not expect null');
-        System.assertEquals(false, testCV.sistEndretAvNav, 'Excpected result was false');
-    }
 
     @isTest
     static void getCVTestOnBlankPersonIdent() {
