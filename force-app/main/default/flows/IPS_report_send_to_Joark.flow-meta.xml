@@ -34,9 +34,12 @@
         <name>logFailure</name>
         <label>logFailure</label>
         <locationX>314</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <actionName>LoggerUtility</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>errorScreen</targetReference>
+        </connector>
         <dataTypeMappings>
             <typeName>T__refRecord</typeName>
             <typeValue>Application_Log__c</typeValue>
@@ -76,7 +79,7 @@
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
         <locationX>182</locationX>
-        <locationY>1322</locationY>
+        <locationY>1430</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -174,6 +177,13 @@
                 <stringValue>OPP</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Entry.CRM_Created_By_Ident__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.CRM_NAV_Ident__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>create_journal_entry</targetReference>
         </connector>
@@ -198,6 +208,36 @@
             </value>
         </assignmentItems>
         <connector>
+            <targetReference>Assign_Journal_Sak</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Journal_Sak</name>
+        <label>Assign Journal Sak</label>
+        <locationX>182</locationX>
+        <locationY>1214</locationY>
+        <assignmentItems>
+            <assignToReference>Journal_Sak.sakstype</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>FAGSAK</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Sak.fagsakId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Journal_Case_Overview.selectedCaseId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Journal_Sak.fagsaksystem</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>AO01</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
             <targetReference>Journal_Entry_Wrapper</targetReference>
         </connector>
     </assignments>
@@ -205,7 +245,7 @@
         <name>Journal_Entry_Wrapper</name>
         <label>Journal Entry Wrapper</label>
         <locationX>182</locationX>
-        <locationY>1214</locationY>
+        <locationY>1322</locationY>
         <assignmentItems>
             <assignToReference>JournalRequest.tittel</assignToReference>
             <operator>Assign</operator>
@@ -218,13 +258,6 @@
             <operator>Assign</operator>
             <value>
                 <stringValue>NAV_NO</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>JournalRequest.sak.fagsakId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Journal_Case_Overview.selectedCaseId</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -273,14 +306,14 @@
             <assignToReference>JournalRequest.avsenderMottaker.id</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>12345678</stringValue>
+                <stringValue>889640782</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>JournalRequest.avsenderMottaker.navn</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>nav</stringValue>
+                <stringValue>ARBEIDS- OG VELFERDSETATEN</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -291,17 +324,17 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>JournalRequest.behandlingstema</assignToReference>
+            <assignToReference>JournalRequest.sak</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Journal_Case_Overview.selectedSubtheme</elementReference>
+                <elementReference>Journal_Sak</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>JournalRequest.sak.sakstype</assignToReference>
+            <assignToReference>JournalRequest.eksternReferanseId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Journal_Case_Overview.navCaseType</elementReference>
+                <elementReference>getReport.IPS_uniqueReportId__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -342,7 +375,7 @@
         <name>setJournalEntryFailedValues</name>
         <label>setJournalEntryFailedValues</label>
         <locationX>314</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -358,7 +391,7 @@
         <name>setJournalEntryValues</name>
         <label>setJournalEntryValues</label>
         <locationX>50</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -374,7 +407,7 @@
         <name>setReportValues</name>
         <label>setReportValues</label>
         <locationX>50</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <assignmentItems>
             <assignToReference>getReport.IPS_status__c</assignToReference>
             <operator>Assign</operator>
@@ -422,7 +455,7 @@
         <name>checkPostStatus</name>
         <label>checkPostStatus</label>
         <locationX>182</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <defaultConnector>
             <targetReference>setJournalEntryFailedValues</targetReference>
         </defaultConnector>
@@ -550,7 +583,7 @@
         <name>updateJournalEntry</name>
         <label>updateJournalEntry</label>
         <locationX>50</locationX>
-        <locationY>1754</locationY>
+        <locationY>1862</locationY>
         <connector>
             <targetReference>updateReport</targetReference>
         </connector>
@@ -560,7 +593,7 @@
         <name>updateReport</name>
         <label>updateReport</label>
         <locationX>50</locationX>
-        <locationY>1862</locationY>
+        <locationY>1970</locationY>
         <inputReference>getReport</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
@@ -724,7 +757,7 @@
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displayNameTxt</name>
-                    <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;                        style=&quot;font-family: sans-serif; font-size: 14px;&quot;&amp;gt;                        class=&quot;ql-cursor&quot;&amp;gt;﻿Deltakers&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;Deltakers navn: &lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -740,7 +773,7 @@
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>displaySummarize</name>
-                    <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;style=&quot;font-family: sans-serif; font-size:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;14px;&quot;&amp;gt;{!getReport.IPS_participantName__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;{!getReport.IPS_participantName__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
@@ -813,6 +846,41 @@
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <fields>
+            <name>participantIsNotInformed</name>
+            <extensionName>c:crmAlertBanner</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Husk å huke av for at deltaker er informert om deling av rapporten.</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>errorScreen</name>
+        <label>errorScreen</label>
+        <locationX>314</locationX>
+        <locationY>1862</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>displayTitle3</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>displayErrorMessage</name>
+            <fieldText>&lt;p&gt;En feil oppstod.&lt;/p&gt;&lt;p&gt;Meld inn feilmelding: &lt;/p&gt;&lt;p&gt;{!varErrorMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -847,6 +915,14 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Journal_Entry__c</objectType>
+    </variables>
+    <variables>
+        <name>Journal_Sak</name>
+        <apexClass>CRM_Sak</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>JournalRequest</name>
