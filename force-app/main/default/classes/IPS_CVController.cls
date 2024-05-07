@@ -3,14 +3,14 @@ public with sharing class IPS_CVController {
     @AuraEnabled(cacheable=true)
     public static CV getCV(String recordId) {
 
-        String personNumber = [SELECT IPS_Personnummer__c  FROM Work_Trail__c WHERE id =: recordId]?.IPS_Personnummer__c;
+        String fodselsnummer = [SELECT IPS_Personnummer__c  FROM Work_Trail__c WHERE id =: recordId]?.IPS_Personnummer__c;
         
         if (String.isBlank(personNumber)) {
             String errorRef = logError('Feil fra getCV()-funksjonen!');
 
             throw new CVException('Kunne ikke hente CV.' + errorRef);
         }
-        HttpResponse response = CV_Service.getCV(personNumber);
+        HttpResponse response = CV_Service.getCV(fodselsnummer);
 
         if (response.getStatusCode() == 200) {
             CV enCV = (true == String.isNotBlank(response.getBody()))
