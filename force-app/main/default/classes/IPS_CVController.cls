@@ -1,24 +1,23 @@
-public with sharing class IPS_CVController {
+public with sharing class IPS_CVController{
+    @AuraEnabled(cacheable = true)
+    public static CV getCV(String recordId){
 
-    @AuraEnabled(cacheable=true)
-    public static CV getCV(String recordId) {
+        String fodselsnummer = [SELECT IPS_Personnummer__c
+                                FROM Work_Trail__c
+                                WHERE id = :recordId]?.IPS_Personnummer__c;
 
-        String personNumber = [SELECT IPS_Personnummer__c  FROM Work_Trail__c WHERE id =: recordId]?.IPS_Personnummer__c;
-        
-        if (String.isBlank(personNumber)) {
+        if (String.isBlank(fodselsnummer)){
             String errorRef = logError('Feil fra getCV()-funksjonen!');
 
             throw new CVException('Kunne ikke hente CV.' + errorRef);
         }
-        HttpResponse response = CV_Service.getCV(personNumber);
+        HttpResponse response = CV_Service.getCV(fodselsnummer);
 
-        if (response.getStatusCode() == 200) {
-            CV enCV = (true == String.isNotBlank(response.getBody()))
-                ? (CV) JSON.deserialize(response.getBody().replaceAll('\n', '\\\\r\\\\n'), CV.class)
-                : null;
+        if (response.getStatusCode() == 200){
+            CV enCV = (true == String.isNotBlank(response.getBody())) ? (CV)JSON.deserialize(response.getBody().replaceAll('\n', '\\\\r\\\\n'), CV.class) : null;
 
             return enCV != null ? enCV : null;
-        } else if (response.getStatusCode() == 404) {
+        } else if (response.getStatusCode() == 404){
             throw new CVException('Ingen CV');
         }
 
@@ -26,7 +25,7 @@ public with sharing class IPS_CVController {
         throw new CVException('Kunne ikke hente CV.' + errorRef);
     }
 
-    private static String logError(HttpResponse resp, String message) {
+    private static String logError(HttpResponse resp, String message){
         String errorRef = '';
 
         LoggerUtility logger = new LoggerUtility();
@@ -37,7 +36,7 @@ public with sharing class IPS_CVController {
         return errorRef;
     }
 
-    private static String logError(String message) {
+    private static String logError(String message){
         String errorRef = '';
 
         LoggerUtility logger = new LoggerUtility();
@@ -48,6 +47,7 @@ public with sharing class IPS_CVController {
         return errorRef;
     }
 
-    private class CVException extends Exception {
+    private class CVException extends Exception{
     }
+
 }
