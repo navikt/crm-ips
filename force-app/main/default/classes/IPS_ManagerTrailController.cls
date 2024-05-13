@@ -69,7 +69,7 @@ public without sharing class IPS_ManagerTrailController {
                     toLabel(ips_Other_end_cases__c) toAnother
                    FROM work_trail__c 
                    WHERE OwnerId in: IPS_Utility.getMyEmployeesUserId() AND ips_Status__c='Ended' 
-                   GROUP BY CALENDAR_YEAR(ips_End_Date__c),CALENDAR_MONTH(ips_End_Date__c),End_Cause__c
+                   GROUP BY CALENDAR_YEAR(ips_End_Date__c),CALENDAR_MONTH(ips_End_Date__c),End_Cause__c,ips_Work__c,ips_Other_end_cases__c
                    ORDER BY CALENDAR_YEAR(ips_End_Date__c)
                   ];
         
