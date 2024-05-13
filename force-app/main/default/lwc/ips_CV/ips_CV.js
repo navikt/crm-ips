@@ -4,7 +4,7 @@ import getCV from '@salesforce/apex/IPS_CVController.getCV';
 export default class Ips_CV extends LightningElement {
     @api recordId;
     @api actorId;
-    @api fodselsnummer ; 
+    @api fodselsnummer; 
 
     @track cv;
     @track sectionClass = 'slds-section slds-is-open';
