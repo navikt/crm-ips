@@ -1,56 +1,57 @@
 @IsTest
-private with sharing class IPS_CVControllerTest {
-
+private with sharing class IPS_CVControllerTest{
     @isTest
-    static void getCVTestOnBlankPersonIdent() {
+    static void getCVTestOnBlankPersonIdent(){
         Boolean hasCVException = false;
 
         Test.startTest();
-        try {
+        try{
             IPS_CVController.getCV('');
-        } catch (IPS_CVController.CVException ex) {
+        } catch (IPS_CVController.CVException ex){
             hasCVException = true;
-        } catch (Exception e) {
+        } catch (Exception e){
             System.assert(false, 'Did not throw correct exception');
         }
         Test.stopTest();
 
         System.assert(hasCVException, 'Did not catch correct exception');
-        System.assertEquals(1, [SELECT Id FROM Application_Log__c].size(), 'Excpected error to be recorded');
+        System.assertEquals(1, [SELECT Id
+                                FROM Application_Log__c].size(), 'Excpected error to be recorded');
     }
 
     @isTest
-    static void getCVTestOnUnauthorizedError() {
+    static void getCVTestOnUnauthorizedError(){
         Boolean hasCVException = false;
 
         Test.setMock(HttpCalloutMock.class, new SingleRequestMock(401, 'Unauthorized', '', null));
 
         Test.startTest();
-        try {
+        try{
             IPS_CVController.getCV('12345678910');
-        } catch (IPS_CVController.CVException ex) {
+        } catch (IPS_CVController.CVException ex){
             hasCVException = true;
-        } catch (Exception e) {
+        } catch (Exception e){
             System.assert(false, 'Did not throw correct exception');
         }
         Test.stopTest();
 
         System.assert(hasCVException, 'Did not catch correct exception');
-        System.assertEquals(1, [SELECT Id FROM Application_Log__c].size(), 'Excpected error to be recorded');
+        System.assertEquals(1, [SELECT Id
+                                FROM Application_Log__c].size(), 'Excpected error to be recorded');
     }
 
     @isTest
-    static void getCVTestOnNotFoundError() {
+    static void getCVTestOnNotFoundError(){
         Boolean hasCVException = false;
 
         Test.setMock(HttpCalloutMock.class, new SingleRequestMock(404, 'Not Found', '', null));
 
         Test.startTest();
-        try {
+        try{
             IPS_CVController.getCV('12345678910');
-        } catch (IPS_CVController.CVException ex) {
+        } catch (IPS_CVController.CVException ex){
             hasCVException = true;
-        } catch (Exception e) {
+        } catch (Exception e){
             System.assert(false, 'Did not throw correct exception');
         }
         Test.stopTest();
@@ -59,22 +60,24 @@ private with sharing class IPS_CVControllerTest {
     }
 
     @isTest
-    static void getCVTestOnInternalServerError() {
+    static void getCVTestOnInternalServerError(){
         Boolean hasCVException = false;
 
         Test.setMock(HttpCalloutMock.class, new SingleRequestMock(500, 'Internal Server Error', '', null));
 
         Test.startTest();
-        try {
+        try{
             IPS_CVController.getCV('12345678910');
-        } catch (IPS_CVController.CVException ex) {
+        } catch (IPS_CVController.CVException ex){
             hasCVException = true;
-        } catch (Exception e) {
+        } catch (Exception e){
             System.assert(false, 'Did not throw correct exception');
         }
         Test.stopTest();
 
         System.assert(hasCVException, 'Did not catch correct exception');
-        System.assertEquals(1, [SELECT Id FROM Application_Log__c].size(), 'Excpected error to be recorded');
+        System.assertEquals(1, [SELECT Id
+                                FROM Application_Log__c].size(), 'Excpected error to be recorded');
     }
+
 }

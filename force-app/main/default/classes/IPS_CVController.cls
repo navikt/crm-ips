@@ -6,7 +6,7 @@ public with sharing class IPS_CVController{
                                 FROM Work_Trail__c
                                 WHERE id = :recordId]?.IPS_Personnummer__c;
 
-        if (String.isBlank(personNumber)){
+        if (String.isBlank(fodselsnummer)){
             String errorRef = logError('Feil fra getCV()-funksjonen!');
 
             throw new CVException('Kunne ikke hente CV.' + errorRef);
