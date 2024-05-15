@@ -14,9 +14,6 @@ public without sharing class IPS_changeOwnerOnActivityController {
         IF(objectName == 'Event'){
             updateRelatedOwnerEvent(currentId,ownerId,oldOwnerId);
         }
-        IF(objectName =='ips_report__c'){
-            updateRelatedOwnerReport(currentId,ownerId);
-        }
     }
         
     @TestVisible
@@ -74,24 +71,6 @@ public without sharing class IPS_changeOwnerOnActivityController {
         	}
         	update allevents; 
         }    
-    }
-
-    private static void updateRelatedOwnerReport(Id currentId, Id ownerId){
-        List<ips_report__c> allreport = [SELECT 
-                                        id,OwnerId
-                                        FROM ips_report__c
-                                        WHERE IPS_workTrailName__c =:currentId];
-        if(!allreport.isEmpty()){
-            for(ips_report__c r:allreport){ 
-                r.OwnerId = ownerId;
-            }
-            /*Set EmailHeader.triggerUserEmail to false, this disables send Email notification. Try to prevent email sendt when report changes owner.
-             * https://help.salesforce.com/s/articleView?id=000385933&type=1
-             * */
-            Database.DMLOptions dmlo = new Database.DMLOptions();
-            dmlo.EmailHeader.triggerUserEmail = false;
-            database.update(allreport, dmlo);
-        }
     }
 
     	//Input variables from flow

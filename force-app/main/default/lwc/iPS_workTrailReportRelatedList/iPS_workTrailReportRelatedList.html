@@ -39,12 +39,15 @@
     <template if:true={isIntervall}>
         <lightning-layout-item size="5">
             <div class="slds-m-around_large,">
-                <lightning-input type="date" name="intervallDateFrom"  label="Velg dato fra: " required="true" ></lightning-input>
+                <lightning-input type="date" name="intervallDateFrom"  label="Velg dato fra: " required="true"  ></lightning-input>
                 <lightning-input type="date" name="intervallDateTo"  label="Velg dato til: " required="true" ></lightning-input>
             </div>
         </lightning-layout-item>
     <template if:true={isDatesNull}>
         <p style="color:red;">Dato fra og dato til må ha en verdi.</p>
+    </template>
+    <template if:true={isDateError}>
+        <p style="color:red;">Sjekk dato fra. Dato er etter til dato.</p>
     </template>
         
         <br>

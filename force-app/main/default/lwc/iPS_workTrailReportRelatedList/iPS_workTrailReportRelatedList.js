@@ -43,6 +43,7 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     @track isIntervall = false;
     @track isEnd = false;
     @track isDatesNull = false;
+    @track isDateError = false;
     reportType;
     reportStatus ='Open';
     columns = COLUMNS;
@@ -100,6 +101,7 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     get ownerid(){
         return getFieldValue(this.wiredtrail.data, OWNERID_FIELD);
     }
+
     
     handleButtonClick(event) {
         switch (event.target.label) {
@@ -132,7 +134,6 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                 "IPS_status__c":this.reportStatus,
                 "IPS_workTrailName__c":this.recordId,
                 "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
-                "OwnerId":this.ownerid,
                 "IPS_workTrailOwner__c":this.ownername
             } };
         createRecord(recordInput)
@@ -159,35 +160,38 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
                 this.intervallDateFrom = element.value;
             if(element.name==='intervallDateTo')
                 this.intervallDateTo = element.value;
-        },this);
+            },this);
 
-        if(this.intervallDateFrom && this.intervallDateTo){
-            const recordInput= { 
-                "apiName": "ips_report__c",
-                "fields" :{
-                    "IPS_intervallDateTo__c":this.intervallDateTo,
-                    "IPS_intervallDateFrom__c":this.intervallDateFrom,
-                    "IPS_report_Type__c":this.reportType,
-                    "IPS_status__c":this.reportStatus,
-                    "IPS_workTrailName__c":this.recordId,
-                    "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
-                    "OwnerId":this.ownerid,
-                    "IPS_workTrailOwner__c":this.ownername
-                } };
-            createRecord(recordInput)
-            .then((ips_report_c) =>{
-                this.reportId = ips_report_c.id;
-                this[NavigationMixin.Navigate]({
-                    type: 'standard__recordPage',
-                    attributes: {
-                      recordId: this.reportId,
-                      actionName: 'view'
-                    }
-                  });
-            })
-            .catch(error => {
-                console.log(error);
-            })
+            if(this.intervallDateFrom && this.intervallDateTo){
+                if(this.intervallDateFrom >= this.intervallDateTo){
+                    this.isDateError = true;
+                }else{
+                const recordInput= { 
+                    "apiName": "ips_report__c",
+                    "fields" :{
+                        "IPS_intervallDateTo__c":this.intervallDateTo,
+                        "IPS_intervallDateFrom__c":this.intervallDateFrom,
+                        "IPS_report_Type__c":this.reportType,
+                        "IPS_status__c":this.reportStatus,
+                        "IPS_workTrailName__c":this.recordId,
+                        "IPS_worktrail_Type__c":this.recordTypeNameWorkTrail,
+                        "IPS_workTrailOwner__c":this.ownername
+                    } };
+                createRecord(recordInput)
+                .then((ips_report_c) =>{
+                    this.reportId = ips_report_c.id;
+                    this[NavigationMixin.Navigate]({
+                        type: 'standard__recordPage',
+                        attributes: {
+                        recordId: this.reportId,
+                        actionName: 'view'
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
         }else{
             this.isDatesNull = true;  
         }     
