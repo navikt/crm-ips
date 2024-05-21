@@ -9,7 +9,7 @@
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>change_owner_on_reports</targetReference>
+            <targetReference>create_owner_history</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -34,38 +34,6 @@
             <name>sObjectName</name>
             <value>
                 <stringValue>Event</stringValue>
-            </value>
-        </inputParameters>
-        <nameSegment>IPS_changeOwnerOnActivityController</nameSegment>
-        <versionSegment>1</versionSegment>
-    </actionCalls>
-    <actionCalls>
-        <name>change_owner_on_reports</name>
-        <label>change owner on reports</label>
-        <locationX>176</locationX>
-        <locationY>863</locationY>
-        <actionName>IPS_changeOwnerOnActivityController</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>create_owner_history</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>currentRecord</name>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>ownerRecord</name>
-            <value>
-                <elementReference>varOwnerId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>sObjectName</name>
-            <value>
-                <stringValue>ips_report__c</stringValue>
             </value>
         </inputParameters>
         <nameSegment>IPS_changeOwnerOnActivityController</nameSegment>
@@ -240,7 +208,7 @@
         <name>create_owner_history</name>
         <label>create owner history</label>
         <locationX>176</locationX>
-        <locationY>971</locationY>
+        <locationY>863</locationY>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
             <name>varDescription</name>
