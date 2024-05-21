@@ -20,8 +20,8 @@ call sf force:package:install --package 04t7U000000TqvIQAS -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-reporting 0.37.0.."
-call sf force:package:install --package 04t7U000000Y2VoQAK -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-reporting 0.38.0.."
+call sf force:package:install --package 04t7U000000Y3yYQAS -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -50,8 +50,8 @@ call sf force:package:install --package 04t7U0000008qz4QAA -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-journal-utilities 0.28.0.."
-call sf force:package:install --package 04t7U000000Y3iGQAS -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-journal-utilities 0.29.0.."
+call sf force:package:install --package 04t7U000000Y3zWQAS -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -60,18 +60,18 @@ call sf force:package:install --package 04t7U000000Y3r3QAC -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-arbeidsgiver-base 1.412.0.."
-call sf force:package:install --package 04t7U000000Y3tOQAS -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.420.0.."
+call sf force:package:install --package 04t7U000000Y471QAC -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-community-base 102."
-call sf force:package:install --package 04t7U000000Y3eTQAS -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-community-base 108."
+call sf force:package:install --package 04t7U000000Y46wQAC -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-ips 0.443.0.."
-call sf force:package:install --package 04t7U000000Y3uMQAS -r --installation-key %3 --wait 10 --publish-wait 10
+echo "Installerer crm-ips 0.450.0.."
+call sf force:package:install --package 04t7U000000Y46SQAS -r --installation-key %3 --wait 10 --publish-wait 10
 
 echo ""
 echo "TILDELER"
