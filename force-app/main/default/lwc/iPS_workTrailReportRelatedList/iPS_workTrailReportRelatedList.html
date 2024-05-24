@@ -1,4 +1,5 @@
 <template>
+    <!-- Buttons to create IPS reports -->
     <template if:true={isIPS}>
         <div class="slds-clearfix">
             <lightning-button-group class="slds-float_right">
@@ -17,6 +18,8 @@
             </lightning-button-group> 
         </div>
     </template>
+
+    <!-- Buttons to create AMS reports -->
     <template if:false={isIPS}>
         <div class="slds-clearfix">
            <lightning-button-group class="slds-float_right">
@@ -36,13 +39,17 @@
         </div>
         <br>
     </template>
+    
+    <!-- Input fields ncecessory to populate intervall reports -->
     <template if:true={isIntervall}>
         <lightning-layout-item size="5">
-            <div class="slds-m-around_large,">
+            <div class="slds-var-m-around_large,">
                 <lightning-input type="date" name="intervallDateFrom"  label="Velg dato fra: " required="true" ></lightning-input>
                 <lightning-input type="date" name="intervallDateTo"  label="Velg dato til: " required="true" ></lightning-input>
             </div>
         </lightning-layout-item>
+
+    <!-- Validates date fields -->
     <template if:true={isDatesNull}>
         <p style="color:red;">Dato fra og dato til må ha en verdi.</p>
     </template>
@@ -51,12 +58,13 @@
     </template>
         
         <br>
+        <!-- Buttons to populate intervall reports -->
         <div class="slds-clearfix">
             <lightning-button 
                         variant="brand" 
                         label='Lagre'
                         onclick={submitIntervall}
-                        class="slds-float_right"
+                        class="slds-float_right slds-var-m-left_small"
                     >
             </lightning-button>
             <lightning-button 
@@ -66,10 +74,10 @@
                         class="slds-float_right"
                     >
             </lightning-button>
-        </div>
-       
+        </div>   
     </template>
 
+    <!-- Displays tablular data  -->
         <lightning-card title="Rapportoversikt">
             <lightning-datatable
                 key-field="Id"
