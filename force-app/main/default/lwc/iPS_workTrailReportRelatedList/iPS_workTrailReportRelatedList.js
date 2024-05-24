@@ -200,7 +200,7 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
         this.isIntervall = false;
     }
 
-    // Navigates to the record page of the chosen id.
+    // Navigates to the chosen jobbspor rapport record page.
     navigateToRecordViewPage(event){
         const row = event.detail.row;
         this[NavigationMixin.Navigate]({
