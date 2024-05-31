@@ -42,6 +42,8 @@ public with sharing class IPS_viewReportPDFController {
     public list<ips_Education__c> plannedParticipantsEducations { get; set; }
     public list<AMS_Vocational_education_and_training__c> activeAmsEducations { get; set; }
     public list<AMS_Vocational_education_and_training__c> plannedAmsEductions { get; set; }
+    public list<IPS_PassivePeriod> getAllPassivePeriods { get; set; }
+    public List<IPS_PassivePeriod> getPassivePeriodsWithinDateRange { get; set; }
 
     public IPS_viewReportPDFController(ApexPages.StandardController sc) {
         this.currentRecordId = sc.getRecord().Id;
@@ -64,6 +66,8 @@ public with sharing class IPS_viewReportPDFController {
         this.plannedParticipantsEducations = getPlannedEducations(intervallFromDate);
         this.activeAmsEducations = getAMSEducation(intervallFromDate, intervallToDate);
         this.plannedAmsEductions = getPlannedAMSEducations(intervallFromDate);
+        this.getAllPassivePeriods = getAllPassivePeriods();
+        this.getPassivePeriodsWithinDateRange = getPassivePeriodsWithinDateRange(intervallFromDate, intervallToDate);
 
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename=' + this.pdfTitle + '.pdf');
     }
@@ -496,18 +500,18 @@ public with sharing class IPS_viewReportPDFController {
                 } else {
                     if (
                         a.AMS_End_Date__c != null &&
-                        (a.AMS_End_Date__c >= startDate ||
-                        a.AMS_End_Date__c >= endDate) &&
+                        ((a.AMS_End_Date__c >= startDate || a.AMS_End_Date__c >= endDate) &&
                         (a.AMS_Status__c == 'Completed' ||
-                        a.AMS_Status__c == 'Fullført')
+                        a.AMS_Status__c == 'Fullført'))
                     ) {
                         amsEduList.add(a);
                     }
                     if (
-                        a.AMS_Status__c == 'Completed' ||
-                        a.AMS_Status__c == 'Fullført' &&
                         a.AMS_End_Date__c == null &&
-                        a.AMS_Start_Date__c >= startDate && a.AMS_Start_Date__c <= endDate
+                        ((a.AMS_Status__c == 'Completed' ||
+                        a.AMS_Status__c == 'Fullført') &&
+                        a.AMS_Start_Date__c >= startDate &&
+                        a.AMS_Start_Date__c <= endDate)
                     ) {
                         amsEduList.add(a);
                     }
@@ -545,6 +549,61 @@ public with sharing class IPS_viewReportPDFController {
             eduList.addAll(plannedEdu);
         }
         return eduList;
+    }
+
+    /**
+     * Returns all the passive periods related to a worktrail
+     * @return  List of passive periods
+     */
+    private list<IPS_PassivePeriod> getAllPassivePeriods() {
+        list<Task> allpassiveActivities = [
+            SELECT id, subject, ActivityDate, CreatedDate, whatId
+            FROM task
+            WHERE
+                WhatId = :workTrailId
+                AND Type_of_Task_IPSUO__c = 'Historikk'
+                AND (subject = 'Passiv tilstand aktivert'
+                OR subject = 'Passiv tilstand deaktivert')
+            ORDER BY CreatedDate
+        ];
+        list<IPS_PassivePeriod> passivePeriods = new List<IPS_PassivePeriod>();
+        Task aktivertTask = null;
+
+        for (Task task : allpassiveActivities) {
+            if (task.Subject == 'Passiv tilstand aktivert') {
+                aktivertTask = task;
+            } else if (task.Subject == 'Passiv tilstand deaktivert' && aktivertTask != null) {
+                passivePeriods.add(new IPS_PassivePeriod(aktivertTask.CreatedDate, task.CreatedDate));
+                aktivertTask = null;
+            }
+        }
+        system.debug('Passive periods');
+        system.debug(passivePeriods);
+
+        return passivePeriods;
+    }
+
+    /**
+     * Returns passive periods within a given date range.
+     * @param startDate starting date of the date range
+     * @param endDate ending date of the date range
+     * @return  List of filtered passive periods
+     */
+    private List<IPS_PassivePeriod> getPassivePeriodsWithinDateRange(Datetime startDate, Datetime endDate) {
+        List<IPS_PassivePeriod> passivePeriods = getAllPassivePeriods();
+        List<IPS_PassivePeriod> filteredPassivePeriods = new List<IPS_PassivePeriod>();
+
+        for (IPS_PassivePeriod period : passivePeriods) {
+            if (
+                (period.startDate >= startDate && period.startDate <= (endDate + 1)) &&
+                (period.endDate >= startDate &&
+                period.endDate <= (endDate + 1))
+            ) {
+                filteredPassivePeriods.add(period);
+            }
+        }
+
+        return filteredPassivePeriods;
     }
 
     /*********************** **************************/
