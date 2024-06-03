@@ -266,8 +266,7 @@ public with sharing class IPS_viewReportPDFController {
                 IPS_Status1__c
             FROM event
             WHERE
-                IPS_participant_related_to_meeting__c = TRUE
-                AND IPS_Type__c IN (
+                IPS_Type__c IN (
                     'Meeting with Employer',
                     'Meeting with Participant',
                     'Start up meeting',
