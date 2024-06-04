@@ -74,7 +74,7 @@ public with sharing class IPS_TestDataFactory {
         Work_Trail__c trailUO = new Work_Trail__c();
         trailUO.ips_Participant__c = participantId;
         trailUO.ips_Status__c = 'Initial contact';
-        trailUO.ips_UO_Service__c	='UO Training';
+        trailUO.ips_UO_Service__c	='AMS';
         trailUO.IPS_Partticipant_phone_number__c = '987 65 432';
         trailUO.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('ips_Supported_Employment').getRecordTypeId();
         return trailUO;
@@ -148,7 +148,6 @@ public with sharing class IPS_TestDataFactory {
             IPS_Type__c = 'Meeting with Employer',
             ips_uo_Kanal__c ='Fysisk',
             ips_Subcategory_Type_IPS__c = 'Job support',
-            F_rste_arbeidsgiverm_te__c = 'Nei',
             IPS_Status1__c  = 'Open',
             OwnerId=ownerId,
             Location='Kontoret'
@@ -204,7 +203,7 @@ public with sharing class IPS_TestDataFactory {
     
     public static ips_Job__c createJob(ID employerId, ID worktrailId, String status){
         Date endDate;
-        if(status=='Ongoing'){
+        if(status=='Ongoing' || status=='Planned'){
             endDate = Date.newInstance(2050, 12, 17);
         }else {
             endDate = Date.newInstance(2022, 12, 17);
@@ -265,10 +264,37 @@ public with sharing class IPS_TestDataFactory {
             IPS_report_Type__c = 'Intervall',
             IPS_workTrailName__c = workTrailId,
             IPS_intervallDateFrom__c = System.today(),
-            IPS_intervallDateTo__c = System.today().addDays(7)
+            IPS_intervallDateTo__c = System.today().addDays(45)
             
         );
             return intervallReport;
+    }
+    
+    public static ips_Education__c createEducation(ID workTrailId){
+        	ips_Education__c educationList = new ips_Education__c(
+        	ips_Work_Trail__c = workTrailId,
+            ips_Education_Subject__c = 'Emne på utdanningen',
+            ips_Contact_at_the_Education_Institution__c ='Utdanningsinstitusjon',
+            ips_Form_of_Education__c ='	Full-time Study',
+            ips_Status__c ='Ongoing',
+            ips_Start_Date__c = System.today(),
+            ips_End_Date__c = System.today().addDays(30)        
+        );
+        return educationList;
+    }
+    
+    public static AMS_Vocational_education_and_training__c createEducationAMS(ID workTrailId){
+        AMS_Vocational_education_and_training__c educationAMS = new AMS_Vocational_education_and_training__c(
+            AMS_Work_Trail__c = workTrailId,
+            AMS_Name_of_the_Education_institution__c = 'Navnet på utdanningsinstitusjon',
+            AMS_Description__c = 'Beskrivelse av utdanningen',
+            AMS_Educational_program__c = 'Building and Construction',
+            AMS_Status__c = 'Ongoing',
+            AMS_Start_Date__c = System.today(),
+            AMS_End_Date__c = System.today().addDays(30),
+            AMS_Form_of_Study__c = 'practice candidate'
+        );
+        return educationAMS;
     }
     
     public static User createInternalUserWithManager(String username, Id managerId){
