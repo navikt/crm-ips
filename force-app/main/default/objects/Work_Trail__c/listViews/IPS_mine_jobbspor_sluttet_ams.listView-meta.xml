@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Metodeveileders_listevisning</fullName>
+    <fullName>IPS_mine_jobbspor_sluttet_ams</fullName>
     <columns>NAME</columns>
-    <columns>ips_Status__c</columns>
-    <columns>Oppstartsdato__c</columns>
-    <columns>ips_UO_Service__c</columns>
-    <columns>Days_before_first_employer_meeting__c</columns>
-    <columns>ips_Behandlingsteam__c</columns>
     <columns>ips_Referred_date__c</columns>
-    <columns>CREATED_DATE</columns>
-    <columns>OWNER.FIRST_NAME</columns>
-    <columns>OWNER.LAST_NAME</columns>
-    <filterScope>Everything</filterScope>
+    <columns>Oppstartsdato__c</columns>
+    <columns>ips_End_Date__c</columns>
+    <columns>ips_UO_Service__c</columns>
+    <columns>End_Cause__c</columns>
+    <filterScope>Mine</filterScope>
     <filters>
         <field>ips_Status__c</field>
-        <operation>notEqual</operation>
+        <operation>equals</operation>
         <value>Ended</value>
     </filters>
     <filters>
@@ -22,8 +18,13 @@
         <operation>equals</operation>
         <value>Work_Trail__c.ips_Supported_Employment,Work_Trail__c.Supported_Employment_mobile_recordpage</value>
     </filters>
-    <label>Metodeveileders listevisning AMS</label>
+    <filters>
+        <field>ips_Other_end_cases__c</field>
+        <operation>notEqual</operation>
+        <value>Not applicable</value>
+    </filters>
+    <label>Mine jobbspor - sluttet AMS</label>
     <sharedTo>
-        <group>Metodeveiledere_UO</group>
+        <group>Jobbspesialister_UO</group>
     </sharedTo>
 </ListView>
