@@ -166,23 +166,54 @@ public with sharing class IPS_viewReportPDFController {
     }
 
     /****************** Goals ********************************************/
-    private list<Task> getCompletedGoals() {
+
+    /**
+     * Returns a list of unique goals that are completed either
+     * within the given intervall or the whole period of the worktrail.
+     *
+     * @return  List of task
+     */
+    private List<Task> getCompletedGoals() {
+        List<Task> userGoal = new List<Task>();
+        List<Task> tempIntervalGoals = new List<Task>();
+        List<Task> tempIntervalDueDateGoals = new List<Task>();
+        List<Task> tempIntervalCompletedGoals = new List<Task>();
         String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
         String goalId = ' AND WhatId = :workTrailId';
-        String goalFilter = ' AND DAY_ONLY(CompletedDateTime) >= :intervallFromDate AND DAY_ONLY(CompletedDateTime) <= :intervallToDate';
-        String goalSort = ' ORDER BY CompletedDateTime DESC';
-        String query = '';
+        String goalDueDateFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
+        String goalCompletedDateFilter = ' AND DAY_ONLY(CompletedDateTime) >= :intervallFromDate AND DAY_ONLY(CompletedDateTime) <= :intervallToDate';
+        String goalSort = ' ORDER BY ActivityDate DESC';
+        String endQuery = '';
+        String dueDateQuery = '';
+        String completedDateQuery = '';
 
         if (isEndReport) {
-            query = goalSelect + goalWhere + goalId + goalSort;
-        }
-        if (isIntervallReport) {
-            query = goalSelect + goalWhere + goalId + goalFilter + goalSort;
+            endQuery = goalSelect + goalWhere + goalId + goalSort;
+            userGoal = Database.query(endQuery);
         }
 
-        list<Task> userGoal = new List<Task>();
-        userGoal = Database.query(query);
+        /* Getting goals that are completed within the intervall and
+         has a due date within the intervall with status completed */
+        if (isIntervallReport) {
+            dueDateQuery = goalSelect + goalWhere + goalId + goalDueDateFilter + goalSort;
+            completedDateQuery = goalSelect + goalWhere + goalId + goalCompletedDateFilter + goalSort;
+            tempIntervalDueDateGoals = Database.query(dueDateQuery);
+            tempIntervalCompletedGoals = Database.query(completedDateQuery);
+            tempIntervalGoals.addAll(tempIntervalDueDateGoals);
+            userGoal = tempIntervalGoals;
+        }
+        // Adding unique completed goals to the list of goals queried by due date
+        for (Task task : tempIntervalCompletedGoals) {
+            if (!userGoal.contains(task)) {
+                userGoal.add(task);
+            }
+        }
+        for (Task task : tempIntervalCompletedGoals) {
+            if (!userGoal.contains(task)) {
+                userGoal.add(task);
+            }
+        }
         return userGoal;
     }
 
