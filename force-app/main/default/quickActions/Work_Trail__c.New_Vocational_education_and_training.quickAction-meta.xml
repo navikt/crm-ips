@@ -1,77 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Brukes bare av UO</description>
-    <fieldOverrides>
-        <field>IPS_isFromTimeline__c</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>IPS_Type__c</field>
-        <literalValue>Start up meeting</literalValue>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>IsVisibleInSelfService</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>TAG_NoPersonInformation__c</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>WhoId</field>
-        <formula>Work_Trail__c.ips_Participant__r.PersonContactId</formula>
-    </fieldOverrides>
-    <label>Start-up meeting&apos;</label>
+    <description>Fag- og yrkesopplæring -AMS</description>
+    <label>New Vocational education and training</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
         <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Location</field>
+                <field>Name</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Description</field>
+                <field>AMS_Form_of_Study__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>AMS_Name_of_the_Education_institution__c</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>StartDateTime</field>
+                <field>AMS_Start_Date__c</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_Travel_time__c</field>
+                <field>AMS_Education_Support_Plan__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
         <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Subject</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>ips_Out_in_the_field__c</field>
+                <field>AMS_Educational_program__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>EndDateTime</field>
+                <field>AMS_Description__c</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>IPS_travelTimeFrom__c</field>
+                <field>AMS_Contact_at_the_Education_Institution__c</field>
                 <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>AMS_End_Date__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>AMS_Status__c</field>
+                <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
     </quickActionLayout>
-    <targetObject>Event</targetObject>
-    <targetParentField>What</targetParentField>
-    <targetRecordType>Event.Ips_uo_Deltakermote</targetRecordType>
+    <successMessage>Ny fag- og yrkesopplæring er opprettet</successMessage>
+    <targetObject>AMS_Vocational_education_and_training__c</targetObject>
+    <targetParentField>AMS_Work_Trail__c</targetParentField>
+    <targetRecordType>AMS_Vocational_education_and_training__c.AMS_Vocational_education_and_training_record_page</targetRecordType>
     <type>Create</type>
 </QuickAction>
