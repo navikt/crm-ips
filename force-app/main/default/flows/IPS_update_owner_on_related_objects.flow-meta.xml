@@ -92,6 +92,13 @@
                 <elementReference>$Record__Prior.Owner:User.UserRole.Name</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewOwnerName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.IPS_ownerName__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>getOldUserName</targetReference>
         </connector>
@@ -178,6 +185,19 @@
             <field>OwnerId</field>
         </outputAssignments>
     </recordLookups>
+    <recordUpdates>
+        <name>update_ownerTextField</name>
+        <label>update ownerTextField</label>
+        <locationX>176</locationX>
+        <locationY>971</locationY>
+        <inputAssignments>
+            <field>IPS_ownerNameText__c</field>
+            <value>
+                <elementReference>varNewOwnerName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
@@ -209,6 +229,9 @@
         <label>create owner history</label>
         <locationX>176</locationX>
         <locationY>863</locationY>
+        <connector>
+            <targetReference>update_ownerTextField</targetReference>
+        </connector>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
             <name>varDescription</name>
