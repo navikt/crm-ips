@@ -58,16 +58,17 @@ public without sharing class IPS_changeOwnerOnActivityController {
     
     private static void updateRelatedOwnerEvent(Id currentId,Id ownerId,Id oldOwnerId){
         List<Event> allevents = [SELECT 
-                                 id,OwnerId 
+                                 id,OwnerId,ips_Travel_time__c,IPS_travelTimeFrom__c
                                  FROM Event 
                                  WHERE IPS_Type__c in ('Meeting with Participant','Meeting with Employer','First Meeting with Employer','Start up meeting') 
-                                 AND IPS_Status1__c in ('Open')
+                                 AND IPS_Status1__c ='Open'
                                  AND OwnerId =:oldOwnerId
-                                 AND Owner.isActive = true
                                  AND whatId =:currentId];
         if(!allevents.isEmpty()){
             for(Event e:allevents){
             	e.OwnerId = ownerId;
+                e.ips_Travel_time__c =0;
+                e.IPS_travelTimeFrom__c = 0;
         	}
         	update allevents; 
         }    
