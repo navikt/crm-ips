@@ -4,7 +4,10 @@
     <active>true</active>
     <errorConditionFormula>AND(
 !ISNEW(),
-ISPICKVAL(Type_of_Task_IPSUO__c,&apos;Historikk&apos;)
+ISPICKVAL(Type_of_Task_IPSUO__c,&apos;Historikk&apos;),
+(Owner:User.Profile.Name =&apos;IPS Jobbspesialist&apos; || Owner:User.Profile.Name =&apos;UO Jobbspesialist&apos; ||
+Owner:User.Profile.Name =&apos;IPS Metodeveileder&apos; ||
+Owner:User.Profile.Name =&apos;UO Metodeveileder&apos; )
 )</errorConditionFormula>
     <errorMessage>Du kan ikke endre en historisk hendelse</errorMessage>
 </ValidationRule>

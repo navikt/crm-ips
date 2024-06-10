@@ -8,8 +8,8 @@ public without sharing class IPS_changeOwnerOnActivityController {
         String objectName = request.get(0).sObjectName;
         
         IF(objectName =='Task'){
-            updateRelatedOwnerTask(currentId,ownerId);
             updateRelatedOwnerHistory(currentId,ownerId);
+            
         }
         IF(objectName == 'Event'){
             updateRelatedOwnerEvent(currentId,ownerId,oldOwnerId);
@@ -18,12 +18,13 @@ public without sharing class IPS_changeOwnerOnActivityController {
         
     @TestVisible
     private static void updateRelatedOwnerTask(Id currentId,Id ownerId){
+        
         List<Task> alltasks = [SELECT 
                                id,OwnerId 
                                FROM Task 
                                WHERE Type_of_Task_IPSUO__c in('Delmål (av hovedmål)') 
                                AND whatId =:currentId 
-                               AND IPS_Status1__c in ('Open')];
+                               AND status ='Open'];
         if(!alltasks.isEmpty()){
             for(Task t:alltasks){
             	t.OwnerId = ownerId;
@@ -34,28 +35,28 @@ public without sharing class IPS_changeOwnerOnActivityController {
             Database.DMLOptions dmlo = new Database.DMLOptions();
             dmlo.EmailHeader.triggerUserEmail = false;
             database.update(alltasks, dmlo);
-        }    
+        } 
     }
     
     private static void updateRelatedOwnerHistory(Id currentId,Id ownerId){
         List<Task> allhistory = [SELECT 
                                id,OwnerId 
                                FROM Task 
-                               WHERE Type_of_Task_IPSUO__c in('Historikk') 
+                               WHERE Type_of_Task_IPSUO__c ='Historikk' 
                                AND whatId =:currentId];
         if(!allhistory.isEmpty()){
             for(Task t:allhistory){
                 t.OwnerId = ownerId;
-            }
-            /*Set EmailHeader.triggerUserEmail to false, this disables send Email notification. Try to prevent email sendt when task changes owner.
-            * https://help.salesforce.com/s/articleView?id=000385933&type=1
-            * */
+    }
+     /*Set EmailHeader.triggerUserEmail to false, this disables send Email notification. Try to prevent email sendt when task changes owner.
+             * https://help.salesforce.com/s/articleView?id=000385933&type=1
+             * */
             Database.DMLOptions dmlo = new Database.DMLOptions();
             dmlo.EmailHeader.triggerUserEmail = false;
             database.update(allhistory, dmlo);
         }    
-    }
-    
+}
+ 
     private static void updateRelatedOwnerEvent(Id currentId,Id ownerId,Id oldOwnerId){
         List<Event> allevents = [SELECT 
                                  id,OwnerId,ips_Travel_time__c,IPS_travelTimeFrom__c
