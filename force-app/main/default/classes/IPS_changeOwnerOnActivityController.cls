@@ -8,7 +8,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
         String objectName = request.get(0).sObjectName;
         
         IF(objectName =='Task'){
-            updateRelatedOwnerHistory(currentId,ownerId);
+            updateRelatedOwnerTask(currentId,ownerId);
             
         }
         IF(objectName == 'Event'){
@@ -38,24 +38,6 @@ public without sharing class IPS_changeOwnerOnActivityController {
         } 
     }
     
-    private static void updateRelatedOwnerHistory(Id currentId,Id ownerId){
-        List<Task> allhistory = [SELECT 
-                               id,OwnerId 
-                               FROM Task 
-                               WHERE Type_of_Task_IPSUO__c ='Historikk' 
-                               AND whatId =:currentId];
-        if(!allhistory.isEmpty()){
-            for(Task t:allhistory){
-                t.OwnerId = ownerId;
-    }
-     /*Set EmailHeader.triggerUserEmail to false, this disables send Email notification. Try to prevent email sendt when task changes owner.
-             * https://help.salesforce.com/s/articleView?id=000385933&type=1
-             * */
-            Database.DMLOptions dmlo = new Database.DMLOptions();
-            dmlo.EmailHeader.triggerUserEmail = false;
-            database.update(allhistory, dmlo);
-        }    
-}
  
     private static void updateRelatedOwnerEvent(Id currentId,Id ownerId,Id oldOwnerId){
         List<Event> allevents = [SELECT 
