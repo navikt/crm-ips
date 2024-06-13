@@ -5,7 +5,7 @@ public class IPS_viewReportPDFControllerTest {
         Person__c participant = IPS_TestDataFactory.createPerson();
         insert participant;
 
-        String UserId = UserInfo.getUserId();
+        String userId = UserInfo.getUserId();
 
         Account businessAccount = IPS_TestDataFactory.createEmployerAccount();
         insert businessAccount;
@@ -43,7 +43,7 @@ public class IPS_viewReportPDFControllerTest {
 
         Event employerMeetingCompletedIPS = IPS_TestDataFactory.createEmployerEventWithParticipant(
             businessAccount.id,
-            UserId,
+            userId,
             jobbspor.id
         );
         insert employerMeetingCompletedIPS;
@@ -53,7 +53,7 @@ public class IPS_viewReportPDFControllerTest {
 
         Event employerMeetingAbsentIPS = IPS_TestDataFactory.createEmployerEventWithParticipant(
             businessAccount.id,
-            UserId,
+            userId,
             jobbspor.id
         );
         insert employerMeetingAbsentIPS;

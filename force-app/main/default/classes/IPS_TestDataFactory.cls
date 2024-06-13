@@ -53,9 +53,9 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static Account createEmployerAccount() {
-        Integer IntrandomNumber = Integer.valueof((Math.random() * 1000));
+        Integer intrandomNumber = Integer.valueof((Math.random() * 1000));
         Account acct = new Account();
-        acct.Name = 'Røre Pinne' + IntrandomNumber;
+        acct.Name = 'Røre Pinne' + intrandomNumber;
         acct.RecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Employer').getRecordTypeId();
         return acct;
     }
