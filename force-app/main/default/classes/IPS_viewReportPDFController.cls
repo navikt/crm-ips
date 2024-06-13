@@ -599,6 +599,7 @@ public with sharing class IPS_viewReportPDFController {
         list<IPS_PassivePeriod> passivePeriods = new List<IPS_PassivePeriod>();
         Task aktivertTask = null;
 
+        // Creating new instances of PassivePeriod from retrived tasks
         for (Task task : allpassiveActivities) {
             if (task.Subject == 'Passiv tilstand aktivert') {
                 aktivertTask = task;
@@ -607,9 +608,6 @@ public with sharing class IPS_viewReportPDFController {
                 aktivertTask = null;
             }
         }
-        system.debug('Passive periods');
-        system.debug(passivePeriods);
-
         return passivePeriods;
     }
 
