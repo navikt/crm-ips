@@ -408,7 +408,7 @@
                     </apex:repeat>
 
                     <apex:repeat value="{!activeParticipantsEducations}" var="edu">
-                        <apex:outputText><h4>Utdanning - {!edu.Name}</h4></apex:outputText>
+                        <apex:outputText><h4>{!edu.Name} - {!edu.ips_Status__c}</h4></apex:outputText>
                         <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
                             <tr>
                                 <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Institusjon</th>
@@ -792,7 +792,7 @@
 
             <apex:repeat value="{!activeParticipantsJobs}" var="jobs">
                 <div style="page-break-inside: avoid">
-                    <apex:outputText><h4>Stilling som - {!jobs.Name}</h4></apex:outputText>
+                    <apex:outputText><h4>{!jobs.Name} - {!jobs.ips_Status__c}</h4></apex:outputText>
                     <table style="width: 100%; border: 1px solid #262626">
                         <tr>
                             <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Arbeidsgiver</th>
@@ -862,7 +862,7 @@
                     <apex:outputText rendered="{!isUO}"><h3>Deltakelse i opplæring</h3></apex:outputText>
 
                     <apex:repeat value="{!activeAmsEducations}" var="amsedu">
-                        <apex:outputText><h4>Utdanning - {!amsedu.Name}</h4></apex:outputText>
+                        <apex:outputText><h4>{!amsedu.Name} - {!amsedu.AMS_Status__c}</h4></apex:outputText>
                         <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
                             <tr>
                                 <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Institusjon</th>
@@ -908,7 +908,7 @@
 
                     <apex:outputText rendered="{!isIPS}"><h3>Deltakelse i utdanning/kurs</h3></apex:outputText>
                     <apex:repeat value="{!activeParticipantsEducations}" var="edu">
-                        <apex:outputText><h4>Utdanning - {!edu.Name}</h4></apex:outputText>
+                        <apex:outputText><h4>{!edu.Name} - {!edu.ips_Status__c}</h4></apex:outputText>
                         <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
                             <tr>
                                 <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Institusjon</th>
@@ -930,12 +930,6 @@
                                     <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                         <apex:param value="{!edu.ips_End_Date__c}" />
                                     </apex:outputText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Status</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!edu.ips_Status__c}" />
                                 </td>
                             </tr>
                             <tr>
