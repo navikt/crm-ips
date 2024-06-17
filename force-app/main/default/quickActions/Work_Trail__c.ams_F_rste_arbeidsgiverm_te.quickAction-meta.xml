@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Brukes bare av Utvidet Oppfølging</description>
+    <description>Det første arbeidsgivermøte i jobbsporet AMS</description>
+    <fieldOverrides>
+        <field>F_rste_arbeidsgiverm_te__c</field>
+        <literalValue>Ja</literalValue>
+    </fieldOverrides>
     <fieldOverrides>
         <field>IPS_isFromTimeline__c</field>
         <formula>true</formula>
@@ -10,8 +14,16 @@
         <formula>true</formula>
     </fieldOverrides>
     <fieldOverrides>
+        <field>IPS_Subcategory_Type_UO__c</field>
+        <literalValue>Relationship building</literalValue>
+    </fieldOverrides>
+    <fieldOverrides>
         <field>IPS_Type__c</field>
-        <literalValue>Meeting with Employer</literalValue>
+        <literalValue>First Meeting with Employer</literalValue>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>ips_uo_Kanal__c</field>
+        <literalValue>Fysisk</literalValue>
     </fieldOverrides>
     <fieldOverrides>
         <field>IsReminderSet</field>
@@ -25,12 +37,7 @@
         <field>ReminderDateTime</field>
         <formula>Work_Trail__c.ips_Start_up_meeting_completed__c -(1/24)</formula>
     </fieldOverrides>
-    <fieldOverrides>
-        <field>TAG_NoPersonInformation__c</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <icon>PersonIcon</icon>
-    <label>Meeting with Employer&apos;</label>
+    <label>Første arbeidsgivermøte`</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
@@ -52,23 +59,18 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>IPS_Subcategory_Type_UO__c</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>StartDateTime</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>ips_Travel_time__c</field>
+                <field>Location</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>IPS_Status1__c</field>
+                <field>EndDateTime</field>
                 <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>IPS_travelTimeFrom__c</field>
+                <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
         <quickActionLayoutColumns>
@@ -89,21 +91,22 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Location</field>
+                <field>StartDateTime</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>EndDateTime</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>IPS_travelTimeFrom__c</field>
+                <field>ips_Travel_time__c</field>
                 <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>IPS_Status1__c</field>
+                <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
     </quickActionLayout>
+    <successMessage>Det første arbeidsgivermøte er opprettet :)</successMessage>
     <targetObject>Event</targetObject>
     <targetParentField>What</targetParentField>
     <targetRecordType>Event.ips_UO_m_ter</targetRecordType>
