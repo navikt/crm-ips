@@ -35,6 +35,12 @@ call sf force:package:install --package 04t2o000000ySqpAAE -r --installation-key
 
 echo ""
 echo "INSTALLERER"
+echo "Installerer crm-shared-flowComponents 0.4.0.."
+call sf force:package:install --package 04t7U0000008qz4QAA -r --installation-key %3 --wait 4 --publish-wait 4
+
+
+echo ""
+echo "INSTALLERER"
 echo "Installerer crm-henvendelse-base 0.20.0.."
 call sf force:package:install --package 04t7U000000Y4EgQAK -r --installation-key %3 --wait 4 --publish-wait 4
 
@@ -42,11 +48,6 @@ echo ""
 echo "INSTALLERER"
 echo "Installerer crm-platform-integration  111.."
 call sf force:package:install --package 04t7U000000Y4JbQAK -r --installation-key %3 --wait 4 --publish-wait 4
-
-echo ""
-echo "INSTALLERER"
-echo "Installerer crm-shared-flowComponents 0.4.0.."
-call sf force:package:install --package 04t7U0000008qz4QAA -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
