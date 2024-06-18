@@ -10,68 +10,74 @@
                             <value>Edit</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>PrintableView</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Work_Trail__c.Sms_reservation</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>collapsed</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>enableActionsConfiguration</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>enableActionsInNative</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideChatterActions</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>numVisibleActions</name>
+                    <value>4</value>
+                </componentInstanceProperties>
+                <componentName>force:highlightsPanel</componentName>
+                <identifier>force_highlightsPanel1</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!$User.Profile.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>NAV UO Jobbspesialist</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!$User.Profile.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>NAV IPS Jobbspesialist</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>Edit</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>Share</value>
-                            <visibilityRule>
-                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV IPS Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV UO Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>true</rightValue>
-                                </criteria>
-                            </visibilityRule>
                         </valueListItems>
                         <valueListItems>
                             <value>PrintableView</value>
                         </valueListItems>
                         <valueListItems>
                             <value>ChangeOwnerOne</value>
-                            <visibilityRule>
-                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV IPS Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV UO Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>true</rightValue>
-                                </criteria>
-                            </visibilityRule>
                         </valueListItems>
                         <valueListItems>
-                            <value>Work_Trail__c.IPS_cloneWorkTrail</value>
+                            <value>Clone</value>
                             <visibilityRule>
-                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
                                 <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
                                     <operator>EQUAL</operator>
-                                    <rightValue>NAV IPS Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV UO Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>true</rightValue>
+                                    <rightValue>Ended</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
@@ -87,6 +93,9 @@
                                     <rightValue>true</rightValue>
                                 </criteria>
                             </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>RecordShareHierarchy</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
@@ -159,13 +168,6 @@
                 </componentInstanceProperties>
                 <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
                 <identifier>pathAssistant</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!$Client.formFactor}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Large</rightValue>
-                    </criteria>
-                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -175,15 +177,11 @@
                     <value>Deltaker er reservert mot å motta sms fra jobbsporet</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>size</name>
-                    <value>L</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
                     <name>type</name>
                     <value>Info</value>
                 </componentInstanceProperties>
-                <componentName>ips_alertBanner</componentName>
-                <identifier>c_ips_alertBanner</identifier>
+                <componentName>crmAlertBanner</componentName>
+                <identifier>c_crmAlertBanner</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.IPS_isSMSReserved__c}</leftValue>
@@ -959,7 +957,7 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>readonly</value>
+                    <value>none</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_Participant__c</fieldItem>
                 <identifier>Recordips_Participant_cField1</identifier>
@@ -1015,24 +1013,6 @@
                 <identifier>RecordIPS_Participant_email_address_cField</identifier>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-53cf6bca-9e4a-4181-8e7e-0dae8be22445</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-53cf6bca-9e4a-4181-8e7e-0dae8be22445</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>flexipage_column</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-89a45b7d-51f5-4635-9a54-d68823e586a2</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
@@ -1680,48 +1660,6 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>default</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentName>ips_showParticipantDetail</componentName>
-                <identifier>c_ips_showParticipantDetail</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>true</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>columns</name>
-                    <value>Facet-89a45b7d-51f5-4635-9a54-d68823e586a2</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>horizontalAlignment</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>{!$Label.IPS_Participant_detail}</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:fieldSection</componentName>
-                <identifier>flexipage_fieldSection</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>false</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
                     <name>accordionSections</name>
                     <value>Facet-b736df6e-d5ce-475d-a3ad-17c961828fc7</value>
                 </componentInstanceProperties>
@@ -1806,13 +1744,6 @@
                 </componentInstanceProperties>
                 <componentName>timeline</componentName>
                 <identifier>c_timeline6</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!$Client.formFactor}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Large</rightValue>
-                    </criteria>
-                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>sidebar</name>
