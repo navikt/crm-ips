@@ -659,9 +659,18 @@
 
             <!-- Passive Periods -->
             <apex:outputPanel rendered="{!getAllPassivePeriods.size != 0}">
-                <apex:outputText><h3>Passive perioder</h3></apex:outputText>
+                <apex:outputText
+                    ><h3>Passive perioder</h3>
+                    <apex:outputText rendered="{!isParticipantPassive}">
+                        Deltaker har en pågående passiv periode med oppfølging dato :
+                        <apex:outputText value="{0,date,dd'.'MM'.'yyyy}" style="margin-left: 5px">
+                            <apex:param value="{!getFollowUpParticipantTask.ActivityDate}"
+                        /></apex:outputText>
+                    </apex:outputText>
+                </apex:outputText>
 
                 <div style="padding-bottom: 10px"></div>
+
                 <apex:variable var="counter" value="{!0}" />
                 <table style="width: 100%; border: 1px solid #262626; table-layout: fixed">
                     <tr style="vertical-align: top; background-color: #f1f1f1">

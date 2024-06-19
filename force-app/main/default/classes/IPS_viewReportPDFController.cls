@@ -44,6 +44,8 @@ public with sharing class IPS_viewReportPDFController {
     public list<AMS_Vocational_education_and_training__c> plannedAmsEductions { get; set; }
     public list<IPS_PassivePeriod> getAllPassivePeriods { get; set; }
     public List<IPS_PassivePeriod> getPassivePeriodsWithinDateRange { get; set; }
+    public Task getFollowUpParticipantTask { get; set; }
+    public Boolean isParticipantPassive { get; set; }
 
     public IPS_viewReportPDFController(ApexPages.StandardController sc) {
         this.currentRecordId = sc.getRecord().Id;
@@ -68,6 +70,8 @@ public with sharing class IPS_viewReportPDFController {
         this.plannedAmsEductions = getPlannedAMSEducations(intervallFromDate);
         this.getAllPassivePeriods = getAllPassivePeriods();
         this.getPassivePeriodsWithinDateRange = getPassivePeriodsWithinDateRange(intervallFromDate, intervallToDate);
+        this.getFollowUpParticipantTask = getFollowUpParticipantTask();
+        this.isParticipantPassive = isParticipantPassive();
 
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename=' + this.pdfTitle + '.pdf');
     }
@@ -609,6 +613,30 @@ public with sharing class IPS_viewReportPDFController {
             }
         }
         return passivePeriods;
+    }
+
+    /**
+     * Returns the last followup participant task
+     * @return  `Task`
+     */
+    private Task getFollowUpParticipantTask() {
+        Task followUpParticipantTask = [
+            SELECT id, subject, ActivityDate, CreatedDate, whatId
+            FROM Task
+            WHERE WhatId = :workTrailId AND subject = 'Oppfølging av deltaker' AND Status = 'Open'
+            ORDER BY CreatedDate DESC
+            LIMIT 1
+        ];
+        return followUpParticipantTask;
+    }
+
+    /**
+     * Returns the status of the worktrail
+     * @return  status of the worktrail
+     */
+    private Boolean isParticipantPassive() {
+        Work_Trail__c workTrailRecord = [SELECT id, ips_Passive__c FROM Work_Trail__c WHERE Id = :workTrailId];
+        return workTrailRecord.ips_Passive__c;
     }
 
     /**
