@@ -617,7 +617,7 @@ public with sharing class IPS_viewReportPDFController {
 
     /**
      * Returns the last followup participant task
-     * @return  `Task`
+     * @return  a followup partcipant task
      */
     private Task getFollowUpParticipantTask() {
         Task followUpParticipantTask = [
@@ -636,6 +636,8 @@ public with sharing class IPS_viewReportPDFController {
      */
     private Boolean isParticipantPassive() {
         Work_Trail__c workTrailRecord = [SELECT id, ips_Passive__c FROM Work_Trail__c WHERE Id = :workTrailId];
+        System.debug('boolean verdi :');
+        System.debug(workTrailRecord.ips_Passive__c);
         return workTrailRecord.ips_Passive__c;
     }
 
