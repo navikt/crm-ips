@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Open_workTrail</name>
         <label>Open workTrail</label>
-        <locationX>864</locationX>
-        <locationY>1706</locationY>
+        <locationX>534</locationX>
+        <locationY>1922</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -20,18 +20,10 @@
     </actionCalls>
     <apiVersion>60.0</apiVersion>
     <assignments>
-        <description>Setter ett flagg på at det er endring på recordtype</description>
-        <name>IPS_add_change_in_recordtype</name>
-        <label>Add change in recordtype</label>
-        <locationX>314</locationX>
-        <locationY>782</locationY>
-        <assignmentItems>
-            <assignToReference>isRecordtypeChanges</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
+        <name>IPS_add_recordtypeId</name>
+        <label>Add recordtypeId</label>
+        <locationX>534</locationX>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>varNewRecordtypeId</assignToReference>
             <operator>Assign</operator>
@@ -40,7 +32,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>IPS_information_recordtype</targetReference>
+            <targetReference>getRecordtTypeName</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -149,7 +141,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>createNewWorkTrailRecord</targetReference>
+            <targetReference>checkChoices</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -264,7 +256,7 @@
     </choices>
     <choices>
         <name>X1_Copy</name>
-        <choiceText>1. Kopier ett avsluttet jobbspor.</choiceText>
+        <choiceText>&lt;span style=&quot;font-size: 14px;&quot;&gt;1. Opprette en kopi av ett avsluttet jobbspor og hvor deltaker har vært ute av tjenesten innen 12 mnd etter avsluttet.&lt;/span&gt;</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>1. Copy</stringValue>
@@ -272,7 +264,7 @@
     </choices>
     <choices>
         <name>X2_Move</name>
-        <choiceText>2. Kopier ett aktivt jobbspor, der deltaker flytter og tilhører annen avdeling/kontor</choiceText>
+        <choiceText>2. Opprette en kopi av jobbsporet hvor deltaker er aktiv i tjenesten, men flytter eller endrer tjeneste</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>2. Move</stringValue>
@@ -290,7 +282,7 @@
         <description>Sjekker om jobbsporet er avsluttet og har en sluttdato som er eldre enn 12 måneder.</description>
         <name>ageCheck</name>
         <label>Age check</label>
-        <locationX>457</locationX>
+        <locationX>292</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>IPS_Transfere_choice</targetReference>
@@ -323,11 +315,8 @@
         <description>Different choices creates different trail</description>
         <name>checkChoices</name>
         <label>checkChoices</label>
-        <locationX>864</locationX>
-        <locationY>566</locationY>
-        <defaultConnector>
-            <targetReference>IPS_Information_screen</targetReference>
-        </defaultConnector>
+        <locationX>534</locationX>
+        <locationY>1514</locationY>
         <defaultConnectorLabel>Nothing</defaultConnectorLabel>
         <rules>
             <name>isCopy</name>
@@ -347,7 +336,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>checkRecordType</targetReference>
+                <targetReference>createNewWorkTrailRecord</targetReference>
             </connector>
             <label>isCopy</label>
         </rules>
@@ -378,20 +367,23 @@
         <name>checkRecordType</name>
         <label>checkRecordType</label>
         <locationX>534</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
+        <defaultConnector>
+            <targetReference>IPS_Information_screen</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Nothing</defaultConnectorLabel>
         <rules>
             <name>isRecordTypeChanged</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varService</leftValueReference>
+                <leftValueReference>varNewRecordtypeId</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <elementReference>getWorktrailRecord.RecordTypeId</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IPS_add_change_in_recordtype</targetReference>
+                <targetReference>IPS_information_recordtype</targetReference>
             </connector>
             <label>isRecordTypeChanged</label>
         </rules>
@@ -399,7 +391,7 @@
             <name>isNotRecordTypeChanged</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varService</leftValueReference>
+                <leftValueReference>varNewRecordtypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>getWorktrailRecord.RecordTypeId</elementReference>
@@ -478,18 +470,41 @@
     <recordCreates>
         <name>createNewWorkTrailRecord</name>
         <label>createNewWorkTrailRecord</label>
-        <locationX>864</locationX>
-        <locationY>1598</locationY>
+        <locationX>534</locationX>
+        <locationY>1814</locationY>
         <connector>
             <targetReference>Open_workTrail</targetReference>
         </connector>
         <inputReference>getWorktrailRecord</inputReference>
     </recordCreates>
     <recordLookups>
+        <name>getRecordtTypeName</name>
+        <label>getRecordtTypeName</label>
+        <locationX>534</locationX>
+        <locationY>674</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkRecordType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varNewRecordtypeId</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varRecordTypeDeveloperName</assignToReference>
+            <field>DeveloperName</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <description>Henter jobbsporet</description>
         <name>getWorktrailRecord</name>
         <label>Get worktrail record</label>
-        <locationX>457</locationX>
+        <locationX>292</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -519,23 +534,8 @@
             <targetReference>IPS_assign_user_input</targetReference>
         </connector>
         <fields>
-            <name>setAssignmentOnSomeFields</name>
-            <fieldText>&lt;p&gt;Ingen endring på tjeneste&lt;/p&gt;&lt;p&gt;{!getWorktrailRecord.RecordType.Name}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Legg til data&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>varInformationRecordTypes</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <booleanValue>false</booleanValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
-        </fields>
-        <fields>
             <name>IPS_changedRecordType</name>
-            <fieldText>&lt;p&gt;Endring på tjeneste: &lt;/p&gt;&lt;p&gt;Opprinnelig tjeneste: {!getWorktrailRecord.RecordType.DeveloperName}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Fyll inn påkrevde data.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -611,10 +611,10 @@
                     <visibilityRule>
                         <conditionLogic>and</conditionLogic>
                         <conditions>
-                            <leftValueReference>varService</leftValueReference>
+                            <leftValueReference>varRecordTypeDeveloperName</leftValueReference>
                             <operator>EqualTo</operator>
                             <rightValue>
-                                <elementReference>IPS</elementReference>
+                                <stringValue>IPS</stringValue>
                             </rightValue>
                         </conditions>
                     </visibilityRule>
@@ -629,10 +629,10 @@
                     <visibilityRule>
                         <conditionLogic>and</conditionLogic>
                         <conditions>
-                            <leftValueReference>varService</leftValueReference>
+                            <leftValueReference>varRecordTypeDeveloperName</leftValueReference>
                             <operator>EqualTo</operator>
                             <rightValue>
-                                <elementReference>AMS</elementReference>
+                                <stringValue>ips_Supported_Employment</stringValue>
                             </rightValue>
                         </conditions>
                     </visibilityRule>
@@ -655,13 +655,13 @@
         <description>Gir bruker til å endre tjeneste</description>
         <name>IPS_information_about_service</name>
         <label>Information about service</label>
-        <locationX>864</locationX>
+        <locationX>534</locationX>
         <locationY>458</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>checkChoices</targetReference>
+            <targetReference>IPS_add_recordtypeId</targetReference>
         </connector>
         <fields>
             <name>Title2</name>
@@ -670,7 +670,7 @@
         </fields>
         <fields>
             <name>displayInformationRecordTypes</name>
-            <fieldText>&lt;p&gt;Tjeneste for valgt jobbspor er: {!getWorktrailRecord.RecordType.Name}&lt;/p&gt;&lt;p&gt;Velg under en annen tjeneste ved behov. Hvis ikke la tjeneste stå som foreslått.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Tjeneste for valgt jobbspor er: {!getWorktrailRecord.RecordType.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Velg under en annen tjeneste ved behov. Hvis ikke la tjeneste stå som foreslått.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -680,8 +680,8 @@
             <defaultValue>
                 <elementReference>getWorktrailRecord.RecordTypeId</elementReference>
             </defaultValue>
-            <fieldText>Service</fieldText>
-            <fieldType>DropdownBox</fieldType>
+            <fieldText>Tjeneste</fieldText>
+            <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
@@ -700,8 +700,8 @@
             <targetReference>IPS_add_data</targetReference>
         </connector>
         <fields>
-            <name>komhit</name>
-            <fieldText>&lt;p&gt;Endring på recordtype fra&lt;/p&gt;&lt;p&gt;{!getWorktrailRecord.RecordType.Name} - til {!varService}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;RecordtypeId: {!varNewRecordtypeId}&lt;/p&gt;</fieldText>
+            <name>IPS_warningChangeRecordtype</name>
+            <fieldText>&lt;p&gt;Du har nå valgt å endre tjeneste fra&lt;/p&gt;&lt;p&gt;{!getWorktrailRecord.RecordType.Name} - til {!varService}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -711,14 +711,17 @@
         <description>Valget bruker gjorde kvalifiserte ikke med kriterier</description>
         <name>IPS_Information_screen</name>
         <label>Information screen</label>
-        <locationX>1194</locationX>
-        <locationY>674</locationY>
+        <locationX>754</locationX>
+        <locationY>890</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <connector>
+            <targetReference>IPS_add_data</targetReference>
+        </connector>
         <fields>
             <name>ips_errorMessage1</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Valget du gjorde kvalifiserte ikke. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sjekk dette for valg nummer 1.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Jobbsporet må være avsluttet og innenfor 12 måneder siden sluttdato.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sjekk dette for valg nummer 2.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Jobbsporet må være aktivt. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Status: {!getWorktrailRecord.ips_Status__c}&lt;/p&gt;&lt;p&gt;Antall dager siden avsluttet: {!varDaysSinceEnded}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Valget du gjorde kvalifiserte ikke. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Jobbsporet må være avsluttet og innenfor 12 måneder siden sluttdato.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Status: {!getWorktrailRecord.ips_Status__c}&lt;/p&gt;&lt;p&gt;Antall dager siden avsluttet: {!varDaysSinceEnded}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -728,7 +731,7 @@
         <description>Menyvalg</description>
         <name>IPS_Transfere_choice</name>
         <label>Transfere choices</label>
-        <locationX>864</locationX>
+        <locationX>534</locationX>
         <locationY>350</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -749,7 +752,7 @@
             <defaultValue>
                 <stringValue>false</stringValue>
             </defaultValue>
-            <fieldText>Transfere choices</fieldText>
+            <fieldText>Valg for overføring</fieldText>
             <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
@@ -773,20 +776,20 @@
         </fields>
         <fields>
             <name>displayInformationWarning</name>
-            <fieldText>&lt;p&gt;Jobbsporet du ønsker klone er avsluttet og sluttdato er eldre enn 12 måneder.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Jobbsporet du ønsker overføre er avsluttet og sluttdato er eldre enn 12 måneder.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>331</locationX>
+        <locationX>166</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailRecord</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>varInformationRecordTypes</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
