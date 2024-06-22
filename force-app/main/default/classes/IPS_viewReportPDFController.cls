@@ -655,13 +655,16 @@ public with sharing class IPS_viewReportPDFController {
     private Task getFollowUpParticipantTask() {
         Task followUpParticipantTask = new Task();
         if (isIPS) {
-            followUpParticipantTask = [
+            List<Task> followUpParticipantTaskReturned = [
                 SELECT id, subject, ActivityDate, CreatedDate, whatId
                 FROM Task
                 WHERE WhatId = :workTrailId AND subject = 'Oppfølging av deltaker' AND Status = 'Open'
                 ORDER BY CreatedDate DESC
                 LIMIT 1
             ];
+            if (!followUpParticipantTaskReturned.isEmpty()) {
+                followUpParticipantTask = followUpParticipantTaskReturned[0];
+            }
         }
         return followUpParticipantTask;
     }
