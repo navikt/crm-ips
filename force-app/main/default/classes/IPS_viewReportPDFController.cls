@@ -38,6 +38,7 @@ public with sharing class IPS_viewReportPDFController {
     public list<Event> openIntervallPartMeeting { get; set; }
 
     public list<ips_Job__c> activeParticipantsJobs { get; set; }
+    public List<ips_Job__c> getPlannedJobs { get; set; }
     public list<ips_Education__c> activeParticipantsEducations { get; set; }
     public list<ips_Education__c> plannedParticipantsEducations { get; set; }
     public list<AMS_Vocational_education_and_training__c> activeAmsEducations { get; set; }
@@ -64,6 +65,7 @@ public with sharing class IPS_viewReportPDFController {
         getParticipantActivity();
         this.openIntervallMeeting = getOpenIntervallActivity(intervallToDate);
         this.activeParticipantsJobs = getActiveJobs(intervallFromDate, intervallToDate);
+        this.getPlannedJobs = getPlannedJobs();
         this.activeParticipantsEducations = getActiveEducations(intervallFromDate, intervallToDate);
         this.plannedParticipantsEducations = getPlannedEducations(intervallFromDate);
         this.activeAmsEducations = getAMSEducation(intervallFromDate, intervallToDate);
@@ -422,6 +424,37 @@ public with sharing class IPS_viewReportPDFController {
         return jobList;
     }
 
+    /**
+     * Returns a list of planned jobs related to the worktrail
+     * @return  list of planned jobs
+     */
+    private List<ips_Job__c> getPlannedJobs() {
+        List<ips_Job__c> plannedJobs = new List<ips_Job__c>();
+        List<ips_Job__c> plannedJobsReturned = new List<ips_Job__c>();
+        plannedJobsReturned = [
+            SELECT
+                id,
+                Name,
+                ips_Work_Trail__c,
+                ips_Employer__r.Name,
+                ips_Form_of_Employment__c,
+                ips_Start_Date__c,
+                IPS_UO_Stillingsbeskrivelse__c,
+                ips_Job_Support__c,
+                ips_End_Date__c,
+                toLabel(ips_Status__c),
+                IPS_jobSubject__c
+            FROM ips_Job__c
+            WHERE ips_Work_Trail__c = :workTrailId AND ips_Status__c = 'Planned'
+            ORDER BY ips_Start_Date__c DESC
+        ];
+
+        if (!plannedJobsReturned.isEmpty()) {
+            plannedJobs.addAll(plannedJobsReturned);
+        }
+        return plannedJobs;
+    }
+
     /****************** Utdanning IPS *************************/
 
     private list<ips_Education__c> getPlannedEducations(Date endDate) {
@@ -620,13 +653,16 @@ public with sharing class IPS_viewReportPDFController {
      * @return  a followup partcipant task
      */
     private Task getFollowUpParticipantTask() {
-        Task followUpParticipantTask = [
-            SELECT id, subject, ActivityDate, CreatedDate, whatId
-            FROM Task
-            WHERE WhatId = :workTrailId AND subject = 'Oppfølging av deltaker' AND Status = 'Open'
-            ORDER BY CreatedDate DESC
-            LIMIT 1
-        ];
+        Task followUpParticipantTask = new Task();
+        if (isIPS) {
+            followUpParticipantTask = [
+                SELECT id, subject, ActivityDate, CreatedDate, whatId
+                FROM Task
+                WHERE WhatId = :workTrailId AND subject = 'Oppfølging av deltaker' AND Status = 'Open'
+                ORDER BY CreatedDate DESC
+                LIMIT 1
+            ];
+        }
         return followUpParticipantTask;
     }
 
@@ -636,8 +672,7 @@ public with sharing class IPS_viewReportPDFController {
      */
     private Boolean isParticipantPassive() {
         Work_Trail__c workTrailRecord = [SELECT id, ips_Passive__c FROM Work_Trail__c WHERE Id = :workTrailId];
-        System.debug('boolean verdi :');
-        System.debug(workTrailRecord.ips_Passive__c);
+
         return workTrailRecord.ips_Passive__c;
     }
 
