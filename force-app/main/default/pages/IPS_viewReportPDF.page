@@ -80,8 +80,14 @@
             <apex:outputField value="{!currentRecord.IPS_summarizeIntervallPeriode__c}"></apex:outputField>
 
             <!-- Passive Periods -->
-            <apex:outputPanel rendered="{!getPassivePeriodsWithinDateRange.size != 0}">
+            <apex:outputPanel rendered="{!AND (getPassivePeriodsWithinDateRange.size != 0,isIPS)}">
                 <apex:outputText><h3>Passive perioder</h3></apex:outputText>
+                <apex:outputText rendered="{!AND (isParticipantPassive, getFollowUpParticipantTask != null)}">
+                    Deltaker har en pågående passiv periode med oppfølgingsdato :
+                    <apex:outputText value="{0,date,dd'.'MM'.'yyyy}" style="margin-left: 5px">
+                        <apex:param value="{!getFollowUpParticipantTask.ActivityDate}"
+                    /></apex:outputText>
+                </apex:outputText>
 
                 <div style="padding-bottom: 10px"></div>
 
@@ -606,6 +612,63 @@
                     </apex:repeat>
                 </div>
             </apex:outputpanel>
+
+            <!-- Jobb -->
+            <apex:outputpanel rendered="{!AND (getPlannedJobs.size != 0, isIPS)}">
+                <apex:outputText><h3>Jobb</h3></apex:outputText>
+                <apex:repeat value="{!getPlannedJobs}" var="jobs">
+                    <div style="page-break-inside: avoid">
+                        <apex:outputText><h4>{!jobs.Name}</h4></apex:outputText>
+                        <table style="width: 100%; border: 1px solid #262626">
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Arbeidsgiver</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!jobs.ips_Employer__r.Name}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Startdato</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                        <apex:param value="{!jobs.ips_Start_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Sluttdato</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                        <apex:param value="{!jobs.ips_End_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Jobbtype</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!jobs.ips_Form_of_Employment__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                    Stillingsbeskrivelse
+                                </th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!jobs.IPS_UO_Stillingsbeskrivelse__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                    Plan for jobbstøtte
+                                </th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!jobs.ips_Job_Support__c}" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="padding-bottom: 15px"></div>
+                    </div>
+                </apex:repeat>
+            </apex:outputpanel>
         </apex:outputPanel>
 
         <!-- End rapport -->
@@ -658,10 +721,19 @@
             <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
 
             <!-- Passive Periods -->
-            <apex:outputPanel rendered="{!getAllPassivePeriods.size != 0}">
-                <apex:outputText><h3>Passive perioder</h3></apex:outputText>
+            <apex:outputPanel rendered="{!AND (getAllPassivePeriods.size != 0,isIPS)}">
+                <apex:outputText
+                    ><h3>Passive perioder</h3>
+                    <apex:outputText rendered="{!AND (isParticipantPassive, getFollowUpParticipantTask != null)}">
+                        Deltaker har en pågående passiv periode med oppfølgingsdato :
+                        <apex:outputText value="{0,date,dd'.'MM'.'yyyy}" style="margin-left: 5px">
+                            <apex:param value="{!getFollowUpParticipantTask.ActivityDate}"
+                        /></apex:outputText>
+                    </apex:outputText>
+                </apex:outputText>
 
                 <div style="padding-bottom: 10px"></div>
+
                 <apex:variable var="counter" value="{!0}" />
                 <table style="width: 100%; border: 1px solid #262626; table-layout: fixed">
                     <tr style="vertical-align: top; background-color: #f1f1f1">
