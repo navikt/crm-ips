@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_EndDate_Required</fullName>
+    <active>true</active>
+    <description>End date is required when status is &quot;Completed&quot;.</description>
+    <errorConditionFormula>AND(
+			  ISPICKVAL(ips_Status__c , &apos;Completed&apos;), 
+     ISBLANK(ips_End_Date__c ) 					
+	    )</errorConditionFormula>
+    <errorDisplayField>ips_End_Date__c</errorDisplayField>
+    <errorMessage>Sluttdato er påkrevd når statusen er ‘Avsluttet’</errorMessage>
+</ValidationRule>

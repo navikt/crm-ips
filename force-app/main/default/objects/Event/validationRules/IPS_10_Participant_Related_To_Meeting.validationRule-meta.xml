@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_10_Participant_Related_To_Meeting</fullName>
+    <active>true</active>
+    <description>‘Deltaker møtte ikke’ kun kan velges etter at deltakerens oppmøte er bekreftet.</description>
+    <errorConditionFormula>AND( ISPICKVAL(IPS_Status1__c, &apos;Participant Absent&apos;) ,
+  NOT(IPS_participant_related_to_meeting__c),
+				   ISPICKVAL(IPS_Type__c, &apos;Meeting with Employer&apos;) 
+	)</errorConditionFormula>
+    <errorDisplayField>IPS_participant_related_to_meeting__c</errorDisplayField>
+    <errorMessage>Bekreft oppmøte før status endres til ‘Deltaker møtte ikke’</errorMessage>
+</ValidationRule>
