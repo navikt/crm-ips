@@ -6,13 +6,13 @@ sf org create scratch --alias $1 --set-default --definition-file ../config/proje
 sf force:org:open --target-org $1
 
 echo "INSTALLERER"
-echo "Installerer platform-base 0.219.0"
-sf force:package:install --package 04t7U000000Y49bQAC -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-base 0.220.0"
+sf force:package:install --package 04t7U000000Y4NYQA0 -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer platform-access-controll 125.."
-sf force:package:install --package 04t7U000000Y3V7QAK -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer platform-access-controll 0.126.0"
+sf force:package:install --package 04t7U000000Y4LNQA0 -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -36,18 +36,18 @@ echo "Installerer crm-shared-base 1.1.0.."
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-henvendelse base 0.19.0.."
-sf force:package:install --package 04t7U000000Y49RQAS -r --installation-key $3 --wait 4 --publish-wait 4
-
-echo ""
-echo "INSTALLERER"
-echo "Installerer crm-platform-integrasjon 110.0"
-sf force:package:install --package 04t7U000000Y3pWQAS -r --installation-key $3 --wait 4 --publish-wait 4
-
-echo ""
-echo "INSTALLERER"
 echo "Installerer crm-shared-flowComponents 0.4.0.."
 sf force:package:install --package 04t7U0000008qz4QAA -r --installation-key $3 --wait 4 --publish-wait 4
+
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-henvendelse base 0.20.0.."
+sf force:package:install --package 04t7U000000Y4EgQAK -r --installation-key $3 --wait 4 --publish-wait 4
+
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-platform-integrasjon 114.0"
+sf force:package:install --package 04t7U000000Y4RkQAK -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -61,13 +61,13 @@ echo "Installerer crm-platform-oppgave 0.53.0"
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-arbeidsgiver-base 1.422.0"
-sf force:package:install --package 04t7U000000Y48OQAS -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.429.0"
+sf force:package:install --package 04t7U000000Y4MfQAK -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-community-base 0.108.0"
-sf force:package:install --package 04t7U000000Y46wQAC -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-community-base 0.109.0"
+sf force:package:install --package 04t7U000000Y4CfQAK -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
