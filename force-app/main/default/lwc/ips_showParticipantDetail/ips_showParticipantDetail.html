@@ -1,6 +1,13 @@
 <template>
     <!-- lightning button for open modal window -->
-    <lightning-button variant="brand" label="Vis adresse" title="Vis adresse" onclick={showModal}
+    <lightning-button 
+        aria-label="Vis deltaker adresse" 
+        type="button"
+        variant="neutral" 
+        label="Vis deltaker adresse"
+        title="Vis deltaker adresse"
+        onclick={showModal}
+        stretch = "true"
         ><label>Vis adresse</label>
     </lightning-button>
 
@@ -25,6 +32,8 @@
                     </h1>
                 </div>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p tabindex="0">Deltaker er skjermet, vis aktsomhet i bruk av adresse</p>
+                    <p></p>
                     <ul>
                         <li>Navn : {name}</li>
                         <li>Alder : {age}</li>
@@ -34,7 +43,7 @@
                     </ul>
                 </div>
                 <div class="slds-modal__footer">
-                    <button class="slds-button slds-button_neutral" onclick={hideModal} aria-label="Lukk">Lukk</button>
+                    <button class="slds-button slds-button_neutral" onclick={hideModal} aria-label="Lukk" tabindex="0">Lukk</button>
                 </div>
             </div>
         </section>
