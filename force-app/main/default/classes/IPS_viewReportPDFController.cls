@@ -455,8 +455,13 @@ public with sharing class IPS_viewReportPDFController {
         return plannedJobs;
     }
 
-    /****************** Utdanning IPS *************************/
+    /****************** Education **************************/
 
+    /**
+     * Returns a list of IPS Education with status planned
+     * @param endDate enddate of the interval report
+     * @return  list of IPS Education
+     */
     private list<ips_Education__c> getPlannedEducations(Date endDate) {
         List<ips_Education__c> eduList = new List<ips_Education__c>();
 
@@ -484,6 +489,17 @@ public with sharing class IPS_viewReportPDFController {
         return eduList;
     }
 
+    /**
+     * Returns a list of IPS education related to the worktrail
+     *
+     * If the report is an end report, it returns the education that are completed and ongoing.
+     * If the report is an intervall report,
+     * it returns the education that are completed, ongoing and planned.
+     * @param startDate Start date of the interval report
+     * @param endDate End date of the interval report
+     * @return  List of IPS education related to the worktrail
+     *
+     */
     private list<ips_Education__c> getActiveEducations(Date startDate, Date endDate) {
         List<ips_Education__c> eduList = new List<ips_Education__c>();
         List<ips_Education__c> allEdu = new List<ips_Education__c>();
@@ -530,8 +546,16 @@ public with sharing class IPS_viewReportPDFController {
         return eduList;
     }
 
-    /****************** Utdanning AMS *************************/
-
+    /**
+     * Returns list of AMS education related to the worktrail.
+     *
+     * If the report is an end report, it returns the education that are completed and ongoing.
+     * If the report is an intervall report,
+     * it returns the education that are completed, ongoing and withing the date range.
+     * @param startDate start date of the interval report
+     * @param endDate end date of the interval report
+     * @return  list of AMS education related to the worktrail
+     */
     private List<AMS_Vocational_education_and_training__c> getAMSEducation(Date startDate, Date endDate) {
         List<AMS_Vocational_education_and_training__c> amsEduList = new List<AMS_Vocational_education_and_training__c>();
         List<AMS_Vocational_education_and_training__c> allAmsEdu = new List<AMS_Vocational_education_and_training__c>();
@@ -588,6 +612,11 @@ public with sharing class IPS_viewReportPDFController {
         return amsEduList;
     }
 
+    /**
+     * Returns a list of AMS educations with status planned
+     * @param endDate the end date
+     * @return  list of AMS education
+     */
     private list<AMS_Vocational_education_and_training__c> getPlannedAMSEducations(Date endDate) {
         List<AMS_Vocational_education_and_training__c> eduList = new List<AMS_Vocational_education_and_training__c>();
 
@@ -617,6 +646,8 @@ public with sharing class IPS_viewReportPDFController {
         }
         return eduList;
     }
+
+    /****************** Passive periods **************************/
 
     /**
      * Returns all the passive periods related to a worktrail
