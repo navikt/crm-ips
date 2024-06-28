@@ -31,6 +31,7 @@ public with sharing class IPS_viewReportPDFController {
     public list<Event> completedPartMeeting { get; set; }
     public list<Event> notAttendedPartMeeting { get; set; }
     public Integer completedPartMeetingNumber { get; set; }
+    public Integer noOfCancelledMeetings { get; set; }
     public Integer notAttendedPartMeetingNumber { get; set; }
     public Set<String> accountNames { get; set; }
 
@@ -64,6 +65,7 @@ public with sharing class IPS_viewReportPDFController {
         getEmployerActivity();
         getParticipantActivity();
         this.openIntervallMeeting = getOpenIntervallActivity(intervallToDate);
+        this.noOfCancelledMeetings = noOfCancelledMeetings(intervallFromDate, intervallToDate);
         this.activeParticipantsJobs = getActiveJobs(intervallFromDate, intervallToDate);
         this.getPlannedJobs = getPlannedJobs();
         this.activeParticipantsEducations = getActiveEducations(intervallFromDate, intervallToDate);
@@ -363,6 +365,33 @@ public with sharing class IPS_viewReportPDFController {
         this.completedPartMeetingNumber = tempCompletedNumber;
         this.notAttendedPartMeeting = tempNotAttended;
         this.notAttendedPartMeetingNumber = tempNotAttendedNumber;
+    }
+
+    /**
+     * Returns no of cancelled participant meetings based on report type requested.
+     *
+     * @param startDate start date of the interval report
+     * @param endDate end date of the interval report
+     * @return  no of cancelled meetings
+     */
+    private Integer noOfCancelledMeetings(Date startDate, Date endDate) {
+        list<Event> partActivity = new List<Event>();
+        String partSelect = 'SELECT id,Subject,CreatedDate,IPS_subjectAndDate__c, ActivityDate,Description,IPS_Type__c,IPS_Status1__c FROM event';
+        String partWhere = ' WHERE IPS_Type__c IN (\'Meeting with Participant\',\'Start up meeting\') AND IPS_Status1__c IN (\'Cancelled\')';
+        String partId = ' AND WhatId = :workTrailId';
+        String partFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
+        String partSort = ' ORDER BY ActivityDate DESC';
+        String query = '';
+
+        if (isEndReport) {
+            query = partSelect + partWhere + partId + partSort;
+        }
+        if (isIntervallReport) {
+            query = partSelect + partWhere + partId + partFilter + partSort;
+        }
+
+        partActivity = Database.query(query);
+        return partActivity.size();
     }
 
     /****************** jobb **************************/
