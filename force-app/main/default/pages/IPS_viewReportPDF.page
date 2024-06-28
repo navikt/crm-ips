@@ -212,6 +212,9 @@
                     </apex:outputpanel>
                 </apex:outputpanel>
             </div>
+            <apex:outputpanel rendered="{!AND (noOfCancelledMeetings > 0, isUO)}">
+                <apex:outputText><p>Antall avlyste deltakermøter : {!noOfCancelledMeetings}</p></apex:outputText>
+            </apex:outputpanel>
 
             <!-- Samarbeid med arbeidsgivere i perioden -->
             <div style="page-break-inside: avoid">
@@ -835,6 +838,11 @@
                     ><p>
                         Det er {!notAttendedPartMeetingNumber} deltakermøte(r) hvor deltaker ikke har møtt.
                     </p></apex:outputText
+                >
+            </apex:outputpanel>
+            <apex:outputpanel rendered="{!AND (noOfCancelledMeetings > 0, isUO)}">
+                <apex:outputText
+                    ><p>Det er {!noOfCancelledMeetings} deltakermøte(r) som har blitt avlyst.</p></apex:outputText
                 >
             </apex:outputpanel>
             <div style="padding-bottom: 10px"></div>
