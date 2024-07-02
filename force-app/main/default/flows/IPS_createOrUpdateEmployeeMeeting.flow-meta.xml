@@ -230,6 +230,7 @@
             </value>
         </assignmentItems>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Update_meeting_with_Id1</targetReference>
         </connector>
     </assignments>
@@ -246,7 +247,6 @@
             </value>
         </assignmentItems>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>Update_meeting_with_Id1</targetReference>
         </connector>
     </assignments>
@@ -362,7 +362,7 @@
         <name>checkTasks</name>
         <label>checkTasks</label>
         <locationX>1370</locationX>
-        <locationY>1637</locationY>
+        <locationY>1679</locationY>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
             <name>isNotEmpty</name>
@@ -385,6 +385,9 @@
         <label>checkTasks</label>
         <locationX>314</locationX>
         <locationY>1655</locationY>
+        <defaultConnector>
+            <targetReference>update_meeting_with_related_to</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
             <name>isNotEmpty1</name>
@@ -568,7 +571,7 @@
         <name>getTasksid</name>
         <label>getTasksid</label>
         <locationX>1370</locationX>
-        <locationY>1529</locationY>
+        <locationY>1571</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTasks</targetReference>
@@ -588,8 +591,8 @@
     <recordUpdates>
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
-        <locationX>1370</locationX>
-        <locationY>1271</locationY>
+        <locationX>1106</locationX>
+        <locationY>1379</locationY>
         <connector>
             <targetReference>getTasksid</targetReference>
         </connector>
@@ -609,6 +612,19 @@
             <field>WhoId</field>
             <value>
                 <elementReference>varContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>update_meeting_with_related_to</name>
+        <label>update meeting with related to</label>
+        <locationX>446</locationX>
+        <locationY>1763</locationY>
+        <inputAssignments>
+            <field>RelatedToAccount__c</field>
+            <value>
+                <elementReference>varRelatedToAccount</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -654,7 +670,7 @@
         <name>UpdateTask</name>
         <label>UpdateTask</label>
         <locationX>1238</locationX>
-        <locationY>1745</locationY>
+        <locationY>1787</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
