@@ -230,7 +230,6 @@
             </value>
         </assignmentItems>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>Update_meeting_with_Id1</targetReference>
         </connector>
     </assignments>
@@ -247,6 +246,7 @@
             </value>
         </assignmentItems>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Update_meeting_with_Id1</targetReference>
         </connector>
     </assignments>
@@ -362,7 +362,7 @@
         <name>checkTasks</name>
         <label>checkTasks</label>
         <locationX>1370</locationX>
-        <locationY>1679</locationY>
+        <locationY>1637</locationY>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
             <name>isNotEmpty</name>
@@ -496,7 +496,7 @@
         <expression>CASE({!$Record.IPS_Status1__c}, 
 &apos;Cancelled&apos;, &apos;Completed&apos;, 
 &apos;Participant Absent&apos;, &apos;Completed&apos;,
-&apos;Completed&apos;, &apos;Completed&apos;, &apos;Open&apos;)</expression>
+&apos;Completed&apos;, &apos;Completed&apos;, &apos;Not Started&apos;)</expression>
     </formulas>
     <interviewLabel>IPS - create or update employee meeting {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - create or update employee meeting</label>
@@ -546,7 +546,7 @@
         <name>getTasksid</name>
         <label>getTasksid</label>
         <locationX>1370</locationX>
-        <locationY>1571</locationY>
+        <locationY>1529</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTasks</targetReference>
@@ -566,8 +566,8 @@
     <recordUpdates>
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
-        <locationX>1106</locationX>
-        <locationY>1379</locationY>
+        <locationX>1370</locationX>
+        <locationY>1271</locationY>
         <connector>
             <targetReference>getTasksid</targetReference>
         </connector>
@@ -632,7 +632,7 @@
         <name>UpdateTask</name>
         <label>UpdateTask</label>
         <locationX>1238</locationX>
-        <locationY>1787</locationY>
+        <locationY>1745</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -656,13 +656,13 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <elementReference>$Record.IPS_Status1__c</elementReference>
+                <elementReference>varRecordStatus</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>WhatId</field>
             <value>
-                <elementReference>varWhatId</elementReference>
+                <elementReference>varRelatedToAccount</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
