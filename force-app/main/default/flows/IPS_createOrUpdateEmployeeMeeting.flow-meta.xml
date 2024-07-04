@@ -124,7 +124,7 @@
         <nameSegment>IPS_eventTravelTimeController</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>61.0</apiVersion>
     <assignments>
         <name>addAccountId</name>
         <label>addAccountId</label>
@@ -230,6 +230,7 @@
             </value>
         </assignmentItems>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Update_meeting_with_Id1</targetReference>
         </connector>
     </assignments>
@@ -246,7 +247,6 @@
             </value>
         </assignmentItems>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>Update_meeting_with_Id1</targetReference>
         </connector>
     </assignments>
@@ -362,7 +362,7 @@
         <name>checkTasks</name>
         <label>checkTasks</label>
         <locationX>1370</locationX>
-        <locationY>1637</locationY>
+        <locationY>1679</locationY>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
             <name>isNotEmpty</name>
@@ -473,12 +473,11 @@
             <label>isFalse</label>
         </rules>
     </decisions>
-    <description>Create or update when using employee meeting or calendar
+    <description>Create or update on meeting type Meeting with Employer and First meeting with employer
 - create/update employee meeting
-- create task
+- create IPS/AMS møte task
 - create/update traveltime
-- update startdate
-- set public true</description>
+- update startdate</description>
     <environments>Default</environments>
     <formulas>
         <name>isDateTimeChanged</name>
@@ -546,7 +545,7 @@
         <name>getTasksid</name>
         <label>getTasksid</label>
         <locationX>1370</locationX>
-        <locationY>1529</locationY>
+        <locationY>1571</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTasks</targetReference>
@@ -566,8 +565,8 @@
     <recordUpdates>
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
-        <locationX>1370</locationX>
-        <locationY>1271</locationY>
+        <locationX>1106</locationX>
+        <locationY>1379</locationY>
         <connector>
             <targetReference>getTasksid</targetReference>
         </connector>
@@ -632,7 +631,7 @@
         <name>UpdateTask</name>
         <label>UpdateTask</label>
         <locationX>1238</locationX>
-        <locationY>1745</locationY>
+        <locationY>1787</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -703,7 +702,7 @@
         <connector>
             <targetReference>getRecordTypeTravelTime</targetReference>
         </connector>
-        <filterLogic>1 AND 5 AND (2 OR 3 OR 4)</filterLogic>
+        <filterLogic>1 AND 4 AND (2 OR 3)</filterLogic>
         <filters>
             <field>Subject</field>
             <operator>NotEqualTo</operator>
@@ -716,13 +715,6 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Meeting with Employer</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>IPS_Type__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Arbeidsgivermøte</stringValue>
             </value>
         </filters>
         <filters>
