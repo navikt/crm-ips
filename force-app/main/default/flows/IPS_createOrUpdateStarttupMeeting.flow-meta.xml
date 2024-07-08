@@ -124,7 +124,7 @@
         <nameSegment>IPS_eventTravelTimeController</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>55.0</apiVersion>
+    <apiVersion>61.0</apiVersion>
     <assignments>
         <name>setPublic</name>
         <label>setPublic</label>
@@ -149,7 +149,7 @@
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
+        <defaultConnectorLabel>isNotNew</defaultConnectorLabel>
         <rules>
             <name>isNewEvent</name>
             <conditionLogic>and</conditionLogic>
@@ -377,6 +377,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Start up meeting</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_isFromTimeline__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>Event</object>
