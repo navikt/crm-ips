@@ -3,8 +3,8 @@
     <actionCalls>
         <name>createTravelTime</name>
         <label>createTravelTime</label>
-        <locationX>50</locationX>
-        <locationY>755</locationY>
+        <locationX>314</locationX>
+        <locationY>947</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -62,7 +62,7 @@
     <actionCalls>
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
-        <locationX>446</locationX>
+        <locationX>886</locationX>
         <locationY>947</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -122,13 +122,17 @@
     <assignments>
         <name>addRelatedToAccount</name>
         <label>addRelatedToAccount</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationX>314</locationX>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>$Record.RelatedToAccount__c</assignToReference>
             <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.WhoId</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <elementReference>$Record.WhatId</elementReference>
+                <elementReference>$Record.Konto_kontakt__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -138,7 +142,7 @@
     <assignments>
         <name>addRelatedToAccount1</name>
         <label>addRelatedToAccount</label>
-        <locationX>314</locationX>
+        <locationX>754</locationX>
         <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>$Record.RelatedToAccount__c</assignToReference>
@@ -151,10 +155,87 @@
             <targetReference>Update_event1</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>addRelatedToAccount2</name>
+        <label>addRelatedToAccount</label>
+        <locationX>50</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.RelatedToAccount__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Konto_kontakt__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.WhoId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateEvent</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>checkAccount</name>
+        <label>checkAccount</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>updateEvent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isFromDesktop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WhatId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RelatedToAccount__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addRelatedToAccount2</targetReference>
+            </connector>
+            <label>isFromDesktop</label>
+        </rules>
+        <rules>
+            <name>isFromMobile</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RelatedToAccount__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WhatId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addRelatedToAccount</targetReference>
+            </connector>
+            <label>isFromMobile</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>isAccountChanged</name>
         <label>isAccountChanged</label>
-        <locationX>446</locationX>
+        <locationX>886</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
@@ -179,7 +260,7 @@
     <decisions>
         <name>isEventNew</name>
         <label>isEventNew</label>
-        <locationX>248</locationX>
+        <locationX>600</locationX>
         <locationY>431</locationY>
         <defaultConnector>
             <targetReference>isAccountChanged</targetReference>
@@ -196,7 +277,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>addRelatedToAccount</targetReference>
+                <targetReference>checkAccount</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -244,7 +325,7 @@
     <recordLookups>
         <name>getRecordTypeTravelTime</name>
         <label>getRecordTypeTravelTime</label>
-        <locationX>248</locationX>
+        <locationX>600</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -267,7 +348,7 @@
     <recordUpdates>
         <name>Update_event1</name>
         <label>Update event</label>
-        <locationX>314</locationX>
+        <locationX>754</locationX>
         <locationY>755</locationY>
         <connector>
             <targetReference>createUpdateTravelTime</targetReference>
@@ -277,27 +358,20 @@
     <recordUpdates>
         <name>updateEvent</name>
         <label>Update event</label>
-        <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationX>314</locationX>
+        <locationY>839</locationY>
         <connector>
             <targetReference>createTravelTime</targetReference>
         </connector>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>122</locationX>
+        <locationX>474</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getRecordTypeTravelTime</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
-        <filters>
-            <field>Subject</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Reisetid</stringValue>
-            </value>
-        </filters>
         <filters>
             <field>IPS_Type__c</field>
             <operator>EqualTo</operator>
