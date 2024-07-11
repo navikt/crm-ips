@@ -368,7 +368,8 @@
         <expression>CASE({!$Record.IPS_Status1__c}, 
 &apos;Cancelled&apos;, &apos;Completed&apos;, 
 &apos;Participant Absent&apos;, &apos;Completed&apos;,
-&apos;Completed&apos;, &apos;Completed&apos;, &apos;Not Started&apos;)</expression>
+&apos;Completed&apos;, &apos;Completed&apos;, 
+&apos;Open&apos;, &apos;Not Started&apos;,&apos;Not Started&apos;)</expression>
     </formulas>
     <interviewLabel>IPS - create or update employee meeting {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - create or update employee meeting</label>
@@ -653,7 +654,7 @@
         <inputAssignments>
             <name>varStatus</name>
             <value>
-                <elementReference>$Record.IPS_Status1__c</elementReference>
+                <elementReference>varRecordStatus</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -739,7 +740,7 @@
         <inputAssignments>
             <name>varStatus</name>
             <value>
-                <elementReference>$Record.IPS_Status1__c</elementReference>
+                <elementReference>varRecordStatus</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
