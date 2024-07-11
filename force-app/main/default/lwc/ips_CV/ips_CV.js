@@ -1,10 +1,10 @@
-import { LightningElement,api,track,wire } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
 import getCV from '@salesforce/apex/IPS_CVController.getCV';
 
 export default class Ips_CV extends LightningElement {
     @api recordId;
     @api actorId;
-    @api fodselsnummer; 
+    @api fodselsnummer;
 
     @track cv;
     @track sectionClass = 'slds-section slds-is-open';
@@ -28,19 +28,19 @@ export default class Ips_CV extends LightningElement {
     }
 
     get isLoaded() {
-        return this.error == true || this.responded == true;
+        return this.error === true || this.responded === true;
     }
 
     get hasCv() {
-        return this.isLoaded == true && this.cv !== null;
+        return this.isLoaded === true && this.cv !== null;
     }
 
     get utfylt() {
-        return this.badges.length == 0 ? true : false;
+        return this.badges.length === 0 ? true : false;
     }
 
     get sistEndret() {
-        if (this.cv == null) {
+        if (this.cv === null) {
             return null;
         }
         let dato = new Date(this.cv.sistEndret);
@@ -53,10 +53,10 @@ export default class Ips_CV extends LightningElement {
     }
 
     get synligForArbeidsgiver() {
-        if (this.cv == null) {
+        if (this.cv === null) {
             return null;
         }
-        return this.cv.synligForArbeidsgiver == true ? 'Ja' : 'Nei';
+        return this.cv.synligForArbeidsgiver === true ? 'Ja' : 'Nei';
     }
 
     get sammendrag() {
@@ -173,10 +173,10 @@ export default class Ips_CV extends LightningElement {
         }
         let list = [];
         let tid = this.cv.jobbprofil.heltidDeltid;
-        if (tid.heltid == true) {
+        if (tid.heltid === true) {
             list.push('Heltid');
         }
-        if (tid.deltid == true) {
+        if (tid.deltid === true) {
             list.push('Deltid');
         }
         return list;
@@ -188,7 +188,7 @@ export default class Ips_CV extends LightningElement {
 
     get badges() {
         let badgeList = [];
-        if (this.sammendrag === '' || this.sammendrag == null) {
+        if (this.sammendrag === '' || this.sammendrag === null) {
             badgeList.push('Sammendrag');
         }
         if (!this.utdanning?.length) {
@@ -222,10 +222,10 @@ export default class Ips_CV extends LightningElement {
             badgeList.push('Kompetanser');
         }
         if (
-            (this.yrker == null && this.arbeidssted == null && this.ansettelsesform == null) ||
-            (this.ansettelsesform.length == 0 && this.arbeidstidsordning == null) ||
-            (this.arbeidstidsordning.length == 0 && this.heltidDeltid == null) ||
-            this.heltidDeltid.length == 0
+            (this.yrker === null && this.arbeidssted === null && this.ansettelsesform === null) ||
+            (this.ansettelsesform.length === 0 && this.arbeidstidsordning === null) ||
+            (this.arbeidstidsordning.length === 0 && this.heltidDeltid === null) ||
+            this.heltidDeltid.length === 0
         ) {
             badgeList.push('Jobbønsker');
         }
