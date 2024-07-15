@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_participants_age__c</fullName>
+    <description>Calculation of age based on IPS_DOB__c - added from person__c.age__c upon creation of work trail</description>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(IPS_DOB__c ),
+0,
+IF(
+   DATE( 2000 , MONTH( DATEVALUE(IPS_DOB__c ) ) , DAY( DATEVALUE(IPS_DOB__c ) ) ) &lt;= DATE( 2000 , MONTH( TODAY() ) , DAY( TODAY() ) ),
+   YEAR (Today()) - YEAR ( DATEVALUE(IPS_DOB__c ) ),
+   YEAR (Today()) - YEAR ( DATEVALUE(IPS_DOB__c ) ) -1
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Participants age</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

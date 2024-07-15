@@ -41,6 +41,9 @@ public class IPS_myWorkTrailControllerTest {
         );
         insert account;
 
+        Account employer=IPS_TestDataFactory.createEmployerAccount();
+        insert employer;
+        
         ID recTypeIdIPS = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
             
         Work_Trail__c trailIPS = new Work_Trail__c(
@@ -59,9 +62,14 @@ public class IPS_myWorkTrailControllerTest {
                     EndDateTime = System.today()+1,
                     Description = 'Møte handler om event ',
                     IPS_Type__c = 'Meeting with Employer',
+                    IPS_isFromTimeline__c = true,
                     ips_Completed__c = false,
+                    ips_uo_Kanal__c ='Fysisk',
+                    Location ='Møte ett sted',
                     IsVisibleInSelfService__c =true,
+                    ips_Subcategory_Type_IPS__c = 'Job support',
                     WhatId = trailIPS.id,
+                    RelatedToAccount__c = employer.id,
                     RecordTypeId = recTypeIdEvent
         );
         insert eventEmployer;
@@ -95,7 +103,7 @@ public class IPS_myWorkTrailControllerTest {
             );
         insert trailIPS;
 
-        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event eventEmployer = new Event(
                     Subject = 'Event ',
@@ -103,6 +111,9 @@ public class IPS_myWorkTrailControllerTest {
                     EndDateTime = System.today()+1,
                     Description = 'Møte handler om event ',
                     IPS_Type__c = 'Meeting with Participant',
+                    IPS_isFromTimeline__c = true,
+                    ips_uo_Kanal__c ='Fysisk',
+                    Location ='Møte ett sted',
                     ips_Completed__c = false,
                     IsVisibleInSelfService__c =true,
                     WhatId = trailIPS.id,
@@ -199,7 +210,7 @@ public class IPS_myWorkTrailControllerTest {
             );
         insert trailIPS;
 
-        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        ID recTypeIdEvent = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('Ips_uo_Deltakermote').getRecordTypeId();
 
         Event allEvent = new Event(
                     Subject = 'Event ',
@@ -207,6 +218,9 @@ public class IPS_myWorkTrailControllerTest {
                     EndDateTime = System.today()+1,
                     Description = 'Møte handler om event ',
                     IPS_Type__c = 'Meeting with Participant',
+                    IPS_isFromTimeline__c = true,
+                    ips_uo_Kanal__c ='Fysisk',
+                    Location ='Møte ett sted',
                     ips_Completed__c = false,
                     IsVisibleInSelfService__c =true,
                     WhatId = trailIPS.id,

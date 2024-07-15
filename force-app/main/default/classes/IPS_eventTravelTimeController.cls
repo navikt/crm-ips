@@ -1,14 +1,17 @@
 public class IPS_eventTravelTimeController {
     @InvocableMethod(label='IPS Traveltime' description='Create or update traveltime')
+    
     public static void invokeTravelTime(List<evenctRequest> request) {
         //parse inputs and variables
-        Boolean isEventUpdate = request.get(0).isUpdate;
         Datetime eventStartDate = request.get(0).startDate;
         Datetime eventEndDate = request.get(0).endDate;
         Id currentEventId = request.get(0).currentRecord;
         Integer eventTraveltimeBefore = request.get(0).travelTimeBefore;
         Integer eventTraveltimeAfter = request.get(0).travelTimeAfter;
         String eventStatus = request.get(0).status;
+        Id eventOwnerId = request.get(0).ownerId;
+        Id recordTypeId = request.get(0).recordtypeId;
+        
         if (eventTraveltimeBefore <= 0 || eventTraveltimeBefore == null) {
             eventTraveltimeBefore = 0;
         }
@@ -16,40 +19,24 @@ public class IPS_eventTravelTimeController {
         if (eventTraveltimeAfter <= 0 || eventTraveltimeAfter == null) {
             eventTraveltimeAfter = 0;
         }
-
-        //Id eventRelatedTo = request.get(0).relatedTo;
-        Id eventOwnerId = request.get(0).ownerId;
-        Id recordTypeId = request.get(0).recordtypeId;
-        
-        /*Schema.SObjectType.Event.getRecordTypeInfosByDeveloperName()
-            .get('IPS_Event')
-            .getRecordTypeId();
-*/
+		//delete all travel time
+		deleteTravelTime(currentEventId);
+                
         //create travel time
-        if (isEventUpdate == false) {
-            createTravelTime(
-                eventStartDate,
-                eventEndDate,
-                currentEventId,
-                eventTraveltimeBefore,
-                eventTraveltimeAfter,
-                recordTypeId,
-                eventStatus,
-                eventOwnerId
-            );
-        }
-
-        //update travel time
-        if (isEventUpdate == true) {
-            updateTravelTime(eventStartDate, eventEndDate, currentEventId, eventTraveltimeBefore, eventTraveltimeAfter,eventStatus);
-        }
+        createTravelTime(
+            eventStartDate,
+            eventEndDate,
+            currentEventId,
+            eventTraveltimeBefore,
+            eventTraveltimeAfter,
+            recordTypeId,
+            eventStatus,
+            eventOwnerId
+        );
     }
 
     //Input variables from flow
     public class evenctRequest {
-
-        @InvocableVariable(required=true)
-        public boolean isUpdate;
 
         @InvocableVariable(required=true)
         public dateTime startDate;
@@ -104,6 +91,8 @@ public class IPS_eventTravelTimeController {
             eBefore.RecordTypeId = recordTypeId;
             eBefore.IPS_eventId__c = currentRecord;
             eBefore.IPS_Status1__c = eventStatus;
+            eBefore.Location ='Reisetid';
+            eBefore.IPS_isFromTimeline__c = true;
             insert eBefore;
         }
 
@@ -119,41 +108,19 @@ public class IPS_eventTravelTimeController {
             eAfter.RecordTypeId = recordTypeId;
             eAfter.IPS_eventId__c = currentRecord;
             eAfter.IPS_Status1__c = eventStatus;
+            eAfter.Location ='Reisetid';
+            eAfter.IPS_isFromTimeline__c = true;
             insert eAfter;
         }
     }
-
-    private static void updateTravelTime(
-        dateTime startDate,
-        dateTime endDate,
-        id currentRecord,
-        Integer travelTimeBefore,
-        Integer travelTimeAfter,
-        String eventStatus
-    ) {
-        dateTime startTimeBefore = startDate.addMinutes(-travelTimeBefore);
-        dateTime startTimeAfter = startDate;
-        dateTime endTimeBefore = endDate;
-        dateTime endTimeAfter = endDate.addMinutes(travelTimeAfter);
-
-        List<Event> travelList = [
-            SELECT id, ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime, Subject, description
-            FROM Event
-            WHERE IPS_eventId__c = :currentRecord
-        ];
-        for (Event l : travelList) {
-            if (l.Description == 'Traveltime before') {
-                l.StartDateTime = startTimeBefore;
-                l.EndDateTime = startTimeAfter;
-                l.IPS_Status1__c = eventStatus;
-                update l;
-            }
-            if (l.Description == 'Traveltime after') {
-                l.StartDateTime = endTimeBefore;
-                l.EndDateTime = endTimeAfter;
-                l.IPS_Status1__c = eventStatus;
-                update l;
-            }
+    
+    private static void deleteTravelTime(id currentRecord){
+        List<SObject> deleteTravelTime = new List<Event>();
+        List<sObject> delList = Database.query('SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord');
+                deleteTravelTime.addAll(delList);
+        if(deleteTravelTime.size()>0){
+            Database.delete(deleteTravelTime, true);
         }
+        
     }
 }

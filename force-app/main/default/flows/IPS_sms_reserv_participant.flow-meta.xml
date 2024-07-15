@@ -1,6 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
+    <assignments>
+        <name>addTextLabel</name>
+        <label>addTextLabel</label>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
+        <assignmentItems>
+            <assignToReference>varSMSReserveText</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SMS reservasjon aktivert</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>createSMSHistory</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addTextLabel1</name>
+        <label>addTextLabel</label>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
+        <assignmentItems>
+            <assignToReference>varSMSReserveText</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SMS reservasjon deaktivert</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>createSMSHistory</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>checkToggleDecision</name>
+        <label>checkToggleDecision</label>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isTrue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>displayToggle.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addTextLabel</targetReference>
+            </connector>
+            <label>isTrue</label>
+        </rules>
+        <rules>
+            <name>isfalse</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>displayToggle.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>addTextLabel1</targetReference>
+            </connector>
+            <label>isfalse</label>
+        </rules>
+    </decisions>
     <description>Jobbspesialist kan reservere deltaker på jobbsporet mot sms fra jobbsporet, eller oppheve reservasjonen</description>
     <environments>Default</environments>
     <interviewLabel>IPS_sms_reserv_participant {!$Flow.CurrentDateTime}</interviewLabel>
@@ -27,7 +96,7 @@
     <recordLookups>
         <name>getPerson</name>
         <label>getPerson</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -51,7 +120,7 @@
         <description>Get worktrail data that triggered flow</description>
         <name>getWorkTrail</name>
         <label>getWorkTrail</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -75,8 +144,11 @@
     <recordUpdates>
         <name>update_workTrail</name>
         <label>update workTrail</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>566</locationY>
+        <connector>
+            <targetReference>checkToggleDecision</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -96,7 +168,7 @@
     <recordUpdates>
         <name>updatePersonSMSReservation</name>
         <label>updatePersonSMSReservation</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>458</locationY>
         <connector>
             <targetReference>update_workTrail</targetReference>
@@ -121,7 +193,7 @@
     <screens>
         <name>SMSDisplayMain</name>
         <label>SMSDisplayMain</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -176,18 +248,63 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorkTrail</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>createSMSHistory</name>
+        <label>createSMSHistory</label>
+        <locationX>314</locationX>
+        <locationY>974</locationY>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varSMSReserveText</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varSMSReserveText</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varSMSReserveText</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>

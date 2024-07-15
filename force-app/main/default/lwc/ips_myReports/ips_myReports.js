@@ -1,6 +1,6 @@
-import { LightningElement, wire,track } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { getFieldValue, getRecord} from 'lightning/uiRecordApi';
+import { getFieldValue, getRecord } from 'lightning/uiRecordApi';
 import templateEnd from './ips_myEndReport.html';
 import templateIntervall from './ips_myIntervallReport.html';
 
@@ -23,7 +23,7 @@ import SUMMARIZE7_FIELD from '@salesforce/schema/ips_report__c.IPS_endReportSumm
 /* worktrail */
 import FIELD_CAREERWISHES from '@salesforce/schema/Work_Trail__c.ips_Priority_career_wishes__c';
 
-const REPORT_FIELDS =[
+const REPORT_FIELDS = [
     COMMENT_FIELD,
     REPORTTYPE_FIELD,
     RECORDTYPE_FIELD,
@@ -37,88 +37,81 @@ const REPORT_FIELDS =[
     SUMMARIZE5_FIELD,
     SUMMARIZE6_FIELD,
     SUMMARIZE7_FIELD
-
 ];
 
-const WORKTRAIL_FIELDS = [
-    FIELD_CAREERWISHES
-];
+const WORKTRAIL_FIELDS = [FIELD_CAREERWISHES];
 
 export default class Ips_myReports extends NavigationMixin(LightningElement) {
-    
     participantComment = COMMENT_FIELD;
-    recordId='a0j7a000006s3jCAAQ';
+    recordId = 'a0j7a000006s3jCAAQ';
     @track reportRecord;
     @track worktrailRecord;
     @track reportType;
     @track service;
-    isReport =false;
+    isReport = false;
     navLogo = NAV_LOGOS + '/navLogoRed.svg';
 
     @wire(getRecord, { recordId: '$recordId', fields: REPORT_FIELDS })
-    reportWire({error,data}){
-        if(data){
+    reportWire({ error, data }) {
+        if (data) {
             this.reportRecord = data;
             this.isReport = true;
-        }else if(error){
+        } else if (error) {
             console.log(error);
         }
     }
 
     @wire(getRecord, { recordId: '$workTrailId', fields: WORKTRAIL_FIELDS })
-    worktrailWire({error,data}){
-        if(data){
+    worktrailWire({ error, data }) {
+        if (data) {
             this.worktrailRecord = data;
             this.isReport = true;
-        }else if(error){
+        } else if (error) {
             console.log(error);
         }
     }
 
-
-    get isEnd(){
-        this.reportType = getFieldValue(this.reportRecord,REPORTTYPE_FIELD);
-        if(this.reportType==='End report'){
-            return true;
-        }else{
-            return false;
+    get isEnd() {
+        let repType = false;
+        this.reportType = getFieldValue(this.reportRecord, REPORTTYPE_FIELD);
+        if (this.reportType === 'End report') {
+            repType = true;
         }
+
+        return repType;
     }
 
-    render(){
+    render() {
         return this.isEnd ? templateEnd : templateIntervall;
     }
 
-    
-
-    get isIPS(){
-        this.service = getFieldValue(this.reportRecord,RECORDTYPE_FIELD);
-        if(this.service ==='IPS'){
-            return true;
-        }else{
-            return false;
+    get isIPS() {
+        this.service = getFieldValue(this.reportRecord, RECORDTYPE_FIELD);
+        let serviceType = false;
+        if (this.service === 'IPS') {
+            serviceType = true;
         }
+        return serviceType;
     }
 
-    get isUO(){
-        this.service = getFieldValue(this.reportRecord,RECORDTYPE_FIELD);
-        if(this.service ==='Utvidet oppfølging'){
-            return true;
-        }else{
-            return false;
+    get isUO() {
+        this.service = getFieldValue(this.reportRecord, RECORDTYPE_FIELD);
+        let recType = false;
+        if (this.service === 'Utvidet oppfølging') {
+            recType = true;
         }
+        return recType;
     }
 
-    get reportSubject(){
-        return getFieldValue(this.reportRecord,SUBJECT_FIELD);
+    get reportSubject() {
+        return getFieldValue(this.reportRecord, SUBJECT_FIELD);
     }
 
-    get workTrailId(){
-        return getFieldValue(this.reportRecord,WORKTRAILID_FIELD);
+    get workTrailId() {
+        return getFieldValue(this.reportRecord, WORKTRAILID_FIELD);
     }
 
-    get careerWishes(){
-        return getFieldValue(this.worktrailRecord,FIELD_CAREERWISHES);
+    get careerWishes() {
+        return getFieldValue(this.worktrailRecord, FIELD_CAREERWISHES);
     }
-  
 }
