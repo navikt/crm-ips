@@ -4,16 +4,20 @@
         <field>CUST_NAME</field>
     </columns>
     <columns>
-        <field>CUST_CREATED_DATE</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Work_Trail__c.IPS_participants_age__c</field>
+    </columns>
+    <columns>
+        <field>Work_Trail__c.ips_NAV_supervisor__c</field>
+    </columns>
+    <columns>
+        <field>Work_Trail__c.ips_Behandlingsteam__c</field>
+    </columns>
+    <columns>
+        <field>Work_Trail__c.ips_Applying_Department__c</field>
     </columns>
     <columns>
         <field>Work_Trail__c.Oppstartsdato__c</field>
-    </columns>
-    <columns>
-        <field>Work_Trail__c.ips_First_meeting_with_the_Employer_held__c</field>
-    </columns>
-    <columns>
-        <field>Work_Trail__c.ips_Status__c</field>
     </columns>
     <filter>
         <criteriaItems>
@@ -35,12 +39,16 @@
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Work_Trail__c.ips_Work__c</field>
+        <field>Work_Trail__c.End_Cause__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>Work_Trail__c.ips_Other_end_cases__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <field>Work_Trail__c.ips_End_Date__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Mine avsluttede jobbspor</name>
@@ -55,6 +63,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>CUST_CREATED_DATE</dateColumn>
-        <interval>INTERVAL_CUSTOM</interval>
+        <interval>INTERVAL_CURY</interval>
     </timeFrameFilter>
 </Report>

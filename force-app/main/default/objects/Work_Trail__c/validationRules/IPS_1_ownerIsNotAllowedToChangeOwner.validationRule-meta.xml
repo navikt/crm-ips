@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_1_ownerIsNotAllowedToChangeOwner</fullName>
+    <active>true</active>
+    <description>Forhindrer jobbspesialist i å endre eier.</description>
+    <errorConditionFormula>AND(
+ISCHANGED( OwnerId ),
+(
+Owner:User.Profile.Name =&apos;IPS Jobbspesialist&apos; ||
+Owner:User.Profile.Name =&apos;UO Jobbspesialist&apos;)
+)</errorConditionFormula>
+    <errorMessage>Det er kun metodeveileder som kan endre eier på jobbsporet.</errorMessage>
+</ValidationRule>

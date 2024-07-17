@@ -1,86 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>54.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <assignments>
-        <name>setAssignment</name>
-        <label>setAssignment</label>
-        <locationX>248</locationX>
-        <locationY>1190</locationY>
+        <name>addHistoryAssignmentText</name>
+        <label>addHistoryAssignmentText</label>
+        <locationX>50</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>varDescription</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Passiv tilstand aktivert</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>setPassiveFlag</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addHistoryAssignmentText1</name>
+        <label>addHistoryAssignmentText</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>varDescription</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Passiv tilstand deaktivert</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>setPassiveFlag</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setPassiveFlag</name>
+        <label>setPassiveFlag</label>
+        <locationX>182</locationX>
+        <locationY>866</locationY>
         <assignmentItems>
             <assignToReference>getWorktrail.ips_Passive__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>varSetParticipantPassive</elementReference>
+                <elementReference>varSetPassive.value</elementReference>
             </value>
         </assignmentItems>
         <connector>
             <targetReference>updateWorktrail</targetReference>
         </connector>
     </assignments>
-    <assignments>
-        <name>setHistoricId</name>
-        <label>setHistoricId</label>
-        <locationX>50</locationX>
-        <locationY>878</locationY>
-        <assignmentItems>
-            <assignToReference>getWorktrail.IPS_historicWorkTrailID__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>varHistoricRowId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>setAssignment</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>SetPassivEndDate</name>
-        <label>SetPassivEndDate</label>
-        <locationX>314</locationX>
-        <locationY>758</locationY>
-        <assignmentItems>
-            <assignToReference>getHistoryField.IPS_endDatePassive__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>setDate</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>updateEndDate</targetReference>
-        </connector>
-    </assignments>
-    <decisions>
-        <name>checkForEmptyList</name>
-        <label>checkForEmptyList</label>
-        <locationX>446</locationX>
-        <locationY>638</locationY>
-        <defaultConnector>
-            <targetReference>setAssignment</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>isNull</defaultConnectorLabel>
-        <rules>
-            <name>isNotNull</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getHistoryField</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>SetPassivEndDate</targetReference>
-            </connector>
-            <label>isNotNull</label>
-        </rules>
-    </decisions>
     <decisions>
         <name>isDateFilled</name>
         <label>isDateFilled</label>
-        <locationX>248</locationX>
-        <locationY>398</locationY>
+        <locationX>182</locationX>
+        <locationY>350</locationY>
         <defaultConnector>
-            <targetReference>getHistoryField</targetReference>
+            <targetReference>addHistoryAssignmentText1</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -99,6 +74,8 @@
             <label>dateFilled</label>
         </rules>
     </decisions>
+    <description>Gjelder kun for IPS hvor JS kan sette deltaker i en passiv tilstand</description>
+    <environments>Default</environments>
     <formulas>
         <name>setDate</name>
         <dataType>Date</dataType>
@@ -111,7 +88,7 @@
         <expression>TODAY() + 30</expression>
     </formulas>
     <interviewLabel>IPS_worktrailSetParticipantPassive {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS_worktrailSetParticipantPassive</label>
+    <label>IPS - worktrail Set Participant Passive</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -132,35 +109,12 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
-        <name>createHistoricRow</name>
-        <label>createHistoricRow</label>
-        <locationX>50</locationX>
-        <locationY>758</locationY>
-        <assignRecordIdToReference>varHistoricRowId</assignRecordIdToReference>
-        <connector>
-            <targetReference>setHistoricId</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>IPS_Status__c</field>
-            <value>
-                <stringValue>Passiv</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>IPS_Work_Trail__c</field>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>IPS_Historic_Work_Trail__c</object>
-    </recordCreates>
-    <recordCreates>
         <name>createTask</name>
         <label>createTask</label>
         <locationX>50</locationX>
-        <locationY>638</locationY>
+        <locationY>566</locationY>
         <connector>
-            <targetReference>createHistoricRow</targetReference>
+            <targetReference>addHistoryAssignmentText</targetReference>
         </connector>
         <inputAssignments>
             <field>ActivityDate</field>
@@ -199,40 +153,31 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Type_of_Task_IPSUO__c</field>
+            <value>
+                <stringValue>Oppgave</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>WhatId</field>
             <value>
                 <elementReference>getWorktrail.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Due_Date_Time__c</field>
+            <value>
+                <elementReference>varAddDateFollowUp</elementReference>
             </value>
         </inputAssignments>
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <name>getHistoryField</name>
-        <label>getHistoryField</label>
-        <locationX>446</locationX>
-        <locationY>518</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkForEmptyList</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>getWorktrail.IPS_historicWorkTrailID__c</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>IPS_Historic_Work_Trail__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>getRecordTypeId</name>
         <label>getRecordTypeId</label>
         <locationX>50</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>createTask</targetReference>
@@ -254,8 +199,8 @@
     <recordLookups>
         <name>getWorktrail</name>
         <label>getWorktrail</label>
-        <locationX>248</locationX>
-        <locationY>158</locationY>
+        <locationX>182</locationX>
+        <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>setParticipantAsPassive</targetReference>
@@ -273,27 +218,20 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>updateEndDate</name>
-        <label>updateEndDate</label>
-        <locationX>314</locationX>
-        <locationY>878</locationY>
-        <connector>
-            <targetReference>setAssignment</targetReference>
-        </connector>
-        <inputReference>getHistoryField</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <name>updateWorktrail</name>
         <label>updateWorktrail</label>
-        <locationX>248</locationX>
-        <locationY>1310</locationY>
+        <locationX>182</locationX>
+        <locationY>974</locationY>
+        <connector>
+            <targetReference>createPassiveHistory</targetReference>
+        </connector>
         <inputReference>getWorktrail</inputReference>
     </recordUpdates>
     <screens>
         <name>setParticipantAsPassive</name>
         <label>Set participant as passive</label>
-        <locationX>248</locationX>
-        <locationY>278</locationY>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -307,14 +245,42 @@
                 <name>setParticipantAsPassive_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>varSetParticipantPassive</name>
-                    <dataType>Boolean</dataType>
-                    <defaultValue>
-                        <booleanValue>true</booleanValue>
-                    </defaultValue>
-                    <fieldText>Set participant passive</fieldText>
-                    <fieldType>InputField</fieldType>
+                    <name>varSetPassive</name>
+                    <extensionName>flowruntime:toggle</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Passiv tilstand</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>messageToggleActive</name>
+                        <value>
+                            <stringValue>passiv aktivert</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>disabled</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>messageToggleInactive</name>
+                        <value>
+                            <stringValue>passiv deaktivert</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>getWorktrail.ips_Passive__c</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
                 </fields>
                 <fields>
                     <name>varAddDateFollowUp</name>
@@ -324,11 +290,12 @@
                     </defaultValue>
                     <fieldText>Add date for follow up participant</fieldText>
                     <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <visibilityRule>
                         <conditionLogic>and</conditionLogic>
                         <conditions>
-                            <leftValueReference>varSetParticipantPassive</leftValueReference>
+                            <leftValueReference>varSetPassive.value</leftValueReference>
                             <operator>EqualTo</operator>
                             <rightValue>
                                 <booleanValue>true</booleanValue>
@@ -370,11 +337,12 @@
                     <fieldText>Reason for passive</fieldText>
                     <fieldType>InputField</fieldType>
                     <helpText>&lt;p&gt;Reason for absence. Next step and follow up.&lt;/p&gt;</helpText>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <visibilityRule>
                         <conditionLogic>and</conditionLogic>
                         <conditions>
-                            <leftValueReference>varSetParticipantPassive</leftValueReference>
+                            <leftValueReference>varSetPassive.value</leftValueReference>
                             <operator>EqualTo</operator>
                             <rightValue>
                                 <booleanValue>true</booleanValue>
@@ -397,18 +365,63 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>122</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrail</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>createPassiveHistory</name>
+        <label>createPassiveHistory</label>
+        <locationX>182</locationX>
+        <locationY>1082</locationY>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varDescription</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>

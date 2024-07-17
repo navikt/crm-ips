@@ -9,6 +9,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
         
         IF(objectName =='Task'){
             updateRelatedOwnerTask(currentId,ownerId);
+            
         }
         IF(objectName == 'Event'){
             updateRelatedOwnerEvent(currentId,ownerId,oldOwnerId);
@@ -16,14 +17,14 @@ public without sharing class IPS_changeOwnerOnActivityController {
     }
         
     @TestVisible
-    @future
     private static void updateRelatedOwnerTask(Id currentId,Id ownerId){
+        
         List<Task> alltasks = [SELECT 
                                id,OwnerId 
                                FROM Task 
                                WHERE Type_of_Task_IPSUO__c in('Delmål (av hovedmål)') 
                                AND whatId =:currentId 
-                               AND IPS_Status1__c in ('Open')];
+                               AND status ='Open'];
         if(!alltasks.isEmpty()){
             for(Task t:alltasks){
             	t.OwnerId = ownerId;
@@ -34,24 +35,28 @@ public without sharing class IPS_changeOwnerOnActivityController {
             Database.DMLOptions dmlo = new Database.DMLOptions();
             dmlo.EmailHeader.triggerUserEmail = false;
             database.update(alltasks, dmlo);
-        }    
+        } 
     }
     
+ 
     private static void updateRelatedOwnerEvent(Id currentId,Id ownerId,Id oldOwnerId){
         List<Event> allevents = [SELECT 
-                                 id,OwnerId 
+                                 id,OwnerId,ips_Travel_time__c,IPS_travelTimeFrom__c
                                  FROM Event 
                                  WHERE IPS_Type__c in ('Meeting with Participant','Meeting with Employer','First Meeting with Employer','Start up meeting') 
-                                 AND IPS_Status1__c in ('Open')
+                                 AND IPS_Status1__c ='Open'
                                  AND OwnerId =:oldOwnerId
                                  AND whatId =:currentId];
         if(!allevents.isEmpty()){
             for(Event e:allevents){
             	e.OwnerId = ownerId;
+                e.ips_Travel_time__c =0;
+                e.IPS_travelTimeFrom__c = 0;
         	}
         	update allevents; 
         }    
     }
+
 
     	//Input variables from flow
         public class eventRequest {

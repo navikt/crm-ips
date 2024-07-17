@@ -51,6 +51,8 @@ public class IPS_MangagerTrailControllerTest {
     private static void getAggregatedEndedTrail(){
         Work_Trail__c t = [SELECT id FROM Work_Trail__c];
         t.ips_Status__c='Ended';
+        t.End_Cause__c = 'Other end causes';
+        t.ips_Other_end_cases__c = 'Illness';
         update t;
         
         List<IPS_ManagerTrail> allTrails=IPS_ManagerTrailController.getAggregatedEndedTrail();

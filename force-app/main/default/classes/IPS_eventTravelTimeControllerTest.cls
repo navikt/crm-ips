@@ -44,11 +44,14 @@ public class IPS_eventTravelTimeControllerTest {
           StartDateTime = system.Datetime.now(),
           EndDateTime = system.Datetime.now()+(60/1440),
           Subject = 'Møte med Arbeidsgiver',
+          IPS_isFromTimeline__c = true,
           IPS_Type__c = 'Meeting with Employer',
           ips_Subcategory_Type_IPS__c = 'Job support',
           ips_Subcategory_Type__c ='Job support',
           IPS_Subcategory_Type_UO__c='Follow-up',
           F_rste_arbeidsgiverm_te__c='Nei',
+          Location ='Fysisk oppmøte',
+          Description = 'Møte',
           IPS_Status1__c ='Completed');
           insert createEvent;
         
@@ -61,11 +64,14 @@ public class IPS_eventTravelTimeControllerTest {
           StartDateTime = system.Datetime.now(),
           EndDateTime = system.Datetime.now()+(60/1440),
           Subject = 'Møte med Arbeidsgiver',
+          IPS_isFromTimeline__c = true,
           IPS_Type__c = 'Meeting with Employer',
           ips_Subcategory_Type_IPS__c = 'Job support',
           ips_Subcategory_Type__c ='Job support',
           IPS_Subcategory_Type_UO__c='Follow-up',
           F_rste_arbeidsgiverm_te__c='Nei',
+          Location ='Fysisk oppmøte',
+          Description = 'Møte',
           IPS_Status1__c ='Open');
           insert createEvent2; 
     }
@@ -112,7 +118,6 @@ public class IPS_eventTravelTimeControllerTest {
         
         List<Event> updateEvent = [SELECT id,ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime,subject,description,IPS_Type__c, ips_Subcategory_Type_IPS__c,whatId, IPS_eventId__c,IPS_Status1__c FROM Event WHERE IPS_eventId__c!=null];
         for(Event i:updateEvent){
-            firstInput.isUpdate = true;
             firstInput.startDate = i.StartDateTime;
         	firstInput.endDate = i.EndDateTime;
         	firstInput.currentRecord= i.Id;
@@ -123,4 +128,5 @@ public class IPS_eventTravelTimeControllerTest {
         IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{firstInput});
         Test.stopTest(); 
     }
+    
 }
