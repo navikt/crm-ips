@@ -11,8 +11,8 @@ sf force:package:install --package 04t7U000000Y4NYQA0 -r --installation-key $3 -
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer platform-access-controll 0.126.0"
-sf force:package:install --package 04t7U000000Y4LNQA0 -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer platform-access-controll 0.127.0"
+sf force:package:install --package 04t7U000000Y4WaQAK -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -41,8 +41,8 @@ sf force:package:install --package 04t7U0000008qz4QAA -r --installation-key $3 -
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-henvendelse base 0.20.0.."
-sf force:package:install --package 04t7U000000Y4EgQAK -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-henvendelse base 0.21.0.."
+sf force:package:install --package 04t7U000000Y4hdQAC -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -61,18 +61,18 @@ echo "Installerer crm-platform-oppgave 0.53.0"
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-arbeidsgiver-base 1.429.0"
-sf force:package:install --package 04t7U000000Y4MfQAK -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.434.0"
+sf force:package:install --package 04t7U000000Y4hdQAC -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-community-base 0.109.0"
-sf force:package:install --package 04t7U000000Y4CfQAK -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-community-base 0.115.0"
+sf force:package:install --package 04t7U000000Y4fhQAC -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-ips 0.450.0.."
-sf force:package:install --package 04t7U000000Y46SQAS -r --installation-key $3 --wait 10 --publish-wait 10
+echo "Installerer crm-ips 0.453.0.."
+sf force:package:install --package 04t7U000000Y4gaQAC -r --installation-key $3 --wait 10 --publish-wait 10
 
 echo ""
 echo "TILDELER"
