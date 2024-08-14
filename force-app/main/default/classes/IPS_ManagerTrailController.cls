@@ -147,10 +147,8 @@ public without sharing class IPS_ManagerTrailController {
         }
     }
 
-    public static String getSubCause(String work, String another) {
-        if (!String.isBlank(work)) {
-            return work;
-        } else if (!String.isBlank(another)) {
+    public static String getSubCause(String another) {
+        if (!String.isBlank(another)) {
             return another;
         } else {
             return null;
