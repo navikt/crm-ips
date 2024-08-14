@@ -87,7 +87,7 @@ public without sharing class IPS_ManagerTrailController {
                 trailEnded.year = (Integer) agg.get('Year');
                 trailEnded.month = convertMonthNumberToString((Integer) agg.get('Month'));
                 trailEnded.cause = (String) agg.get('Cause');
-                trailEnded.subCause = getSubCause((String) agg.get('toWork'), (String) agg.get('toAnother'));
+                trailEnded.subCause = getSubCause((String) agg.get('toAnother'));
                 trailEnds.add(trailEnded);
             }
         }
