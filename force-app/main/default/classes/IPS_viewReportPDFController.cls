@@ -143,7 +143,6 @@ public with sharing class IPS_viewReportPDFController {
                 ips_End_Date__c,
                 End_Cause__c,
                 toLabel(ips_Other_end_cases__c),
-                toLabel(ips_Work__c),
                 toLabel(ips_Main_Goal_list__c),
                 ips_Priority_career_wishes__c,
                 ips_Desired_profession_industry_career__c,
