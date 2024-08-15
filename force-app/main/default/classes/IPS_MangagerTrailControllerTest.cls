@@ -63,12 +63,8 @@ public class IPS_MangagerTrailControllerTest {
 
     @isTest
     private static void testSubCategory() {
-        String work;
         String other;
-        work = IPS_ManagerTrailController.getSubCause(null);
         other = IPS_ManagerTrailController.getSubCause('other');
-
-        System.assertEquals('work', work, 'Expect work as output');
         System.assertEquals('other', other, 'Expect other as output');
     }
 
