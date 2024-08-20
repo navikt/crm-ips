@@ -3,7 +3,7 @@ import { getRecord } from 'lightning/uiRecordApi';
 
 const FIELDS = [
     'Work_Trail__c.Name',
-    'Work_Trail__c.IPS_Participants_home_address__c'
+    'Work_Trail__c.IPS_participant_skjerming_address__c'
 ];
 
 export default class Ips_showParticipantDetail extends LightningElement {
@@ -20,7 +20,7 @@ export default class Ips_showParticipantDetail extends LightningElement {
         } else if (data) {
             this.detail = data;
             this.name = this.detail.fields.Name.value;
-            this.adress = this.detail.fields.IPS_Participants_home_address__c.value;
+            this.adress = this.detail.fields.IPS_participant_skjerming_address__c.value;
         }
     }
 
