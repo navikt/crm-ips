@@ -4,8 +4,8 @@
         <description>Changes owner on all open events that is open and related to a work trail, assigns it to new work trail owner</description>
         <name>Change_owner_on_event</name>
         <label>Change owner on event</label>
-        <locationX>176</locationX>
-        <locationY>755</locationY>
+        <locationX>308</locationX>
+        <locationY>971</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -43,8 +43,8 @@
         <description>Changes owner on all open task (delmål) that is open, assigns it to new work trail owner</description>
         <name>Change_owner_on_task</name>
         <label>Change owner on task</label>
-        <locationX>176</locationX>
-        <locationY>647</locationY>
+        <locationX>308</locationX>
+        <locationY>863</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -76,8 +76,8 @@
     <assignments>
         <name>setOldOwner</name>
         <label>setOldOwner</label>
-        <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationX>308</locationX>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>varOldOwner</assignToReference>
             <operator>Assign</operator>
@@ -103,6 +103,28 @@
             <targetReference>getOldUserName</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>checkOwnerType</name>
+        <label>checkOwnerType</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>getWorkTrailDetails</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isQueue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getOwnerType</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>isQueue</label>
+        </rules>
+    </decisions>
     <description>Update owner on related object when work trail owner changes.</description>
     <environments>Default</environments>
     <formulas>
@@ -134,8 +156,8 @@
     <recordLookups>
         <name>getOldUserName</name>
         <label>getOldUserName</label>
-        <locationX>176</locationX>
-        <locationY>539</locationY>
+        <locationX>308</locationX>
+        <locationY>755</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Change_owner_on_task</targetReference>
@@ -155,10 +177,38 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>getWorkTrailDetails</name>
-        <label>getWorkTrailDetails</label>
+        <name>getOwnerType</name>
+        <label>getOwnerType</label>
         <locationX>176</locationX>
         <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkOwnerType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IPS Fortrolig</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Queue</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Group</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getWorkTrailDetails</name>
+        <label>getWorkTrailDetails</label>
+        <locationX>308</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>setOldOwner</targetReference>
@@ -188,8 +238,8 @@
     <recordUpdates>
         <name>update_ownerTextField</name>
         <label>update ownerTextField</label>
-        <locationX>176</locationX>
-        <locationY>971</locationY>
+        <locationX>308</locationX>
+        <locationY>1187</locationY>
         <inputAssignments>
             <field>IPS_ownerNameText__c</field>
             <value>
@@ -202,7 +252,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>getWorkTrailDetails</targetReference>
+            <targetReference>getOwnerType</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -227,8 +277,8 @@
     <subflows>
         <name>create_owner_history</name>
         <label>create owner history</label>
-        <locationX>176</locationX>
-        <locationY>863</locationY>
+        <locationX>308</locationX>
+        <locationY>1079</locationY>
         <connector>
             <targetReference>update_ownerTextField</targetReference>
         </connector>
