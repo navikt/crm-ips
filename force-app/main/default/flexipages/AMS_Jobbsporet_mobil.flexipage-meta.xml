@@ -56,6 +56,56 @@
                 <identifier>force_highlightsPanel</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Deltaker er reservert mot å motta sms fra jobbsporet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Info</value>
+                </componentInstanceProperties>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isSMSReserved__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Deltaker er skjermet. Vis aktsomhet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Warning</value>
+                </componentInstanceProperties>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
         <name>header</name>
         <type>Region</type>
     </flexiPageRegions>
