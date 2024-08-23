@@ -3,10 +3,7 @@ import { getRecord } from 'lightning/uiRecordApi';
 
 const FIELDS = [
     'Work_Trail__c.Name',
-    'Work_Trail__c.IPS_Participant_email_address__c',
-    'Work_Trail__c.IPS_participants_age__c',
-    'Work_Trail__c.IPS_Participants_home_address__c',
-    'Work_Trail__c.IPS_Partticipant_phone_number__c'
+    'Work_Trail__c.IPS_participant_skjerming_address__c'
 ];
 
 export default class Ips_showParticipantDetail extends LightningElement {
@@ -23,10 +20,7 @@ export default class Ips_showParticipantDetail extends LightningElement {
         } else if (data) {
             this.detail = data;
             this.name = this.detail.fields.Name.value;
-            this.age = this.detail.fields.IPS_participants_age__c.value;
-            this.adress = this.detail.fields.IPS_Participants_home_address__c.value;
-            this.email = this.detail.fields.IPS_Participant_email_address__c.value;
-            this.phone = this.detail.fields.IPS_Partticipant_phone_number__c.value;
+            this.adress = this.detail.fields.IPS_participant_skjerming_address__c.value;
         }
     }
 

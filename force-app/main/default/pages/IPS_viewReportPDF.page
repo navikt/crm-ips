@@ -212,6 +212,9 @@
                     </apex:outputpanel>
                 </apex:outputpanel>
             </div>
+            <apex:outputpanel rendered="{!AND (noOfCancelledMeetings > 0, isUO)}">
+                <apex:outputText><p>Antall avlyste deltakermøter : {!noOfCancelledMeetings}</p></apex:outputText>
+            </apex:outputpanel>
 
             <!-- Samarbeid med arbeidsgivere i perioden -->
             <div style="page-break-inside: avoid">
@@ -583,10 +586,10 @@
             </apex:outputpanel>
 
             <apex:outputpanel rendered="{!plannedAmsEductions.size !=0}">
-                <apex:outputText><h3>Opplæringsløp</h3></apex:outputText>
+                <apex:outputText><h3>Planlagte opplæringsløp</h3></apex:outputText>
                 <div style="page-break-inside: avoid">
                     <apex:repeat value="{!plannedAmsEductions}" var="plan">
-                        <apex:outputText><h4>Utdanning - {!plan.Name}</h4></apex:outputText>
+                        <apex:outputText><h4>{!plan.Name} - {!plan.AMS_Status__c}</h4></apex:outputText>
                         <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
                             <tr>
                                 <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Institusjon</th>
@@ -603,9 +606,25 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Sluttdato</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                        <apex:param value="{!plan.AMS_End_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Type</th>
                                 <td style="border: 1px solid #f1f1f1">
                                     <apex:outputField value="{!plan.AMS_Form_of_Study__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                    Detaljer om opplæring
+                                </th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!plan.AMS_Description__c}" />
                                 </td>
                             </tr>
                         </table>
@@ -819,6 +838,11 @@
                     ><p>
                         Det er {!notAttendedPartMeetingNumber} deltakermøte(r) hvor deltaker ikke har møtt.
                     </p></apex:outputText
+                >
+            </apex:outputpanel>
+            <apex:outputpanel rendered="{!AND (noOfCancelledMeetings > 0, isUO)}">
+                <apex:outputText
+                    ><p>Det er {!noOfCancelledMeetings} deltakermøte(r) som har blitt avlyst.</p></apex:outputText
                 >
             </apex:outputpanel>
             <div style="padding-bottom: 10px"></div>

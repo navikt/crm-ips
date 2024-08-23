@@ -6,10 +6,6 @@
         <formula>True</formula>
     </fieldOverrides>
     <fieldOverrides>
-        <field>ips_Out_in_the_field__c</field>
-        <formula>true</formula>
-    </fieldOverrides>
-    <fieldOverrides>
         <field>IPS_Subcategory_Type_UO__c</field>
         <literalValue>Relationship building</literalValue>
     </fieldOverrides>
@@ -18,8 +14,12 @@
         <literalValue>Arbeidsgivermøte</literalValue>
     </fieldOverrides>
     <fieldOverrides>
-        <field>ips_uo_Kanal__c</field>
-        <literalValue>Fysisk</literalValue>
+        <field>OwnerId</field>
+        <formula>$User.Id</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>RelatedToAccount__c</field>
+        <formula>Account.Id</formula>
     </fieldOverrides>
     <fieldOverrides>
         <field>TAG_ActivityType__c</field>
@@ -29,6 +29,10 @@
         <field>TAG_service__c</field>
         <literalValue>IPS Jobbstøtte</literalValue>
     </fieldOverrides>
+    <fieldOverrides>
+        <field>WhatId</field>
+        <formula>Account.Id</formula>
+    </fieldOverrides>
     <label>Nytt arbeidsgivermøte</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
@@ -36,7 +40,12 @@
         <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>WhoId</field>
+                <field>RelatedToAccount__c</field>
+                <uiBehavior>Readonly</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Konto_kontakt__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -51,29 +60,17 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Location</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>EndDateTime</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-        </quickActionLayoutColumns>
-        <quickActionLayoutColumns>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>ips_Is_the_employer_decision_maker__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
                 <field>TAG_NoPersonInformation__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>IPS_Status1__c</field>
+                <field>ips_uo_Kanal__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Location</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -83,15 +80,21 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ips_Travel_time__c</field>
-                <uiBehavior>Edit</uiBehavior>
+                <field>EndDateTime</field>
+                <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>IPS_travelTimeFrom__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ips_Travel_time__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
         </quickActionLayoutColumns>
+        <quickActionLayoutColumns/>
     </quickActionLayout>
     <targetObject>Event</targetObject>
     <targetParentField>What</targetParentField>

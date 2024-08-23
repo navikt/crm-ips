@@ -40,7 +40,7 @@
                                 <criteria>
                                     <leftValue>{!$User.Profile.Name}</leftValue>
                                     <operator>EQUAL</operator>
-                                    <rightValue>NAV IPS Metodeveiler</rightValue>
+                                    <rightValue>NAV IPS Metodeveileder</rightValue>
                                 </criteria>
                                 <criteria>
                                     <leftValue>{!$User.Profile.Name}</leftValue>
@@ -58,18 +58,13 @@
                             <value>PrintableView</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Work_Trail__c.IPS_cloneWorkTrail</value>
+                            <value>Clone</value>
                             <visibilityRule>
-                                <booleanFilter>4 AND (1 OR 2 OR 3)</booleanFilter>
+                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
                                 <criteria>
                                     <leftValue>{!$User.Profile.Name}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>NAV IPS Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV UO Metodeveileder</rightValue>
                                 </criteria>
                                 <criteria>
                                     <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
@@ -77,9 +72,9 @@
                                     <rightValue>true</rightValue>
                                 </criteria>
                                 <criteria>
-                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
                                     <operator>EQUAL</operator>
-                                    <rightValue>Ended</rightValue>
+                                    <rightValue>NAV UO Metodeveileder</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
@@ -171,6 +166,31 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Deltaker er skjermet. Vis aktsomhet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Warning</value>
+                </componentInstanceProperties>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner3</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>hideUpdateButton</name>
                     <value>false</value>
                 </componentInstanceProperties>
@@ -186,16 +206,6 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>readonly</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Name</fieldItem>
-                <identifier>field1</identifier>
-            </fieldInstance>
-        </itemInstances>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
@@ -224,6 +234,13 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.IPS_Participants_home_address__c</fieldItem>
                 <identifier>RecordIPS_Participants_home_address_cField</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -246,24 +263,6 @@
                 <identifier>RecordIPS_Participant_email_address_cField</identifier>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-666a98d2-c934-4624-bd96-0179d9e1c9a3</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-666a98d2-c934-4624-bd96-0179d9e1c9a3</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>flexipage_column</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-87f1ae79-a177-4896-a682-963c8851be4f</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
@@ -836,31 +835,6 @@
                         <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>true</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>columns</name>
-                    <value>Facet-87f1ae79-a177-4896-a682-963c8851be4f</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>horizontalAlignment</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>{!$Label.IPS_Participant_detail}</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:fieldSection</componentName>
-                <identifier>flexipage_fieldSection</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>false</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -1631,8 +1605,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.ips_Network__c</fieldItem>
-                <identifier>field37</identifier>
+                <fieldItem>Record.ips_job_edu_support_network__c</fieldItem>
+                <identifier>Recordips_job_edu_support_network_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-972fee0b-01de-4e19-bfe6-f58db06da3a1</name>

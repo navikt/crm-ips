@@ -31,6 +31,7 @@ public with sharing class IPS_viewReportPDFController {
     public list<Event> completedPartMeeting { get; set; }
     public list<Event> notAttendedPartMeeting { get; set; }
     public Integer completedPartMeetingNumber { get; set; }
+    public Integer noOfCancelledMeetings { get; set; }
     public Integer notAttendedPartMeetingNumber { get; set; }
     public Set<String> accountNames { get; set; }
 
@@ -64,6 +65,7 @@ public with sharing class IPS_viewReportPDFController {
         getEmployerActivity();
         getParticipantActivity();
         this.openIntervallMeeting = getOpenIntervallActivity(intervallToDate);
+        this.noOfCancelledMeetings = noOfCancelledMeetings(intervallFromDate, intervallToDate);
         this.activeParticipantsJobs = getActiveJobs(intervallFromDate, intervallToDate);
         this.getPlannedJobs = getPlannedJobs();
         this.activeParticipantsEducations = getActiveEducations(intervallFromDate, intervallToDate);
@@ -141,7 +143,6 @@ public with sharing class IPS_viewReportPDFController {
                 ips_End_Date__c,
                 End_Cause__c,
                 toLabel(ips_Other_end_cases__c),
-                toLabel(ips_Work__c),
                 toLabel(ips_Main_Goal_list__c),
                 ips_Priority_career_wishes__c,
                 ips_Desired_profession_industry_career__c,
@@ -365,6 +366,33 @@ public with sharing class IPS_viewReportPDFController {
         this.notAttendedPartMeetingNumber = tempNotAttendedNumber;
     }
 
+    /**
+     * Returns no of cancelled participant meetings based on report type requested.
+     *
+     * @param startDate start date of the interval report
+     * @param endDate end date of the interval report
+     * @return  no of cancelled meetings
+     */
+    private Integer noOfCancelledMeetings(Date startDate, Date endDate) {
+        list<Event> partActivity = new List<Event>();
+        String partSelect = 'SELECT id,Subject,CreatedDate,IPS_subjectAndDate__c, ActivityDate,Description,IPS_Type__c,IPS_Status1__c FROM event';
+        String partWhere = ' WHERE IPS_Type__c IN (\'Meeting with Participant\',\'Start up meeting\') AND IPS_Status1__c IN (\'Cancelled\')';
+        String partId = ' AND WhatId = :workTrailId';
+        String partFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
+        String partSort = ' ORDER BY ActivityDate DESC';
+        String query = '';
+
+        if (isEndReport) {
+            query = partSelect + partWhere + partId + partSort;
+        }
+        if (isIntervallReport) {
+            query = partSelect + partWhere + partId + partFilter + partSort;
+        }
+
+        partActivity = Database.query(query);
+        return partActivity.size();
+    }
+
     /****************** jobb **************************/
     private list<ips_Job__c> getActiveJobs(Date startDate, Date endDate) {
         List<ips_Job__c> jobList = new List<ips_Job__c>();
@@ -455,8 +483,13 @@ public with sharing class IPS_viewReportPDFController {
         return plannedJobs;
     }
 
-    /****************** Utdanning IPS *************************/
+    /****************** Education **************************/
 
+    /**
+     * Returns a list of IPS Education with status planned
+     * @param endDate enddate of the interval report
+     * @return  list of IPS Education
+     */
     private list<ips_Education__c> getPlannedEducations(Date endDate) {
         List<ips_Education__c> eduList = new List<ips_Education__c>();
 
@@ -484,6 +517,17 @@ public with sharing class IPS_viewReportPDFController {
         return eduList;
     }
 
+    /**
+     * Returns a list of IPS education related to the worktrail
+     *
+     * If the report is an end report, it returns the education that are completed and ongoing.
+     * If the report is an intervall report,
+     * it returns the education that are completed, ongoing and planned.
+     * @param startDate Start date of the interval report
+     * @param endDate End date of the interval report
+     * @return  List of IPS education related to the worktrail
+     *
+     */
     private list<ips_Education__c> getActiveEducations(Date startDate, Date endDate) {
         List<ips_Education__c> eduList = new List<ips_Education__c>();
         List<ips_Education__c> allEdu = new List<ips_Education__c>();
@@ -530,8 +574,16 @@ public with sharing class IPS_viewReportPDFController {
         return eduList;
     }
 
-    /****************** Utdanning AMS *************************/
-
+    /**
+     * Returns list of AMS education related to the worktrail.
+     *
+     * If the report is an end report, it returns the education that are completed and ongoing.
+     * If the report is an intervall report,
+     * it returns the education that are completed, ongoing and withing the date range.
+     * @param startDate start date of the interval report
+     * @param endDate end date of the interval report
+     * @return  list of AMS education related to the worktrail
+     */
     private List<AMS_Vocational_education_and_training__c> getAMSEducation(Date startDate, Date endDate) {
         List<AMS_Vocational_education_and_training__c> amsEduList = new List<AMS_Vocational_education_and_training__c>();
         List<AMS_Vocational_education_and_training__c> allAmsEdu = new List<AMS_Vocational_education_and_training__c>();
@@ -588,6 +640,11 @@ public with sharing class IPS_viewReportPDFController {
         return amsEduList;
     }
 
+    /**
+     * Returns a list of AMS educations with status planned
+     * @param endDate the end date
+     * @return  list of AMS education
+     */
     private list<AMS_Vocational_education_and_training__c> getPlannedAMSEducations(Date endDate) {
         List<AMS_Vocational_education_and_training__c> eduList = new List<AMS_Vocational_education_and_training__c>();
 
@@ -617,6 +674,8 @@ public with sharing class IPS_viewReportPDFController {
         }
         return eduList;
     }
+
+    /****************** Passive periods **************************/
 
     /**
      * Returns all the passive periods related to a worktrail
