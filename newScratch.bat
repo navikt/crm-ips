@@ -71,8 +71,8 @@ call sf force:package:install --package 04tKB000000XzCAYA0 -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-ips 0.450.0.."
-call sf force:package:install --package 04t7U000000Y4RaQAK -r --installation-key %3 --wait 10 --publish-wait 10
+echo "Installerer crm-ips 0.455.0.."
+call sf force:package:install --package 04tKB000000XzEfYAK -r --installation-key %3 --wait 10 --publish-wait 10
 
 echo ""
 echo "TILDELER"
