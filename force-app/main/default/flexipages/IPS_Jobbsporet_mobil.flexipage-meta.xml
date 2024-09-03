@@ -4,6 +4,81 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Deltaker er skjermet. Vis aktsomhet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Warning</value>
+                </componentInstanceProperties>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner3</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Deltaker er reservert mot å motta sms fra jobbsporet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Info</value>
+                </componentInstanceProperties>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isSMSReserved__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Passiv</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Info</value>
+                </componentInstanceProperties>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.ips_Passive__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>actionNames</name>
                     <valueList>
                         <valueListItems>
@@ -62,76 +137,19 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>message</name>
-                    <value>Passiv</value>
+                    <name>relatedListComponentOverride</name>
+                    <value>NONE</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>size</name>
-                    <value>L</value>
+                    <name>rowsToDisplay</name>
+                    <value>10</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>type</name>
-                    <value>Info</value>
+                    <name>showActionBar</name>
+                    <value>true</value>
                 </componentInstanceProperties>
-                <componentName>ips_alertBanner</componentName>
-                <identifier>c_ips_alertBanner</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.ips_Passive__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>true</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>message</name>
-                    <value>Deltaker er reservert mot å motta sms fra jobbsporet</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>size</name>
-                    <value>L</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>type</name>
-                    <value>Info</value>
-                </componentInstanceProperties>
-                <componentName>ips_alertBanner</componentName>
-                <identifier>c_ips_alertBanner2</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.IPS_isSMSReserved__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>true</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>message</name>
-                    <value>Deltaker er skjermet. Vis aktsomhet</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>size</name>
-                    <value>L</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>type</name>
-                    <value>Warning</value>
-                </componentInstanceProperties>
-                <componentName>ips_alertBanner</componentName>
-                <identifier>c_ips_alertBanner3</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>true</rightValue>
-                    </criteria>
-                </visibilityRule>
+                <componentName>force:relatedListContainer</componentName>
+                <identifier>force_relatedListContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>header</name>
@@ -139,79 +157,454 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Main_goal__c</fieldItem>
+                <identifier>Recordips_Main_goal_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-55841ebb-dc2c-4655-b13e-1ea9caf73dfc</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>parentFieldApiName</name>
-                    <value>Work_Trail__c.Id</value>
+                    <name>body</name>
+                    <value>Facet-55841ebb-dc2c-4655-b13e-1ea9caf73dfc</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-a7ad9803-b78d-488f-8ec7-a613e696023f</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-a7ad9803-b78d-488f-8ec7-a613e696023f</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>relatedListApiName</name>
-                    <value>OpenActivities</value>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
-                    <value>GRID</value>
+                    <name>label</name>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-d11dc6c6-0eb1-4674-8c2c-598d95481d0a</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_participants_age__c</fieldItem>
+                <identifier>RecordIPS_participants_age_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_Participants_home_address__c</fieldItem>
+                <identifier>RecordIPS_Participants_home_address_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_Partticipant_phone_number__c</fieldItem>
+                <identifier>RecordIPS_Partticipant_phone_number_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Referred_date__c</fieldItem>
+                <identifier>Recordips_Referred_date_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_behandler__c</fieldItem>
+                <identifier>Recordips_behandler_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.OwnerId</fieldItem>
+                <identifier>RecordOwnerIdField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-f91ec69c-791b-45e2-b340-8e7f34801ced</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-f91ec69c-791b-45e2-b340-8e7f34801ced</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-243f4162-33ad-49d1-a68d-1675cf0a3ccf</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-243f4162-33ad-49d1-a68d-1675cf0a3ccf</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>true</value>
+                    <name>label</name>
+                    <value>.</value>
                 </componentInstanceProperties>
-                <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer</identifier>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-f17472c4-120f-4072-85fd-fecf730557dc</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Desired_profession_industry_career__c</fieldItem>
+                <identifier>Recordips_Desired_profession_industry_career_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Desired_work_tasks__c</fieldItem>
+                <identifier>Recordips_Desired_work_tasks_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Desired_working_environment__c</fieldItem>
+                <identifier>Recordips_Desired_working_environment_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Personal_Qualities__c</fieldItem>
+                <identifier>RecordPersonal_Qualities_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Health__c</fieldItem>
+                <identifier>Recordips_Health_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-61c8650c-8f72-46f9-906e-a3c6f280bfd1</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-61c8650c-8f72-46f9-906e-a3c6f280bfd1</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column4</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-2ec93b14-8b7f-4a12-846c-6417a914a51b</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Education__c</fieldItem>
+                <identifier>Recordips_Education_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Work_experience__c</fieldItem>
+                <identifier>Recordips_Work_experience_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-c51ada6f-fb4b-4327-b1d2-c5ac4506f55f</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-c51ada6f-fb4b-4327-b1d2-c5ac4506f55f</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column3</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-1b573cf9-29a2-4d1a-88a6-8db1785b48f4</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_What_can_be_shared_with_the_employer__c</fieldItem>
+                <identifier>Recordips_What_can_be_shared_with_the_employer_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.What_cannot_be_shared_with_the_employer__c</fieldItem>
+                <identifier>RecordWhat_cannot_be_shared_with_the_employer_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-dbf86bff-c0d2-4b14-bdca-c7460104ce7a</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-dbf86bff-c0d2-4b14-bdca-c7460104ce7a</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column5</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-2ea4fc59-60f0-487e-9369-8e00c8795c1b</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-2ec93b14-8b7f-4a12-846c-6417a914a51b</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Yrkesprofil</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>parentFieldApiName</name>
-                    <value>Work_Trail__c.Id</value>
+                    <name>columns</name>
+                    <value>Facet-1b573cf9-29a2-4d1a-88a6-8db1785b48f4</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>relatedListApiName</name>
-                    <value>Jobs__r</value>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
-                    <value>GRID</value>
+                    <name>label</name>
+                    <value>Utdanning og erfaring</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer2</identifier>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection6</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>parentFieldApiName</name>
-                    <value>Work_Trail__c.Id</value>
+                    <name>columns</name>
+                    <value>Facet-2ea4fc59-60f0-487e-9369-8e00c8795c1b</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>relatedListApiName</name>
-                    <value>Educations__r</value>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
-                    <value>GRID</value>
+                    <name>label</name>
+                    <value>Åpenhet</value>
                 </componentInstanceProperties>
-                <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer4</identifier>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection7</identifier>
             </componentInstance>
         </itemInstances>
+        <name>Facet-1c8ce150-1ea2-4f5f-9f0f-8594da721998</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentName>force:detailPanel</componentName>
                 <identifier>force_detailPanel</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-3fc3de47-78f4-4b90-970c-eae0e37ee258</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-d11dc6c6-0eb1-4674-8c2c-598d95481d0a</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Beskrivelse av hovedmål</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection1</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-f17472c4-120f-4072-85fd-fecf730557dc</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Detaljer (minimert)</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection2</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-1c8ce150-1ea2-4f5f-9f0f-8594da721998</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Kartlegging (minimert)</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection--oqj4pjc1ook</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection3</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-3fc3de47-78f4-4b90-970c-eae0e37ee258</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Jobbsporet i sin helhet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection--c2e7cuka6ka</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection4</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-c6fc624c-2306-43be-ad5e-941bdb66f336</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>accordionSections</name>
+                    <value>Facet-c6fc624c-2306-43be-ad5e-941bdb66f336</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>defaultSectionName</name>
+                    <value>accordionSection1</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordion</componentName>
+                <identifier>flexipage_accordion</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
