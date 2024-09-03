@@ -118,7 +118,7 @@ private class IPS_EventReminderSMSBatchTest {
 
     @isTest
     static void schedulableTest() {
-        String cron_exp = '0 0 0 3 9 ? 2024';
+        String cron_exp = '0 0 0 3 9 ? 2034';
         Test.startTest();
         String jobId = System.schedule('IPS_EventReminderSMSBatch', cron_exp, new IPS_EventReminderSMSBatch());
         Test.stopTest();
