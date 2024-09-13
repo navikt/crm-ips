@@ -66,8 +66,8 @@ sf force:package:install --package 04tKB000000XzDDYA0 -r --installation-key $3 -
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-community-base 0.117.0"
-sf force:package:install --package 04tKB000000XzDDYA0 -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-community-base 0.116.0"
+sf force:package:install --package 04tKB000000XzCAYA0 -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
