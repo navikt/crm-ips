@@ -26,6 +26,10 @@ public with sharing class IPS_CVController {
                 : null;
 
             return enCV != null ? enCV : null;
+        } else if (response.getStatusCode() == 401) {
+            throw new CVException('Unauthorized');
+        } else if (response.getStatusCode() == 403) {
+            throw new CVException('Brukeren er ikke under oppfølging');
         } else if (response.getStatusCode() == 404) {
             throw new CVException('Ingen CV');
         }
