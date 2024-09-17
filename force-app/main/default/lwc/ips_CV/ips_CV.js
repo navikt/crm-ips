@@ -13,6 +13,8 @@ export default class Ips_CV extends LightningElement {
     responded = false;
     error = false;
     isExpanded = true;
+    rawErrorMsg = '';
+    errorMsg = '';
 
     @wire(getCV, { recordId: '$recordId' })
     wiredCV({ data, error }) {
@@ -23,7 +25,11 @@ export default class Ips_CV extends LightningElement {
         if (error) {
             this.cv = null;
             this.error = true;
+            this.rawErrorMsg = error.body.message;
             console.log(JSON.stringify(error, null, 2));
+        }
+        if (this.rawErrorMsg.includes('Unauthorized endpoint')) {
+            this.errorMsg = 'Visning av CV er ikke tilgjengelig i testmiljøet.';
         }
     }
 
