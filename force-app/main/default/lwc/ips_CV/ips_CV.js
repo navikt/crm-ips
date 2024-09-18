@@ -30,6 +30,14 @@ export default class Ips_CV extends LightningElement {
         }
         if (this.rawErrorMsg.includes('Unauthorized endpoint')) {
             this.errorMsg = 'Visning av CV er ikke tilgjengelig i testmiljøet.';
+        } else if (this.rawErrorMsg.includes('Unauthorized')) {
+            this.errorMsg = 'Uautorisert tilgang – vennligst kontroller autentiseringen.';
+        } else if (this.rawErrorMsg.includes('Brukeren er ikke')) {
+            this.errorMsg = 'Brukeren er ikke under oppfølging';
+        } else if (this.rawErrorMsg.includes('Ingen CV')) {
+            this.errorMsg = 'Ingen CV funnet';
+        } else {
+            this.errorMsg = 'Kunne ikke hente CV.';
         }
     }
 
