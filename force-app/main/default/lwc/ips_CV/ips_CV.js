@@ -106,17 +106,20 @@ export default class Ips_CV extends LightningElement {
         let list = [];
         let data = this.cv.kurs;
 
-        for (var k in data) {
-            let newTidsenhet = data[k].varighet.tidsenhet.toLowerCase();
+        for (let k in data) {
+            if (Object.prototype.hasOwnProperty.call(data, k)) {
+                let tidsenhet = data[k].varighet?.tidsenhet || '';
+                let newTidsenhet = tidsenhet.toLowerCase();
 
-            let newVarighet = { varighet: data[k].varighet.varighet, tidsenhet: newTidsenhet };
-            let newKurs = {
-                tittel: data[k].tittel,
-                arrangor: data[k].arrangor,
-                fraDato: data[k].fraDato,
-                varighet: newVarighet
-            };
-            list.push(newKurs);
+                let newVarighet = { varighet: data[k].varighet.varighet, tidsenhet: newTidsenhet };
+                let newKurs = {
+                    tittel: data[k].tittel,
+                    arrangor: data[k].arrangor,
+                    fraDato: data[k].fraDato,
+                    varighet: newVarighet
+                };
+                list.push(newKurs);
+            }
         }
         return list;
     }
@@ -136,14 +139,16 @@ export default class Ips_CV extends LightningElement {
         let list = [];
         let data = this.cv.sprak;
 
-        for (var s in data) {
-            let muntlig = data[s].muntligNiva.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
-            muntlig = muntlig.charAt(0) + muntlig.slice(1).toLowerCase();
-            let skriftlig = data[s].skriftligNiva.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
-            skriftlig = skriftlig.charAt(0) + skriftlig.slice(1).toLowerCase();
+        for (let s in data) {
+            if (Object.prototype.hasOwnProperty.call(data, s)) {
+                let muntlig = data[s].muntligNiva.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
+                muntlig = muntlig.charAt(0) + muntlig.slice(1).toLowerCase();
+                let skriftlig = data[s].skriftligNiva.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
+                skriftlig = skriftlig.charAt(0) + skriftlig.slice(1).toLowerCase();
 
-            let newSprak = { sprak: data[s].sprak, muntligNiva: muntlig, skriftligNiva: skriftlig };
-            list.push(newSprak);
+                let newSprak = { sprak: data[s].sprak, muntligNiva: muntlig, skriftligNiva: skriftlig };
+                list.push(newSprak);
+            }
         }
         return list;
     }
@@ -162,10 +167,14 @@ export default class Ips_CV extends LightningElement {
         }
         let list = [];
         let data = this.cv.jobbprofil.onsketAnsettelsesform;
-        for (var a in data) {
-            let tittel = data[a].tittel.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ').replace('AE', 'Æ');
-            tittel = tittel.charAt(0) + tittel.slice(1).toLowerCase();
-            list.push(tittel);
+        for (let a in data) {
+            if (Object.prototype.hasOwnProperty.call(data, a)) {
+                let tittel = data[a].tittel
+                    .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ')
+                    .replace('AE', 'Æ');
+                tittel = tittel.charAt(0) + tittel.slice(1).toLowerCase();
+                list.push(tittel);
+            }
         }
         return list;
     }
@@ -176,9 +185,11 @@ export default class Ips_CV extends LightningElement {
         }
         let list = [];
         let data = this.cv.jobbprofil.onsketArbeidstidsordning;
-        for (var a in data) {
-            let tittel = data[a].tittel.charAt(0) + data[a].tittel.slice(1).toLowerCase();
-            list.push(tittel);
+        for (let a in data) {
+            if (Object.prototype.hasOwnProperty.call(data, a)) {
+                let tittel = data[a].tittel.charAt(0) + data[a].tittel.slice(1).toLowerCase();
+                list.push(tittel);
+            }
         }
         return list;
     }
