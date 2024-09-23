@@ -1,85 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Open_workTrail</name>
-        <label>Open workTrail</label>
-        <locationX>534</locationX>
-        <locationY>1922</locationY>
-        <actionName>c:IPS_redirect</actionName>
-        <actionType>component</actionType>
+        <name>IPS_workTrailClonedNotification</name>
+        <label>Work trail cloned notification</label>
+        <locationX>842</locationX>
+        <locationY>3878</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>recordId</name>
+            <name>customNotifTypeId</name>
             <value>
-                <elementReference>getWorktrailRecord.Id</elementReference>
+                <elementReference>varNotificationId</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>c:IPS_redirect</nameSegment>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>IPS_add_owner_lookup.recordIds</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Tildeling av jobbspor</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <stringValue>Du har fått tildelt ett jobbspor</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>varNewRecordId</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>60.0</apiVersion>
+    <apiVersion>61.0</apiVersion>
     <assignments>
-        <name>IPS_add_recordtypeId</name>
-        <label>Add recordtypeId</label>
-        <locationX>534</locationX>
-        <locationY>566</locationY>
+        <name>Add_record_to_list</name>
+        <label>Add record to list</label>
+        <locationX>798</locationX>
+        <locationY>2786</locationY>
         <assignmentItems>
-            <assignToReference>varNewRecordtypeId</assignToReference>
-            <operator>Assign</operator>
+            <assignToReference>varGoalList</assignToReference>
+            <operator>Add</operator>
             <value>
-                <elementReference>varService</elementReference>
+                <elementReference>loopingGoals</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getRecordtTypeName</targetReference>
+            <targetReference>loopingGoals</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>IPS_assign_user_input</name>
-        <label>Assign user input</label>
-        <locationX>534</locationX>
-        <locationY>1190</locationY>
+        <description>Legger til recordId for nytt jobbspor og valgt eier.</description>
+        <name>addDatavaluesGoals</name>
+        <label>Add datavalues</label>
+        <locationX>798</locationX>
+        <locationY>2678</locationY>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Referred_date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>IPS_referred_Date</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Behandlingsteam__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>IPS_treatmentTeam</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Applying_Department__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>IPS_applying_department</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_NAV_supervisor__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>IPS_navSupervisor</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>getWorktrailRecord.OwnerId</assignToReference>
+            <assignToReference>loopingGoals.OwnerId</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>IPS_add_owner_lookup.recordId</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.RecordTypeId</assignToReference>
+            <assignToReference>loopingGoals.WhatId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>varService</elementReference>
+                <elementReference>varNewWorkTrailRecord.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_record_to_list</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Legger til recordId for nytt jobbspor</description>
+        <name>addDatavaluesJobs</name>
+        <label>Add data values</label>
+        <locationX>822</locationX>
+        <locationY>3386</locationY>
+        <assignmentItems>
+            <assignToReference>loopingJobs.ips_Work_Trail__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varNewWorkTrailRecord.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>addJobRecordToList</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addJobRecordToList</name>
+        <label>Add job record to list</label>
+        <locationX>822</locationX>
+        <locationY>3494</locationY>
+        <assignmentItems>
+            <assignToReference>varJobList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>loopingJobs</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loopingJobs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_recordtype</name>
+        <label>Assign recordtype</label>
+        <locationX>842</locationX>
+        <locationY>2246</locationY>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varNewWorkTrailRecordtypeId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>createNewWorkTrailRecord</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Legger jobbsporet som trigges inn i en ny liste</description>
+        <name>assignToNewWorkTrailList</name>
+        <label>Assign to new work trail list</label>
+        <locationX>842</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>startMenu</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assignUserInput</name>
+        <label>Assign user input</label>
+        <locationX>842</locationX>
+        <locationY>1622</locationY>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Referred_date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_referred_Date</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Behandlingsteam__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_treatmentTeam</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Applying_Department__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_applying_department</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_NAV_supervisor__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_navSupervisor</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_add_owner_lookup.recordId</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -87,155 +194,156 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Fjerner verdier fra IPS</description>
         <name>IPS_remove_IPS_values</name>
         <label>Remove IPS values</label>
-        <locationX>534</locationX>
-        <locationY>1406</locationY>
+        <locationX>842</locationX>
+        <locationY>2054</locationY>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.Phone_number_for_contact_when_no_show__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.Phone_number_for_contact_when_no_show__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Contact_when_not_showing__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Contact_when_not_showing__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Benefits_of_openness_to_the_employer__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Disadvantages_of_openness_employe__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Disadvantages_of_openness_employe__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Benefits_of_openness_to_the_employer__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Plan__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Plan__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Transition_to_work__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Transition_to_work__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Financialframework_before_start_work__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Financialframework_before_start_work__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>checkChoices</targetReference>
+            <targetReference>Assign_recordtype</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <description>Values that booth services use</description>
+        <description>Fjerner verdier som begge tjenester bruker og som ikke bør klones med</description>
         <name>IPS_remove_old_values</name>
         <label>Remove old values</label>
-        <locationX>534</locationX>
-        <locationY>1298</locationY>
+        <locationX>842</locationX>
+        <locationY>1730</locationY>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.Id</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.Id</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Status__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Status__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Referred</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.Oppstartsdato__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.Oppstartsdato__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>varSetDateNull</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_First_meeting_with_the_Employer_held__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_First_meeting_with_the_Employer_held__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>varSetDateNull</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_End_Date__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_End_Date__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>varSetDateNull</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.End_Cause__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.End_Cause__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Other_end_cases__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Other_end_cases__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Transparency_consent_obtained_date__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Transparency_consent_obtained_date__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>varSetDateNull</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.What_cannot_be_shared_with_the_employer__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.What_cannot_be_shared_with_the_employer__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_What_can_be_shared_with_the_employer__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_What_can_be_shared_with_the_employer__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Can_the_employer_be_contacted__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Can_the_employer_be_contacted__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>false</booleanValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>getWorktrailRecord.ips_Network_partner__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Network_partner__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>IPS_remove_IPS_values</targetReference>
+            <targetReference>checkServiceInput</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -256,7 +364,7 @@
     </choices>
     <choices>
         <name>X1_Copy</name>
-        <choiceText>&lt;span style=&quot;font-size: 14px;&quot;&gt;1. Opprette en kopi av ett avsluttet jobbspor og hvor deltaker har vært ute av tjenesten innen 12 mnd etter avsluttet.&lt;/span&gt;</choiceText>
+        <choiceText>1. Velges når deltaker er skrevet ut av tiltaket, men søkes inn igjen i tiltaket.</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>1. Copy</stringValue>
@@ -264,7 +372,7 @@
     </choices>
     <choices>
         <name>X2_Move</name>
-        <choiceText>2. Opprette en kopi av jobbsporet hvor deltaker er aktiv i tjenesten, men flytter eller endrer tjeneste</choiceText>
+        <choiceText>2. Velges når deltaker overføres til en annen IPS/AMS tjeneste og/eller flytter</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>2. Move</stringValue>
@@ -282,10 +390,10 @@
         <description>Sjekker om jobbsporet er avsluttet og har en sluttdato som er eldre enn 12 måneder.</description>
         <name>ageCheck</name>
         <label>Age check</label>
-        <locationX>292</locationX>
-        <locationY>242</locationY>
+        <locationX>578</locationX>
+        <locationY>458</locationY>
         <defaultConnector>
-            <targetReference>IPS_Transfere_choice</targetReference>
+            <targetReference>assignToNewWorkTrailList</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>isOK</defaultConnectorLabel>
         <rules>
@@ -312,11 +420,90 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Different choices creates different trail</description>
-        <name>checkChoices</name>
-        <label>checkChoices</label>
-        <locationX>534</locationX>
-        <locationY>1514</locationY>
+        <name>checkIfGoalsIsNotEmpty</name>
+        <label>Check if goals is not empty</label>
+        <locationX>842</locationX>
+        <locationY>2462</locationY>
+        <defaultConnector>
+            <targetReference>checkIfJobIsNotEmpty</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getActiveGoals</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>loopingGoals</targetReference>
+            </connector>
+            <label>isNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkIfJobIsNotEmpty</name>
+        <label>Check if job is not empty</label>
+        <locationX>842</locationX>
+        <locationY>3170</locationY>
+        <defaultConnector>
+            <targetReference>getNotificationId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isNotJobEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getActiveJobs</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>loopingJobs</targetReference>
+            </connector>
+            <label>isNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Sjekker om deltaker har ett aktivt jobbspor</description>
+        <name>checkIfParticipantHaveAnActiveTrail</name>
+        <label>Check if participant have an active trail</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <defaultConnector>
+            <targetReference>ageCheck</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>noActive</defaultConnectorLabel>
+        <rules>
+            <name>isActive</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getAllRecordsOnSCN</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_2_of_Worktrail_is_too_old</targetReference>
+            </connector>
+            <label>isActive</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Sjekker hvilket menyvalg som er valgt.</description>
+        <name>checkMenuChoice</name>
+        <label>Check menu choice</label>
+        <locationX>842</locationX>
+        <locationY>890</locationY>
+        <defaultConnector>
+            <targetReference>IPS_Information_screen</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Nothing</defaultConnectorLabel>
         <rules>
             <name>isCopy</name>
@@ -328,15 +515,8 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>getWorktrailRecord.ips_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Ended</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>createNewWorkTrailRecord</targetReference>
+                <targetReference>addData</targetReference>
             </connector>
             <label>isCopy</label>
         </rules>
@@ -350,89 +530,51 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>getWorktrailRecord.ips_Status__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Ended</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>createNewWorkTrailRecord</targetReference>
+                <targetReference>getActiveGoals</targetReference>
             </connector>
             <label>isMove</label>
         </rules>
     </decisions>
     <decisions>
-        <name>checkRecordType</name>
-        <label>checkRecordType</label>
-        <locationX>534</locationX>
-        <locationY>782</locationY>
-        <defaultConnector>
-            <targetReference>IPS_Information_screen</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Nothing</defaultConnectorLabel>
+        <description>Basert på valg av posttype/tjeneste, skal det tildeles og slettes informasjon i klonet jobbspor</description>
+        <name>checkServiceInput</name>
+        <label>Check service input</label>
+        <locationX>842</locationX>
+        <locationY>1838</locationY>
+        <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
-            <name>isRecordTypeChanged</name>
+            <name>isAMS</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varNewRecordtypeId</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <elementReference>getWorktrailRecord.RecordTypeId</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>IPS_information_recordtype</targetReference>
-            </connector>
-            <label>isRecordTypeChanged</label>
-        </rules>
-        <rules>
-            <name>isNotRecordTypeChanged</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varNewRecordtypeId</leftValueReference>
+                <leftValueReference>Service</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>getWorktrailRecord.RecordTypeId</elementReference>
+                    <elementReference>AMS</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IPS_add_data</targetReference>
+                <targetReference>getRecordTypeIdAMS</targetReference>
             </connector>
-            <label>isNotRecordTypeChanged</label>
+            <label>isAMS</label>
+        </rules>
+        <rules>
+            <name>isIPS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Service</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>IPS</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getRecordTypeId</targetReference>
+            </connector>
+            <label>isIPS</label>
         </rules>
     </decisions>
     <description>Clones a worktrail, set correct dates, status and remove manual sharings</description>
-    <dynamicChoiceSets>
-        <name>varRecordType</name>
-        <dataType>String</dataType>
-        <displayField>Name</displayField>
-        <filterLogic>1 AND (2 OR 3)</filterLogic>
-        <filters>
-            <field>SobjectType</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Work_Trail__c</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>ips_Supported_Employment</stringValue>
-            </value>
-        </filters>
-        <object>RecordType</object>
-        <valueField>Id</valueField>
-    </dynamicChoiceSets>
     <environments>Default</environments>
     <formulas>
         <name>varDaysSinceEnded</name>
@@ -446,8 +588,47 @@
         <dataType>Date</dataType>
         <expression> {!getWorktrailRecord.ips_End_Date__c}+365</expression>
     </formulas>
+    <formulas>
+        <description>Oversetter recordtype.developername til norsk da dette ikke gjøres automatisk i flow</description>
+        <name>varRecordTypeName</name>
+        <dataType>String</dataType>
+        <expression>CASE({!getWorktrailRecord.RecordType.DeveloperName},
+&apos;IPS&apos;,&apos;IPS&apos;,
+&apos;ips_Supported_Employment&apos;, &apos;AMS&apos;,
+&apos;&apos;
+)</expression>
+    </formulas>
     <interviewLabel>IPS - worktrail_clone {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - worktrail_clone</label>
+    <loops>
+        <description>Løper gjennom for å legge til korrekte verdier</description>
+        <name>loopingGoals</name>
+        <label>Looping goals</label>
+        <locationX>710</locationX>
+        <locationY>2570</locationY>
+        <collectionReference>getActiveGoals</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>addDatavaluesGoals</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Create_goals</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>loopingJobs</name>
+        <label>Looping jobs</label>
+        <locationX>734</locationX>
+        <locationY>3278</locationY>
+        <collectionReference>getActiveJobs</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>addDatavaluesJobs</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>getNotificationId</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -468,81 +649,272 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
+        <description>Oppretter aktive delmål knyttet til nytt jobbspor</description>
+        <name>Create_goals</name>
+        <label>Create goals</label>
+        <locationX>710</locationX>
+        <locationY>2978</locationY>
+        <connector>
+            <targetReference>checkIfJobIsNotEmpty</targetReference>
+        </connector>
+        <inputReference>varGoalList</inputReference>
+    </recordCreates>
+    <recordCreates>
         <name>createNewWorkTrailRecord</name>
         <label>createNewWorkTrailRecord</label>
-        <locationX>534</locationX>
-        <locationY>1814</locationY>
+        <locationX>842</locationX>
+        <locationY>2354</locationY>
         <connector>
-            <targetReference>Open_workTrail</targetReference>
+            <targetReference>checkIfGoalsIsNotEmpty</targetReference>
         </connector>
-        <inputReference>getWorktrailRecord</inputReference>
+        <inputReference>varNewWorkTrailRecord</inputReference>
     </recordCreates>
     <recordLookups>
-        <name>getRecordtTypeName</name>
-        <label>getRecordtTypeName</label>
-        <locationX>534</locationX>
-        <locationY>674</locationY>
+        <description>Henter aktive AMS utdanninger</description>
+        <name>getActiveAMSEducation</name>
+        <label>Get active AMS education</label>
+        <locationX>798</locationX>
+        <locationY>1322</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>checkRecordType</targetReference>
+            <targetReference>addData</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Id</field>
+            <field>AMS_Work_Trail__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>varNewRecordtypeId</elementReference>
+                <elementReference>recordId.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AMS_Vocational_education_and_training__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Henter aktive delmål</description>
+        <name>getActiveGoals</name>
+        <label>Get active goals</label>
+        <locationX>798</locationX>
+        <locationY>998</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getActiveJobs</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Delmål (av hovedmål)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Henter ut aktive utdanninger for IPS</description>
+        <name>getActiveIPSEducation</name>
+        <label>Get active IPS education</label>
+        <locationX>798</locationX>
+        <locationY>1214</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getActiveAMSEducation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Education__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Henter aktive jobber</description>
+        <name>getActiveJobs</name>
+        <label>Get active jobs</label>
+        <locationX>798</locationX>
+        <locationY>1106</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getActiveIPSEducation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Job__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Henter ut jobbspor på fødselsnummer på jobbsporet for å sjekke om det finnes andre jobbspor på deltaker som er aktiv.</description>
+        <name>getAllRecordsOnSCN</name>
+        <label>Get all records on SCN</label>
+        <locationX>314</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkIfParticipantHaveAnActiveTrail</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IPS_Personnummer__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrailRecord.IPS_Personnummer__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Status__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Ended</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getNotificationId</name>
+        <label>getNotificationId</label>
+        <locationX>842</locationX>
+        <locationY>3770</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IPS_workTrailClonedNotification</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Notify_new_owner</stringValue>
+            </value>
+        </filters>
+        <object>CustomNotificationType</object>
+        <outputAssignments>
+            <assignToReference>varNotificationId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>getRecordTypeId</name>
+        <label>getRecordTypeId</label>
+        <locationX>842</locationX>
+        <locationY>1946</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IPS_remove_IPS_values</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IPS</stringValue>
             </value>
         </filters>
         <object>RecordType</object>
         <outputAssignments>
-            <assignToReference>varRecordTypeDeveloperName</assignToReference>
+            <assignToReference>varNewWorkTrailRecordtypeId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>getRecordTypeIdAMS</name>
+        <label>getRecordTypeId</label>
+        <locationX>578</locationX>
+        <locationY>1946</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_recordtype</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
             <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>ips_Supported_Employment</stringValue>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varNewWorkTrailRecordtypeId</assignToReference>
+            <field>Id</field>
         </outputAssignments>
     </recordLookups>
     <recordLookups>
         <description>Henter jobbsporet</description>
         <name>getWorktrailRecord</name>
         <label>Get worktrail record</label>
-        <locationX>292</locationX>
+        <locationX>314</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>ageCheck</targetReference>
+            <targetReference>getAllRecordsOnSCN</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>recordId</elementReference>
+                <elementReference>recordId.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Work_Trail__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <runInMode>DefaultMode</runInMode>
     <screens>
-        <name>IPS_add_data</name>
-        <label>Add data</label>
-        <locationX>534</locationX>
-        <locationY>1082</locationY>
+        <description>Må velge en eier.
+Kan gå videre uten å velge data, men må da huke av for dette.</description>
+        <name>addData</name>
+        <label>3. Add data</label>
+        <locationX>842</locationX>
+        <locationY>1514</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>IPS_assign_user_input</targetReference>
+            <targetReference>assignUserInput</targetReference>
         </connector>
         <fields>
-            <name>IPS_changedRecordType</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Fyll inn påkrevde data.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <name>displayTitle3</name>
+            <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>IPS_add_data_Section1</name>
+            <name>addData_Section1</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>IPS_add_data_Section1_Column1</name>
+                <name>addData_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>IPS_add_owner_lookup</name>
@@ -583,6 +955,35 @@
                     <storeOutputAutomatically>true</storeOutputAutomatically>
                 </fields>
                 <fields>
+                    <name>dataNotKnown</name>
+                    <dataType>Boolean</dataType>
+                    <defaultValue>
+                        <booleanValue>false</booleanValue>
+                    </defaultValue>
+                    <fieldText>Data er ikke kjent</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <helpText>&lt;p&gt;Huk av her hvis data under ikke er kjent.&lt;/p&gt;</helpText>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>addData_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>addData_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
                     <name>IPS_referred_Date</name>
                     <dataType>Date</dataType>
                     <defaultValue>
@@ -596,6 +997,9 @@
                 <fields>
                     <name>IPS_navSupervisor</name>
                     <dataType>String</dataType>
+                    <defaultValue>
+                        <stringValue>SKRIV INN VEILEDERNAVN</stringValue>
+                    </defaultValue>
                     <fieldText>Veileder</fieldText>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -604,6 +1008,9 @@
                 <fields>
                     <name>IPS_treatmentTeam</name>
                     <dataType>String</dataType>
+                    <defaultValue>
+                        <stringValue>SKRIV INN BEHANDLINGSTEAM</stringValue>
+                    </defaultValue>
                     <fieldText>Behandlingsteam</fieldText>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -611,10 +1018,10 @@
                     <visibilityRule>
                         <conditionLogic>and</conditionLogic>
                         <conditions>
-                            <leftValueReference>varRecordTypeDeveloperName</leftValueReference>
+                            <leftValueReference>Service</leftValueReference>
                             <operator>EqualTo</operator>
                             <rightValue>
-                                <stringValue>IPS</stringValue>
+                                <elementReference>IPS</elementReference>
                             </rightValue>
                         </conditions>
                     </visibilityRule>
@@ -622,6 +1029,9 @@
                 <fields>
                     <name>IPS_applying_department</name>
                     <dataType>String</dataType>
+                    <defaultValue>
+                        <stringValue>SKRIV INN INNSØKENDE AVDELING</stringValue>
+                    </defaultValue>
                     <fieldText>Innsøkende avdeling</fieldText>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -629,10 +1039,10 @@
                     <visibilityRule>
                         <conditionLogic>and</conditionLogic>
                         <conditions>
-                            <leftValueReference>varRecordTypeDeveloperName</leftValueReference>
+                            <leftValueReference>Service</leftValueReference>
                             <operator>EqualTo</operator>
                             <rightValue>
-                                <stringValue>ips_Supported_Employment</stringValue>
+                                <elementReference>AMS</elementReference>
                             </rightValue>
                         </conditions>
                     </visibilityRule>
@@ -647,21 +1057,107 @@
             </fields>
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>dataNotKnown</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <description>Gir bruker til å endre tjeneste</description>
-        <name>IPS_information_about_service</name>
-        <label>Information about service</label>
-        <locationX>534</locationX>
+        <description>Viser en liste over jobbspor aktive på deltaker</description>
+        <name>Copy_2_of_Worktrail_is_too_old</name>
+        <label>Participant have an active worktrail</label>
+        <locationX>50</locationX>
         <locationY>458</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <fields>
+            <name>Copy_2_of_Copy_1_of_Title2</name>
+            <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>displayInformationWarning0</name>
+            <fieldText>&lt;p&gt;Det finnes allerede et aktivt jobbspor på denne deltakeren.&lt;/p&gt;&lt;p&gt;Kan ikke klone jobbsporet før alle aktive jobbspor er avsluttet.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>activeParticipantOnWorkTrail</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Work_Trail__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Aktivt jobbspor</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>NO_SELECTION</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>getAllRecordsOnSCN</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-7cae&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Jobbspor navn&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Work Trail Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;IPS_ownerNameText__c&quot;,&quot;guid&quot;:&quot;column-09e4&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Jobbspesialist&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;IPS_ownerNameText&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Gir bruker tilgang til å endre tjeneste</description>
+        <name>informationAboutService</name>
+        <label>2. Information about service</label>
+        <locationX>842</locationX>
+        <locationY>782</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
         <connector>
-            <targetReference>IPS_add_recordtypeId</targetReference>
+            <targetReference>checkMenuChoice</targetReference>
         </connector>
         <fields>
             <name>Title2</name>
@@ -670,18 +1166,19 @@
         </fields>
         <fields>
             <name>displayInformationRecordTypes</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Tjeneste for valgt jobbspor er: {!getWorktrailRecord.RecordType.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Velg under en annen tjeneste ved behov. Hvis ikke la tjeneste stå som foreslått.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Velg tjeneste ved behov. Hvis ikke la tjeneste stå som foreslått.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>varService</name>
-            <choiceReferences>varRecordType</choiceReferences>
+            <name>Service</name>
+            <choiceReferences>AMS</choiceReferences>
+            <choiceReferences>IPS</choiceReferences>
             <dataType>String</dataType>
             <defaultValue>
-                <elementReference>getWorktrailRecord.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeName</elementReference>
             </defaultValue>
             <fieldText>Tjeneste</fieldText>
-            <fieldType>RadioButtons</fieldType>
+            <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
@@ -689,55 +1186,60 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>IPS_information_recordtype</name>
-        <label>Information recordtype</label>
-        <locationX>314</locationX>
-        <locationY>890</locationY>
-        <allowBack>false</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>IPS_add_data</targetReference>
-        </connector>
-        <fields>
-            <name>IPS_warningChangeRecordtype</name>
-            <fieldText>&lt;p&gt;Du har nå valgt å endre tjeneste fra&lt;/p&gt;&lt;p&gt;{!getWorktrailRecord.RecordType.Name} - til {!varService}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <description>Valget bruker gjorde kvalifiserte ikke med kriterier</description>
         <name>IPS_Information_screen</name>
         <label>Information screen</label>
-        <locationX>754</locationX>
-        <locationY>890</locationY>
+        <locationX>1062</locationX>
+        <locationY>998</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
-        <connector>
-            <targetReference>IPS_add_data</targetReference>
-        </connector>
         <fields>
-            <name>ips_errorMessage1</name>
+            <name>displayErrorMessage</name>
+            <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>errorMessage1</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Valget du gjorde kvalifiserte ikke. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Jobbsporet må være avsluttet og innenfor 12 måneder siden sluttdato.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Status: {!getWorktrailRecord.ips_Status__c}&lt;/p&gt;&lt;p&gt;Antall dager siden avsluttet: {!varDaysSinceEnded}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Hvis jobbsporet er avsluttet og sluttdato er eldre enn 1 år skal det ikke være mulig klone jobbsporet.</description>
+        <name>IPS_worktrail_is_too_old</name>
+        <label>Worktrail is too old</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Copy_1_of_Title2</name>
+            <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>displayInformationWarning</name>
+            <fieldText>&lt;p&gt;Jobbsporet du ønsker klone har en sluttdato som er eldre enn 12 måneder.&lt;/p&gt;&lt;p&gt;Opprett ett nytt jobbspor.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <description>Menyvalg</description>
-        <name>IPS_Transfere_choice</name>
-        <label>Transfere choices</label>
-        <locationX>534</locationX>
-        <locationY>350</locationY>
+        <name>startMenu</name>
+        <label>1. Start menu</label>
+        <locationX>842</locationX>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>IPS_information_about_service</targetReference>
+            <targetReference>informationAboutService</targetReference>
         </connector>
         <fields>
             <name>Title</name>
@@ -752,7 +1254,7 @@
             <defaultValue>
                 <stringValue>false</stringValue>
             </defaultValue>
-            <fieldText>Valg for overføring</fieldText>
+            <fieldText>Velg i meny</fieldText>
             <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
@@ -760,36 +1262,14 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <screens>
-        <description>Hvis jobbsporet er avsluttet og sluttdato er eldre enn 1 år skal det ikke være mulig klone jobbsporet.</description>
-        <name>IPS_worktrail_is_too_old</name>
-        <label>Worktrail is too old</label>
-        <locationX>50</locationX>
-        <locationY>350</locationY>
-        <allowBack>false</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <fields>
-            <name>Copy_1_of_Title2</name>
-            <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>displayInformationWarning</name>
-            <fieldText>&lt;p&gt;Jobbsporet du ønsker overføre er avsluttet og sluttdato er eldre enn 12 måneder.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
     <start>
-        <locationX>166</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrailRecord</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>varInformationRecordTypes</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
@@ -798,7 +1278,7 @@
     <textTemplates>
         <name>varTitle</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Transfering&lt;/strong&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Overføring av jobbspor&lt;/strong&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>isRecordtypeChanges</name>
@@ -811,14 +1291,82 @@
         </value>
     </variables>
     <variables>
-        <name>recordId</name>
+        <name>newWorkTrailId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>varNewRecordtypeId</name>
+        <name>recordId</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Work_Trail__c</objectType>
+    </variables>
+    <variables>
+        <name>varGoalList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
+    </variables>
+    <variables>
+        <name>varJobList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Job__c</objectType>
+    </variables>
+    <variables>
+        <name>varJobRecordtypeName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varNewJob</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Job__c</objectType>
+    </variables>
+    <variables>
+        <name>varNewRecordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varNewWorktrailId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varNewWorkTrailRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Work_Trail__c</objectType>
+    </variables>
+    <variables>
+        <name>varNewWorkTrailRecordtypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varNotificationId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
