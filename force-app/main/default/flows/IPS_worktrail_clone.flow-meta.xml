@@ -4,7 +4,7 @@
         <name>IPS_workTrailClonedNotification</name>
         <label>Work trail cloned notification</label>
         <locationX>842</locationX>
-        <locationY>3878</locationY>
+        <locationY>3986</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -87,7 +87,7 @@
         <description>Legger til recordId for nytt jobbspor</description>
         <name>addDatavaluesJobs</name>
         <label>Add data values</label>
-        <locationX>822</locationX>
+        <locationX>798</locationX>
         <locationY>3386</locationY>
         <assignmentItems>
             <assignToReference>loopingJobs.ips_Work_Trail__c</assignToReference>
@@ -103,7 +103,7 @@
     <assignments>
         <name>addJobRecordToList</name>
         <label>Add job record to list</label>
-        <locationX>822</locationX>
+        <locationX>798</locationX>
         <locationY>3494</locationY>
         <assignmentItems>
             <assignToReference>varJobList</assignToReference>
@@ -618,7 +618,7 @@
     <loops>
         <name>loopingJobs</name>
         <label>Looping jobs</label>
-        <locationX>734</locationX>
+        <locationX>710</locationX>
         <locationY>3278</locationY>
         <collectionReference>getActiveJobs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -626,7 +626,7 @@
             <targetReference>addDatavaluesJobs</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>getNotificationId</targetReference>
+            <targetReference>createJobs</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -658,6 +658,16 @@
             <targetReference>checkIfJobIsNotEmpty</targetReference>
         </connector>
         <inputReference>varGoalList</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <name>createJobs</name>
+        <label>Create Jobs</label>
+        <locationX>710</locationX>
+        <locationY>3686</locationY>
+        <connector>
+            <targetReference>getNotificationId</targetReference>
+        </connector>
+        <inputReference>varJobList</inputReference>
     </recordCreates>
     <recordCreates>
         <name>createNewWorkTrailRecord</name>
@@ -804,7 +814,7 @@
         <name>getNotificationId</name>
         <label>getNotificationId</label>
         <locationX>842</locationX>
-        <locationY>3770</locationY>
+        <locationY>3878</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IPS_workTrailClonedNotification</targetReference>
