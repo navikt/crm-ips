@@ -54,7 +54,7 @@ export default class Ips_ManagerEvents extends LightningElement {
                 const [ipsResult, amsResult] = results;
                 userOptions.push({ label: this.value, value: this.value });
 
-                if (ipsResult.status === 'fulfilled') {
+                if (ipsResult.status === 'fulfilled' && ipsResult.value.length > 0) {
                     userOptions.push({ label: '--- IPS ---', value: 'IPS_Separator' });
                     ipsResult.value.forEach((user) => {
                         userOptions.push({ label: user.employeeName, value: user.employeeName });
@@ -63,7 +63,7 @@ export default class Ips_ManagerEvents extends LightningElement {
                     console.error('Failed to fetch IPS Users:', ipsResult.reason);
                 }
 
-                if (amsResult.status === 'fulfilled') {
+                if (amsResult.status === 'fulfilled' && amsResult.value.length > 0) {
                     userOptions.push({ label: '--- AMS ---', value: 'AMS_Separator' });
                     amsResult.value.forEach((user) => {
                         userOptions.push({ label: user.employeeName, value: user.employeeName });
@@ -77,7 +77,6 @@ export default class Ips_ManagerEvents extends LightningElement {
                 this.optionsLoaded = true;
             })
             .catch((error) => {
-                // Handle errors
                 console.error('Error in Promise.allSettled:', error);
                 this.error = error;
             });
