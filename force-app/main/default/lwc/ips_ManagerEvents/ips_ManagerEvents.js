@@ -49,6 +49,19 @@ export default class Ips_ManagerEvents extends LightningElement {
         getManagerUsers()
             .then((result) => {
                 this.userOptions.push({ label: this.value, value: this.value });
+                this.userOptions.push({ label: '--- IPS ---', value: 'IPS_Separator' });
+                for (let i = 0; i < result.length; i++) {
+                    this.userOptions.push({ label: result[i].employeeName, value: result[i].employeeName });
+                }
+                this.optionsLoaded = false;
+            })
+            .catch((error) => {
+                this.error = error;
+            });
+
+        getManagerUsers()
+            .then((result) => {
+                this.userOptions.push({ label: '--- AMS ---', value: 'AMS_Separator' });
                 for (let i = 0; i < result.length; i++) {
                     this.userOptions.push({ label: result[i].employeeName, value: result[i].employeeName });
                 }
