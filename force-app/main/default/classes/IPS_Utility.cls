@@ -16,7 +16,7 @@ public without sharing class IPS_Utility {
     }
 
     /**
-     * List all active employees id reporting to the current user filtered by profile
+     * List all active employees id reporting to the current user filtered by profile.
      * @param employerProfile profile of the employer
      * @return  id of the employees reporting to the current user
      */
@@ -27,6 +27,18 @@ public without sharing class IPS_Utility {
             FROM USER
             WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE AND Profile.Name = :employerProfile
         ]) {
+            userIds.add(u.Id);
+        }
+        return userIds;
+    }
+
+    /**
+     * List of all active employees id reporting to the current user.
+     * @return id of the employees reporting to the current user.
+     */
+    public static List<Id> getMyEmployeesUserId() {
+        List<Id> userIds = new List<Id>();
+        for (User u : [SELECT Id FROM USER WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE]) {
             userIds.add(u.Id);
         }
         return userIds;
