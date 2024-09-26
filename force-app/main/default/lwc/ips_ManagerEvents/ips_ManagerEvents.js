@@ -1,9 +1,10 @@
 import { LightningElement, wire, track } from 'lwc';
 import { getRecord } from 'lightning/uiRecordApi';
 import Id from '@salesforce/user/Id';
-import getManagerUsers from '@salesforce/apex/IPS_ManagerEventController.getManagerUsers';
 import getEventList from '@salesforce/apex/ips_ManagerEventController.getEventsForCurrentWeek';
 import UserNameFIELD from '@salesforce/schema/User.Name';
+import getManagerIPSUsers from '@salesforce/apex/IPS_ManagerEventController.getManagerIPSUsers';
+import getManagerAMSUsers from '@salesforce/apex/IPS_ManagerEventController.getManagerAMSUsers';
 
 export default class Ips_ManagerEvents extends LightningElement {
     @track columnsPart = [
@@ -36,7 +37,7 @@ export default class Ips_ManagerEvents extends LightningElement {
 
     @track userOptions = [];
     @track value = '- Alle -';
-    @track optionsLoaded = false;
+    @track optionsLoaded;
     @track initialRecords;
     @track initialPartMeeting;
     @track initialEmplMeeting;
@@ -46,28 +47,38 @@ export default class Ips_ManagerEvents extends LightningElement {
     @track partData;
 
     connectedCallback() {
-        getManagerUsers()
-            .then((result) => {
-                this.userOptions.push({ label: this.value, value: this.value });
-                this.userOptions.push({ label: '--- IPS ---', value: 'IPS_Separator' });
-                for (let i = 0; i < result.length; i++) {
-                    this.userOptions.push({ label: result[i].employeeName, value: result[i].employeeName });
-                }
-                this.optionsLoaded = false;
-            })
-            .catch((error) => {
-                this.error = error;
-            });
+        let userOptions = [];
+        // Fetching IPS and AMS users asynchronously
+        Promise.allSettled([getManagerIPSUsers(), getManagerAMSUsers()])
+            .then((results) => {
+                const [ipsResult, amsResult] = results;
+                userOptions.push({ label: this.value, value: this.value });
 
-        getManagerUsers()
-            .then((result) => {
-                this.userOptions.push({ label: '--- AMS ---', value: 'AMS_Separator' });
-                for (let i = 0; i < result.length; i++) {
-                    this.userOptions.push({ label: result[i].employeeName, value: result[i].employeeName });
+                if (ipsResult.status === 'fulfilled') {
+                    userOptions.push({ label: '--- IPS ---', value: 'IPS_Separator' });
+                    ipsResult.value.forEach((user) => {
+                        userOptions.push({ label: user.employeeName, value: user.employeeName });
+                    });
+                } else {
+                    console.error('Failed to fetch IPS Users:', ipsResult.reason);
                 }
+
+                if (amsResult.status === 'fulfilled') {
+                    userOptions.push({ label: '--- AMS ---', value: 'AMS_Separator' });
+                    amsResult.value.forEach((user) => {
+                        userOptions.push({ label: user.employeeName, value: user.employeeName });
+                    });
+                } else {
+                    console.error('Failed to fetch AMS Users:', amsResult.reason);
+                }
+
+                // Reassigning user options array to ensure reactivity
+                this.userOptions = [...userOptions];
                 this.optionsLoaded = true;
             })
             .catch((error) => {
+                // Handle errors
+                console.error('Error in Promise.allSettled:', error);
                 this.error = error;
             });
     }
