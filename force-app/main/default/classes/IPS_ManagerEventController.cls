@@ -1,22 +1,44 @@
 public without sharing class IPS_ManagerEventController {
     @AuraEnabled(cacheable=true)
-    /* Henter alle jobbspesialister tilhørende leder*/
-    public static List<IPS_ManagerUsers> getManagerUsers() {
-        List<IPS_ManagerUsers> usersList = new List<IPS_ManagerUsers>();
+    /* Henter alle IPS jobbspesialister tilhørende leder*/
+    public static List<IPS_ManagerUsers> getManagerIPSUsers() {
+        List<IPS_ManagerUsers> IPSUsersList = new List<IPS_ManagerUsers>();
         // SOQL to fetch employees reporting to the current manager (logged-in user)
-        List<User> employees = [
-            SELECT Id, Name
+        List<User> IPSEmployees = [
+            SELECT Id, Name, Profile.Name
             FROM User
-            WHERE isActive = TRUE AND id IN :IPS_Utility.getMyEmployeesUserId()
+            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserId('NAV IPS Jobbspesialist')
         ];
 
-        for (User u : employees) {
+        for (User u : IPSEmployees) {
             IPS_ManagerUsers userList = new IPS_ManagerUsers();
             userList.employeeId = u.Id;
             userList.employeeName = u.Name;
-            usersList.add(userList);
+            userList.profileName = u.Profile.Name;
+            IPSUsersList.add(userList);
         }
-        return usersList;
+        return IPSUsersList;
+    }
+
+    @AuraEnabled(cacheable=true)
+    /* Henter alle AMS jobbspesialister tilhørende leder*/
+    public static List<IPS_ManagerUsers> getManagerAMSUsers() {
+        List<IPS_ManagerUsers> AMSUsersList = new List<IPS_ManagerUsers>();
+        // SOQL to fetch employees reporting to the current manager (logged-in user)
+        List<User> IPSEmployees = [
+            SELECT Id, Name, Profile.Name
+            FROM User
+            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserId('NAV UO Jobbspesialist')
+        ];
+
+        for (User u : IPSEmployees) {
+            IPS_ManagerUsers userList = new IPS_ManagerUsers();
+            userList.employeeId = u.Id;
+            userList.employeeName = u.Name;
+            userList.profileName = u.Profile.Name;
+            AMSUsersList.add(userList);
+        }
+        return AMSUsersList;
     }
 
     @AuraEnabled(cacheable=true)
