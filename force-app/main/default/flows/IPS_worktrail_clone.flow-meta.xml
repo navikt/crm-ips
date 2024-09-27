@@ -35,11 +35,10 @@
         <inputParameters>
             <name>targetId</name>
             <value>
-                <elementReference>varNewRecordId</elementReference>
+                <elementReference>varNewWorkTrailRecord.Id</elementReference>
             </value>
         </inputParameters>
         <nameSegment>customNotificationAction</nameSegment>
-        <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>61.0</apiVersion>
@@ -47,7 +46,7 @@
         <name>Add_record_to_list</name>
         <label>Add record to list</label>
         <locationX>798</locationX>
-        <locationY>2786</locationY>
+        <locationY>2678</locationY>
         <assignmentItems>
             <assignToReference>varGoalList</assignToReference>
             <operator>Add</operator>
@@ -64,7 +63,7 @@
         <name>addDatavaluesGoals</name>
         <label>Add datavalues</label>
         <locationX>798</locationX>
-        <locationY>2678</locationY>
+        <locationY>2570</locationY>
         <assignmentItems>
             <assignToReference>loopingGoals.OwnerId</assignToReference>
             <operator>Assign</operator>
@@ -88,7 +87,7 @@
         <name>addDatavaluesJobs</name>
         <label>Add data values</label>
         <locationX>798</locationX>
-        <locationY>3386</locationY>
+        <locationY>3278</locationY>
         <assignmentItems>
             <assignToReference>loopingJobs.ips_Work_Trail__c</assignToReference>
             <operator>Assign</operator>
@@ -104,7 +103,7 @@
         <name>addJobRecordToList</name>
         <label>Add job record to list</label>
         <locationX>798</locationX>
-        <locationY>3494</locationY>
+        <locationY>3386</locationY>
         <assignmentItems>
             <assignToReference>varJobList</assignToReference>
             <operator>Add</operator>
@@ -120,7 +119,7 @@
         <name>Assign_recordtype</name>
         <label>Assign recordtype</label>
         <locationX>842</locationX>
-        <locationY>2246</locationY>
+        <locationY>2138</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.RecordTypeId</assignToReference>
             <operator>Assign</operator>
@@ -133,16 +132,65 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Legger jobbsporet som trigges inn i en ny liste</description>
-        <name>assignToNewWorkTrailList</name>
-        <label>Assign to new work trail list</label>
+        <description>Legger inn data om deltaker fra person objektet</description>
+        <name>assignParticipantsData</name>
+        <label>Assign participants data</label>
         <locationX>842</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Participant__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>getWorktrailRecord</elementReference>
+                <elementReference>getWorktrailRecord.ips_Participant__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_Participants_home_address__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varParticipantsResidentialAddress</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_Partticipant_phone_number__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getParticipantsData.INT_KrrMobilePhone__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_Participant_email_address__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getParticipantsData.INT_KrrEmail__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_Personnummer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getParticipantsData.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_participants_age__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getParticipantsData.CRM_AgeNumber__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_DOB__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getParticipantsData.INT_DateOfBirth__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -153,7 +201,7 @@
         <name>assignUserInput</name>
         <label>Assign user input</label>
         <locationX>842</locationX>
-        <locationY>1622</locationY>
+        <locationY>1514</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.ips_Referred_date__c</assignToReference>
             <operator>Assign</operator>
@@ -189,63 +237,125 @@
                 <elementReference>IPS_add_owner_lookup.recordId</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_ownerNameText__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_add_owner_lookup.recordName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_ownerName__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_add_owner_lookup.recordName</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>IPS_remove_old_values</targetReference>
+            <targetReference>setDefaultValues</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <description>Fjerner verdier fra IPS</description>
-        <name>IPS_remove_IPS_values</name>
-        <label>Remove IPS values</label>
-        <locationX>842</locationX>
-        <locationY>2054</locationY>
+        <name>setAMSfields</name>
+        <label>Set AMS fields</label>
+        <locationX>578</locationX>
+        <locationY>1946</locationY>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.Phone_number_for_contact_when_no_show__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.Personal_Qualities__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.Personal_Qualities__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Contact_when_not_showing__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Desired_profession_industry_career__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Desired_profession_industry_career__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Disadvantages_of_openness_employe__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Desired_work_tasks__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Desired_work_tasks__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Benefits_of_openness_to_the_employer__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Desired_working_environment__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Desired_working_environment__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Plan__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Economic_conditions__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Economic_conditions__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Transition_to_work__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Education__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Education__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Financialframework_before_start_work__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Health__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Health__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Interests_Hobbies__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Interests_Hobbies__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Main_goal__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Main_goal__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Mobility__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Mobility__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Network_partner__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Network_partner__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Other__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Other__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Social_conditions__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Social_conditions__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Work_experience__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Work_experience__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -253,18 +363,11 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Fjerner verdier som begge tjenester bruker og som ikke bør klones med</description>
-        <name>IPS_remove_old_values</name>
-        <label>Remove old values</label>
+        <description>Sikrer at verdier blir satt/nullet ut. Gjelder begge tjenester</description>
+        <name>setDefaultValues</name>
+        <label>Set default values</label>
         <locationX>842</locationX>
-        <locationY>1730</locationY>
-        <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.Id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue></stringValue>
-            </value>
-        </assignmentItems>
+        <locationY>1622</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.ips_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -272,78 +375,199 @@
                 <stringValue>Referred</stringValue>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>checkServiceInput</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>setIPSFields</name>
+        <label>Set IPS fields</label>
+        <locationX>842</locationX>
+        <locationY>1946</locationY>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.Oppstartsdato__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.Personal_Qualities__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>varSetDateNull</elementReference>
+                <elementReference>getWorktrailRecord.Personal_Qualities__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_First_meeting_with_the_Employer_held__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Conversation_with_previous_employers__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>varSetDateNull</elementReference>
+                <elementReference>getWorktrailRecord.ips_Conversation_with_previous_employers__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_End_Date__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Cultural_background__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>varSetDateNull</elementReference>
+                <elementReference>getWorktrailRecord.ips_Cultural_background__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.End_Cause__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Early_signs_increased_symptompressur__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Early_signs_increased_symptompressur__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Other_end_cases__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Economy__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Economy__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Transparency_consent_obtained_date__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Education__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>varSetDateNull</elementReference>
+                <elementReference>getWorktrailRecord.ips_Education__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.What_cannot_be_shared_with_the_employer__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Environmental_conditions__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Environmental_conditions__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_What_can_be_shared_with_the_employer__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Facilitation_needs__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Facilitation_needs__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varNewWorkTrailRecord.ips_Can_the_employer_be_contacted__c</assignToReference>
+            <assignToReference>varNewWorkTrailRecord.ips_Financialframework_before_start_work__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <booleanValue>false</booleanValue>
+                <elementReference>getWorktrailRecord.ips_Financialframework_before_start_work__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Framework_for_job_development_search__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Framework_for_job_development_search__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Geography__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Geography__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Health__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Health__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Interests_Hobbies__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Interests_Hobbies__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Main_Goal_list__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Main_Goal_list__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Main_goal__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Main_goal__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Network__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Network__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.ips_Network_partner__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue></stringValue>
+                <elementReference>getWorktrailRecord.ips_Network_partner__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Plan__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Plan__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Preferred_working_hours__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Preferred_working_hours__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Priority_career_wishes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Priority_career_wishes__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Social_conditions__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Social_conditions__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Strategy_before_and_after_work__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Strategy_before_and_after_work__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Transition_to_work__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Transition_to_work__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_What_coping_strategies_are_there__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_What_coping_strategies_are_there__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Work_experience__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Work_experience__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_job_edu_support_network__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_job_edu_support_network__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>checkServiceInput</targetReference>
+            <targetReference>Assign_recordtype</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -393,7 +617,7 @@
         <locationX>578</locationX>
         <locationY>458</locationY>
         <defaultConnector>
-            <targetReference>assignToNewWorkTrailList</targetReference>
+            <targetReference>getParticipantsData</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>isOK</defaultConnectorLabel>
         <rules>
@@ -423,7 +647,7 @@
         <name>checkIfGoalsIsNotEmpty</name>
         <label>Check if goals is not empty</label>
         <locationX>842</locationX>
-        <locationY>2462</locationY>
+        <locationY>2354</locationY>
         <defaultConnector>
             <targetReference>checkIfJobIsNotEmpty</targetReference>
         </defaultConnector>
@@ -448,9 +672,9 @@
         <name>checkIfJobIsNotEmpty</name>
         <label>Check if job is not empty</label>
         <locationX>842</locationX>
-        <locationY>3170</locationY>
+        <locationY>3062</locationY>
         <defaultConnector>
-            <targetReference>getNotificationId</targetReference>
+            <targetReference>createCloneHistory</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
@@ -483,7 +707,7 @@
             <name>isActive</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getAllRecordsOnSCN</leftValueReference>
+                <leftValueReference>getAllRecordsBasedOnSCN</leftValueReference>
                 <operator>IsEmpty</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -500,7 +724,7 @@
         <name>checkMenuChoice</name>
         <label>Check menu choice</label>
         <locationX>842</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <defaultConnector>
             <targetReference>IPS_Information_screen</targetReference>
         </defaultConnector>
@@ -541,7 +765,7 @@
         <name>checkServiceInput</name>
         <label>Check service input</label>
         <locationX>842</locationX>
-        <locationY>1838</locationY>
+        <locationY>1730</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
             <name>isAMS</name>
@@ -589,6 +813,11 @@
         <expression> {!getWorktrailRecord.ips_End_Date__c}+365</expression>
     </formulas>
     <formulas>
+        <name>varParticipantsResidentialAddress</name>
+        <dataType>String</dataType>
+        <expression>{!getParticipantsData.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getParticipantsData.INT_ResidentialZip__c}&amp;&apos; &apos;&amp;{!getParticipantsData.INT_ResidentialPlace__c}</expression>
+    </formulas>
+    <formulas>
         <description>Oversetter recordtype.developername til norsk da dette ikke gjøres automatisk i flow</description>
         <name>varRecordTypeName</name>
         <dataType>String</dataType>
@@ -598,6 +827,11 @@
 &apos;&apos;
 )</expression>
     </formulas>
+    <formulas>
+        <name>varWorkTrailName</name>
+        <dataType>String</dataType>
+        <expression>&apos;Jobbsporet - &apos;&amp;{!getParticipantsData.CRM_FullName__c}</expression>
+    </formulas>
     <interviewLabel>IPS - worktrail_clone {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - worktrail_clone</label>
     <loops>
@@ -605,7 +839,7 @@
         <name>loopingGoals</name>
         <label>Looping goals</label>
         <locationX>710</locationX>
-        <locationY>2570</locationY>
+        <locationY>2462</locationY>
         <collectionReference>getActiveGoals</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -619,7 +853,7 @@
         <name>loopingJobs</name>
         <label>Looping jobs</label>
         <locationX>710</locationX>
-        <locationY>3278</locationY>
+        <locationY>3170</locationY>
         <collectionReference>getActiveJobs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -653,7 +887,7 @@
         <name>Create_goals</name>
         <label>Create goals</label>
         <locationX>710</locationX>
-        <locationY>2978</locationY>
+        <locationY>2870</locationY>
         <connector>
             <targetReference>checkIfJobIsNotEmpty</targetReference>
         </connector>
@@ -663,9 +897,9 @@
         <name>createJobs</name>
         <label>Create Jobs</label>
         <locationX>710</locationX>
-        <locationY>3686</locationY>
+        <locationY>3578</locationY>
         <connector>
-            <targetReference>getNotificationId</targetReference>
+            <targetReference>createCloneHistory</targetReference>
         </connector>
         <inputReference>varJobList</inputReference>
     </recordCreates>
@@ -673,40 +907,18 @@
         <name>createNewWorkTrailRecord</name>
         <label>createNewWorkTrailRecord</label>
         <locationX>842</locationX>
-        <locationY>2354</locationY>
+        <locationY>2246</locationY>
         <connector>
             <targetReference>checkIfGoalsIsNotEmpty</targetReference>
         </connector>
         <inputReference>varNewWorkTrailRecord</inputReference>
     </recordCreates>
     <recordLookups>
-        <description>Henter aktive AMS utdanninger</description>
-        <name>getActiveAMSEducation</name>
-        <label>Get active AMS education</label>
-        <locationX>798</locationX>
-        <locationY>1322</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>addData</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>AMS_Work_Trail__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>AMS_Vocational_education_and_training__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <description>Henter aktive delmål</description>
         <name>getActiveGoals</name>
         <label>Get active goals</label>
         <locationX>798</locationX>
-        <locationY>998</locationY>
+        <locationY>1106</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getActiveJobs</targetReference>
@@ -738,36 +950,14 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Henter ut aktive utdanninger for IPS</description>
-        <name>getActiveIPSEducation</name>
-        <label>Get active IPS education</label>
-        <locationX>798</locationX>
-        <locationY>1214</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>getActiveAMSEducation</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ips_Work_Trail__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>ips_Education__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <description>Henter aktive jobber</description>
         <name>getActiveJobs</name>
         <label>Get active jobs</label>
         <locationX>798</locationX>
-        <locationY>1106</locationY>
+        <locationY>1214</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getActiveIPSEducation</targetReference>
+            <targetReference>addData</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -783,8 +973,8 @@
     </recordLookups>
     <recordLookups>
         <description>Henter ut jobbspor på fødselsnummer på jobbsporet for å sjekke om det finnes andre jobbspor på deltaker som er aktiv.</description>
-        <name>getAllRecordsOnSCN</name>
-        <label>Get all records on SCN</label>
+        <name>getAllRecordsBasedOnSCN</name>
+        <label>Get all records based on SCN</label>
         <locationX>314</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -834,13 +1024,35 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <description>Henter data som fødselsdato, adresse, telefon og epost</description>
+        <name>getParticipantsData</name>
+        <label>Get participants data</label>
+        <locationX>842</locationX>
+        <locationY>566</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>assignParticipantsData</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CRM_Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrailRecord.ips_Participant__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Person__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getRecordTypeId</name>
         <label>getRecordTypeId</label>
         <locationX>842</locationX>
-        <locationY>1946</locationY>
+        <locationY>1838</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>IPS_remove_IPS_values</targetReference>
+            <targetReference>setIPSFields</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -860,10 +1072,10 @@
         <name>getRecordTypeIdAMS</name>
         <label>getRecordTypeId</label>
         <locationX>578</locationX>
-        <locationY>1946</locationY>
+        <locationY>1838</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Assign_recordtype</targetReference>
+            <targetReference>setAMSfields</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -887,7 +1099,7 @@
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getAllRecordsOnSCN</targetReference>
+            <targetReference>getAllRecordsBasedOnSCN</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -901,14 +1113,14 @@
         <object>Work_Trail__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <runInMode>DefaultMode</runInMode>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <description>Må velge en eier.
 Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <name>addData</name>
         <label>3. Add data</label>
         <locationX>842</locationX>
-        <locationY>1514</locationY>
+        <locationY>1406</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1135,7 +1347,7 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <inputParameters>
                 <name>tableData</name>
                 <value>
-                    <elementReference>getAllRecordsOnSCN</elementReference>
+                    <elementReference>getAllRecordsBasedOnSCN</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1162,7 +1374,7 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <name>informationAboutService</name>
         <label>2. Information about service</label>
         <locationX>842</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1200,7 +1412,7 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <name>IPS_Information_screen</name>
         <label>Information screen</label>
         <locationX>1062</locationX>
-        <locationY>998</locationY>
+        <locationY>1106</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1244,7 +1456,7 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <name>startMenu</name>
         <label>1. Start menu</label>
         <locationX>842</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1280,6 +1492,47 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>createCloneHistory</name>
+        <label>Create clone history</label>
+        <locationX>842</locationX>
+        <locationY>3770</locationY>
+        <connector>
+            <targetReference>getNotificationId</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <stringValue>Jobbsporet klonet</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>IPS_add_owner_lookup.recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <stringValue>Jobbsporet klonet</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varNewWorkTrailRecord.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <textTemplates>
         <name>varInformationRecordTypes</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
