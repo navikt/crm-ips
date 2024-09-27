@@ -22,10 +22,19 @@ public without sharing class IPS_Utility {
      */
     public static List<Id> getMyEmployeesUserId(String employerProfile) {
         List<Id> userIds = new List<Id>();
+        // If jobbspesialist of IPS/UO, metodeveilder of IPS/UO will also be added to the query.
+        List<String> profilesToFetch = new List<String>();
+        if (employerProfile == 'NAV UO Jobbspesialist') {
+            profilesToFetch.add('NAV UO Jobbspesialist');
+            profilesToFetch.add('NAV UO Metodeveileder');
+        } else if (employerProfile == 'NAV IPS Jobbspesialist') {
+            profilesToFetch.add('NAV IPS Jobbspesialist');
+            profilesToFetch.add('NAV IPS Metodeveileder');
+        }
         for (User u : [
             SELECT Id
             FROM USER
-            WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE AND Profile.Name = :employerProfile
+            WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE AND Profile.Name IN :profilesToFetch
         ]) {
             userIds.add(u.Id);
         }
