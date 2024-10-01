@@ -1,8 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>56.0</apiVersion>
+    <apiVersion>61.0</apiVersion>
+    <decisions>
+        <name>checkIfWorktTrailIsManuallyShared</name>
+        <label>Check if worktrail is manually shared</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>updateEnddate</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>notShared</defaultConnectorLabel>
+        <rules>
+            <name>isShared</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getManualSharing</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>deleteManuallySharedRecords</targetReference>
+            </connector>
+            <label>isShared</label>
+        </rules>
+    </decisions>
     <description>Setter sluttdato når status = sluttet
-Gjelder både for UO og IPS</description>
+Gjelder både for UO og IPS
+Fjerner også manuel deling knyttet til jobbsporet</description>
     <environments>Default</environments>
     <interviewLabel>IPS_Sett dato for sluttet i Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS_Sett dato for sluttet i Jobbspor</label>
@@ -19,11 +45,50 @@ Gjelder både for UO og IPS</description>
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordDeletes>
+        <name>deleteManuallySharedRecords</name>
+        <label>Delete manually shared records</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <connector>
+            <targetReference>updateEnddate</targetReference>
+        </connector>
+        <inputReference>getManualSharing</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <description>Henter records hvis jobbsporet er manuelt delt med andre</description>
+        <name>getManualSharing</name>
+        <label>Get manual sharing</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>checkIfWorktTrailIsManuallyShared</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RowCause</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Manual</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Work_Trail__Share</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>updateEnddate</name>
         <label>Update enddate</label>
-        <locationX>176</locationX>
-        <locationY>311</locationY>
+        <locationX>182</locationX>
+        <locationY>731</locationY>
         <inputAssignments>
             <field>ips_End_Date__c</field>
             <value>
@@ -33,10 +98,10 @@ Gjelder både for UO og IPS</description>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>updateEnddate</targetReference>
+            <targetReference>getManualSharing</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
@@ -49,7 +114,7 @@ Gjelder både for UO og IPS</description>
         </filters>
         <object>Work_Trail__c</object>
         <recordTriggerType>Update</recordTriggerType>
-        <triggerType>RecordBeforeSave</triggerType>
+        <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
 </Flow>
