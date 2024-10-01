@@ -53,6 +53,7 @@ public without sharing class IPS_ManagerEventController {
                 WhatId,
                 Subject,
                 Owner.Name,
+                Owner.Profile.Name,
                 Location,
                 StartDateTime,
                 toLabel(IPS_Type__c),
@@ -71,6 +72,7 @@ public without sharing class IPS_ManagerEventController {
                 IPS_ManagerEvent managerEvent = new IPS_ManagerEvent();
                 managerEvent.eventId = employeeEvent.Id;
                 managerEvent.employeeName = employeeEvent.Owner.Name;
+                managerEvent.profileName = employeeEvent.Owner.Profile.Name;
                 managerEvent.subject = employeeEvent.Subject;
                 managerEvent.location = employeeEvent.Location;
                 managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
@@ -90,7 +92,6 @@ public without sharing class IPS_ManagerEventController {
                     ':' +
                     eventTime.format('mm');
                 managerEvents.add(managerEvent);
-
                 workTrailIds.add(employeeEvent.WhatId);
             }
         }

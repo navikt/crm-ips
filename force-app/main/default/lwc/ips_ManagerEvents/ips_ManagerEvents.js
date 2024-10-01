@@ -55,7 +55,7 @@ export default class Ips_ManagerEvents extends LightningElement {
                 userOptions.push({ label: this.value, value: this.value });
 
                 if (ipsResult.status === 'fulfilled' && ipsResult.value.length > 0) {
-                    userOptions.push({ label: '--- IPS ---', value: 'IPS_Separator' });
+                    userOptions.push({ label: '--- IPS ---', value: 'IPS' });
                     ipsResult.value.forEach((user) => {
                         userOptions.push({ label: user.employeeName, value: user.employeeName });
                     });
@@ -64,7 +64,7 @@ export default class Ips_ManagerEvents extends LightningElement {
                 }
 
                 if (amsResult.status === 'fulfilled' && amsResult.value.length > 0) {
-                    userOptions.push({ label: '--- AMS ---', value: 'AMS_Separator' });
+                    userOptions.push({ label: '--- AMS ---', value: 'UO' });
                     amsResult.value.forEach((user) => {
                         userOptions.push({ label: user.employeeName, value: user.employeeName });
                     });
