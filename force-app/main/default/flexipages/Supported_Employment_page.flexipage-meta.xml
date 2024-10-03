@@ -55,27 +55,6 @@
                             </visibilityRule>
                         </valueListItems>
                         <valueListItems>
-                            <value>Clone</value>
-                            <visibilityRule>
-                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV UO Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>true</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV IPS Metodeveileder</rightValue>
-                                </criteria>
-                            </visibilityRule>
-                        </valueListItems>
-                        <valueListItems>
                             <value>Work_Trail__c.Sms_reservation</value>
                         </valueListItems>
                         <valueListItems>
@@ -112,10 +91,21 @@
                         <valueListItems>
                             <value>Work_Trail__c.IPS_cloneWorkTrail</value>
                             <visibilityRule>
+                                <booleanFilter>(1 OR 2) AND 3</booleanFilter>
                                 <criteria>
                                     <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV UO Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Ended</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
