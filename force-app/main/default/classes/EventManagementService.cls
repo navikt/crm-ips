@@ -1,4 +1,8 @@
 public without sharing class EventManagementService {
+    /**
+     * Fetches a list of custom events happening within the next 7 days, starting from today.
+     * @return  list of custom events.
+     */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerEvent> getEventsForCurrentWeek() {
         List<IPS_ManagerEvent> managerEvents = new List<IPS_ManagerEvent>();
