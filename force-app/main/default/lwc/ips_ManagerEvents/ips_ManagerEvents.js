@@ -3,8 +3,8 @@ import { getRecord } from 'lightning/uiRecordApi';
 import Id from '@salesforce/user/Id';
 import getEventList from '@salesforce/apex/ips_ManagerEventController.getEventsForCurrentWeek';
 import UserNameFIELD from '@salesforce/schema/User.Name';
-import getManagerIPSUsers from '@salesforce/apex/IPS_ManagerEventController.getManagerIPSUsers';
-import getManagerAMSUsers from '@salesforce/apex/IPS_ManagerEventController.getManagerAMSUsers';
+import getIPSUsersManagedByCurrentUser from '@salesforce/apex/IPS_ManagerEventController.getIPSUsersManagedByCurrentUser';
+import getAMSUsersManagedByCurrentUser from '@salesforce/apex/IPS_ManagerEventController.getAMSUsersManagedByCurrentUser';
 
 export default class Ips_ManagerEvents extends LightningElement {
     @track columnsPart = [
@@ -49,7 +49,7 @@ export default class Ips_ManagerEvents extends LightningElement {
     connectedCallback() {
         let userOptions = [];
         // Fetching IPS and AMS users asynchronously
-        Promise.allSettled([getManagerIPSUsers(), getManagerAMSUsers()])
+        Promise.allSettled([getIPSUsersManagedByCurrentUser(), getAMSUsersManagedByCurrentUser()])
             .then((results) => {
                 const [ipsResult, amsResult] = results;
                 userOptions.push({ label: this.value, value: this.value });

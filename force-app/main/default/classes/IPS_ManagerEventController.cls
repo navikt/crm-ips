@@ -1,44 +1,44 @@
 public without sharing class IPS_ManagerEventController {
+    /**
+     * Returns list of IPS jobbspecialists managed by the current user.
+     * @return  List of IPS jobbspecialist
+     */
     @AuraEnabled(cacheable=true)
-    /* Henter alle IPS jobbspesialister tilhørende leder*/
-    public static List<IPS_ManagerUsers> getManagerIPSUsers() {
-        List<IPS_ManagerUsers> IPSUsersList = new List<IPS_ManagerUsers>();
-        // SOQL to fetch employees reporting to the current manager (logged-in user)
-        List<User> IPSEmployees = [
-            SELECT Id, Name, Profile.Name
-            FROM User
-            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserId('NAV IPS Jobbspesialist')
-        ];
-
-        for (User u : IPSEmployees) {
-            IPS_ManagerUsers userList = new IPS_ManagerUsers();
-            userList.employeeId = u.Id;
-            userList.employeeName = u.Name;
-            userList.profileName = u.Profile.Name;
-            IPSUsersList.add(userList);
-        }
-        return IPSUsersList;
+    public static List<IPS_ManagerUsers> getIPSUsersManagedByCurrentUser() {
+        return getUsersManagedByCurrentUser('NAV IPS Jobbspesialist');
     }
 
+    /**
+     * Returns list of AMS jobbspecialists managed by the current user.
+     * @return List of AMS jobbspecialist
+     */
     @AuraEnabled(cacheable=true)
-    /* Henter alle AMS jobbspesialister tilhørende leder*/
-    public static List<IPS_ManagerUsers> getManagerAMSUsers() {
-        List<IPS_ManagerUsers> AMSUsersList = new List<IPS_ManagerUsers>();
-        // SOQL to fetch employees reporting to the current manager (logged-in user)
-        List<User> IPSEmployees = [
+    public static List<IPS_ManagerUsers> getAMSUsersManagedByCurrentUser() {
+        return getUsersManagedByCurrentUser('NAV UO Jobbspesialist');
+    }
+
+    /**
+     * Retunrs list of users managed by the current user according the given profile.
+     * @param profileName profile of the user
+     * @return  List of users
+     */
+    private static List<IPS_ManagerUsers> getUsersManagedByCurrentUser(String profileName) {
+        List<IPS_ManagerUsers> usersList = new List<IPS_ManagerUsers>();
+
+        List<User> fetchedUsers = [
             SELECT Id, Name, Profile.Name
             FROM User
-            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserId('NAV UO Jobbspesialist')
+            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserId(profileName)
         ];
 
-        for (User u : IPSEmployees) {
-            IPS_ManagerUsers userList = new IPS_ManagerUsers();
-            userList.employeeId = u.Id;
-            userList.employeeName = u.Name;
-            userList.profileName = u.Profile.Name;
-            AMSUsersList.add(userList);
+        for (User user : fetchedUsers) {
+            IPS_ManagerUsers tempUsersList = new IPS_ManagerUsers();
+            tempUsersList.employeeId = user.Id;
+            tempUsersList.employeeName = user.Name;
+            tempUsersList.profileName = user.Profile.Name;
+            usersList.add(tempUsersList);
         }
-        return AMSUsersList;
+        return usersList;
     }
 
     @AuraEnabled(cacheable=true)
