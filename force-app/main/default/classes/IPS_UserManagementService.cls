@@ -1,4 +1,4 @@
-public without sharing class UserManagementService {
+public without sharing class IPS_UserManagementService {
     /**
      * Retunrs list of users managed by the current user according the given profile.
      * @param profileName profile of the user

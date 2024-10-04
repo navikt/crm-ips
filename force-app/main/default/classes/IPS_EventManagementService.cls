@@ -1,4 +1,4 @@
-public without sharing class EventManagementService {
+public without sharing class IPS_EventManagementService {
     /**
      * Fetches a list of custom events happening within the next 7 days, starting from today.
      * @return  list of custom events.
