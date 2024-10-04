@@ -1,7 +1,7 @@
 import { LightningElement, wire, track } from 'lwc';
 import { getRecord } from 'lightning/uiRecordApi';
 import Id from '@salesforce/user/Id';
-import getEventList from '@salesforce/apex/ips_ManagerEventController.getEventsForCurrentWeek';
+import getEventList from '@salesforce/apex/IPS_ManagerEventController.getEventsForCurrentWeek';
 import UserNameFIELD from '@salesforce/schema/User.Name';
 import getIPSUsersManagedByCurrentUser from '@salesforce/apex/IPS_ManagerEventController.getIPSUsersManagedByCurrentUser';
 import getAMSUsersManagedByCurrentUser from '@salesforce/apex/IPS_ManagerEventController.getAMSUsersManagedByCurrentUser';

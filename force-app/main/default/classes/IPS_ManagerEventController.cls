@@ -5,7 +5,7 @@ public without sharing class IPS_ManagerEventController {
      */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerUsers> getIPSUsersManagedByCurrentUser() {
-        return UserManagementService.getIPSUsersManagedByCurrentUser();
+        return IPS_UserManagementService.getIPSUsersManagedByCurrentUser();
     }
 
     /**
@@ -14,7 +14,7 @@ public without sharing class IPS_ManagerEventController {
      */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerUsers> getAMSUsersManagedByCurrentUser() {
-        return UserManagementService.getAMSUsersManagedByCurrentUser();
+        return IPS_UserManagementService.getAMSUsersManagedByCurrentUser();
     }
 
     /**
@@ -23,6 +23,6 @@ public without sharing class IPS_ManagerEventController {
      */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerEvent> getEventsForCurrentWeek() {
-        return EventManagementService.getEventsForCurrentWeek();
+        return IPS_EventManagementService.getEventsForCurrentWeek();
     }
 }
