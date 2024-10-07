@@ -42,7 +42,7 @@ private class IPS_ManagerEventControllerTest {
 
     @isTest
     private static void testGetManagerIPSUser() {
-        List<IPS_ManagerUsers> events = IPS_ManagerEventController.getManagerIPSUsers();
+        List<IPS_ManagerUsers> events = IPS_ManagerEventController.getIPSUsersManagedByCurrentUser();
         //System.assertEquals(3, events.size(), 'Expect users connected with manager');
     }
 
