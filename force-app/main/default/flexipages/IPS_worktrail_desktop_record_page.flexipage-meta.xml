@@ -15,7 +15,7 @@
                         <valueListItems>
                             <value>Share</value>
                             <visibilityRule>
-                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
+                                <booleanFilter>(1 OR 2 OR 3) AND 4</booleanFilter>
                                 <criteria>
                                     <leftValue>{!$User.Profile.Name}</leftValue>
                                     <operator>EQUAL</operator>
@@ -30,13 +30,18 @@
                                     <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>Ended</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
                         <valueListItems>
                             <value>ChangeOwnerOne</value>
                             <visibilityRule>
-                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
+                                <booleanFilter>(1 OR 2 OR 3) AND 4</booleanFilter>
                                 <criteria>
                                     <leftValue>{!$User.Profile.Name}</leftValue>
                                     <operator>EQUAL</operator>
@@ -51,6 +56,11 @@
                                     <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>Ended</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
@@ -311,13 +321,20 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_Status__c</fieldItem>
                 <identifier>field7</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IsEndCauseSet__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.End_Cause__c</fieldItem>
                 <identifier>field8</identifier>
@@ -334,7 +351,7 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_Other_end_cases__c</fieldItem>
                 <identifier>Recordips_Other_end_cases_cField</identifier>
@@ -351,7 +368,7 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_End_Date__c</fieldItem>
                 <identifier>field9</identifier>
