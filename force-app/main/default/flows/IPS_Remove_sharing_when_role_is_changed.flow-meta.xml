@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <description>All manually shared worktrails will be removed from the user when user changes role.</description>
+    <environments>Default</environments>
+    <interviewLabel>IPS - Remove sharing when role is changed {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - Remove sharing when user role is changed</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordDeletes>
+        <description>Removing all manually shared worktrails from the user</description>
+        <name>Removing_manually_shared_worktrails</name>
+        <label>Removing manually shared worktrails</label>
+        <locationX>308</locationX>
+        <locationY>384</locationY>
+        <inputReference>Get_worktrails_shared_with_the_user</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <description>Getting all worktrails shared with the user</description>
+        <name>Get_worktrails_shared_with_the_user</name>
+        <label>Get worktrails shared with the user</label>
+        <locationX>308</locationX>
+        <locationY>276</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Removing_manually_shared_worktrails</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RowCause</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Manual</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>UserOrGroupId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Work_Trail__Share</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>UserRoleId</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>User</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>Get_worktrails_shared_with_the_user</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
