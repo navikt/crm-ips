@@ -55,6 +55,7 @@ import FIELD_EARLYSIGNS from '@salesforce/schema/Work_Trail__c.ips_Early_signs_i
 import FIELD_COPINGSTRATEGY from '@salesforce/schema/Work_Trail__c.ips_What_coping_strategies_are_there__c';
 import FIELD_OWNERID from '@salesforce/schema/Work_Trail__c.OwnerId';
 import FIELD_OWNERNAME from '@salesforce/schema/Work_Trail__c.IPS_ownerName__c';
+import FIELD_NETWORKSUPPORT from '@salesforce/schema/Work_Trail__c.ips_job_edu_support_network__c';
 
 /* Event/task */
 import getEmployerActivity from '@salesforce/apex/IPS_myActivityController.getEmployerActivity';
@@ -118,7 +119,8 @@ const WORKTRAIL_FIELDS = [
     FIELD_NETWORKPARTNER,
     FIELD_MAINGOALLIST,
     FIELD_OWNERID,
-    FIELD_OWNERNAME
+    FIELD_OWNERNAME,
+    FIELD_NETWORKSUPPORT
 ];
 
 export default class Ips_trail extends NavigationMixin(LightningElement) {
@@ -322,6 +324,10 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     }
 
     /* IPS fields */
+    get networksupport(){
+        return getFieldValue(this.workTrailWire,FIELD_NETWORKSUPPORT);
+    }
+    
     get geography() {
         return getFieldValue(this.workTrailWire, FIELD_GEOGRAPHY);
     }
