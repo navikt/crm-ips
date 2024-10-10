@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>61.0</apiVersion>
+    <decisions>
+        <description>Evaluates whether the shared worktrail list from &apos;Get worktrail shared with the user&apos; is empty.</description>
+        <name>Is_shared_worktrail_empty</name>
+        <label>Is shared worktrail empty</label>
+        <locationX>352</locationX>
+        <locationY>384</locationY>
+        <defaultConnector>
+            <targetReference>Removing_manually_shared_worktrails</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Shared worktrail found</defaultConnectorLabel>
+        <rules>
+            <name>Shared_worktrail_is_empty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_worktrails_shared_with_the_user</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Shared worktrail is empty</label>
+        </rules>
+    </decisions>
     <description>All manually shared worktrails will be removed from the user when user changes role.</description>
     <environments>Default</environments>
     <interviewLabel>IPS - Remove sharing when role is changed {!$Flow.CurrentDateTime}</interviewLabel>
@@ -28,19 +51,19 @@
         <description>Removing all manually shared worktrails from the user</description>
         <name>Removing_manually_shared_worktrails</name>
         <label>Removing manually shared worktrails</label>
-        <locationX>308</locationX>
-        <locationY>384</locationY>
+        <locationX>440</locationX>
+        <locationY>492</locationY>
         <inputReference>Get_worktrails_shared_with_the_user</inputReference>
     </recordDeletes>
     <recordLookups>
         <description>Getting all worktrails shared with the user</description>
         <name>Get_worktrails_shared_with_the_user</name>
         <label>Get worktrails shared with the user</label>
-        <locationX>308</locationX>
+        <locationX>352</locationX>
         <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Removing_manually_shared_worktrails</targetReference>
+            <targetReference>Is_shared_worktrail_empty</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
