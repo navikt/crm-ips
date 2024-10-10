@@ -5,7 +5,7 @@
         <description>Evaluates whether the shared worktrail list from &apos;Get worktrail shared with the user&apos; is empty.</description>
         <name>Is_shared_worktrail_empty</name>
         <label>Is shared worktrail empty</label>
-        <locationX>352</locationX>
+        <locationX>374</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <targetReference>Removing_manually_shared_worktrails</targetReference>
@@ -51,7 +51,7 @@
         <description>Removing all manually shared worktrails from the user</description>
         <name>Removing_manually_shared_worktrails</name>
         <label>Removing manually shared worktrails</label>
-        <locationX>440</locationX>
+        <locationX>506</locationX>
         <locationY>492</locationY>
         <inputReference>Get_worktrails_shared_with_the_user</inputReference>
     </recordDeletes>
@@ -59,7 +59,7 @@
         <description>Getting all worktrails shared with the user</description>
         <name>Get_worktrails_shared_with_the_user</name>
         <label>Get worktrails shared with the user</label>
-        <locationX>352</locationX>
+        <locationX>374</locationX>
         <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -93,6 +93,20 @@
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsPortalEnabled</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>User</object>
