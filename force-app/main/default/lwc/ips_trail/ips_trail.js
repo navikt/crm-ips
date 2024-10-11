@@ -130,7 +130,6 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
     myGoalImg = IPS_HOME_LOGOS + '/TaskFilled.svg';
     myPlanImg = IPS_HOME_LOGOS + '/DirectionSignFilled.svg';
     currentUser = Id;
-    //currentUser ='0051w000009WVWGAA4' ;
     recordId;
     @track recordtypename;
     ownerId;
@@ -507,9 +506,12 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
 
     formatDate(initialDate) {
         if (initialDate === undefined) {
-            return null;
-        }
-        let date = new Date(initialDate);
-        return date.toLocaleDateString();
+            let date = '';
+            this.date = null;
+            return date;
+        }else{
+            let date = new Date(initialDate);
+            return date.toLocaleDateString();
+        }        
     }
 }
