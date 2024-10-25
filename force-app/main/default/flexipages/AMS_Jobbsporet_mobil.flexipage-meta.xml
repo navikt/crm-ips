@@ -465,10 +465,16 @@
                 <componentName>flowruntime:interview</componentName>
                 <identifier>flowruntime_interview</identifier>
                 <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.ips_Status__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>Ended</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
