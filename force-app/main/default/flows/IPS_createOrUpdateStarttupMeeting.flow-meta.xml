@@ -3,8 +3,8 @@
     <actionCalls>
         <name>createTravelTime</name>
         <label>createTravelTime</label>
-        <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationX>776</locationX>
+        <locationY>647</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -60,13 +60,14 @@
             </value>
         </inputParameters>
         <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
-        <locationX>622</locationX>
-        <locationY>539</locationY>
+        <locationX>1898</locationX>
+        <locationY>647</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -122,14 +123,15 @@
             </value>
         </inputParameters>
         <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>61.0</apiVersion>
     <assignments>
         <name>setPublic</name>
         <label>setPublic</label>
-        <locationX>182</locationX>
-        <locationY>755</locationY>
+        <locationX>776</locationX>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -141,11 +143,32 @@
             <targetReference>IsEventClosed</targetReference>
         </connector>
     </assignments>
+    <customErrors>
+        <description>Show validation error that occurs due to first meeting with employer held date</description>
+        <name>First_meeting_with_employer_validation_error</name>
+        <label>First meeting with employer validation error</label>
+        <locationX>314</locationX>
+        <locationY>1403</locationY>
+        <customErrorMessages>
+            <errorMessage>Oppstartsdato må være før eller lik datoen for første møte med arbeidsgiver ble avholdt. Vennligst oppgi gyldige datoer.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>Startup_date_not_valid</name>
+        <label>Startup date not valid</label>
+        <locationX>842</locationX>
+        <locationY>1187</locationY>
+        <customErrorMessages>
+            <errorMessage>Oppstartsdato må være før eller lik datoen for første møte med arbeidsgiver ble avholdt. Vennligst oppgi gyldige datoer.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
     <decisions>
         <name>checkCriteria</name>
         <label>checkCriteria</label>
-        <locationX>402</locationX>
-        <locationY>431</locationY>
+        <locationX>1337</locationX>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
         </defaultConnector>
@@ -169,11 +192,8 @@
     <decisions>
         <name>IsEventClosed</name>
         <label>IsEventClosed</label>
-        <locationX>182</locationX>
-        <locationY>863</locationY>
-        <defaultConnector>
-            <targetReference>UpdateEvent</targetReference>
-        </defaultConnector>
+        <locationX>776</locationX>
+        <locationY>971</locationY>
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>IsClosed</name>
@@ -186,7 +206,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>updateStartUpDate</targetReference>
+                <targetReference>IsStartupDateValid</targetReference>
             </connector>
             <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
             <label>IsClosed</label>
@@ -195,8 +215,8 @@
     <decisions>
         <name>IsEventClosed1</name>
         <label>IsEventClosed</label>
-        <locationX>622</locationX>
-        <locationY>647</locationY>
+        <locationX>1898</locationX>
+        <locationY>755</locationY>
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>isClosed1</name>
@@ -209,16 +229,69 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Copy_1_of_updateStartUpDate</targetReference>
+                <targetReference>IsStartupDateValidNotNew</targetReference>
             </connector>
             <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
             <label>isClosed</label>
         </rules>
     </decisions>
+    <decisions>
+        <description>Ensures the startup date is earlier than first meeting with employer held.</description>
+        <name>IsStartupDateValid</name>
+        <label>IsStartupDateValid</label>
+        <locationX>446</locationX>
+        <locationY>1079</locationY>
+        <defaultConnector>
+            <targetReference>Startup_date_not_valid</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Startup date not valid</defaultConnectorLabel>
+        <rules>
+            <name>Startup_date_valid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isStartupDateValidFormula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateStartUpDate</targetReference>
+            </connector>
+            <label>Startup date valid</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Ensures the startup date is earlier than first meeting with employer held.</description>
+        <name>IsStartupDateValidNotNew</name>
+        <label>IsStartupDateValid</label>
+        <locationX>1634</locationX>
+        <locationY>863</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Startup_date_not_valid</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Startup date not valid</defaultConnectorLabel>
+        <rules>
+            <name>Startup_date_valid_Not_new</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isStartupDateValidFormula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_updateStartUpDate</targetReference>
+            </connector>
+            <label>Startup date valid</label>
+        </rules>
+    </decisions>
     <description>creation or updates on startup meetings
-- set startdate for worktrail when meeting is completed
-- set contactId on WhoId
-- set public checkbox</description>
+- sets startdate for worktrail when meeting is completed
+- sets contactId on WhoId
+- sets public checkbox</description>
     <environments>Default</environments>
     <formulas>
         <name>isDateTimeChanged</name>
@@ -229,6 +302,12 @@
         <name>isNew</name>
         <dataType>Boolean</dataType>
         <expression>IsNew()</expression>
+    </formulas>
+    <formulas>
+        <description>Returns true, if startup date is equal or earlier than first meeting with employer held.</description>
+        <name>isStartupDateValidFormula</name>
+        <dataType>Boolean</dataType>
+        <expression>{!$Record.StartDateTime} &gt; {!Get_related_work_trail.ips_First_meeting_with_the_Employer_held__c}</expression>
     </formulas>
     <formulas>
         <name>varRecordStatus</name>
@@ -260,13 +339,35 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <name>getRecordTypeNameTravelTime</name>
-        <label>getRecordTypeNameTravelTime</label>
-        <locationX>402</locationX>
-        <locationY>323</locationY>
+        <description>Getting related work trail to compare startup date and first meeting with employer held.</description>
+        <name>Get_related_work_trail</name>
+        <label>Get related work trail</label>
+        <locationX>1337</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkCriteria</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getRecordTypeNameTravelTime</name>
+        <label>getRecordTypeNameTravelTime</label>
+        <locationX>1337</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_related_work_trail</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -285,8 +386,12 @@
     <recordUpdates>
         <name>Copy_1_of_updateStartUpDate</name>
         <label>updateStartUpDate</label>
-        <locationX>490</locationX>
-        <locationY>755</locationY>
+        <locationX>1370</locationX>
+        <locationY>971</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>First_meeting_with_employer_validation_error</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -312,8 +417,11 @@
     <recordUpdates>
         <name>UpdateEvent</name>
         <label>UpdateEvent</label>
-        <locationX>182</locationX>
-        <locationY>1163</locationY>
+        <locationX>50</locationX>
+        <locationY>1295</locationY>
+        <faultConnector>
+            <targetReference>First_meeting_with_employer_validation_error</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>IPS_participant_related_to_meeting__c</field>
             <value>
@@ -339,10 +447,14 @@
         <name>updateStartUpDate</name>
         <label>updateStartUpDate</label>
         <locationX>50</locationX>
-        <locationY>971</locationY>
+        <locationY>1187</locationY>
         <connector>
             <targetReference>UpdateEvent</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>First_meeting_with_employer_validation_error</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -366,7 +478,7 @@
         <object>Work_Trail__c</object>
     </recordUpdates>
     <start>
-        <locationX>276</locationX>
+        <locationX>1211</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getRecordTypeNameTravelTime</targetReference>
@@ -394,8 +506,8 @@
     <subflows>
         <name>Add_contactId_to_event</name>
         <label>Add contactId to event</label>
-        <locationX>182</locationX>
-        <locationY>647</locationY>
+        <locationX>776</locationX>
+        <locationY>755</locationY>
         <connector>
             <targetReference>setPublic</targetReference>
         </connector>
