@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>61.0</apiVersion>
+    <apiVersion>62.0</apiVersion>
     <assignments>
         <name>setConfidentialAssignment</name>
         <label>setConfidentialAssignment</label>
-        <locationX>314</locationX>
-        <locationY>839</locationY>
+        <locationX>671</locationX>
+        <locationY>792</locationY>
         <assignmentItems>
             <assignToReference>varSetConfidentalitet</assignToReference>
             <operator>Assign</operator>
@@ -27,8 +27,8 @@
     <assignments>
         <name>setConfidentialAssignment1</name>
         <label>setConfidentialAssignment</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationX>143</locationX>
+        <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>varSetConfidentalitet</assignToReference>
             <operator>Assign</operator>
@@ -50,8 +50,8 @@
     <assignments>
         <name>setConfidentialAssignment2</name>
         <label>setConfidentialAssignment</label>
-        <locationX>314</locationX>
-        <locationY>1139</locationY>
+        <locationX>671</locationX>
+        <locationY>1092</locationY>
         <assignmentItems>
             <assignToReference>varSetConfidentalitet</assignToReference>
             <operator>Assign</operator>
@@ -73,8 +73,8 @@
     <assignments>
         <name>setConfidentialAssignment4</name>
         <label>setConfidentialAssignment</label>
-        <locationX>314</locationX>
-        <locationY>539</locationY>
+        <locationX>671</locationX>
+        <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>varSetConfidentalitet</assignToReference>
             <operator>Assign</operator>
@@ -96,8 +96,8 @@
     <assignments>
         <name>setConfidentialAssignment5</name>
         <label>setConfidentialAssignment</label>
-        <locationX>578</locationX>
-        <locationY>539</locationY>
+        <locationX>935</locationX>
+        <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>varSetConfidentalitet</assignToReference>
             <operator>Assign</operator>
@@ -119,8 +119,8 @@
     <decisions>
         <name>CodeSeven</name>
         <label>CodeSeven</label>
-        <locationX>446</locationX>
-        <locationY>731</locationY>
+        <locationX>803</locationX>
+        <locationY>684</locationY>
         <defaultConnector>
             <targetReference>Ungraded</targetReference>
         </defaultConnector>
@@ -144,8 +144,8 @@
     <decisions>
         <name>Confidential_Changed</name>
         <label>Confidential Changed</label>
-        <locationX>248</locationX>
-        <locationY>323</locationY>
+        <locationX>473</locationX>
+        <locationY>276</locationY>
         <defaultConnector>
             <targetReference>NAVEmployee</targetReference>
         </defaultConnector>
@@ -176,8 +176,8 @@
     <decisions>
         <name>NAVEmployee</name>
         <label>NAVEmployee</label>
-        <locationX>446</locationX>
-        <locationY>431</locationY>
+        <locationX>803</locationX>
+        <locationY>384</locationY>
         <defaultConnector>
             <targetReference>setConfidentialAssignment5</targetReference>
         </defaultConnector>
@@ -201,8 +201,8 @@
     <decisions>
         <name>Ungraded</name>
         <label>Ungraded</label>
-        <locationX>446</locationX>
-        <locationY>1031</locationY>
+        <locationX>803</locationX>
+        <locationY>984</locationY>
         <defaultConnector>
             <targetReference>Update_worktrail_records</targetReference>
         </defaultConnector>
@@ -260,8 +260,8 @@
         <description>If the participant get code 6 - the work_trail will be assigned an queue</description>
         <name>getQueue</name>
         <label>getQueue</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationX>143</locationX>
+        <locationY>384</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>setConfidentialAssignment1</targetReference>
@@ -288,8 +288,11 @@
     <recordUpdates>
         <name>Update_worktrail_records</name>
         <label>Update worktrail records</label>
-        <locationX>446</locationX>
-        <locationY>1331</locationY>
+        <locationX>803</locationX>
+        <locationY>1284</locationY>
+        <faultConnector>
+            <targetReference>addErrorToLog</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>ips_Participant__c</field>
@@ -327,8 +330,12 @@
     <recordUpdates>
         <name>Update_worktrail_records1</name>
         <label>Update worktrail records</label>
-        <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationX>143</locationX>
+        <locationY>600</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>addErrorToLog</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>ips_Participant__c</field>
@@ -352,11 +359,8 @@
         <object>Work_Trail__c</object>
     </recordUpdates>
     <start>
-        <locationX>122</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
-        <connector>
-            <targetReference>Confidential_Changed</targetReference>
-        </connector>
         <filterLogic>or</filterLogic>
         <filters>
             <field>INT_Confidential__c</field>
@@ -374,9 +378,52 @@
         </filters>
         <object>Person__c</object>
         <recordTriggerType>Update</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>Confidential_Changed</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
+    <subflows>
+        <name>addErrorToLog</name>
+        <label>Add error to log</label>
+        <locationX>1199</locationX>
+        <locationY>1392</locationY>
+        <flowName>Flow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>Application_Domain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Error_Payload</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Error_Source</name>
+            <value>
+                <stringValue>&quot;IPS - Person set worktrail skerming&quot;</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Level</name>
+            <value>
+                <stringValue>&quot;Critical&quot;</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Message</name>
+            <value>
+                <stringValue>&quot;Failed to update worktrail&quot;</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>varOwnerId</name>
         <dataType>String</dataType>
