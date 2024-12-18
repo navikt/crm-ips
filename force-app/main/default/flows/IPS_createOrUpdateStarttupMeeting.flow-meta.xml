@@ -247,12 +247,19 @@
         <defaultConnectorLabel>Startup date not valid</defaultConnectorLabel>
         <rules>
             <name>Startup_date_valid</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>isStartupDateValidFormula</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_related_work_trail.ips_First_meeting_with_the_Employer_held__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -274,12 +281,19 @@
         <defaultConnectorLabel>Startup date not valid</defaultConnectorLabel>
         <rules>
             <name>Startup_date_valid_Not_new</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>isStartupDateValidFormula</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_related_work_trail.ips_First_meeting_with_the_Employer_held__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
