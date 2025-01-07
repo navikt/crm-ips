@@ -30,7 +30,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
    private static List<IPS_ParticipantPortalWorkTrail> getWorkTrailWrapperList(Id currentRecordId){
     List<IPS_ParticipantPortalWorkTrail> wrapperTempList = new List<IPS_ParticipantPortalWorkTrail>();
         
-    Work_Trail__c tempTrailList = new Work_Trail__c();
+    List <Work_Trail__c> tempTrailList = new List<Work_Trail__c>();
         tempTrailList =[
             SELECT id,
             Name,
@@ -45,7 +45,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
 
             for(Work_Trail__c t :tempTrailList){
                 
-                List<IPS_ParticipantPortalWorkTrail> tempList = new List<IPS_ParticipantPortalWorkTrail>();
+                IPS_ParticipantPortalWorkTrail tempList = new IPS_ParticipantPortalWorkTrail();
                 tempList.jobbsporId = t.id;
                 tempList.jobbsporNavn = t.Name;
                 tempList.jobbsporPostTypeNavn = t.RecordType.DeveloperName;

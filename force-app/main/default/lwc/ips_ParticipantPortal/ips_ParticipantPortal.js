@@ -15,7 +15,7 @@ import informationTextIPS from '@salesforce/label/c.IPS_Information_text_IPS';
 import titleTextIPS from '@salesforce/label/c.IPS_title_text_IPS';
 import jobDevelopmentTitle from '@salesforce/label/c.IPS_job_development_title_IPS';
 import careerProfileTitle from '@salesforce/label/c.IPS_career_profile_title_IPS';
-import workEducationSupportTitle from '@salesforce/label/c.IPS_education_and_work_support_title_IPS';
+//import workEducationSupportTitle from '@salesforce/label/c.IPS_education_and_work_support_title_IPS';
 import cooperationTitle from '@salesforce/label/c.IPS_cooperation_title_IPS';
 import economyTitle from '@salesforce/label/c.IPS_economy_title_IPS';
 /* label AMS */
@@ -62,7 +62,6 @@ label ={
         jobDevelopmentTitle,
         warningText,
         careerProfileTitle,
-        workEducationSupportTitle,
         transparencyTitle,
         transparencyText,
         cooperationTitle,
