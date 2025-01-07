@@ -28,9 +28,9 @@ public with sharing class IPS_ParticipantPortalTrailController {
    }
 
    private static List<IPS_ParticipantPortalWorkTrail> getWorkTrailWrapperList(Id currentRecordId){
-    IPS_ParticipantPortalWorkTrail wrapperTempList = new IPS_ParticipantPortalWorkTrail();
+    List<IPS_ParticipantPortalWorkTrail> wrapperTempList = new List<IPS_ParticipantPortalWorkTrail>();
         
-    List<Work_Trail__c> tempTrailList = new List<Work_Trail__c>();
+    Work_Trail__c tempTrailList = new Work_Trail__c();
         tempTrailList =[
             SELECT id,
             Name,
