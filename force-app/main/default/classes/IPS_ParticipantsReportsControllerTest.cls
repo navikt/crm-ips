@@ -1,5 +1,5 @@
 @isTest
-public class IPS_ParticipantsReportControllerTest {
+public class IPS_ParticipantsReportsControllerTest {
     
      @TestSetup
     static void makeData() {
