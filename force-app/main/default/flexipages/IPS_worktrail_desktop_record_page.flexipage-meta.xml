@@ -10,7 +10,57 @@
                             <value>Edit</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>ChangeOwnerOne</value>
+                            <visibilityRule>
+                                <booleanFilter>(1 OR 2 OR 3) AND 4</booleanFilter>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV IPS Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV UO Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>Ended</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Work_Trail__c.Sms_reservation</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>Work_Trail__c.IPS_setParticipantPassive</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Work_Trail__c.IPS_cloneWorkTrail</value>
+                            <visibilityRule>
+                                <booleanFilter>(1 OR 2) AND 3</booleanFilter>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV IPS Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Ended</rightValue>
+                                </criteria>
+                            </visibilityRule>
                         </valueListItems>
                         <valueListItems>
                             <value>Share</value>
@@ -39,36 +89,10 @@
                             </visibilityRule>
                         </valueListItems>
                         <valueListItems>
-                            <value>ChangeOwnerOne</value>
-                            <visibilityRule>
-                                <booleanFilter>(1 OR 2 OR 3) AND 4</booleanFilter>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV IPS Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV UO Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>true</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!Record.ips_Status__c}</leftValue>
-                                    <operator>NE</operator>
-                                    <rightValue>Ended</rightValue>
-                                </criteria>
-                            </visibilityRule>
+                            <value>RecordShareHierarchy</value>
                         </valueListItems>
                         <valueListItems>
                             <value>PrintableView</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.Sms_reservation</value>
                         </valueListItems>
                         <valueListItems>
                             <value>Delete</value>
@@ -77,27 +101,6 @@
                                     <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>true</rightValue>
-                                </criteria>
-                            </visibilityRule>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.IPS_cloneWorkTrail</value>
-                            <visibilityRule>
-                                <booleanFilter>(1 OR 2) AND 3</booleanFilter>
-                                <criteria>
-                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>true</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!$User.Profile.Name}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>NAV IPS Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!Record.ips_Status__c}</leftValue>
-                                    <operator>EQUAL</operator>
-                                    <rightValue>Ended</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
@@ -769,36 +772,6 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>parentFieldApiName</name>
-                    <value>Work_Trail__c.Id</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListApiName</name>
-                    <value>AttachedContentDocuments</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
-                    <value>ADVGRID</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>relatedListSingleContainer3</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-889c5354-b554-420f-b6e2-d0f6f4d6d840</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
                     <name>body</name>
                     <value>Facet-79d5d477-556a-4d05-9567-5bb4455eba26</value>
                 </componentInstanceProperties>
@@ -866,24 +839,6 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
                 <identifier>flexipage_accordionSection4</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-889c5354-b554-420f-b6e2-d0f6f4d6d840</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>Dokumenter</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>name</name>
-                    <value>accordionSection--f62q4xbodpu</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:accordionSection</componentName>
-                <identifier>flexipage_accordionSection6</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-1dfc73f4-1943-470b-bdfa-2bc7297decc9</name>
@@ -1828,7 +1783,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>rowsToDisplay</name>
-                    <value>10</value>
+                    <value>20</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>showActionBar</name>
@@ -1836,81 +1791,6 @@
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
                 <identifier>force_relatedListSingleContainer3</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>amountOfMonths</name>
-                    <value>3</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>amountOfMonthsToLoad</name>
-                    <value>3</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>amountOfMonthsToOpen</name>
-                    <value>2</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>amountOfRecords</name>
-                    <value>3</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>amountOfRecordsToLoad</name>
-                    <value>3</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>buttonIsHidden</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>configId</name>
-                    <value>{!$Label.IPS_custom_metadata_ID}</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>customEmptySubtitle</name>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>filterIsActive</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>headerIcon</name>
-                    <value>standard:channel_program_history</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>headerTitleEnglish</name>
-                    <value>{!$Label.IPS_title_history}</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>headerTitleNorwegian</name>
-                    <value>{!$Label.IPS_title_history}</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>hideMyActivitiesFilter</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>includeAmountInTitle</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>logEvent</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>picklistFilter1Label</name>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>picklistFilter2Label</name>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>timelineParentField</name>
-                    <value>Id</value>
-                </componentInstanceProperties>
-                <componentName>timeline</componentName>
-                <identifier>c_timeline6</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-afc646be-680f-49b6-a9b4-fc07e69e601c</name>
