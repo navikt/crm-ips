@@ -1,0 +1,216 @@
+<template>
+    <div lwc:if={isActive}>
+        <a href="#main" class="button button--skip-link">Skip to content</a>
+        <div class="container responsive ">
+            <h1>
+                <img src={ipsLogoImg} alt=""/>
+                {label.titleTextIPS}
+            </h1>
+            <p id="titleText" tabindex="0">{label.informationTextIPS}</p>       
+                
+            <template lwc:if={isTrail}>
+                <template lwc:if={trailClassList} >
+                    <dl title="Ditt jobbspor">
+                        <div tabindex="0">
+                            <dt >Henvist dato</dt>
+                            <dd>{trailClassList.jobbsporHenvistDato}</dd>
+                        </div>
+                        <div tabindex="0">
+                            <dt>Din jobbspesialist</dt>
+                            <dd>{trailClassList.jobbsporEierNavn}</dd>
+                        </div>
+                        <div tabindex="0">
+                            <dt>Ditt hovedmål</dt>
+                            <dd>{trailClassList.ipsHovedmaal}</dd>
+                        </div>
+                        <div tabindex="0">
+                            <dt>Beskrivelse av ditt mål</dt>
+                            <dd>{trailClassList.jobbsporHovedmaalBeskrivelse}</dd>
+                        </div>
+                    </dl>
+
+                    <template lwc:if={isReport}>
+                        <div class="container-color">
+                            <h2>Veilederrapport</h2>
+                            <p tabindex="0">Du har ny(e) rapporter for innsyn.</p>
+                            <template for:each={participantSharedReportList} for:item="report" >
+                                <c-readmore key={report.reportId} label={report.reportName} >
+                                    <dl>
+                                        <dt>Frist for å se rapport</dt>
+                                        <dd>{report.reportDueDate}</dd>
+                                    </dl>                                
+                                    
+                                    <p tabindex="0">
+                                        <lightning-button 
+                                        variant="Brand"
+                                        id={report.reportId} 
+                                        label="Se rapport" 
+                                        title="Se på rapport og kommenter" 
+                                        value={report.reportId}
+                                        onclick={navigateToReport}
+                                        class="slds-m-left_x-small">
+                                    </lightning-button>
+                                    </p>
+                                </c-readmore>
+                            </template>
+                        </div>       
+                    </template> 
+
+                    <template lwc:if={isGoal}>
+                        <h2>Dine delmål</h2>
+                    </template>
+                    <template lwc:if={isMeeting}>
+                        <h2>Dine planlagte møter</h2>
+                    </template>
+                    <template lwc:if={isJob}>
+                        <h2>Dine jobber</h2>
+                    </template>
+                    <template lwc:if={isTraining}>
+                        <h2>Dine arbeidstreninger</h2>
+                    </template>
+                    <template lwc:if={isEducation}>
+                        <h2>Din utdanning</h2>
+                    </template>
+                    
+                   
+
+
+                    <h2 tabindex="0">{label.careerPlanningTitle}</h2>
+                    <p tabindex="0">{label.careerPlanningText}</p>
+                    <c-readmore label={label.jobDevelopmentTitle}>
+                        <dl>
+                            <div tabindex="0">
+                                <dt>Beskrivelse av mitt mål</dt>
+                                <dd>{trailClassList.jobbsporHovedmaalBeskrivelse}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Mine karriereønsker</dt>
+                                <dd>{trailClassList.ipsPrioriterteOnsker}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Rammer for jobbutvikling/jobbsøk</dt>
+                                <dd>{trailClassList.ipsRammerJobbUtvikling}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Ønsket arbeidstid</dt>
+                                <dd>{trailClassList.ipsArbeidstid}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Nettverk</dt>
+                                <dd>{trailClassList.ipsNettverk}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Ønsket arbeidsområde/geografi</dt>
+                                <dd>{trailClassList.ipsGeografi}</dd>
+                            </div>
+                        </dl>
+                    </c-readmore>
+                    <c-readmore label={label.careerProfileTitle}>
+                        <dl title="Kartlegging">
+                            <div tabindex="0">
+                                <dt>Interesser/hobbyer</dt>
+                                <dd>{trailClassList.jobbsporHobbyInteresse}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Personlige egenskaper</dt>
+                                <dd>{trailClassList.ipsPersonligeEgenskaper}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Kulturell bakgrunn</dt>
+                                <dd>{trailClassList.ipsKulturBakgrunn}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Omgivelsene dine og miljøet du er en del av</dt>
+                                <dd>{trailClassList.ipsOmgivelser}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Din økonomiske situasjon</dt>
+                                <dd>{trailClassList.ipsOekonomi}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Din helsesituasjon relatert til jobb og behov for tilrettelegging</dt>
+                                <dd>{trailClassList.jobbsporHelse}</dd>
+                            </div>
+                        </dl> 
+                    </c-readmore>
+                    <c-readmore label="mistet label">
+                        <dl title="Jobb og utdanningsstøtte">
+                            <div tabindex="0">
+                                <dt>Strategi før og etter jobb/utdanning</dt>
+                                <dd>{trailClassList.ipsStrategiForJobb}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Behov for tilrettelegging</dt>
+                                <dd>{trailClassList.ipsBehovForTillrettelegging}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Tegn på økt symptomtrykk</dt>
+                                <dd>{trailClassList.ipsTidligSymptomTrykk}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Mestringstrategi</dt>
+                                <dd>{trailClassList.ipsMestringStrategi}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Nettverk</dt>
+                                <dd>{trailClassList.ipsNettverkUtdanningJobb}</dd>
+                            </div>
+                        </dl>
+                    </c-readmore>
+                    <c-readmore label={label.transparencyTitle}>
+                        <p>{label.transparencyText}</p>
+                        <dl title="åpenhet">
+                            <div tabindex="0">
+                                <dt>Åpenhet innhentet</dt>
+                                <dd>{trailClassList.jobbsporAapenhetDato}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Hva kan deles med arbeidsgiver?</dt>
+                                <dd>{trailClassList.jobbsporKanDelesMedArbeidsgiver}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Hva skal ikke deles med arbeidsgiver?</dt>
+                                <dd>{trailClassList.jobbsporKanIkkeDelesMedArbeidsgiver}</dd>
+                            </div>
+                        </dl>
+                    </c-readmore>
+                    <c-readmore label={label.cooperationTitle}>
+                        <dl title="Samarbeid">
+                            <div tabindex="0">
+                                <dt>NAV veileder</dt>
+                                <dd>{trailClassList.jobbsporVeileder}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Behandlingsteam</dt>
+                                <dd>{trailClassList.ipsBehandlingsTeam}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Nettverk</dt>
+                                <dd>{trailClassList.jobbsporNettverkPartner}</dd>
+                            </div>
+                        </dl>
+                    </c-readmore>
+                    <c-readmore label={label.economyTitle}>
+                        <dl title="Økonomiske rammer">
+                            <div tabindex="0">
+                                <dt>Dine økonomiske rammer før jobbstart</dt>
+                                <dd>{trailClassList.ipsOkonomiskeRammerVedOvergang}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Ditt behov for økonomisk rådgivning/gjeldsrådgivning</dt>
+                                <dd>{trailClassList.ipsRaadgivningGjeld}</dd>
+                            </div>
+                            <div tabindex="0">
+                                <dt>Hvordan stønader og ytelser påvirkes etter overgang til jobb</dt>
+                                <dd>{trailClassList.ipsOvergangTilJobb}</dd>
+                            </div>
+                        </dl>
+                    </c-readmore> 
+                    
+                    <h2 tabindex="0">{label.historyTitle}</h2>
+                    <p tabindex="0">{label.historyText}</p>
+                </template>
+            </template>  
+        </div>
+    </div>
+</template>
