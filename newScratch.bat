@@ -5,28 +5,28 @@ call sf force:org:open --target-org %1
 
 
 echo "INSTALLERER"
-echo "Installerer platform-base 230.."
-call sf force:package:install --package 04tKB000000Y1nzYAC -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-base 252"
+call sf force:package:install --package 04tKB000000Y7SbYAK -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer platform-access-controll 135.."
-call sf force:package:install --package 04tKB000000Y1nuYAC -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-access-control 149"
+call sf force:package:install --package 04tKB000000Y7q4YAC -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-thread-view 0.2.0.."
-call sf force:package:install --package 04t7U000000TqvIQAS -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-thread-view 0.3.0.."
+call sf force:package:install --package 04tKB000000Y7DEYA0 -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-reporting 0.38.0.."
-call sf force:package:install --package 04t7U000000Y3yYQAS -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-reporting 0.39.0.."
+call sf force:package:install --package 04tKB000000Y5GEYA0 -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-shared-timeline 1.23.0.."
-call sf force:package:install --package 04tKB000000Y0cFYAS -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-shared-timeline 1.27.0.."
+call sf force:package:install --package 04tKB000000Y655YAC -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -41,28 +41,28 @@ call sf force:package:install --package 04t7U0000008qz4QAA -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-henvendelse-base 0.21.0.."
-call sf force:package:install --package 04t7U000000Y4hdQAC -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-henvendelse-base 0.27.0.."
+call sf force:package:install --package 04tKB000000Y77jYAC -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-integration  133.."
-call sf force:package:install --package 04tKB000000Y1GEYA0 -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-integration  146"
+call sf force:package:install --package 04tKB000000Y7c4YAC -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-journal-utilities 0.37.0.."
-call sf force:package:install --package 04tKB000000Y1o9YAC -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-journal-utilities 0.41.0.."
+call sf force:package:install --package 04tKB000000Y7BwYAK -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-oppgave 0.60-0.."
-call sf force:package:install --package 04tKB000000Y0aJYAS -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-oppgave 0.63-0.."
+call sf force:package:install --package 04tKB000000Y5H7YAK -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-arbeidsgiver-base 1.461.0.."
-call sf force:package:install --package 04tKB000000Y0dIYAS -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.490.0.."
+call sf force:package:install --package 04tKB000000Y7s5YAC -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -71,8 +71,8 @@ call sf force:package:install --package 04tKB000000Y0CZYA0 -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-ips 0.463.0.."
-call sf force:package:install --package 04tKB000000Y3IgYAK -r --installation-key %3 --wait 10 --publish-wait 10
+echo "Installerer crm-ips 0.472.0.."
+call sf force:package:install --package 04tKB000000Y6OUYA0 -r --installation-key %3 --wait 10 --publish-wait 10
 
 echo ""
 echo "TILDELER"
