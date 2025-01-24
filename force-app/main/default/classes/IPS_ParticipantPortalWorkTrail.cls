@@ -52,6 +52,10 @@ public class IPS_ParticipantPortalWorkTrail{
     @AuraEnabled public String ipsNettverkUtdanningJobb{get;set;}
 
     //Samarbeid
+    @AuraEnabled public String ipsAapenhetFordeler{get;set;}
+    @AuraEnabled public String ipsAapenhetUlemper{get;set;}
+
+    //Åpenhet
     @AuraEnabled public String ipsBehandlingsTeam{get;set;}
 
     //Økonomi

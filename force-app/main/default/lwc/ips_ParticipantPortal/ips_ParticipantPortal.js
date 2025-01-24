@@ -15,8 +15,9 @@ import informationTextIPS from '@salesforce/label/c.IPS_Information_text_IPS';
 import titleTextIPS from '@salesforce/label/c.IPS_title_text_IPS';
 import jobDevelopmentTitle from '@salesforce/label/c.IPS_job_development_title_IPS';
 import careerProfileTitle from '@salesforce/label/c.IPS_career_profile_title_IPS';
-//import workEducationSupportTitle from '@salesforce/label/c.IPS_education_and_work_support_title_IPS';
+import workEducationSupportTitle from '@salesforce/label/c.IPS_education_and_work_support_title_IPS';
 import cooperationTitle from '@salesforce/label/c.IPS_cooperation_title_IPS';
+import cooperationText from '@salesforce/label/c.IPS_cooperation_text_IPS';
 import economyTitle from '@salesforce/label/c.IPS_economy_title_IPS';
 /* label AMS */
 import informationTextAMS from '@salesforce/label/c.IPS_Information_text_AMS';
@@ -38,7 +39,7 @@ import State from '@salesforce/schema/Asset.State';
 
 export default class Ips_ParticipantPortal extends NavigationMixin(LightningElement) {
 //currentUser = USER_ID;
-currentUser ='005KN0000018AEbYAM';
+currentUser ='005KF000006zTHqYAM';
 error;
 @track recordTypeName;
 @track participantSharedReportList;
@@ -68,6 +69,8 @@ label ={
         economyTitle,
         historyTitle,
         historyText,
+        workEducationSupportTitle,
+        cooperationText,
 };
 // warning icon and text used in default page
 warningIcon = IPS_HOME_LOGOS + '/ExclamationmarkTriangle.svg';
