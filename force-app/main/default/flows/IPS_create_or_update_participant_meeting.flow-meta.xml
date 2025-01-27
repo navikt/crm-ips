@@ -4,7 +4,7 @@
         <name>createTravelTime</name>
         <label>createTravelTime</label>
         <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -60,13 +60,14 @@
             </value>
         </inputParameters>
         <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
         <locationX>314</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -119,6 +120,7 @@
             </value>
         </inputParameters>
         <nameSegment>IPS_eventTravelTimeController</nameSegment>
+        <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>61.0</apiVersion>
@@ -126,7 +128,7 @@
         <name>setPublic</name>
         <label>setPublic</label>
         <locationX>50</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -142,7 +144,7 @@
         <name>createOrUpdate</name>
         <label>createOrUpdate</label>
         <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
         </defaultConnector>
@@ -204,10 +206,32 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <description>Getting worktrail info</description>
+        <name>Get_work_trail_info</name>
+        <label>Get work trail info</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getRecordTypeNameTravelTime</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getRecordTypeNameTravelTime</name>
         <label>getRecordTypeNameTravelTime</label>
         <locationX>182</locationX>
-        <locationY>323</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>createOrUpdate</targetReference>
@@ -230,7 +254,13 @@
         <name>UpdateEvent</name>
         <label>UpdateEvent</label>
         <locationX>50</locationX>
-        <locationY>863</locationY>
+        <locationY>971</locationY>
+        <inputAssignments>
+            <field>CE_Work_Trail_Status__c</field>
+            <value>
+                <elementReference>Get_work_trail_info.ips_Status__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>IPS_participant_related_to_meeting__c</field>
             <value>
@@ -255,7 +285,7 @@
         <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>getRecordTypeNameTravelTime</targetReference>
+            <targetReference>Get_work_trail_info</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -281,7 +311,7 @@
         <name>Add_contactId_to_event</name>
         <label>Add contactId to event</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>setPublic</targetReference>
         </connector>
