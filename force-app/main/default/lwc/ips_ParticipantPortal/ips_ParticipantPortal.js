@@ -10,6 +10,7 @@ import USER_CONTACT_FIELD from '@salesforce/schema/User.ContactId';
 import getTrailAndRecordtype from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrailAndRecordtype';
 import getTrailWrapperClassList from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrailWrapperClassList';
 import getParticipantSharedReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
+import getTaskOpenGoals from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantsOpenGoals';
 /* label IPS */
 import informationTextIPS from '@salesforce/label/c.IPS_Information_text_IPS';
 import titleTextIPS from '@salesforce/label/c.IPS_title_text_IPS';
@@ -49,7 +50,7 @@ error;
 @track recordId;
 recordOwnerName;
 @track isActive = false;
-isGoal = true;
+isGoal = false;
 isMeeting = true;
 isJob = true;
 isTraining = true;
@@ -172,6 +173,19 @@ educationImg = IPS_HOME_LOGOS + '/PencilBoard.svg';
             this.participantSharedReportList = data;
             this.isReport = true;
 
+        }
+        if(error){
+            this.error = error;
+        }
+    }
+
+@wire(getTaskOpenGoals,{
+    recordId:'$recordId'})
+    participantOpenGoalHandler
+    ({data,error}){
+        if(data){
+            this.participantOpenGoalList = data;
+            this.isGoal = true;
         }
         if(error){
             this.error = error;

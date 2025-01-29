@@ -57,7 +57,21 @@
                     </template> 
 
                     <template lwc:if={isGoal}>
-                        <h2>Dine delmål</h2>
+                        <div class="container-color">
+                            <h2>Dine delmål</h2>
+                            <p tabindex="0">Her er delmålene som du og jobbspesialisten din samarbeider om nå.</p>
+                            <template for:each={participantOpenGoalList} for:item="goal" >
+                                <c-readmore key={goal.oppgaveId} label={goal.Emne} >
+                                    <dl>
+                                        <dt>Frist</dt>
+                                        <dd>{goal.ForfallsDato}</dd>
+                                        <dt>Beskrivelse av delmålet</dt>
+                                        <dd>{goal.ReferatKommentar}</dd>
+                                    </dl>                                
+                                </c-readmore>
+                            </template>
+                        </div>
+                        
                     </template>
                     <template lwc:if={isMeeting}>
                         <h2>Dine planlagte møter</h2>
