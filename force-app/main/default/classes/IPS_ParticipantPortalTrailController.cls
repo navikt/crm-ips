@@ -69,7 +69,17 @@ public with sharing class IPS_ParticipantPortalTrailController {
             ips_Plan__c,
             ips_Transition_to_work__c,
             ips_Benefits_of_openness_to_the_employer__c,
-            ips_Disadvantages_of_openness_employe__c
+            ips_Disadvantages_of_openness_employe__c,
+            ips_Desired_profession_industry_career__c,
+            ips_Desired_working_environment__c,
+            ips_Desired_work_tasks__c,
+            ips_UO_Service__c,
+            ips_Mobility__c,
+            ips_Economic_conditions__c,
+            ips_Social_conditions__c,
+            ips_Other__c,
+            ips_Education__c,
+            ips_Work_experience__c
             FROM Work_Trail__c
             WHERE  Id = :currentRecordId];
 
@@ -90,7 +100,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
                 tempList.ipsNettverk = t.ips_Network__c;
                 tempList.ipsGeografi = t.ips_Geography__c;
                 tempList.jobbsporHobbyInteresse = t.ips_Interests_Hobbies__c;
-                tempList.ipsPersonligeEgenskaper = t.Personal_Qualities__c;
+                tempList.jobbsporPersonligeEgenskaper = t.Personal_Qualities__c;
                 tempList.ipsKulturBakgrunn = t.ips_Cultural_background__c;
                 tempList.ipsOmgivelser = t.ips_Environmental_conditions__c;
                 tempList.ipsOekonomi = t.ips_Economy__c;
@@ -111,6 +121,16 @@ public with sharing class IPS_ParticipantPortalTrailController {
                 tempList.ipsOvergangTilJobb = t.ips_Transition_to_work__c;
                 tempList.ipsAapenhetFordeler = t.ips_Benefits_of_openness_to_the_employer__c;
                 tempList.ipsAapenhetUlemper = t.ips_Disadvantages_of_openness_employe__c;
+                tempList.amsYrkeBransjeKarriere = t.ips_Desired_profession_industry_career__c;
+                tempList.amsArbeidsmiljoe = t.ips_Desired_working_environment__c;
+                tempList.amsArbeidsoppgaver = t.ips_Desired_work_tasks__c;
+                tempList.amsHovedmaal = t.ips_UO_Service__c;
+                tempList.amsMobilitet = t.ips_Mobility__c;
+                tempList.amsOkonomiskeForhold = t.ips_Economic_conditions__c;
+                tempList.amsSosialeForhold = t.ips_Social_conditions__c;
+                tempList.amsAnnet = t.ips_Other__c;
+                tempList.jobbsporUtdanning =t.ips_Education__c;
+                tempList.jobbsporArbeidserfaring = t.ips_Work_experience__c;
                 wrapperTempList.add(tempList);
             }
             return wrapperTempList;

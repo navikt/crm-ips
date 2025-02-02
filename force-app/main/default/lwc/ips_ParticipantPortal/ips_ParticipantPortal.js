@@ -10,6 +10,7 @@ import USER_CONTACT_FIELD from '@salesforce/schema/User.ContactId';
 import getTrailAndRecordtype from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrailAndRecordtype';
 import getTrailWrapperClassList from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrailWrapperClassList';
 import getParticipantSharedReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
+import getTaskOpenGoals from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantsOpenGoals';
 /* label IPS */
 import informationTextIPS from '@salesforce/label/c.IPS_Information_text_IPS';
 import titleTextIPS from '@salesforce/label/c.IPS_title_text_IPS';
@@ -22,6 +23,9 @@ import economyTitle from '@salesforce/label/c.IPS_economy_title_IPS';
 /* label AMS */
 import informationTextAMS from '@salesforce/label/c.IPS_Information_text_AMS';
 import titleTextAMS from '@salesforce/label/c.IPS_title_text_AMS';
+import workProfileAMS from '@salesforce/label/c.IPS_work_profile_AMS';
+import workProfileTextAMS from '@salesforce/label/c.IPS_work_profile_text_AMS';
+import educationExperienceAMS from '@salesforce/label/c.IPS_educattion_and_experience_AMS';
 /* label Alle */
 import careerPlanningTitle from '@salesforce/label/c.IPS_Career_Planning_Title';
 import careerPlanningText from '@salesforce/label/c.IPS_Career_Planning_Text';
@@ -34,19 +38,19 @@ import warningText from '@salesforce/label/c.IPS_Information_message_text';
 
 /* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
-import State from '@salesforce/schema/Asset.State';
 
 
 export default class Ips_ParticipantPortal extends NavigationMixin(LightningElement) {
 //currentUser = USER_ID;
-currentUser ='005KF000006zTHqYAM';
+//currentUser ='005KF000006zTHqYAM';//ips
+currentUser ='005KF000006zS0YYAU';//ams
 error;
 @track recordTypeName;
 @track participantSharedReportList;
 @track recordId;
 recordOwnerName;
 @track isActive = false;
-isGoal = true;
+isGoal = false;
 isMeeting = true;
 isJob = true;
 isTraining = true;
@@ -71,11 +75,21 @@ label ={
         historyText,
         workEducationSupportTitle,
         cooperationText,
+        workProfileAMS,
+        educationExperienceAMS,
+        workProfileTextAMS,
 };
 // warning icon and text used in default page
 warningIcon = IPS_HOME_LOGOS + '/ExclamationmarkTriangle.svg';
+warningText ='Du må være aktiv deltaker i et av arbeidsmarkedstiltakene, individuell jobbstøtte eller arbeid med støtte, for tilgang til denne siden.';
 ipsLogoImg = IPS_HOME_LOGOS + '/IPSikon.svg';
-//warningText ='Du må være aktiv deltaker i et av arbeidsmarkedstiltakene, individuell jobbstøtte eller arbeid med støtte, for tilgang til denne siden.';
+phoneImg = IPS_HOME_LOGOS + '/Phone.svg';
+meetingImg = IPS_HOME_LOGOS + '/MeetingSmall.svg'
+goalImg = IPS_HOME_LOGOS + '/ClipboardCheckmark.svg';
+jobsImg = IPS_HOME_LOGOS + '/Briefcase.svg';
+trainingImg = IPS_HOME_LOGOS + '/Buildings2.svg';
+educationImg = IPS_HOME_LOGOS + '/PencilBoard.svg';
+
 
 
 @wire(getRecord, {
@@ -159,6 +173,19 @@ ipsLogoImg = IPS_HOME_LOGOS + '/IPSikon.svg';
             this.participantSharedReportList = data;
             this.isReport = true;
 
+        }
+        if(error){
+            this.error = error;
+        }
+    }
+
+@wire(getTaskOpenGoals,{
+    recordId:'$recordId'})
+    participantOpenGoalHandler
+    ({data,error}){
+        if(data){
+            this.participantOpenGoalList = data;
+            this.isGoal = true;
         }
         if(error){
             this.error = error;

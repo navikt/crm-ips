@@ -14,18 +14,32 @@ public class IPS_ParticipantPortalWorkTrail{
     @AuraEnabled public String jobbsporHenvistDato{get;set;}
     @AuraEnabled public String jobbsporHovedmaalBeskrivelse{get;set;}
     @AuraEnabled public String jobbsporNettverkPartner{get;set;}
+    @AuraEnabled public String jobbsporPersonligeEgenskaper{get;set;}
     
-    @AuraEnabled public String jobbsporHelse{get;set;}//IPS - kartlegging
-    @AuraEnabled public String jobbsporHobbyInteresse{get;set;}//IPS - kartlegging
+    @AuraEnabled public String jobbsporHelse{get;set;}
+    @AuraEnabled public String jobbsporHobbyInteresse{get;set;}
     @AuraEnabled public String jobbsporAapenhetDato{get;set;}//IPS - åpenhet
     @AuraEnabled public String jobbsporKanDelesMedArbeidsgiver{get;set;}//IPS - åpenhet
     @AuraEnabled public String jobbsporKanIkkeDelesMedArbeidsgiver{get;set;}//IPS - åpenhet
     @AuraEnabled public String jobbsporVeileder{get;set;}//IPS -samarbeid
+    @AuraEnabled public String jobbsporUtdanning{get;set;}
+    @AuraEnabled public String jobbsporArbeidserfaring{get;set;}
+
     
     //Fields for AMS
     @AuraEnabled public String amsHovedmaal{get;set;}
     @AuraEnabled public String value {get;set;}
     @AuraEnabled public String name{get;set;}
+    //yrkesprofil
+    @AuraEnabled public String amsYrkeBransjeKarriere{get;set;}
+    @AuraEnabled public String amsArbeidsmiljoe{get;set;}
+    @AuraEnabled public String amsArbeidsoppgaver{get;set;}
+    @AuraEnabled public String amsMobilitet{get;set;}
+    @AuraEnabled public String amsOkonomiskeForhold{get;set;}
+    @AuraEnabled public String amsSosialeForhold{get;set;}
+    @AuraEnabled public String amsAnnet{get;set;}
+    //Utdanning og erfaring
+    @AuraEnabled public String ipsTilbakemeldingForrigeArbeidsgiver{get;set;}
  
 
     //Fields for IPS
@@ -37,8 +51,6 @@ public class IPS_ParticipantPortalWorkTrail{
     @AuraEnabled public String ipsGeografi{get;set;}
     @AuraEnabled public String ipsNettverk{get;set;}
     //kartlegging
-    
-    @AuraEnabled public String ipsPersonligeEgenskaper{get;set;}
     @AuraEnabled public String ipsKulturBakgrunn{get;set;}
     @AuraEnabled public String ipsOekonomi{get;set;}
     @AuraEnabled public String ipsOmgivelser{get;set;}
