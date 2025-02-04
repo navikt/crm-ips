@@ -92,7 +92,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
                 tempList.jobbsporEierNavn = t.IPS_ownerName__c;
                 tempList.jobbsporStatus = t.ips_Status__c;
                 tempList.jobbsporHenvistDato =  IPS_ParticipantPortalUtility.formatDate(t.ips_Referred_date__c);
-                tempList.ipsHovedmaal = t.ips_Main_Goal_list__c;
+                tempList.ipsHovedmaal = IPS_ParticipantPortalUtility.formatMainGoal(t.ips_Main_Goal_list__c);
                 tempList.jobbsporHovedmaalBeskrivelse = t.ips_Main_goal__c;
                 tempList.ipsPrioriterteOnsker = t.ips_Priority_career_wishes__c;
                 tempList.ipsRammerJobbUtvikling = t.ips_Framework_for_job_development_search__c;
@@ -124,7 +124,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
                 tempList.amsYrkeBransjeKarriere = t.ips_Desired_profession_industry_career__c;
                 tempList.amsArbeidsmiljoe = t.ips_Desired_working_environment__c;
                 tempList.amsArbeidsoppgaver = t.ips_Desired_work_tasks__c;
-                tempList.amsHovedmaal = t.ips_UO_Service__c;
+                tempList.amsHovedmaal = IPS_ParticipantPortalUtility.formatMainGoal(t.ips_UO_Service__c);
                 tempList.amsMobilitet = t.ips_Mobility__c;
                 tempList.amsOkonomiskeForhold = t.ips_Economic_conditions__c;
                 tempList.amsSosialeForhold = t.ips_Social_conditions__c;

@@ -28,6 +28,7 @@
                             <dd>{trailClassList.jobbsporHovedmaalBeskrivelse}</dd>
                         </div>
                     </dl>
+                </template>
 
                     <template lwc:if={isReport}>
                         <div class="container-color">
@@ -74,18 +75,144 @@
                         
                     </template>
                     <template lwc:if={isMeeting}>
-                        <h2>Dine planlagte møter</h2>
+                        <div class="container-color">
+                            <h2>Dine planlagte møter</h2>
+                            <p tabindex="0">Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover.</p>
+                            <template for:each={participantOpenEventList} for:item="event" >
+                                <c-readmore key={event.EventId} label={event.Emne} >
+                                    <dl>
+                                        <dt>Tidspunkt</dt>
+                                        <dd>
+                                            <lightning-formatted-date-time
+                                                value={event.FraTidDato} 
+                                                hour="2-digit" 
+                                                minute="2-digit" 
+                                                hour12={isTwelveHours} 
+                                                time-zone="Europe/Paris"
+                                                >
+                                            </lightning-formatted-date-time>
+                                            &nbsp;-&nbsp;
+                                            <lightning-formatted-date-time 
+                                                value={event.TilTidDato} 
+                                                hour="2-digit" 
+                                                minute="2-digit" 
+                                                hour12={isTwelveHours} 
+                                                time-zone="Europe/Paris"
+                                                >
+                                            </lightning-formatted-date-time>
+                                        </dd>
+                                        <dt>Sted</dt>
+                                        <dd>{event.Lokasjon}</dd>
+                                        <template lwc:if={event.Arbeidsgiver}>
+                                            <dt>Arbeidsgiver</dt>
+                                            <dd>{event.Arbeidsgiver}</dd>
+                                        </template>
+                                        <dt>Agenda</dt>
+                                        <dd>{event.ReferatKommentar}</dd>
+                                    </dl>                                
+                                </c-readmore>
+                            </template>
+                        </div>
                     </template>
                     <template lwc:if={isJob}>
-                        <h2>Dine jobber</h2>
+                        <div class="container-color">
+                            <h2>Dine jobber</h2>
+                            <p tabindex="0">Viser jobber du er i nå.</p>
+                            <template for:each={participantOpenJobList} for:item="job" >
+                                <c-readmore key={job.JobbId} label={job.Emne} >
+                                    <dl>
+                                        <dt>Periode</dt>
+                                        <dd><lightning-formatted-date-time 
+                                            value={job.StartDato}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                        &nbsp;-&nbsp;
+                                        <lightning-formatted-date-time 
+                                            value={job.SluttDato}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time></dd>
+                                        <dt>Antall timer per uke</dt>
+                                        <dd>{job.AntallTimerUke}</dd>
+                                        <dt>Arbeidsform</dt>
+                                        <dd>{job.Arbeidsform}</dd>
+                                        <dt>Arbeidsoppgaver</dt>
+                                        <dd>{job.Arbeidsoppgaver}</dd>
+                                        <dt>Plan for støtte</dt>
+                                        <dd>{job.Plan}</dd>
+                                    </dl>                                
+                                </c-readmore>
+                            </template>
+                        </div>
                     </template>
                     <template lwc:if={isTraining}>
-                        <h2>Dine arbeidstreninger</h2>
+                        <div class="container-color">
+                            <h2>Dine arbeidstreninger</h2>
+                            <p tabindex="0">Viser arbeidstreningen du er i nå.</p>
+                            <template for:each={participantOpenJobTrainingList} for:item="train" >
+                                <c-readmore key={train.JobbId} label={train.Emne} >
+                                    <dl>
+                                        <dt>Periode</dt>
+                                        <dd><lightning-formatted-date-time 
+                                            value={train.StartDato}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                        &nbsp;-&nbsp;
+                                        <lightning-formatted-date-time 
+                                            value={train.SluttDato}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time></dd>
+                                        <dt>Antall timer per uke</dt>
+                                        <dd>{train.AntallTimerUke}</dd>
+                                        <dt>Arbeidsoppgaver</dt>
+                                        <dd>{train.Arbeidsoppgaver}</dd>
+                                        <dt>Plan for støtte</dt>
+                                        <dd>{train.Plan}</dd>
+                                    </dl>                                
+                                </c-readmore>
+                            </template>
+                        </div>
                     </template>
                     <template lwc:if={isEducation}>
-                        <h2>Din utdanning</h2>
-                    </template>
-                    
+                        <div class="container-color">
+                            <h2>Din fag- og yrkesopplæring</h2>
+                            <p tabindex="0">Viser fag- og yrkesopplæringen du er i nå.</p>
+                            <template for:each={participantOpenEducationTrainingAMSList} for:item="utd" >
+                                <c-readmore key={utd.UtdanningId} label={utd.UtdanningNavn} >
+                                    <dl>
+                                        <dt>Navn på utdanningsinstitusjon</dt>
+                                        <dd>{utd.UtdanningSted}</dd>
+                                        <dt>Periode</dt>
+                                        <dd><lightning-formatted-date-time 
+                                            value={utd.UtdanningStart}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                        &nbsp;-&nbsp;
+                                        <lightning-formatted-date-time 
+                                            value={utd.UtdanningSlutt}
+                                            year="numeric"
+                                            month="2-digit"
+                                            day="2-digit">
+                                        </lightning-formatted-date-time>
+                                        </dd>
+                                        <dt>Studieform</dt>
+                                        <dd>{utd.Utdanningsform}</dd>
+                                        <dt>Støtte under utdanningen</dt>
+                                        <dd>{utd.Plan}</dd>
+                                    </dl>                                
+                                </c-readmore>
+                            </template>
+                        </div>
+                    </template>                  
                    
 
 
@@ -224,8 +351,7 @@
                             image-max-width="100%;">
                         </c-linkTile>  
                     </div>
-                </template>
-            </template>  
+            </template>
         </div>
     </div>
 </template>
