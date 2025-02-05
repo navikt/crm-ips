@@ -11,6 +11,12 @@ import getTrailAndRecordtype from '@salesforce/apex/IPS_ParticipantPortalTrailCo
 import getTrailWrapperClassList from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrailWrapperClassList';
 import getParticipantSharedReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
 import getTaskOpenGoals from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantsOpenGoals';
+import getEventOpenMeetings from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantOpenMeetings';
+import getJobOpenJobs from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantOpenJobs';
+import getJobOpenJobTrainings from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantOpenJobTrainings';
+import getEducationOpenEducations from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantOpenEducations';
+import getEducationOpenEduTrainingAMS from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantOpenEducationTrainingAMS';
+
 /* label IPS */
 import informationTextIPS from '@salesforce/label/c.IPS_Information_text_IPS';
 import titleTextIPS from '@salesforce/label/c.IPS_title_text_IPS';
@@ -46,17 +52,25 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
 currentUser ='005KF000006zS0YYAU';//ams
 error;
 @track recordTypeName;
-@track participantSharedReportList;
 @track recordId;
-recordOwnerName;
 @track isActive = false;
+trailClassList;
+participantSharedReportList;
+participantOpenGoalList;
+participantOpenEventList;
+participantOpenJobList;
+participantOpenJobTrainingList;
+participantOpenEducationList;
+participantOpenEducationTrainingAMSList;
+recordOwnerName;
 isGoal = false;
-isMeeting = true;
-isJob = true;
-isTraining = true;
-isEducation = true;
+isMeeting = false;
+isJob = false;
+isTraining = false;
+isEducation = false;
 isReport = true;
 isTrail = false;
+
 label ={
         informationTextIPS,
         informationTextAMS,
@@ -170,9 +184,10 @@ educationImg = IPS_HOME_LOGOS + '/PencilBoard.svg';
     participantReportHandler
     ({data,error}){
         if(data){
+            if (data.length > 0) {
             this.participantSharedReportList = data;
             this.isReport = true;
-
+            }
         }
         if(error){
             this.error = error;
@@ -184,12 +199,91 @@ educationImg = IPS_HOME_LOGOS + '/PencilBoard.svg';
     participantOpenGoalHandler
     ({data,error}){
         if(data){
+            if (data.length > 0) {
             this.participantOpenGoalList = data;
             this.isGoal = true;
+            }
         }
         if(error){
             this.error = error;
         }
     }
+
+@wire(getEventOpenMeetings,{
+    recordId:'$recordId',
+    contactId: '$userContactId'})
+    participantOpenEventHandler
+    ({data,error}){
+        if(data){
+            if (data.length > 0) {
+            this.participantOpenEventList = data;
+            this.isMeeting = true;
+            }
+        }
+        if(error){
+            this.error = error;
+        }   
+    }
+
+@wire(getJobOpenJobs,{
+    recordId: '$recordId'})
+    participantOpenJobHandler
+    ({data,error}){
+        if(data){
+            if (data.length > 0) {
+            this.participantOpenJobList = data;
+            this.isJob = true; 
+            } 
+        }
+        if(error){
+            this.error = error;
+        }       
+    } 
+
     
+@wire(getJobOpenJobTrainings,{
+    recordId: '$recordId'})
+    participantOpenJobTrainingHandler
+    ({data,error}){
+        if(data){
+            if (data.length > 0) {
+            this.participantOpenJobTrainingList = data;
+            this.isTraining = true; 
+            } 
+        }
+        if(error){
+            this.error = error;
+        }       
+    }
+       
+@wire(getEducationOpenEducations,{
+    recordId: '$recordId'})
+    participantOpenEducationHandler
+    ({data,error}){
+        if(data){
+            if (data.length > 0) {
+            this.participantOpenEducationList = data;
+            this.isEducation = true; 
+            } 
+        }
+        if(error){
+            this.error = error;
+        }       
+    }  
+    
+    
+    @wire(getEducationOpenEduTrainingAMS,{
+        recordId: '$recordId'})
+        participantOpenEducationTrainingHandler
+        ({data,error}){
+            if(data){
+                if (data.length > 0) {
+                this.participantOpenEducationTrainingAMSList = data;
+                this.isEducation = true; 
+                } 
+            }
+            if(error){
+                this.error = error;
+            }       
+        } 
 }//end of class

@@ -31,4 +31,29 @@ public with sharing class IPS_ParticipantPortalUtility{
         else{return 'Ingen hovedmål valgt';}
     }
 
+    public static String formatTypeOf(string typeOf){
+        //job types
+        if(typeOf =='Apprentice'){return 'Lærling';}
+        if(typeOf =='Freelance / self-employed'){return 'Freelance/selvstendig næringsdrivende';}
+        if(typeOf =='Permanent employment'){return 'Fast ansettelse';}
+        if(typeOf =='Temporary employment'){return 'Tidsbegrenset ansettelse';}
+        if(typeOf =='work training'){return 'Arbeidstrening';}
+        if(typeOf =='Zero hours contrac'){return 'Tilkalling ekstrajobb';}
+        //education types
+        if(typeOf =='Certificate of Apprenticeship'){return 'Lærling';}
+        if(typeOf =='Full-time Study'){return 'Heltidsstudie';}
+        if(typeOf =='Part-time Study'){return 'Deltidsstudie';}
+        if(typeOf =='Evening Course'){return 'Kurs på kveldstid';}
+        if(typeOf =='Day Cource'){return 'Kurs på dagtid';}
+        if(typeOf =='Module-structured subject and vocational training'){return 'Modulstrukturert fag- og yrkesopplæring';}
+        //ams education types
+        if(typeOf =='Vocational certificate at work'){return 'Fagbrev på jobb';}
+        if(typeOf =='0+4 scheme'){return '0+4 ordning';}
+        if(typeOf =='practice letter candidate'){return 'Praksisbrevkandidat';}
+        if(typeOf =='practice candidate'){return 'Praksiskandidat';}
+        if(typeOf =='Teaching candidate'){return 'Lærerkandidat';}
+        if(typeOf =='Upper Secondary Education for Adults (VOV)'){return 'Videregående opplæring for voksne (VOV)';}
+        else{return 'Ingen type valgt';}
+    }
+
 }
