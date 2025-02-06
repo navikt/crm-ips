@@ -1,14 +1,8 @@
 public class IPS_ParticipantPortalWorkTrail{
     //Joint fields for IPS and AMS
     @AuraEnabled public String jobbsporNavn{get;set;}
-    @AuraEnabled public String jobbsporType{get;set;}
-    @AuraEnabled public String jobbsporStartDato{get;set;}
-    @AuraEnabled public String jobbsporSted{get;set;}
     @AuraEnabled public String jobbsporPostTypeNavn{get;set;}
     @AuraEnabled public String jobbsporEierNavn{get;set;}
-    @AuraEnabled public String jobbsporSluttDato{get;set;}
-    @AuraEnabled public String jobbsporSluttaarsak{get;set;}
-    @AuraEnabled public String jobbsporUnderaarsak{get;set;}
     @AuraEnabled public String jobbsporStatus{get;set;}
     @AuraEnabled public String jobbsporId{get;set;}
     @AuraEnabled public String jobbsporHenvistDato{get;set;}
@@ -28,8 +22,7 @@ public class IPS_ParticipantPortalWorkTrail{
     
     //Fields for AMS
     @AuraEnabled public String amsHovedmaal{get;set;}
-    @AuraEnabled public String value {get;set;}
-    @AuraEnabled public String name{get;set;}
+
     //yrkesprofil
     @AuraEnabled public String amsYrkeBransjeKarriere{get;set;}
     @AuraEnabled public String amsArbeidsmiljoe{get;set;}
@@ -38,10 +31,7 @@ public class IPS_ParticipantPortalWorkTrail{
     @AuraEnabled public String amsOkonomiskeForhold{get;set;}
     @AuraEnabled public String amsSosialeForhold{get;set;}
     @AuraEnabled public String amsAnnet{get;set;}
-    //Utdanning og erfaring
-    @AuraEnabled public String ipsTilbakemeldingForrigeArbeidsgiver{get;set;}
- 
-
+    
     //Fields for IPS
     //jobbutvikling
     @AuraEnabled public String ipsHovedmaal{get;set;}
@@ -58,7 +48,6 @@ public class IPS_ParticipantPortalWorkTrail{
     //jobb og utdanningstøtte
     @AuraEnabled public String ipsStrategiForJobb{get;set;}
     @AuraEnabled public String ipsBehovForTillrettelegging{get;set;}
-    @AuraEnabled public String ipsNyJobbaNyttighet{get;set;}
     @AuraEnabled public String ipsTidligSymptomTrykk{get;set;}
     @AuraEnabled public String ipsMestringStrategi{get;set;}
     @AuraEnabled public String ipsNettverkUtdanningJobb{get;set;}
