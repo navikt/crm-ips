@@ -1,3 +1,8 @@
+/*
+* wrapperclass used by IPS_ParticipantPortalActivityController
+* experience cloud for participant
+**/
+
 public class IPS_ParticipantPortalTask {
     @AuraEnabled public String OppgaveId{get;set;}
     @AuraEnabled public String Emne{get;set;}
