@@ -1,0 +1,53 @@
+<template>
+    <div class="container container-col-main">
+        <h1>Lederoversikt - {currentUserName}</h1>
+    </div>
+   
+    <div class="container container-col-main">
+        <h1>Møteaktivitet fremover</h1>
+        <h2>Planlagte møter på vegne av eller med deltaker de neste 7 dager</h2>
+
+        <!-- All users related to manager -->
+        
+        <template if:true={optionsLoaded}>
+            <lightning-combobox
+                name="selectOwner"
+                label="Filtrer aktivitet på ansatt."
+                value={value}
+                options={userOptions}
+                onchange={handleUserChange} >
+            </lightning-combobox>
+        </template>
+        <br>
+       
+        
+        <template if:true={partMeeting}>
+            <h2>Planlagte møter med deltakere, med og uten arbeidsgiver.</h2>
+            <lightning-datatable 
+                data={partMeeting} 
+                hide-checkbox-column="true" 
+                columns={columnsPart} 
+                key-field="eventId"
+                >
+            </lightning-datatable>
+        </template>
+
+        <br>
+        <br>
+
+        <template if:true={emplMeeting}>
+            <h2>Planlagte møter med arbeidsgivere (uten deltaker).</h2>
+            <lightning-datatable 
+                data={emplMeeting} 
+                hide-checkbox-column="true" 
+                columns={columnsEmpl} 
+                key-field="eventId"
+                >
+            </lightning-datatable>
+        </template>
+    </div>
+
+    <template if:true={error}>
+       <p>Det er en eller annen feil i rapporten</p> {error}
+    </template>
+</template>
