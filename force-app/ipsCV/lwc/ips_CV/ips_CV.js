@@ -80,8 +80,19 @@ export default class Ips_CV extends LightningElement {
     }
 
     get arbeidserfaring() {
-        return this.cv?.arbeidserfaring ? this.cv.arbeidserfaring : null;
+        if (!this.cv?.arbeidserfaring) {
+            return null;
+        }
+        let sortedArbeidserfaring = [...this.cv.arbeidserfaring];
+        sortedArbeidserfaring.sort((a, b) => {
+            if (!a.tilDato) return -1; 
+            if (!b.tilDato) return 1; 
+            return new Date(b.tilDato) - new Date(a.tilDato);
+        });
+        return sortedArbeidserfaring;
     }
+
+    
 
     get utdanning() {
         return this.cv?.utdanning ? this.cv.utdanning : null;
