@@ -1,4 +1,4 @@
-public class IPS_ParticipantPortalReportController{
+public with sharing class IPS_ParticipantPortalReportController{
  
     /* Get all reports and show it in experience cloud*/
     @AuraEnabled(cacheable=true)
@@ -22,10 +22,19 @@ public class IPS_ParticipantPortalReportController{
   private static List<IPS_ParticipantPortalReport> getReportWrapperList(id currentRecordId){
       List<IPS_ParticipantPortalReport> wrapperTempList = new List<IPS_ParticipantPortalReport>();
       List<ips_report__c> tempReportList = new List<ips_report__c>();
-      tempReportList =[SELECT id 
+      tempReportList =[SELECT id,IPS_subject__c,IPS_dueDateBack__c
                       FROM ips_report__c
                       WHERE IPS_workTrailName__c =:currentRecordId
                       AND IPS_status__c = 'Shared report'];
+
+                      for(ips_report__c r:tempReportList){
+                          IPS_ParticipantPortalReport tempList = new IPS_ParticipantPortalReport();
+                         tempList.reportId = r.Id;
+                         tempList.reportName = r.IPS_subject__c;
+                         tempList.reportDueDate  =IPS_ParticipantPortalUtility.formatDate(r.IPS_dueDateBack__c);
+                         wrapperTempList.add(tempList);
+                      }
+                      
       return wrapperTempList;
   
   
@@ -46,6 +55,8 @@ public class IPS_ParticipantPortalReportController{
             IPS_dueDateBack__c,
             IPS_report_Type__c,
             IPS_participantName__c,
+            IPS_participantsComment__c,
+            IPS_participantsOnBehalf__c,
             IPS_workTrailOwner__c,
             IPS_worktrail_Type__c,
             IPS_subject__c,
@@ -75,8 +86,10 @@ public class IPS_ParticipantPortalReportController{
               for(ips_report__c r:tempReportList){
                   IPS_ParticipantPortalReport tempList = new IPS_ParticipantPortalReport();
                   tempList.reportId = r.Id;
-                  tempList.reportDueDate =r.IPS_dueDateBack__c;
+                  tempList.reportDueDate =IPS_ParticipantPortalUtility.formatDate(r.IPS_dueDateBack__c);
                   tempList.reportName = r.IPS_subject__c;
+                  tempList.reportParticipantComment =r.IPS_participantsComment__c;
+                  tempList.reportParticipantOnBehalfComment = r.IPS_participantsOnBehalf__c;
                   tempList.reportOwnerName = r.IPS_workTrailOwner__c;
                   tempList.reportParticipantName = r.IPS_participantName__c;
                   tempList.reportTrailGoalDescription = r.IPS_workTrailName__r.ips_Main_goal__c;

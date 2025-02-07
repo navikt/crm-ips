@@ -16,7 +16,7 @@ import getJobOpenJobs from '@salesforce/apex/IPS_ParticipantPortalActivityContro
 import getJobOpenJobTrainings from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantOpenJobTrainings';
 import getEducationOpenEducations from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantOpenEducations';
 import getEducationOpenEduTrainingAMS from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantOpenEducationTrainingAMS';
-
+import getReportSharedReports from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
 /* label IPS */
 import informationTextIPS from '@salesforce/label/c.IPS_Information_text_IPS';
 import titleTextIPS from '@salesforce/label/c.IPS_title_text_IPS';
@@ -68,7 +68,7 @@ isMeeting = false;
 isJob = false;
 isTraining = false;
 isEducation = false;
-isReport = true;
+isReport = false;
 isTrail = false;
 
 label ={
@@ -160,7 +160,7 @@ educationImg = IPS_HOME_LOGOS + '/PencilBoard.svg';
             name:'ips_min_veilederrapport__c'
         },
         state: {
-            recordId: 'a0qKN000000CkUIYA0'
+            recordId: 'a0tKF000001weMMYAY'
         }
   });
 }
@@ -285,5 +285,19 @@ educationImg = IPS_HOME_LOGOS + '/PencilBoard.svg';
             if(error){
                 this.error = error;
             }       
-        } 
+        }
+
+    @wire(getReportSharedReports,{
+        recordId: '$recordId',
+        typeOfId:'TRAIL'})
+    sharedReportHandler
+    ({data,error}){
+        if(data){
+            this.participantSharedReportList = data;
+            this.isReport = true;
+        }
+        if(error){
+            this.error = error;
+        }
+    }
 }//end of class

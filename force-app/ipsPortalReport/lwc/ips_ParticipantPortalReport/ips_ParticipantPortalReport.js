@@ -14,9 +14,14 @@ import priorityWorkSection from '@salesforce/label/c.IPS_priority_work_section_I
 export default class Ips_ParticipantPortalReport extends LightningElement {
 
     @api recordId;
+    @api recordTypeName;
+    @api isActive = false;
+    @api isIPS = false;
     reportTypeName ='Intervall';
+    reportType ='REPORT';
     isAMS = true;
     isIPS = false;
+    isGoal = true;
 
     reportList;
     isTrail = false;
@@ -33,9 +38,11 @@ export default class Ips_ParticipantPortalReport extends LightningElement {
     };
 
     @wire(getParticipantReport,{
-        recordId: '$recordId'})
+        recordId: '$recordId',
+        typeOfId: '$reportType'})
         reportListHandler
         ({data,error}){
+            console.log(JSON.stringify(data));
             if(data){
                 console.log(JSON.stringify(data));
                 this.reportList = data;
@@ -66,4 +73,5 @@ export default class Ips_ParticipantPortalReport extends LightningElement {
         render(){
             return this.showtemplate;
           }
+
 }

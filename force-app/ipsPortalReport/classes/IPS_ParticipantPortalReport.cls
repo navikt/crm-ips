@@ -3,7 +3,7 @@ public class IPS_ParticipantPortalReport{
     public Id reportId;
 
     @AuraEnabled
-    public Date reportDueDate;
+    public String reportDueDate;
 
     @AuraEnabled
     public String reportParticipantName;
@@ -67,5 +67,9 @@ public class IPS_ParticipantPortalReport{
     
     @AuraEnabled
     public String reportTrailWorkWish;
+    
+    @AuraEnabled
+    public String reportParticipantComment;
+    @AuraEnabled public String reportParticipantOnBehalfComment;
 
 }
