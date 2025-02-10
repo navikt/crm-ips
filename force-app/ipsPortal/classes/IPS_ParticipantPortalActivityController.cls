@@ -2,6 +2,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
 
  /* 
  * Open goals that is connected with participants worktrail
+ * Used in ips_ParticipantPortal lwc
  * Portal Activity
  * */
  @AuraEnabled(cacheable = true)    
@@ -41,6 +42,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
      return tempWrapperList;
  }
 
+  
   /* 
  * Open meetings that is connected with participants worktrail
  * Portal Activity

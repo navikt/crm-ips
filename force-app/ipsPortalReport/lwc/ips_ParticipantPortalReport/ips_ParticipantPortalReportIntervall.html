@@ -3,7 +3,6 @@
     <template lwc:if={reportList}>
         <template for:each={reportList} for:item="report">
             <div key={report.reportId}>
-                <form class="form-control">
                     <h1 tabindex="0" >{report.reportName}</h1>
                         <dl class="form-control">
                                 <dt tabindex="0" >Deltaker:</dt>
@@ -28,13 +27,40 @@
                     </div>
 
                     <h2>{label.summarizeSectionReport} {report.reportFromDate} - {report.reportToDate}</h2>
+                    <p>{report.reportIntervallSummarizePeriode}</p>
+                    <template lwc:if={isGoal}>
+                            <h3>Fullførte delmål i perioden:</h3>
+                            <!--<template for:each={participantSharedReportList} for:item="goal" >
+                                <div class="horisontal-list">
+                                    <dl>
+                                        <dt>Emne</dt>
+                                        <dd>{report.reportIntervallGoal}</dd>
+                                        <dt>Opprettet dato</dt>
+                                        <dd></dd>
+                                        <dt>Frist</dt>
+                                        <dd>{report.reportIntervallGoalDueDate}</dd>
+                                        <dt>Fullført</dt>
+                                        <dd></dd>
+                                        <dt>Beskrivelse av målet</dt>
+                                        <dd></dd>
+                                    </dl>
+                                </div>
+                            </template>-->
+                            
+                            
+                        
+                    </template>
+
 
                     <h3>{label.cooperationParticipantSection}</h3>
+                    
                     <h3>{label.cooperationEmployerSection}</h3>
                     <h3>{label.planNextPeriodeSection}</h3>
+                    <p>{report.reportIntervallSummarizeNextPeriode}</p>
                     <h3>{label.participantCommentSection}</h3>
+                    <p>{label.reportParticipantComment}</p>
+                    <p>{label.reportParticipantOnBehalfComment}</p>
 
-                </form>
             </div>
         </template>
     </template>
