@@ -44,7 +44,7 @@
                         <valueListItems>
                             <value>Work_Trail__c.IPS_cloneWorkTrail</value>
                             <visibilityRule>
-                                <booleanFilter>(1 OR 2) AND 3</booleanFilter>
+                                <booleanFilter>(1 OR 2 OR 4) AND 3</booleanFilter>
                                 <criteria>
                                     <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
                                     <operator>EQUAL</operator>
@@ -59,6 +59,11 @@
                                     <leftValue>{!Record.ips_Status__c}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>Ended</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV UO Metodeveileder</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
