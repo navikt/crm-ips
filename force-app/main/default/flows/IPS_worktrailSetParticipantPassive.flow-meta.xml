@@ -27,7 +27,7 @@
             <assignToReference>varDescription</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Passiv tilstand aktivert</stringValue>
+                <elementReference>taskSubject</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -87,7 +87,7 @@
     </choices>
     <decisions>
         <name>Deactivate_or_extend</name>
-        <label>Deactivate or extend</label>
+        <label>Deactivate or Extend</label>
         <locationX>182</locationX>
         <locationY>458</locationY>
         <defaultConnector>
@@ -147,9 +147,16 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>dateFilled</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>varAddDateFollowUp</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Ny_oppf_lging_dato</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -164,13 +171,33 @@
     <description>Gjelder kun for IPS hvor JS kan sette deltaker i en passiv tilstand</description>
     <environments>Default</environments>
     <formulas>
+        <name>dueDate</name>
+        <dataType>Date</dataType>
+        <expression>IF(!ISBLANK({!varAddDateFollowUp}), {!varAddDateFollowUp}, {!Ny_oppf_lging_dato})</expression>
+    </formulas>
+    <formulas>
         <name>setDate</name>
         <dataType>Date</dataType>
         <expression>today()</expression>
     </formulas>
     <formulas>
+        <name>taskComment</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK({!varAddDateFollowUp}), {!varReasonForPassiveParticipant},{!Ny_aarsak})</expression>
+    </formulas>
+    <formulas>
+        <name>taskSubject</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK({!varAddDateFollowUp}), &apos;Passiv tilstand aktivert&apos;, &apos;Passiv tilstand forlenget&apos;)</expression>
+    </formulas>
+    <formulas>
         <description>Adds 30 days as follow up date</description>
         <name>varFollowUpDate</name>
+        <dataType>Date</dataType>
+        <expression>{!Passiv_periode_starter} + 30</expression>
+    </formulas>
+    <formulas>
+        <name>varNyFolloUpDate</name>
         <dataType>Date</dataType>
         <expression>TODAY() + 30</expression>
     </formulas>
@@ -212,7 +239,7 @@
         <inputAssignments>
             <field>Description</field>
             <value>
-                <elementReference>varReasonForPassiveParticipant</elementReference>
+                <elementReference>taskComment</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -254,7 +281,7 @@
         <inputAssignments>
             <field>ips_Due_Date_Time__c</field>
             <value>
-                <elementReference>varAddDateFollowUp</elementReference>
+                <elementReference>dueDate</elementReference>
             </value>
         </inputAssignments>
         <object>Task</object>
@@ -316,7 +343,7 @@
     </recordUpdates>
     <screens>
         <name>Deactivate_screen</name>
-        <label>Deactivate</label>
+        <label>Deactivate screen</label>
         <locationX>50</locationX>
         <locationY>566</locationY>
         <allowBack>true</allowBack>
@@ -373,7 +400,7 @@
                     <name>Ny_oppf_lging_dato</name>
                     <dataType>Date</dataType>
                     <defaultValue>
-                        <elementReference>varFollowUpDate</elementReference>
+                        <elementReference>varNyFolloUpDate</elementReference>
                     </defaultValue>
                     <fieldText>Ny oppfølging dato</fieldText>
                     <fieldType>InputField</fieldType>
