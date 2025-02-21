@@ -1,68 +1,66 @@
 <template>
+    <div class="breadcrumb-container">
+        <img src={homeImg} alt="" class="breadcrumb-img" />
+        <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
+    </div>
     <div class="container skjema-max-width">
-    <template lwc:if={reportList}>
-        <template for:each={reportList} for:item="report">
-            <div key={report.reportId}>
-                    <h1 tabindex="0" >{report.reportName}</h1>
-                        <dl class="form-control">
-                                <dt tabindex="0" >Deltaker:</dt>
-                                <dd tabindex="0" >{report.reportParticipantName}</dd>
-                                <dt tabindex="0" >Jobbspesialist:</dt>
-                                <dd tabindex="0" >{report.reportOwnerName}</dd>
-                                <dt tabindex="0" >{report.reportTrailDepartmentTeamLabel}:</dt>
-                                <dd tabindex="0">{report.reportTrailDepartmentTeam}</dd>
-                                <dt tabindex="0" >Nav veileder:</dt>
-                                <dd tabindex="0" >{report.reportTrailSupervisor}</dd>
-                                <dt tabindex="0" >Startdato:</dt>
-                                <dd tabindex="0" >{report.reportTrailStartDate}</dd>
-                        </dl>
+        <template lwc:if={reportList}>
+            <template for:each={reportList} for:item="report">
+                <div key={report.reportId}>
+                    <h1 tabindex="0">{report.reportName}</h1>
+                    <dl class="form-control">
+                        <dt tabindex="0">Deltaker</dt>
+                        <dd tabindex="0">{report.reportParticipantName}</dd>
+                        <dt tabindex="0">Jobbspesialist</dt>
+                        <dd tabindex="0">{report.reportOwnerName}</dd>
+                        <dt tabindex="0">{report.reportTrailDepartmentTeamLabel}</dt>
+                        <dd tabindex="0">{report.reportTrailDepartmentTeam}</dd>
+                        <dt tabindex="0">Nav veileder</dt>
+                        <dd tabindex="0">{report.reportTrailSupervisor}</dd>
+                        <dt tabindex="0">Startdato</dt>
+                        <dd tabindex="0">{report.reportTrailStartDate}</dd>
+                    </dl>
 
-                    <h2>{label.mainGoalSection}</h2>
-                    <p>{report.reportTrailGoal}</p>
-                    <p>{report.reportTrailGoalDescription}</p>
+                    <h2 tabindex="0">{label.mainGoalSection}</h2>
+                    <p tabindex="0">{report.reportTrailGoal}</p>
+                    <p tabindex="0">{report.reportTrailGoalDescription}</p>
 
                     <div lwc:if={isIPS}>
-                        <h2>{label.priorityWorkSection}</h2>
-                        <p>{report.reportTrailWorkWish}</p>
+                        <h2 tabindex="0">{label.priorityWorkSection}</h2>
+                        <p tabindex="0">{report.reportTrailWorkWish}</p>
                     </div>
 
                     <h2>{label.summarizeSectionReport} {report.reportFromDate} - {report.reportToDate}</h2>
-                    <p>{report.reportIntervallSummarizePeriode}</p>
+                    <p tabindex="0">{report.reportIntervallSummarizePeriode}</p>
                     <template lwc:if={isGoal}>
-                            <h3>Fullførte delmål i perioden:</h3>
-                            <!--<template for:each={participantSharedReportList} for:item="goal" >
-                                <div class="horisontal-list">
-                                    <dl>
-                                        <dt>Emne</dt>
-                                        <dd>{report.reportIntervallGoal}</dd>
-                                        <dt>Opprettet dato</dt>
-                                        <dd></dd>
-                                        <dt>Frist</dt>
-                                        <dd>{report.reportIntervallGoalDueDate}</dd>
-                                        <dt>Fullført</dt>
-                                        <dd></dd>
-                                        <dt>Beskrivelse av målet</dt>
-                                        <dd></dd>
-                                    </dl>
-                                </div>
-                            </template>-->
-                            
-                            
-                        
+                        <h3>Fullførte delmål i perioden:</h3>
+                        <div class="grid-container" role="table">
+                            <div tabindex="0" class="grid-label">Emne</div>
+                            <div tabindex="0" class="grid-label">Opprettet dato</div>
+                            <div tabindex="0" class="grid-label">Frist</div>
+                            <div tabindex="0" class="grid-label">Fullført</div>
+                            <div tabindex="0" class="grid-label">Beskrivelse av målet</div>
+
+                            <template for:each={goalList} for:item="goal">
+                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.Emne}</div>
+                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.ForfallsDato}</div>
+                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.ForfallsDato}</div>
+                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.ForfallsDato}</div>
+                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.ReferatKommentar}</div>
+                            </template>
+                        </div>
                     </template>
 
-
                     <h3>{label.cooperationParticipantSection}</h3>
-                    
+
                     <h3>{label.cooperationEmployerSection}</h3>
                     <h3>{label.planNextPeriodeSection}</h3>
                     <p>{report.reportIntervallSummarizeNextPeriode}</p>
                     <h3>{label.participantCommentSection}</h3>
                     <p>{label.reportParticipantComment}</p>
                     <p>{label.reportParticipantOnBehalfComment}</p>
-
-            </div>
+                </div>
+            </template>
         </template>
-    </template>
     </div>
 </template>

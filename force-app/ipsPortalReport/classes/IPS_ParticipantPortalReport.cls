@@ -3,6 +3,9 @@ public class IPS_ParticipantPortalReport{
     public Id reportId;
 
     @AuraEnabled
+    public Id reportTrailId;
+
+    @AuraEnabled
     public String reportDueDate;
 
     @AuraEnabled
@@ -22,9 +25,15 @@ public class IPS_ParticipantPortalReport{
     
     @AuraEnabled
     public String reportFromDate;
+
+    @AuraEnabled
+    public Date reportNotFormatFromDate;
     
     @AuraEnabled
     public String reportToDate;
+
+    @AuraEnabled
+    public Date reportNotFormatToDate;
 
     @AuraEnabled
     public String reportName;

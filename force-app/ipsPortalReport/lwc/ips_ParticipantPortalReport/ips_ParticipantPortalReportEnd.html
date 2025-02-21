@@ -1,54 +1,60 @@
 <template>
+    <div class="breadcrumb-container">
+        <img src={homeImg} alt="" class="breadcrumb-img" />
+        <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
+    </div>
     <div class="container skjema-max-width">
-    <template lwc:if={reportList}>
-        <template for:each={reportList} for:item="report">
-            <div key={report.reportId}>
-                <form class="form-control">
-                    <h1 tabindex="0" >{report.reportName}</h1>
+        <template lwc:if={reportList}>
+            <template for:each={reportList} for:item="report">
+                <div key={report.reportId}>
+                    <form class="form-control">
+                        <h1 tabindex="0">{report.reportName}</h1>
                         <dl class="form-control">
-                                <dt tabindex="0" >Deltaker:</dt>
-                                <dd tabindex="0" >{report.reportParticipantName}</dd>
-                                <dt tabindex="0" >Jobbspesialist:</dt>
-                                <dd tabindex="0" >{report.reportOwnerName}</dd>
-                                <dt tabindex="0" >{report.reportTrailDepartmentTeamLabel}:</dt>
-                                <dd tabindex="0">{report.reportTrailDepartmentTeam}</dd>
-                                <dt tabindex="0" >Nav veileder:</dt>
-                                <dd tabindex="0" >{report.reportTrailSupervisor}</dd>
-                                <dt tabindex="0" >Startdato:</dt>
-                                <dd tabindex="0" >{report.reportTrailStartDate}</dd>
-                                <dt tabindex="0">Sluttdato</dt>
-                                <dd></dd>
-                                <dt>Sluttårsak</dt>
-                                <dd></dd>
-                                <dt>Detaljert sluttårsak</dt>
-                                <dd></dd>
+                            <dt tabindex="0">Deltaker:</dt>
+                            <dd tabindex="0">{report.reportParticipantName}</dd>
+                            <dt tabindex="0">Jobbspesialist:</dt>
+                            <dd tabindex="0">{report.reportOwnerName}</dd>
+                            <dt tabindex="0">{report.reportTrailDepartmentTeamLabel}:</dt>
+                            <dd tabindex="0">{report.reportTrailDepartmentTeam}</dd>
+                            <dt tabindex="0">Nav veileder:</dt>
+                            <dd tabindex="0">{report.reportTrailSupervisor}</dd>
+                            <dt tabindex="0">Startdato:</dt>
+                            <dd tabindex="0">{report.reportTrailStartDate}</dd>
+                            <dt tabindex="0">Sluttdato</dt>
+                            <dd></dd>
+                            <dt>Sluttårsak</dt>
+                            <dd></dd>
+                            <dt>Detaljert sluttårsak</dt>
+                            <dd></dd>
                         </dl>
 
                         <div lwc:if={isIPS}>
-                            <p>Kake ble henvist til Individuell jobbstøtte(IPS). Deltaker har vært med i perioden {report.reportTrailStartDate} - sluttdato</p>
+                            <p>
+                                Kake ble henvist til Individuell jobbstøtte(IPS). Deltaker har vært med i perioden
+                                {report.reportTrailStartDate} - sluttdato
+                            </p>
                         </div>
 
-                    <h2>Avsluttende oppsummering</h2>
-                    <p>oppsummering</p>
+                        <h2>Avsluttende oppsummering</h2>
+                        <p>oppsummering</p>
 
-                    <h2>Deltakers mål med IPS</h2>
-                    <h3>{label.mainGoalSection}</h3>
-                    <p>{report.reportTrailGoal}</p>
-                    <p>{report.reportTrailGoalDescription}</p>
+                        <h2>Deltakers mål med IPS</h2>
+                        <h3>{label.mainGoalSection}</h3>
+                        <p>{report.reportTrailGoal}</p>
+                        <p>{report.reportTrailGoalDescription}</p>
 
-                    <div lwc:if={isIPS}>
-                        <h3>{label.priorityWorkSection}</h3>
-                        <p>{report.reportTrailWorkWish}</p>
-                    </div>
+                        <div lwc:if={isIPS}>
+                            <h3>{label.priorityWorkSection}</h3>
+                            <p>{report.reportTrailWorkWish}</p>
+                        </div>
 
-                    <h3>Deltakelse i jobb og arbeidstrening</h3>
-                    <h3>Beskriv jobbutviklingsprosessen</h3>
-                    <h3>Oppsummering av behov for tilrettelegging</h3>
-                    <h3>Oppsummering av jobb/arbeidstrening</h3>
-
-                </form>
-            </div>
+                        <h3>Deltakelse i jobb og arbeidstrening</h3>
+                        <h3>Beskriv jobbutviklingsprosessen</h3>
+                        <h3>Oppsummering av behov for tilrettelegging</h3>
+                        <h3>Oppsummering av jobb/arbeidstrening</h3>
+                    </form>
+                </div>
+            </template>
         </template>
-    </template>
     </div>
 </template>
