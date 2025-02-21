@@ -1,5 +1,6 @@
-import { LightningElement,wire,track } from 'lwc';
-import { getRecord,getFieldValue} from 'lightning/uiRecordApi';
+import { LightningElement, wire, track } from 'lwc';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import formFactorPropertyName from '@salesforce/client/formFactor';
 import { NavigationMixin } from 'lightning/navigation';
 import templateIPS from './ips_ParticipantPortalIPS.html';
 import templateAMS from './ips_ParticipantPortalAMS.html';
@@ -45,33 +46,32 @@ import warningText from '@salesforce/label/c.IPS_Information_message_text';
 /* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
-
 export default class Ips_ParticipantPortal extends NavigationMixin(LightningElement) {
-//currentUser = USER_ID;
-//currentUser ='005KF000006zTHqYAM';//ips
-currentUser ='005KF000006zS0YYAU';//ams
-error;
-@track recordTypeName;
-@track recordId;
-@track isActive = false;
-trailClassList;
-participantSharedReportList;
-participantOpenGoalList;
-participantOpenEventList;
-participantOpenJobList;
-participantOpenJobTrainingList;
-participantOpenEducationList;
-participantOpenEducationTrainingAMSList;
-recordOwnerName;
-isGoal = false;
-isMeeting = false;
-isJob = false;
-isTraining = false;
-isEducation = false;
-isReport = false;
-isTrail = false;
+    //currentUser = USER_ID;
+    currentUser = '005KF000006xWImYAM'; //ips
+    //currentUser ='005KF000006zS0YYAU';//ams
+    error;
+    @track recordTypeName;
+    @track recordId;
+    @track isActive = false;
+    trailClassList;
+    participantSharedReportList;
+    participantOpenGoalList;
+    participantOpenEventList;
+    participantOpenJobList;
+    participantOpenJobTrainingList;
+    participantOpenEducationList;
+    participantOpenEducationTrainingAMSList;
+    recordOwnerName;
+    isGoal = false;
+    isMeeting = false;
+    isJob = false;
+    isTraining = false;
+    isEducation = false;
+    isReport = false;
+    isTrail = false;
 
-label ={
+    label = {
         informationTextIPS,
         informationTextAMS,
         titleTextIPS,
@@ -91,213 +91,229 @@ label ={
         cooperationText,
         workProfileAMS,
         educationExperienceAMS,
-        workProfileTextAMS,
-};
-// warning icon and text used in default page
-warningIcon = IPS_HOME_LOGOS + '/ExclamationmarkTriangle.svg';
-warningText ='Du må være aktiv deltaker i et av arbeidsmarkedstiltakene, individuell jobbstøtte eller arbeid med støtte, for tilgang til denne siden.';
-ipsLogoImg = IPS_HOME_LOGOS + '/IPSikon.svg';
-phoneImg = IPS_HOME_LOGOS + '/Phone.svg';
-meetingImg = IPS_HOME_LOGOS + '/MeetingSmall.svg'
-goalImg = IPS_HOME_LOGOS + '/ClipboardCheckmark.svg';
-jobsImg = IPS_HOME_LOGOS + '/Briefcase.svg';
-trainingImg = IPS_HOME_LOGOS + '/Buildings2.svg';
-educationImg = IPS_HOME_LOGOS + '/PencilBoard.svg';
+        workProfileTextAMS
+    };
+    // warning icon and text used in default page
+    warningIcon = IPS_HOME_LOGOS + '/ExclamationmarkTriangle.svg';
+    warningText =
+        'Du må være aktiv deltaker i et av arbeidsmarkedstiltakene, individuell jobbstøtte eller arbeid med støtte, for tilgang til denne siden.';
+    ipsLogoImg = IPS_HOME_LOGOS + '/IPSikon.svg';
+    phoneImg = IPS_HOME_LOGOS + '/Phone.svg';
+    meetingImg = IPS_HOME_LOGOS + '/MeetingSmall.svg';
+    goalImg = IPS_HOME_LOGOS + '/ClipboardCheckmark.svg';
+    jobsImg = IPS_HOME_LOGOS + '/Briefcase.svg';
+    trainingImg = IPS_HOME_LOGOS + '/Buildings2.svg';
+    educationImg = IPS_HOME_LOGOS + '/PencilBoard.svg';
 
+    // end of warning icon and text used in default page
+    // used in default page
 
-
-@wire(getRecord, {
-    recordId: '$currentUser',
-    optionalFields: [USER_CONTACT_ACCOUNT_FIELD,USER_CONTACT_FIELD] })
+    @wire(getRecord, {
+        recordId: '$currentUser',
+        optionalFields: [USER_CONTACT_ACCOUNT_FIELD, USER_CONTACT_FIELD]
+    })
     user;
 
-@wire(getTrailAndRecordtype,{
-    accountId: '$userAccountId'})
-    trailDataHandler
-    ({data,error}){
-
-        if(data){
+    @wire(getTrailAndRecordtype, {
+        accountId: '$userAccountId'
+    })
+    trailDataHandler({ data, error }) {
+        if (data) {
             this.recordTypeName = data.jobbsporPostTypeNavn;
             this.recordId = data.jobbsporId;
             this.isActive = true;
         }
-        if(error){
-                this.error = error;
-                this.isActive = false;
-                this.recordTypeName = 'default';
-            }
-        }   
-
-  get userAccountId() {
-    return getFieldValue(this.user.data,USER_CONTACT_ACCOUNT_FIELD);
-    }
-  get userContactId() {
-    return getFieldValue(this.user.data,USER_CONTACT_FIELD);
-  }
-
-  get showtemplate(){
-    switch (this.recordTypeName) {
-        case 'IPS': return templateIPS;
-        break;
-        case 'ips_Supported_Employment': return templateAMS;
-        break;
-        case 'default': return defaultTemplate;
-        break;
-        default: return defaultTemplate;
-    }
-  } 
- 
-  render(){
-    return this.showtemplate;
-  }
-
-  navigateToReport(){
-    console.log('testA');
-    console.log()
-    this[NavigationMixin.Navigate]({
-        type: 'comm__namedPage',
-        attributes: {
-            name:'ips_min_veilederrapport__c'
-        },
-        state: {
-            recordId: 'a0tKF000001weMMYAY'
+        if (error) {
+            this.error = error;
+            this.isActive = false;
+            this.recordTypeName = 'default';
         }
-  });
-}
+    }
 
+    get userAccountId() {
+        return getFieldValue(this.user.data, USER_CONTACT_ACCOUNT_FIELD);
+    }
+    get userContactId() {
+        return getFieldValue(this.user.data, USER_CONTACT_FIELD);
+    }
 
-@wire(getTrailWrapperClassList,{
-    recordId: '$recordId'})
-    trailClassListHandler
-    ({data,error}){
-        if(data){
+    get isDesktop() {
+        if (formFactorPropertyName === 'Large') {
+            return true;
+        } else if (formFactorPropertyName === 'Medium') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    get showtemplate() {
+        switch (this.recordTypeName) {
+            case 'IPS':
+                return templateIPS;
+                break;
+            case 'ips_Supported_Employment':
+                return templateAMS;
+                break;
+            case 'default':
+                return defaultTemplate;
+                break;
+            default:
+                return defaultTemplate;
+        }
+    }
+
+    render() {
+        return this.showtemplate;
+    }
+
+    navigateToReport(event) {
+        let reportRecordId = event.target.dataset.id;
+        console.log('ID er: ' + reportRecordId);
+
+        this[NavigationMixin.Navigate]({
+            type: 'comm__namedPage',
+            attributes: {
+                name: 'ips_min_veilederrapport__c'
+            },
+            state: {
+                recordId: { reportRecordId }
+            }
+        });
+    }
+
+    @wire(getTrailWrapperClassList, {
+        recordId: '$recordId'
+    })
+    trailClassListHandler({ data, error }) {
+        if (data) {
             this.trailClassList = data[0];
             this.isTrail = true;
         }
-        if(error){
+        if (error) {
             this.error = error;
         }
     }
 
-@wire(getParticipantSharedReport,{
-    recordId: '$recordId'})
-    participantReportHandler
-    ({data,error}){
-        if(data){
+    @wire(getParticipantSharedReport, {
+        recordId: '$recordId'
+    })
+    participantReportHandler({ data, error }) {
+        if (data) {
             if (data.length > 0) {
-            this.participantSharedReportList = data;
-            this.isReport = true;
+                this.participantSharedReportList = data;
+                this.isReport = true;
             }
         }
-        if(error){
+        if (error) {
             this.error = error;
         }
     }
 
-@wire(getTaskOpenGoals,{
-    recordId:'$recordId'})
-    participantOpenGoalHandler
-    ({data,error}){
-        if(data){
+    @wire(getTaskOpenGoals, {
+        recordId: '$recordId'
+    })
+    participantOpenGoalHandler({ data, error }) {
+        if (data) {
             if (data.length > 0) {
-            this.participantOpenGoalList = data;
-            this.isGoal = true;
+                this.participantOpenGoalList = data;
+                this.isGoal = true;
             }
         }
-        if(error){
+        if (error) {
             this.error = error;
         }
     }
 
-@wire(getEventOpenMeetings,{
-    recordId:'$recordId',
-    contactId: '$userContactId'})
-    participantOpenEventHandler
-    ({data,error}){
-        if(data){
-            if (data.length > 0) {
-            this.participantOpenEventList = data;
-            this.isMeeting = true;
-            }
-        }
-        if(error){
-            this.error = error;
-        }   
-    }
-
-@wire(getJobOpenJobs,{
-    recordId: '$recordId'})
-    participantOpenJobHandler
-    ({data,error}){
-        if(data){
-            if (data.length > 0) {
-            this.participantOpenJobList = data;
-            this.isJob = true; 
-            } 
-        }
-        if(error){
-            this.error = error;
-        }       
-    } 
-
-    
-@wire(getJobOpenJobTrainings,{
-    recordId: '$recordId'})
-    participantOpenJobTrainingHandler
-    ({data,error}){
-        if(data){
-            if (data.length > 0) {
-            this.participantOpenJobTrainingList = data;
-            this.isTraining = true; 
-            } 
-        }
-        if(error){
-            this.error = error;
-        }       
-    }
-       
-@wire(getEducationOpenEducations,{
-    recordId: '$recordId'})
-    participantOpenEducationHandler
-    ({data,error}){
-        if(data){
-            if (data.length > 0) {
-            this.participantOpenEducationList = data;
-            this.isEducation = true; 
-            } 
-        }
-        if(error){
-            this.error = error;
-        }       
-    }  
-    
-    
-    @wire(getEducationOpenEduTrainingAMS,{
-        recordId: '$recordId'})
-        participantOpenEducationTrainingHandler
-        ({data,error}){
-            if(data){
-                if (data.length > 0) {
-                this.participantOpenEducationTrainingAMSList = data;
-                this.isEducation = true; 
-                } 
-            }
-            if(error){
-                this.error = error;
-            }       
-        }
-
-    @wire(getReportSharedReports,{
+    @wire(getEventOpenMeetings, {
         recordId: '$recordId',
-        typeOfId:'TRAIL'})
-    sharedReportHandler
-    ({data,error}){
-        if(data){
-            this.participantSharedReportList = data;
-            this.isReport = true;
+        contactId: '$userContactId'
+    })
+    participantOpenEventHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
+                this.participantOpenEventList = data;
+                this.isMeeting = true;
+            }
         }
-        if(error){
+        if (error) {
             this.error = error;
         }
     }
-}//end of class
+
+    @wire(getJobOpenJobs, {
+        recordId: '$recordId'
+    })
+    participantOpenJobHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
+                this.participantOpenJobList = data;
+                this.isJob = true;
+            }
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getJobOpenJobTrainings, {
+        recordId: '$recordId'
+    })
+    participantOpenJobTrainingHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
+                this.participantOpenJobTrainingList = data;
+                this.isTraining = true;
+            }
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getEducationOpenEducations, {
+        recordId: '$recordId'
+    })
+    participantOpenEducationHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
+                this.participantOpenEducationList = data;
+                this.isEducation = true;
+            }
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getEducationOpenEduTrainingAMS, {
+        recordId: '$recordId'
+    })
+    participantOpenEducationTrainingHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
+                this.participantOpenEducationTrainingAMSList = data;
+                this.isEducation = true;
+            }
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getReportSharedReports, {
+        recordId: '$recordId',
+        typeOfId: 'TRAIL'
+    })
+    sharedReportHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
+                this.participantSharedReportList = data;
+                this.isReport = true;
+            }
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+} //end of class

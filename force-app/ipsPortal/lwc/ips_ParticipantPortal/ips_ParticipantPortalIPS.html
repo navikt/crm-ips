@@ -1,18 +1,18 @@
 <template>
     <div lwc:if={isActive}>
         <a href="#main" class="button button--skip-link">Skip to content</a>
-        <div class="container responsive ">
+        <div class="container responsive">
             <h1>
-                <img src={ipsLogoImg} alt=""/>
+                <img src={ipsLogoImg} alt="" />
                 {label.titleTextIPS}
             </h1>
-            <p id="titleText" tabindex="0">{label.informationTextIPS}</p>       
-                
+            <p id="titleText" tabindex="0">{label.informationTextIPS}</p>
+
             <template lwc:if={isTrail}>
-                <template lwc:if={trailClassList} >
+                <template lwc:if={trailClassList}>
                     <dl title="Ditt jobbspor">
                         <div tabindex="0">
-                            <dt >Henvist dato</dt>
+                            <dt>Henvist dato</dt>
                             <dd>{trailClassList.jobbsporHenvistDato}</dd>
                         </div>
                         <div tabindex="0">
@@ -28,76 +28,80 @@
                             <dd>{trailClassList.jobbsporHovedmaalBeskrivelse}</dd>
                         </div>
                     </dl>
+                    <template lwc:if={isDesktop}>
+                        <template lwc:if={isReport}>
+                            <div class="container-color">
+                                <h2>Veilederrapport</h2>
+                                <p tabindex="0">Du har ny(e) rapporter for innsyn.</p>
+                                <template for:each={participantSharedReportList} for:item="report">
+                                    <c-readmore key={report.reportId} label={report.reportName}>
+                                        <dl>
+                                            <dt>Frist for å se rapport</dt>
+                                            <dd>{report.reportDueDate}</dd>
+                                        </dl>
 
-                    <template lwc:if={isReport}>
-                        <div class="container-color">
-                            <h2>Veilederrapport</h2>
-                            <p tabindex="0">Du har ny(e) rapporter for innsyn.</p>
-                            <template for:each={participantSharedReportList} for:item="report" >
-                                <c-readmore key={report.reportId} label={report.reportName} >
-                                    <dl>
-                                        <dt>Frist for å se rapport</dt>
-                                        <dd>{report.reportDueDate}</dd>
-                                    </dl>                                
-                                    
-                                    <p tabindex="0">
-                                        <lightning-button 
-                                        variant="Brand"
-                                        id={report.reportId} 
-                                        label="Se rapport" 
-                                        title="Se på rapport og kommenter" 
-                                        value={report.reportId}
-                                        onclick={navigateToReport}
-                                        class="slds-m-left_x-small">
-                                    </lightning-button>
-                                    </p>
-                                </c-readmore>
-                            </template>
-                        </div>       
-                    </template> 
+                                        <p tabindex="0">
+                                            <lightning-button
+                                                variant="Brand"
+                                                id={report.reportId}
+                                                label="Se rapport"
+                                                title="Se på rapport og kommenter"
+                                                value={report.reportId}
+                                                data-id={report.reportId}
+                                                onclick={navigateToReport}
+                                                class="slds-m-left_x-small"
+                                            >
+                                            </lightning-button>
+                                        </p>
+                                    </c-readmore>
+                                </template>
+                            </div>
+                        </template>
+                    </template>
 
                     <template lwc:if={isGoal}>
                         <div class="container-color">
                             <h2>Dine delmål</h2>
                             <p tabindex="0">Her er delmålene som du og jobbspesialisten din samarbeider om nå.</p>
-                            <template for:each={participantOpenGoalList} for:item="goal" >
-                                <c-readmore key={goal.oppgaveId} label={goal.Emne} >
+                            <template for:each={participantOpenGoalList} for:item="goal">
+                                <c-readmore key={goal.oppgaveId} label={goal.Emne}>
                                     <dl>
                                         <dt>Frist</dt>
                                         <dd>{goal.ForfallsDato}</dd>
                                         <dt>Beskrivelse av delmålet</dt>
                                         <dd>{goal.ReferatKommentar}</dd>
-                                    </dl>                                
+                                    </dl>
                                 </c-readmore>
                             </template>
                         </div>
-                        
                     </template>
                     <template lwc:if={isMeeting}>
                         <div class="container-color">
                             <h2>Dine planlagte møter</h2>
-                            <p tabindex="0">Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover.</p>
-                            <template for:each={participantOpenEventList} for:item="event" >
-                                <c-readmore key={event.EventId} label={event.Emne} >
+                            <p tabindex="0">
+                                Her er møtene som er planlagt mellom deg og jobbspesialisten din fremover.
+                            </p>
+                            <template for:each={participantOpenEventList} for:item="event">
+                                <c-readmore key={event.EventId} label={event.Emne}>
                                     <dl>
                                         <dt>Tidspunkt</dt>
                                         <dd>
                                             <lightning-formatted-date-time
-                                                value={event.FraTidDato} 
-                                                hour="2-digit" 
-                                                minute="2-digit" 
-                                                hour12={isTwelveHours} 
+                                                value={event.FraTidDato}
+                                                hour="2-digit"
+                                                minute="2-digit"
+                                                hour12={isTwelveHours}
                                                 time-zone="Europe/Paris"
-                                                >
+                                            >
                                             </lightning-formatted-date-time>
                                             &nbsp;-&nbsp;
-                                            <lightning-formatted-date-time 
-                                                value={event.TilTidDato} 
-                                                hour="2-digit" 
-                                                minute="2-digit" 
-                                                hour12={isTwelveHours} 
+                                            <lightning-formatted-date-time
+                                                value={event.TilTidDato}
+                                                hour="2-digit"
+                                                minute="2-digit"
+                                                hour12={isTwelveHours}
                                                 time-zone="Europe/Paris"
-                                                >
+                                            >
                                             </lightning-formatted-date-time>
                                         </dd>
                                         <dt>Sted</dt>
@@ -108,7 +112,7 @@
                                         </template>
                                         <dt>Agenda</dt>
                                         <dd>{event.ReferatKommentar}</dd>
-                                    </dl>                                
+                                    </dl>
                                 </c-readmore>
                             </template>
                         </div>
@@ -117,23 +121,27 @@
                         <div class="container-color">
                             <h2>Dine jobber</h2>
                             <p tabindex="0">Viser jobber du er i nå.</p>
-                            <template for:each={participantOpenJobList} for:item="job" >
-                                <c-readmore key={job.JobbId} label={job.Emne} >
+                            <template for:each={participantOpenJobList} for:item="job">
+                                <c-readmore key={job.JobbId} label={job.Emne}>
                                     <dl>
                                         <dt>Periode</dt>
-                                        <dd><lightning-formatted-date-time 
-                                            value={job.StartDato}
-                                            year="numeric"
-                                            month="2-digit"
-                                            day="2-digit">
-                                        </lightning-formatted-date-time>
-                                        &nbsp;-&nbsp;
-                                        <lightning-formatted-date-time 
-                                            value={job.SluttDato}
-                                            year="numeric"
-                                            month="2-digit"
-                                            day="2-digit">
-                                        </lightning-formatted-date-time></dd>
+                                        <dd>
+                                            <lightning-formatted-date-time
+                                                value={job.StartDato}
+                                                year="numeric"
+                                                month="2-digit"
+                                                day="2-digit"
+                                            >
+                                            </lightning-formatted-date-time>
+                                            &nbsp;-&nbsp;
+                                            <lightning-formatted-date-time
+                                                value={job.SluttDato}
+                                                year="numeric"
+                                                month="2-digit"
+                                                day="2-digit"
+                                            >
+                                            </lightning-formatted-date-time>
+                                        </dd>
                                         <dt>Antall timer per uke</dt>
                                         <dd>{job.AntallTimerUke}</dd>
                                         <dt>Arbeidsform</dt>
@@ -142,7 +150,7 @@
                                         <dd>{job.Arbeidsoppgaver}</dd>
                                         <dt>Plan for støtte</dt>
                                         <dd>{job.Plan}</dd>
-                                    </dl>                                
+                                    </dl>
                                 </c-readmore>
                             </template>
                         </div>
@@ -151,30 +159,34 @@
                         <div class="container-color">
                             <h2>Dine arbeidstreninger</h2>
                             <p tabindex="0">Viser arbeidstreningen du er i nå.</p>
-                            <template for:each={participantOpenJobTrainingList} for:item="train" >
-                                <c-readmore key={train.JobbId} label={train.Emne} >
+                            <template for:each={participantOpenJobTrainingList} for:item="train">
+                                <c-readmore key={train.JobbId} label={train.Emne}>
                                     <dl>
                                         <dt>Periode</dt>
-                                        <dd><lightning-formatted-date-time 
-                                            value={train.StartDato}
-                                            year="numeric"
-                                            month="2-digit"
-                                            day="2-digit">
-                                        </lightning-formatted-date-time>
-                                        &nbsp;-&nbsp;
-                                        <lightning-formatted-date-time 
-                                            value={train.SluttDato}
-                                            year="numeric"
-                                            month="2-digit"
-                                            day="2-digit">
-                                        </lightning-formatted-date-time></dd>
+                                        <dd>
+                                            <lightning-formatted-date-time
+                                                value={train.StartDato}
+                                                year="numeric"
+                                                month="2-digit"
+                                                day="2-digit"
+                                            >
+                                            </lightning-formatted-date-time>
+                                            &nbsp;-&nbsp;
+                                            <lightning-formatted-date-time
+                                                value={train.SluttDato}
+                                                year="numeric"
+                                                month="2-digit"
+                                                day="2-digit"
+                                            >
+                                            </lightning-formatted-date-time>
+                                        </dd>
                                         <dt>Antall timer per uke</dt>
                                         <dd>{train.AntallTimerUke}</dd>
                                         <dt>Arbeidsoppgaver</dt>
                                         <dd>{train.Arbeidsoppgaver}</dd>
                                         <dt>Plan for støtte</dt>
                                         <dd>{train.Plan}</dd>
-                                    </dl>                                
+                                    </dl>
                                 </c-readmore>
                             </template>
                         </div>
@@ -183,38 +195,38 @@
                         <div class="container-color">
                             <h2>Din utdanning</h2>
                             <p tabindex="0">Viser utdanningen du er i nå.</p>
-                            <template for:each={participantOpenEducationList} for:item="utd" >
-                                <c-readmore key={utd.UtdanningId} label={utd.UtdanningNavn} >
+                            <template for:each={participantOpenEducationList} for:item="utd">
+                                <c-readmore key={utd.UtdanningId} label={utd.UtdanningNavn}>
                                     <dl>
                                         <dt>Navn på utdanningsinstitusjon</dt>
                                         <dd>{utd.UtdanningSted}</dd>
                                         <dt>Periode</dt>
-                                        <dd><lightning-formatted-date-time 
-                                            value={utd.UtdanningStart}
-                                            year="numeric"
-                                            month="2-digit"
-                                            day="2-digit">
-                                        </lightning-formatted-date-time>
-                                        &nbsp;-&nbsp;
-                                        <lightning-formatted-date-time 
-                                            value={utd.UtdanningSlutt}
-                                            year="numeric"
-                                            month="2-digit"
-                                            day="2-digit">
-                                        </lightning-formatted-date-time>
+                                        <dd>
+                                            <lightning-formatted-date-time
+                                                value={utd.UtdanningStart}
+                                                year="numeric"
+                                                month="2-digit"
+                                                day="2-digit"
+                                            >
+                                            </lightning-formatted-date-time>
+                                            &nbsp;-&nbsp;
+                                            <lightning-formatted-date-time
+                                                value={utd.UtdanningSlutt}
+                                                year="numeric"
+                                                month="2-digit"
+                                                day="2-digit"
+                                            >
+                                            </lightning-formatted-date-time>
                                         </dd>
                                         <dt>Studieform</dt>
                                         <dd>{utd.Utdanningsform}</dd>
                                         <dt>Støtte under utdanningen</dt>
                                         <dd>{utd.Plan}</dd>
-                                    </dl>                                
+                                    </dl>
                                 </c-readmore>
                             </template>
                         </div>
                     </template>
-                    
-                   
-
 
                     <h2 tabindex="0">{label.careerPlanningTitle}</h2>
                     <p tabindex="0">{label.careerPlanningText}</p>
@@ -272,7 +284,7 @@
                                 <dt>Din helsesituasjon relatert til jobb og behov for tilrettelegging</dt>
                                 <dd>{trailClassList.jobbsporHelse}</dd>
                             </div>
-                        </dl> 
+                        </dl>
                     </c-readmore>
                     <c-readmore label={label.workEducationSupportTitle}>
                         <dl title="Jobb og utdanningsstøtte">
@@ -354,60 +366,66 @@
                                 <dd>{trailClassList.ipsOvergangTilJobb}</dd>
                             </div>
                         </dl>
-                    </c-readmore> 
-                    
+                    </c-readmore>
+
                     <h2 tabindex="0">{label.historyTitle}</h2>
                     <p tabindex="0">{label.historyText}</p>
-                    <div style="padding-top: 0.5rem;">
+                    <div style="padding-top: 0.5rem">
                         <c-linkTile
-                        link-header="Gjennomførte telefonsamtaler"
-                        navigation-address="ips_my_logs__c"
-                        image-url={phoneImg}
-                        image-max-width="100%;">
+                            link-header="Gjennomførte telefonsamtaler"
+                            navigation-address="ips_my_logs__c"
+                            image-url={phoneImg}
+                            image-max-width="100%;"
+                        >
                         </c-linkTile>
                     </div>
-                    <div style="padding-top: 0.5rem;">
+                    <div style="padding-top: 0.5rem">
                         <c-linkTile
-                        link-header="Avsluttede møter"
-                        navigation-address="ips_my_meetings__c"
-                        image-url={meetingImg}
-                        image-max-width="100%;">
+                            link-header="Avsluttede møter"
+                            navigation-address="ips_my_meetings__c"
+                            image-url={meetingImg}
+                            image-max-width="100%;"
+                        >
                         </c-linkTile>
-                    </div >
-                    <div style="padding-top: 0.5rem;">
-                        <c-linkTile
-                        link-header="Gjennomførte delmål"
-                        navigation-address="ips_my_goals__c"
-                        image-url={goalImg}
-                        image-max-width="100%;">
-                    </c-linkTile>
                     </div>
-                    <div style="padding-top: 0.5rem;">
+                    <div style="padding-top: 0.5rem">
+                        <c-linkTile
+                            link-header="Gjennomførte delmål"
+                            navigation-address="ips_my_goals__c"
+                            image-url={goalImg}
+                            image-max-width="100%;"
+                        >
+                        </c-linkTile>
+                    </div>
+                    <div style="padding-top: 0.5rem">
                         <c-linkTile
                             link-header="Avsluttede jobber"
                             navigation-address="ips_my_jobs__c"
                             image-url={jobsImg}
-                            image-max-width="100%;">
+                            image-max-width="100%;"
+                        >
                         </c-linkTile>
                     </div>
-                    <div style="padding-top: 0.5rem;">
+                    <div style="padding-top: 0.5rem">
                         <c-linkTile
                             link-header="Avsluttede arbeidstreninger"
                             navigation-address="ips_my_worktrainings__c"
                             image-url={trainingImg}
-                            image-max-width="100%;">
+                            image-max-width="100%;"
+                        >
                         </c-linkTile>
                     </div>
-                    <div style="padding-top: 0.5rem;">
+                    <div style="padding-top: 0.5rem">
                         <c-linkTile
                             link-header="Avsluttede utdanning og kurs"
                             navigation-address="ips_my_educations__c"
                             image-url={educationImg}
-                            image-max-width="100%;">
-                        </c-linkTile>  
+                            image-max-width="100%;"
+                        >
+                        </c-linkTile>
                     </div>
                 </template>
-            </template>  
+            </template>
         </div>
     </div>
 </template>
