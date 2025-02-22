@@ -171,6 +171,8 @@
     <description>Gjelder kun for IPS hvor JS kan sette deltaker i en passiv tilstand</description>
     <environments>Default</environments>
     <formulas>
+        <description>If activating, it sets the follow-up date to varAddDateFollowUp from Set participant active screen. 
+If extending, it sets the follow-up date Ny_oppfølging_dato from Extend screen.</description>
         <name>dueDate</name>
         <dataType>Date</dataType>
         <expression>IF(!ISBLANK({!varAddDateFollowUp}), {!varAddDateFollowUp}, {!Ny_oppf_lging_dato})</expression>
@@ -181,11 +183,15 @@
         <expression>today()</expression>
     </formulas>
     <formulas>
+        <description>If activating, it sets the reason from Set participant screen.
+If extending, it sets the new reason from Extend screen.</description>
         <name>taskComment</name>
         <dataType>String</dataType>
         <expression>IF(!ISBLANK({!varAddDateFollowUp}), {!varReasonForPassiveParticipant},{!Ny_aarsak})</expression>
     </formulas>
     <formulas>
+        <description>If activating, it sets the subject from Set participant screen.
+If extending, it sets the subject from Extend screen.</description>
         <name>taskSubject</name>
         <dataType>String</dataType>
         <expression>IF(!ISBLANK({!varAddDateFollowUp}), &apos;Passiv tilstand aktivert&apos;, &apos;Passiv tilstand forlenget&apos;)</expression>
@@ -197,7 +203,7 @@
         <expression>{!Passiv_periode_starter} + 30</expression>
     </formulas>
     <formulas>
-        <name>varNyFolloUpDate</name>
+        <name>varNyFollowUpDate</name>
         <dataType>Date</dataType>
         <expression>TODAY() + 30</expression>
     </formulas>
@@ -400,7 +406,7 @@
                     <name>Ny_oppf_lging_dato</name>
                     <dataType>Date</dataType>
                     <defaultValue>
-                        <elementReference>varNyFolloUpDate</elementReference>
+                        <elementReference>varNyFollowUpDate</elementReference>
                     </defaultValue>
                     <fieldText>Ny oppfølging dato</fieldText>
                     <fieldType>InputField</fieldType>
