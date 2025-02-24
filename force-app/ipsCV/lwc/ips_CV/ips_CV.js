@@ -86,7 +86,7 @@ export default class Ips_CV extends LightningElement {
         
     
         let sortedArbeidserfaring = [...this.cv.arbeidserfaring];
-        console.log("Original array:", JSON.stringify(sortedArbeidserfaring, null, 2));
+       
     
         sortedArbeidserfaring.sort((a, b) => {
             const aOngoing = !a.tilDato; 
@@ -100,7 +100,7 @@ export default class Ips_CV extends LightningElement {
     
             return new Date(b.fraDato) - new Date(a.fraDato); 
         });
-        console.log("Sorted array:", JSON.stringify(sortedArbeidserfaring, null, 2));
+        
     
         return sortedArbeidserfaring;
     }
