@@ -83,12 +83,22 @@ export default class Ips_CV extends LightningElement {
         if (!this.cv?.arbeidserfaring) {
             return null;
         }
+    
         let sortedArbeidserfaring = [...this.cv.arbeidserfaring];
+    
         sortedArbeidserfaring.sort((a, b) => {
-            if (!a.tilDato) return -1; 
-            if (!b.tilDato) return 1; 
-            return new Date(b.tilDato) - new Date(a.tilDato);
+            const aOngoing = !a.tilDato; 
+            const bOngoing = !b.tilDato; 
+    
+            if (aOngoing && bOngoing) {
+                return new Date(b.fraDato) - new Date(a.fraDato); 
+            }
+            if (aOngoing) return -1; 
+            if (bOngoing) return 1;  
+    
+            return new Date(b.fraDato) - new Date(a.fraDato); 
         });
+    
         return sortedArbeidserfaring;
     }
 
