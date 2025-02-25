@@ -91,7 +91,7 @@
         <locationX>182</locationX>
         <locationY>458</locationY>
         <defaultConnector>
-            <targetReference>Extend_screen</targetReference>
+            <targetReference>Get_follow_up_task</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Extend</defaultConnectorLabel>
         <rules>
@@ -294,6 +294,44 @@ If extending, it sets the subject from Extend screen.</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <description>Get follow up task created when activating passive period to access the reason for the passive period.</description>
+        <name>Get_follow_up_task</name>
+        <label>Get follow up task</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Extend_screen</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IPS/UOTask</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Oppfølging av deltaker</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWorktrail.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Task</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getRecordTypeId</name>
         <label>getRecordTypeId</label>
         <locationX>248</locationX>
@@ -365,15 +403,47 @@ If extending, it sets the subject from Extend screen.</description>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>Passiv_periode_deaktivert</name>
-            <dataType>Date</dataType>
-            <defaultValue>
-                <elementReference>setDate</elementReference>
-            </defaultValue>
-            <fieldText>Passiv periode deaktivert</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
+            <name>Deactivate_screen_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Deactivate_screen_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Passiv_periode_deaktivert</name>
+                    <dataType>Date</dataType>
+                    <defaultValue>
+                        <elementReference>setDate</elementReference>
+                    </defaultValue>
+                    <fieldText>Passiv periode deaktivert</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <validationRule>
+                        <errorMessage>&lt;p&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Velg dagens dato eller en tidligere dato.&lt;/p&gt;</errorMessage>
+                        <formulaExpression>{!Passiv_periode_deaktivert} &lt;= Today()</formulaExpression>
+                    </validationRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Deactivate_screen_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
         <nextOrFinishButtonLabel>Deaktiver</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
@@ -383,7 +453,7 @@ If extending, it sets the subject from Extend screen.</description>
         <name>Extend_screen</name>
         <label>Extend screen</label>
         <locationX>314</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -393,7 +463,7 @@ If extending, it sets the subject from Extend screen.</description>
         </connector>
         <fields>
             <name>info_text_extend</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Deltakeren har en pågående passiv periode.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Deltakeren har en pågående passiv periode.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Årsak : {!Get_follow_up_task.Description}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -412,6 +482,10 @@ If extending, it sets the subject from Extend screen.</description>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <validationRule>
+                        <errorMessage>&lt;p&gt;Velg dagens dato eller en fremtidig dato.&lt;/p&gt;</errorMessage>
+                        <formulaExpression>{!Ny_oppf_lging_dato} &gt;= Today()</formulaExpression>
+                    </validationRule>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -524,7 +598,7 @@ If extending, it sets the subject from Extend screen.</description>
         <name>Passive_period_extended</name>
         <label>Passive period extended</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -568,6 +642,10 @@ If extending, it sets the subject from Extend screen.</description>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <validationRule>
+                        <errorMessage>&lt;p&gt;Velg dagens dato eller en tidligere dato.&lt;/p&gt;</errorMessage>
+                        <formulaExpression>{!Passiv_periode_starter}  &lt;= Today()</formulaExpression>
+                    </validationRule>
                 </fields>
                 <fields>
                     <name>varAddDateFollowUp</name>
@@ -579,6 +657,10 @@ If extending, it sets the subject from Extend screen.</description>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <validationRule>
+                        <errorMessage>&lt;p&gt;Velg dagens dato eller en fremtidig dato.&lt;/p&gt;</errorMessage>
+                        <formulaExpression>{!varAddDateFollowUp} &gt;= Today()</formulaExpression>
+                    </validationRule>
                 </fields>
                 <inputParameters>
                     <name>width</name>
