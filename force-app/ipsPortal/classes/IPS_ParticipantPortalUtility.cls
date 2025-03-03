@@ -23,6 +23,29 @@ public with sharing class IPS_ParticipantPortalUtility{
         
     }
 
+    public static String formatParticipatedBoolean(Boolean bool){
+        if(bool){
+            return 'Deltatt';
+        }else{
+            return'Ikke deltatt';
+        }
+    }
+
+    public static String formatTypeOfMeeting(String typeOfMeeting){
+        if(typeOfMeeting == 'Meeting with Participant'){return 'Møte med deltaker';}
+        if(typeOfMeeting == 'Start up meeting'){return 'Oppstartsmøte';}
+        if(typeOfMeeting == 'First Meeting with Employer'){ return 'Første møte med arbeidsgiver';}
+      else{return 'Ingen møtetype';}
+    }
+
+    public static String formatSubcategory(String subcategory){
+        if(subcategory == 'Job development'){return 'Jobbutvikling';}
+        if(subcategory == 'Relationship building'){return 'Relasjonsbygging';}
+        if(subcategory == 'Job support'){return 'Jobbstøtte';}
+        if(subcategory == 'Follow-up'){return 'Oppfølging';}
+        else {return 'Ingen underkategori';}
+    }
+
     public static String formatMainGoal(String goal){
         if(goal =='Work'){return 'Jobb';}
         if(goal =='Education/Apprentice'){return 'Utdanning';}
