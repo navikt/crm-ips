@@ -439,7 +439,7 @@ public with sharing class IPS_viewReportPDFController {
                 ips_Work_Trail__c = :workTrailId
                 AND ips_Status__c = 'Completed'
                 AND (ips_End_Date__c >= :startDate
-                OR ips_End_Date__c >= :endDate)
+                AND ips_End_Date__c <= :endDate)
             ORDER BY ips_End_Date__c DESC
         ];
 
