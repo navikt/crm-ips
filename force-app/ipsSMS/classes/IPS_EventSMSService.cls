@@ -98,6 +98,7 @@ public without sharing class IPS_EventSMSService {
     private static String constructReminderMessage(Event event) {
         String message = 'Husk '+ event.ips_uo_Kanal__c.toLowerCase() + ' møte med jobbspesialisten din.';
         message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
+        message += '\n\nHvor: ' + event.Location.left(30);
         message += '\n\nDu kan ikke svare på denne meldingen.';
         return message;
     }
