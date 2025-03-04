@@ -78,7 +78,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
              AND WhatId = :trailRecordId 
              AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
              AND IPS_Status1__c ='Open'
-         ORDER BY ActivityDate DESC
+         ORDER BY ActivityDate ASC
      ];
 
      for(Event t:tempEventList){
