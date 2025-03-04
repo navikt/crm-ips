@@ -310,7 +310,7 @@ public with sharing class IPS_viewReportPDFController {
                     'Start up meeting',
                     'First Meeting with Employer'
                 )
-                AND ActivityDate > :sluttDato
+                AND ActivityDate > :sluttDato AND ActivityDate <NEXT_N_MONTHS:3
                 AND WhatId = :workTrailId
                 AND IPS_Status1__c IN ('Open')
             ORDER BY ActivityDate ASC
