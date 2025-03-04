@@ -4,50 +4,39 @@
     <assignments>
         <description>Setting the following field to true, displays the &quot;Passive&quot; flag in worktrail</description>
         <name>Activate_passive_flag</name>
-        <label>Activate passive flag</label>
-        <locationX>578</locationX>
-        <locationY>458</locationY>
+        <label>Activate passive period</label>
+        <locationX>1040</locationX>
+        <locationY>1274</locationY>
         <assignmentItems>
-            <assignToReference>getWorktrail.ips_Passive__c</assignToReference>
+            <assignToReference>getWorktrail.Passive_activate__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <booleanValue>true</booleanValue>
+                <elementReference>Passiv_periode_starter</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_deactivate__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Passiv_periode_slutter</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_followup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>followUpDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varReasonForPassiveParticipant</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Passive_period_activated</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addHistoryAssignmentText</name>
-        <label>addHistoryAssignmentText</label>
-        <locationX>248</locationX>
-        <locationY>1382</locationY>
-        <assignmentItems>
-            <assignToReference>varDescription</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>taskSubject</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>updateWorktrail</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addHistoryAssignmentText1</name>
-        <label>addHistoryAssignmentText</label>
-        <locationX>512</locationX>
-        <locationY>1166</locationY>
-        <assignmentItems>
-            <assignToReference>varDescription</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Passiv tilstand deaktivert</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>updateWorktrail</targetReference>
+            <targetReference>Passive_period_information</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -57,14 +46,74 @@
         <locationX>50</locationX>
         <locationY>674</locationY>
         <assignmentItems>
-            <assignToReference>getWorktrail.ips_Passive__c</assignToReference>
+            <assignToReference>getWorktrail.Passive_deactivate__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <booleanValue>false</booleanValue>
+                <elementReference>Passiv_periode_deaktivert</elementReference>
             </value>
         </assignmentItems>
         <connector>
             <targetReference>Passiv_periode_deactivated</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assigns value to the fields related the passive period</description>
+        <name>Extend_passive_period</name>
+        <label>Extend passive period</label>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_deactivate__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Passiv_periode_slutter_extend</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Ny_aarsak</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_followup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Ny_oppfolging_dato</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Passive_period_extended</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Setting fields related to passive period to blank.</description>
+        <name>Remove_passive_period_dates</name>
+        <label>Remove passive period</label>
+        <locationX>754</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_activate__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_deactivate__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_followup__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getWorktrail.Passive_reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_worktrail_after_removing</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -85,13 +134,74 @@
             <stringValue>Forleng</stringValue>
         </value>
     </choices>
+    <choices>
+        <name>ingen_endring</name>
+        <choiceText>Ingen endring</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Ingen endring</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>remove_passive_period</name>
+        <choiceText>Fjern passiv periode</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Fjern passiv periode</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>vil_endre_perioden</name>
+        <choiceText>Vil endre perioden</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Vil endre perioden</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <name>Change_future_period</name>
+        <label>Change future period</label>
+        <locationX>798</locationX>
+        <locationY>566</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_change_future_period</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Vil_du_gj_re_endringer_til_registrerte_periode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>vil_endre_perioden</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>setParticipantAsPassive</targetReference>
+            </connector>
+            <label>Yes, change period</label>
+        </rules>
+        <rules>
+            <name>Remove_period</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Vil_du_gj_re_endringer_til_registrerte_periode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>remove_passive_period</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Remove_passive_period_dates</targetReference>
+            </connector>
+            <label>Remove period</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Deactivate_or_extend</name>
         <label>Deactivate or Extend</label>
         <locationX>182</locationX>
         <locationY>458</locationY>
         <defaultConnector>
-            <targetReference>Get_follow_up_task</targetReference>
+            <targetReference>Extend_screen</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Extend</defaultConnectorLabel>
         <rules>
@@ -111,20 +221,45 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Future_passive_period</name>
+        <label>Future passive period ?</label>
+        <locationX>1040</locationX>
+        <locationY>350</locationY>
+        <defaultConnector>
+            <targetReference>setParticipantAsPassive</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Future</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getWorktrail.Passive_activate__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Has_future_passive_period</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Checks whether the participant is already active ?</description>
         <name>Is_participant_passive</name>
         <label>Is participant passive ?</label>
-        <locationX>380</locationX>
+        <locationX>611</locationX>
         <locationY>242</locationY>
         <defaultConnector>
-            <targetReference>setParticipantAsPassive</targetReference>
+            <targetReference>Future_passive_period</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getWorktrail.ips_Passive__c</leftValueReference>
+                <leftValueReference>getWorktrail.passive_status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -136,38 +271,6 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>isDateFilled</name>
-        <label>isDateFilled</label>
-        <locationX>380</locationX>
-        <locationY>1058</locationY>
-        <defaultConnector>
-            <targetReference>addHistoryAssignmentText1</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>dateFilled</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>varAddDateFollowUp</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Ny_oppf_lging_dato</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>getRecordTypeId</targetReference>
-            </connector>
-            <label>dateFilled</label>
-        </rules>
-    </decisions>
     <description>Gjelder kun for IPS hvor JS kan sette deltaker i en passiv tilstand</description>
     <environments>Default</environments>
     <formulas>
@@ -175,37 +278,53 @@
 If extending, it sets the follow-up date Ny_oppfølging_dato from Extend screen.</description>
         <name>dueDate</name>
         <dataType>Date</dataType>
-        <expression>IF(!ISBLANK({!varAddDateFollowUp}), {!varAddDateFollowUp}, {!Ny_oppf_lging_dato})</expression>
+        <expression>IF(!ISBLANK({!followUpDate}), {!followUpDate}, {!Ny_oppfolging_dato})</expression>
     </formulas>
     <formulas>
-        <name>setDate</name>
+        <name>setActiveDate</name>
         <dataType>Date</dataType>
-        <expression>today()</expression>
+        <expression>IF( ISBLANK({!getWorktrail.Passive_activate__c}),
+ TODAY(),
+ {!getWorktrail.Passive_activate__c})</expression>
+    </formulas>
+    <formulas>
+        <name>setDeactiveDate</name>
+        <dataType>Date</dataType>
+        <expression>IF((ISBLANK({!getWorktrail.Passive_deactivate__c})), 
+null,
+{!getWorktrail.Passive_deactivate__c})</expression>
+    </formulas>
+    <formulas>
+        <description>Adds 30 days as follow up date</description>
+        <name>setFollowUpDate</name>
+        <dataType>Date</dataType>
+        <expression>IF(({!setActiveDate} &lt; TODAY()), 
+TODAY(), 
+{!Passiv_periode_starter} + 30)</expression>
+    </formulas>
+    <formulas>
+        <name>setNewFollowUpDate</name>
+        <dataType>Date</dataType>
+        <expression>TODAY() + 30</expression>
     </formulas>
     <formulas>
         <description>If activating, it sets the reason from Set participant screen.
 If extending, it sets the new reason from Extend screen.</description>
         <name>taskComment</name>
         <dataType>String</dataType>
-        <expression>IF(!ISBLANK({!varAddDateFollowUp}), {!varReasonForPassiveParticipant},{!Ny_aarsak})</expression>
+        <expression>IF(!ISBLANK({!followUpDate}), {!varReasonForPassiveParticipant},{!Ny_aarsak})</expression>
     </formulas>
     <formulas>
         <description>If activating, it sets the subject from Set participant screen.
 If extending, it sets the subject from Extend screen.</description>
         <name>taskSubject</name>
         <dataType>String</dataType>
-        <expression>IF(!ISBLANK({!varAddDateFollowUp}), &apos;Passiv tilstand aktivert&apos;, &apos;Passiv tilstand forlenget&apos;)</expression>
+        <expression>IF(!ISBLANK({!followUpDate}), &apos;Passiv tilstand aktivert&apos;, &apos;Passiv tilstand forlenget&apos;)</expression>
     </formulas>
     <formulas>
-        <description>Adds 30 days as follow up date</description>
-        <name>varFollowUpDate</name>
+        <name>varToday</name>
         <dataType>Date</dataType>
-        <expression>{!Passiv_periode_starter} + 30</expression>
-    </formulas>
-    <formulas>
-        <name>varNyFollowUpDate</name>
-        <dataType>Date</dataType>
-        <expression>TODAY() + 30</expression>
+        <expression>TODAY()</expression>
     </formulas>
     <interviewLabel>IPS_worktrailSetParticipantPassive {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - worktrail Set Participant Passive</label>
@@ -228,136 +347,10 @@ If extending, it sets the subject from Extend screen.</description>
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <recordCreates>
-        <name>createTask</name>
-        <label>createTask</label>
-        <locationX>248</locationX>
-        <locationY>1274</locationY>
-        <connector>
-            <targetReference>addHistoryAssignmentText</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>varAddDateFollowUp</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Description</field>
-            <value>
-                <elementReference>taskComment</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Priority</field>
-            <value>
-                <stringValue>Normal</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>RecordTypeId</field>
-            <value>
-                <elementReference>varRecordTypeId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Open</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subject</field>
-            <value>
-                <elementReference>varTaskSubject</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type_of_Task_IPSUO__c</field>
-            <value>
-                <stringValue>Oppgave</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WhatId</field>
-            <value>
-                <elementReference>getWorktrail.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ips_Due_Date_Time__c</field>
-            <value>
-                <elementReference>dueDate</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordLookups>
-        <description>Get follow up task created when activating passive period to access the reason for the passive period.</description>
-        <name>Get_follow_up_task</name>
-        <label>Get follow up task</label>
-        <locationX>314</locationX>
-        <locationY>566</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Extend_screen</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>RecordTypeName__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>IPS/UOTask</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Subject</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Oppfølging av deltaker</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>WhatId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>getWorktrail.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Task</object>
-        <sortField>CreatedDate</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>getRecordTypeId</name>
-        <label>getRecordTypeId</label>
-        <locationX>248</locationX>
-        <locationY>1166</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>createTask</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>IPS_Task</stringValue>
-            </value>
-        </filters>
-        <object>RecordType</object>
-        <outputAssignments>
-            <assignToReference>varRecordTypeId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
     <recordLookups>
         <name>getWorktrail</name>
         <label>getWorktrail</label>
-        <locationX>380</locationX>
+        <locationX>611</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -376,13 +369,18 @@ If extending, it sets the subject from Extend screen.</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <description>Updating worktrail after removing period.</description>
+        <name>Update_worktrail_after_removing</name>
+        <label>Update worktrail after removing</label>
+        <locationX>754</locationX>
+        <locationY>782</locationY>
+        <inputReference>getWorktrail</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>updateWorktrail</name>
         <label>updateWorktrail</label>
-        <locationX>380</locationX>
+        <locationX>611</locationX>
         <locationY>1574</locationY>
-        <connector>
-            <targetReference>createPassiveHistory</targetReference>
-        </connector>
         <inputReference>getWorktrail</inputReference>
     </recordUpdates>
     <screens>
@@ -399,7 +397,7 @@ If extending, it sets the subject from Extend screen.</description>
         </connector>
         <fields>
             <name>info_Text_deactivate</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;Velg dato for deaktivering. Dato kan ikke være frem i tid&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;Velg dato for deaktivering. Passiv periode startet {!getWorktrail.Passive_activate__c}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -412,7 +410,7 @@ If extending, it sets the subject from Extend screen.</description>
                     <name>Passiv_periode_deaktivert</name>
                     <dataType>Date</dataType>
                     <defaultValue>
-                        <elementReference>setDate</elementReference>
+                        <elementReference>varToday</elementReference>
                     </defaultValue>
                     <fieldText>Passiv periode deaktivert</fieldText>
                     <fieldType>InputField</fieldType>
@@ -453,17 +451,17 @@ If extending, it sets the subject from Extend screen.</description>
         <name>Extend_screen</name>
         <label>Extend screen</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <backButtonLabel>Forrige</backButtonLabel>
         <connector>
-            <targetReference>Passive_period_extended</targetReference>
+            <targetReference>Extend_passive_period</targetReference>
         </connector>
         <fields>
             <name>info_text_extend</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Deltakeren har en pågående passiv periode.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Årsak : {!Get_follow_up_task.Description}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Deltakeren har en pågående passiv periode fra {!getWorktrail.Passive_activate__c}.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Årsak : {!getWorktrail.Passive_reason__c}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -473,10 +471,18 @@ If extending, it sets the subject from Extend screen.</description>
                 <name>Extend_screen_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>Ny_oppf_lging_dato</name>
+                    <name>Passiv_periode_slutter_extend</name>
+                    <dataType>Date</dataType>
+                    <fieldText>Passiv periode slutter</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>Ny_oppfolging_dato</name>
                     <dataType>Date</dataType>
                     <defaultValue>
-                        <elementReference>varNyFollowUpDate</elementReference>
+                        <elementReference>setNewFollowUpDate</elementReference>
                     </defaultValue>
                     <fieldText>Ny oppfølging dato</fieldText>
                     <fieldType>InputField</fieldType>
@@ -484,7 +490,7 @@ If extending, it sets the subject from Extend screen.</description>
                     <isRequired>true</isRequired>
                     <validationRule>
                         <errorMessage>&lt;p&gt;Velg dagens dato eller en fremtidig dato.&lt;/p&gt;</errorMessage>
-                        <formulaExpression>{!Ny_oppf_lging_dato} &gt;= Today()</formulaExpression>
+                        <formulaExpression>{!Ny_oppfolging_dato} &gt;= Today()</formulaExpression>
                     </validationRule>
                 </fields>
                 <inputParameters>
@@ -522,6 +528,62 @@ If extending, it sets the subject from Extend screen.</description>
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Has_future_passive_period</name>
+        <label>Has future passive period</label>
+        <locationX>798</locationX>
+        <locationY>458</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Change_future_period</targetReference>
+        </connector>
+        <fields>
+            <name>display_future_passive_active</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Deltakeren har en registrert passive period fra &lt;/span&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!getWorktrail.Passive_activate__c}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>getWorktrail.Passive_deactivate__c</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>future_passive_period_display</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Deltakeren har en registrert passive period fra &lt;/span&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!getWorktrail.Passive_activate__c} &lt;/strong&gt;&lt;span style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;til &lt;/span&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!getWorktrail.Passive_deactivate__c}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>getWorktrail.Passive_deactivate__c</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Vil_du_gj_re_endringer_til_registrerte_periode</name>
+            <choiceReferences>vil_endre_perioden</choiceReferences>
+            <choiceReferences>remove_passive_period</choiceReferences>
+            <choiceReferences>ingen_endring</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Vil du gjøre endringer til registrerte periode ?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Bekreft</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <description>Provides alternative for deactivating or extending passive period.</description>
         <name>Manage_passive_status</name>
         <label>Manage passive status</label>
@@ -535,8 +597,33 @@ If extending, it sets the subject from Extend screen.</description>
         </connector>
         <fields>
             <name>info_text</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Deltakeren har en pågående passiv periode &lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Deltakeren har en pågående passiv periode fra {!getWorktrail.Passive_activate__c}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>getWorktrail.Passive_deactivate__c</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>info_text_period</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Deltakeren har en pågående passiv periode fra {!getWorktrail.Passive_activate__c}  til {!getWorktrail.Passive_deactivate__c}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>getWorktrail.Passive_deactivate__c</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>Vennligst_velg_en_av_f_lgende_handlinger</name>
@@ -562,32 +649,11 @@ If extending, it sets the subject from Extend screen.</description>
         <allowPause>false</allowPause>
         <backButtonLabel>Forrige</backButtonLabel>
         <connector>
-            <targetReference>isDateFilled</targetReference>
+            <targetReference>updateWorktrail</targetReference>
         </connector>
         <fields>
             <name>deactivate_info_text</name>
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Passiv periode registrert til &lt;/span&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!Passiv_periode_deaktivert}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>Passive_period_activated</name>
-        <label>Passive period activated</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <backButtonLabel>Forrige</backButtonLabel>
-        <connector>
-            <targetReference>isDateFilled</targetReference>
-        </connector>
-        <fields>
-            <name>info_text_activated</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Passiv periode aktivert med oppfølging &lt;/span&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varAddDateFollowUp}.&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
@@ -604,12 +670,83 @@ If extending, it sets the subject from Extend screen.</description>
         <allowPause>true</allowPause>
         <backButtonLabel>Forrige</backButtonLabel>
         <connector>
-            <targetReference>isDateFilled</targetReference>
+            <targetReference>updateWorktrail</targetReference>
         </connector>
         <fields>
-            <name>Copy_1_of_info_text_activated</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Passiv periode forlenget med oppfølging &lt;/span&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!Ny_oppf_lging_dato}.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <name>info_text_activated_passive_extend</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Passiv periode forlenget med oppfølging &lt;/span&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!Ny_oppfolging_dato}.&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Passiv_periode_slutter_extend</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>info_text_activated_passive_extend_with_deactiveDate</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;Passiv periode forlenget til &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;{!Passiv_periode_slutter_extend}&lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt; med oppfølging &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;{!Ny_oppfolging_dato}.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Passiv_periode_slutter_extend</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Passive_period_information</name>
+        <label>Passive period information</label>
+        <locationX>1040</locationX>
+        <locationY>1382</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <backButtonLabel>Forrige</backButtonLabel>
+        <connector>
+            <targetReference>updateWorktrail</targetReference>
+        </connector>
+        <fields>
+            <name>info_text_activated</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Passiv periode aktivert fra &lt;/span&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!Passiv_periode_starter} &lt;/strong&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;med oppfølging &lt;/span&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!followUpDate}.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Passiv_periode_slutter</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>info_text_activated_deactivated</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Passive periode registrert fra &lt;/span&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!Passiv_periode_starter} &lt;/strong&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;til&lt;/span&gt; &lt;strong style=&quot;font-size: 18px;&quot;&gt;{!Passiv_periode_slutter}&lt;/strong&gt;.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Oppfølging -&lt;/span&gt; &lt;strong style=&quot;font-size: 18px;&quot;&gt;{!followUpDate}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Passiv_periode_slutter</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
@@ -618,11 +755,12 @@ If extending, it sets the subject from Extend screen.</description>
     <screens>
         <name>setParticipantAsPassive</name>
         <label>Set participant as passive</label>
-        <locationX>578</locationX>
-        <locationY>350</locationY>
-        <allowBack>false</allowBack>
+        <locationX>1040</locationX>
+        <locationY>1166</locationY>
+        <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <backButtonLabel>Forrige</backButtonLabel>
         <connector>
             <targetReference>Activate_passive_flag</targetReference>
         </connector>
@@ -636,22 +774,36 @@ If extending, it sets the subject from Extend screen.</description>
                     <name>Passiv_periode_starter</name>
                     <dataType>Date</dataType>
                     <defaultValue>
-                        <elementReference>setDate</elementReference>
+                        <elementReference>setActiveDate</elementReference>
                     </defaultValue>
                     <fieldText>Passiv periode starter</fieldText>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                </fields>
+                <fields>
+                    <name>Passiv_periode_slutter</name>
+                    <dataType>Date</dataType>
+                    <defaultValue>
+                        <elementReference>setDeactiveDate</elementReference>
+                    </defaultValue>
+                    <fieldText>Passiv periode slutter</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
                     <validationRule>
-                        <errorMessage>&lt;p&gt;Velg dagens dato eller en tidligere dato.&lt;/p&gt;</errorMessage>
-                        <formulaExpression>{!Passiv_periode_starter}  &lt;= Today()</formulaExpression>
+                        <errorMessage>&lt;p&gt;Sluttdato må være etter startdato.&lt;/p&gt;</errorMessage>
+                        <formulaExpression>OR(
+ISBLANK({!Passiv_periode_slutter}),  
+({!Passiv_periode_slutter} &gt; {!Passiv_periode_starter})
+)</formulaExpression>
                     </validationRule>
                 </fields>
                 <fields>
-                    <name>varAddDateFollowUp</name>
+                    <name>followUpDate</name>
                     <dataType>Date</dataType>
                     <defaultValue>
-                        <elementReference>varFollowUpDate</elementReference>
+                        <elementReference>setFollowUpDate</elementReference>
                     </defaultValue>
                     <fieldText>Add date for follow up participant</fieldText>
                     <fieldType>InputField</fieldType>
@@ -659,7 +811,7 @@ If extending, it sets the subject from Extend screen.</description>
                     <isRequired>true</isRequired>
                     <validationRule>
                         <errorMessage>&lt;p&gt;Velg dagens dato eller en fremtidig dato.&lt;/p&gt;</errorMessage>
-                        <formulaExpression>{!varAddDateFollowUp} &gt;= Today()</formulaExpression>
+                        <formulaExpression>{!followUpDate} &gt;= Today()</formulaExpression>
                     </validationRule>
                 </fields>
                 <inputParameters>
@@ -715,51 +867,13 @@ If extending, it sets the subject from Extend screen.</description>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>254</locationX>
+        <locationX>485</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrail</targetReference>
         </connector>
     </start>
-    <status>Active</status>
-    <subflows>
-        <name>createPassiveHistory</name>
-        <label>createPassiveHistory</label>
-        <locationX>380</locationX>
-        <locationY>1682</locationY>
-        <flowName>IPS_subflow_create_task_history</flowName>
-        <inputAssignments>
-            <name>varDescription</name>
-            <value>
-                <elementReference>varDescription</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varOwnerId</name>
-            <value>
-                <elementReference>$User.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varRecordTypeDeveloperName</name>
-            <value>
-                <stringValue>IPS_Task</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varSubject</name>
-            <value>
-                <elementReference>varDescription</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varWhatId</name>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </inputAssignments>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </subflows>
+    <status>Draft</status>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
