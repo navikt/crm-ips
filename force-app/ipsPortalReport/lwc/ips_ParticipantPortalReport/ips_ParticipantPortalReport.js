@@ -5,6 +5,10 @@ import templateIntervall from './ips_ParticipantPortalReportIntervall.html';
 import templateDefault from './ips_ParticipantPortalReportDefault.html';
 import getParticipantReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
 import getParticipantCompletedGoals from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportCompletedGoals';
+import getParticipantCompletedMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportCompletedMeetings';
+import getParticipantAbsentMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportAbsentMeetings';
+import getParticipantCompletedEmployeeMetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEmployeeCompletedMeetings';
+import getParticipantOpenMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportOpenMeetings';
 
 import mainGoalSection from '@salesforce/label/c.IPS_main_goal_section_report';
 import summarizeSectionReport from '@salesforce/label/c.IPS_summarize_section_report';
@@ -23,16 +27,22 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     @api isIPS = false;
     reportList;
     goalList;
+    @track absentMeetingsList;
+    @track completedMeetingsList;
+    @track employeeMeetingsList;
+    @track openMeetingsList;
     @track reportTypeName;
     @track reportTrailRecordId;
     @track reportDateFrom;
     @track reportDateTo;
     isAMS = false;
     isIPS = false;
-    isGoal = true;
-
-    reportList;
+    isGoal = false;
+    isAbsent = false;
+    isCompleted = false;
     isTrail = false;
+    isEmployeeCompleted = false;
+    isOpenMeeting = false;
     error;
     numPops = 2;
 
@@ -64,14 +74,76 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         typeOfId: 'REPORT'
     })
     reportListHandler({ data, error }) {
-        console.log(JSON.stringify('Rapport: ' + data));
         if (data) {
             this.reportList = data;
             this.reportTypeName = this.reportList[0].reportType;
             this.reportTrailRecordId = this.reportList[0].reportTrailId;
             this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
             this.reportDateTo = this.reportList[0].reportNotFormatToDate;
-            console.log(this.reportDateTo);
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getParticipantOpenMeetings, {
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateTo: '$reportDateTo'
+    })
+    openMeetingsHandler({ data, error }) {
+        if (data) {
+            this.openMeetingsList = data;
+            this.isOpenMeeting = true;
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getParticipantCompletedEmployeeMetings, {
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })
+    completeEmployeeHandler({ data, error }) {
+        if (data) {
+            this.employeeMeetingsList = data;
+            this.isEmployeeCompleted = true;
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getParticipantAbsentMeetings, {
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })
+    absentListHandler({ data, error }) {
+        if (data) {
+            this.absentMeetingsList = data;
+            this.isAbsent = true;
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getParticipantCompletedMeetings, {
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })
+    completedListHandler({ data, error }) {
+        console.log(JSON.stringify('Møter: ' + data));
+        if (data) {
+            this.completedMeetingsList = data;
+            this.isCompleted = true;
         }
         if (error) {
             this.error = error;
@@ -85,7 +157,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     goalListHandler({ data, error }) {
-        console.log(JSON.stringify('Delmål: ' + data));
         if (data) {
             this.goalList = data;
             this.isGoal = true;
@@ -96,7 +167,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     }
 
     get showtemplate() {
-        console.log('Type rapport: ' + this.reportTypeName);
         if (this.reportTypeName === 'Intervall') {
             return templateIntervall;
         }
