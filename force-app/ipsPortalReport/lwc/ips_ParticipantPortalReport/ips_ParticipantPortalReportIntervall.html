@@ -34,27 +34,121 @@
                     <p tabindex="0">{report.reportIntervallSummarizePeriode}</p>
                     <template lwc:if={isGoal}>
                         <h3>Fullførte delmål i perioden:</h3>
-                        <div class="grid-container" role="table">
-                            <div tabindex="0" class="grid-label">Emne</div>
-                            <div tabindex="0" class="grid-label">Opprettet dato</div>
-                            <div tabindex="0" class="grid-label">Frist</div>
-                            <div tabindex="0" class="grid-label">Fullført</div>
-                            <div tabindex="0" class="grid-label">Beskrivelse av målet</div>
-
-                            <template for:each={goalList} for:item="goal">
-                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.Emne}</div>
-                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.ForfallsDato}</div>
-                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.ForfallsDato}</div>
-                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.ForfallsDato}</div>
-                                <div tabindex="0" key={goal.OppgaveId} class="grid-data">{goal.ReferatKommentar}</div>
-                            </template>
-                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emne</th>
+                                    <th>Opprettet dato</th>
+                                    <th>Frist</th>
+                                    <th>Fullført</th>
+                                    <th>Beskrivelse av målet</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={goalList} for:item="goal">
+                                    <tr key={goal.OppgaveId}>
+                                        <td>{goal.Emne}</td>
+                                        <td>{goal.ForfallsDato}</td>
+                                        <td>{goal.ForfallsDato}</td>
+                                        <td>{goal.ForfallsDato}</td>
+                                        <td>{goal.ReferatKommentar}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
                     </template>
 
                     <h3>{label.cooperationParticipantSection}</h3>
+                    <template lwc:if={isCompleted}>
+                        <h4>Møter deltaker har deltatt på i perioden:</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emne</th>
+                                    <th style="width: 20%">Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={completedMeetingsList} for:item="com">
+                                    <tr key={com.EventId}>
+                                        <td>{com.Emne}</td>
+                                        <td>{com.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+
+                    <template lwc:if={isAbsent}>
+                        <h4>Møter deltaker ikke har møtt til i perioden:</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emne</th>
+                                    <th style="width: 20%">Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={absentMeetingsList} for:item="abs">
+                                    <tr key={abs.EventId}>
+                                        <td>{abs.Emne}</td>
+                                        <td>{abs.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
 
                     <h3>{label.cooperationEmployerSection}</h3>
+                    <template lwc:if={isEmployeeCompleted}>
+                        <h4>Møter gjennomført med arbeidsgiver(e) i perioden:</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Arbeidsgiver</th>
+                                    <th>Kontaktperson</th>
+                                    <th>Deltaker deltar</th>
+                                    <th>Emne</th>
+                                    <th>Møtekategori</th>
+                                    <th>Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={employeeMeetingsList} for:item="emp">
+                                    <tr key={emp.EventId}>
+                                        <td>{emp.Arbeidsgiver}</td>
+                                        <td>{emp.ArbeidsgiverKontakt}</td>
+                                        <td>{emp.DeltakerDeltatt}</td>
+                                        <td>{emp.Emne}</td>
+                                        <td>{emp.Underkategori}</td>
+                                        <td>{emp.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
                     <h3>{label.planNextPeriodeSection}</h3>
+                    <template lwc:if={isOpenMeeting}>
+                        <h4>Møter:</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emne</th>
+                                    <th>Type</th>
+                                    <th>Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={openMeetingsList} for:item="open">
+                                    <tr key={open.EventId}>
+                                        <td>{open.Emne}</td>
+                                        <td>{open.Motetype}</td>
+                                        <td>{open.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
                     <p>{report.reportIntervallSummarizeNextPeriode}</p>
                     <h3>{label.participantCommentSection}</h3>
                     <p>{label.reportParticipantComment}</p>

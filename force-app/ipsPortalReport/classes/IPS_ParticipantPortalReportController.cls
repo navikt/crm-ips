@@ -21,7 +21,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalTask> getParticipantsReportCompletedGoals(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
         Id currentRecordId = recordId;
-        String reportType = typeOfReport; //if true the report is end report, if false the report is intervall report
+        String reportType = typeOfReport; 
         Date reportDateTo = recordDateTo;
         Date reportDateFrom = recordDateFrom;
     
@@ -30,6 +30,250 @@ public with sharing class IPS_ParticipantPortalReportController{
         wrapperList = getReportCompletedGoals(currentRecordId,reportType,reportDateFrom,reportDateTo);
         return wrapperList;
         
+    }
+
+    /* Get all completed participant meetings and show it in report in experience cloud*/
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalEvent> getParticipantsReportCompletedMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+        Id currentRecordId = recordId;
+        String reportType = typeOfReport;
+        Date reportDateTo = recordDateTo;
+        Date reportDateFrom = recordDateFrom;
+
+        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+
+        if(reportType =='Intervall'){
+           
+            wrapperListMeeting = getReportCompletedMeetings(currentRecordId,reportDateFrom, reportDateTo); 
+        }
+        if(reportType =='End report'){
+            wrapperListMeeting = getReportCompletedMeetings(currentRecordId);
+        }
+
+        return wrapperListMeeting;
+    }
+
+        /* Get all absent participant meetings and show it in report in experience cloud*/
+        @AuraEnabled(cacheable=true)
+        public static List<IPS_ParticipantPortalEvent> getParticipantsReportAbsentMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+            Id currentRecordId = recordId;
+            String reportType = typeOfReport;
+            Date reportDateTo = recordDateTo;
+            Date reportDateFrom = recordDateFrom;
+    
+            List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+    
+            if(reportType =='Intervall'){
+    
+                wrapperListMeeting = getReportAbsentMeetings(currentRecordId,reportDateFrom, reportDateTo);
+    
+            }
+            if(reportType =='End report'){
+    
+                wrapperListMeeting = getReportAbsentMeetings(currentRecordId);
+            }
+    
+            return wrapperListMeeting;
+        }
+
+        /* Get all completed employee meetings and show it in report in experience cloud*/
+        @AuraEnabled(cacheable=true)
+        public static List<IPS_ParticipantPortalEvent> getParticipantsReportEmployeeCompletedMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+            Id currentRecordId = recordId;
+            String reportType = typeOfReport;
+            Date reportDateTo = recordDateTo;
+            Date reportDateFrom = recordDateFrom;
+
+            List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+
+            if(reportType =='Intervall'){
+            
+                wrapperListMeeting = getReportCompletedEmployeeMeetings(currentRecordId,reportDateFrom, reportDateTo); 
+            }
+            if(reportType =='End report'){
+               
+            }
+
+            return wrapperListMeeting;
+    }
+
+    /* Get all open meetings and show it in report in experience cloud*/
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalEvent> getParticipantsReportOpenMeetings(String recordId,String typeOfReport, Date recordDateTo){
+        Id currentRecordId = recordId;
+        String reportType = typeOfReport;
+        Date reportDateTo = recordDateTo;
+
+        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+
+        if(reportType =='Intervall'){
+        
+            wrapperListMeeting = getReportOpenMeetings(currentRecordId, reportDateTo); 
+        }
+
+        return wrapperListMeeting;
+    }
+
+    /**
+     * Returns a list of unique open meetings 
+     * after intervall periode. 
+     *
+     * @return  List of event
+     */
+    private static List<IPS_ParticipantPortalEvent> getReportOpenMeetings(id currentRecordId, Date reportDateTo){
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        Date tempDate = reportDateTo.addMonths(3);
+        List<Event> emplActivity = new List<Event>();
+        emplActivity = [
+            SELECT
+                id,
+                Subject,
+                ActivityDate,
+                IPS_Type__c
+            FROM event
+            WHERE
+                IPS_Type__c IN (
+                    'Meeting with Employer',
+                    'Meeting with Participant',
+                    'Start up meeting',
+                    'First Meeting with Employer'
+                )
+                AND ActivityDate > :reportDateTo AND ActivityDate < :tempDate
+                AND WhatId = :currentRecordId
+                AND IPS_Status1__c ='Open'
+            ORDER BY ActivityDate ASC
+        ];
+
+        for(event e:emplActivity){
+            
+            IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+            tempList.EventId = e.Id;
+            tempList.Emne = e.Subject;
+            tempList.Motedato = IPS_ParticipantPortalUtility.formatDate(e.ActivityDate);
+            tempList.Motetype = IPS_ParticipantPortalUtility.formatTypeOfMeeting(e.IPS_Type__c);
+            wrapperTempList.add(tempList);
+        }
+
+        return wrapperTempList;
+    }
+
+    /**
+     * Returns a list of unique completed employee meetings 
+     * within the given intervall. 
+     *
+     * @return  List of event
+     */
+    private static List<IPS_ParticipantPortalEvent> getReportCompletedEmployeeMeetings(id currentRecordId,Date reportDateFrom, Date reportDateTo) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        list<Event> employeeActivity = new List<Event>();
+        employeeActivity=[
+            SELECT id,Subject,ActivityDate,RelatedToAccount__r.name,Konto_kontakt__r.Name,IPS_participant_related_to_meeting__c,toLabel(ips_Subcategory_Type_IPS__c),toLabel(IPS_Subcategory_Type_UO__c) 
+            FROM event
+            WHERE IPS_Type__c IN ('Meeting with Employer','First Meeting with Employer')
+            AND IPS_Status1__c = 'Completed'
+            AND WhatId = :currentRecordId
+            AND ActivityDate >= :reportDateFrom
+            AND ActivityDate <= :reportDateTo
+            ORDER BY ActivityDate DESC];
+
+
+        for(Event epart : employeeActivity) {
+            IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+            tempList.EventId = epart.Id;
+            tempList.Emne = epart.Subject;
+            tempList.Motedato = IPS_ParticipantPortalUtility.formatDate(epart.ActivityDate);
+            tempList.Arbeidsgiver = epart.RelatedToAccount__r.name;
+            tempList.ArbeidsgiverKontakt = epart.Konto_kontakt__r.Name;
+            tempList.DeltakerDeltatt = IPS_ParticipantPortalUtility.formatParticipatedBoolean(epart.IPS_participant_related_to_meeting__c);
+            if(epart.ips_Subcategory_Type_IPS__c != null){
+                tempList.Underkategori = IPS_ParticipantPortalUtility.formatSubcategory(epart.ips_Subcategory_Type_IPS__c);
+            }
+            if(epart.IPS_Subcategory_Type_UO__c != null){
+                tempList.Underkategori = IPS_ParticipantPortalUtility.formatSubcategory(epart.IPS_Subcategory_Type_UO__c);
+            }
+            wrapperTempList.add(tempList);
+        }
+        return wrapperTempList;
+    }
+
+
+   
+    /**
+     * Returns a list of unique completed participants meetings 
+     * within the given intervall. If date is null - it will return all completed meetings.
+     *
+     * @return  List of event
+     */
+    private static List<IPS_ParticipantPortalEvent> getReportCompletedMeetings(id currentRecordId,Date reportDateFrom, Date reportDateTo) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        List<Event> participantActivity = new List<Event>();
+
+        String partSelect = 'SELECT id,Subject,ActivityDate FROM event';
+        String partWhere = ' WHERE IPS_Type__c IN (\'Meeting with Participant\',\'Start up meeting\') AND IPS_Status1__c IN (\'Completed\')';
+        String partId = ' AND WhatId = :currentRecordId';
+        String partFilter = ' AND ActivityDate >= :reportDateFrom AND ActivityDate <= :reportDateTo';
+        String partSort = ' ORDER BY ActivityDate DESC';
+        String query = '';
+
+       query = partSelect + partWhere + partId + partFilter + partSort;
+           
+            participantActivity = Database.query(query);
+            for(Event epart : participantActivity) {
+                IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+                tempList.EventId = epart.Id;
+                tempList.Emne = epart.Subject;
+                tempList.Motedato = IPS_ParticipantPortalUtility.formatDate(epart.ActivityDate);
+                wrapperTempList.add(tempList);
+            }
+            return wrapperTempList;
+    }
+
+    private static List<IPS_ParticipantPortalEvent> getReportCompletedMeetings(id currentRecordId) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+        tempList.AntallCompletedMeeting =(Integer) [SELECT count(id)Antall FROM Event WHERE IPS_Type__c in('Meeting with Participant','Start up meeting') AND IPS_Status1__c ='Completed' AND WhatId =:currentRecordId][0].get('Antall');
+        wrapperTempList.add(tempList);
+
+        return wrapperTempList;
+    }
+
+    /**
+     * Returns a list of unique absent participants meetings 
+     * within the given intervall 
+     *
+     * @return  List of event
+     */
+    private static List<IPS_ParticipantPortalEvent> getReportAbsentMeetings(id currentRecordId,Date reportDateFrom, Date reportDateTo) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        list<Event> participantActivity = new List<Event>();
+
+
+        String partSelect = 'SELECT id,Subject,ActivityDate FROM event';
+        String partWhere = ' WHERE IPS_Type__c IN (\'Meeting with Participant\',\'Start up meeting\') AND IPS_Status1__c IN (\'Participant Absent\')';
+        String partId = ' AND WhatId = :currentRecordId';
+        String partFilter = ' AND ActivityDate >= :reportDateFrom AND ActivityDate <= :reportDateTo';
+        String partSort = ' ORDER BY ActivityDate DESC';
+        String query = '';
+
+            query = partSelect + partWhere + partId + partFilter + partSort;
+            participantActivity = Database.query(query);
+            for(Event epart : participantActivity) {
+                IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+                tempList.EventId = epart.Id;
+                tempList.Emne = epart.Subject;
+                tempList.Motedato = IPS_ParticipantPortalUtility.formatDate(epart.ActivityDate);
+                wrapperTempList.add(tempList);
+            }
+            return wrapperTempList;
+    }
+
+    private static List<IPS_ParticipantPortalEvent> getReportAbsentMeetings(id currentRecordId) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+        tempList.AntallAbsentMeeting =(Integer) [SELECT count(id)Antall FROM Event WHERE IPS_Type__c in('Meeting with Participant','Start up meeting') AND IPS_Status1__c ='Participant Absent' AND WhatId =:currentRecordId][0].get('Antall');
+        wrapperTempList.add(tempList);
+
+        return wrapperTempList;
     }
   
   
