@@ -46,6 +46,45 @@ public class IPS_ParticipantPortalUtilityTest {
     }
     
     @isTest
+    static void formatBooleantrue(){
+        Boolean tempBool = true;
+        String formatBool = IPS_ParticipantPortalUtility.formatParticipatedBoolean(tempBool);
+        System.Assert.areEqual('Deltatt',formatBool);
+    }
+    
+    @isTest
+    static void formatBooleanfalse(){
+        Boolean tempBool = false;
+        String formatBool = IPS_ParticipantPortalUtility.formatParticipatedBoolean(tempBool);
+        System.Assert.areEqual('Ikke deltatt',formatBool);
+    }
+    
+    @isTest
+    static void formatTypeOfMeeting(){
+        String tempType = 'Meeting with Participant';
+        String formatType = IPS_ParticipantPortalUtility.formatTypeOfMeeting(tempType);
+        System.Assert.areEqual('Møte med deltaker',formatType);
+    }
+    
+    @isTest
+    static void formatSubCategory(){
+        String tempSub = 'Job development';
+        String formatSub = IPS_ParticipantPortalUtility.formatSubcategory(tempSub);
+        System.Assert.areEqual('Jobbutvikling',formatSub);
+    }
+    
+    @isTest
+    static void formatTypeOf(){
+        String tempType = 'Apprentice';
+        String formatType = IPS_ParticipantPortalUtility.formatTypeOf(tempType);
+        System.Assert.areEqual('Lærling',formatType);
+    }
+    
+    
+    
+    
+    
+    @isTest
     static void testNullValues(){
         Date tempDate = null;
         String formatDate =IPS_ParticipantPortalUtility.formatDate(tempDate);
@@ -58,6 +97,18 @@ public class IPS_ParticipantPortalUtilityTest {
         String tempGoal = '';
         String formatGoal =IPS_ParticipantPortalUtility.formatMainGoal(tempGoal);
         System.Assert.areEqual('Ingen hovedmål valgt',formatGoal);
+        
+        String tempType = '';
+        String formatType = IPS_ParticipantPortalUtility.formatTypeOfMeeting(tempType);
+        System.Assert.areEqual('Ingen møtetype',formatType);
+        
+        String tempSub = '';
+        String formatSub = IPS_ParticipantPortalUtility.formatSubcategory(tempSub);
+        System.Assert.areEqual('Ingen underkategori',formatSub);
+        
+        String tempTypeOf = '';
+        String formatTypeOf = IPS_ParticipantPortalUtility.formatTypeOf(tempTypeOf);
+        System.Assert.areEqual('Ingen type valgt',formatTypeOf);
     }
 
 }
