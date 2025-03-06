@@ -298,8 +298,8 @@ null,
         <description>Adds 30 to the passive active date as follow up date.</description>
         <name>setFollowUpDate</name>
         <dataType>Date</dataType>
-        <expression>IF(({!setActiveDate} &lt; TODAY()), 
-null, 
+        <expression>IF(({!Passiv_periode_starter} &lt; TODAY()), 
+TODAY() + 30, 
 {!Passiv_periode_starter} + 30)</expression>
     </formulas>
     <formulas>
@@ -735,6 +735,13 @@ If extending, it sets the subject from Extend screen.</description>
                         <booleanValue>true</booleanValue>
                     </rightValue>
                 </conditions>
+                <conditions>
+                    <leftValueReference>followUpDate</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
             </visibilityRule>
         </fields>
         <fields>
@@ -748,6 +755,28 @@ If extending, it sets the subject from Extend screen.</description>
                     <operator>IsNull</operator>
                     <rightValue>
                         <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>followUpDate</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>info_text_without_followupdate</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Passive periode registrert fra &lt;/span&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!Passiv_periode_starter} &lt;/strong&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;til&lt;/span&gt; &lt;strong style=&quot;font-size: 18px;&quot;&gt;{!Passiv_periode_slutter}&lt;/strong&gt;.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>followUpDate</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -814,9 +843,26 @@ ISBLANK({!Passiv_periode_slutter}),
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <validationRule>
-                        <errorMessage>&lt;p&gt;Velg dagens dato eller en fremtidig dato.&lt;/p&gt;</errorMessage>
-                        <formulaExpression>{!followUpDate} &gt;= Today()</formulaExpression>
+                        <errorMessage>&lt;p&gt;Velg en dato i fremtid.&lt;/p&gt;</errorMessage>
+                        <formulaExpression>{!followUpDate} &gt; TODAY()</formulaExpression>
                     </validationRule>
+                    <visibilityRule>
+                        <conditionLogic>or</conditionLogic>
+                        <conditions>
+                            <leftValueReference>Passiv_periode_slutter</leftValueReference>
+                            <operator>GreaterThan</operator>
+                            <rightValue>
+                                <elementReference>varToday</elementReference>
+                            </rightValue>
+                        </conditions>
+                        <conditions>
+                            <leftValueReference>Passiv_periode_slutter</leftValueReference>
+                            <operator>IsNull</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -877,7 +923,7 @@ ISBLANK({!Passiv_periode_slutter}),
             <targetReference>getWorktrail</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
