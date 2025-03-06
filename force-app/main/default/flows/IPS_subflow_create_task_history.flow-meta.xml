@@ -36,7 +36,7 @@
         <inputAssignments>
             <field>ActivityDate</field>
             <value>
-                <elementReference>varDueDate</elementReference>
+                <elementReference>varPassiveActiveDeactiveDate</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -96,7 +96,7 @@
         <inputAssignments>
             <field>ips_Due_Date_Time__c</field>
             <value>
-                <elementReference>varDueDate</elementReference>
+                <elementReference>varPassiveActiveDeactiveDate</elementReference>
             </value>
         </inputAssignments>
         <object>Task</object>
@@ -141,19 +141,17 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>varDueDate</name>
-        <dataType>DateTime</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>$Flow.CurrentDate</elementReference>
-        </value>
-    </variables>
-    <variables>
         <description>Eier som oppretter oppgaven</description>
         <name>varOwnerId</name>
         <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Passive period activated or deactivated date</description>
+        <name>varPassiveActiveDeactiveDate</name>
+        <dataType>Date</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
