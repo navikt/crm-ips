@@ -6,7 +6,7 @@
         <name>Set_fields_associated_with_passive_period_to_blank</name>
         <label>Set fields associated with passive period to blank</label>
         <locationX>314</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>$Record.Passive_activate__c</assignToReference>
             <operator>Assign</operator>
@@ -34,7 +34,7 @@
         <description>Checks the status of the passive period</description>
         <name>Passive_period_status</name>
         <label>Passive period status</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>431</locationY>
         <defaultConnector>
             <targetReference>Update_worktrail</targetReference>
@@ -50,26 +50,17 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>Create_history_passive_active_task</targetReference>
-            </connector>
-            <label>Activated</label>
-        </rules>
-        <rules>
-            <name>Deactivated</name>
-            <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.passive_status__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>$Record.Passive_followup__c</leftValueReference>
+                <operator>IsChanged</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_history_passive_deactive_task</targetReference>
+                <targetReference>Create_follow_up_task</targetReference>
             </connector>
-            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
-            <label>Deactivated</label>
+            <label>Activated</label>
         </rules>
         <rules>
             <name>Past_passive_period</name>
@@ -93,6 +84,20 @@
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>setToday</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Passive_activate__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Passive_deactivate__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -134,7 +139,7 @@
         <name>Create_follow_up_task</name>
         <label>Create follow up task</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>539</locationY>
         <connector>
             <targetReference>Update_worktrail</targetReference>
         </connector>
@@ -199,7 +204,7 @@
         <description>Get task record type</description>
         <name>Get_task_record_type</name>
         <label>Get task record type</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -221,22 +226,43 @@
         <description>Update worktrail</description>
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
-        <locationX>446</locationX>
-        <locationY>905</locationY>
+        <locationX>314</locationX>
+        <locationY>947</locationY>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>320</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_task_record_type</targetReference>
         </connector>
-        <filterLogic>or</filterLogic>
+        <filterLogic>(1 AND 2) OR (3 AND 4) OR (5 AND 6)</filterLogic>
         <filters>
-            <field>passive_status__c</field>
+            <field>Passive_activate__c</field>
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Passive_activate__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Passive_deactivate__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Passive_deactivate__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <filters>
@@ -247,17 +273,10 @@
             </value>
         </filters>
         <filters>
-            <field>Passive_activate__c</field>
-            <operator>IsChanged</operator>
+            <field>Passive_followup__c</field>
+            <operator>IsNull</operator>
             <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Passive_deactivate__c</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>true</booleanValue>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>Work_Trail__c</object>
@@ -267,57 +286,9 @@
     <status>Active</status>
     <subflows>
         <description>Create history passive active task to show passive period in supervisor report</description>
-        <name>Create_history_passive_active_task</name>
-        <label>Create history passive active task</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
-        <connector>
-            <targetReference>Create_follow_up_task</targetReference>
-        </connector>
-        <flowName>IPS_subflow_create_task_history</flowName>
-        <inputAssignments>
-            <name>varDescription</name>
-            <value>
-                <stringValue>Passiv tilstand aktivert</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varOwnerId</name>
-            <value>
-                <elementReference>$User.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varPassiveActiveDeactiveDate</name>
-            <value>
-                <elementReference>$Record.Passive_activate__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varRecordTypeDeveloperName</name>
-            <value>
-                <stringValue>IPS_Task</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varSubject</name>
-            <value>
-                <stringValue>Passiv tilstand aktivert</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varWhatId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </subflows>
-    <subflows>
-        <description>Create history passive active task to show passive period in supervisor report</description>
         <name>Create_history_passive_active_task_to_past_passive_period</name>
         <label>Create history passive active task to past passive period</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>539</locationY>
         <connector>
             <targetReference>Create_history_passive_deactive_task_for_past_passive_period</targetReference>
@@ -362,61 +333,12 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <subflows>
-        <description>Create history passive active task to show passive period in supervisor reports.</description>
-        <name>Create_history_passive_deactive_task</name>
-        <label>Create history passive deactive task</label>
-        <locationX>314</locationX>
-        <locationY>539</locationY>
-        <connector>
-            <targetReference>Set_fields_associated_with_passive_period_to_blank</targetReference>
-        </connector>
-        <flowName>IPS_subflow_create_task_history</flowName>
-        <inputAssignments>
-            <name>varDescription</name>
-            <value>
-                <stringValue>Passiv tilstand deaktivert</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varOwnerId</name>
-            <value>
-                <elementReference>$User.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varPassiveActiveDeactiveDate</name>
-            <value>
-                <elementReference>$Record.Passive_deactivate__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varRecordTypeDeveloperName</name>
-            <value>
-                <stringValue>IPS_Task</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varSubject</name>
-            <value>
-                <stringValue>Passiv tilstand deaktivert</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varWhatId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </subflows>
-    <subflows>
         <description>Create history passive deactive task to show passive period in supervisor reports.</description>
         <name>Create_history_passive_deactive_task_for_past_passive_period</name>
         <label>Create history passive deactive task for past passive period</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>647</locationY>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>Set_fields_associated_with_passive_period_to_blank</targetReference>
         </connector>
         <flowName>IPS_subflow_create_task_history</flowName>
