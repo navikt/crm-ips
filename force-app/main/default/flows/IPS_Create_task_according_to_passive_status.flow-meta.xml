@@ -6,7 +6,7 @@
         <name>Set_fields_associated_with_passive_period_to_blank</name>
         <label>Set fields associated with passive period to blank</label>
         <locationX>314</locationX>
-        <locationY>755</locationY>
+        <locationY>971</locationY>
         <assignmentItems>
             <assignToReference>$Record.Passive_activate__c</assignToReference>
             <operator>Assign</operator>
@@ -101,7 +101,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_history_passive_active_task_to_past_passive_period</targetReference>
+                <targetReference>Update_task_to_completed</targetReference>
             </connector>
             <label>Past passive period</label>
         </rules>
@@ -200,6 +200,72 @@
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <description>Creating a passive period to a past passive period.</description>
+        <name>Create_follow_up_task_to_past_passive_period</name>
+        <label>Create follow up task to past passive period</label>
+        <locationX>314</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>Create_history_passive_deactive_task_for_past_passive_period</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>$Record.Passive_deactivate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>$Record.Passive_reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Priority</field>
+            <value>
+                <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_task_record_type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Etterregistrert passiv periode</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type_of_Task_IPSUO__c</field>
+            <value>
+                <stringValue>Oppgave</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Due_Date_Time__c</field>
+            <value>
+                <elementReference>$Record.Passive_deactivate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <description>Get task record type</description>
         <name>Get_task_record_type</name>
@@ -223,11 +289,56 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_task_to_completed</name>
+        <label>Update task to completed</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <connector>
+            <targetReference>Create_history_passive_active_task_to_past_passive_period</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_task_record_type.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Oppgave</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Oppfølging av passiv deltaker</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Tasks</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <description>Update worktrail</description>
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
         <locationX>314</locationX>
-        <locationY>947</locationY>
+        <locationY>1163</locationY>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
@@ -289,9 +400,9 @@
         <name>Create_history_passive_active_task_to_past_passive_period</name>
         <label>Create history passive active task to past passive period</label>
         <locationX>314</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
-            <targetReference>Create_history_passive_deactive_task_for_past_passive_period</targetReference>
+            <targetReference>Create_follow_up_task_to_past_passive_period</targetReference>
         </connector>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
@@ -337,7 +448,7 @@
         <name>Create_history_passive_deactive_task_for_past_passive_period</name>
         <label>Create history passive deactive task for past passive period</label>
         <locationX>314</locationX>
-        <locationY>647</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>Set_fields_associated_with_passive_period_to_blank</targetReference>
         </connector>
