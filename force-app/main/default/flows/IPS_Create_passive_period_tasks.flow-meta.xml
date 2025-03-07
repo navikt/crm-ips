@@ -5,8 +5,8 @@
         <description>Updating passive period fields to blank</description>
         <name>Update_passive_period_fields</name>
         <label>Update passive period fields</label>
-        <locationX>314</locationX>
-        <locationY>684</locationY>
+        <locationX>402</locationX>
+        <locationY>1200</locationY>
         <assignmentItems>
             <assignToReference>$Record.Passive_activate__c</assignToReference>
             <operator>Assign</operator>
@@ -30,10 +30,26 @@
             <targetReference>Update_worktrail</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Update_task_to_completed</name>
+        <label>Update task to completed</label>
+        <locationX>490</locationX>
+        <locationY>900</locationY>
+        <assignmentItems>
+            <assignToReference>Update_status.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_tasks</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>status</name>
         <label>Status</label>
-        <locationX>314</locationX>
+        <locationX>358</locationX>
         <locationY>360</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -74,10 +90,25 @@ deactive - passive active and deactive task</description>
     <formulas>
         <name>varToday</name>
         <dataType>Date</dataType>
-        <expression>TODAY()</expression>
+        <expression>TODAY() + 2</expression>
     </formulas>
     <interviewLabel>IPS - Create passive period tasks {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Create passive period tasks scheduled</label>
+    <loops>
+        <description>Update status to completed</description>
+        <name>Update_status</name>
+        <label>Update status</label>
+        <locationX>402</locationX>
+        <locationY>792</locationY>
+        <collectionReference>Get_open_followup_task</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Update_task_to_completed</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_passive_period_fields</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -161,9 +192,58 @@ deactive - passive active and deactive task</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Get_open_followup_task</name>
+        <label>Get open followup task</label>
+        <locationX>402</locationX>
+        <locationY>684</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Oppgave</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_task_record_type_id.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Oppfølging av passiv deltaker</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_task_record_type_id</name>
         <label>Get task record type Id</label>
-        <locationX>314</locationX>
+        <locationX>358</locationX>
         <locationY>252</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -182,24 +262,34 @@ deactive - passive active and deactive task</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_tasks</name>
+        <label>Update tasks</label>
+        <locationX>490</locationX>
+        <locationY>1008</locationY>
+        <connector>
+            <targetReference>Update_status</targetReference>
+        </connector>
+        <inputReference>Update_status</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <description>Update triggering worktrail</description>
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
-        <locationX>314</locationX>
-        <locationY>792</locationY>
+        <locationX>402</locationX>
+        <locationY>1308</locationY>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>232</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_task_record_type_id</targetReference>
         </connector>
         <object>Work_Trail__c</object>
         <schedule>
-            <frequency>Daily</frequency>
+            <frequency>Once</frequency>
             <startDate>2025-03-07</startDate>
-            <startTime>05:00:00.000Z</startTime>
+            <startTime>15:40:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
@@ -208,7 +298,7 @@ deactive - passive active and deactive task</description>
         <description>Create active task to passive period in supervisor report.</description>
         <name>Create_history_task_active</name>
         <label>Create history task active</label>
-        <locationX>314</locationX>
+        <locationX>402</locationX>
         <locationY>468</locationY>
         <connector>
             <targetReference>Create_history_task_deactive</targetReference>
@@ -256,10 +346,10 @@ deactive - passive active and deactive task</description>
         <description>Create deactive task to passive period in supervisor report.</description>
         <name>Create_history_task_deactive</name>
         <label>Create history task deactive</label>
-        <locationX>314</locationX>
+        <locationX>402</locationX>
         <locationY>576</locationY>
         <connector>
-            <targetReference>Update_passive_period_fields</targetReference>
+            <targetReference>Get_open_followup_task</targetReference>
         </connector>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
