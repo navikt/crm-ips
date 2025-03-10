@@ -735,7 +735,7 @@ public with sharing class IPS_viewReportPDFController {
     private Boolean isParticipantPassive() {
         Work_Trail__c workTrailRecord = [SELECT id, passive_status__c FROM Work_Trail__c WHERE Id = :workTrailId];
 
-        return workTrailRecord.ips_Passive__c;
+        return workTrailRecord.passive_status__c;
     }
 
     /**
