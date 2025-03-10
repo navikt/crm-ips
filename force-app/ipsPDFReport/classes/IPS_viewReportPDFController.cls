@@ -717,7 +717,7 @@ public with sharing class IPS_viewReportPDFController {
             List<Task> followUpParticipantTaskReturned = [
                 SELECT id, subject, ActivityDate, CreatedDate, whatId
                 FROM Task
-                WHERE WhatId = :workTrailId AND subject = 'Oppfølging av deltaker' AND Status = 'Open'
+                WHERE WhatId = :workTrailId AND subject = 'Oppfølging av passiv deltaker' AND Status = 'Open'
                 ORDER BY CreatedDate DESC
                 LIMIT 1
             ];
