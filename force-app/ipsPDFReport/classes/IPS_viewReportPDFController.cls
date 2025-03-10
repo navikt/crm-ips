@@ -700,7 +700,7 @@ public with sharing class IPS_viewReportPDFController {
             if (task.Subject == 'Passiv tilstand aktivert') {
                 aktivertTask = task;
             } else if (task.Subject == 'Passiv tilstand deaktivert' && aktivertTask != null) {
-                passivePeriods.add(new IPS_PassivePeriod(aktivertTask.CreatedDate, task.CreatedDate));
+                passivePeriods.add(new IPS_PassivePeriod(aktivertTask.ActivityDate, task.ActivityDate));
                 aktivertTask = null;
             }
         }
