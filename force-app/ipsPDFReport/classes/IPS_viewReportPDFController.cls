@@ -700,7 +700,7 @@ public with sharing class IPS_viewReportPDFController {
             if (task.Subject == 'Passiv tilstand aktivert') {
                 aktivertTask = task;
             } else if (task.Subject == 'Passiv tilstand deaktivert' && aktivertTask != null) {
-                passivePeriods.add(new IPS_PassivePeriod(aktivertTask.CreatedDate, task.CreatedDate));
+                passivePeriods.add(new IPS_PassivePeriod(aktivertTask.ActivityDate, task.ActivityDate));
                 aktivertTask = null;
             }
         }
@@ -717,7 +717,7 @@ public with sharing class IPS_viewReportPDFController {
             List<Task> followUpParticipantTaskReturned = [
                 SELECT id, subject, ActivityDate, CreatedDate, whatId
                 FROM Task
-                WHERE WhatId = :workTrailId AND subject = 'Oppfølging av deltaker' AND Status = 'Open'
+                WHERE WhatId = :workTrailId AND subject = 'Oppfølging av passiv deltaker' AND Status = 'Open'
                 ORDER BY CreatedDate DESC
                 LIMIT 1
             ];
@@ -733,9 +733,9 @@ public with sharing class IPS_viewReportPDFController {
      * @return  status of the worktrail
      */
     private Boolean isParticipantPassive() {
-        Work_Trail__c workTrailRecord = [SELECT id, ips_Passive__c FROM Work_Trail__c WHERE Id = :workTrailId];
+        Work_Trail__c workTrailRecord = [SELECT id, passive_status__c FROM Work_Trail__c WHERE Id = :workTrailId];
 
-        return workTrailRecord.ips_Passive__c;
+        return workTrailRecord.passive_status__c;
     }
 
     /**
