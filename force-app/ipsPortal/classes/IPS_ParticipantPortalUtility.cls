@@ -1,4 +1,51 @@
-public with sharing class IPS_ParticipantPortalUtility{
+public without sharing class IPS_ParticipantPortalUtility{
+
+    private static Boolean checkParticipantPermission(String userId){
+        String currentRecordId = userId;
+        String userPermissionSet = 'IPS_Deltaker';
+        List<PermissionSetAssignment> tempList = new List<PermissionSetAssignment>();
+        tempList = [SELECT Id FROM PermissionSetAssignment WHERE PermissionSet.name =: userPermissionSet AND isActive = true AND AssigneeId =:currentRecordId];
+        if(tempList.size() > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public static List<User> getPersonAccountId(String userId) {
+        List<User> userList = new List<User>();
+        String confidential = 'UGRADERT';
+        //String query = 'SELECT AccountId FROM User WHERE Id = :userId AND Account.CRM_Person__r.INT_Confidential__C =:confidential LIMIT 1';
+        if (userId != null) {
+            //userList = Database.query(query);
+            userList = [
+                SELECT AccountId
+                FROM User
+                WHERE Id = :userId AND Account.CRM_Person__r.INT_Confidential__C = :confidential
+                LIMIT 1
+            ];
+        }
+        return userList;
+    }
+
+    @AuraEnabled(cacheable = true)
+    public static List<work_trail__c> getUserWorkTrailId(String userId) {
+
+            List<User> userList = IPS_Utility.getPersonAccountId(userId);
+                if(userList.isEmpty()){
+                    system.debug('No accountId found on user');
+                    return new List<work_trail__c>();
+                }
+            String accountId = userList[0]?.AccountId;
+            List<Work_Trail__c> mytrail = new List<Work_Trail__c>();
+            mytrail = [
+                SELECT id,ips_Participant__r.PersonContactId,RecordType.DeveloperName,ips_End_Date__c
+                FROM Work_Trail__c 
+                WHERE ips_Participant__c = :accountId AND (ips_End_Date__c = LAST_N_DAYS:365 OR ips_End_Date__c =NULL)
+                ORDER BY CreatedDate DESC 
+                LIMIT 1];
+            
+            return mytrail;
+    }
 
     public static string formatDate(Date recordDate){
         if(recordDate==null){

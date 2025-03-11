@@ -1,4 +1,4 @@
-public with sharing class IPS_ParticipantPortalActivityController {
+public without sharing class IPS_ParticipantPortalActivityController {
 
  /* 
  * Open goals that is connected with participants worktrail
@@ -74,7 +74,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
          FROM event 
          WHERE 
              ActivityDate >=: todaysDate
-             AND WhoId= :participantId 
+             AND WhoId !=null
              AND WhatId = :trailRecordId 
              AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
              AND IPS_Status1__c ='Open'
