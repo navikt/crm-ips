@@ -6,7 +6,7 @@
         <name>Set_fields_associated_with_passive_period_to_blank</name>
         <label>Set fields associated with passive period to blank</label>
         <locationX>314</locationX>
-        <locationY>971</locationY>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>$Record.Passive_activate__c</assignToReference>
             <operator>Assign</operator>
@@ -200,72 +200,6 @@
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordCreates>
-        <description>Creating a passive period to a past passive period.</description>
-        <name>Create_follow_up_task_to_past_passive_period</name>
-        <label>Create follow up task to past passive period</label>
-        <locationX>314</locationX>
-        <locationY>755</locationY>
-        <connector>
-            <targetReference>Create_history_passive_deactive_task_for_past_passive_period</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>$Record.Passive_deactivate__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Description</field>
-            <value>
-                <elementReference>$Record.Passive_reason__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Priority</field>
-            <value>
-                <stringValue>Normal</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>RecordTypeId</field>
-            <value>
-                <elementReference>Get_task_record_type.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subject</field>
-            <value>
-                <stringValue>Etterregistrert passiv periode</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type_of_Task_IPSUO__c</field>
-            <value>
-                <stringValue>Oppgave</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WhatId</field>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ips_Due_Date_Time__c</field>
-            <value>
-                <elementReference>$Record.Passive_deactivate__c</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
     <recordLookups>
         <description>Get task record type</description>
         <name>Get_task_record_type</name>
@@ -338,7 +272,7 @@
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
         <locationX>314</locationX>
-        <locationY>1163</locationY>
+        <locationY>1055</locationY>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
@@ -402,7 +336,7 @@
         <locationX>314</locationX>
         <locationY>647</locationY>
         <connector>
-            <targetReference>Create_follow_up_task_to_past_passive_period</targetReference>
+            <targetReference>Create_history_passive_deactive_task_for_past_passive_period</targetReference>
         </connector>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
@@ -448,7 +382,7 @@
         <name>Create_history_passive_deactive_task_for_past_passive_period</name>
         <label>Create history passive deactive task for past passive period</label>
         <locationX>314</locationX>
-        <locationY>863</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>Set_fields_associated_with_passive_period_to_blank</targetReference>
         </connector>
@@ -456,7 +390,7 @@
         <inputAssignments>
             <name>varDescription</name>
             <value>
-                <stringValue>Passiv tilstand deaktivert</stringValue>
+                <elementReference>$Record.Passive_reason__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
