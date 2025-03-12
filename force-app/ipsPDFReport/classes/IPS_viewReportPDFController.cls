@@ -750,14 +750,12 @@ public with sharing class IPS_viewReportPDFController {
 
         for (IPS_PassivePeriod period : passivePeriods) {
             if (
-                (period.startDate >= startDate && period.startDate <= (endDate + 1)) &&
-                (period.endDate >= startDate &&
-                period.endDate <= (endDate + 1))
-            ) {
+                (period.startDate <= (endDate + 1)) &&
+                (period.endDate >= startDate ))
+             {
                 filteredPassivePeriods.add(period);
             }
         }
-
         return filteredPassivePeriods;
     }
 
