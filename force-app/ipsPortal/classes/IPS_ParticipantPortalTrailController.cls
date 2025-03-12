@@ -1,23 +1,5 @@
 public with sharing class IPS_ParticipantPortalTrailController {
-        
-    @AuraEnabled(cacheable=true)
-    public static Map<String,String> getTrailAndRecordtype(Id accountId){
-        Id currentAccountId = accountId;
-
-        Work_Trail__c activeTrail =[
-            SELECT Id, RecordType.DeveloperName,Owner.Name
-            FROM Work_Trail__c 
-            WHERE  ips_Participant__c = :currentAccountId  
-            AND (ips_End_Date__c = LAST_N_DAYS:365 OR ips_End_Date__c =NULL) 
-            ORDER BY CreatedDate DESC LIMIT 1];
-
-        Map<String,String> trailMap = new Map<String,String>();
-        trailMap.put('jobbsporId',activeTrail.Id);
-        trailMap.put('jobbsporPostTypeNavn',activeTrail.RecordType.DeveloperName);
-        trailMap.put('jobbsporJobbspesialist',activeTrail.Owner.Name);
-        return trailMap;
-    }
-    
+  
     @AuraEnabled(cacheable=true)
    public static List<IPS_ParticipantPortalWorkTrail> getTrailWrapperClassList(Id recordId){
     Id currentRecordId = recordId;
@@ -81,7 +63,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
             ips_Education__c,
             ips_Work_experience__c
             FROM Work_Trail__c
-            WHERE  Id = :currentRecordId];
+            WHERE  ips_Participant__c  = :currentRecordId];
 
             for(Work_Trail__c t :tempTrailList){
                 

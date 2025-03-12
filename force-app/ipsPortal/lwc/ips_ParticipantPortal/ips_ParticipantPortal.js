@@ -5,10 +5,8 @@ import { NavigationMixin } from 'lightning/navigation';
 import templateIPS from './ips_ParticipantPortalIPS.html';
 import templateAMS from './ips_ParticipantPortalAMS.html';
 import defaultTemplate from './ips_ParticipantPortalDefault.html';
-import USER_ID from '@salesforce/user/Id';
-import USER_CONTACT_ACCOUNT_FIELD from '@salesforce/schema/User.Contact.AccountId';
-import USER_CONTACT_FIELD from '@salesforce/schema/User.ContactId';
-import getTrailAndRecordtype from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrailAndRecordtype';
+import Id from '@salesforce/user/Id';
+import USER_ACCOUNT_FIELD from '@salesforce/schema/User.AccountId';
 import getTrailWrapperClassList from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrailWrapperClassList';
 import getParticipantSharedReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
 import getTaskOpenGoals from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantsOpenGoals';
@@ -47,13 +45,14 @@ import warningText from '@salesforce/label/c.IPS_Information_message_text';
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_ParticipantPortal extends NavigationMixin(LightningElement) {
-    //currentUser = USER_ID;
+    //currentUser = Id;
     currentUser = '005KF000006xWImYAM'; //ips
-    //currentUser ='005KF000006zS0YYAU';//ams
+    //currentUser = '005KF000006zS0YYAU'; //ams
     error;
     @track recordTypeName;
     @track recordId;
-    @track isActive = false;
+    @track recordTrailId;
+    @track isActive = true;
     trailClassList;
     participantSharedReportList;
     participantOpenGoalList;
@@ -110,31 +109,33 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
 
     @wire(getRecord, {
         recordId: '$currentUser',
-        optionalFields: [USER_CONTACT_ACCOUNT_FIELD, USER_CONTACT_FIELD]
+        fields: [USER_ACCOUNT_FIELD]
     })
-    user;
+    userAccount;
 
-    @wire(getTrailAndRecordtype, {
-        accountId: '$userAccountId'
+    get userAccountId() {
+        return getFieldValue(this.userAccount.data, USER_ACCOUNT_FIELD);
+    }
+
+    get userContactId() {
+        return null;
+    }
+
+    @wire(getTrailWrapperClassList, {
+        recordId: '$userAccountId'
     })
-    trailDataHandler({ data, error }) {
+    trailClassListHandler({ data, error }) {
+        console.log(JSON.stringify('Bruker: ' + this.currentUser));
+        console.log(JSON.stringify('AccountId: ' + this.userAccountId));
         if (data) {
-            this.recordTypeName = data.jobbsporPostTypeNavn;
-            this.recordId = data.jobbsporId;
-            this.isActive = true;
+            this.trailClassList = data[0];
+            this.recordId = this.trailClassList?.jobbsporId;
+            this.recordTypeName = this.trailClassList?.jobbsporPostTypeNavn;
+            this.isTrail = true;
         }
         if (error) {
             this.error = error;
-            this.isActive = false;
-            this.recordTypeName = 'default';
         }
-    }
-
-    get userAccountId() {
-        return getFieldValue(this.user.data, USER_CONTACT_ACCOUNT_FIELD);
-    }
-    get userContactId() {
-        return getFieldValue(this.user.data, USER_CONTACT_FIELD);
     }
 
     get isDesktop() {
@@ -180,19 +181,6 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
                 recordId: { reportRecordId }
             }
         });
-    }
-
-    @wire(getTrailWrapperClassList, {
-        recordId: '$recordId'
-    })
-    trailClassListHandler({ data, error }) {
-        if (data) {
-            this.trailClassList = data[0];
-            this.isTrail = true;
-        }
-        if (error) {
-            this.error = error;
-        }
     }
 
     @wire(getParticipantSharedReport, {

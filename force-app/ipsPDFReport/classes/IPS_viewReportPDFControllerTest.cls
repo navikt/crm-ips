@@ -40,6 +40,7 @@ public class IPS_viewReportPDFControllerTest {
 
         participantMeetingAbsent.IPS_Status1__c = 'Participant Absent';
         update participantMeetingAbsent;
+        
 
         Event employerMeetingCompletedIPS = IPS_TestDataFactory.createEmployerEventWithParticipant(
             businessAccount.id,
