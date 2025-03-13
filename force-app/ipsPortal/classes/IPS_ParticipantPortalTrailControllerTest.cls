@@ -35,13 +35,12 @@ public class IPS_ParticipantPortalTrailControllerTest {
         
         AMS_Vocational_education_and_training__c eduAMS = IPS_TestDataFactory.createEducationAMS(jobbspor.id);
         insert eduAMS;
-        
     }
+        
     
     @isTest
     static void getTrail(){
-        
-      
+       
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
         
          List<IPS_ParticipantPortalWorkTrail> trail = IPS_ParticipantPortalTrailController.getTrailWrapperClassList(participantId);    
