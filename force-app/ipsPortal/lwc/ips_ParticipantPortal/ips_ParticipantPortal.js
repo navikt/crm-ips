@@ -7,6 +7,7 @@ import templateAMS from './ips_ParticipantPortalAMS.html';
 import defaultTemplate from './ips_ParticipantPortalDefault.html';
 import Id from '@salesforce/user/Id';
 import USER_ACCOUNT_FIELD from '@salesforce/schema/User.AccountId';
+import USER_CONTACT_FIELD from '@salesforce/schema/User.ContactId';
 import getTrailWrapperClassList from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrailWrapperClassList';
 import getParticipantSharedReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
 import getTaskOpenGoals from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantsOpenGoals';
@@ -67,6 +68,7 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
     isJob = false;
     isTraining = false;
     isEducation = false;
+    isEducationAMS = false;
     isReport = false;
     isTrail = false;
 
@@ -109,16 +111,16 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
 
     @wire(getRecord, {
         recordId: '$currentUser',
-        fields: [USER_ACCOUNT_FIELD]
+        fields: [USER_ACCOUNT_FIELD, USER_CONTACT_FIELD]
     })
-    userAccount;
+    userContactAccount;
 
     get userAccountId() {
-        return getFieldValue(this.userAccount.data, USER_ACCOUNT_FIELD);
+        return getFieldValue(this.userContactAccount.data, USER_ACCOUNT_FIELD);
     }
 
     get userContactId() {
-        return null;
+        return getFieldValue(this.userContactAccount.data, USER_CONTACT_FIELD);
     }
 
     @wire(getTrailWrapperClassList, {
@@ -127,6 +129,7 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
     trailClassListHandler({ data, error }) {
         console.log(JSON.stringify('Bruker: ' + this.currentUser));
         console.log(JSON.stringify('AccountId: ' + this.userAccountId));
+        console.log(JSON.stringify('ContactId: ' + this.userContactId));
         if (data) {
             this.trailClassList = data[0];
             this.recordId = this.trailClassList?.jobbsporId;
@@ -143,6 +146,8 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
             return true;
         } else if (formFactorPropertyName === 'Medium') {
             return true;
+        } else if (formFactorPropertyName === 'Small') {
+            return false;
         } else {
             return false;
         }
@@ -281,7 +286,7 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
         if (data) {
             if (data.length > 0) {
                 this.participantOpenEducationTrainingAMSList = data;
-                this.isEducation = true;
+                this.isEducationAMS = true;
             }
         }
         if (error) {
