@@ -747,17 +747,18 @@ public with sharing class IPS_viewReportPDFController {
     private List<IPS_PassivePeriod> getPassivePeriodsWithinDateRange(Datetime startDate, Datetime endDate) {
         List<IPS_PassivePeriod> passivePeriods = getAllPassivePeriods();
         List<IPS_PassivePeriod> filteredPassivePeriods = new List<IPS_PassivePeriod>();
-
-        for (IPS_PassivePeriod period : passivePeriods) {
-            if (
-                (period.startDate >= startDate && period.startDate <= (endDate + 1)) &&
-                (period.endDate >= startDate &&
-                period.endDate <= (endDate + 1))
-            ) {
-                filteredPassivePeriods.add(period);
+        if(passivePeriods != null && startDate != null && endDate != null){
+            for (IPS_PassivePeriod period : passivePeriods) {
+                if (
+                    (period.startDate <= (endDate + 1)) &&
+                    (period.endDate >= startDate ))
+                 {
+                    filteredPassivePeriods.add(period);
+                }
             }
-        }
 
+        }
+        
         return filteredPassivePeriods;
     }
 
