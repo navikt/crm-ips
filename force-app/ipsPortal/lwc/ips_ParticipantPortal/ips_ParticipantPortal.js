@@ -46,9 +46,7 @@ import warningText from '@salesforce/label/c.IPS_Information_message_text';
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_ParticipantPortal extends NavigationMixin(LightningElement) {
-    //currentUser = Id;
-    currentUser = '005KF000006xWImYAM'; //ips
-    //currentUser = '005KF000006zS0YYAU'; //ams
+    currentUser = Id;
     error;
     @track recordTypeName;
     @track recordId;
@@ -127,9 +125,6 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
         recordId: '$userAccountId'
     })
     trailClassListHandler({ data, error }) {
-        console.log(JSON.stringify('Bruker: ' + this.currentUser));
-        console.log(JSON.stringify('AccountId: ' + this.userAccountId));
-        console.log(JSON.stringify('ContactId: ' + this.userContactId));
         if (data) {
             this.trailClassList = data[0];
             this.recordId = this.trailClassList?.jobbsporId;
@@ -175,7 +170,6 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
 
     navigateToReport(event) {
         let reportRecordId = event.target.dataset.id;
-        console.log('ID er: ' + reportRecordId);
 
         this[NavigationMixin.Navigate]({
             type: 'comm__namedPage',
