@@ -3,7 +3,7 @@
     <actionCalls>
         <name>createTravelTime</name>
         <label>createTravelTime</label>
-        <locationX>776</locationX>
+        <locationX>578</locationX>
         <locationY>647</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -65,7 +65,7 @@
     <actionCalls>
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
-        <locationX>1898</locationX>
+        <locationX>1810</locationX>
         <locationY>647</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -128,7 +128,7 @@
     <assignments>
         <name>setPublic</name>
         <label>setPublic</label>
-        <locationX>776</locationX>
+        <locationX>578</locationX>
         <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
@@ -145,8 +145,8 @@
         <description>Show validation error that occurs due to first meeting with employer held date</description>
         <name>First_meeting_with_employer_validation_error</name>
         <label>First meeting with employer validation error</label>
-        <locationX>314</locationX>
-        <locationY>1403</locationY>
+        <locationX>1018</locationX>
+        <locationY>1679</locationY>
         <customErrorMessages>
             <errorMessage>Oppstartsdato må være før eller lik datoen for første møte med arbeidsgiver ble avholdt. Vennligst oppgi gyldige datoer.</errorMessage>
             <isFieldError>false</isFieldError>
@@ -155,7 +155,7 @@
     <customErrors>
         <name>Startup_date_not_valid</name>
         <label>Startup date not valid</label>
-        <locationX>842</locationX>
+        <locationX>578</locationX>
         <locationY>1187</locationY>
         <customErrorMessages>
             <errorMessage>Oppstartsdato må være før eller lik datoen for første møte med arbeidsgiver ble avholdt. Vennligst oppgi gyldige datoer.</errorMessage>
@@ -165,7 +165,7 @@
     <decisions>
         <name>checkCriteria</name>
         <label>checkCriteria</label>
-        <locationX>1337</locationX>
+        <locationX>1194</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
@@ -190,8 +190,11 @@
     <decisions>
         <name>IsEventClosed</name>
         <label>IsEventClosed</label>
-        <locationX>776</locationX>
+        <locationX>578</locationX>
         <locationY>971</locationY>
+        <defaultConnector>
+            <targetReference>UpdateEvent</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
             <name>IsClosed</name>
@@ -213,7 +216,7 @@
     <decisions>
         <name>IsEventClosed1</name>
         <label>IsEventClosed</label>
-        <locationX>1898</locationX>
+        <locationX>1810</locationX>
         <locationY>755</locationY>
         <defaultConnectorLabel>anythingElse</defaultConnectorLabel>
         <rules>
@@ -237,7 +240,7 @@
         <description>Ensures the startup date is earlier than first meeting with employer held.</description>
         <name>IsStartupDateValid</name>
         <label>IsStartupDateValid</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>1079</locationY>
         <defaultConnector>
             <targetReference>Startup_date_not_valid</targetReference>
@@ -270,7 +273,7 @@
         <description>Ensures the startup date is earlier than first meeting with employer held.</description>
         <name>IsStartupDateValidNotNew</name>
         <label>IsStartupDateValid</label>
-        <locationX>1634</locationX>
+        <locationX>1546</locationX>
         <locationY>863</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -354,7 +357,7 @@
         <description>Getting related work trail to compare startup date and first meeting with employer held.</description>
         <name>Get_related_work_trail</name>
         <label>Get related work trail</label>
-        <locationX>1337</locationX>
+        <locationX>1194</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -375,7 +378,7 @@
     <recordLookups>
         <name>getRecordTypeNameTravelTime</name>
         <label>getRecordTypeNameTravelTime</label>
-        <locationX>1337</locationX>
+        <locationX>1194</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -398,7 +401,7 @@
     <recordUpdates>
         <name>Copy_1_of_updateStartUpDate</name>
         <label>updateStartUpDate</label>
-        <locationX>1370</locationX>
+        <locationX>1282</locationX>
         <locationY>971</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -429,8 +432,8 @@
     <recordUpdates>
         <name>UpdateEvent</name>
         <label>UpdateEvent</label>
-        <locationX>50</locationX>
-        <locationY>1295</locationY>
+        <locationX>578</locationX>
+        <locationY>1571</locationY>
         <faultConnector>
             <targetReference>First_meeting_with_employer_validation_error</targetReference>
         </faultConnector>
@@ -441,7 +444,7 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>IsVisibleInSelfService</field>
+            <field>IsVisibleInSelfService__c</field>
             <value>
                 <elementReference>varPublicTrue</elementReference>
             </value>
@@ -490,7 +493,7 @@
         <object>Work_Trail__c</object>
     </recordUpdates>
     <start>
-        <locationX>1211</locationX>
+        <locationX>1068</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getRecordTypeNameTravelTime</targetReference>
@@ -518,7 +521,7 @@
     <subflows>
         <name>Add_contactId_to_event</name>
         <label>Add contactId to event</label>
-        <locationX>776</locationX>
+        <locationX>578</locationX>
         <locationY>755</locationY>
         <connector>
             <targetReference>setPublic</targetReference>
