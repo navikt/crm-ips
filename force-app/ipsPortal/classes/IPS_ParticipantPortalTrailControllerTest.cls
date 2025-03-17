@@ -19,6 +19,17 @@ public class IPS_ParticipantPortalTrailControllerTest {
         Task delmaal = IPS_TestDataFactory.creategoal(jobbspor.id);
         insert delmaal;
         
+        Task logg = new task();
+        logg.ActivityDate = system.today();
+        logg.IsVisibleInSelfService = true;
+        logg.Type_of_Task_IPSUO__c ='Logg kontakt';
+        logg.Subject = 'Oppgave logg';
+        logg.WhatId =jobbspor.id;
+        logg.Samtalereferat__c = true;
+        logg.Status = 'Completed';
+        insert logg;
+        
+        
         Event meeting = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
         insert meeting;
         
@@ -43,8 +54,18 @@ public class IPS_ParticipantPortalTrailControllerTest {
        
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
         
-         List<IPS_ParticipantPortalWorkTrail> trail = IPS_ParticipantPortalTrailController.getTrailWrapperClassList(participantId);    
+         List<IPS_ParticipantPortalWorkTrail> trail = IPS_ParticipantPortalTrailController.getTrailWrapperClassList(participantId);  
+            List<IPS_ParticipantPortalWorkTrail> trail2 = IPS_ParticipantPortalTrailController.getTrail(participantId);  
         System.assert.isNotNull(trail);
+        System.assert.isNotNull(trail2);
+        
+    }
+    
+     @isTest
+    static void getLogg(){
+         ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
+        List<IPS_ParticipantPortalTask> logg = IPS_ParticipantPortalActivityController.getParticipantsLogs(workTrailId);
+        System.assert.isNotNull(logg);
         
     }
     

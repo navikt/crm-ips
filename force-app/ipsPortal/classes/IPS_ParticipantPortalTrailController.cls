@@ -4,7 +4,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
     public static List<IPS_ParticipantPortalWorkTrail> getTrail(Id recordId){
         Id currentRecordId = recordId;
         List<IPS_ParticipantPortalWorkTrail> wrapperList =  new List<IPS_ParticipantPortalWorkTrail>();
-    wrapperList = getWorkTrailWrapperList(currentRecordId);
+    wrapperList = getTrailId(currentRecordId);
     return wrapperList;
    }
 
