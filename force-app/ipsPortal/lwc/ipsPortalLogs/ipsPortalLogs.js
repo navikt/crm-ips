@@ -12,8 +12,7 @@ import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 export default class IpsPortalLogs extends LightningElement {
     homeImg = IPS_HOME_LOGOS + '/House.svg';
     warningIcon = IPS_HOME_LOGOS + '/ExclamationmarkTriangle.svg';
-    //currentUser = Id;
-    currentUser ='005KH000001oK9dYAE';
+    currentUser = Id;
     @track loggRecords;
     @track record;
     recordIds;
