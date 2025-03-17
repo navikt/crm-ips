@@ -1,0 +1,37 @@
+<template>
+    <div class="breadcrumb-container">
+        <img src={homeImg} alt="" class="breadcrumb-img" />
+        <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
+    </div>
+    <template if:true={isLogg}>
+        <div class="container responsive">
+            <h1>Gjennomførte telefonsamtaler</h1>
+                <template for:each={loggRecords} for:item="logg">
+                    <div key={logg.jobbsporId} >
+                        <c-readmore label={logg.Emne}>
+                            <dl>
+                                <dt>Emne</dt>
+                                <dd>{logg.Emne}</dd>
+                                <dt>Dato</dt>
+                                <dd> {logg.ForfallsDato}</dd>
+                                <dt>Referat</dt>
+                                <dd>{logg.ReferatKommentar}</dd>
+                            </dl>
+                        </c-readmore>
+                    </div>
+                </template>
+        </div>
+    </template>
+    <template if:false={isLogg}>
+        <div class="container responsive">
+                <div class="responsive">
+                    <div class="colorWarning">
+                        <div class="spaceAround" tabindex="0" role="status">
+                                <img src={warningIcon} alt="kontaktlogg varsel" /> 
+                                &nbsp;&nbsp;{warningText}
+                        </div>  
+                    </div>
+                </div>
+        </div>
+    </template>
+</template>

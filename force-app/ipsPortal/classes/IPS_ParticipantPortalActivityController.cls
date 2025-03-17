@@ -1,5 +1,45 @@
 public with sharing class IPS_ParticipantPortalActivityController {
 
+/*All Completed Logs that is connected with worktrail 
+ * */
+@AuraEnabled(cacheable = true)    
+public static List<IPS_ParticipantPortalTask> getParticipantsLogs(String recordId){
+
+    Id trailRecordId = recordId;
+
+    List<IPS_ParticipantPortalTask> wrapperList = new List<IPS_ParticipantPortalTask>();
+    wrapperList = getLogs(trailRecordId);
+    return wrapperList;
+}
+
+private static List<IPS_ParticipantPortalTask> getLogs(Id trailRecordId){
+    List<IPS_ParticipantPortalTask> tempWrapperList = new List<IPS_ParticipantPortalTask>();
+    List<Task> tempTaskList = new List<Task>();
+    tempTaskList =[
+        SELECT 
+            id,
+            ActivityDate,
+            IPS_subjectAndDate__c,
+            Description
+        FROM Task 
+        WHERE WhatId = :trailRecordId 
+        AND Type_of_Task_IPSUO__c ='Logg kontakt'  
+        AND Samtalereferat__c = true
+        AND Status ='Completed'
+        ORDER BY ActivityDate DESC
+    ];
+
+    for(Task t:tempTaskList){
+        IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
+        tempList.Emne = t.IPS_subjectAndDate__c;
+        tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
+        tempList.ReferatKommentar = t.Description;
+        tempList.OppgaveId = t.id;
+        tempWrapperList.add(tempList);
+     }
+     return tempWrapperList;
+}
+
  /* 
  * Open goals that is connected with participants worktrail
  * Used in ips_ParticipantPortal lwc

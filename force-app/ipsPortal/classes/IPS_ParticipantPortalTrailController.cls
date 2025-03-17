@@ -1,4 +1,35 @@
 public with sharing class IPS_ParticipantPortalTrailController {
+
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalWorkTrail> getTrail(Id recordId){
+        Id currentRecordId = recordId;
+        List<IPS_ParticipantPortalWorkTrail> wrapperList =  new List<IPS_ParticipantPortalWorkTrail>();
+    wrapperList = getTrailId(currentRecordId);
+    return wrapperList;
+   }
+
+   private static List<IPS_ParticipantPortalWorkTrail> getTrailId(Id currentRecordId){
+    List<IPS_ParticipantPortalWorkTrail> wrapperTempList = new List<IPS_ParticipantPortalWorkTrail>();
+    List <Work_Trail__c> tempTrailList = new List<Work_Trail__c>();
+    tempTrailList =[
+        SELECT id
+        FROM Work_Trail__c
+        WHERE  ips_Participant__c  = :currentRecordId
+        AND (ips_End_Date__c = LAST_N_DAYS:365 OR ips_End_Date__c =NULL)
+        ORDER BY CreatedDate DESC 
+        LIMIT 1];
+
+        for(Work_Trail__c t :tempTrailList){
+                
+            IPS_ParticipantPortalWorkTrail tempList = new IPS_ParticipantPortalWorkTrail();
+            tempList.jobbsporId = t.id;
+            wrapperTempList.add(tempList);
+            }
+            return wrapperTempList;
+    
+
+}
+
   
     @AuraEnabled(cacheable=true)
    public static List<IPS_ParticipantPortalWorkTrail> getTrailWrapperClassList(Id recordId){
