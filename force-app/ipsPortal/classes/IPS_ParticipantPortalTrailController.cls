@@ -63,7 +63,10 @@ public with sharing class IPS_ParticipantPortalTrailController {
             ips_Education__c,
             ips_Work_experience__c
             FROM Work_Trail__c
-            WHERE  ips_Participant__c  = :currentRecordId];
+            WHERE  ips_Participant__c  = :currentRecordId
+            AND (ips_End_Date__c = LAST_N_DAYS:365 OR ips_End_Date__c =NULL)
+            ORDER BY CreatedDate DESC 
+            LIMIT 1];
 
             for(Work_Trail__c t :tempTrailList){
                 
