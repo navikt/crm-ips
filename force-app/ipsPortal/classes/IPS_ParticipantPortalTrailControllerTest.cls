@@ -19,6 +19,11 @@ public class IPS_ParticipantPortalTrailControllerTest {
         Task delmaal = IPS_TestDataFactory.creategoal(jobbspor.id);
         insert delmaal;
         
+        Task delmaal2 = IPS_TestDataFactory.creategoal(jobbspor.id);
+        insert delmaal2;
+        delmaal2.Status = 'Completed';
+        update delmaal2;
+        
         Task logg = new task();
         logg.ActivityDate = system.today();
         logg.IsVisibleInSelfService = true;
@@ -73,9 +78,22 @@ public class IPS_ParticipantPortalTrailControllerTest {
     static void getGoals(){
          ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
         List<IPS_ParticipantPortalTask> goal = IPS_ParticipantPortalActivityController.getParticipantsOpenGoals(workTrailId);
+        List<IPS_ParticipantPortalTask> goalCompleted = IPS_ParticipantPortalActivityController.getParticipantsCompletedGoals(workTrailId);
+        
         System.assert.isNotNull(goal);
         
     }
+    
+     @isTest
+    static void getCompletedGoals(){
+          String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
+        List<IPS_ParticipantPortalTask> goalCompleted = IPS_ParticipantPortalActivityController.getParticipantsCompletedGoals(participantId);
+        
+        System.assert.isNotNull(goalCompleted);
+        
+    }
+    
+    
     
     @isTest
     static void getMeeting(){

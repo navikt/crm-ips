@@ -9,7 +9,7 @@ import getUserWorkTrailId from '@salesforce/apex/IPS_ParticipantPortalTrailContr
 /* all logos related to IPS/UO portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
-export default class IpsPortalLogs extends LightningElement {
+export default class IpsPortalLogs extends NavigationMixin(LightningElement) {
     homeImg = IPS_HOME_LOGOS + '/House.svg';
     warningIcon = IPS_HOME_LOGOS + '/ExclamationmarkTriangle.svg';
     currentUser = Id;
@@ -18,6 +18,7 @@ export default class IpsPortalLogs extends LightningElement {
     recordIds;
     isLogg = false;
     numPops = 2;
+    error;
 
     breadcrumbs = [
         {
@@ -25,7 +26,7 @@ export default class IpsPortalLogs extends LightningElement {
             href: ''
         },
         {
-            label: 'kontaktlogg',
+            label: 'mine samtaler',
             href: ''
         }
     ];
@@ -55,7 +56,7 @@ export default class IpsPortalLogs extends LightningElement {
             this.record = data[0];
             this.recordIds = this.record?.jobbsporId;
         } else if (error) {
-            console.log('Something went wrong:', error);
+            this.error = error;
         }
     }
 
