@@ -82,6 +82,52 @@ private static List<IPS_ParticipantPortalTask> getLogs(Id trailRecordId){
      return tempWrapperList;
  }
 
+  /* 
+ * Completed goals that is connected with participants worktrail
+ * Used in ips_ParticipantPortal lwc
+ * Portal Activity
+ * */
+@AuraEnabled(cacheable = true)    
+public static List<IPS_ParticipantPortalTask> getParticipantsCompletedGoals(String recordId){
+   Id trailRecordId = recordId;
+
+   List<IPS_ParticipantPortalTask> wrapperList = new List<IPS_ParticipantPortalTask>();
+   wrapperList = getCompletedGoals(trailRecordId);
+   return wrapperList;
+}
+
+private static List<IPS_ParticipantPortalTask> getCompletedGoals(Id trailRecordId){
+   List<IPS_ParticipantPortalTask> tempWrapperList = new List<IPS_ParticipantPortalTask>();
+
+   List<Task> tempTaskList = new List<Task>();
+   tempTaskList =[
+        SELECT 
+            id,
+            ActivityDate,
+            CreatedDate,
+            CompletedDateTime,
+            Subject,
+            Description
+        FROM Task 
+        WHERE WhatId = :trailRecordId 
+        AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'  
+        AND Status ='Completed'
+        ORDER BY ActivityDate ASC
+    ];
+
+    for(Task t:tempTaskList){
+       IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
+       tempList.Emne = t.subject;
+       tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
+       tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(t.CreatedDate));
+       tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(t.CompletedDateTime));
+       tempList.ReferatKommentar = t.Description;
+       tempList.OppgaveId = t.id;
+       tempWrapperList.add(tempList);
+    }
+    return tempWrapperList;
+}
+
   
   /* 
  * Open meetings that is connected with participants worktrail
