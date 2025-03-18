@@ -4,19 +4,20 @@ import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
 import USER_ACCOUNT_FIELD from '@salesforce/schema/User.AccountId';
 import USER_CONTACT_FIELD from '@salesforce/schema/User.ContactId';
-import getParticipantsLogs from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantsLogs';
+import getParticipantsGoals from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantsCompletedGoals';
 import getUserWorkTrailId from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrail';
 /* all logos related to IPS/UO portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
-export default class IpsPortalLogs extends NavigationMixin(LightningElement) {
+export default class Ips_ParticipantPortalGoals extends NavigationMixin(LightningElement) {
+
     homeImg = IPS_HOME_LOGOS + '/House.svg';
     warningIcon = IPS_HOME_LOGOS + '/ExclamationmarkTriangle.svg';
     currentUser = Id;
-    @track loggRecords;
+    @track goalRecords;
     @track record;
     recordIds;
-    isLogg = false;
+    isGoal = false;
     numPops = 2;
     error;
 
@@ -26,7 +27,7 @@ export default class IpsPortalLogs extends NavigationMixin(LightningElement) {
             href: ''
         },
         {
-            label: 'mine samtaler',
+            label: 'mine aktiviteter',
             href: ''
         }
     ];
@@ -46,7 +47,7 @@ export default class IpsPortalLogs extends NavigationMixin(LightningElement) {
         }
 
         get warningText(){
-            return 'Din jobbspesialist har ikke lagt inn referat fra telefonsamtaler med deg.';
+            return 'Det er ikke registrert gjennomførte aktiviteter.';
         }
 
     /* Fetch recordId from logged in user */
@@ -60,16 +61,16 @@ export default class IpsPortalLogs extends NavigationMixin(LightningElement) {
         }
     }
 
-    @wire(getParticipantsLogs, { recordId: '$recordIds' })
-    wiredLogg({ error, data }) {
+    /* Get all completed goals for logged in user */
+    @wire(getParticipantsGoals, { recordId: '$recordIds' })
+    wiredGoals({ error, data }) {
         if (data) {
             if (data.length > 0) {
-                this.loggRecords = data;
-                this.isLogg = true;
+                this.goalRecords = data;
+                this.isGoal = true;
             }
         } else if (error) {
-            console.log('An error has ocurred');
-            console.log(error);
+            this.error = error;
         }
     }
 
