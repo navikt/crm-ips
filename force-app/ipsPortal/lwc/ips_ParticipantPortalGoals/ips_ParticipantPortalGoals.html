@@ -5,7 +5,7 @@
     </div>
     <template if:true={isGoal}>
         <div class="container responsive">
-            <h1>Gjennomførte delmål</h1>
+            <h1>Gjennomførte aktiviteter</h1>
                 <template for:each={goalRecords} for:item="goal">
                     <div key={goal.jobbsporId} >
                         <c-readmore label={goal.Emne}>
@@ -21,11 +21,11 @@
         </div>
     </template>
     <template if:false={isGoal}>
-        <div class="container responsive">
+        <div class="container responsive warningContainer">
                 <div class="responsive">
                     <div class="colorWarning">
                         <div class="spaceAround" tabindex="0" role="status">
-                                <img src={warningIcon} alt="kontaktlogg varsel" /> 
+                                <img src={warningIcon} alt="Dine aktiviteter varsel" /> 
                                 &nbsp;&nbsp;{warningText}
                         </div>  
                     </div>
