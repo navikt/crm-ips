@@ -162,7 +162,7 @@ private static List<IPS_ParticipantPortalTask> getCompletedGoals(Id trailRecordI
              ActivityDate >=: todaysDate
              AND WhoId =:participantId
              AND WhatId = :trailRecordId 
-             AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer')
+             AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer' OR IPS_Type__c='Start up meeting')
              AND IPS_Status1__c ='Open'
          ORDER BY ActivityDate ASC
      ];
@@ -181,6 +181,57 @@ private static List<IPS_ParticipantPortalTask> getCompletedGoals(Id trailRecordI
      return tempWrapperList;
 
  }
+
+   /* 
+ * Completed meetings that is connected with participants worktrail
+ * Portal Activity
+ * */
+@AuraEnabled(cacheable = true) 
+public static List<IPS_ParticipantPortalEvent> getParticipantCompletedMeetings(String recordId,String contactId){
+   Id trailRecordId = recordId;
+   Id participantId = contactId;
+
+   List<IPS_ParticipantPortalEvent> wrapperList = new List<IPS_ParticipantPortalEvent>();
+   wrapperList = getCompletedMeetings(trailRecordId,participantId);
+   return wrapperList;
+}
+
+private static List<IPS_ParticipantPortalEvent> getCompletedMeetings(Id trailRecordId,Id participantId){
+   List<IPS_ParticipantPortalEvent> tempWrapperList = new List<IPS_ParticipantPortalEvent>();
+
+    List<Event> tempEventList = new List<Event>();
+    tempEventList =[
+        SELECT 
+            id,
+            IPS_subjectAndDate__c,
+            Location,
+            StartDateTime,
+            EndDateTime, 
+            Description,
+            IPS_employerName__c 
+        FROM event 
+        WHERE 
+            WhoId =:participantId
+            AND WhatId = :trailRecordId 
+            AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer' OR IPS_Type__c='Start up meeting')
+            AND IPS_Status1__c ='Completed'
+        ORDER BY ActivityDate DESC
+    ];
+
+    for(Event t:tempEventList){
+       IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+       tempList.Emne = t.IPS_subjectAndDate__c;
+       tempList.FraTidDato = t.StartDateTime;
+       tempList.TilTidDato = t.EndDateTime;
+       tempList.ReferatKommentar = t.Description;
+       tempList.EventId = t.id;
+       tempList.Lokasjon =t.Location;
+       tempList.Arbeidsgiver = t.IPS_employerName__c;
+       tempWrapperList.add(tempList);
+    }
+    return tempWrapperList;
+
+}
 
   /* 
  * Open jobs that is connected with participants worktrail

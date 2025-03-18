@@ -38,6 +38,11 @@ public class IPS_ParticipantPortalTrailControllerTest {
         Event meeting = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
         insert meeting;
         
+        Event meeting2 = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
+        insert meeting2;
+        meeting2.ips_Status1__c = 'Completed';
+        update meeting2;
+        
         ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Ongoing');
         insert job1;
         
@@ -100,7 +105,9 @@ public class IPS_ParticipantPortalTrailControllerTest {
         ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
         ID contactId = [SELECT CRM_Account__r.PersonContactId  FROM Person__c WHERE Name = '12069755555']?.CRM_Account__r.PersonContactId;
 		List<IPS_ParticipantPortalEvent> meeting = IPS_ParticipantPortalActivityController.getParticipantOpenMeetings(workTrailId, contactId);
+        List<IPS_ParticipantPortalEvent> meeting2 = IPS_ParticipantPortalActivityController.getParticipantCompletedMeetings(workTrailId, contactId);
         System.assert.isNotNull(meeting);        
+         System.assert.isNotNull(meeting2);
     }
     
     @isTest
