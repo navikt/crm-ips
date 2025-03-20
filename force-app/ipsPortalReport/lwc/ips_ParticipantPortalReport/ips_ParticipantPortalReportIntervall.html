@@ -25,7 +25,7 @@
                     <p tabindex="0">{report.reportTrailGoal}</p>
                     <p tabindex="0">{report.reportTrailGoalDescription}</p>
 
-                    <div lwc:if={isIPS}>
+                    <div lwc:if={typeValue}>
                         <h2 tabindex="0">{label.priorityWorkSection}</h2>
                         <p tabindex="0">{report.reportTrailWorkWish}</p>
                     </div>
@@ -127,6 +127,7 @@
                             </tbody>
                         </table>
                     </template>
+
                     <h3>{label.planNextPeriodeSection}</h3>
                     <template lwc:if={isOpenMeeting}>
                         <h4>Møter:</h4>
@@ -149,10 +150,14 @@
                             </tbody>
                         </table>
                     </template>
+
                     <p>{report.reportIntervallSummarizeNextPeriode}</p>
-                    <h3>{label.participantCommentSection}</h3>
-                    <p>{label.reportParticipantComment}</p>
-                    <p>{label.reportParticipantOnBehalfComment}</p>
+                    <template lwc:if={report.reportParticipantOnBehalfComment}>
+                        <h3>{label.participantCommentSection}</h3>
+                            <p>{report.reportParticipantComment}</p>
+                        <p>{report.reportParticipantOnBehalfComment}</p>
+                </template>
+                    
                 </div>
             </template>
         </template>

@@ -35,6 +35,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     @track reportTrailRecordId;
     @track reportDateFrom;
     @track reportDateTo;
+    @track reportRecordTypeName;
     isAMS = false;
     isIPS = false;
     isGoal = false;
@@ -80,9 +81,19 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             this.reportTrailRecordId = this.reportList[0].reportTrailId;
             this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
             this.reportDateTo = this.reportList[0].reportNotFormatToDate;
+            this.reportRecordTypeName = this.reportList[0].reportTrailType;
         }
         if (error) {
             this.error = error;
+        }
+    }
+
+    get typeValue(){
+        if(this.reportRecordTypeName ==='IPS'){
+            return true;
+        }
+        if(this.reportRecordTypeName ==='AMS'){
+            return false;
         }
     }
 
@@ -93,8 +104,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     })
     openMeetingsHandler({ data, error }) {
         if (data) {
+            if (data.length > 0) {
             this.openMeetingsList = data;
             this.isOpenMeeting = true;
+            }
         }
         if (error) {
             this.error = error;
@@ -109,8 +122,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     })
     completeEmployeeHandler({ data, error }) {
         if (data) {
+            if (data.length > 0) {
             this.employeeMeetingsList = data;
             this.isEmployeeCompleted = true;
+            }
         }
         if (error) {
             this.error = error;
@@ -125,8 +140,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     })
     absentListHandler({ data, error }) {
         if (data) {
+            if (data.length > 0) {
             this.absentMeetingsList = data;
             this.isAbsent = true;
+            }
         }
         if (error) {
             this.error = error;
@@ -140,10 +157,11 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     completedListHandler({ data, error }) {
-        console.log(JSON.stringify('Møter: ' + data));
         if (data) {
+            if (data.length > 0) {
             this.completedMeetingsList = data;
             this.isCompleted = true;
+            }
         }
         if (error) {
             this.error = error;
@@ -158,8 +176,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     })
     goalListHandler({ data, error }) {
         if (data) {
+            if (data.length > 0) {
             this.goalList = data;
             this.isGoal = true;
+            }
         }
         if (error) {
             this.error = error;
