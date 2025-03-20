@@ -426,7 +426,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                   tempList.reportName = r.IPS_subject__c;
                   tempList.reportType = r.IPS_report_Type__c;
                   tempList.reportParticipantComment =r.IPS_participantsComment__c;
-                  tempList.reportParticipantOnBehalfComment = r.IPS_participantsOnBehalf__c;
+                  tempList.reportParticipantOnBehalfComment = IPS_ParticipantPortalUtility.replaceBr(r.IPS_participantsOnBehalf__c);
                   tempList.reportOwnerName = r.IPS_workTrailOwner__c;
                   tempList.reportParticipantName = r.IPS_participantName__c;
                   tempList.reportTrailGoalDescription = r.IPS_workTrailName__r.ips_Main_goal__c;
@@ -435,7 +435,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                   tempList.reportTrailEndSubCause = r.IPS_workTrailName__r.ips_Other_end_cases__c;
                   tempList.reportTrailReferredDate = IPS_ParticipantPortalUtility.formatDate(r.IPS_workTrailName__r.ips_Referred_date__c);
                   
-                  tempList.reportTrailStartDate = IPS_ParticipantPortalUtility.formatDateTime(r.IPS_workTrailName__r.Oppstartsdato__c);
+                  tempList.reportTrailStartDate = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(r.IPS_workTrailName__r.Oppstartsdato__c));
                   tempList.reportTrailSupervisor = r.IPS_workTrailName__r.ips_NAV_supervisor__c;
   
                   

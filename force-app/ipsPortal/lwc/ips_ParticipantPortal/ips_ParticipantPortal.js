@@ -174,12 +174,13 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
         this[NavigationMixin.Navigate]({
             type: 'comm__namedPage',
             attributes: {
-                name: 'ips_min_veilederrapport__c'
+                name: "ips_min_veilederrapport__c"
             },
-            state: {
-                recordId: { reportRecordId }
+
+                state: {
+                        recordId: reportRecordId
             }
-        });
+        })
     }
 
     @wire(getParticipantSharedReport, {
