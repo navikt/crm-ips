@@ -80,8 +80,13 @@ public without sharing class IPS_ParticipantPortalUtility{
     }
 
     public static String replaceBr( String textToReplace) {
-        String tempText = textToReplace.replace('<br>','\n');
-        return tempText;
+        if(textToReplace==null){
+            return null;
+        }else{
+            String tempText = textToReplace.replace('<br>','\n');
+            return tempText;
+        }
+        
     }
 
 }
