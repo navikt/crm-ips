@@ -1,6 +1,7 @@
 @isTest
 public class IPS_ParticipantPortalUtilityTest {
     
+     
      @isTest
     static void formatDate(){
         
@@ -78,6 +79,13 @@ public class IPS_ParticipantPortalUtilityTest {
         String tempType = 'Apprentice';
         String formatType = IPS_ParticipantPortalUtility.formatTypeOf(tempType);
         System.Assert.areEqual('Lærling',formatType);
+    }
+
+    @isTest
+    static void textReplace(){
+        String s1 = 'First Line<br>Second Line<br>Third Line';
+        String s2 = IPS_ParticipantPortalUtility.replaceBr(s1);
+        System.assert(!s2.contains('<br>'));
     }
     
     
