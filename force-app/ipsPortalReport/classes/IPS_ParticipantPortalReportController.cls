@@ -5,7 +5,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     /* Get all reports and show it in experience cloud*/
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalReport> getParticipantReport(String recordId,String typeOfId){
-      Id currentRecordId = recordId;
+    Id currentRecordId = recordId;
       
       List<IPS_ParticipantPortalReport> wrapperList = new List<IPS_ParticipantPortalReport>();
       if(idType.TRAIL.name() == typeOfId){ 
@@ -16,6 +16,20 @@ public with sharing class IPS_ParticipantPortalReportController{
       }
       return wrapperList; 
     }
+
+    /* Jobs connected with trail */
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalJob> getParticipantJobs(String recordId,Date recordDateFrom, Date recordDateTo)
+    {
+        Id trailRecordId = recordId;
+        Date reportDateTo = recordDateTo;
+        Date reportDateFrom = recordDateFrom;
+
+        List<ips_ParticipantPortalJob> wrapperList = new List<ips_ParticipantPortalJob>();
+        wrapperList = getJobs(trailRecordId,reportDateFrom,reportDateTo);
+        return wrapperList;
+    }
+
 
    /* Get all completed goals and show it in report in experience cloud*/
     @AuraEnabled(cacheable=true)
@@ -112,6 +126,97 @@ public with sharing class IPS_ParticipantPortalReportController{
         }
 
         return wrapperListMeeting;
+    }
+
+    /**
+     * Returns a list of active and completed jobs
+     * within intervall periode. 
+     *
+     * @return  List of jobs
+     */
+    private static list< IPS_ParticipantPortalJob> getJobs(ID trailRecordId,Date reportDateFrom, Date reportDateTo) {
+        List<IPS_ParticipantPortalJob> wrapperTempList = new List<IPS_ParticipantPortalJob>();
+        List<ips_Job__c> activeJobs = new List<ips_Job__c>();
+        activeJobs = [
+            SELECT
+                id,
+                Name,
+                ips_Employer__r.Name,
+                ips_Form_of_Employment__c,
+                ips_Start_Date__c,
+                IPS_UO_Stillingsbeskrivelse__c,
+                ips_Job_Support__c,
+                ips_End_Date__c,
+                ips_Status__c,
+                ips_What_did_not_work_at_the_workplace__c,
+                ips_What_did_work_at_the_workplace__c,
+                IPS_jobSubject__c
+            FROM ips_Job__c
+            WHERE ips_Work_Trail__c = :trailRecordId AND ips_Status__c = 'Ongoing'
+            ORDER BY ips_Start_Date__c DESC
+        ];
+
+        for(ips_Job__c j:activeJobs){
+
+            IPS_ParticipantPortalJob tempListActive = new IPS_ParticipantPortalJob();
+            tempListActive.JobbId =  j.id;
+            tempListActive.Emne = j.Name;
+            tempListActive.Arbeidsform = j.ips_Form_of_Employment__c;
+            tempListActive.Plan = j.ips_Job_Support__c;
+            tempListActive.StartDato = j.ips_Start_Date__c;
+            tempListActive.SluttDato = j.ips_End_Date__c;
+            tempListActive.Arbeidsgiver = j.ips_Employer__r.Name;
+            tempListActive.Stillingsbeskrivelse = j.IPS_UO_Stillingsbeskrivelse__c;
+            tempListActive.Fungerer = j.ips_What_did_work_at_the_workplace__c;
+            tempListActive.FungererIkke = j.ips_What_did_not_work_at_the_workplace__c;
+            tempListActive.Status = IPS_ParticipantPortalUtility.formatJobStatus(j.ips_Status__c);
+            wrapperTempList.add(tempListActive);
+        }
+
+        List<ips_Job__c> closedJobs = new List<ips_Job__c>();
+        closedJobs = [
+            SELECT
+                id,
+                Name,
+                ips_Work_Trail__c,
+                ips_Employer__r.Name,
+                ips_Form_of_Employment__c,
+                ips_Start_Date__c,
+                IPS_UO_Stillingsbeskrivelse__c,
+                ips_Job_Support__c,
+                ips_End_Date__c,
+                toLabel(ips_Status__c),
+                ips_Job__c.ips_What_did_not_work_at_the_workplace__c,
+                ips_What_did_work_at_the_workplace__c,
+                IPS_jobSubject__c
+            FROM ips_Job__c
+            WHERE
+                ips_Work_Trail__c = :trailRecordId
+                AND ips_Status__c = 'Completed'
+                AND (ips_End_Date__c >= :reportDateFrom
+                AND ips_End_Date__c <= :reportDateTo)
+            ORDER BY ips_End_Date__c DESC
+        ];
+
+        for(ips_Job__c j:closedJobs){
+
+        IPS_ParticipantPortalJob tempListCompleted = new IPS_ParticipantPortalJob();
+        tempListCompleted.JobbId =  j.id;
+        tempListCompleted.Emne = j.Name;
+        tempListCompleted.Arbeidsform = j.ips_Form_of_Employment__c;
+        tempListCompleted.Plan = j.ips_Job_Support__c;
+        tempListCompleted.StartDato = j.ips_Start_Date__c;
+        tempListCompleted.SluttDato = j.ips_End_Date__c;
+        tempListCompleted.Arbeidsgiver = j.ips_Employer__r.Name;
+        tempListCompleted.Stillingsbeskrivelse = j.IPS_UO_Stillingsbeskrivelse__c;
+        tempListCompleted.Fungerer = j.ips_What_did_work_at_the_workplace__c;
+        tempListCompleted.FungererIkke = j.ips_What_did_not_work_at_the_workplace__c;
+        tempListCompleted.Status = IPS_ParticipantPortalUtility.formatJobStatus(j.ips_Status__c);
+        wrapperTempList.add(tempListCompleted);
+
+        }
+       
+        return wrapperTempList;
     }
 
     /**

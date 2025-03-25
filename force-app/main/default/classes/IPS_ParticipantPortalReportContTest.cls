@@ -6,6 +6,7 @@ public class IPS_ParticipantPortalReportContTest {
         Person__c participant = IPS_TestDataFactory.createPerson();
         insert participant;
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
+        String contactId = [SELECT PersonContactId FROM Account WHERE INT_PersonIdent__c  ='12069755555']?.PersonContactId;
         
         Account acc1 = IPS_TestDataFactory.createEmployerAccount();
         insert acc1;
@@ -22,8 +23,23 @@ public class IPS_ParticipantPortalReportContTest {
         Event meeting = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
         insert meeting;
         
+        Event meeting1 = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
+        insert meeting1;
+        meeting1.ips_status1__c = 'Completed';
+        update meeting1;
+        
+        Event meetingPart = IPS_TestDataFactory.createParticipantEvent(contactId, jobbspor.id);
+        insert meetingPart;
+        meetingPart.IPS_Status1__c ='Completed';
+        update meetingPart;
+        
+        Event meeting2 = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
+        insert meeting2;
+        
         ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Ongoing');
         insert job1;
+        job1.ips_Status__c = 'Completed';
+        update job1;
         
         ips_job__c job2 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Ongoing');
         insert job2;
@@ -76,6 +92,7 @@ public class IPS_ParticipantPortalReportContTest {
         List<IPS_ParticipantPortalEvent> absent = IPS_ParticipantPortalReportController.getParticipantsReportAbsentMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
         List<IPS_ParticipantPortalEvent> employee =  IPS_ParticipantPortalReportController.getParticipantsReportEmployeeCompletedMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
         List<IPS_ParticipantPortalEvent> openmeeting =  IPS_ParticipantPortalReportController.getParticipantsReportOpenMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateTo__c);
+        List<IPS_ParticipantPortalJob> jobs = IPS_ParticipantPortalReportController.getParticipantJobs(workTrailId,intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
     }
 
 }

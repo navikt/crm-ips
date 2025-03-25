@@ -89,4 +89,11 @@ public without sharing class IPS_ParticipantPortalUtility{
         
     }
 
+    public static String formatJobStatus(String jobStatus){
+        if(jobStatus == 'Planned'){return 'Planlagt';}
+        if(jobStatus == 'Ongoing'){return 'Pågående';}
+        if(jobStatus == 'Completed'){return 'Avsluttet';}
+        else {return 'Ingen status valgt';}
+    }
+
 }
