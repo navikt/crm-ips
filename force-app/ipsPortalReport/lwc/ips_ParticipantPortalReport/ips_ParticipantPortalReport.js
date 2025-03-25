@@ -3,6 +3,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import templateEnd from './ips_ParticipantPortalReportEnd.html';
 import templateIntervall from './ips_ParticipantPortalReportIntervall.html';
 import templateDefault from './ips_ParticipantPortalReportDefault.html';
+import getParticipantJobs from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantJobs';
 import getParticipantReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
 import getParticipantCompletedGoals from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportCompletedGoals';
 import getParticipantCompletedMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportCompletedMeetings';
@@ -28,6 +29,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     reportList;
     goalList;
     @track absentMeetingsList;
+    @track jobsList;
     @track completedMeetingsList;
     @track employeeMeetingsList;
     @track openMeetingsList;
@@ -44,8 +46,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     isTrail = false;
     isEmployeeCompleted = false;
     isOpenMeeting = false;
+    isJob = false;
     error;
     numPops = 2;
+    warningText ='Her skjedde det en feil.';
 
     breadcrumbs = [
         {
@@ -75,13 +79,16 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         typeOfId: 'REPORT'
     })
     reportListHandler({ data, error }) {
+        console.log(JSON.stringify(data));
         if (data) {
+            if (data.length > 0) {
             this.reportList = data;
             this.reportTypeName = this.reportList[0].reportType;
             this.reportTrailRecordId = this.reportList[0].reportTrailId;
             this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
             this.reportDateTo = this.reportList[0].reportNotFormatToDate;
             this.reportRecordTypeName = this.reportList[0].reportTrailType;
+            }
         }
         if (error) {
             this.error = error;
@@ -91,8 +98,9 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     get typeValue(){
         if(this.reportRecordTypeName ==='IPS'){
             return true;
-        }
-        if(this.reportRecordTypeName ==='AMS'){
+        }if(this.reportRecordTypeName ==='AMS'){
+            return false;
+        }else{
             return false;
         }
     }
@@ -107,6 +115,22 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             if (data.length > 0) {
             this.openMeetingsList = data;
             this.isOpenMeeting = true;
+            }
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getParticipantJobs,{
+        recordId: '$reportTrailRecordId',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })jobsHandler({data,error}){
+        if (data) {
+            if (data.length > 0) {
+            this.jobsList = data;
+            this.isJob = true;
             }
         }
         if (error) {

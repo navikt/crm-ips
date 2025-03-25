@@ -33,15 +33,15 @@
                     <h2>{label.summarizeSectionReport} {report.reportFromDate} - {report.reportToDate}</h2>
                     <p tabindex="0">{report.reportIntervallSummarizePeriode}</p>
                     <template lwc:if={isGoal}>
-                        <h3>Fullførte delmål i perioden:</h3>
+                        <h3 tabindex="0">Fullførte delmål i perioden:</h3>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Emne</th>
-                                    <th>Opprettet dato</th>
-                                    <th>Frist</th>
-                                    <th>Fullført</th>
-                                    <th>Beskrivelse av målet</th>
+                                    <th class="horisontal">Emne</th>
+                                    <th class="horisontal">Opprettet dato</th>
+                                    <th class="horisontal">Frist</th>
+                                    <th class="horisontal">Fullført</th>
+                                    <th class="horisontal">Beskrivelse av målet</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,12 +60,12 @@
 
                     <h3>{label.cooperationParticipantSection}</h3>
                     <template lwc:if={isCompleted}>
-                        <h4>Møter deltaker har deltatt på i perioden:</h4>
+                        <h4 tabindex="0">Møter deltaker har deltatt på i perioden:</h4>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Emne</th>
-                                    <th style="width: 20%">Møtedato</th>
+                                    <th class="horisontal">Emne</th>
+                                    <th class="horisontal" style="width: 20%">Møtedato</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -80,12 +80,12 @@
                     </template>
 
                     <template lwc:if={isAbsent}>
-                        <h4>Møter deltaker ikke har møtt til i perioden:</h4>
+                        <h4 tabindex="0">Møter deltaker ikke har møtt til i perioden:</h4>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Emne</th>
-                                    <th style="width: 20%">Møtedato</th>
+                                    <th class="horisontal">Emne</th>
+                                    <th class="horisontal" style="width: 20%">Møtedato</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,18 +99,18 @@
                         </table>
                     </template>
 
-                    <h3>{label.cooperationEmployerSection}</h3>
+                    <h3 tabindex="0">{label.cooperationEmployerSection}</h3>
                     <template lwc:if={isEmployeeCompleted}>
-                        <h4>Møter gjennomført med arbeidsgiver(e) i perioden:</h4>
+                        <h4 tabindex="0">Møter gjennomført med arbeidsgiver(e) i perioden:</h4>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Arbeidsgiver</th>
-                                    <th>Kontaktperson</th>
-                                    <th>Deltaker deltar</th>
-                                    <th>Emne</th>
-                                    <th>Møtekategori</th>
-                                    <th>Møtedato</th>
+                                    <th class="horisontal">Arbeidsgiver</th>
+                                    <th class="horisontal">Kontaktperson</th>
+                                    <th class="horisontal">Deltaker deltar</th>
+                                    <th class="horisontal">Emne</th>
+                                    <th class="horisontal">Møtekategori</th>
+                                    <th class="horisontal">Møtedato</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,15 +128,59 @@
                         </table>
                     </template>
 
-                    <h3>{label.planNextPeriodeSection}</h3>
+                    <h3 tabindex="0">Deltakelse i jobb og arbeidstrening</h3>
+                    <template lwc:if={isJob}>
+                        <template for:each={jobsList} for:item="job">
+                            <h4  tabindex="0" key={job.JobbId}> {job.Emne} - {job.Status}</h4>
+                            <table key={job.JobbId}>
+                                <tr>
+                                    <th class="vertical">Arbeidsgiver</th>
+                                    <td>{job.arbeidsgiver}</td>
+                                </tr>
+                                <tr>
+                                    <th class="vertical">Startdato</th>
+                                    <td>{job.StartDato}</td>
+                                </tr>
+                                <tr>
+                                    <th class="vertical">Sluttdato</th>
+                                    <td>{job.SluttDato}</td>
+                                </tr>
+                                <tr>
+                                    <th class="vertical">Jobbtype</th>
+                                    <td>{job.Arbeidsform}</td>
+                                </tr>
+                                <tr>
+                                    <th class="vertical">Stillingsbeskrivelse</th>
+                                    <td>{job.Stillingsbeskrivelse}</td>
+                                </tr>
+                                <tr>
+                                    <th class="vertical">Plan for jobbstøtte</th>
+                                    <td>{job.Plan}</td>
+                                </tr>
+                                <tr>
+                                    <th class="vertical">Hva fungerte</th>
+                                    <td>{job.Fungerer}</td>
+                                </tr>
+                                <tr>
+                                    <th class="vertical">Hva fungerte ikke</th>
+                                    <td>{job.FungererIkke}</td>
+                                </tr>
+
+                            </table>
+                        </template>
+                        
+
+                    </template>
+
+                    <h3 tabindex="0">{label.planNextPeriodeSection}</h3>
                     <template lwc:if={isOpenMeeting}>
-                        <h4>Møter:</h4>
+                        <h4 tabindex="0">Møter:</h4>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Emne</th>
-                                    <th>Type</th>
-                                    <th>Møtedato</th>
+                                    <th class="horisontal">Emne</th>
+                                    <th class="horisontal">Type</th>
+                                    <th class="horisontal">Møtedato</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -153,9 +197,9 @@
 
                     <p>{report.reportIntervallSummarizeNextPeriode}</p>
                     <template lwc:if={report.reportParticipantOnBehalfComment}>
-                        <h3>{label.participantCommentSection}</h3>
-                            <p>{report.reportParticipantComment}</p>
-                        <p>{report.reportParticipantOnBehalfComment}</p>
+                        <h3 tabindex="0">{label.participantCommentSection}</h3>
+                            <p tabindex="0"> {report.reportParticipantComment}</p>
+                        <p tabindex="0">{report.reportParticipantOnBehalfComment}</p>
                 </template>
                     
                 </div>
@@ -163,3 +207,4 @@
         </template>
     </div>
 </template>
+
