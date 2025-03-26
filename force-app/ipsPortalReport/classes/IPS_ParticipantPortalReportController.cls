@@ -2,7 +2,9 @@ public with sharing class IPS_ParticipantPortalReportController{
     /* */
   public enum idType {TRAIL, REPORT}
  
-    /* Get all reports and show it in experience cloud*/
+    /* 
+     * USED IN MAIN PAGE, get all reports that is in shared status
+     * */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalReport> getParticipantReport(String recordId,String typeOfId){
     Id currentRecordId = recordId;
@@ -17,7 +19,27 @@ public with sharing class IPS_ParticipantPortalReportController{
       return wrapperList; 
     }
 
-    /* Jobs connected with trail */
+    /*** VEILEDER RAPPORT ****/
+/* 
+     * USED IN REPORT, education connected with trail (only IPS)
+     * */
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalEducation> getParticipantEducations(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+        Id trailRecordId = recordId;
+        Date reportDateTo = recordDateTo;
+        Date reportDateFrom = recordDateFrom;
+        String reportType = typeOfReport; 
+
+        List<ips_ParticipantPortalEducation> wrapperList = new List<ips_ParticipantPortalEducation>();
+        wrapperList = getEducations(trailRecordId,reportDateFrom,reportDateTo);
+        return wrapperList;
+    }
+
+
+
+    /* 
+     * USED IN REPORT, jobs connected with trail 
+     * */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalJob> getParticipantJobs(String recordId,Date recordDateFrom, Date recordDateTo)
     {
@@ -31,22 +53,33 @@ public with sharing class IPS_ParticipantPortalReportController{
     }
 
 
-   /* Get all completed goals and show it in report in experience cloud*/
+   /* 
+    * USED IN REPORT, get all completed goals
+    * */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalTask> getParticipantsReportCompletedGoals(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
         Id currentRecordId = recordId;
         String reportType = typeOfReport; 
         Date reportDateTo = recordDateTo;
         Date reportDateFrom = recordDateFrom;
-    
 
         List<IPS_ParticipantPortalTask> wrapperList = new List<IPS_ParticipantPortalTask>();
-        wrapperList = getReportCompletedGoals(currentRecordId,reportType,reportDateFrom,reportDateTo);
+    
+        if(reportType == 'Intervall'){
+            wrapperList = getReportCompletedGoals(currentRecordId,reportType,reportDateFrom,reportDateTo); 
+        }
+        if(reportType == 'End report'){
+            wrapperList = getReportCompletedGoals(currentRecordId,reportType,null,null);
+        }
         return wrapperList;
+        
+        
         
     }
 
-    /* Get all completed participant meetings and show it in report in experience cloud*/
+    /*
+     * USED IN REPORT, get all completed participant meetings
+     * */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalEvent> getParticipantsReportCompletedMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
         Id currentRecordId = recordId;
@@ -67,51 +100,80 @@ public with sharing class IPS_ParticipantPortalReportController{
         return wrapperListMeeting;
     }
 
-        /* Get all absent participant meetings and show it in report in experience cloud*/
-        @AuraEnabled(cacheable=true)
-        public static List<IPS_ParticipantPortalEvent> getParticipantsReportAbsentMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
-            Id currentRecordId = recordId;
-            String reportType = typeOfReport;
-            Date reportDateTo = recordDateTo;
-            Date reportDateFrom = recordDateFrom;
-    
-            List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
-    
-            if(reportType =='Intervall'){
-    
-                wrapperListMeeting = getReportAbsentMeetings(currentRecordId,reportDateFrom, reportDateTo);
-    
-            }
-            if(reportType =='End report'){
-    
-                wrapperListMeeting = getReportAbsentMeetings(currentRecordId);
-            }
-    
-            return wrapperListMeeting;
+    /*
+     * USED IN REPORT, get cancelled participant meetings
+     * */
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalEvent> getParticipantReportCancelledMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+        Id currentRecordId = recordId;
+        String reportType = typeOfReport;
+        Date reportDateTo = recordDateTo;
+        Date reportDateFrom = recordDateFrom;
+        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+
+        if(reportType =='Intervall'){
+           
+            wrapperListMeeting = getReportCanceledMeetings(currentRecordId,reportDateFrom, reportDateTo); 
+        }
+        if(reportType =='End report'){
+            wrapperListMeeting = getReportCanceledMeetings(currentRecordId);
         }
 
-        /* Get all completed employee meetings and show it in report in experience cloud*/
-        @AuraEnabled(cacheable=true)
-        public static List<IPS_ParticipantPortalEvent> getParticipantsReportEmployeeCompletedMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
-            Id currentRecordId = recordId;
-            String reportType = typeOfReport;
-            Date reportDateTo = recordDateTo;
-            Date reportDateFrom = recordDateFrom;
+        return wrapperListMeeting;
 
-            List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
-
-            if(reportType =='Intervall'){
-            
-                wrapperListMeeting = getReportCompletedEmployeeMeetings(currentRecordId,reportDateFrom, reportDateTo); 
-            }
-            if(reportType =='End report'){
-               
-            }
-
-            return wrapperListMeeting;
     }
 
-    /* Get all open meetings and show it in report in experience cloud*/
+    /*
+     * USED IN REPORT, get all absent participant meetings
+     * */
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalEvent> getParticipantsReportAbsentMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+        Id currentRecordId = recordId;
+        String reportType = typeOfReport;
+        Date reportDateTo = recordDateTo;
+        Date reportDateFrom = recordDateFrom;
+
+        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+
+        if(reportType =='Intervall'){
+
+            wrapperListMeeting = getReportAbsentMeetings(currentRecordId,reportDateFrom, reportDateTo);
+
+        }
+        if(reportType =='End report'){
+
+            wrapperListMeeting = getReportAbsentMeetings(currentRecordId);
+        }
+
+        return wrapperListMeeting;
+    }
+
+    /*
+     * USED IN REPORT, get all completed employee meetings
+     * */
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalEvent> getParticipantsReportEmployeeCompletedMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+        Id currentRecordId = recordId;
+        String reportType = typeOfReport;
+        Date reportDateTo = recordDateTo;
+        Date reportDateFrom = recordDateFrom;
+
+        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+
+        if(reportType =='Intervall'){
+        
+            wrapperListMeeting = getReportCompletedEmployeeMeetings(currentRecordId,reportDateFrom, reportDateTo); 
+        }
+        if(reportType =='End report'){
+            
+        }
+
+        return wrapperListMeeting;
+}
+
+    /* 
+     * USED IN REPORT, get all open meetings
+     * */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalEvent> getParticipantsReportOpenMeetings(String recordId,String typeOfReport, Date recordDateTo){
         Id currentRecordId = recordId;
@@ -128,12 +190,30 @@ public with sharing class IPS_ParticipantPortalReportController{
         return wrapperListMeeting;
     }
 
+    /* 
+     * USED IN REPORT, get all open goals
+     * */
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalTask> getParticipantsReportOpenGoals(String recordId,String typeOfReport, Date recordDateTo){
+        Id currentRecordId = recordId;
+        String reportType = typeOfReport;
+        Date reportDateTo = recordDateTo;
+
+        List<IPS_ParticipantPortalTask> wrapperListGoals = new List<IPS_ParticipantPortalTask>();
+
+        if(reportType =='Intervall'){
+        
+            wrapperListGoals = getReportOpenGoals(currentRecordId, reportDateTo); 
+        }
+
+        return wrapperListGoals;
+    }
+
+    
+
     /**
-     * Returns a list of active and completed jobs
-     * within intervall periode. 
-     *
-     * @return  List of jobs
-     */
+     * USED IN REPORT, all ongoing and completed jobs within intervall
+     * */
     private static list< IPS_ParticipantPortalJob> getJobs(ID trailRecordId,Date reportDateFrom, Date reportDateTo) {
         List<IPS_ParticipantPortalJob> wrapperTempList = new List<IPS_ParticipantPortalJob>();
         List<ips_Job__c> activeJobs = new List<ips_Job__c>();
@@ -161,7 +241,7 @@ public with sharing class IPS_ParticipantPortalReportController{
             IPS_ParticipantPortalJob tempListActive = new IPS_ParticipantPortalJob();
             tempListActive.JobbId =  j.id;
             tempListActive.Emne = j.Name;
-            tempListActive.Arbeidsform = j.ips_Form_of_Employment__c;
+            tempListActive.Arbeidsform = IPS_ParticipantPortalUtility.formatTypeOf(j.ips_Form_of_Employment__c);
             tempListActive.Plan = j.ips_Job_Support__c;
             tempListActive.StartDato = j.ips_Start_Date__c;
             tempListActive.SluttDato = j.ips_End_Date__c;
@@ -219,12 +299,41 @@ public with sharing class IPS_ParticipantPortalReportController{
         return wrapperTempList;
     }
 
+
     /**
-     * Returns a list of unique open meetings 
-     * after intervall periode. 
-     *
-     * @return  List of event
-     */
+     * USED IN REPORT, return  open goals within intervall
+     * */
+    private static List<IPS_ParticipantPortalTask> getReportOpenGoals(id currentRecordId, Date reportDateTo){
+        List<IPS_ParticipantPortalTask> wrapperTempList = new List<IPS_ParticipantPortalTask>();
+        Date tempDate = reportDateTo.addMonths(3);
+
+        List<Task> tempGoalList = new List<Task>();
+        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
+        String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Open\' ';
+        String goalId = ' AND WhatId = :currentRecordId';
+        String goalFilter = ' AND ActivityDate > :reportDateTo  AND ActivityDate < :tempDate';
+        String goalSort = ' ORDER BY ActivityDate ASC';
+        String query = goalSelect + goalWhere + goalId + goalFilter + goalSort;
+        tempGoalList = Database.query(query);
+
+            for(Task t:tempGoalList){
+                IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
+                tempList.Emne = t.Subject;
+                tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
+                tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDateTime(t.CompletedDateTime);
+                tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDateTime(t.CreatedDate);
+                tempList.ReferatKommentar = t.Description;
+                tempList.OppgaveId = t.id;
+                wrapperTempList.add(tempList);
+            }
+
+        return wrapperTempList;
+    }
+
+
+    /**
+     * USED IN REPORT, return  open meetings within intervall
+     * */
     private static List<IPS_ParticipantPortalEvent> getReportOpenMeetings(id currentRecordId, Date reportDateTo){
         List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
         Date tempDate = reportDateTo.addMonths(3);
@@ -333,10 +442,35 @@ public with sharing class IPS_ParticipantPortalReportController{
             return wrapperTempList;
     }
 
+
     private static List<IPS_ParticipantPortalEvent> getReportCompletedMeetings(id currentRecordId) {
         List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
         IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
         tempList.AntallCompletedMeeting =(Integer) [SELECT count(id)Antall FROM Event WHERE IPS_Type__c in('Meeting with Participant','Start up meeting') AND IPS_Status1__c ='Completed' AND WhatId =:currentRecordId][0].get('Antall');
+        wrapperTempList.add(tempList);
+
+        return wrapperTempList;
+    }
+
+    /**
+     * Returns a list of unique canceled participants meetings 
+     * within the given intervall 
+     *
+     * @return  List of event
+     */
+    private static List<IPS_ParticipantPortalEvent> getReportCanceledMeetings(id currentRecordId, Date reportDateFrom, Date reportDateTo) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+        tempList.AntallCancelledMeeting =(Integer) [SELECT count(id)Antall FROM Event WHERE IPS_Type__c in('Meeting with Participant','Start up meeting') AND ActivityDate >= :reportDateFrom AND ActivityDate <= :reportDateTo AND IPS_Status1__c ='Cancelled' AND WhatId =:currentRecordId][0].get('Antall');
+        wrapperTempList.add(tempList);
+
+        return wrapperTempList;
+    }
+
+    private static List<IPS_ParticipantPortalEvent> getReportCanceledMeetings(id currentRecordId) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+        tempList.AntallCancelledMeeting =(Integer) [SELECT count(id)Antall FROM Event WHERE IPS_Type__c in('Meeting with Participant','Start up meeting') AND IPS_Status1__c ='Cancelled' AND WhatId =:currentRecordId][0].get('Antall');
         wrapperTempList.add(tempList);
 
         return wrapperTempList;
@@ -396,7 +530,7 @@ public with sharing class IPS_ParticipantPortalReportController{
         List<Task> tempIntervalCompletedGoals = new List<Task>();
         List<Task> tempIntervalGoals = new List<Task>();
 
-        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
+        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,IPS_subjectAndDate__c ,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
         String goalId = ' AND WhatId = :currentRecordId';
         String goalDueDateFilter = ' AND ActivityDate >= :reportDateFrom AND ActivityDate <= :reportDateTo';
@@ -412,7 +546,8 @@ public with sharing class IPS_ParticipantPortalReportController{
 
             for(Task t:tempGoalList){
                 IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
-                tempList.Emne = t.subject;
+                tempList.Emne = t.Subject;
+                tempList.EmneOgDato = t.IPS_subjectAndDate__c ;
                 tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
                 tempList.ReferatKommentar = t.Description;
                 tempList.OppgaveId = t.id;
@@ -434,7 +569,8 @@ public with sharing class IPS_ParticipantPortalReportController{
 
             for(Task t:tempGoalList){
                 IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
-                tempList.Emne = t.subject;
+                tempList.Emne = t.Subject;
+                tempList.EmneOgDato = t.IPS_subjectAndDate__c ;
                 tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
                 tempList.ReferatKommentar = t.Description;
                 tempList.OppgaveId = t.id;
@@ -446,7 +582,8 @@ public with sharing class IPS_ParticipantPortalReportController{
             for (Task task : tempIntervalCompletedGoals) {
                 if (!tempGoalList.contains(task)) {
                     IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
-                    tempList.Emne = task.subject;
+                    tempList.Emne = task.Subject;
+                    tempList.EmneOgDato = task.IPS_subjectAndDate__c ;
                     tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(task.ActivityDate);
                     tempList.ReferatKommentar = task.Description;
                     tempList.OppgaveId = task.id;
@@ -457,7 +594,7 @@ public with sharing class IPS_ParticipantPortalReportController{
         return wrapperTempList;
     }
   
-  /* */
+  /*USED ON MAIN PAGE */
   private static List<IPS_ParticipantPortalReport> getReportWrapperList(id currentRecordId){
       List<IPS_ParticipantPortalReport> wrapperTempList = new List<IPS_ParticipantPortalReport>();
       List<ips_report__c> tempReportList = new List<ips_report__c>();
@@ -476,11 +613,203 @@ public with sharing class IPS_ParticipantPortalReportController{
                       
       return wrapperTempList;
   
-  
   }
+
+  /**
+     * USED IN REPORT, all ongoing and completed educations within intervall
+     * If the report is an end report, it returns the education that are completed and ongoing.
+     * If the report is an intervall report, it returns the education that are completed, ongoing and planned.
+     * @param startDate Start date of the interval report
+     * @param endDate End date of the interval report
+     * @return  List of IPS education related to the worktrail
+     */
+    private static List<IPS_ParticipantPortalEducation> getEducations(ID trailRecordId,Date reportDateFrom, Date reportDateTo){
+        
+        List<IPS_ParticipantPortalEducation> wrapperTempList = new List<IPS_ParticipantPortalEducation>();
+        List<ips_Education__c> tempEducation = new List<ips_Education__c>();
+        List<AMS_Vocational_education_and_training__c> tempAMSEducation = new List<AMS_Vocational_education_and_training__c>();
+
+        tempEducation = [
+            SELECT
+                id,
+                Name,
+                ips_Name_of_the_Education_Institution__c,
+                ips_Form_of_Education__c,
+                ips_Start_Date__c,
+                ips_End_Date__c,
+                ips_What_did_not_work_with_thiseducation__c,
+                ips_What_did_work_with_this_education__c,
+                ips_Education_Support_Plan__c,
+                ips_Status__c
+            FROM ips_Education__c
+            WHERE ips_Work_Trail__c = :trailRecordId 
+            AND ips_Status__c IN ('Ongoing', 'Completed', 'Planned')
+            ORDER BY ips_Start_Date__c DESC
+        ];
+
+        tempAMSEducation = [
+            SELECT 
+            id,
+            name,
+            AMS_Name_of_the_Education_institution__c,
+            AMS_Form_of_Study__c,
+            AMS_Start_Date__c,
+            AMS_End_Date__c,
+            AMS_What_did_not_work_with_the_education__c,
+            AMS_What_did_work_with_the_education__c,
+            AMS_Education_Support_Plan__c,
+            AMS_Status__c,
+            AMS_Description__c
+            FROM AMS_Vocational_education_and_training__c 
+            WHERE AMS_Work_Trail__c =:trailRecordId
+            AND AMS_Status__c IN ('Ongoing', 'Completed', 'Planned')
+            ORDER BY AMS_Start_Date__c DESC
+
+        ];
+        if(tempAMSEducation.size()>0){
+            for(AMS_Vocational_education_and_training__c ams : tempAMSEducation){
+                IPS_ParticipantPortalEducation tempAMSList = new IPS_ParticipantPortalEducation();
+
+                //end report
+                if(reportDateFrom==null && reportDateTo==null){
+                    if(ams.AMS_Status__c =='Completed' || ams.AMS_Status__c == 'Ongoing'){
+                        tempAMSList.UtdanningId = ams.id;
+                        tempAMSList.Utdanningslop = ams.AMS_Description__c;
+                        tempAMSList.UtdanningNavn = ams.Name;
+                        tempAMSList.Utdanningsform = IPS_ParticipantPortalUtility.formatTypeOf(ams.AMS_Form_of_Study__c);
+                        tempAMSList.Plan = ams.AMS_Education_Support_Plan__c;
+                        tempAMSList.UtdanningStart = ams.AMS_Start_Date__c;
+                        tempAMSList.UtdanningSlutt = ams.AMS_End_Date__c;
+                        tempAMSList.Fungerer = ams.AMS_What_did_work_with_the_education__c;
+                        tempAMSList.FungererIkke = ams.AMS_What_did_not_work_with_the_education__c;
+                        tempAMSList.Status = ams.AMS_Status__c;
+                       
+                        wrapperTempList.add(tempAMSList);
+                    }
+                }
+                //intervall report
+                if(reportDateFrom!=null && reportDateTo!=null){
+                    if(ams.AMS_Status__c == 'Ongoing'){
+                        tempAMSList.UtdanningId = ams.id;
+                        tempAMSList.Utdanningslop = ams.AMS_Description__c;
+                        tempAMSList.UtdanningNavn = ams.Name;
+                        tempAMSList.Utdanningsform = IPS_ParticipantPortalUtility.formatTypeOf(ams.AMS_Form_of_Study__c);
+                        tempAMSList.Plan = ams.AMS_Education_Support_Plan__c;
+                        tempAMSList.UtdanningStart = ams.AMS_Start_Date__c;
+                        tempAMSList.UtdanningSlutt = ams.AMS_End_Date__c;
+                        tempAMSList.Fungerer = ams.AMS_What_did_work_with_the_education__c;
+                        tempAMSList.FungererIkke = ams.AMS_What_did_not_work_with_the_education__c;
+                        tempAMSList.Status = ams.AMS_Status__c;
+                       
+                        wrapperTempList.add(tempAMSList);
+                    }else{
+                        if(ams.AMS_End_Date__c !=null && (ams.AMS_End_Date__c >= reportDateFrom || ams.AMS_End_Date__c>= reportDateTo)){
+                            tempAMSList.UtdanningId = ams.id;
+                            tempAMSList.Utdanningslop = ams.AMS_Description__c;
+                            tempAMSList.UtdanningNavn = ams.Name;
+                            tempAMSList.Utdanningsform = IPS_ParticipantPortalUtility.formatTypeOf(ams.AMS_Form_of_Study__c);
+                            tempAMSList.Plan = ams.AMS_Education_Support_Plan__c;
+                            tempAMSList.UtdanningStart = ams.AMS_Start_Date__c;
+                            tempAMSList.UtdanningSlutt = ams.AMS_End_Date__c;
+                            tempAMSList.Fungerer = ams.AMS_What_did_work_with_the_education__c;
+                            tempAMSList.FungererIkke = ams.AMS_What_did_not_work_with_the_education__c;
+                            tempAMSList.Status = ams.AMS_Status__c;
+                       
+                            wrapperTempList.add(tempAMSList);
+                        }
+                        if(ams.AMS_End_Date__c== null && ams.AMS_Start_Date__c >= reportDateFrom && ams.AMS_Start_Date__c <= reportDateTo){
+                            tempAMSList.UtdanningId = ams.id;
+                            tempAMSList.Utdanningslop = ams.AMS_Description__c;
+                            tempAMSList.UtdanningNavn = ams.Name;
+                            tempAMSList.Utdanningsform = IPS_ParticipantPortalUtility.formatTypeOf(ams.AMS_Form_of_Study__c);
+                            tempAMSList.Plan = ams.AMS_Education_Support_Plan__c;
+                            tempAMSList.UtdanningStart = ams.AMS_Start_Date__c;
+                            tempAMSList.UtdanningSlutt = ams.AMS_End_Date__c;
+                            tempAMSList.Fungerer = ams.AMS_What_did_work_with_the_education__c;
+                            tempAMSList.FungererIkke = ams.AMS_What_did_not_work_with_the_education__c;
+                            tempAMSList.Status = ams.AMS_Status__c;
+                        
+                            wrapperTempList.add(tempAMSList);
+                        }
+                    }
+                }
+        }
+
+        if(tempEducation.size()>0){
+            for(ips_Education__c i : tempEducation) {
+                IPS_ParticipantPortalEducation tempList = new IPS_ParticipantPortalEducation();
+                
+                // end report
+                if (reportDateFrom==null && reportDateTo==null){
+                    if(i.ips_Status__c == 'Ongoing' || i.ips_Status__c == 'Completed'){
+                        tempList.UtdanningId = i.id;
+                        tempList.UtdanningNavn = i.Name;
+                        tempList.UtdanningSted = i.ips_Name_of_the_Education_Institution__c;
+                        tempList.Utdanningsform =IPS_ParticipantPortalUtility.formatTypeOf(i.ips_Form_of_Education__c);
+                        tempList.Plan = i.ips_Education_Support_Plan__c;
+                        tempList.UtdanningStart = i.ips_Start_Date__c;
+                        tempList.UtdanningSlutt = i.ips_End_Date__c;
+                        tempList.Fungerer = i.ips_What_did_work_with_this_education__c;
+                        tempList.FungererIkke = i.ips_What_did_not_work_with_thiseducation__c;
+                        tempList.Status = i.ips_Status__c;
+                        wrapperTempList.add(tempList);
+                    }
+                }
+                //intervall report
+                if (reportDateFrom!=null && reportDateTo!=null){
+                    if(i.ips_Status__c == 'Ongoing'){
+                        tempList.UtdanningId = i.id;
+                        tempList.UtdanningNavn = i.Name;
+                        tempList.UtdanningSted = i.ips_Name_of_the_Education_Institution__c;
+                        tempList.Utdanningsform =IPS_ParticipantPortalUtility.formatTypeOf(i.ips_Form_of_Education__c);
+                        tempList.Plan = i.ips_Education_Support_Plan__c;
+                        tempList.UtdanningStart = i.ips_Start_Date__c;
+                        tempList.UtdanningSlutt = i.ips_End_Date__c;
+                        tempList.Fungerer = i.ips_What_did_work_with_this_education__c;
+                        tempList.FungererIkke = i.ips_What_did_not_work_with_thiseducation__c;
+                        tempList.Status = i.ips_Status__c;
+                        wrapperTempList.add(tempList);
+                    }else{
+                        if(i.ips_End_Date__c !=null && (i.ips_End_Date__c >= reportDateFrom || i.ips_End_Date__c>= reportDateTo)){
+                            tempList.UtdanningId = i.id;
+                            tempList.UtdanningNavn = i.Name;
+                            tempList.UtdanningSted = i.ips_Name_of_the_Education_Institution__c;
+                            tempList.Utdanningsform =IPS_ParticipantPortalUtility.formatTypeOf(i.ips_Form_of_Education__c);
+                            tempList.Plan = i.ips_Education_Support_Plan__c;
+                            tempList.UtdanningStart = i.ips_Start_Date__c;
+                            tempList.UtdanningSlutt = i.ips_End_Date__c;
+                            tempList.Fungerer = i.ips_What_did_work_with_this_education__c;
+                            tempList.FungererIkke = i.ips_What_did_not_work_with_thiseducation__c;
+                            tempList.Status = i.ips_Status__c;
+                            wrapperTempList.add(tempList);
+                        }
+                        if(i.ips_End_Date__c== null && i.ips_Start_Date__c >= reportDateFrom && i.ips_Start_Date__c <= reportDateTo){
+                            tempList.UtdanningId = i.id;
+                            tempList.UtdanningNavn = i.Name;
+                            tempList.UtdanningSted = i.ips_Name_of_the_Education_Institution__c;
+                            tempList.Utdanningsform =IPS_ParticipantPortalUtility.formatTypeOf(i.ips_Form_of_Education__c);
+                            tempList.Plan = i.ips_Education_Support_Plan__c;
+                            tempList.UtdanningStart = i.ips_Start_Date__c;
+                            tempList.UtdanningSlutt = i.ips_End_Date__c;
+                            tempList.Fungerer = i.ips_What_did_work_with_this_education__c;
+                            tempList.FungererIkke = i.ips_What_did_not_work_with_thiseducation__c;
+                            tempList.Status = i.ips_Status__c;
+                            wrapperTempList.add(tempList);
+    
+                        }
+    
+                    }
+    
+                }
+            }
+        }
+       
+    }
+    return wrapperTempList;
+}
   
       /* 
-      * Get the report that is shared with participant
+      * Get the report details that is shared with participant
       *
       * @return List of reports
       */

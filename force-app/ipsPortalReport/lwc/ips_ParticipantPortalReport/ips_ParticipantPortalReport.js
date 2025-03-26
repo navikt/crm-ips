@@ -1,8 +1,10 @@
 import { LightningElement, wire, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
+import formFactorPropertyName from '@salesforce/client/formFactor';
 import templateEnd from './ips_ParticipantPortalReportEnd.html';
 import templateIntervall from './ips_ParticipantPortalReportIntervall.html';
 import templateDefault from './ips_ParticipantPortalReportDefault.html';
+import getParticipantEducations from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantEducations';
 import getParticipantJobs from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantJobs';
 import getParticipantReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
 import getParticipantCompletedGoals from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportCompletedGoals';
@@ -10,6 +12,8 @@ import getParticipantCompletedMeetings from '@salesforce/apex/IPS_ParticipantPor
 import getParticipantAbsentMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportAbsentMeetings';
 import getParticipantCompletedEmployeeMetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEmployeeCompletedMeetings';
 import getParticipantOpenMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportOpenMeetings';
+import getParticipantCancelledMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReportCancelledMeetings';
+import getParticipantOpenGoals from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportOpenGoals';
 
 import mainGoalSection from '@salesforce/label/c.IPS_main_goal_section_report';
 import summarizeSectionReport from '@salesforce/label/c.IPS_summarize_section_report';
@@ -18,6 +22,9 @@ import cooperationEmployerSection from '@salesforce/label/c.IPS_cooperation_with
 import planNextPeriodeSection from '@salesforce/label/c.IPS_plan_for_next_periode';
 import participantCommentSection from '@salesforce/label/c.IPS_participants_comment_section';
 import priorityWorkSection from '@salesforce/label/c.IPS_priority_work_section_IPS';
+import participantWorkTraining from '@salesforce/label/c.IPS_participant_ork_training';
+import completedGoalsInPeriodeSection from '@salesforce/label/c.IPS_completed_goals_in_periode';
+import participantEducationSection from '@salesforce/label/c.IPS_participant_education_section';
 /* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
@@ -27,12 +34,16 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     @api isActive = false;
     @api isIPS = false;
     reportList;
-    goalList;
+    @track goalList;
     @track absentMeetingsList;
+    @track cancelledMeetingsList;
     @track jobsList;
+    @track educationList;
     @track completedMeetingsList;
     @track employeeMeetingsList;
     @track openMeetingsList;
+    @track openGoalsList;
+    @track completedGoalsList;
     @track reportTypeName;
     @track reportTrailRecordId;
     @track reportDateFrom;
@@ -41,12 +52,15 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     isAMS = false;
     isIPS = false;
     isGoal = false;
+    isOpenGoal = false;
     isAbsent = false;
     isCompleted = false;
+    isCancel = false;
     isTrail = false;
     isEmployeeCompleted = false;
     isOpenMeeting = false;
     isJob = false;
+    isEducation = false;
     error;
     numPops = 2;
     warningText ='Her skjedde det en feil.';
@@ -71,7 +85,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         cooperationEmployerSection,
         planNextPeriodeSection,
         participantCommentSection,
-        priorityWorkSection
+        priorityWorkSection,
+        completedGoalsInPeriodeSection,
+        participantWorkTraining,
+        participantEducationSection
     };
 
     @wire(getParticipantReport, {
@@ -105,6 +122,24 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
+    get isDesktop(){
+        if (formFactorPropertyName === 'Large') {
+            return true;
+        } else if (formFactorPropertyName === 'Medium') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    get isMobile() {
+        if (formFactorPropertyName === 'Small') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @wire(getParticipantOpenMeetings, {
         recordId: '$reportTrailRecordId',
         typeOfReport: '$reportTypeName',
@@ -122,9 +157,45 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
+    @wire(getParticipantCancelledMeetings, {
+            recordId: '$reportTrailRecordId',
+            typeOfReport: '$reportTypeName',
+            recordDateFrom: '$reportDateFrom',
+            recordDateTo: '$reportDateTo'
+        })
+    cancelledMeetingsListHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
+                this.cancelledMeetingsList = data;
+                this.isCancel = true;
+            }   
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
+
+    @wire(getParticipantEducations, {
+            recordId: '$reportTrailRecordId',
+            typeOfReport: '$reportTypeName',
+            recordDateFrom: '$reportDateFrom',
+            recordDateTo: '$reportDateTo'
+        })educationHandler({data,error}){
+        if(data){
+            if(data.length>0){
+                this.educationList = data;
+                this.isEducation = true;
+            }
+            if(error){
+                this.error = error;
+            }
+        }
+    }
+
     @wire(getParticipantJobs,{
         recordId: '$reportTrailRecordId',
         recordDateFrom: '$reportDateFrom',
+        typeOfReport: '$reportTypeName',
         recordDateTo: '$reportDateTo'
     })jobsHandler({data,error}){
         if (data) {
@@ -209,6 +280,24 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             this.error = error;
         }
     }
+
+    @wire(getParticipantOpenGoals, {
+            recordId: '$reportTrailRecordId',
+            typeOfReport: '$reportTypeName',
+            recordDateFrom: '$reportDateFrom',
+            recordDateTo: '$reportDateTo'
+        })
+        openGoalsListHandler({ data, error }) {
+            if (data) {
+                if (data.length > 0) {
+                    this.openGoalsList = data;  
+                    this.isOpenGoal = true;
+                }
+            }
+            if (error) {
+                this.error = error;
+            }
+        }
 
     get showtemplate() {
         if (this.reportTypeName === 'Intervall') {
