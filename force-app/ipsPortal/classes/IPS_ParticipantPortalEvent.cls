@@ -17,4 +17,5 @@ public class IPS_ParticipantPortalEvent {
    @AuraEnabled public String Lokasjon{get;set;}
    @AuraEnabled public Integer AntallCompletedMeeting{get;set;}
    @AuraEnabled public Integer AntallAbsentMeeting{get;set;}
+   @AuraEnabled public Integer AntallCancelledMeeting{get;set;}
 }
