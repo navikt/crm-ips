@@ -88,6 +88,21 @@ public class IPS_ParticipantPortalUtilityTest {
         System.assert(!s2.contains('<br>'));
     }
     
+    @isTest
+    static void jobStatus(){
+        
+        String[] tempStatus = new List<String>();
+        tempStatus.add('Planned');
+        tempStatus.add('Ongoing');
+        tempStatus.add('Completed');
+        tempStatus.add(' ');
+        String formatStatus;
+        for(Integer i=0;i<tempStatus.size();i++){
+            formatStatus =IPS_ParticipantPortalUtility.formatJobStatus(tempStatus[i]);
+        }
+        System.Assert.areEqual('Ingen status valgt',formatStatus);
+    }
+    
     
     
     
@@ -117,6 +132,10 @@ public class IPS_ParticipantPortalUtilityTest {
         String tempTypeOf = '';
         String formatTypeOf = IPS_ParticipantPortalUtility.formatTypeOf(tempTypeOf);
         System.Assert.areEqual('Ingen type valgt',formatTypeOf);
+        
+        String s1 = '';
+        String s2 = IPS_ParticipantPortalUtility.replaceBr(s1);
+        System.Assert.areEqual('',s2);
     }
 
 }

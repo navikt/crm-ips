@@ -11,5 +11,9 @@ public class IPS_ParticipantPortalEducation {
     @AuraEnabled public String UtdanningId{get; set;}
     @AuraEnabled public String UtdanningNavn{get; set;}
     @AuraEnabled public String UtdanningSted{get; set;}
+    @AuraEnabled public String FungererIkke{get; set;}
+    @AuraEnabled public String Fungerer{get; set;}
+    @AuraEnabled public String Status {get; set;}
+    @AuraEnabled public String Utdanningslop{get; set;}
    
 }

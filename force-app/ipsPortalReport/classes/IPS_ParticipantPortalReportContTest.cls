@@ -33,13 +33,19 @@ public class IPS_ParticipantPortalReportContTest {
         meetingPart.IPS_Status1__c ='Completed';
         update meetingPart;
         
+        Event meetingPart1 = IPS_TestDataFactory.createParticipantEvent(contactId, jobbspor.id);
+        insert meetingPart1;
+        meetingPart1.IPS_Status1__c ='Cancelled';
+        update meetingPart1;
+        
         Event meeting2 = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
         insert meeting2;
         
-        ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Ongoing');
+        ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Completed');
         insert job1;
-        job1.ips_Status__c = 'Completed';
-        update job1;
+        
+        ips_job__c job3 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Planned');
+        insert job3;
         
         ips_job__c job2 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Ongoing');
         insert job2;
@@ -48,9 +54,28 @@ public class IPS_ParticipantPortalReportContTest {
         
         ips_education__c edu1 = IPS_TestDataFactory.createEducation(jobbspor.id);
         insert edu1;
+        edu1.ips_Status__c ='Ongoing';
+        update edu1;
+        
+        ips_education__c edu2 = IPS_TestDataFactory.createEducation(jobbspor.id);
+        insert edu2;
+         edu2.ips_Status__c ='Completed';
+        update edu2;
+        
+        ips_education__c edu3 = IPS_TestDataFactory.createEducation(jobbspor.id);
+        insert edu3;
+         edu3.ips_Status__c ='Planned';
+        update edu3;
         
         AMS_Vocational_education_and_training__c eduAMS = IPS_TestDataFactory.createEducationAMS(jobbspor.id);
         insert eduAMS;
+        eduAMS.AMS_Status__c ='Ongoing';
+        update eduAMS;
+        
+        AMS_Vocational_education_and_training__c eduAMS1 = IPS_TestDataFactory.createEducationAMS(jobbspor.id);
+        insert eduAMS1;
+        eduAMS1.AMS_Status__c ='Completed';
+        update eduAMS1;
         
     }
 
@@ -88,11 +113,35 @@ public class IPS_ParticipantPortalReportContTest {
         update intervallReport;
 
         List<IPS_ParticipantPortalTask> goal = IPS_ParticipantPortalReportController.getParticipantsReportCompletedGoals(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
+        List<IPS_ParticipantPortalTask> openGoal = IPS_ParticipantPortalReportController.getParticipantsReportOpenGoals(intervallReport.id, 'Intervall', intervallReport.IPS_intervallDateTo__c);
         List<IPS_ParticipantPortalEvent> meeting =  IPS_ParticipantPortalReportController.getParticipantsReportCompletedMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
         List<IPS_ParticipantPortalEvent> absent = IPS_ParticipantPortalReportController.getParticipantsReportAbsentMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
+        List<IPS_ParticipantPortalEvent> cancelled = IPS_ParticipantPortalReportController.getParticipantReportCancelledMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
         List<IPS_ParticipantPortalEvent> employee =  IPS_ParticipantPortalReportController.getParticipantsReportEmployeeCompletedMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
         List<IPS_ParticipantPortalEvent> openmeeting =  IPS_ParticipantPortalReportController.getParticipantsReportOpenMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateTo__c);
         List<IPS_ParticipantPortalJob> jobs = IPS_ParticipantPortalReportController.getParticipantJobs(workTrailId,intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
+        List<ips_ParticipantPortalEducation> edu = IPS_ParticipantPortalReportController.getParticipantEducations(workTrailId,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
+    }
+    
+     @isTest
+    static void EndReport(){
+         ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
+
+        ips_report__c endReport = IPS_TestDataFactory.createEndReport(workTrailId);
+        insert endReport;
+        endReport.IPS_status__c='Shared report';
+        update endReport;
+
+        List<IPS_ParticipantPortalTask> goal = IPS_ParticipantPortalReportController.getParticipantsReportCompletedGoals(endReport.id,'End report',null,null);
+        List<IPS_ParticipantPortalEvent> meeting =  IPS_ParticipantPortalReportController.getParticipantsReportCompletedMeetings(endReport.id,'End report',null,null);
+        List<IPS_ParticipantPortalEvent> absent = IPS_ParticipantPortalReportController.getParticipantsReportAbsentMeetings(endReport.id,'End report',null,null);
+        List<IPS_ParticipantPortalEvent> cancelled = IPS_ParticipantPortalReportController.getParticipantReportCancelledMeetings(endReport.id,'End report',null,null);
+        /*
+        List<IPS_ParticipantPortalEvent> employee =  IPS_ParticipantPortalReportController.getParticipantsReportEmployeeCompletedMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
+        List<IPS_ParticipantPortalEvent> openmeeting =  IPS_ParticipantPortalReportController.getParticipantsReportOpenMeetings(intervallReport.id,'Intervall',intervallReport.IPS_intervallDateTo__c);
+        List<IPS_ParticipantPortalJob> jobs = IPS_ParticipantPortalReportController.getParticipantJobs(workTrailId,intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
+        List<ips_ParticipantPortalEducation> edu = IPS_ParticipantPortalReportController.getParticipantEducations(workTrailId,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
+*/
     }
 
 }

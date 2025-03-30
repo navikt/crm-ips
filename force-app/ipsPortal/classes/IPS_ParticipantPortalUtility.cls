@@ -35,6 +35,7 @@ public without sharing class IPS_ParticipantPortalUtility{
         if(typeOfMeeting == 'Meeting with Participant'){return 'Møte med deltaker';}
         if(typeOfMeeting == 'Start up meeting'){return 'Oppstartsmøte';}
         if(typeOfMeeting == 'First Meeting with Employer'){ return 'Første møte med arbeidsgiver';}
+        if(typeOfMeeting == 'Meeting with Employer'){return 'Møte med arbeidsgiver';}
       else{return 'Ingen møtetype';}
     }
 
@@ -80,8 +81,8 @@ public without sharing class IPS_ParticipantPortalUtility{
     }
 
     public static String replaceBr( String textToReplace) {
-        if(textToReplace==null){
-            return null;
+        if(String.isEmpty(textToReplace)){
+            return '';
         }else{
             String tempText = textToReplace.replace('<br>','\n');
             return tempText;
