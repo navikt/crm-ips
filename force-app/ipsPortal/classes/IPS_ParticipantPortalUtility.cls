@@ -81,8 +81,8 @@ public without sharing class IPS_ParticipantPortalUtility{
     }
 
     public static String replaceBr( String textToReplace) {
-        if(textToReplace==null){
-            return null;
+        if(String.isEmpty(textToReplace)){
+            return '';
         }else{
             String tempText = textToReplace.replace('<br>','\n');
             return tempText;
