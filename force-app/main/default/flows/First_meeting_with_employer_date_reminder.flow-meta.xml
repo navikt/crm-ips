@@ -5,7 +5,7 @@
         <name>Notification_to_update_first_meeting_with_employer_held_field</name>
         <label>Notification to update first meeting with employer held field</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>863</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -41,15 +41,15 @@
         </inputParameters>
         <nameSegment>customNotificationAction</nameSegment>
         <offset>0</offset>
-        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>62.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <description>Setting recipient id</description>
         <name>Recipient_id</name>
         <label>Recipient id</label>
         <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>varRecipientId</assignToReference>
             <operator>Add</operator>
@@ -66,22 +66,52 @@
         <name>Is_first_meeting_with_employer_date_blank</name>
         <label>Is first meeting with employer date blank</label>
         <locationX>182</locationX>
-        <locationY>323</locationY>
+        <locationY>539</locationY>
         <defaultConnectorLabel>First meeting with employer dato is not blank</defaultConnectorLabel>
         <rules>
             <name>First_meeting_with_employer_is_blank</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.F_rste_arbeidsgiverm_te__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>Get_worktrail.ips_First_meeting_with_the_Employer_held__c</leftValueReference>
+                <operator>IsBlank</operator>
                 <rightValue>
-                    <stringValue>Ja</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>Get_custom_notification_id</targetReference>
             </connector>
             <label>First meeting with employer is blank</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Ensures that owner of the worktrail is active and worktrail status is not ended before sending notification.</description>
+        <name>Is_owner_worktrail_active</name>
+        <label>Is owner and worktrail active ?</label>
+        <locationX>380</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_worktrail.Owner:User.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_worktrail.ips_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ended</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_first_meeting_with_employer_date_blank</targetReference>
+            </connector>
+            <label>Yes</label>
         </rules>
     </decisions>
     <description>Sends a notification to update the first meeting with employer held field.</description>
@@ -112,7 +142,7 @@
         <name>Get_custom_notification_id</name>
         <label>Get custom notification id</label>
         <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Recipient_id</targetReference>
@@ -129,11 +159,32 @@
         <object>CustomNotificationType</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Get_worktrail</name>
+        <label>Get worktrail</label>
+        <locationX>380</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_owner_worktrail_active</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>56</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Is_first_meeting_with_employer_date_blank</targetReference>
+            <targetReference>Get_worktrail</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
