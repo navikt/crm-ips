@@ -38,9 +38,6 @@ public class IPS_ParticipantPortalReportContTest {
         meetingPart1.IPS_Status1__c ='Cancelled';
         update meetingPart1;
         
-        Event meeting2 = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
-        insert meeting2;
-        
         ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Completed');
         insert job1;
         
