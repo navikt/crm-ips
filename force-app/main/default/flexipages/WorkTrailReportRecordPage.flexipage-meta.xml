@@ -16,6 +16,22 @@
                             <value>ips_report__c.IPS_onBehalfOf</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>ips_report__c.IPS_shareReportParticipant</value>
+                            <visibilityRule>
+                                <booleanFilter>1 AND 2</booleanFilter>
+                                <criteria>
+                                    <leftValue>{!Record.IPS_report_Type__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Intervall</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
                             <value>ips_report__c.IPS_archiveReport</value>
                         </valueListItems>
                     </valueList>
