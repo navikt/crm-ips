@@ -100,6 +100,7 @@ public with sharing class IPS_TestDataFactory {
             Location = 'Møte ett sted',
             ips_Subcategory_Type_IPS__c = 'Job support',
             F_rste_arbeidsgiverm_te__c = 'Nei',
+            ips_Out_in_the_field__c = true,
             IPS_Status1__c = 'Open'
         );
         return createEvent;
@@ -192,6 +193,7 @@ public with sharing class IPS_TestDataFactory {
             ips_Subcategory_Type_IPS__c = 'Job support',
             IPS_Status1__c = 'Open',
             OwnerId = ownerId,
+            ips_Out_in_the_field__c = true,
             Location = 'Kontoret'
         );
         return createEvent;
@@ -217,6 +219,7 @@ public with sharing class IPS_TestDataFactory {
             IPS_Type__c = 'Meeting with Participant',
             IPS_Status1__c = 'Open',
             ips_uo_Kanal__c = 'Fysisk',
+            ips_Out_in_the_field__c = true,
             Location = 'Kontoret'
         );
         return createEvent;
@@ -242,6 +245,7 @@ public with sharing class IPS_TestDataFactory {
             IPS_Status1__c = 'Open',
             OwnerId = ownerId,
             ips_uo_Kanal__c = 'Fysisk',
+            ips_Out_in_the_field__c = true,
             Location = 'Kontoret'
         );
         return createEvent;
