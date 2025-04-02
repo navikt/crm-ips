@@ -8,80 +8,113 @@ public class IPS_ParticipantPortalReportContTest {
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
         String contactId = [SELECT PersonContactId FROM Account WHERE INT_PersonIdent__c  ='12069755555']?.PersonContactId;
         
-        Account acc1 = IPS_TestDataFactory.createEmployerAccount();
-        insert acc1;
+        Account businessAccount = IPS_TestDataFactory.createEmployerAccount();
+        insert businessAccount;
         
-        User usr1 = IPS_TestDataFactory.getAdminUser('Sankt','Claus');
-        insert usr1;        
+        User userId = IPS_TestDataFactory.getAdminUser('Sankt','Claus');
+        insert userId;        
         
+        /***** IPS *****/
         Work_Trail__c jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
-        insert jobbspor; 
+        insert jobbspor;
         
-        Task delmaal = IPS_TestDataFactory.creategoal(jobbspor.id);
-        insert delmaal;
+        jobbspor.ips_Passive__c = true;
+        update jobbspor;
         
-        Event meeting = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
-        insert meeting;
+        Task taskActive = IPS_TestDataFactory.createPassiveActivateGoal(jobbspor.Id);
+        insert taskActive;
         
-        Event meeting1 = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
-        insert meeting1;
-        meeting1.ips_status1__c = 'Completed';
-        update meeting1;
+        jobbspor.ips_Passive__c = false;
+        update jobbspor;
         
-        Event meetingPart = IPS_TestDataFactory.createParticipantEvent(contactId, jobbspor.id);
-        insert meetingPart;
-        meetingPart.IPS_Status1__c ='Completed';
-        update meetingPart;
+        Task taskDeactive = IPS_TestDataFactory.createPassiveDeactivateGoal(jobbspor.Id);
+        insert taskDeactive;
         
-        Event meetingPart1 = IPS_TestDataFactory.createParticipantEvent(contactId, jobbspor.id);
-        insert meetingPart1;
-        meetingPart1.IPS_Status1__c ='Cancelled';
-        update meetingPart1;
+         Event participantMeetingCompleted = IPS_TestDataFactory.createParticipantEvent(contactId, jobbspor.Id);
+        insert participantMeetingCompleted;
+
+        participantMeetingCompleted.IPS_Status1__c = 'Completed';
+        update participantMeetingCompleted;
+
+        Event participantMeetingAbsent = IPS_TestDataFactory.createParticipantEvent(contactId, jobbspor.Id);
+        insert participantMeetingAbsent;
+
+        participantMeetingAbsent.IPS_Status1__c = 'Participant Absent';
+        update participantMeetingAbsent;
+
+        ips_job__c jobOngoingIPS = IPS_TestDataFactory.createJob(businessAccount.id, jobbspor.id, 'Ongoing');
+        insert jobOngoingIPS;
+
+        ips_job__c jobPlannedIPS = IPS_TestDataFactory.createJob(businessAccount.id, jobbspor.id, 'Planned');
+        insert jobPlannedIPS;
+
+        ips_Education__c eduOngoingIPS = IPS_TestDataFactory.createEducation(jobbspor.id);
+        insert eduOngoingIPS;
+
+        ips_Education__c eduPlannedIPS = IPS_TestDataFactory.createEducation(jobbspor.id);
+        insert eduPlannedIPS;
+
+        eduPlannedIPS.ips_Status__c = 'Planned';
+        eduPlannedIPS.ips_Start_Date__c = System.today().addDays(7);
+        update eduPlannedIPS;
+
+        ips_Education__c eduCompletedIPS = IPS_TestDataFactory.createEducation(jobbspor.id);
+        insert eduCompletedIPS;
+
+        eduCompletedIPS.ips_Status__c = 'Completed';
+        eduCompletedIPS.ips_Start_Date__c = System.today().addDays(-7);
+        eduCompletedIPS.ips_End_Date__c = System.today().addDays(30);
+        update eduCompletedIPS;
         
-        ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Completed');
-        insert job1;
         
-        ips_job__c job3 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Planned');
-        insert job3;
+        /***** AMS *****/
+        Work_Trail__c jobbsporAMS = IPS_TestDataFactory.createUOJobbspor(participantId);
+        insert jobbsporAMS;
         
-        ips_job__c job2 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Ongoing');
-        insert job2;
-        job2.ips_Form_of_Employment__c = 'work training';
-        update job2;
+         AMS_Vocational_education_and_training__c eduOngoingAMS = IPS_TestDataFactory.createEducationAMS(jobbsporAMS.id);
+        insert eduOngoingAMS;
+
+        AMS_Vocational_education_and_training__c eduPlannedAMS = IPS_TestDataFactory.createEducationAMS(jobbsporAMS.id);
+        insert eduPlannedAMS;
+
+        eduPlannedAMS.AMS_Status__c = 'Planned';
+        eduPlannedAMS.AMS_Start_Date__c = System.today().addDays(7);
+        eduPlannedAMS.AMS_End_Date__c = System.today().addDays(30);
+        update eduPlannedAMS;
+
+        AMS_Vocational_education_and_training__c eduCompletedAMS = IPS_TestDataFactory.createEducationAMS(
+            jobbsporAMS.id
+        );
+        insert eduCompletedAMS;
+
+        eduCompletedAMS.AMS_Status__c = 'Completed';
+        eduCompletedAMS.AMS_Start_Date__c = System.today().addDays(-7);
+        eduCompletedAMS.AMS_End_Date__c = System.today();
+        update eduCompletedAMS;
         
-        ips_education__c edu1 = IPS_TestDataFactory.createEducation(jobbspor.id);
-        insert edu1;
-        edu1.ips_Status__c ='Ongoing';
-        update edu1;
-        
-        ips_education__c edu2 = IPS_TestDataFactory.createEducation(jobbspor.id);
-        insert edu2;
-         edu2.ips_Status__c ='Completed';
-        update edu2;
-        
-        ips_education__c edu3 = IPS_TestDataFactory.createEducation(jobbspor.id);
-        insert edu3;
-         edu3.ips_Status__c ='Planned';
-        update edu3;
-        
-        AMS_Vocational_education_and_training__c eduAMS = IPS_TestDataFactory.createEducationAMS(jobbspor.id);
-        insert eduAMS;
-        eduAMS.AMS_Status__c ='Ongoing';
-        update eduAMS;
-        
-        AMS_Vocational_education_and_training__c eduAMS1 = IPS_TestDataFactory.createEducationAMS(jobbspor.id);
-        insert eduAMS1;
-        eduAMS1.AMS_Status__c ='Completed';
-        update eduAMS1;
-        
+       
     }
 
 	@isTest
-    static void getReportPortal() {
+    static void getReportPortalIPS() {
         ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
 
         ips_report__c intervallReport = IPS_TestDataFactory.createIntervallReport(workTrailId);
         insert intervallReport;
+        intervallReport.IPS_worktrail_Type__c = 'IPS';
+        intervallReport.IPS_status__c='Shared report';
+        update intervallReport;
+
+        List<IPS_ParticipantPortalReport> listReport = IPS_ParticipantPortalReportController.getParticipantReport(workTrailId,'TRAIL');
+    }
+    
+    @isTest
+    static void getReportPortalAMS() {
+        ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'ips_Supported_Employment' LIMIT 1]?.id;
+
+        ips_report__c intervallReport = IPS_TestDataFactory.createIntervallReport(workTrailId);
+        insert intervallReport;
+        intervallReport.IPS_worktrail_Type__c = 'Supported Employment';
         intervallReport.IPS_status__c='Shared report';
         update intervallReport;
 
@@ -139,6 +172,36 @@ public class IPS_ParticipantPortalReportContTest {
         List<IPS_ParticipantPortalJob> jobs = IPS_ParticipantPortalReportController.getParticipantJobs(workTrailId,intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
         List<ips_ParticipantPortalEducation> edu = IPS_ParticipantPortalReportController.getParticipantEducations(workTrailId,'Intervall',intervallReport.IPS_intervallDateFrom__c,intervallReport.IPS_intervallDateTo__c);
 */
+    }
+    
+    @isTest
+    static void intervallReportIPS() {
+        ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
+
+        ips_report__c intervallReport = IPS_TestDataFactory.createIntervallReport(workTrailId);
+        insert intervallReport;
+
+        PageReference pageRef = Page.IPS_viewReportPDF;
+        Test.setCurrentPage(pageRef);
+
+        pageRef.getParameters().put('Id', String.valueOf(intervallReport.Id));
+        ApexPages.StandardController sc = new ApexPages.StandardController(intervallReport);
+        IPS_viewReportPDFController testIntervallReport = new IPS_viewReportPDFController(sc);
+    }
+
+    @isTest
+    static void endReportIPS() {
+        ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
+
+        ips_report__c endReport = IPS_TestDataFactory.createEndReport(workTrailId);
+        insert endReport;
+
+        PageReference pageRef = Page.IPS_viewReportPDF;
+        Test.setCurrentPage(pageRef);
+
+        pageRef.getParameters().put('Id', String.valueOf(endReport.Id));
+        ApexPages.StandardController sc = new ApexPages.StandardController(endReport);
+        IPS_viewReportPDFController testEndReport = new IPS_viewReportPDFController(sc);
     }
 
 }
