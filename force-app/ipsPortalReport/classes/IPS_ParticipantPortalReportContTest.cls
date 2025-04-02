@@ -29,7 +29,7 @@ public class IPS_ParticipantPortalReportContTest {
         
         Task taskDeactive = IPS_TestDataFactory.createPassiveDeactivateGoal(jobbspor.Id);
         insert taskDeactive;
-        
+
          Event participantMeetingCompleted = IPS_TestDataFactory.createParticipantEvent(contactId, jobbspor.Id);
         insert participantMeetingCompleted;
 
