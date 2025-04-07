@@ -36,7 +36,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     reportList;
     @track goalList;
     @track absentMeetingsList;
-    @track cancelledMeetingsList;
+    @track cancelledMeetingsNumber;
     @track jobsList;
     @track educationList;
     @track completedMeetingsList;
@@ -63,7 +63,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     isEducation = false;
     error;
     numPops = 2;
-    warningText ='Her skjedde det en feil.';
+    warningText = 'Her skjedde det en feil.';
 
     breadcrumbs = [
         {
@@ -99,12 +99,12 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         console.log(JSON.stringify(data));
         if (data) {
             if (data.length > 0) {
-            this.reportList = data;
-            this.reportTypeName = this.reportList[0].reportType;
-            this.reportTrailRecordId = this.reportList[0].reportTrailId;
-            this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
-            this.reportDateTo = this.reportList[0].reportNotFormatToDate;
-            this.reportRecordTypeName = this.reportList[0].reportTrailType;
+                this.reportList = data;
+                this.reportTypeName = this.reportList[0].reportType;
+                this.reportTrailRecordId = this.reportList[0].reportTrailId;
+                this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
+                this.reportDateTo = this.reportList[0].reportNotFormatToDate;
+                this.reportRecordTypeName = this.reportList[0].reportTrailType;
             }
         }
         if (error) {
@@ -112,17 +112,18 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
-    get typeValue(){
-        if(this.reportRecordTypeName ==='IPS'){
+    get typeValue() {
+        if (this.reportRecordTypeName === 'IPS') {
             return true;
-        }if(this.reportRecordTypeName ==='AMS'){
+        }
+        if (this.reportRecordTypeName === 'AMS') {
             return false;
-        }else{
+        } else {
             return false;
         }
     }
 
-    get isDesktop(){
+    get isDesktop() {
         if (formFactorPropertyName === 'Large') {
             return true;
         } else if (formFactorPropertyName === 'Medium') {
@@ -148,8 +149,8 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     openMeetingsHandler({ data, error }) {
         if (data) {
             if (data.length > 0) {
-            this.openMeetingsList = data;
-            this.isOpenMeeting = true;
+                this.openMeetingsList = data;
+                this.isOpenMeeting = true;
             }
         }
         if (error) {
@@ -158,17 +159,21 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     }
 
     @wire(getParticipantCancelledMeetings, {
-            recordId: '$reportTrailRecordId',
-            typeOfReport: '$reportTypeName',
-            recordDateFrom: '$reportDateFrom',
-            recordDateTo: '$reportDateTo'
-        })
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })
     cancelledMeetingsListHandler({ data, error }) {
         if (data) {
             if (data.length > 0) {
-                this.cancelledMeetingsList = data;
-                this.isCancel = true;
-            }   
+                this.cancelledMeetingsNumber = data[0].AntallCancelledMeeting;
+                if (this.cancelledMeetingsNumber > 0) {
+                    this.isCancel = true;
+                } else {
+                    this.isCancel = false;
+                }
+            }
         }
         if (error) {
             this.error = error;
@@ -176,32 +181,34 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     }
 
     @wire(getParticipantEducations, {
-            recordId: '$reportTrailRecordId',
-            typeOfReport: '$reportTypeName',
-            recordDateFrom: '$reportDateFrom',
-            recordDateTo: '$reportDateTo'
-        })educationHandler({data,error}){
-        if(data){
-            if(data.length>0){
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })
+    educationHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
                 this.educationList = data;
                 this.isEducation = true;
             }
-            if(error){
+            if (error) {
                 this.error = error;
             }
         }
     }
 
-    @wire(getParticipantJobs,{
+    @wire(getParticipantJobs, {
         recordId: '$reportTrailRecordId',
         recordDateFrom: '$reportDateFrom',
         typeOfReport: '$reportTypeName',
         recordDateTo: '$reportDateTo'
-    })jobsHandler({data,error}){
+    })
+    jobsHandler({ data, error }) {
         if (data) {
             if (data.length > 0) {
-            this.jobsList = data;
-            this.isJob = true;
+                this.jobsList = data;
+                this.isJob = true;
             }
         }
         if (error) {
@@ -218,8 +225,8 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     completeEmployeeHandler({ data, error }) {
         if (data) {
             if (data.length > 0) {
-            this.employeeMeetingsList = data;
-            this.isEmployeeCompleted = true;
+                this.employeeMeetingsList = data;
+                this.isEmployeeCompleted = true;
             }
         }
         if (error) {
@@ -236,8 +243,8 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     absentListHandler({ data, error }) {
         if (data) {
             if (data.length > 0) {
-            this.absentMeetingsList = data;
-            this.isAbsent = true;
+                this.absentMeetingsList = data;
+                this.isAbsent = true;
             }
         }
         if (error) {
@@ -254,8 +261,8 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     completedListHandler({ data, error }) {
         if (data) {
             if (data.length > 0) {
-            this.completedMeetingsList = data;
-            this.isCompleted = true;
+                this.completedMeetingsList = data;
+                this.isCompleted = true;
             }
         }
         if (error) {
@@ -272,8 +279,8 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     goalListHandler({ data, error }) {
         if (data) {
             if (data.length > 0) {
-            this.goalList = data;
-            this.isGoal = true;
+                this.goalList = data;
+                this.isGoal = true;
             }
         }
         if (error) {
@@ -282,22 +289,22 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     }
 
     @wire(getParticipantOpenGoals, {
-            recordId: '$reportTrailRecordId',
-            typeOfReport: '$reportTypeName',
-            recordDateFrom: '$reportDateFrom',
-            recordDateTo: '$reportDateTo'
-        })
-        openGoalsListHandler({ data, error }) {
-            if (data) {
-                if (data.length > 0) {
-                    this.openGoalsList = data;  
-                    this.isOpenGoal = true;
-                }
-            }
-            if (error) {
-                this.error = error;
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })
+    openGoalsListHandler({ data, error }) {
+        if (data) {
+            if (data.length > 0) {
+                this.openGoalsList = data;
+                this.isOpenGoal = true;
             }
         }
+        if (error) {
+            this.error = error;
+        }
+    }
 
     get showtemplate() {
         if (this.reportTypeName === 'Intervall') {
