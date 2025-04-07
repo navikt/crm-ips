@@ -30,6 +30,7 @@ public class IPS_ParticipantPortalReportContTest {
         
         Task taskDeactive = IPS_TestDataFactory.createPassiveDeactivateGoal(jobbspor.Id);
         insert taskDeactive;
+
         
         Task participantGoalsOpen = IPS_TestDataFactory.creategoal(jobbspor.Id);
         insert participantGoalsOpen;
@@ -39,7 +40,7 @@ public class IPS_ParticipantPortalReportContTest {
         participantGoalsCompleted.ActivityDate = System.today().addDays(-7);
         participantGoalsCompleted.Status = 'Completed' ;
         insert participantGoalsCompleted;
-        
+
          Event participantMeetingCompleted = IPS_TestDataFactory.createParticipantEvent(contactId, jobbspor.Id);
         insert participantMeetingCompleted;
 
@@ -51,6 +52,7 @@ public class IPS_ParticipantPortalReportContTest {
 
         participantMeetingAbsent.IPS_Status1__c = 'Participant Absent';
         update participantMeetingAbsent;
+
         
 
         Event employerMeetingCompletedIPS = IPS_TestDataFactory.createEmployerEventWithParticipant(
@@ -68,6 +70,7 @@ public class IPS_ParticipantPortalReportContTest {
         );
         employerMeetingAbsentIPS.IPS_Status1__c = 'Participant Absent';
         insert employerMeetingAbsentIPS;
+
 
         ips_job__c jobOngoingIPS = IPS_TestDataFactory.createJob(businessAccount.id, jobbspor.id, 'Ongoing');
         insert jobOngoingIPS;
