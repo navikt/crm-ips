@@ -3,12 +3,12 @@
     <actionCalls>
         <name>Convert_worktrail_to_JSON</name>
         <label>Convert worktrail to JSON</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>468</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Post_worktrail_to_archive</targetReference>
+            <targetReference>Add_worktrail_to_archive</targetReference>
         </connector>
         <dataTypeMappings>
             <typeName>T__recordsList</typeName>
@@ -31,12 +31,12 @@
     <actionCalls>
         <name>Events_to_JSON</name>
         <label>Events to JSON</label>
-        <locationX>176</locationX>
-        <locationY>1308</locationY>
+        <locationX>182</locationX>
+        <locationY>1200</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Post_meetings_to_archive</targetReference>
+            <targetReference>Add_events_to_archive</targetReference>
         </connector>
         <dataTypeMappings>
             <typeName>T__recordsList</typeName>
@@ -57,15 +57,66 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <name>Post_meetings_to_archive</name>
-        <label>Post meetings to archive</label>
-        <locationX>176</locationX>
-        <locationY>1416</locationY>
+        <name>Post_worktrail_Part_to_archive</name>
+        <label>Post Worktrail Part To Archive</label>
+        <locationX>138</locationX>
+        <locationY>1848</locationY>
         <actionName>ArchiveHandler</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Add_events_to_archive_worktrail_file</targetReference>
+            <targetReference>Incrementing_Worktrail_Part_Number</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>archiveData</name>
+            <value>
+                <elementReference>Loop_Through_Worktrail_Parts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>dokumentasjonId</name>
+            <value>
+                <elementReference>documentIdInLargeWorktrail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fnr</name>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>konfidentiellt</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>opprettetAv</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>referenceObject</name>
+            <value>
+                <stringValue>Work_Trail__c</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>ArchiveHandler</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>archiveResponce</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Post_Worktrail_To_Archive</name>
+        <label>Post Worktrail To Archive</label>
+        <locationX>314</locationX>
+        <locationY>1524</locationY>
+        <actionName>ArchiveHandler</actionName>
+        <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>aktoerid</name>
@@ -76,7 +127,7 @@
         <inputParameters>
             <name>archiveData</name>
             <value>
-                <elementReference>archiveData</elementReference>
+                <elementReference>worktrailFileToPost</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -123,76 +174,44 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <description>Posts a Worktrail entry along with all its associated activities, jobs, and related records</description>
-        <name>Post_worktrail_to_archive</name>
-        <label>Post worktrail to archive</label>
-        <locationX>176</locationX>
-        <locationY>576</locationY>
-        <actionName>ArchiveHandler</actionName>
+        <description>Splits worktrail data and returns parts under 90000 characters.</description>
+        <name>Split_Worktrail_Data</name>
+        <label>Split Worktrail Data</label>
+        <locationX>50</locationX>
+        <locationY>1524</locationY>
+        <actionName>IPS_TextSplitter</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Add_worktrail_to_archive_worktrail_file</targetReference>
+            <targetReference>Worktrail_Part_Number</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>aktoerid</name>
+            <name>textToSplit</name>
             <value>
-                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+                <elementReference>WorktrailFileToArchive</elementReference>
             </value>
         </inputParameters>
-        <inputParameters>
-            <name>archiveData</name>
-            <value>
-                <elementReference>archiveData</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>dokumentasjonId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>fnr</name>
-            <value>
-                <elementReference>$Record.IPS_Personnummer__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>konfidentiellt</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>opprettetAv</name>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>referenceObject</name>
-            <value>
-                <stringValue>Work_Trail__c</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>tema</name>
-            <value>
-                <stringValue>Jobbspor</stringValue>
-            </value>
-        </inputParameters>
-        <nameSegment>ArchiveHandler</nameSegment>
+        <nameSegment>IPS_TextSplitter</nameSegment>
         <offset>0</offset>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputParameters>
+            <assignToReference>WorktrailFileToArchive</assignToReference>
+            <name>textToSend</name>
+        </outputParameters>
     </actionCalls>
     <apiVersion>63.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <name>Add_events_to_archive_worktrail_file</name>
-        <label>Add events to archive worktrail file</label>
-        <locationX>176</locationX>
-        <locationY>1524</locationY>
+        <name>Add_events_to_archive</name>
+        <label>Add events to archive</label>
+        <locationX>182</locationX>
+        <locationY>1308</locationY>
+        <assignmentItems>
+            <assignToReference>WorktrailFileToArchive</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>archiveData</elementReference>
+            </value>
+        </assignmentItems>
         <assignmentItems>
             <assignToReference>worktrailFileToPost</assignToReference>
             <operator>Add</operator>
@@ -200,12 +219,22 @@
                 <elementReference>archiveData</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>Is_worktrail_file_exceeded_max_length</targetReference>
+        </connector>
     </assignments>
     <assignments>
-        <name>Add_worktrail_to_archive_worktrail_file</name>
-        <label>Add worktrail to archive worktrail file</label>
-        <locationX>176</locationX>
-        <locationY>684</locationY>
+        <name>Add_worktrail_to_archive</name>
+        <label>Add Worktrail To Archive</label>
+        <locationX>182</locationX>
+        <locationY>576</locationY>
+        <assignmentItems>
+            <assignToReference>WorktrailFileToArchive</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>archiveData</elementReference>
+            </value>
+        </assignmentItems>
         <assignmentItems>
             <assignToReference>worktrailFileToPost</assignToReference>
             <operator>Add</operator>
@@ -220,8 +249,8 @@
     <assignments>
         <name>Event_to_archive</name>
         <label>Event to archive</label>
-        <locationX>264</locationX>
-        <locationY>1008</locationY>
+        <locationX>270</locationX>
+        <locationY>900</locationY>
         <assignmentItems>
             <assignToReference>eventToArchive.Subject</assignToReference>
             <operator>Assign</operator>
@@ -243,8 +272,8 @@
     <assignments>
         <name>Events_collection</name>
         <label>Events collection</label>
-        <locationX>264</locationX>
-        <locationY>1116</locationY>
+        <locationX>270</locationX>
+        <locationY>1008</locationY>
         <assignmentItems>
             <assignToReference>eventsToArchive</assignToReference>
             <operator>Add</operator>
@@ -257,9 +286,25 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Incrementing_Worktrail_Part_Number</name>
+        <label>Incrementing Worktrail Part Number</label>
+        <locationX>138</locationX>
+        <locationY>1956</locationY>
+        <assignmentItems>
+            <assignToReference>counter</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Through_Worktrail_Parts</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Worktrail_collection_to_convert_to_JSON</name>
         <label>Worktrail collection to convert to JSON</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>360</locationY>
         <assignmentItems>
             <assignToReference>worktralCollection</assignToReference>
@@ -273,9 +318,26 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Indicates the sequence number of this archive part in relation to the full Worktrail. Used to track the order of parts linked to a single Worktrail record.</description>
+        <name>Worktrail_Part_Number</name>
+        <label>Worktrail Part Number</label>
+        <locationX>50</locationX>
+        <locationY>1632</locationY>
+        <assignmentItems>
+            <assignToReference>counter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Through_Worktrail_Parts</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Worktrail_to_archive</name>
         <label>Worktrail to archive</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>252</locationY>
         <assignmentItems>
             <assignToReference>worktrailToArchive.Name</assignToReference>
@@ -323,14 +385,52 @@
             <targetReference>Worktrail_collection_to_convert_to_JSON</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Is_worktrail_file_exceeded_max_length</name>
+        <label>Is worktrail file exceeded max length?</label>
+        <locationX>182</locationX>
+        <locationY>1416</locationY>
+        <defaultConnector>
+            <targetReference>Post_Worktrail_To_Archive</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isWorktrailFileTooLong</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Split_Worktrail_Data</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>documentIdInLargeWorktrail</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Id} + &apos;  Del -  &apos; + TEXT ({!counter})</expression>
+    </formulas>
+    <formulas>
+        <description>The field storing archive data is -  Long Text Area(131072). 
+Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 encoding is applied.</description>
+        <name>isWorktrailFileTooLong</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(LEN({!worktrailFileToPost}) &gt; 90000
+,TRUE,FALSE)</expression>
+    </formulas>
     <interviewLabel>IPS - Worktrail data to archive {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Worktrail data to archive</label>
     <loops>
         <name>Add_meetings_to_collection</name>
         <label>Add meetings to collection</label>
-        <locationX>176</locationX>
-        <locationY>900</locationY>
+        <locationX>182</locationX>
+        <locationY>792</locationY>
         <collectionReference>Get_meetings_related_to_worktrail</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -339,6 +439,17 @@
         <noMoreValuesConnector>
             <targetReference>Events_to_JSON</targetReference>
         </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_Through_Worktrail_Parts</name>
+        <label>Loop Through Worktrail Parts</label>
+        <locationX>50</locationX>
+        <locationY>1740</locationY>
+        <collectionReference>WorktrailFileToArchive</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Post_worktrail_Part_to_archive</targetReference>
+        </nextValueConnector>
     </loops>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -362,8 +473,8 @@
     <recordLookups>
         <name>Get_meetings_related_to_worktrail</name>
         <label>Get meetings related to worktrail</label>
-        <locationX>176</locationX>
-        <locationY>792</locationY>
+        <locationX>182</locationX>
+        <locationY>684</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Add_meetings_to_collection</targetReference>
@@ -381,7 +492,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Worktrail_to_archive</targetReference>
@@ -411,6 +522,21 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>archiveResponce</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>counter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
         <name>eventsToArchive</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
@@ -425,6 +551,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Event</objectType>
+    </variables>
+    <variables>
+        <name>WorktrailFileToArchive</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>worktrailFileToPost</name>
