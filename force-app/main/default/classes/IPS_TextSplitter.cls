@@ -7,7 +7,7 @@
 public inherited sharing class IPS_TextSplitter {
     @InvocableMethod(label='Split text' description='Splits long text')
     public static List<OutputVariables> splitText(List<InputVariables> inputVariables) {
-        final Integer MAX_LENGTH = 150;
+        final Integer MAX_LENGTH = 90000;
         List<OutputVariables> outputList = new List<OutputVariables>();
 
         for (InputVariables input : inputVariables) {
