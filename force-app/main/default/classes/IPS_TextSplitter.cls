@@ -1,29 +1,37 @@
 /**
  * @description       : It takes a long text string, splits into smaller chunks
  * @author            : Balendra
- * @last modified on  : 07-04-2025
+ * @last modified on  : 10-04-2025
  * @last modified by  : Balendra
  */
 public inherited sharing class IPS_TextSplitter {
     @InvocableMethod(label='Split text' description='Splits long text')
     public static List<OutputVariables> splitText(List<InputVariables> inputVariables) {
-        List<String> textToSplit = inputVariables.get(0).textToSplit;
-        //Limited to 90,000 characters to support safe Base64 encoding within the 131072-character field limit.
-        final Integer MAX_LENGTH = 90000;
-        List<String> splittedText = new List<String>();
+        final Integer MAX_LENGTH = 150;
+        List<OutputVariables> outputList = new List<OutputVariables>();
 
-        for (String ts : textToSplit) {
-            Integer start = 0;
-            while (start < ts.length()) {
-                Integer endOfGivenText = Math.min(start + MAX_LENGTH, ts.length());
-                splittedText.add(ts.substring(start, endOfGivenText));
-                start = endOfGivenText;
+        for (InputVariables input : inputVariables) {
+            List<String> splittedText = new List<String>();
+
+            if (input != null && input.textToSplit != null) {
+                for (String ts : input.textToSplit) {
+                    if (ts != null) {
+                        Integer start = 0;
+                        while (start < ts.length()) {
+                            Integer endd = Math.min(start + MAX_LENGTH, ts.length());
+                            splittedText.add(ts.substring(start, endd));
+                            start = endd;
+                        }
+                    }
+                }
             }
-        }
-        OutputVariables output = new OutputVariables();
-        output.textToSend = splittedText;
 
-        return new List<OutputVariables>{ output };
+            OutputVariables output = new OutputVariables();
+            output.textToSend = splittedText;
+            outputList.add(output);
+        }
+
+        return outputList;
     }
 
     /**
