@@ -36,7 +36,7 @@
                         <h3 tabindex="0">{label.completedGoalsInPeriodeSection}</h3>
                         <template lwc:if={isMobile}>
                             <template for:each={goalList} for:item="goal">
-                                <c-ips_-participant-portal-readmore tabindex="0" key={goal.OppgaveId} label={goal.Emne} >
+                                <c-ips_-participant-portal-readmore tabindex="0" key={goal.OppgaveId} label={goal.Emne}>
                                     <dl>
                                         <dt>Emne</dt>
                                         <dd>{goal.Emne}</dd>
@@ -56,11 +56,11 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th >Emne</th>
-                                        <th >Opprettet dato</th>
-                                        <th >Frist</th>
-                                        <th >Fullført</th>
-                                        <th >Beskrivelse av målet</th>
+                                        <th>Emne</th>
+                                        <th>Opprettet dato</th>
+                                        <th>Frist</th>
+                                        <th>Fullført</th>
+                                        <th>Beskrivelse av målet</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,7 +77,6 @@
                             </table>
                         </template>
                     </template>
-                    
 
                     <h2 tabindex="0">{label.cooperationParticipantSection}</h2>
                     <template lwc:if={isCompleted}>
@@ -86,12 +85,11 @@
                             <template for:each={completedMeetingsList} for:item="com">
                                 <c-ips_-participant-portal-readmore key={com.EventId} label={com.Emne}>
                                     <dl>
-                                            <dt>Emne</dt>
-                                            <dd>{com.Emne}</dd> 
-                                            <dt>Motedato</dt>
-                                            <dd>{com.Motedato}</dd> 
+                                        <dt>Emne</dt>
+                                        <dd>{com.Emne}</dd>
+                                        <dt>Motedato</dt>
+                                        <dd>{com.Motedato}</dd>
                                     </dl>
-
                                 </c-ips_-participant-portal-readmore>
                             </template>
                         </template>
@@ -121,10 +119,10 @@
                             <template for:each={absentMeetingsList} for:item="abs">
                                 <c-ips_-participant-portal-readmore key={abs.EventId} label={abs.Emne}>
                                     <dl>
-                                            <dt>Emne</dt>   
-                                            <dd>{abs.Emne}</dd> 
-                                            <dt>Motedato</dt>
-                                            <dd>{abs.Motedato}</dd> 
+                                        <dt>Emne</dt>
+                                        <dd>{abs.Emne}</dd>
+                                        <dt>Motedato</dt>
+                                        <dd>{abs.Motedato}</dd>
                                     </dl>
                                 </c-ips_-participant-portal-readmore>
                             </template>
@@ -150,10 +148,7 @@
                     </template>
 
                     <template lwc:if={isCancel}>
-                        <template for:each={cancelledMeetingsList} for:item="can">
-                            <p key={can.EventId}>Antall avlyste deltakermøter : {can.AntallCancelledMeeting}</p>
-
-                        </template>
+                        <p>Antall avlyste deltakermøter : {cancelledMeetingsNumber}</p>
                         <p></p>
                     </template>
 
@@ -164,18 +159,18 @@
                             <template for:each={employeeMeetingsList} for:item="emp">
                                 <c-ips_-participant-portal-readmore key={emp.EventId} label={emp.Emne}>
                                     <dl>
-                                            <dt>Arbeidsgiver</dt>
-                                            <dd>{emp.Arbeidsgiver}</dd> 
-                                            <dt>Kontaktperson</dt>
-                                            <dd>{emp.ArbeidsgiverKontakt}</dd> 
-                                            <dt>Deltaker deltar</dt>
-                                            <dd>{emp.DeltakerDeltatt}</dd> 
-                                            <dt>Emne</dt>
-                                            <dd>{emp.Emne}</dd> 
-                                            <dt>Møtekategori</dt>
-                                            <dd>{emp.Underkategori}</dd> 
-                                            <dt>Møtedato</dt>
-                                            <dd>{emp.Motedato}</dd> 
+                                        <dt>Arbeidsgiver</dt>
+                                        <dd>{emp.Arbeidsgiver}</dd>
+                                        <dt>Kontaktperson</dt>
+                                        <dd>{emp.ArbeidsgiverKontakt}</dd>
+                                        <dt>Deltaker deltar</dt>
+                                        <dd>{emp.DeltakerDeltatt}</dd>
+                                        <dt>Emne</dt>
+                                        <dd>{emp.Emne}</dd>
+                                        <dt>Møtekategori</dt>
+                                        <dd>{emp.Underkategori}</dd>
+                                        <dt>Møtedato</dt>
+                                        <dd>{emp.Motedato}</dd>
                                     </dl>
                                 </c-ips_-participant-portal-readmore>
                             </template>
@@ -236,28 +231,28 @@
 
                     <template lwc:if={isEducation}>
                         <h2 tabindex="0">{label.participantEducationSection}</h2>
-                            <template for:each={educationList} for:item="edu">
-                                <c-ips_-participant-portal-readmore key={edu.UtdanningId} label={edu.UtdanningNavn}>
-                                    <dl>
-                                            <dt>Instutisjon</dt>
-                                            <dd>{edu.UtdanningSted}</dd> 
-                                            <dt>Start dato</dt>
-                                            <dd>{edu.UtdanningStart}</dd> 
-                                            <dt>Slutt dato</dt>
-                                            <dd>{edu.UtdanningSlutt}</dd> 
-                                            <dt>Type utdanning</dt>
-                                            <dd>{edu.Utdanningsform}</dd> 
-                                            <dt>Plan for støtte</dt>
-                                            <dd>{edu.Plan}</dd>
-                                            <dt>Hva fungerte</dt>
-                                            <dd>{edu.Fungerer}</dd>
-                                            <dt>Hva fungerte ikke</dt>
-                                            <dd>{edu.FungererIkke}</dd> 
-                                            <dt>Beskrivelse av opplæringsløp</dt>
-                                            <dd>{edu.Utdanningslop}</dd>
-                                    </dl>
-                                </c-ips_-participant-portal-readmore>
-                            </template>
+                        <template for:each={educationList} for:item="edu">
+                            <c-ips_-participant-portal-readmore key={edu.UtdanningId} label={edu.UtdanningNavn}>
+                                <dl>
+                                    <dt>Instutisjon</dt>
+                                    <dd>{edu.UtdanningSted}</dd>
+                                    <dt>Start dato</dt>
+                                    <dd>{edu.UtdanningStart}</dd>
+                                    <dt>Slutt dato</dt>
+                                    <dd>{edu.UtdanningSlutt}</dd>
+                                    <dt>Type utdanning</dt>
+                                    <dd>{edu.Utdanningsform}</dd>
+                                    <dt>Plan for støtte</dt>
+                                    <dd>{edu.Plan}</dd>
+                                    <dt>Hva fungerte</dt>
+                                    <dd>{edu.Fungerer}</dd>
+                                    <dt>Hva fungerte ikke</dt>
+                                    <dd>{edu.FungererIkke}</dd>
+                                    <dt>Beskrivelse av opplæringsløp</dt>
+                                    <dd>{edu.Utdanningslop}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
                     </template>
 
                     <h2 tabindex="0">{label.planNextPeriodeSection}</h2>
@@ -265,25 +260,24 @@
                     <template lwc:if={isOpenGoal}>
                         <h3 tabindex="0">Delmål:</h3>
                         <template lwc:if={isMobile}>
-                            
                             <template for:each={openGoalsList} for:item="ogoals">
                                 <c-ips_-participant-portal-readmore key={ogoals.OppgaveId} label={ogoals.Emne}>
                                     <dl>
-                                            <dt>Emne</dt>
-                                            <dd>{ogoals.Emne}</dd>
-                                            <dt>Opprettet dato</dt>
-                                            <dd>{ogoals.OpprettelsesDato}</dd>
-                                            <dt>Frist</dt>
-                                            <dd>{ogoals.ForfallsDato}</dd>
-                                            <dt>Fullført dato</dt>
-                                            <dd>{ogoals.UtfoertDato}</dd>
-                                            <dt>Beskrivelse av målet</dt>
-                                            <dd>{ogoals.ReferatKommentar}</dd>
+                                        <dt>Emne</dt>
+                                        <dd>{ogoals.Emne}</dd>
+                                        <dt>Opprettet dato</dt>
+                                        <dd>{ogoals.OpprettelsesDato}</dd>
+                                        <dt>Frist</dt>
+                                        <dd>{ogoals.ForfallsDato}</dd>
+                                        <dt>Fullført dato</dt>
+                                        <dd>{ogoals.UtfoertDato}</dd>
+                                        <dt>Beskrivelse av målet</dt>
+                                        <dd>{ogoals.ReferatKommentar}</dd>
                                     </dl>
                                 </c-ips_-participant-portal-readmore>
                             </template>
                         </template>
-                        
+
                         <template lwc:if={isDesktop}>
                             <table>
                                 <thead>
@@ -308,7 +302,6 @@
                                 </tbody>
                             </table>
                         </template>
-
                     </template>
                     <template lwc:if={isOpenMeeting}>
                         <h3 tabindex="0">Møter:</h3>
@@ -316,12 +309,12 @@
                             <template for:each={openMeetingsList} for:item="open">
                                 <c-ips_-participant-portal-readmore key={open.EventId} label={open.Emne}>
                                     <dl>
-                                            <dt>Emne</dt>
-                                            <dd>{open.Emne}</dd>
-                                            <dt>Type</dt>
-                                            <dd>{open.Motetype}</dd> 
-                                            <dt>Motedato</dt>
-                                            <dd>{open.Motedato}</dd>    
+                                        <dt>Emne</dt>
+                                        <dd>{open.Emne}</dd>
+                                        <dt>Type</dt>
+                                        <dd>{open.Motetype}</dd>
+                                        <dt>Motedato</dt>
+                                        <dd>{open.Motedato}</dd>
                                     </dl>
                                 </c-ips_-participant-portal-readmore>
                             </template>
@@ -345,19 +338,16 @@
                                     </template>
                                 </tbody>
                             </table>
-                        </template> 
+                        </template>
                     </template>
 
-                    
                     <template lwc:if={report.reportParticipantOnBehalfComment}>
                         <h2 tabindex="0">{label.participantCommentSection}</h2>
-                            <p tabindex="0"> {report.reportParticipantComment}</p>
+                        <p tabindex="0">{report.reportParticipantComment}</p>
                         <p tabindex="0">{report.reportParticipantOnBehalfComment}</p>
-                </template>
-                    
+                    </template>
                 </div>
             </template>
         </template>
     </div>
 </template>
-
