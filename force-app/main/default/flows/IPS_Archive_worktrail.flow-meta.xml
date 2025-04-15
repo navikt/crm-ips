@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Convert_worktrail_to_JSON</name>
         <label>Convert worktrail to JSON</label>
-        <locationX>374</locationX>
+        <locationX>484</locationX>
         <locationY>792</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
@@ -31,8 +31,8 @@
     <actionCalls>
         <name>Events_to_JSON</name>
         <label>Events to JSON</label>
-        <locationX>374</locationX>
-        <locationY>2172</locationY>
+        <locationX>484</locationX>
+        <locationY>2472</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -59,8 +59,8 @@
     <actionCalls>
         <name>Post_to_archive_Events</name>
         <label>Post to archive - Events</label>
-        <locationX>506</locationX>
-        <locationY>2496</locationY>
+        <locationX>616</locationX>
+        <locationY>2796</locationY>
         <actionName>ArchiveHandler</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -118,8 +118,8 @@
     <assignments>
         <name>Add_events_to_archive</name>
         <label>Add events to archive</label>
-        <locationX>374</locationX>
-        <locationY>2280</locationY>
+        <locationX>484</locationX>
+        <locationY>2580</locationY>
         <assignmentItems>
             <assignToReference>eventsFileToArchive</assignToReference>
             <operator>Add</operator>
@@ -134,7 +134,7 @@
     <assignments>
         <name>Add_worktrail_to_archive</name>
         <label>Add Worktrail To Archive</label>
-        <locationX>374</locationX>
+        <locationX>484</locationX>
         <locationY>900</locationY>
         <assignmentItems>
             <assignToReference>worktrailDataToSplit</assignToReference>
@@ -150,7 +150,7 @@
     <assignments>
         <name>AMS_Worktrail_fields</name>
         <label>AMS Worktrail fields</label>
-        <locationX>506</locationX>
+        <locationX>616</locationX>
         <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>worktrailToArchive.ips_UO_Service__c</assignToReference>
@@ -173,7 +173,7 @@
     <assignments>
         <name>Archive_entry</name>
         <label>Archive entry</label>
-        <locationX>506</locationX>
+        <locationX>616</locationX>
         <locationY>1116</locationY>
         <assignmentItems>
             <assignToReference>tempArchvieEntry.Archive_Data__c</assignToReference>
@@ -229,15 +229,66 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Event_to_archive</name>
-        <label>Event to archive</label>
-        <locationX>462</locationX>
-        <locationY>1872</locationY>
+        <name>employer_meeting_related_fields</name>
+        <label>Employer meeting related fields</label>
+        <locationX>572</locationX>
+        <locationY>2088</locationY>
         <assignmentItems>
-            <assignToReference>eventToArchive.Subject</assignToReference>
+            <assignToReference>eventToArchive.IPS_employerName__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Add_meetings_to_collection.Subject</elementReference>
+                <elementReference>Add_meetings_to_collection.IPS_employerName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.ips_Is_the_employer_decision_maker__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.ips_Is_the_employer_decision_maker__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Events_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Event_to_archive</name>
+        <label>Event to archive</label>
+        <locationX>704</locationX>
+        <locationY>1872</locationY>
+        <assignmentItems>
+            <assignToReference>eventToArchive.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.CreatedDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.CreatedDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.StartDateTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.StartDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.EndDateTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.EndDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.IPS_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.IPS_Type__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -247,15 +298,78 @@
                 <elementReference>Add_meetings_to_collection.IPS_Status1__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.ActivityDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.ActivityDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.Subject</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.ips_uo_Kanal__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.ips_uo_Kanal__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.Location</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.Location</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.IPS_travelTimeFrom__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.IPS_travelTimeFrom__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.ips_Travel_time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.ips_Travel_time__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.ips_Out_in_the_field__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.ips_Out_in_the_field__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eventToArchive.Total_Duration__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_meetings_to_collection.Total_Duration__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Events_collection</targetReference>
+            <targetReference>Type_of_meeting</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Events_collection</name>
         <label>Events collection</label>
-        <locationX>462</locationX>
-        <locationY>1980</locationY>
+        <locationX>704</locationX>
+        <locationY>2280</locationY>
         <assignmentItems>
             <assignToReference>eventsToArchive</assignToReference>
             <operator>Add</operator>
@@ -270,7 +384,7 @@
     <assignments>
         <name>IPS_Worktrail_fields</name>
         <label>IPS Worktrail fields</label>
-        <locationX>242</locationX>
+        <locationX>352</locationX>
         <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>worktrailToArchive.ips_Contact_when_not_showing__c</assignToReference>
@@ -419,7 +533,7 @@
     <assignments>
         <name>Worktrail_collection_to_convert_to_JSON</name>
         <label>Worktrail collection to convert to JSON</label>
-        <locationX>374</locationX>
+        <locationX>484</locationX>
         <locationY>684</locationY>
         <assignmentItems>
             <assignToReference>worktralCollection</assignToReference>
@@ -435,7 +549,7 @@
     <assignments>
         <name>Worktrail_to_archive</name>
         <label>Worktrail to archive</label>
-        <locationX>374</locationX>
+        <locationX>484</locationX>
         <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>worktrailToArchive.Name</assignToReference>
@@ -682,7 +796,7 @@
     <decisions>
         <name>IPS_or_AMS</name>
         <label>IPS or AMS</label>
-        <locationX>374</locationX>
+        <locationX>484</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <targetReference>AMS_Worktrail_fields</targetReference>
@@ -707,8 +821,8 @@
     <decisions>
         <name>Is_Events_Exceed_Max_Limit</name>
         <label>Is Events Exceed Max Limit ?</label>
-        <locationX>374</locationX>
-        <locationY>2388</locationY>
+        <locationX>484</locationX>
+        <locationY>2688</locationY>
         <defaultConnector>
             <targetReference>Post_to_archive_Events</targetReference>
         </defaultConnector>
@@ -732,7 +846,7 @@
     <decisions>
         <name>Is_worktrail_exceeds_maxlimit</name>
         <label>Is worktrail exceeds maxlimit ?</label>
-        <locationX>374</locationX>
+        <locationX>484</locationX>
         <locationY>1008</locationY>
         <defaultConnector>
             <targetReference>Archive_entry</targetReference>
@@ -752,6 +866,32 @@
                 <targetReference>Create_archive_entries</targetReference>
             </connector>
             <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Adding fields according to the type of meeting</description>
+        <name>Type_of_meeting</name>
+        <label>Type of meeting</label>
+        <locationX>704</locationX>
+        <locationY>1980</locationY>
+        <defaultConnector>
+            <targetReference>Events_collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Employer_meeting</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Add_meetings_to_collection.IPS_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Meeting with Employer</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>employer_meeting_related_fields</targetReference>
+            </connector>
+            <label>Employer meeting</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -783,7 +923,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <loops>
         <name>Add_meetings_to_collection</name>
         <label>Add meetings to collection</label>
-        <locationX>374</locationX>
+        <locationX>484</locationX>
         <locationY>1764</locationY>
         <collectionReference>Get_meetings_related_to_worktrail</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -816,7 +956,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <recordCreates>
         <name>Application_log</name>
         <label>Application log</label>
-        <locationX>770</locationX>
+        <locationX>880</locationX>
         <locationY>1332</locationY>
         <inputAssignments>
             <field>Application_Domain__c</field>
@@ -848,7 +988,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <recordCreates>
         <name>Create_archive_entry</name>
         <label>Create archive entry</label>
-        <locationX>506</locationX>
+        <locationX>616</locationX>
         <locationY>1224</locationY>
         <connector>
             <targetReference>Get_meetings_related_to_worktrail</targetReference>
@@ -861,7 +1001,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <recordLookups>
         <name>Get_meetings_related_to_worktrail</name>
         <label>Get meetings related to worktrail</label>
-        <locationX>374</locationX>
+        <locationX>484</locationX>
         <locationY>1656</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -883,8 +1023,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <description>Set archived to true</description>
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
-        <locationX>374</locationX>
-        <locationY>2688</locationY>
+        <locationX>484</locationX>
+        <locationY>2988</locationY>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -919,7 +1059,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <subflows>
         <name>Create_archive_entries</name>
         <label>Create archive entries</label>
-        <locationX>242</locationX>
+        <locationX>352</locationX>
         <locationY>1116</locationY>
         <connector>
             <targetReference>Get_meetings_related_to_worktrail</targetReference>
@@ -965,8 +1105,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <subflows>
         <name>Create_archive_entries_Event</name>
         <label>Create Archive Entries - Event</label>
-        <locationX>242</locationX>
-        <locationY>2496</locationY>
+        <locationX>352</locationX>
+        <locationY>2796</locationY>
         <connector>
             <targetReference>Update_worktrail</targetReference>
         </connector>
