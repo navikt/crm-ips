@@ -45,44 +45,41 @@ export default class Ips_ParticipantPortalMeetings extends LightningElement {
         return getFieldValue(this.userContactAccount.data, USER_CONTACT_FIELD);
     }
 
-    get warningText(){
-        return 'Det er ikke registrert fullførte møter i ditt jobbspor.';
+    get warningText() {
+        return 'Det er ikke registrert fullførte møter i ditt jobbspor. Hvis ikke det er riktig ta kontakt med din jobbspesialist.';
     }
 
-/* Fetch recordId from logged in user */
-@wire(getUserWorkTrailId, { recordId: '$userAccountId' })
-wiredtrail({ error, data }) {
-    if (data) {
-        this.record = data[0];
-        this.recordIds = this.record?.jobbsporId;
-    } else if (error) {
-        this.error = error;
+    /* Fetch recordId from logged in user */
+    @wire(getUserWorkTrailId, { recordId: '$userAccountId' })
+    wiredtrail({ error, data }) {
+        if (data) {
+            this.record = data[0];
+            this.recordIds = this.record?.jobbsporId;
+        } else if (error) {
+            this.error = error;
+        }
     }
-}
 
- /* Get all completed goals for logged in user */
- @wire(getParticipantsMeetings, { recordId: '$recordIds',contactId: '$userContactId' })
- wiredMeetings({ error, data }) {
-     if (data) {
-         if (data.length > 0) {
-             this.meetingRecords = data;
-             this.isMeeting = true;
-         }
-     } else if (error) {
-         this.error = error;
-     }
- }
+    /* Get all completed goals for logged in user */
+    @wire(getParticipantsMeetings, { recordId: '$recordIds', contactId: '$userContactId' })
+    wiredMeetings({ error, data }) {
+        if (data) {
+            if (data.length > 0) {
+                this.meetingRecords = data;
+                this.isMeeting = true;
+            }
+        } else if (error) {
+            this.error = error;
+        }
+    }
 
- navigateToPage(event) {
-     const page = event.target.name;
-     this[NavigationMixin.Navigate]({
-         type: 'comm__namedPage',
-         attributes: {
-             name: page
-         }
-     });
- }
-
-
-
+    navigateToPage(event) {
+        const page = event.target.name;
+        this[NavigationMixin.Navigate]({
+            type: 'comm__namedPage',
+            attributes: {
+                name: page
+            }
+        });
+    }
 }
