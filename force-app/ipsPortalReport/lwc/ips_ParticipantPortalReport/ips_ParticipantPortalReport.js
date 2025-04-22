@@ -25,15 +25,28 @@ import priorityWorkSection from '@salesforce/label/c.IPS_priority_work_section_I
 import participantWorkTraining from '@salesforce/label/c.IPS_participant_ork_training';
 import completedGoalsInPeriodeSection from '@salesforce/label/c.IPS_completed_goals_in_periode';
 import participantEducationSection from '@salesforce/label/c.IPS_participant_education_section';
+import participantGoalTitle from '@salesforce/label/c.IPS_participant_goals_title_IPS';
+import participantGoalTitleAMS from '@salesforce/label/c.IPS_participant_goals_title_AMS';
+import participantCareerPlanTitleAMS from '@salesforce/label/c.IPS_participant_career_plan_title_AMS';
+import partcicipantGoalSection from '@salesforce/label/c.IPS_participant_goal_section';
+import employerCooperationSection from '@salesforce/label/c.IPS_employer_cooperation_section';
+import participantCooperationSection from '@salesforce/label/c.IPS_participant_cooperation_section';
 /* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
+
+const REPORT_TYPE_INTERVAL = 'Intervall';
+const REPORT_TYPE_END = 'End report';
+const REPORT_TYPE_UNDEFINED = undefined;
+const REPORT_TYPE_AMS = 'AMS';
+const REPORT_TYPE_IPS = 'IPS';
+const REPORT_TYPE_REPORT = 'REPORT';
 
 export default class Ips_ParticipantPortalReport extends NavigationMixin(LightningElement) {
     @api recordId;
     @api recordTypeName;
     @api isActive = false;
     @api isIPS = false;
-    reportList;
+    @track reportList;
     @track goalList;
     @track absentMeetingsList;
     @track cancelledMeetingsNumber;
@@ -49,9 +62,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     @track reportDateFrom;
     @track reportDateTo;
     @track reportRecordTypeName;
+    @track isReportDataLoaded = false;
     isAMS = false;
     isIPS = false;
-    isGoal = false;
+    isGoal = true;
     isOpenGoal = false;
     isAbsent = false;
     isCompleted = false;
@@ -61,6 +75,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     isOpenMeeting = false;
     isJob = false;
     isEducation = false;
+    isPassiv = false;
     error;
     numPops = 2;
     warningText = 'Her skjedde det en feil.';
@@ -88,35 +103,66 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         priorityWorkSection,
         completedGoalsInPeriodeSection,
         participantWorkTraining,
-        participantEducationSection
+        participantEducationSection,
+        participantGoalTitle,
+        participantGoalTitleAMS,
+        participantCareerPlanTitleAMS,
+        partcicipantGoalSection,
+        employerCooperationSection,
+        participantCooperationSection
     };
 
-    @wire(getParticipantReport, {
-        recordId: '$recordId',
-        typeOfId: 'REPORT'
-    })
-    reportListHandler({ data, error }) {
-        console.log(JSON.stringify(data));
-        if (data) {
-            if (data.length > 0) {
+    handleWireResponse(data, listProperty, flagProperty) {
+        if (data && data.length > 0) {
+            this[listProperty] = data;
+            this[flagProperty] = true;
+        }
+    }
+
+    get showtemplate() {
+        if (this.reportTypeName === REPORT_TYPE_INTERVAL) {
+            return templateIntervall;
+        }
+        if (this.reportTypeName === REPORT_TYPE_END) {
+            return templateEnd;
+        }
+        if (this.reportTypeName === REPORT_TYPE_UNDEFINED) {
+            return templateDefault;
+        } else {
+            return templateDefault;
+        }
+    }
+
+    render() {
+        return this.showtemplate;
+    }
+
+    connectedCallback() {
+        this.loadParticipantReport();
+    }
+
+    async loadParticipantReport() {
+        try {
+            const data = await getParticipantReport({ recordId: this.recordId, typeOfId: REPORT_TYPE_REPORT });
+            if (data && data.length > 0) {
                 this.reportList = data;
                 this.reportTypeName = this.reportList[0].reportType;
                 this.reportTrailRecordId = this.reportList[0].reportTrailId;
                 this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
                 this.reportDateTo = this.reportList[0].reportNotFormatToDate;
-                this.reportRecordTypeName = this.reportList[0].reportTrailType;
             }
-        }
-        if (error) {
+            this.isReportDataLoaded = true;
+        } catch (error) {
             this.error = error;
+            this.isReportDataLoaded = false;
         }
     }
 
     get typeValue() {
-        if (this.reportRecordTypeName === 'IPS') {
+        if (this.reportRecordTypeName === REPORT_TYPE_IPS) {
             return true;
         }
-        if (this.reportRecordTypeName === 'AMS') {
+        if (this.reportRecordTypeName === REPORT_TYPE_AMS) {
             return false;
         } else {
             return false;
@@ -141,20 +187,21 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
-    @wire(getParticipantOpenMeetings, {
+    @wire(getParticipantCompletedGoals, {
         recordId: '$reportTrailRecordId',
         typeOfReport: '$reportTypeName',
+        recordDateFrom: '$reportDateFrom',
         recordDateTo: '$reportDateTo'
     })
-    openMeetingsHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.openMeetingsList = data;
-                this.isOpenMeeting = true;
+    goalListHandler({ data, error }) {
+        if (this.isReportDataLoaded) {
+            console.log(JSON.stringify(data));
+            if (data) {
+                this.handleWireResponse(data, 'completedGoalsList', 'isGoal');
             }
-        }
-        if (error) {
-            this.error = error;
+            if (error) {
+                this.error = error;
+            }
         }
     }
 
@@ -165,18 +212,18 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     cancelledMeetingsListHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.cancelledMeetingsNumber = data[0].AntallCancelledMeeting;
-                if (this.cancelledMeetingsNumber > 0) {
-                    this.isCancel = true;
-                } else {
-                    this.isCancel = false;
+        if (this.isReportDataLoaded) {
+            if (data) {
+                if (data.length > 0) {
+                    this.cancelledMeetingsNumber = data[0].AntallCancelledMeeting;
+                    if (this.cancelledMeetingsNumber > 0) {
+                        this.isCancel = true;
+                    }
                 }
             }
-        }
-        if (error) {
-            this.error = error;
+            if (error) {
+                this.error = error;
+            }
         }
     }
 
@@ -187,11 +234,11 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     educationHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.educationList = data;
-                this.isEducation = true;
+        if (this.isReportDataLoaded) {
+            if (data) {
+                this.handleWireResponse(data, 'educationList', 'isEducation');
             }
+
             if (error) {
                 this.error = error;
             }
@@ -205,14 +252,13 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     jobsHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.jobsList = data;
-                this.isJob = true;
+        if (this.isReportDataLoaded) {
+            if (data) {
+                this.handleWireResponse(data, 'jobsList', 'isJob');
             }
-        }
-        if (error) {
-            this.error = error;
+            if (error) {
+                this.error = error;
+            }
         }
     }
 
@@ -223,14 +269,13 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     completeEmployeeHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.employeeMeetingsList = data;
-                this.isEmployeeCompleted = true;
+        if (this.isReportDataLoaded) {
+            if (data) {
+                this.handleWireResponse(data, 'employeeMeetingsList', 'isEmployeeCompleted');
             }
-        }
-        if (error) {
-            this.error = error;
+            if (error) {
+                this.error = error;
+            }
         }
     }
 
@@ -241,14 +286,13 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     absentListHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.absentMeetingsList = data;
-                this.isAbsent = true;
+        if (this.isReportDataLoaded) {
+            if (data) {
+                this.handleWireResponse(data, 'absentMeetingsList', 'isAbsent');
             }
-        }
-        if (error) {
-            this.error = error;
+            if (error) {
+                this.error = error;
+            }
         }
     }
 
@@ -259,32 +303,13 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     completedListHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.completedMeetingsList = data;
-                this.isCompleted = true;
+        if (this.isReportDataLoaded) {
+            if (data) {
+                this.handleWireResponse(data, 'completedMeetingsList', 'isCompleted');
             }
-        }
-        if (error) {
-            this.error = error;
-        }
-    }
-
-    @wire(getParticipantCompletedGoals, {
-        recordId: '$reportTrailRecordId',
-        typeOfReport: '$reportTypeName',
-        recordDateFrom: '$reportDateFrom',
-        recordDateTo: '$reportDateTo'
-    })
-    goalListHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.goalList = data;
-                this.isGoal = true;
+            if (error) {
+                this.error = error;
             }
-        }
-        if (error) {
-            this.error = error;
         }
     }
 
@@ -295,32 +320,29 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     openGoalsListHandler({ data, error }) {
-        if (data) {
-            if (data.length > 0) {
-                this.openGoalsList = data;
-                this.isOpenGoal = true;
+        if (this.isReportDataLoaded && !this.typeValue) {
+            if (data) {
+                this.handleWireResponse(data, 'openGoalsList', 'isOpenGoal');
+            }
+            if (error) {
+                this.error = error;
             }
         }
-        if (error) {
-            this.error = error;
-        }
     }
 
-    get showtemplate() {
-        if (this.reportTypeName === 'Intervall') {
-            return templateIntervall;
+    @wire(getParticipantOpenMeetings, {
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateTo: '$reportDateTo'
+    })
+    openMeetingsHandler({ data, error }) {
+        if (this.isReportDataLoaded && !this.typeValue) {
+            if (data) {
+                this.handleWireResponse(data, 'openMeetingsList', 'isOpenMeeting');
+            }
+            if (error) {
+                this.error = error;
+            }
         }
-        if (this.reportTypeName === 'End report') {
-            return templateEnd;
-        }
-        if (this.reportTypeName === undefined) {
-            return templateDefault;
-        } else {
-            return templateDefault;
-        }
-    }
-
-    render() {
-        return this.showtemplate;
     }
 }

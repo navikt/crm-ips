@@ -4,12 +4,11 @@
         <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
     </div>
     <div class="container skjema-max-width">
-        <template lwc:if={reportList}>
+        <template lwc:if={isReportDataLoaded}>
             <template for:each={reportList} for:item="report">
                 <div key={report.reportId}>
-                    <form class="form-control">
                         <h1 tabindex="0">{report.reportName}</h1>
-                        <dl class="form-control">
+                        <dl>
                             <dt tabindex="0">Deltaker:</dt>
                             <dd tabindex="0">{report.reportParticipantName}</dd>
                             <dt tabindex="0">Jobbspesialist:</dt>
@@ -21,40 +20,127 @@
                             <dt tabindex="0">Startdato:</dt>
                             <dd tabindex="0">{report.reportTrailStartDate}</dd>
                             <dt tabindex="0">Sluttdato</dt>
-                            <dd></dd>
+                            <dd>{report.reportTrailEndDate}</dd>
                             <dt>Sluttårsak</dt>
-                            <dd></dd>
+                            <dd>{report.reportTrailEndCause}</dd>
                             <dt>Detaljert sluttårsak</dt>
-                            <dd></dd>
+                            <dd>{report.reportTrailEndSubCause}</dd>
                         </dl>
 
-                        <div lwc:if={isIPS}>
+                        <div lwc:if={typeValue}>
                             <p>
-                                Kake ble henvist til Individuell jobbstøtte(IPS). Deltaker har vært med i perioden
-                                {report.reportTrailStartDate} - sluttdato
+                                {report.reportParticipantName} ble henvist til Individuell jobbstøtte(IPS). Deltaker har
+                                vært med i perioden {report.reportTrailStartDate} - {report.reportTrailEndDate}
                             </p>
                         </div>
 
                         <h2>Avsluttende oppsummering</h2>
-                        <p>oppsummering</p>
+                        <p>{report.reportSummarizeComment5}</p>
 
-                        <h2>Deltakers mål med IPS</h2>
+                        <div lwc:if={typeValue}>
+                            <h2>{label.participantGoalTitle}</h2>
+                        </div>
+                        <div lwc:else>
+                            <h2>{label.participantGoalTitleAMS}</h2>
+                        </div>
+
                         <h3>{label.mainGoalSection}</h3>
                         <p>{report.reportTrailGoal}</p>
                         <p>{report.reportTrailGoalDescription}</p>
 
-                        <div lwc:if={isIPS}>
+                        <div lwc:if={typeValue}>
                             <h3>{label.priorityWorkSection}</h3>
                             <p>{report.reportTrailWorkWish}</p>
+                            <div lwc:if={isPassiv}>
+                                <h3>Passive perioder - legge til en tabell</h3>
+                            </div>
+                        </div>
+                        <div lwc:else>
+                            <h3>{label.participantCareerPlanTitleAMS}</h3>
+                            <p>{report.reportTrailWorkWish}</p>
+                        </div>
+
+                        <template lwc:if={isGoal}>
+                            <h3 tabindex="0">{label.partcicipantGoalSection}</h3>
+                            <template lwc:if={isMobile}>
+                                <template for:each={completedGoalsList} for:item="goal">
+                                    <c-ips_-participant-portal-readmore
+                                        tabindex="0"
+                                        key={goal.OppgaveId}
+                                        label={goal.Emne}
+                                    >
+                                        <dl>
+                                            <dt>Emne</dt>
+                                            <dd>{goal.Emne}</dd>
+                                            <dt>Opprettet dato</dt>
+                                            <dd>{goal.ForfallsDato}</dd>
+                                            <dt>Frist</dt>
+                                            <dd>{goal.ForfallsDato}</dd>
+                                            <dt>Fullført</dt>
+                                            <dd>{goal.ForfallsDato}</dd>
+                                            <dt>Beskrivelse av målet</dt>
+                                            <dd>{goal.ReferatKommentar}</dd>
+                                        </dl>
+                                    </c-ips_-participant-portal-readmore>
+                                </template>
+                            </template>
+                            <template lwc:if={isDesktop}>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Emne</th>
+                                            <th>Opprettet dato</th>
+                                            <th>Frist</th>
+                                            <th>Fullført</th>
+                                            <th>Beskrivelse av målet</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={completedGoalsList} for:item="goal">
+                                            <tr key={goal.OppgaveId}>
+                                                <td>{goal.Emne}</td>
+                                                <td>{goal.ForfallsDato}</td>
+                                                <td>{goal.ForfallsDato}</td>
+                                                <td>{goal.ForfallsDato}</td>
+                                                <td>{goal.ReferatKommentar}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </template>
+
+                        <h3>{label.participantCooperationSection}</h3>
+                        <template lwc:if={isCompleted}>
+                            <template lwc:if={isMobile}>
+                                <template for:each={completedMeetingsList} for:item="com">
+                                    <p key={com.EventId}>
+                                        Det er gjennomført {com.AntallCompletedMeeting} deltakermøte(r) med
+                                        deltaker tilstede.
+                                    </p>
+                                </template>
+                            </template>
+                        </template>
+                        <p>Det er gjennomført ... deltakermøte(r) med deltaker tilstede.</p>
+                        <p>Det er .. ... deltakermøte(r) hvor deltaker ikke har møtt.</p>
+
+                        <h3>{label.employerCooperationSection}</h3>
+
+                        <div lwc:if={typeValue}>
+                            <h3>{label.participantJobSection}</h3>
+                            <p>{report.reportTrailJobWish}</p>
                         </div>
 
                         <h3>Deltakelse i jobb og arbeidstrening</h3>
                         <h3>Beskriv jobbutviklingsprosessen</h3>
                         <h3>Oppsummering av behov for tilrettelegging</h3>
                         <h3>Oppsummering av jobb/arbeidstrening</h3>
-                    </form>
                 </div>
             </template>
         </template>
+        <template lwc:else>
+                <lightning-spinner alternative-text="Laster rapport" ></lightning-spinner>
+        </template>
+    </div>
     </div>
 </template>
