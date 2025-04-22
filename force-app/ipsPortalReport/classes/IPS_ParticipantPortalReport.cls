@@ -79,6 +79,24 @@ public class IPS_ParticipantPortalReport{
     
     @AuraEnabled
     public String reportParticipantComment;
-    @AuraEnabled public String reportParticipantOnBehalfComment;
+
+    @AuraEnabled public 
+    String reportParticipantOnBehalfComment;
+
+    @AuraEnabled public
+    String reportSummarizeComment1;
+
+    @AuraEnabled public
+    String reportSummarizeComment2;
+    @AuraEnabled public         
+    String reportSummarizeComment3;
+    @AuraEnabled public
+    String reportSummarizeComment4;
+    @AuraEnabled public
+    String reportSummarizeComment5;
+    @AuraEnabled public
+    String reportSummarizeComment6;
+    @AuraEnabled public
+    String reportSummarizeComment7;
 
 }
