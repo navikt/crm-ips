@@ -4,11 +4,11 @@
         <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
     </div>
     <div class="container responsive">
-        <template lwc:if={reportList}>
+        <template lwc:if={isReportDataLoaded}>
             <template for:each={reportList} for:item="report">
                 <div key={report.reportId}>
                     <h1 tabindex="0">{report.reportName}</h1>
-                    <dl class="form-control">
+                    <dl>
                         <dt tabindex="0">Deltaker</dt>
                         <dd tabindex="0">{report.reportParticipantName}</dd>
                         <dt tabindex="0">Jobbspesialist</dt>
@@ -35,17 +35,17 @@
                     <template lwc:if={isGoal}>
                         <h3 tabindex="0">{label.completedGoalsInPeriodeSection}</h3>
                         <template lwc:if={isMobile}>
-                            <template for:each={goalList} for:item="goal">
+                            <template for:each={completedGoalsList} for:item="goal">
                                 <c-ips_-participant-portal-readmore tabindex="0" key={goal.OppgaveId} label={goal.Emne}>
                                     <dl>
                                         <dt>Emne</dt>
                                         <dd>{goal.Emne}</dd>
                                         <dt>Opprettet dato</dt>
-                                        <dd>{goal.ForfallsDato}</dd>
+                                        <dd>{goal.OpprettelsesDato}</dd>
                                         <dt>Frist</dt>
                                         <dd>{goal.ForfallsDato}</dd>
                                         <dt>Fullført</dt>
-                                        <dd>{goal.ForfallsDato}</dd>
+                                        <dd>{goal.UtfoertDato}</dd>
                                         <dt>Beskrivelse av målet</dt>
                                         <dd>{goal.ReferatKommentar}</dd>
                                     </dl>
@@ -64,12 +64,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <template for:each={goalList} for:item="goal">
+                                    <template for:each={completedGoalsList} for:item="goal">
                                         <tr key={goal.OppgaveId}>
                                             <td>{goal.Emne}</td>
+                                            <td>{goal.OpprettelsesDato}</td>
                                             <td>{goal.ForfallsDato}</td>
-                                            <td>{goal.ForfallsDato}</td>
-                                            <td>{goal.ForfallsDato}</td>
+                                            <td>{goal.UtfoertDato}</td>
                                             <td>{goal.ReferatKommentar}</td>
                                         </tr>
                                     </template>
@@ -269,8 +269,6 @@
                                         <dd>{ogoals.OpprettelsesDato}</dd>
                                         <dt>Frist</dt>
                                         <dd>{ogoals.ForfallsDato}</dd>
-                                        <dt>Fullført dato</dt>
-                                        <dd>{ogoals.UtfoertDato}</dd>
                                         <dt>Beskrivelse av målet</dt>
                                         <dd>{ogoals.ReferatKommentar}</dd>
                                     </dl>
@@ -285,7 +283,6 @@
                                         <th>Emne</th>
                                         <th>Opprettet dato</th>
                                         <th>Frist</th>
-                                        <th>Fullført dato</th>
                                         <th>Beskrivelse av målet</th>
                                     </tr>
                                 </thead>
@@ -295,7 +292,6 @@
                                             <td>{ogoals.Emne}</td>
                                             <td>{ogoals.OpprettelsesDato}</td>
                                             <td>{ogoals.ForfallsDato}</td>
-                                            <td>{ogoals.UtfoertDato}</td>
                                             <td>{ogoals.ReferatKommentar}</td>
                                         </tr>
                                     </template>
@@ -348,6 +344,9 @@
                     </template>
                 </div>
             </template>
+        </template>
+        <template lwc:else>
+            <lightning-spinner alternative-text="Laster rapport"></lightning-spinner>
         </template>
     </div>
 </template>

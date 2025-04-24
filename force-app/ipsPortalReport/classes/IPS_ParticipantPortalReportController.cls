@@ -125,17 +125,18 @@ public with sharing class IPS_ParticipantPortalReportController{
         Date reportDateFrom = recordDateFrom;
 
         List<IPS_ParticipantPortalTask> wrapperList = new List<IPS_ParticipantPortalTask>();
-    
+        if(reportType == 'End report'){
+            wrapperList = getReportCompletedGoals(currentRecordId); 
+
+        }
         if(reportType == 'Intervall'){
             wrapperList = getReportCompletedGoals(currentRecordId,reportType,reportDateFrom,reportDateTo); 
         }
-        if(reportType == 'End report'){
-            wrapperList = getReportCompletedGoals(currentRecordId,reportType,null,null);
-        }
+
+    
+           
+
         return wrapperList;
-        
-        
-        
     }
 
      /*
@@ -352,8 +353,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                 IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
                 tempList.Emne = t.Subject;
                 tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
-                tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDateTime(t.CompletedDateTime);
-                tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDateTime(t.CreatedDate);
+                tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(t.CreatedDate));
                 tempList.ReferatKommentar = t.Description;
                 tempList.OppgaveId = t.id;
                 wrapperTempList.add(tempList);
@@ -496,6 +496,7 @@ public with sharing class IPS_ParticipantPortalReportController{
             Integer numbersOfMeeting = 1;
             
             for(Event epart : Database.query(query)) {
+                tempList.EventId = epart.Id;
                 tempList.AntallCompletedMeeting = numbersOfMeeting++;
             }
             wrapperTempList.add(tempList);
@@ -638,23 +639,25 @@ public with sharing class IPS_ParticipantPortalReportController{
         if (reportType == 'End report') {
             endQuery = goalSelect + goalWhere + goalId + goalSort;
             tempGoalList = Database.query(endQuery);
+            System.debug('Henter delmål: '+endQuery);
 
-            for(Task t:tempGoalList){
+            for(Task ta:tempGoalList){
                 IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
-                tempList.Emne = t.Subject;
-                tempList.EmneOgDato = t.IPS_subjectAndDate__c ;
-                tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
-                tempList.ReferatKommentar = t.Description;
-                tempList.OppgaveId = t.id;
+                tempList.Emne = ta.Subject;
+                tempList.EmneOgDato = ta.IPS_subjectAndDate__c ;
+                tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(ta.ActivityDate);
+                tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(ta.CreatedDate));
+                tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(ta.CompletedDateTime));
+                tempList.ReferatKommentar = ta.Description;
+                tempList.OppgaveId = ta.id;
                 wrapperTempList.add(tempList);
             }
+            
         }
-
-        /* Getting goals that are completed within the intervall and
-         has a due date within the intervall with status completed */
-        if (reportType =='Intervall') {
+        if( reportType == 'Intervall') {
             dueDateQuery = goalSelect + goalWhere + goalId + goalDueDateFilter + goalSort;
             tempIntervalDueDateGoals = Database.query(dueDateQuery);
+            System.debug('Henter åpne delmål: '+tempGoalList);
 
             completedDateQuery = goalSelect + goalWhere + goalId + goalCompletedDateFilter + goalSort;
             tempIntervalCompletedGoals = Database.query(completedDateQuery);
@@ -667,6 +670,8 @@ public with sharing class IPS_ParticipantPortalReportController{
                 tempList.Emne = t.Subject;
                 tempList.EmneOgDato = t.IPS_subjectAndDate__c ;
                 tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
+                tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(t.CreatedDate));
+                tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(t.CompletedDateTime));
                 tempList.ReferatKommentar = t.Description;
                 tempList.OppgaveId = t.id;
                 wrapperTempList.add(tempList);
@@ -680,14 +685,55 @@ public with sharing class IPS_ParticipantPortalReportController{
                     tempList.Emne = task.Subject;
                     tempList.EmneOgDato = task.IPS_subjectAndDate__c ;
                     tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(task.ActivityDate);
+                    tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(task.CreatedDate));
+                    tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(task.CompletedDateTime));
                     tempList.ReferatKommentar = task.Description;
                     tempList.OppgaveId = task.id;
                     wrapperTempList.add(tempList);
                 }
             }
-        }        
-        return wrapperTempList;
     }
+    return wrapperTempList;
+}
+
+     /**
+     * Returns a list of unique goals that are completed either
+     * within the given intervall or the whole period of the worktrail.
+     *
+     * @return  List of task
+     */
+    private static List<IPS_ParticipantPortalTask> getReportCompletedGoals(id recordId) {
+        List<IPS_ParticipantPortalTask> wrapperTempList = new List<IPS_ParticipantPortalTask>();
+        List<Task> tempGoalList = new List<Task>();
+
+
+        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,IPS_subjectAndDate__c ,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
+        String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
+        String goalId = ' AND WhatId = :recordId';
+        String goalSort = ' ORDER BY ActivityDate DESC';
+        String endQuery = '';
+
+
+            endQuery = goalSelect + goalWhere + goalId + goalSort;
+            tempGoalList = Database.query(endQuery);
+            System.debug('Henter delmål: '+endQuery);
+
+            for(Task ta:tempGoalList){
+                IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
+                tempList.Emne = ta.Subject;
+                tempList.EmneOgDato = ta.IPS_subjectAndDate__c ;
+                tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(ta.ActivityDate);
+                tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(ta.CreatedDate));
+                tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(ta.CompletedDateTime));
+                tempList.ReferatKommentar = ta.Description;
+                tempList.OppgaveId = ta.id;
+                wrapperTempList.add(tempList);
+            }
+            return wrapperTempList;
+            
+        }
+
+
   
   /*
     *********************************************************
@@ -748,7 +794,14 @@ public with sharing class IPS_ParticipantPortalReportController{
             IPS_intervallDateTo__c,
             IPS_summarizeIntervallNextPeriode__c,
             IPS_summarizeIntervallPeriode__c,
+            IPS_endReportSumm1__c,
+            IPS_endReportSumm2__c,
+            IPS_endReportSumm3__c,
             IPS_workTrailName__c,
+            IPS_endReportSumm4__c,
+            IPS_endReportSumm5__c,
+            IPS_endReportSumm6__c,
+            IPS_endReportSumm7__c,
             IPS_workTrailName__r.ips_Main_goal__c,
             IPS_workTrailName__r.ips_UO_Service__c,
             IPS_workTrailName__r.ips_Main_Goal_list__c,
@@ -760,12 +813,12 @@ public with sharing class IPS_ParticipantPortalReportController{
             IPS_workTrailName__r.ips_Applying_Department__c,
             IPS_workTrailName__r.Oppstartsdato__c,
             IPS_workTrailName__r.ips_Referred_date__c,
-            IPS_workTrailName__r.ips_Priority_career_wishes__c
+            IPS_workTrailName__r.ips_Priority_career_wishes__c,
+            IPS_workTrailName__r.ips_Desired_profession_industry_career__c
             FROM ips_report__c 
             WHERE id =:currentRecordId
-            AND IPS_status__c = 'Shared report' LIMIT 1];
+            AND IPS_status__c = 'Shared report'];
   
-            system.debug(tempReportList);
   
             if(!tempReportList.isEmpty()){
               for(ips_report__c r:tempReportList){
@@ -794,6 +847,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                       tempList.reportTrailDepartmentTeam = r.IPS_workTrailName__r.ips_Applying_Department__c;
                       tempList.reportTrailDepartmentTeamLabel ='Innsøkende avdeling';
                       tempList.reportTrailType = 'AMS';
+                      tempList.reportTrailWorkWish= r.IPS_workTrailName__r.ips_Desired_profession_industry_career__c;
                   }
   
                   if(r.IPS_worktrail_Type__c =='IPS'){
@@ -814,7 +868,13 @@ public with sharing class IPS_ParticipantPortalReportController{
                   }
   
                   if(r.IPS_report_Type__c =='End report'){
-  
+                    tempList.reportSummarizeComment1 = r.IPS_endReportSumm1__c;
+                    tempList.reportSummarizeComment2 = r.IPS_endReportSumm2__c;
+                    tempList.reportSummarizeComment3 = r.IPS_endReportSumm3__c;
+                    tempList.reportSummarizeComment4 = r.IPS_endReportSumm4__c;
+                    tempList.reportSummarizeComment5 = r.IPS_endReportSumm5__c;
+                    tempList.reportSummarizeComment6 = r.IPS_endReportSumm6__c;
+                    tempList.reportSummarizeComment7 = r.IPS_endReportSumm7__c;
                   }
                   
                   wrapperTempList.add(tempList);
