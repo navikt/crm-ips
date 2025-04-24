@@ -56,63 +56,6 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
-    <actionCalls>
-        <name>Post_to_archive_Events</name>
-        <label>Post to archive - Events</label>
-        <locationX>616</locationX>
-        <locationY>2796</locationY>
-        <actionName>ArchiveHandler</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Update_worktrail</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>archiveData</name>
-            <value>
-                <elementReference>eventJsonOutput</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>dokumentasjonId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>fnr</name>
-            <value>
-                <elementReference>$Record.IPS_Personnummer__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>konfidentiellt</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>opprettetAv</name>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>referenceObject</name>
-            <value>
-                <stringValue>Event</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>tema</name>
-            <value>
-                <stringValue>Meeting</stringValue>
-            </value>
-        </inputParameters>
-        <nameSegment>ArchiveHandler</nameSegment>
-        <offset>0</offset>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
     <apiVersion>63.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
@@ -226,6 +169,64 @@
         </assignmentItems>
         <connector>
             <targetReference>Create_archive_entry</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Archive_Entry_Events</name>
+        <label>Archive Entry - Events</label>
+        <locationX>616</locationX>
+        <locationY>2796</locationY>
+        <assignmentItems>
+            <assignToReference>tempEventArchiveEvent.Archive_Data__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>eventJsonOutput</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempEventArchiveEvent.Confidential__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempEventArchiveEvent.Fnr__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempEventArchiveEvent.Domain__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempEventArchiveEvent.Reference_Id__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempEventArchiveEvent.Reference_Object__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Event</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempEventArchiveEvent.Theme__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Jobbspor</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_archive_entry_Event</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -824,7 +825,7 @@
         <locationX>484</locationX>
         <locationY>2688</locationY>
         <defaultConnector>
-            <targetReference>Post_to_archive_Events</targetReference>
+            <targetReference>Archive_Entry_Events</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -894,6 +895,7 @@
             <label>Employer meeting</label>
         </rules>
     </decisions>
+    <description>Archives worktrail one year after status - Ended</description>
     <environments>Default</environments>
     <formulas>
         <name>eventsExceedMaxLimit</name>
@@ -986,6 +988,38 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Application_log_Events</name>
+        <label>Application log - Events</label>
+        <locationX>880</locationX>
+        <locationY>3012</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_Info__c</field>
+            <value>
+                <stringValue>Create archive entry - Events</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - Archive worktrial</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_archive_entry</name>
         <label>Create archive entry</label>
         <locationX>616</locationX>
@@ -997,6 +1031,19 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
             <targetReference>Application_log</targetReference>
         </faultConnector>
         <inputReference>tempArchvieEntry</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_archive_entry_Event</name>
+        <label>Create archive entry - Event</label>
+        <locationX>616</locationX>
+        <locationY>2904</locationY>
+        <connector>
+            <targetReference>Update_worktrail</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Application_log_Events</targetReference>
+        </faultConnector>
+        <inputReference>tempEventArchiveEvent</inputReference>
     </recordCreates>
     <recordLookups>
         <name>Get_meetings_related_to_worktrail</name>
@@ -1024,7 +1071,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
         <locationX>484</locationX>
-        <locationY>2988</locationY>
+        <locationY>3336</locationY>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -1202,6 +1249,14 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     </variables>
     <variables>
         <name>tempArchvieEntry</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Archive_Entry__c</objectType>
+    </variables>
+    <variables>
+        <name>tempEventArchiveEvent</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
