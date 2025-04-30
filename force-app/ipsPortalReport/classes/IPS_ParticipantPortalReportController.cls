@@ -431,7 +431,6 @@ public with sharing class IPS_ParticipantPortalReportController{
     private static List<IPS_ParticipantPortalEvent> getReportCompletedEmployeeMeetings(id recordId,String reportType, Date reportDateFrom, Date reportDateTo) {
         List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
         list<Event> employeeActivity = new List<Event>();
-        IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
 
         String partSelect = 'SELECT id,Subject,ActivityDate,RelatedToAccount__r.name,Konto_kontakt__r.Name,IPS_participant_related_to_meeting__c,ips_Subcategory_Type_IPS__c,IPS_Subcategory_Type_UO__c FROM event';
         String partWhere = ' WHERE IPS_Type__c IN (\'Meeting with Employer\',\'First Meeting with Employer\') AND IPS_Status1__c IN (\'Completed\')';
@@ -446,7 +445,7 @@ public with sharing class IPS_ParticipantPortalReportController{
         if(reportType == 'Intervall'){
             query = partSelect + partWhere + partId + partFilter + partSort;
             for(Event epart : Database.query(query)) {
-                
+                IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
                 tempList.EventId = epart.Id;
                 tempList.Emne = epart.Subject;
                 tempList.Motedato = IPS_ParticipantPortalUtility.formatDate(epart.ActivityDate);
@@ -483,7 +482,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     */
     private static List<IPS_ParticipantPortalEvent> getReportCompletedMeetings(id recordId,String reportType, Date reportDateFrom, Date reportDateTo) {
         List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
-        IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+        
 
         String partSelect = 'SELECT id,Subject,ActivityDate FROM event';
         String partWhere = ' WHERE IPS_Type__c IN (\'Meeting with Participant\',\'Start up meeting\') AND IPS_Status1__c IN (\'Completed\')';
@@ -496,15 +495,18 @@ public with sharing class IPS_ParticipantPortalReportController{
             Integer numbersOfMeeting = 1;
             
             for(Event epart : Database.query(query)) {
+                IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
                 tempList.EventId = epart.Id;
                 tempList.AntallCompletedMeeting = numbersOfMeeting++;
+                wrapperTempList.add(tempList);
             }
-            wrapperTempList.add(tempList);
+            
         }
         if(reportType == 'Intervall'){
 
             query = partSelect + partWhere + partId + partFilter + partSort;
             for(Event epart : Database.query(query)) {
+                IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
                 tempList.EventId = epart.Id;
                 tempList.Emne = epart.Subject;
                 tempList.Motedato = IPS_ParticipantPortalUtility.formatDate(epart.ActivityDate);
@@ -581,9 +583,7 @@ public with sharing class IPS_ParticipantPortalReportController{
      */
     private static List<IPS_ParticipantPortalEvent> getReportAbsentMeetings(id recordId,String reportType,Date reportDateFrom, Date reportDateTo) {
         List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
-        IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
-
-
+        
         String partSelect = 'SELECT id,Subject,ActivityDate FROM event';
         String partWhere = ' WHERE IPS_Type__c IN (\'Meeting with Participant\',\'Start up meeting\') AND IPS_Status1__c IN (\'Participant Absent\')';
         String partId = ' AND WhatId = :recordId';
@@ -595,14 +595,17 @@ public with sharing class IPS_ParticipantPortalReportController{
             query = partSelect + partWhere + partId;
             Integer numbersOfMeeting = 1;
             for(Event epart : Database.query(query)) {
+                IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
                 tempList.AntallCancelledMeeting = numbersOfMeeting++;
+                wrapperTempList.add(tempList);
             }
-            wrapperTempList.add(tempList);
+            
 
         }
         if(reportType == 'Intervall'){
             query = partSelect + partWhere + partId + partFilter + partSort;
             for(Event epart : Database.query(query)) {
+                IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
                 tempList.EventId = epart.Id;
                 tempList.Emne = epart.Subject;
                 tempList.Motedato = IPS_ParticipantPortalUtility.formatDate(epart.ActivityDate);
@@ -940,7 +943,7 @@ public with sharing class IPS_ParticipantPortalReportController{
             ORDER BY AMS_Start_Date__c DESC
 
         ];
-        if(tempAMSEducation.size()>0){
+        if(!tempAMSEducation.isEmpty()){
             for(AMS_Vocational_education_and_training__c ams : tempAMSEducation){
                 IPS_ParticipantPortalEducation tempAMSList = new IPS_ParticipantPortalEducation();
 
@@ -1009,7 +1012,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                 }
         }
 
-        if(tempEducation.size()>0){
+        if(!tempEducation.isEmpty()){
             for(ips_Education__c i : tempEducation) {
                 IPS_ParticipantPortalEducation tempList = new IPS_ParticipantPortalEducation();
                 
@@ -1043,7 +1046,9 @@ public with sharing class IPS_ParticipantPortalReportController{
                         tempList.FungererIkke = i.ips_What_did_not_work_with_thiseducation__c;
                         tempList.Status = i.ips_Status__c;
                         wrapperTempList.add(tempList);
-                    }else{
+                    }
+                    
+                    /*else{
                         if(i.ips_End_Date__c !=null && (i.ips_End_Date__c >= reportDateFrom || i.ips_End_Date__c>= reportDateTo)){
                             tempList.UtdanningId = i.id;
                             tempList.UtdanningNavn = i.Name;
@@ -1072,7 +1077,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     
                         }
     
-                    }
+                    }*/
     
                 }
             }
