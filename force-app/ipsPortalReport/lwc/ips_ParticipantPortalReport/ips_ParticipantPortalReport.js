@@ -65,7 +65,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     @track isReportDataLoaded = false;
     isAMS = false;
     isIPS = false;
-    isGoal = true;
+    isGoal = false;
     isOpenGoal = false;
     isAbsent = false;
     isCompleted = false;
@@ -147,11 +147,13 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             if (data && data.length > 0) {
                 this.reportList = data;
                 this.reportTypeName = this.reportList[0].reportType;
+                this.reportRecordTypeName = this.reportList[0].reportTrailType;
                 this.reportTrailRecordId = this.reportList[0].reportTrailId;
                 this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
                 this.reportDateTo = this.reportList[0].reportNotFormatToDate;
+                this.isReportDataLoaded = true;
             }
-            this.isReportDataLoaded = true;
+            
         } catch (error) {
             this.error = error;
             this.isReportDataLoaded = false;
@@ -195,7 +197,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     })
     goalListHandler({ data, error }) {
         if (this.isReportDataLoaded) {
-            console.log(JSON.stringify(data));
             if (data) {
                 this.handleWireResponse(data, 'completedGoalsList', 'isGoal');
             }
@@ -234,6 +235,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     educationHandler({ data, error }) {
+        console.log(JSON.stringify(data));
         if (this.isReportDataLoaded) {
             if (data) {
                 this.handleWireResponse(data, 'educationList', 'isEducation');
@@ -320,7 +322,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     openGoalsListHandler({ data, error }) {
-        if (this.isReportDataLoaded && !this.typeValue) {
+        if (this.isReportDataLoaded) {
             if (data) {
                 this.handleWireResponse(data, 'openGoalsList', 'isOpenGoal');
             }
@@ -336,7 +338,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     openMeetingsHandler({ data, error }) {
-        if (this.isReportDataLoaded && !this.typeValue) {
+        if (this.isReportDataLoaded ) {
             if (data) {
                 this.handleWireResponse(data, 'openMeetingsList', 'isOpenMeeting');
             }

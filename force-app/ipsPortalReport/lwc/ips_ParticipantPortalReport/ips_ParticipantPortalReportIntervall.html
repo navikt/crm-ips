@@ -1,37 +1,40 @@
 <template>
-    <div class="breadcrumb-container">
-        <img src={homeImg} alt="" class="breadcrumb-img" />
-        <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
-    </div>
+    
     <div class="container responsive">
+        <div class="breadcrumb-container">
+            <img src={homeImg} alt="" class="breadcrumb-img" />
+            <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
+        </div>
         <template lwc:if={isReportDataLoaded}>
-            <template for:each={reportList} for:item="report">
-                <div key={report.reportId}>
-                    <h1 tabindex="0">{report.reportName}</h1>
-                    <dl>
-                        <dt tabindex="0">Deltaker</dt>
-                        <dd tabindex="0">{report.reportParticipantName}</dd>
-                        <dt tabindex="0">Jobbspesialist</dt>
-                        <dd tabindex="0">{report.reportOwnerName}</dd>
-                        <dt tabindex="0">{report.reportTrailDepartmentTeamLabel}</dt>
-                        <dd tabindex="0">{report.reportTrailDepartmentTeam}</dd>
-                        <dt tabindex="0">Nav veileder</dt>
-                        <dd tabindex="0">{report.reportTrailSupervisor}</dd>
-                        <dt tabindex="0">Startdato</dt>
-                        <dd tabindex="0">{report.reportTrailStartDate}</dd>
-                    </dl>
-
-                    <h2 tabindex="0">{label.mainGoalSection}</h2>
-                    <p tabindex="0">{report.reportTrailGoal}</p>
-                    <p tabindex="0">{report.reportTrailGoalDescription}</p>
-
-                    <div lwc:if={typeValue}>
-                        <h2 tabindex="0">{label.priorityWorkSection}</h2>
-                        <p tabindex="0">{report.reportTrailWorkWish}</p>
+           <template for:each={reportList} for:item="reportList">
+                <div key={reportList.reportId}>
+                    <h1 tabindex="0">{reportList.reportName}</h1>
+                    <div>
+                        <dl>
+                            <dt tabindex="0">Deltaker</dt>
+                            <dd tabindex="0">{reportList.reportParticipantName}</dd>
+                            <dt tabindex="0">Jobbspesialist</dt>
+                            <dd tabindex="0">{reportList.reportOwnerName}</dd>
+                            <dt tabindex="0">{reportList.reportTrailDepartmentTeamLabel}</dt>
+                            <dd tabindex="0">{reportList.reportTrailDepartmentTeam}</dd>
+                            <dt tabindex="0">Nav veileder</dt>
+                            <dd tabindex="0">{reportList.reportTrailSupervisor}</dd>
+                            <dt tabindex="0">Startdato</dt>
+                            <dd tabindex="0">{reportList.reportTrailStartDate}</dd>
+                        </dl>
                     </div>
 
-                    <h2 tabindex="0">{label.summarizeSectionReport} {report.reportFromDate} - {report.reportToDate}</h2>
-                    <p tabindex="0">{report.reportIntervallSummarizePeriode}</p>
+                    <h2 tabindex="0">{label.mainGoalSection}</h2>
+                    <p tabindex="0">{reportList.reportTrailGoal}</p>
+                    <p tabindex="0">{reportList.reportTrailGoalDescription}</p>
+
+                    <template lwc:if={typeValue}>
+                        <h2 tabindex="0">{label.priorityWorkSection}</h2>
+                        <p tabindex="0">{reportList.reportTrailWorkWish}</p>
+                    </template>
+
+                    <h2 tabindex="0">{label.summarizeSectionReport} {reportList.reportFromDate} - {reportList.reportToDate}</h2>
+                    <p tabindex="0">{reportList.reportIntervallSummarizePeriode}</p>
                     <template lwc:if={isGoal}>
                         <h3 tabindex="0">{label.completedGoalsInPeriodeSection}</h3>
                         <template lwc:if={isMobile}>
@@ -46,7 +49,7 @@
                                         <dd>{goal.ForfallsDato}</dd>
                                         <dt>Fullført</dt>
                                         <dd>{goal.UtfoertDato}</dd>
-                                        <dt>Beskrivelse av målet</dt>
+                                        <dt>Beskrivelse av aktivitet</dt>
                                         <dd>{goal.ReferatKommentar}</dd>
                                     </dl>
                                 </c-ips_-participant-portal-readmore>
@@ -60,7 +63,7 @@
                                         <th>Opprettet dato</th>
                                         <th>Frist</th>
                                         <th>Fullført</th>
-                                        <th>Beskrivelse av målet</th>
+                                        <th>Beskrivelse av aktivitet</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -256,9 +259,9 @@
                     </template>
 
                     <h2 tabindex="0">{label.planNextPeriodeSection}</h2>
-                    <p>{report.reportIntervallSummarizeNextPeriode}</p>
+                    <p>{reportList.reportIntervallSummarizeNextPeriode}</p>
                     <template lwc:if={isOpenGoal}>
-                        <h3 tabindex="0">Delmål:</h3>
+                        <h3 tabindex="0">Aktiviteter:</h3>
                         <template lwc:if={isMobile}>
                             <template for:each={openGoalsList} for:item="ogoals">
                                 <c-ips_-participant-portal-readmore key={ogoals.OppgaveId} label={ogoals.Emne}>
@@ -269,7 +272,7 @@
                                         <dd>{ogoals.OpprettelsesDato}</dd>
                                         <dt>Frist</dt>
                                         <dd>{ogoals.ForfallsDato}</dd>
-                                        <dt>Beskrivelse av målet</dt>
+                                        <dt>Beskrivelse av aktivitet</dt>
                                         <dd>{ogoals.ReferatKommentar}</dd>
                                     </dl>
                                 </c-ips_-participant-portal-readmore>
@@ -283,7 +286,7 @@
                                         <th>Emne</th>
                                         <th>Opprettet dato</th>
                                         <th>Frist</th>
-                                        <th>Beskrivelse av målet</th>
+                                        <th>Beskrivelse av aktivitet</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -337,14 +340,14 @@
                         </template>
                     </template>
 
-                    <template lwc:if={report.reportParticipantOnBehalfComment}>
+                    <template lwc:if={reportList.reportParticipantOnBehalfComment}>
                         <h2 tabindex="0">{label.participantCommentSection}</h2>
-                        <p tabindex="0">{report.reportParticipantComment}</p>
-                        <p tabindex="0">{report.reportParticipantOnBehalfComment}</p>
+                        <p tabindex="0">{reportList.reportParticipantComment}</p>
+                        <p tabindex="0">{reportList.reportParticipantOnBehalfComment}</p>
                     </template>
                 </div>
             </template>
-        </template>
+            </template>
         <template lwc:else>
             <lightning-spinner alternative-text="Laster rapport"></lightning-spinner>
         </template>
