@@ -642,7 +642,6 @@ public with sharing class IPS_ParticipantPortalReportController{
         if (reportType == 'End report') {
             endQuery = goalSelect + goalWhere + goalId + goalSort;
             tempGoalList = Database.query(endQuery);
-            System.debug('Henter delmål: '+endQuery);
 
             for(Task ta:tempGoalList){
                 IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
@@ -660,7 +659,6 @@ public with sharing class IPS_ParticipantPortalReportController{
         if( reportType == 'Intervall') {
             dueDateQuery = goalSelect + goalWhere + goalId + goalDueDateFilter + goalSort;
             tempIntervalDueDateGoals = Database.query(dueDateQuery);
-            System.debug('Henter åpne delmål: '+tempGoalList);
 
             completedDateQuery = goalSelect + goalWhere + goalId + goalCompletedDateFilter + goalSort;
             tempIntervalCompletedGoals = Database.query(completedDateQuery);
@@ -719,7 +717,6 @@ public with sharing class IPS_ParticipantPortalReportController{
 
             endQuery = goalSelect + goalWhere + goalId + goalSort;
             tempGoalList = Database.query(endQuery);
-            System.debug('Henter delmål: '+endQuery);
 
             for(Task ta:tempGoalList){
                 IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
@@ -836,9 +833,9 @@ public with sharing class IPS_ParticipantPortalReportController{
                   tempList.reportOwnerName = r.IPS_workTrailOwner__c;
                   tempList.reportParticipantName = r.IPS_participantName__c;
                   tempList.reportTrailGoalDescription = r.IPS_workTrailName__r.ips_Main_goal__c;
-                  tempList.reportTrailEndDate = r.IPS_workTrailName__r.ips_End_Date__c;
-                  tempList.reportTrailEndCause = r.IPS_workTrailName__r.End_Cause__c;
-                  tempList.reportTrailEndSubCause = r.IPS_workTrailName__r.ips_Other_end_cases__c;
+                  tempList.reportTrailEndDate = IPS_ParticipantPortalUtility.formatDate(r.IPS_workTrailName__r.ips_End_Date__c);
+                  tempList.reportTrailEndCause = IPS_ParticipantPortalUtility.formatEndCauses(r.IPS_workTrailName__r.End_Cause__c);
+                  tempList.reportTrailEndSubCause = IPS_ParticipantPortalUtility.formatEndCauses(r.IPS_workTrailName__r.ips_Other_end_cases__c);
                   tempList.reportTrailReferredDate = IPS_ParticipantPortalUtility.formatDate(r.IPS_workTrailName__r.ips_Referred_date__c);
                   
                   tempList.reportTrailStartDate = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(r.IPS_workTrailName__r.Oppstartsdato__c));
