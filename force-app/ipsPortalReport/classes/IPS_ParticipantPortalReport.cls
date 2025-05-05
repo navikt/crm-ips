@@ -51,7 +51,7 @@ public class IPS_ParticipantPortalReport{
     public String reportTrailGoalDescription;
 
     @AuraEnabled
-    public Date reportTrailEndDate;
+    public String reportTrailEndDate;
 
     @AuraEnabled
     public String reportTrailEndCause;
