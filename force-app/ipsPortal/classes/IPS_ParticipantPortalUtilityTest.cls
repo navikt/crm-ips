@@ -102,9 +102,23 @@ public class IPS_ParticipantPortalUtilityTest {
         }
         System.Assert.areEqual('Ingen status valgt',formatStatus);
     }
+
+    @isTest
+    static void formatEndCause(){
+        
+        String[] tempEndCause = new List<String>();
+        tempEndCause.add('Work');
+        tempEndCause.add('Other');
+        tempEndCause.add('Education');
+        tempEndCause.add(' ');
+        String formatEndCause;
+        for(Integer i=0;i<tempEndCause.size();i++){
+            formatEndCause =IPS_ParticipantPortalUtility.formatEndCauses(tempEndCause[i]);
+        }
+        System.Assert.areEqual('Ingen årsak valgt',formatEndCause);
+    }
     
-    
-    
+     
     
     
     @isTest
