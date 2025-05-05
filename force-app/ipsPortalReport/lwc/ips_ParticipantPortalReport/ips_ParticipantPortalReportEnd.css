@@ -20,7 +20,16 @@
 
 @media only screen and (min-width: 700px) {
     .responsive {
-        max-width: 50rem;
+        max-width: 60rem;
+    }
+
+    .breadcrumb-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        margin-left: -3rem;
     }
 
     p {
@@ -43,6 +52,7 @@
         line-height: 2rem; /* 32px */
         font-weight: 600;
         padding-bottom: 1rem;
+        padding-top: 0.2rem;
     }
 
     h3 {
@@ -52,12 +62,37 @@
         padding-bottom: 1rem;
     }
 
-    .horisontal-list {
-        dl {
-            display: grid;
-            grid-template-rows: auto auto;
-            grid-auto-flow: column;
-        }
+    h4 {
+        font-size: 1rem; /* 16 px*/
+        line-height: 1.125rem; /* 18px */
+        font-weight: 600;
+        padding-bottom: 1rem;
+    }
+    table {
+        margin-bottom: 2.5rem;
+        margin-top: 1.5rem;
+    }
+
+    /*
+    tr:nth-child(odd) {
+        background-color: #f2f3f5;
+    }*/
+
+    th {
+        border-bottom: 2px solid black;
+        font-size: 1.125rem; /* 18 px*/
+        line-height: 1.5rem; /*24px*/
+        font-weight: 600;
+        padding: 0.5rem;
+        background-color: #f2f3f5;
+    }
+    td {
+        border-bottom: 1px solid black;
+        font-size: 1.125rem; /* 18 px*/
+        line-height: 1.5rem; /*24px*/
+        font-weight: 400;
+        vertical-align: text-top;
+        padding: 0.5rem;
     }
 
     dd {
@@ -69,10 +104,17 @@
     }
 
     dt {
+        float: left;
+        clear: left;
+        width: 25%;
+        text-align: left;
         font-size: 1.125rem; /* 18 px*/
         line-height: 1.5rem; /*24px*/
         font-weight: 600;
         white-space: pre-line;
+    }
+    dt::after {
+        content: ':';
     }
 
     img {
@@ -87,6 +129,18 @@
 }
 
 @media only screen and (max-width: 500px) {
+    .responsive {
+        max-width: 80rem;
+    }
+
+    .breadcrumb-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
     p {
         padding-bottom: 1rem;
         font-size: 1rem; /* 16 px*/
@@ -112,6 +166,13 @@
     h3 {
         font-size: 1rem; /* 16 px*/
         line-height: 1.125rem; /*18px*/
+        font-weight: 600;
+        padding-bottom: 1rem;
+    }
+
+    h4 {
+        font-size: 0.5rem; /* 16 px*/
+        line-height: 1rem; /* 18px */
         font-weight: 600;
         padding-bottom: 1rem;
     }
@@ -149,9 +210,4 @@
     padding-left: 1rem;
     margin-top: 1rem;
     margin-left: -1rem;
-}
-
-.skjema-max-width {
-    width: 100%;
-    max-width: 800px;
 }

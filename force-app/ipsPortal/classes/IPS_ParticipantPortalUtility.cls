@@ -97,4 +97,24 @@ public without sharing class IPS_ParticipantPortalUtility{
         else {return 'Ingen status valgt';}
     }
 
+    public static String formatEndCauses(String endCause){
+        if(endCause == 'Work'){return 'Arbeid';}
+        if(endCause == 'Education'){return 'Utdanning';}
+        if(endCause == 'Other end causes'){return 'Andre sluttårsaker';}
+        if(endCause == 'Education - self-financed'){return 'Utdanning - egenfinansiert';} 
+        if(endCause == 'Education - covered by NAV'){return 'Utdanning - dekket av NAV';}
+        if(endCause == 'Chaining for other work-oriented measures under the auspices of NAV'){return 'Kjeding til andre arbeidsrettede tiltak i regi av NAV';}
+        if(endCause == 'Other (military, pregnancy, relocation, etc.)'){return 'Annet (militær, svangerskap, flytting mm)';}
+        if(endCause == 'Other active measures in consultation with NAV (eg medical treatment, or municipal measures)'){return 'Andre aktive tiltak i samråd med NAV (eks medisinsk behandling eller kommunale tiltak)';}
+        if(endCause == 'Illness'){return 'Sykdom';} 
+        if(endCause == 'Applied for / granted old age pension / AFP'){return 'Søkt/innvilget alderspensjon/AFP';}
+        if(endCause == 'Applied / granted disability benefits'){return 'Søkt/innvilget uføretrygd';}   
+        if(endCause == 'Work without wage subsidy'){return 'Arbeid uten lønnstilskudd';}
+        if(endCause == 'Work with wage subsidies from NAV'){return 'Arbeid med lønnstilskudd fra NAV';}
+        if(endCause == 'Work in combination with other benefits from NAV'){return 'Arbeid i kombinasjon med andre ytelser fra NAV';}
+        if(endCause == 'Work in combination with a graduated disability pension'){return 'Arbeid i kombinasjon med gradert uførepensjon';}
+        if(endCause == 'Not applicable'){return 'Ikke aktuell';}
+        else {return 'Ingen årsak valgt';}
+    }
+
 }
