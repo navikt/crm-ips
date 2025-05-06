@@ -71,8 +71,8 @@ call sf force:package:install --package 04tQC000000ieEfYAI -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-shared-user-notification 0.24.0"
-call sf force:package:install --package 04tKB000000YBG5YAO -r --installation-key %3 --wait 4 --publish-wait 4
+echo "Installerer crm-shared-user-notification 0.22.0"
+call sf force:package:install --package 04t7U000000D2E7QAK -r --installation-key %3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
