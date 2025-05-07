@@ -68,7 +68,7 @@ call sf force:package:install --package 04tKB000000YB09YAG -r --installation-key
 echo ""
 echo "INSTALLERER"
 echo "Installerer crm-arbeidsgiver-base 1.559.0.."
-call sf force:package:install --package 04tQC000000jX6HYAU -r --installation-key %1 --wait 4 --publish-wait 4
+call sf force:package:install --package 04tQC000000jX6HYAU -r --installation-key %1 --wait 10 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -77,13 +77,13 @@ call sf force:package:install --package 04tQC000000ieEfYAI -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-shared-user-notification 0.22.0"
-call sf force:package:install --package 04t7U000000D2E7QAK -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-shared-user-notification 0.24.0"
+call sf force:package:install --package 04t7U000000Y4jZQAS -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
 echo "Installerer crm-henvendelse 0.169.0"
-call sf force:package:install --package 04tQC000000ieWPYAY -r --installation-key %1 --wait 4 --publish-wait 4
+call sf force:package:install --package 04tQC000000ieWPYAY -r --installation-key %1 --wait 5 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -93,17 +93,17 @@ call sf force:package:install --package 04tQC000000jnfhYAA -r --installation-key
 echo ""
 echo "TILDELER"
 echo "Tildel tilatelsessett til brukeren - IPS_management.."
-call sfdx force:user:permset:assign --perm-set-name IPS_management
+call sf org assign permset -n IPS_management
 
 echo ""
 echo "TILDELER"
 echo "Tildel tilatelsessett til brukeren IPS_Utvidet_oppf_lging_management.."
-call sfdx force:user:permset:assign --perm-set-name IPS_Utvidet_oppf_lging_management
+call sf org assign permset -n IPS_Utvidet_oppf_lging_management
 
 echo ""
 echo "TILDELER"
 echo "Tildel tilatelsessett til brukeren IPS_Config.."
-call sfdx force:user:permset:assign --perm-set-name IPS_Config
+call sf org assign permset -n IPS_Config
 
 echo Inserting test data...
 call sf force:data:tree:import -p  dummy-data/Plan.json
