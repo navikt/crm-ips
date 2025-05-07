@@ -56,6 +56,34 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
+    <actionCalls>
+        <name>Jobs_to_JSON</name>
+        <label>Jobs to JSON</label>
+        <locationX>484</locationX>
+        <locationY>3852</locationY>
+        <actionName>ArchiveHelper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Add_jobs_to_archive</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__recordsList</typeName>
+            <typeValue>ips_Job__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordsList</name>
+            <value>
+                <elementReference>jobsToArchive</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ArchiveHelper</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>jobsJSONOutput</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
     <apiVersion>63.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
@@ -72,6 +100,22 @@
         </assignmentItems>
         <connector>
             <targetReference>Is_Events_Exceed_Max_Limit</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_jobs_to_archive</name>
+        <label>Add jobs to archive</label>
+        <locationX>484</locationX>
+        <locationY>3960</locationY>
+        <assignmentItems>
+            <assignToReference>jobsFileToArchive</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>jobsJSONOutput</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is_Jobs_Exceed_Max_Limit</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -227,6 +271,64 @@
         </assignmentItems>
         <connector>
             <targetReference>Create_archive_entry_Event</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Archive_Entry_Jobs</name>
+        <label>Archive Entry - Jobs</label>
+        <locationX>616</locationX>
+        <locationY>4176</locationY>
+        <assignmentItems>
+            <assignToReference>tempArchiveJob.Confidential__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveJob.Archive_Data__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>jobsJSONOutput</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveJob.Fnr__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveJob.Domain__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveJob.Reference_Id__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveJob.Reference_Object__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Job</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchvieEntry.Theme__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Jobbspor</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_archive_entry_Job</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -529,6 +631,150 @@
         </assignmentItems>
         <connector>
             <targetReference>Worktrail_collection_to_convert_to_JSON</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Job_to_archive</name>
+        <label>Job to archive</label>
+        <locationX>572</locationX>
+        <locationY>3552</locationY>
+        <assignmentItems>
+            <assignToReference>jobToArchive.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_End_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_End_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Form_of_Employment__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Form_of_Employment__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Inclusion_subsidies__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Inclusion_subsidies__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Job_Support__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Job_Support__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.IPS_jobSubject__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.IPS_jobSubject__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Mentor_subsidies__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Mentor_subsidies__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Number_of_hours__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Number_of_hours__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Paid_work__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Paid_work__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Start_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Start_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Status__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.IPS_UO_Stillingsbeskrivelse__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.IPS_UO_Stillingsbeskrivelse__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Wage_subsidies__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Wage_subsidies__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_What_did_not_work_at_the_workplace__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_What_did_not_work_at_the_workplace__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_What_did_work_at_the_workplace__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_What_did_work_at_the_workplace__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.ips_Work_Trail__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.ips_Work_Trail__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>jobToArchive.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_jobs_to_collection.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Jobs_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Jobs_collection</name>
+        <label>Jobs collection</label>
+        <locationX>572</locationX>
+        <locationY>3660</locationY>
+        <assignmentItems>
+            <assignToReference>jobsToArchive</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>jobsToArchive</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_jobs_to_collection</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -845,6 +1091,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_Jobs_Exceed_Max_Limit</name>
+        <label>Is Jobs Exceed Max Limit ?</label>
+        <locationX>484</locationX>
+        <locationY>4068</locationY>
+        <defaultConnector>
+            <targetReference>Archive_Entry_Jobs</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Jobs</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>jobsExceedMaxLimit</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Archive_Entries_Job</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_worktrail_exceeds_maxlimit</name>
         <label>Is worktrail exceeds maxlimit ?</label>
         <locationX>484</locationX>
@@ -920,8 +1191,27 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <expression>IF(LEN({!worktrailFileToPost}) &gt; 100
 ,TRUE,FALSE)</expression>
     </formulas>
+    <formulas>
+        <name>jobsExceedMaxLimit</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(LEN({!jobsJSONOutput}) &gt; 100, TRUE, FALSE)</expression>
+    </formulas>
     <interviewLabel>IPS - Archive worktrail {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Archive worktrail</label>
+    <loops>
+        <name>Add_jobs_to_collection</name>
+        <label>Add jobs to collection</label>
+        <locationX>484</locationX>
+        <locationY>3444</locationY>
+        <collectionReference>Get_job_related_to_worktrail</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Job_to_archive</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Jobs_to_JSON</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <loops>
         <name>Add_meetings_to_collection</name>
         <label>Add meetings to collection</label>
@@ -1020,6 +1310,38 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Application_log_Jobs</name>
+        <label>Application log - Jobs</label>
+        <locationX>880</locationX>
+        <locationY>4392</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_Info__c</field>
+            <value>
+                <stringValue>Create archive entry - Jobs</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - Archive worktrail</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_archive_entry</name>
         <label>Create archive entry</label>
         <locationX>616</locationX>
@@ -1038,13 +1360,47 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <locationX>616</locationX>
         <locationY>2904</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_job_related_to_worktrail</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Application_log_Events</targetReference>
         </faultConnector>
         <inputReference>tempEventArchiveEvent</inputReference>
     </recordCreates>
+    <recordCreates>
+        <name>Create_archive_entry_Job</name>
+        <label>Create archive entry - Job</label>
+        <locationX>616</locationX>
+        <locationY>4284</locationY>
+        <connector>
+            <targetReference>Update_worktrail</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Application_log_Jobs</targetReference>
+        </faultConnector>
+        <inputReference>tempArchiveJob</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_job_related_to_worktrail</name>
+        <label>Get job related to worktrail</label>
+        <locationX>484</locationX>
+        <locationY>3336</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Add_jobs_to_collection</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Job__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_meetings_related_to_worktrail</name>
         <label>Get meetings related to worktrail</label>
@@ -1071,7 +1427,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
         <locationX>484</locationX>
-        <locationY>3336</locationY>
+        <locationY>4716</locationY>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -1097,6 +1453,13 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
             <operator>EqualTo</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Is_Archived__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>Work_Trail__c</object>
@@ -1162,7 +1525,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <locationX>352</locationX>
         <locationY>2796</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_job_related_to_worktrail</targetReference>
         </connector>
         <flowName>IPS_Create_archive_entries</flowName>
         <inputAssignments>
@@ -1199,6 +1562,52 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
             <name>referenceObject</name>
             <value>
                 <stringValue>Event</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Create_Archive_Entries_Job</name>
+        <label>Create Archive Entries - Job</label>
+        <locationX>352</locationX>
+        <locationY>4176</locationY>
+        <connector>
+            <targetReference>Update_worktrail</targetReference>
+        </connector>
+        <flowName>IPS_Create_archive_entries</flowName>
+        <inputAssignments>
+            <name>archiveDataToSplit</name>
+            <value>
+                <elementReference>jobsFileToArchive</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>confidential</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>domain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>fnr</name>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>referenceId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>referenceObject</name>
+            <value>
+                <stringValue>Job</stringValue>
             </value>
         </inputAssignments>
     </subflows>
@@ -1253,6 +1662,44 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Event</objectType>
+    </variables>
+    <variables>
+        <name>jobsFileToArchive</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>jobsJSONOutput</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>jobsToArchive</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Job__c</objectType>
+    </variables>
+    <variables>
+        <name>jobToArchive</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Job__c</objectType>
+    </variables>
+    <variables>
+        <name>tempArchiveJob</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Archive_Entry__c</objectType>
     </variables>
     <variables>
         <name>tempArchvieEntry</name>
