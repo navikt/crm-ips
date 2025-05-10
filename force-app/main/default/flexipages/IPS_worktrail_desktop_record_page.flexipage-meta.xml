@@ -218,6 +218,46 @@
                 </componentInstanceProperties>
                 <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
                 <identifier>pathAssistant</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Jobbsporet er avsluttet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Info</value>
+                </componentInstanceProperties>
+                <componentName>crmAlertBanner</componentName>
+                <identifier>c_crmAlertBanner</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>header</name>
