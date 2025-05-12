@@ -125,19 +125,36 @@ public with sharing class IPS_ParticipantPortalReportController{
         Date reportDateFrom = recordDateFrom;
 
         List<IPS_ParticipantPortalTask> wrapperList = new List<IPS_ParticipantPortalTask>();
-        if(reportType == 'End report'){
-            wrapperList = getReportCompletedGoals(currentRecordId); 
 
-        }
-        if(reportType == 'Intervall'){
             wrapperList = getReportCompletedGoals(currentRecordId,reportType,reportDateFrom,reportDateTo); 
-        }
-
-    
-           
+      
 
         return wrapperList;
     }
+/*
+    @AuraEnabled
+    public static string getParticipantReportPassiveFollowUpTask(String recordId){
+        Id currentRecordId = recordId;
+
+        List<IPS_ParticipantPortalTask> wrapperListFollowUp = new List<IPS_ParticipantPortalTask>();
+
+        wrapperListFollowUp = getAllPassivePeriods(currentRecordId); 
+
+        return wrapperListFollowUp;
+    }*/
+
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalTask> getParticipantsReportAllPassivPeriods(String recordId){
+        Id currentRecordId = recordId;
+
+        List<IPS_ParticipantPortalTask> wrapperListPassive = new List<IPS_ParticipantPortalTask>();
+
+        wrapperListPassive = getAllPassivePeriods(currentRecordId); 
+
+        return wrapperListPassive;
+    }
+
+    
 
      /*
     *********************************************************
@@ -267,7 +284,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                         Henter møter som er planlagte max 3 mnd fremover.
 
     @param          : JobbsporId, 
-    @param          : Type rapport(intervall,sluttrapport)
+    @param          : Type rapport(intervall)
     @param          : Startdato
     @param          : Sluttdato
     @Return         : Liste over møter knyttet til ett jobbspor
@@ -298,10 +315,10 @@ public with sharing class IPS_ParticipantPortalReportController{
                         Henter Delmål som er planlagte max 3 mnd fremover.
 
     @param          : JobbsporId, 
-    @param          : Type rapport(intervall,sluttrapport)
+    @param          : Type rapport(intervall)
     @param          : Startdato
     @param          : Sluttdato
-    @Return         : Liste over møter knyttet til ett jobbspor
+    @Return         : Liste over aktiviteter knyttet til ett jobbspor
     ********************************************************
     */
     @AuraEnabled(cacheable=true)
@@ -638,6 +655,7 @@ public with sharing class IPS_ParticipantPortalReportController{
         String endQuery = '';
         String dueDateQuery = '';
         String completedDateQuery = '';
+        System.debug('reportType: ' + reportType);
 
         if (reportType == 'End report') {
             endQuery = goalSelect + goalWhere + goalId + goalSort;
@@ -693,7 +711,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                     wrapperTempList.add(tempList);
                 }
             }
-    }
+        }
     return wrapperTempList;
 }
 
@@ -802,6 +820,7 @@ public with sharing class IPS_ParticipantPortalReportController{
             IPS_endReportSumm5__c,
             IPS_endReportSumm6__c,
             IPS_endReportSumm7__c,
+            IPS_workTrailName__r.createdDate,
             IPS_workTrailName__r.ips_Main_goal__c,
             IPS_workTrailName__r.ips_UO_Service__c,
             IPS_workTrailName__r.ips_Main_Goal_list__c,
@@ -868,6 +887,8 @@ public with sharing class IPS_ParticipantPortalReportController{
                   }
   
                   if(r.IPS_report_Type__c =='End report'){
+                    tempList.reportNotFormatFromDate = Date.ValueOf(r.IPS_workTrailName__r.createdDate);
+                    tempList.reportNotFormatToDate = r.IPS_workTrailName__r.ips_End_Date__c;
                     tempList.reportSummarizeComment1 = r.IPS_endReportSumm1__c;
                     tempList.reportSummarizeComment2 = r.IPS_endReportSumm2__c;
                     tempList.reportSummarizeComment3 = r.IPS_endReportSumm3__c;
@@ -1082,6 +1103,78 @@ public with sharing class IPS_ParticipantPortalReportController{
        
         }
         return wrapperTempList;
+    }
+
+    /*
+    *********************************************************
+    @Method Name    : getAllPassivePeriods
+    @author         : AKO
+    @description    : Henter passive perioder fra Task objektet. 
+                        Henter passive perioder for sluttrapport og intervallrapport.
+    @param          : JobbsporId
+    @Return         : Liste over oppgaver knyttet til passive periode
+    ********************************************************
+    */
+
+    private static list<IPS_ParticipantPortalTask> getAllPassivePeriods(ID currentRecordId) {
+        List<IPS_ParticipantPortalTask> wrapperTempList = new List<IPS_ParticipantPortalTask>();
+        list<Task> allpassiveActivities = [
+            SELECT id, subject, ActivityDate, CreatedDate, whatId
+            FROM task
+            WHERE
+                WhatId = :currentRecordId
+                AND Type_of_Task_IPSUO__c = 'Historikk'
+                AND (subject = 'Passiv tilstand aktivert'
+                OR subject = 'Passiv tilstand deaktivert')
+            ORDER BY CreatedDate
+        ];
+
+        Task tempListActive = null;
+        Integer index =0;
+
+        // Creating new instances of PassivePeriod from retrived tasks
+        for (Task task : allpassiveActivities) {
+            
+            if (task.Subject == 'Passiv tilstand aktivert') {
+                tempListActive = task;
+            } else if (task.Subject == 'Passiv tilstand deaktivert' && tempListActive != null) {
+                index++;
+                IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
+                tempList.OppgaveId = task.id;
+                tempList.Emne = 'Periode - ' + index;
+                tempList.IndexNummer = index; 
+                tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(tempListActive.ActivityDate);
+                tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(task.ActivityDate);  
+                          
+                wrapperTempList.add(tempList);
+                tempListActive = null;
+            }
+        }
+        return wrapperTempList;
+    }
+
+    /*
+    *********************************************************
+    @Method Name    : getPassiveFollowUpPeriod
+    @author         : AKO
+    @description    : Henter passive periode som er aktiv.
+    @param          : JobbsporId
+    @Return         : Liste over oppgaver knyttet til passive periode
+    ********************************************************
+    */
+    private static Task getFollowUpParticipantTask(Id currentRecordId) {
+        Task followUpParticipantTask = new Task();
+            List<Task> followUpParticipantTaskReturned = [
+                SELECT id, subject, ActivityDate, CreatedDate, whatId
+                FROM Task
+                WHERE WhatId = :currentRecordId AND subject = 'Oppfølging av passiv deltaker' AND Status = 'Open'
+                ORDER BY CreatedDate DESC
+                LIMIT 1
+            ];
+            if (!followUpParticipantTaskReturned.isEmpty()) {
+                followUpParticipantTask = followUpParticipantTaskReturned[0];
+            }
+        return followUpParticipantTask;
     }
 
     /*

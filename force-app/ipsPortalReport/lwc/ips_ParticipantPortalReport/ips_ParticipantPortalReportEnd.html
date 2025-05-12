@@ -51,34 +51,62 @@
                         <div lwc:if={typeValue}>
                             <h3>{label.priorityWorkSection}</h3>
                             <p>{report.reportTrailWorkWish}</p>
-                            <div lwc:if={isPassiv}>
-                                <h3>Passive perioder - legge til en tabell</h3>
-                            </div>
+                            <template lwc:if={isPassiv}>
+                                <h3>{label.participantPassiveSection}</h3>
+                                <template lwc:if={isMobile}>
+                                    <template for:each={passivePeriodeList} for:item="pass">
+                                        <c-ips_-participant-portal-readmore key={pass.IndexNummer} label= {pass.Emne}>
+                                            <dl>
+                                                <dt>Passiv aktivert</dt>
+                                                <dd>{pass.OpprettelsesDato}</dd>
+                                                <dt>Passiv deaktivert</dt>
+                                                <dd>{pass.ForfallsDato}</dd>
+                                            </dl>
+                                        </c-ips_-participant-portal-readmore>
+                                    </template>
+                                </template>
+                                <template lwc:if={isDesktop}>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Periode</th>
+                                                <th>Passiv aktivert</th>
+                                                <th>Passiv deaktivert</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={passivePeriodeList} for:item="passive">
+                                                <tr key={passive.IndexNummer}>
+                                                    <td>{passive.IndexNummer}</td>
+                                                    <td>{passive.OpprettelsesDato}</td>
+                                                    <td>{passive.ForfallsDato}</td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </template>
+                            </template>
                         </div>
                         <div lwc:else>
                             <h3>{label.participantCareerPlanTitleAMS}</h3>
                             <p>{report.reportTrailWorkWish}</p>
                         </div>
-
+                        
                         <template lwc:if={isGoal}>
-                            <h3 tabindex="0">{label.partcicipantGoalSection}</h3>
+                            <h3 tabindex="0">{label.completedGoalsInPeriodeSection}</h3>
                             <template lwc:if={isMobile}>
                                 <template for:each={completedGoalsList} for:item="goal">
-                                    <c-ips_-participant-portal-readmore
-                                        tabindex="0"
-                                        key={goal.OppgaveId}
-                                        label={goal.Emne}
-                                    >
+                                    <c-ips_-participant-portal-readmore tabindex="0" key={goal.OppgaveId} label={goal.Emne}>
                                         <dl>
                                             <dt>Emne</dt>
                                             <dd>{goal.Emne}</dd>
                                             <dt>Opprettet dato</dt>
-                                            <dd>{goal.ForfallsDato}</dd>
+                                            <dd>{goal.OpprettelsesDato}</dd>
                                             <dt>Frist</dt>
                                             <dd>{goal.ForfallsDato}</dd>
                                             <dt>Fullført</dt>
-                                            <dd>{goal.ForfallsDato}</dd>
-                                            <dt>Beskrivelse av målet</dt>
+                                            <dd>{goal.UtfoertDato}</dd>
+                                            <dt>Beskrivelse av aktivitet</dt>
                                             <dd>{goal.ReferatKommentar}</dd>
                                         </dl>
                                     </c-ips_-participant-portal-readmore>
@@ -92,16 +120,16 @@
                                             <th>Opprettet dato</th>
                                             <th>Frist</th>
                                             <th>Fullført</th>
-                                            <th>Beskrivelse av målet</th>
+                                            <th>Beskrivelse av aktivitet</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <template for:each={completedGoalsList} for:item="goal">
                                             <tr key={goal.OppgaveId}>
                                                 <td>{goal.Emne}</td>
+                                                <td>{goal.OpprettelsesDato}</td>
                                                 <td>{goal.ForfallsDato}</td>
-                                                <td>{goal.ForfallsDato}</td>
-                                                <td>{goal.ForfallsDato}</td>
+                                                <td>{goal.UtfoertDato}</td>
                                                 <td>{goal.ReferatKommentar}</td>
                                             </tr>
                                         </template>
@@ -109,6 +137,7 @@
                                 </table>
                             </template>
                         </template>
+                       
 
                         <h3>{label.participantCooperationSection}</h3>
                         <template lwc:if={isCompleted}>
