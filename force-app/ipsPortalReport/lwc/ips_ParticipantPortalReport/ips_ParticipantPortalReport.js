@@ -4,6 +4,14 @@ import formFactorPropertyName from '@salesforce/client/formFactor';
 import templateEnd from './ips_ParticipantPortalReportEnd.html';
 import templateIntervall from './ips_ParticipantPortalReportIntervall.html';
 import templateDefault from './ips_ParticipantPortalReportDefault.html';
+
+/* Intervall report */
+import getParticipantOpenGoals from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportOpenGoals';
+import getParticipantOpenMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportOpenMeetings';
+import getParticipantCancelledMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReportCancelledMeetings';
+
+/* End report */
+
 import getParticipantEducations from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantEducations';
 import getParticipantJobs from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantJobs';
 import getParticipantReport from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReport';
@@ -11,9 +19,9 @@ import getParticipantCompletedGoals from '@salesforce/apex/IPS_ParticipantPortal
 import getParticipantCompletedMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportCompletedMeetings';
 import getParticipantAbsentMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportAbsentMeetings';
 import getParticipantCompletedEmployeeMetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEmployeeCompletedMeetings';
-import getParticipantOpenMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportOpenMeetings';
-import getParticipantCancelledMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantReportCancelledMeetings';
-import getParticipantOpenGoals from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportOpenGoals';
+import getParticipantPassivePeriods from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportAllPassivPeriods';
+
+import getParticipantPassive from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportAllPassivPeriods';
 
 import mainGoalSection from '@salesforce/label/c.IPS_main_goal_section_report';
 import summarizeSectionReport from '@salesforce/label/c.IPS_summarize_section_report';
@@ -31,6 +39,7 @@ import participantCareerPlanTitleAMS from '@salesforce/label/c.IPS_participant_c
 import partcicipantGoalSection from '@salesforce/label/c.IPS_participant_goal_section';
 import employerCooperationSection from '@salesforce/label/c.IPS_employer_cooperation_section';
 import participantCooperationSection from '@salesforce/label/c.IPS_participant_cooperation_section';
+import participantPassiveSection from '@salesforce/label/c.IPS_Participant_passive_section_IPS';
 /* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
@@ -57,6 +66,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     @track openMeetingsList;
     @track openGoalsList;
     @track completedGoalsList;
+    @track passivePeriodeList;
     @track reportTypeName;
     @track reportTrailRecordId;
     @track reportDateFrom;
@@ -109,7 +119,8 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         participantCareerPlanTitleAMS,
         partcicipantGoalSection,
         employerCooperationSection,
-        participantCooperationSection
+        participantCooperationSection,
+        participantPassiveSection
     };
 
     handleWireResponse(data, listProperty, flagProperty) {
@@ -188,6 +199,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             return false;
         }
     }
+        
 
     @wire(getParticipantCompletedGoals, {
         recordId: '$reportTrailRecordId',
@@ -315,22 +327,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
-    @wire(getParticipantOpenGoals, {
-        recordId: '$reportTrailRecordId',
-        typeOfReport: '$reportTypeName',
-        recordDateFrom: '$reportDateFrom',
-        recordDateTo: '$reportDateTo'
-    })
-    openGoalsListHandler({ data, error }) {
-        if (this.isReportDataLoaded) {
-            if (data) {
-                this.handleWireResponse(data, 'openGoalsList', 'isOpenGoal');
-            }
-            if (error) {
-                this.error = error;
-            }
-        }
-    }
+    
 
     @wire(getParticipantOpenMeetings, {
         recordId: '$reportTrailRecordId',
@@ -338,9 +335,40 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     openMeetingsHandler({ data, error }) {
-        if (this.isReportDataLoaded ) {
+        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_INTERVAL) {
             if (data) {
                 this.handleWireResponse(data, 'openMeetingsList', 'isOpenMeeting');
+            }
+            if (error) {
+                this.error = error;
+            }
+        }
+    }
+
+    @wire(getParticipantPassivePeriods, {
+        recordId: '$reportTrailRecordId'
+    })
+    passivePeriodHandler({ data, error }) {
+        if (this.isReportDataLoaded && this.typeValue) {
+            if (data) {
+                this.handleWireResponse(data, 'passivePeriodeList', 'isPassiv');
+            }
+            if (error) {
+                this.error = error;
+            }       
+        }
+    }
+
+    @wire(getParticipantOpenGoals, {
+        recordId: '$reportTrailRecordId',
+        typeOfReport: '$reportTypeName',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })
+    openGoalsListHandler({ data, error }) {
+        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_INTERVAL) {
+            if (data) {
+                this.handleWireResponse(data, 'openGoalsList', 'isOpenGoal');
             }
             if (error) {
                 this.error = error;

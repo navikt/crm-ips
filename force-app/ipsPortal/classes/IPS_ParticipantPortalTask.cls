@@ -5,6 +5,7 @@
 
 public class IPS_ParticipantPortalTask {
     @AuraEnabled public String OppgaveId{get;set;}
+    @AuraEnabled public Integer IndexNummer{get;set;}
     @AuraEnabled public String Emne{get;set;}
     @AuraEnabled public String EmneOgDato{get;set;}
     @AuraEnabled public String ForfallsDato{get;set;}

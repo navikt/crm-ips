@@ -69,6 +69,7 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
     isEducationAMS = false;
     isReport = false;
     isTrail = false;
+    reportApiName = 'ips_min_veilederrapport__c';
 
     label = {
         informationTextIPS,
@@ -174,7 +175,7 @@ export default class Ips_ParticipantPortal extends NavigationMixin(LightningElem
         this[NavigationMixin.Navigate]({
             type: 'comm__namedPage',
             attributes: {
-                name: "ips_min_veilederrapport__c"
+                name: this.reportApiName
             },
 
                 state: {
