@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Converting worktrail record collection to JSON using Apex class - ArchiveHelper. ArchiveHelper accepts only record collection as a parameter.</description>
         <name>Convert_worktrail_to_JSON</name>
         <label>Convert worktrail to JSON</label>
         <locationX>484</locationX>
@@ -163,6 +164,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Adding output from ArchiveHelper to a collection.</description>
         <name>Add_worktrail_to_archive</name>
         <label>Add Worktrail To Archive</label>
         <locationX>484</locationX>
@@ -179,6 +181,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Adding AMS related fields from Worktrail object</description>
         <name>AMS_Worktrail_fields</name>
         <label>AMS Worktrail fields</label>
         <locationX>616</locationX>
@@ -202,6 +205,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Assigning values to the archive entry fields.</description>
         <name>Archive_entry</name>
         <label>Archive entry</label>
         <locationX>616</locationX>
@@ -587,6 +591,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Adding IPS related fields from Worktrial object</description>
         <name>IPS_Worktrail_fields</name>
         <label>IPS Worktrail fields</label>
         <locationX>352</locationX>
@@ -969,6 +974,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Adding worktrail record to a worktrail record collection variable.</description>
         <name>Worktrail_collection_to_convert_to_JSON</name>
         <label>Worktrail collection to convert to JSON</label>
         <locationX>484</locationX>
@@ -985,6 +991,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Selected fields from Worktrail object.</description>
         <name>Worktrail_to_archive</name>
         <label>Worktrail to archive</label>
         <locationX>484</locationX>
@@ -1332,6 +1339,7 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Maximum length of the archive data field is 130000 characters. Formula field isWorktrailExceedsMaxLimit is used to check for maximum limit.</description>
         <name>Is_worktrail_exceeds_maxlimit</name>
         <label>Is worktrail exceeds maxlimit ?</label>
         <locationX>484</locationX>
@@ -1393,6 +1401,7 @@ FALSE
 )</expression>
     </formulas>
     <formulas>
+        <description>Returns true when archive data exceeds max limit. Archive data is output from the ArchiveHelper Apex class.</description>
         <name>isWorktrailExceedsMaxLimit</name>
         <dataType>Boolean</dataType>
         <expression>IF(LEN({!archiveData}) &gt; 100,
@@ -1481,6 +1490,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <description>Creates an log when creating archive entry fails.</description>
         <name>Application_log</name>
         <label>Application log</label>
         <locationX>880</locationX>
@@ -1609,6 +1619,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <description>Creating an archive entry which will be sent to archive using a record triggered flow.</description>
         <name>Create_archive_entry</name>
         <label>Create archive entry</label>
         <locationX>616</locationX>
@@ -1775,6 +1786,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     </start>
     <status>Draft</status>
     <subflows>
+        <description>Using subflow which creates archive entries. Each archive entry will have split archive data. This subflow is used when the archive data exceeds the maximum limit of the archive data field.</description>
         <name>Create_archive_entries</name>
         <label>Create archive entries</label>
         <locationX>352</locationX>
@@ -2103,6 +2115,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <objectType>Task</objectType>
     </variables>
     <variables>
+        <description>Will be used in subflow : IPS - Create archive entries subflow, to split the data into small chunks that are within the maximum limit.</description>
         <name>worktrailDataToSplit</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
@@ -2125,6 +2138,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <objectType>Work_Trail__c</objectType>
     </variables>
     <variables>
+        <description>Used to add worktrail record. This variable will be used as parameter in Apex class ArchiveHelper.</description>
         <name>worktralCollection</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
