@@ -21,8 +21,8 @@
     <decisions>
         <name>Worktrail_Or_Profile</name>
         <label>Worktrail Or Profile</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
         <defaultConnector>
             <targetReference>Name_of_the_user</targetReference>
         </defaultConnector>
@@ -44,8 +44,8 @@
         </rules>
     </decisions>
     <environments>Default</environments>
-    <interviewLabel>IPS - Worktrail owned by user {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Informasjonsvisning: Bruker og Jobbspor</label>
+    <interviewLabel>IPS - User And Profile Information {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - User And Profile Information</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -68,8 +68,8 @@
     <recordLookups>
         <name>Get_profile_name</name>
         <label>Get profile name</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Profile_info</targetReference>
@@ -89,8 +89,8 @@
     <recordLookups>
         <name>Get_user_info</name>
         <label>Get user info</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_profile_name</targetReference>
@@ -110,8 +110,8 @@
     <recordLookups>
         <name>Get_worktrail</name>
         <label>Get worktrail related to owner</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Worktrail_owned</targetReference>
@@ -132,8 +132,8 @@
     <screens>
         <name>Choose_between_worktrail_and_profile</name>
         <label>Choose between worktrail and profile</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>182</locationX>
+        <locationY>134</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -157,8 +157,8 @@
     <screens>
         <name>Jobbspor_knyttet_til_JS_MV</name>
         <label>Jobbspor knyttet til JS / MV</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -181,8 +181,8 @@
     <screens>
         <name>Name_of_the_user</name>
         <label>Name of the user</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -205,16 +205,15 @@
     <screens>
         <name>Profile_info</name>
         <label>Profile info</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <backButtonLabel>Forrige</backButtonLabel>
         <fields>
             <name>profileNameDisplay</name>
-            <fieldText>&lt;p style=&quot;text-align: right;&quot;&gt;{!Brukerens_navn} profile
-                :&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: right;&quot;&gt;{!Brukerens_navn} profile : &lt;/p&gt;&lt;p style=&quot;text-align: right;&quot;&gt;              &lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -229,14 +228,14 @@
     <screens>
         <name>Worktrail_owned</name>
         <label>Worktrail owned</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <backButtonLabel>Forrige</backButtonLabel>
         <fields>
-            <name>worktrailCollection</name>
+            <name>worktrailCollectionDisplay</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
                 <typeValue>Work_Trail__c</typeValue>
@@ -274,18 +273,15 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>columns</name>
-                <value>
-                    <stringValue>
-                        [{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-36fe&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Work
-                        Trail
-                        Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_Status__c&quot;,&quot;guid&quot;:&quot;column-00bf&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>maxRowSelection</name>
                 <value>
                     <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-0d1b&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Work Trail Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_Status__c&quot;,&quot;guid&quot;:&quot;column-1420&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -297,7 +293,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>0</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Choose_between_worktrail_and_profile</targetReference>
