@@ -1,0 +1,35 @@
+<template>
+    <div class="breadcrumb-container">
+        <img src={homeImg} alt="" class="breadcrumb-img" />
+        <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
+    </div>
+    <template if:true={isGoal}>
+        <div class="container responsive">
+            <h1>Gjennomførte aktiviteter</h1>
+                <template for:each={goalRecords} for:item="goal">
+                    <div key={goal.jobbsporId} >
+                        <c-readmore label={goal.Emne}>
+                            <dl>
+                                <dt >Periode</dt>
+                                <dd tabindex="0"> {goal.OpprettelsesDato} - {goal.UtfoertDato }</dd>
+                                <dt >Beskrivelse</dt>
+                                <dd tabindex="0">{goal.ReferatKommentar}</dd>
+                            </dl>
+                        </c-readmore>
+                    </div>
+                </template>
+        </div>
+    </template>
+    <template if:false={isGoal}>
+        <div class="container responsive warningContainer">
+                <div class="responsive">
+                    <div class="colorWarning">
+                        <div class="spaceAround" tabindex="0" role="status">
+                                <img src={warningIcon} alt="Dine aktiviteter varsel" /> 
+                                &nbsp;&nbsp;{warningText}
+                        </div>  
+                    </div>
+                </div>
+        </div>
+    </template>
+</template>

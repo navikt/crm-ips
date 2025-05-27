@@ -1,0 +1,31 @@
+<template>
+    <div class="responsive" data-id={id}>
+        <!--section header-->
+        <button
+            type="button"
+            aria-expanded={ariaExpanded}
+            class="section-header"
+            aria-controls={id}
+            data-buttonid={id}
+            onclick={toggleSection}
+        >
+            <span class="section-title" title={label}>{label}</span>
+            <span class="section-illustration">
+                <lightning-icon
+                    icon-name="utility:switch"
+                    alternative-text="button icon"
+                    size="small"
+                    class="slds-section__title-action-icon"
+                >
+                    <label>refresh</label>
+                    <!--A trick for mobile warning-->
+                </lightning-icon>
+            </span>
+        </button>
+        <div class="slds-section__content section-body vertical-line">
+            <slot></slot>
+        </div>
+        <div style="padding-top: 0.2rem"></div>
+        <div class="section-border"></div>
+    </div>
+</template>

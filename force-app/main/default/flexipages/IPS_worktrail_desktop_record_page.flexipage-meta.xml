@@ -44,7 +44,7 @@
                         <valueListItems>
                             <value>Work_Trail__c.IPS_cloneWorkTrail</value>
                             <visibilityRule>
-                                <booleanFilter>(1 OR 2) AND 3</booleanFilter>
+                                <booleanFilter>(1 OR 2 OR 4) AND 3</booleanFilter>
                                 <criteria>
                                     <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
                                     <operator>EQUAL</operator>
@@ -59,6 +59,11 @@
                                     <leftValue>{!Record.ips_Status__c}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>Ended</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV UO Metodeveileder</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
@@ -148,7 +153,7 @@
                 <identifier>c_ips_alertBanner</identifier>
                 <visibilityRule>
                     <criteria>
-                        <leftValue>{!Record.ips_Passive__c}</leftValue>
+                        <leftValue>{!Record.passive_status__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>true</rightValue>
                     </criteria>
@@ -213,6 +218,46 @@
                 </componentInstanceProperties>
                 <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
                 <identifier>pathAssistant</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Jobbsporet er avsluttet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Info</value>
+                </componentInstanceProperties>
+                <componentName>crmAlertBanner</componentName>
+                <identifier>c_crmAlertBanner</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>header</name>
@@ -707,26 +752,6 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_Financialframework_before_start_work__c</fieldItem>
                 <identifier>field40</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.ips_Plan__c</fieldItem>
-                <identifier>field41</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.ips_Transition_to_work__c</fieldItem>
-                <identifier>field42</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-cbd393e2-d95d-4291-b16f-d73f0cedad07</name>
@@ -1891,6 +1916,10 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Tabs</value>
+                </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>tabs</name>
                     <value>Facet-a645aa81-399a-4831-9469-6d5362a9856c</value>

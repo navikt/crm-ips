@@ -100,21 +100,29 @@ public with sharing class IPS_TestDataFactory {
             Location = 'Møte ett sted',
             ips_Subcategory_Type_IPS__c = 'Job support',
             F_rste_arbeidsgiverm_te__c = 'Nei',
+            ips_Out_in_the_field__c = true,
             IPS_Status1__c = 'Open'
         );
         return createEvent;
     }
 
+    /**
+     * Creates task delmål
+     * Activities related to worktrail
+     * @param jobbsporId worktrail id of the task
+     * @return  `Task`
+     */
     public static Task creategoal(String jobbsporId) {
         Id devRecordTypeId1 = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
-
+       
         Task taskGoal = new Task(
             WhatId = jobbsporId,
             RecordTypeId = devRecordTypeId1,
             Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)',
+            ips_Due_Date_Time__c = system.Datetime.now().addMonths(1),
+            ActivityDate = system.Date.today().addMonths(1),
             Subject = 'Ett delmål',
-            IPS_Status1__c = 'Open',
-            Status = 'Open'
+            Status = 'Open' 
         );
         return taskGoal;
     }
@@ -180,10 +188,10 @@ public with sharing class IPS_TestDataFactory {
             IPS_participant_related_to_meeting__c = true,
             WhatId = jobbsporId,
             RelatedToAccount__c = employerId,
-            RecordTypeId = devRecordTypeId,
-            IPS_travelTimeFrom__c = 20,
             StartDateTime = system.Datetime.now(),
             EndDateTime = system.Datetime.now().addHours(1),
+            RecordTypeId = devRecordTypeId,
+            IPS_travelTimeFrom__c = 20,
             Subject = 'Møte med Arbeidsgiver',
             Description = 'Møte',
             IPS_isFromTimeline__c = true,
@@ -192,11 +200,18 @@ public with sharing class IPS_TestDataFactory {
             ips_Subcategory_Type_IPS__c = 'Job support',
             IPS_Status1__c = 'Open',
             OwnerId = ownerId,
+            ips_Out_in_the_field__c = true,
             Location = 'Kontoret'
         );
         return createEvent;
     }
 
+     /**
+     * Creates Event, type Meeting with Participant
+     * Activities related to worktrail
+     * @param contactid, jobbsporId,status worktrail id of the event
+     * @return  `Event`
+     */
     public static Event createParticipantEvent(String contactId, String jobbsporId) {
         Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
             .get('Ips_uo_Deltakermote')
@@ -208,15 +223,16 @@ public with sharing class IPS_TestDataFactory {
             WhatId = jobbsporId,
             WhoId = contactId,
             RecordTypeId = devRecordTypeId,
-            IPS_travelTimeFrom__c = 20,
             StartDateTime = system.Datetime.now(),
             EndDateTime = system.Datetime.now().addHours(1),
+            IPS_travelTimeFrom__c = 20,
             Subject = 'Møte med deltaker',
             IPS_isFromTimeline__c = true,
             Description = 'Møte',
             IPS_Type__c = 'Meeting with Participant',
             IPS_Status1__c = 'Open',
             ips_uo_Kanal__c = 'Fysisk',
+            ips_Out_in_the_field__c = true,
             Location = 'Kontoret'
         );
         return createEvent;
@@ -242,6 +258,7 @@ public with sharing class IPS_TestDataFactory {
             IPS_Status1__c = 'Open',
             OwnerId = ownerId,
             ips_uo_Kanal__c = 'Fysisk',
+            ips_Out_in_the_field__c = true,
             Location = 'Kontoret'
         );
         return createEvent;
@@ -249,17 +266,19 @@ public with sharing class IPS_TestDataFactory {
 
     public static ips_Job__c createJob(ID employerId, ID worktrailId, String status) {
         Date endDate;
+        Date startDate = System.today();
         if (status == 'Ongoing' || status == 'Planned') {
-            endDate = Date.newInstance(2050, 12, 17);
+            endDate = startDate.addMonths(1);
         } else {
-            endDate = Date.newInstance(2022, 12, 17);
+            startDate = startDate.addMonths(-1);
+            endDate = startDate.addDays(-1);
         }
 
         ips_Job__c createJob = new ips_Job__c(
             Name = 'Jobb nr 1',
             ips_Employer__c = employerId,
             ips_Work_Trail__c = worktrailId,
-            ips_Start_Date__c = Date.newInstance(2022, 10, 17),
+            ips_Start_Date__c = startDate,
             ips_End_Date__c = endDate,
             ips_Form_of_Employment__c = 'Permanent employment',
             ips_Job_Support__c = 'Dette er jobbstøtte',
@@ -273,17 +292,19 @@ public with sharing class IPS_TestDataFactory {
 
     public static ips_Job__c createWorkTraining(ID employerId, ID worktrailId, String status) {
         Date endDate;
-        if (status == 'Ongoing') {
-            endDate = Date.newInstance(2050, 12, 17);
+        Date startDate = System.today();
+        if (status == 'Ongoing' || status == 'Planned') {
+            endDate = startDate.addMonths(1);
         } else {
-            endDate = Date.newInstance(2022, 12, 17);
+            startDate = startDate.addMonths(-1);
+            endDate = startDate.addDays(-1);
         }
 
         ips_Job__c createJob = new ips_Job__c(
             Name = 'Arbeidstrening nr 1',
             ips_Employer__c = employerId,
             ips_Work_Trail__c = worktrailId,
-            ips_Start_Date__c = Date.newInstance(2022, 10, 17),
+            ips_Start_Date__c = startDate,
             ips_End_Date__c = endDate,
             ips_Form_of_Employment__c = 'work training',
             ips_Job_Support__c = 'Dette er jobbstøtte',
@@ -309,8 +330,8 @@ public with sharing class IPS_TestDataFactory {
             IPS_intervallReport__c = 'Underveisnotat',
             IPS_report_Type__c = 'Intervall',
             IPS_workTrailName__c = workTrailId,
-            IPS_intervallDateFrom__c = System.today(),
-            IPS_intervallDateTo__c = System.today().addDays(45)
+            IPS_intervallDateFrom__c =System.today().addMonths(-3),
+            IPS_intervallDateTo__c = System.today().addDays(-1)
         );
         return intervallReport;
     }
@@ -320,7 +341,7 @@ public with sharing class IPS_TestDataFactory {
             ips_Work_Trail__c = workTrailId,
             ips_Education_Subject__c = 'Emne på utdanningen',
             ips_Contact_at_the_Education_Institution__c = 'Utdanningsinstitusjon',
-            ips_Form_of_Education__c = '	Full-time Study',
+            ips_Form_of_Education__c = 'Full-time Study',
             ips_Status__c = 'Ongoing',
             ips_Start_Date__c = System.today(),
             ips_End_Date__c = System.today().addDays(30)

@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
+    <constants>
+        <description>Denne posttypen brukes til møter i Jobbsporet med arbeidsgivere - IPS</description>
+        <name>arbeidsgiver_from_worktrail</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>IPS_Event</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Denne posttypen brukes til møter med arbeidsgivere registrert på arbeidsgiverkontoen - IPS og UO</description>
+        <name>arbeidsgivermote</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>IPS_UO_Arbeidsgiver</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Denne posttypen brukes til møter i Jobbsporet med Deltakere - IPS og UO</description>
+        <name>deltakermote</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Ips_uo_Deltakermote</stringValue>
+        </value>
+    </constants>
     <decisions>
         <description>Checks whether time greater than zero. If time is zero &apos;out in the
             field&apos; checkbox will not be set to true (checked).</description>
         <name>Is_time_greater_than_zero</name>
         <label>Is time greater than zero</label>
-        <locationX>182</locationX>
-        <locationY>287</locationY>
+        <locationX>314</locationX>
+        <locationY>323</locationY>
         <defaultConnectorLabel>Time is zero</defaultConnectorLabel>
         <rules>
             <name>Time_is_greater_than_zero</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ips_Travel_time__c</leftValueReference>
                 <operator>GreaterThan</operator>
@@ -26,10 +50,32 @@
                     <numberValue>0.0</numberValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Set_out_in_the_field_to_true</targetReference>
             </connector>
             <label>Time is greater than zero</label>
+        </rules>
+        <rules>
+            <name>Greater_than_zero_and_cancelled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_out_in_the_field_to_false</targetReference>
+            </connector>
+            <label>Greater than zero and cancelled</label>
         </rules>
     </decisions>
     <description>Update out in the field checkbox to true/checked when travel time is not null.</description>
@@ -56,12 +102,26 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
+        <description>Set out in the field to false when status of the meeting is cancelled.</description>
+        <name>Set_out_in_the_field_to_false</name>
+        <label>Set out in the field to false</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>ips_Out_in_the_field__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <description>Out in the field field is set to true, when travel time is not blank and not
             zero.</description>
         <name>Set_out_in_the_field_to_true</name>
         <label>Set out in the field to true</label>
         <locationX>50</locationX>
-        <locationY>395</locationY>
+        <locationY>431</locationY>
         <inputAssignments>
             <field>ips_Out_in_the_field__c</field>
             <value>
@@ -71,7 +131,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_time_greater_than_zero</targetReference>
@@ -93,7 +153,7 @@
         </filters>
         <object>Event</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
-        <triggerType>RecordBeforeSave</triggerType>
+        <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
 </Flow>

@@ -1,0 +1,392 @@
+<template>
+    
+    <div class="container responsive">
+        <div class="breadcrumb-container">
+            <img src={homeImg} alt="" class="breadcrumb-img" />
+            <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
+        </div>
+        <template lwc:if={isReportDataLoaded}>
+           <template for:each={reportList} for:item="reportList">
+                <div key={reportList.reportId}>
+                    <h1 tabindex="0">{reportList.reportName}</h1>
+                    <div>
+                        <dl>
+                            <dt tabindex="0">Deltaker</dt>
+                            <dd tabindex="0">{reportList.reportParticipantName}</dd>
+                            <dt tabindex="0">Jobbspesialist</dt>
+                            <dd tabindex="0">{reportList.reportOwnerName}</dd>
+                            <dt tabindex="0">{reportList.reportTrailDepartmentTeamLabel}</dt>
+                            <dd tabindex="0">{reportList.reportTrailDepartmentTeam}</dd>
+                            <dt tabindex="0">Nav veileder</dt>
+                            <dd tabindex="0">{reportList.reportTrailSupervisor}</dd>
+                            <dt tabindex="0">Startdato</dt>
+                            <dd tabindex="0">{reportList.reportTrailStartDate}</dd>
+                        </dl>
+                    </div>
+
+                    <h2 tabindex="0">{label.mainGoalSection}</h2>
+                    <p tabindex="0">{reportList.reportTrailGoal}</p>
+                    <p tabindex="0">{reportList.reportTrailGoalDescription}</p>
+
+                    <template lwc:if={typeValue}>
+                        <h2 tabindex="0">{label.priorityWorkSection}</h2>
+                        <p tabindex="0">{reportList.reportTrailWorkWish}</p>
+                    </template>
+
+                    <h2 tabindex="0">{label.summarizeSectionReport} {reportList.reportFromDate} - {reportList.reportToDate}</h2>
+                    <p tabindex="0">{reportList.reportIntervallSummarizePeriode}</p>
+
+                <template lwc:if={isPassiv}>
+                    <h3>{label.participantPassiveSection}</h3>
+                    <template lwc:if={isMobile}>
+                        <template for:each={passivePeriodeList} for:item="pass">
+                            <c-ips_-participant-portal-readmore key={pass.IndexNummer} label= {pass.Emne}>
+                                <dl>
+                                    <dt>Passiv aktivert</dt>
+                                    <dd>{pass.OpprettelsesDato}</dd>
+                                    <dt>Passiv deaktivert</dt>
+                                    <dd>{pass.ForfallsDato}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
+                    </template>
+                    <template lwc:if={isDesktop}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Periode</th>
+                                    <th>Passiv aktivert</th>
+                                    <th>Passiv deaktivert</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={passivePeriodeList} for:item="passive">
+                                    <tr key={passive.IndexNummer}>
+                                        <td>{passive.IndexNummer}</td>
+                                        <td>{passive.OpprettelsesDato}</td>
+                                        <td>{passive.ForfallsDato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </template>
+
+                <template lwc:if={isGoal}>
+                    <h3 tabindex="0">{label.completedGoalsInPeriodeSection}</h3>
+                    <template lwc:if={isMobile}>
+                        <template for:each={completedGoalsList} for:item="goal">
+                            <c-ips_-participant-portal-readmore tabindex="0" key={goal.OppgaveId} label={goal.Emne}>
+                                <dl>
+                                    <dt>Emne</dt>
+                                    <dd>{goal.Emne}</dd>
+                                    <dt>Opprettet dato</dt>
+                                    <dd>{goal.OpprettelsesDato}</dd>
+                                    <dt>Frist</dt>
+                                    <dd>{goal.ForfallsDato}</dd>
+                                    <dt>Fullført</dt>
+                                    <dd>{goal.UtfoertDato}</dd>
+                                    <dt>Beskrivelse av aktivitet</dt>
+                                    <dd>{goal.ReferatKommentar}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
+                    </template>
+                    <template lwc:if={isDesktop}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emne</th>
+                                    <th>Opprettet dato</th>
+                                    <th>Frist</th>
+                                    <th>Fullført</th>
+                                    <th>Beskrivelse av aktivitet</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={completedGoalsList} for:item="goal">
+                                    <tr key={goal.OppgaveId}>
+                                        <td>{goal.Emne}</td>
+                                        <td>{goal.OpprettelsesDato}</td>
+                                        <td>{goal.ForfallsDato}</td>
+                                        <td>{goal.UtfoertDato}</td>
+                                        <td>{goal.ReferatKommentar}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </template>
+
+                <h2 tabindex="0">{label.cooperationParticipantSection}</h2>
+                <template lwc:if={isCompleted}>
+                    <h3 tabindex="0">Møter deltaker har deltatt på i perioden:</h3>
+                    <template lwc:if={isMobile}>
+                        <template for:each={completedMeetingsList} for:item="com">
+                            <c-ips_-participant-portal-readmore key={com.EventId} label={com.Emne}>
+                                <dl>
+                                    <dt>Emne</dt>
+                                    <dd>{com.Emne}</dd>
+                                    <dt>Motedato</dt>
+                                    <dd>{com.Motedato}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
+                    </template>
+                    <template lwc:if={isDesktop}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emne</th>
+                                    <th style="width: 20%">Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={completedMeetingsList} for:item="com">
+                                    <tr key={com.EventId}>
+                                        <td>{com.Emne}</td>
+                                        <td>{com.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </template>
+
+                <template lwc:if={isAbsent}>
+                    <h3 tabindex="0">Møter deltaker ikke har møtt til i perioden:</h3>
+                    <template lwc:if={isMobile}>
+                        <template for:each={absentMeetingsList} for:item="abs">
+                            <c-ips_-participant-portal-readmore key={abs.EventId} label={abs.Emne}>
+                                <dl>
+                                    <dt>Emne</dt>
+                                    <dd>{abs.Emne}</dd>
+                                    <dt>Motedato</dt>
+                                    <dd>{abs.Motedato}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
+                    </template>
+                    <template lwc:if={isDesktop}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emne</th>
+                                    <th style="width: 20%">Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={absentMeetingsList} for:item="abs">
+                                    <tr key={abs.EventId}>
+                                        <td>{abs.Emne}</td>
+                                        <td>{abs.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </template>
+
+                <template lwc:if={isCancel}>
+                    <p>Antall avlyste deltakermøter : {cancelledMeetingsNumber}</p>
+                    <p></p>
+                </template>
+
+                <h2 tabindex="0">{label.cooperationEmployerSection}</h2>
+                <template lwc:if={isEmployeeCompleted}>
+                    <h3 tabindex="0">Møter gjennomført med arbeidsgiver(e) i perioden:</h3>
+                    <template lwc:if={isMobile}>
+                        <template for:each={employeeMeetingsList} for:item="emp">
+                            <c-ips_-participant-portal-readmore key={emp.EventId} label={emp.Emne}>
+                                <dl>
+                                    <dt>Arbeidsgiver</dt>
+                                    <dd>{emp.Arbeidsgiver}</dd>
+                                    <dt>Kontaktperson</dt>
+                                    <dd>{emp.ArbeidsgiverKontakt}</dd>
+                                    <dt>Deltaker deltar</dt>
+                                    <dd>{emp.DeltakerDeltatt}</dd>
+                                    <dt>Emne</dt>
+                                    <dd>{emp.Emne}</dd>
+                                    <dt>Møtekategori</dt>
+                                    <dd>{emp.Underkategori}</dd>
+                                    <dt>Møtedato</dt>
+                                    <dd>{emp.Motedato}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
+                    </template>
+                    <template lwc:if={isDesktop}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Arbeidsgiver</th>
+                                    <th>Kontaktperson</th>
+                                    <th>Deltaker deltar</th>
+                                    <th>Emne</th>
+                                    <th>Møtekategori</th>
+                                    <th>Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={employeeMeetingsList} for:item="emp">
+                                    <tr key={emp.EventId}>
+                                        <td>{emp.Arbeidsgiver}</td>
+                                        <td>{emp.ArbeidsgiverKontakt}</td>
+                                        <td>{emp.DeltakerDeltatt}</td>
+                                        <td>{emp.Emne}</td>
+                                        <td>{emp.Underkategori}</td>
+                                        <td>{emp.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </template>
+
+                <template lwc:if={isJob}>
+                    <h2 tabindex="0">{label.participantWorkTraining}</h2>
+                    <template for:each={jobsList} for:item="job">
+                        <c-ips_-participant-portal-readmore tabindex="0" key={job.JobbId} label={job.Emne}>
+                            <dl>
+                                <dt>Arbeidsgiver</dt>
+                                <dd>{job.arbeidsgiver}</dd>
+                                <dt>Startdato</dt>
+                                <dd>{job.StartDato}</dd>
+                                <dt>Sluttdato</dt>
+                                <dd>{job.SluttDato}</dd>
+                                <dt>Jobbtype</dt>
+                                <dd>{job.Arbeidsform}</dd>
+                                <dt>Stillingsbeskrivelse</dt>
+                                <dd>{job.Stillingsbeskrivelse}</dd>
+                                <dt>Plan for jobbstøtte</dt>
+                                <dd>{job.Plan}</dd>
+                                <dt>Hva fungerte</dt>
+                                <dd>{job.Fungerer}</dd>
+                                <dt>Hva fungerte ikke</dt>
+                                <dd>{job.FungererIkke}</dd>
+                            </dl>
+                        </c-ips_-participant-portal-readmore>
+                    </template>
+                </template>
+
+                <template lwc:if={isEducation}>
+                    <h2 tabindex="0">{label.participantEducationSection}</h2>
+                    <template for:each={educationList} for:item="edu">
+                        <c-ips_-participant-portal-readmore key={edu.UtdanningId} label={edu.UtdanningNavn}>
+                            <dl>
+                                <dt>Instutisjon</dt>
+                                <dd>{edu.UtdanningSted}</dd>
+                                <dt>Start dato</dt>
+                                <dd>{edu.UtdanningStart}</dd>
+                                <dt>Slutt dato</dt>
+                                <dd>{edu.UtdanningSlutt}</dd>
+                                <dt>Type utdanning</dt>
+                                <dd>{edu.Utdanningsform}</dd>
+                                <dt>Plan for støtte</dt>
+                                <dd>{edu.Plan}</dd>
+                                <dt>Hva fungerte</dt>
+                                <dd>{edu.Fungerer}</dd>
+                                <dt>Hva fungerte ikke</dt>
+                                <dd>{edu.FungererIkke}</dd>
+                                <dt>Beskrivelse av opplæringsløp</dt>
+                                <dd>{edu.Utdanningslop}</dd>
+                            </dl>
+                        </c-ips_-participant-portal-readmore>
+                    </template>
+                </template>
+
+                <h2 tabindex="0">{label.planNextPeriodeSection}</h2>
+                <p>{reportList.reportIntervallSummarizeNextPeriode}</p>
+                <template lwc:if={isOpenGoal}>
+                    <h3 tabindex="0">Aktiviteter:</h3>
+                    <template lwc:if={isMobile}>
+                        <template for:each={openGoalsList} for:item="ogoals">
+                            <c-ips_-participant-portal-readmore key={ogoals.OppgaveId} label={ogoals.Emne}>
+                                <dl>
+                                    <dt>Emne</dt>
+                                    <dd>{ogoals.Emne}</dd>
+                                    <dt>Opprettet dato</dt>
+                                    <dd>{ogoals.OpprettelsesDato}</dd>
+                                    <dt>Frist</dt>
+                                    <dd>{ogoals.ForfallsDato}</dd>
+                                    <dt>Beskrivelse av aktivitet</dt>
+                                    <dd>{ogoals.ReferatKommentar}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
+                    </template>
+
+                        <template lwc:if={isDesktop}>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Emne</th>
+                                        <th>Opprettet dato</th>
+                                        <th>Frist</th>
+                                        <th>Beskrivelse av aktivitet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={openGoalsList} for:item="ogoals">
+                                        <tr key={ogoals.OppgaveId}>
+                                            <td>{ogoals.Emne}</td>
+                                            <td>{ogoals.OpprettelsesDato}</td>
+                                            <td>{ogoals.ForfallsDato}</td>
+                                            <td>{ogoals.ReferatKommentar}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                    </template>
+                <template lwc:if={isOpenMeeting}>
+                    <h3 tabindex="0">Møter:</h3>
+                    <template lwc:if={isMobile}>
+                        <template for:each={openMeetingsList} for:item="open">
+                            <c-ips_-participant-portal-readmore key={open.EventId} label={open.Emne}>
+                                <dl>
+                                    <dt>Emne</dt>
+                                    <dd>{open.Emne}</dd>
+                                    <dt>Type</dt>
+                                    <dd>{open.Motetype}</dd>
+                                    <dt>Motedato</dt>
+                                    <dd>{open.Motedato}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
+                    </template>
+                    <template lwc:if={isDesktop}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emne</th>
+                                    <th>Type</th>
+                                    <th>Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={openMeetingsList} for:item="open">
+                                    <tr key={open.EventId}>
+                                        <td>{open.Emne}</td>
+                                        <td>{open.Motetype}</td>
+                                        <td>{open.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </template>
+
+                <template lwc:if={reportList.reportParticipantOnBehalfComment}>
+                    <h2 tabindex="0">{label.participantCommentSection}</h2>
+                    <p tabindex="0">{reportList.reportParticipantComment}</p>
+                    <p tabindex="0">{reportList.reportParticipantOnBehalfComment}</p>
+                </template>
+                </div>
+            </template>
+        </template>
+        <template lwc:else>
+            <lightning-spinner alternative-text="Laster rapport"></lightning-spinner>
+        </template>
+    </div>
+</template>
