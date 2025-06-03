@@ -138,7 +138,7 @@ public with sharing class IPS_ParticipantPortalReportController{
 
        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
 
-           wrapperListMeeting = getParticipantsReportCompletedMeetingsEnd(currentRecordId); 
+           wrapperListMeeting = getParticipantsCompletedMeetingsEnd(currentRecordId); 
 
        return wrapperListMeeting;
    }
@@ -236,14 +236,13 @@ public with sharing class IPS_ParticipantPortalReportController{
     ********************************************************
     */
     @AuraEnabled(cacheable=true)
-    public static List<IPS_ParticipantPortalEducation> getParticipantEducations(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+    public static List<IPS_ParticipantPortalEducation> getParticipantEducations(String recordId,Date recordDateFrom, Date recordDateTo){
         Id currentRecordId = recordId;
         Date reportDateTo = recordDateTo;
         Date reportDateFrom = recordDateFrom;
-        String reportType = typeOfReport; 
 
         List<ips_ParticipantPortalEducation> wrapperList = new List<ips_ParticipantPortalEducation>();
-            wrapperList = getEducations(currentRecordId,reportType,reportDateFrom,reportDateTo);
+            wrapperList = getEducations(currentRecordId,reportDateFrom,reportDateTo);
             return wrapperList;
     }
 
@@ -376,14 +375,13 @@ public with sharing class IPS_ParticipantPortalReportController{
     ********************************************************
     */
     @AuraEnabled(cacheable=true)
-    public static List<IPS_ParticipantPortalEvent> getParticipantReportCancelledMeetings(String recordId,String typeOfReport,Date recordDateFrom, Date recordDateTo){
+    public static List<IPS_ParticipantPortalEvent> getParticipantReportCancelledMeetings(String recordId,Date recordDateFrom, Date recordDateTo){
         Id currentRecordId = recordId;
-        String reportType = typeOfReport;
         Date reportDateTo = recordDateTo;
         Date reportDateFrom = recordDateFrom;
         List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
         
-        wrapperListMeeting = getReportCanceledMeetings(currentRecordId,reportType,reportDateFrom, reportDateTo);
+        wrapperListMeeting = getReportCanceledMeetings(currentRecordId,reportDateFrom, reportDateTo);
         return wrapperListMeeting;
 
     }
@@ -805,7 +803,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     @Return         : Liste over fullførte møter knyttet til ett jobbspor
     ********************************************************
     */
-   private static List<IPS_ParticipantPortalEvent> getParticipantsReportCompletedMeetingsEnd (id recordId) {
+   private static List<IPS_ParticipantPortalEvent> getParticipantsCompletedMeetingsEnd (id recordId) {
     List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
     List<Event> employeeActivity = new List<Event>();
     
@@ -857,7 +855,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     @Return         : Liste over møter knyttet til ett jobbspor
     ********************************************************
     */
-    private static List<IPS_ParticipantPortalEvent> getReportCanceledMeetings(id recordId,String reportType, Date reportDateFrom, Date reportDateTo) {
+    private static List<IPS_ParticipantPortalEvent> getReportCanceledMeetings(id recordId, Date reportDateFrom, Date reportDateTo) {
         List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
         IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
 
@@ -867,12 +865,8 @@ public with sharing class IPS_ParticipantPortalReportController{
         String partFilter = ' AND ActivityDate >= :reportDateFrom AND ActivityDate <= :reportDateTo';
         String partSort = ' ORDER BY ActivityDate DESC';
         String query = '';
-        if(reportType == 'End report'){
-            query = partSelect + partWhere + partId;
-        }
-        if(reportType == 'Intervall'){
+      
             query = partSelect + partWhere + partId + partFilter + partSort;
-        }
 
        Integer numbersOfMeeting = 1;
         for(Event epart : Database.query(query)) {
@@ -975,7 +969,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     @return         : Liste over utdanninger knyttet til ett jobbspor
     ********************************************************
     */
-    private static List<IPS_ParticipantPortalEducation> getEducations(ID currentRecordId,String reportType,Date reportDateFrom, Date reportDateTo){
+    private static List<IPS_ParticipantPortalEducation> getEducations(ID currentRecordId,Date reportDateFrom, Date reportDateTo){
         
         List<IPS_ParticipantPortalEducation> wrapperTempList = new List<IPS_ParticipantPortalEducation>();
 
@@ -997,25 +991,7 @@ public with sharing class IPS_ParticipantPortalReportController{
             ORDER BY ips_Start_Date__c DESC
         ];
         
-        if(reportType == 'End report'){
-            for(ips_Education__c i : tempEducation) {
-                IPS_ParticipantPortalEducation tempList = new IPS_ParticipantPortalEducation();
-                if(i.ips_Status__c == 'Ongoing' || i.ips_Status__c == 'Completed'){
-                    tempList.UtdanningId = i.id;
-                    tempList.UtdanningNavn = i.Name;
-                    tempList.UtdanningSted = i.ips_Name_of_the_Education_Institution__c;
-                    tempList.Utdanningsform =IPS_ParticipantPortalUtility.formatTypeOf(i.ips_Form_of_Education__c);
-                    tempList.Plan = i.ips_Education_Support_Plan__c;
-                    tempList.UtdanningStart = i.ips_Start_Date__c;
-                    tempList.UtdanningSlutt = i.ips_End_Date__c;
-                    tempList.Fungerer = i.ips_What_did_work_with_this_education__c;
-                    tempList.FungererIkke = i.ips_What_did_not_work_with_thiseducation__c;
-                    tempList.Status = i.ips_Status__c;
-                    wrapperTempList.add(tempList);
-                }
-            }
-        }
-        if(reportType =='Intervall'){
+
             for(ips_Education__c i : tempEducation) {
                 IPS_ParticipantPortalEducation tempList = new IPS_ParticipantPortalEducation();
                 tempList.UtdanningId = i.id;
@@ -1030,7 +1006,6 @@ public with sharing class IPS_ParticipantPortalReportController{
                 tempList.Status = i.ips_Status__c;
                 wrapperTempList.add(tempList);
             }
-        }
         
         
 
@@ -1054,27 +1029,7 @@ public with sharing class IPS_ParticipantPortalReportController{
 
         ];
             
-                
-        if(reportType == 'End report'){
-            for(AMS_Vocational_education_and_training__c ams : tempAMSEducation){
-                IPS_ParticipantPortalEducation tempAMSList = new IPS_ParticipantPortalEducation();
-                if(ams.AMS_Status__c =='Completed' || ams.AMS_Status__c == 'Ongoing'){
-                    tempAMSList.UtdanningId = ams.id;
-                    tempAMSList.Utdanningslop = ams.AMS_Description__c;
-                    tempAMSList.UtdanningNavn = ams.Name;
-                    tempAMSList.Utdanningsform = IPS_ParticipantPortalUtility.formatTypeOf(ams.AMS_Form_of_Study__c);
-                    tempAMSList.Plan = ams.AMS_Education_Support_Plan__c;
-                    tempAMSList.UtdanningStart = ams.AMS_Start_Date__c;
-                    tempAMSList.UtdanningSlutt = ams.AMS_End_Date__c;
-                    tempAMSList.Fungerer = ams.AMS_What_did_work_with_the_education__c;
-                    tempAMSList.FungererIkke = ams.AMS_What_did_not_work_with_the_education__c;
-                    tempAMSList.Status = ams.AMS_Status__c;
-                    wrapperTempList.add(tempAMSList);
-                }
-            }
-        }
 
-        if(reportType == 'Intervall'){
             for(AMS_Vocational_education_and_training__c ams : tempAMSEducation){
                 IPS_ParticipantPortalEducation tempAMSList = new IPS_ParticipantPortalEducation();
                 if(ams.AMS_Status__c == 'Ongoing'){
@@ -1121,7 +1076,6 @@ public with sharing class IPS_ParticipantPortalReportController{
                     }
                 }
             }
-        }
         return wrapperTempList;
     }
 
@@ -1268,7 +1222,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     @param          : JobbsporId
     @Return         : Liste over oppgaver knyttet til passive periode
     ********************************************************
-    */
+    
     private static Task getFollowUpParticipantTask(Id currentRecordId) {
         Task followUpParticipantTask = new Task();
             List<Task> followUpParticipantTaskReturned = [
@@ -1282,7 +1236,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                 followUpParticipantTask = followUpParticipantTaskReturned[0];
             }
         return followUpParticipantTask;
-    }
+    }*/
 
     /*
     *********************************************************

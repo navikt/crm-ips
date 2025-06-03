@@ -200,7 +200,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
 
     @wire(getParticipantCancelledMeetings, {
         recordId: '$reportTrailRecordId',
-        typeOfReport: '$reportTypeName',
         recordDateFrom: '$reportDateFrom',
         recordDateTo: '$reportDateTo'
     })
@@ -222,7 +221,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
 
     @wire(getParticipantEducations, {
         recordId: '$reportTrailRecordId',
-        typeOfReport: '$reportTypeName',
         recordDateFrom: '$reportDateFrom',
         recordDateTo: '$reportDateTo'
     })
