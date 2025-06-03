@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Splits large text into smaller parts, each with a maximum length of 130,000 characters.</description>
         <name>Split_data</name>
         <label>Split data</label>
         <locationX>352</locationX>
@@ -43,6 +44,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Tracks part number of each split text to maintain order.</description>
         <name>Archive_Data_Part_Number</name>
         <label>Archive Data Part Number</label>
         <locationX>352</locationX>
@@ -95,7 +97,7 @@
             <assignToReference>tempArchiveEntry.Theme__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>counter</elementReference>
+                <elementReference>themeWithCounter</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -155,6 +157,12 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <description>Part number of the archived file.</description>
+        <name>themeWithCounter</name>
+        <dataType>String</dataType>
+        <expression>&apos;Jobbspor - &apos; + TEXT({!counter})</expression>
+    </formulas>
     <interviewLabel>IPS - Create archive entries {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Create archive entries subflow</label>
     <loops>

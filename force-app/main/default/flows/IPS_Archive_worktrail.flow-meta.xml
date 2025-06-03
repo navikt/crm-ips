@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Converting worktrail record collection to JSON using Apex class - ArchiveHelper. ArchiveHelper accepts only record collection as a parameter.</description>
         <name>Convert_worktrail_to_JSON</name>
         <label>Convert worktrail to JSON</label>
         <locationX>484</locationX>
@@ -84,6 +85,34 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
+    <actionCalls>
+        <name>Subgoals_to_JSON</name>
+        <label>Subgoals to JSON</label>
+        <locationX>484</locationX>
+        <locationY>5232</locationY>
+        <actionName>ArchiveHelper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Add_subgoals_to_archive_file</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__recordsList</typeName>
+            <typeValue>Task</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordsList</name>
+            <value>
+                <elementReference>subgoalsToArchive</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ArchiveHelper</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>subgoalJSONOutput</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
     <apiVersion>63.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
@@ -119,6 +148,23 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Add_subgoals_to_archive_file</name>
+        <label>Add subgoals to archive file</label>
+        <locationX>484</locationX>
+        <locationY>5340</locationY>
+        <assignmentItems>
+            <assignToReference>subgoalFileToArchive</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>subgoalJSONOutput</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Adding output from ArchiveHelper to a collection.</description>
         <name>Add_worktrail_to_archive</name>
         <label>Add Worktrail To Archive</label>
         <locationX>484</locationX>
@@ -135,6 +181,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Adding AMS related fields from Worktrail object</description>
         <name>AMS_Worktrail_fields</name>
         <label>AMS Worktrail fields</label>
         <locationX>616</locationX>
@@ -158,6 +205,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Assigning values to the archive entry fields.</description>
         <name>Archive_entry</name>
         <label>Archive entry</label>
         <locationX>616</locationX>
@@ -201,7 +249,7 @@
             <assignToReference>tempArchvieEntry.Reference_Object__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Work_Trail__c</stringValue>
+                <stringValue>Worktrail</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -329,6 +377,64 @@
         </assignmentItems>
         <connector>
             <targetReference>Create_archive_entry_Job</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Archive_Entry_Subgoals</name>
+        <label>Archive Entry - Subgoals</label>
+        <locationX>616</locationX>
+        <locationY>5556</locationY>
+        <assignmentItems>
+            <assignToReference>tempArchiveSubgoal.Confidential__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveSubgoal.Archive_Data__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>subgoalJSONOutput</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveSubgoal.Fnr__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveSubgoal.Domain__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveSubgoal.Reference_Id__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveSubgoal.Reference_Object__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Task - Subgoal</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveSubgoal.Theme__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Jobbspor</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_archive_entry_Subgoals</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -485,6 +591,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Adding IPS related fields from Worktrial object</description>
         <name>IPS_Worktrail_fields</name>
         <label>IPS Worktrail fields</label>
         <locationX>352</locationX>
@@ -778,6 +885,96 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Subgoal_collection</name>
+        <label>Subgoal collection</label>
+        <locationX>572</locationX>
+        <locationY>5040</locationY>
+        <assignmentItems>
+            <assignToReference>subgoalsToArchive</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempSubgoal</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_subgoals_to</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Subgoal with selected fields</description>
+        <name>Subgoal_to_archive</name>
+        <label>Subgoal to archive</label>
+        <locationX>572</locationX>
+        <locationY>4932</locationY>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.CreatedDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.CreatedDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.CompletedDateTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.CompletedDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.ips_Due_Date_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.ips_Due_Date_Time__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.Subject</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.Type_of_Task_IPSUO__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.Type_of_Task_IPSUO__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.Status</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.WhatId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.WhatId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Subgoal_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Adding worktrail record to a worktrail record collection variable.</description>
         <name>Worktrail_collection_to_convert_to_JSON</name>
         <label>Worktrail collection to convert to JSON</label>
         <locationX>484</locationX>
@@ -794,6 +991,7 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Selected fields from Worktrail object.</description>
         <name>Worktrail_to_archive</name>
         <label>Worktrail to archive</label>
         <locationX>484</locationX>
@@ -1066,6 +1264,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is</name>
+        <label>Is Subgoals Exceed Max Limit ?</label>
+        <locationX>484</locationX>
+        <locationY>5448</locationY>
+        <defaultConnector>
+            <targetReference>Archive_Entry_Subgoals</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_subgoals</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>subgoalsExceedMaxLimit</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Archive_Entries_Subgoal</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Events_Exceed_Max_Limit</name>
         <label>Is Events Exceed Max Limit ?</label>
         <locationX>484</locationX>
@@ -1116,6 +1339,7 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Maximum length of the archive data field is 130000 characters. Formula field isWorktrailExceedsMaxLimit is used to check for maximum limit.</description>
         <name>Is_worktrail_exceeds_maxlimit</name>
         <label>Is worktrail exceeds maxlimit ?</label>
         <locationX>484</locationX>
@@ -1177,6 +1401,7 @@ FALSE
 )</expression>
     </formulas>
     <formulas>
+        <description>Returns true when archive data exceeds max limit. Archive data is output from the ArchiveHelper Apex class.</description>
         <name>isWorktrailExceedsMaxLimit</name>
         <dataType>Boolean</dataType>
         <expression>IF(LEN({!archiveData}) &gt; 100,
@@ -1195,6 +1420,11 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>jobsExceedMaxLimit</name>
         <dataType>Boolean</dataType>
         <expression>IF(LEN({!jobsJSONOutput}) &gt; 100, TRUE, FALSE)</expression>
+    </formulas>
+    <formulas>
+        <name>subgoalsExceedMaxLimit</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(LEN({!subgoalJSONOutput}) &gt; 100, TRUE, FALSE)</expression>
     </formulas>
     <interviewLabel>IPS - Archive worktrail {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Archive worktrail</label>
@@ -1226,6 +1456,20 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
             <targetReference>Events_to_JSON</targetReference>
         </noMoreValuesConnector>
     </loops>
+    <loops>
+        <name>Add_subgoals_to</name>
+        <label>Add subgoals to collection</label>
+        <locationX>484</locationX>
+        <locationY>4824</locationY>
+        <collectionReference>Get_Subgoals_Related_To_Worktrail</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Subgoal_to_archive</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Subgoals_to_JSON</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -1246,6 +1490,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <description>Creates an log when creating archive entry fails.</description>
         <name>Application_log</name>
         <label>Application log</label>
         <locationX>880</locationX>
@@ -1342,6 +1587,39 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Application_log_Subgoals</name>
+        <label>Application log - Subgoals</label>
+        <locationX>880</locationX>
+        <locationY>5772</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_Info__c</field>
+            <value>
+                <stringValue>Create archive entry - Subgoals</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - Archive worktrail</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Creating an archive entry which will be sent to archive using a record triggered flow.</description>
         <name>Create_archive_entry</name>
         <label>Create archive entry</label>
         <locationX>616</locationX>
@@ -1373,12 +1651,25 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <locationX>616</locationX>
         <locationY>4284</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_Subgoals_Related_To_Worktrail</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Application_log_Jobs</targetReference>
         </faultConnector>
         <inputReference>tempArchiveJob</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_archive_entry_Subgoals</name>
+        <label>Create archive entry - Subgoals</label>
+        <locationX>616</locationX>
+        <locationY>5664</locationY>
+        <connector>
+            <targetReference>Update_worktrail</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Application_log_Subgoals</targetReference>
+        </faultConnector>
+        <inputReference>tempArchiveSubgoal</inputReference>
     </recordCreates>
     <recordLookups>
         <name>Get_job_related_to_worktrail</name>
@@ -1422,12 +1713,40 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Get_Subgoals_Related_To_Worktrail</name>
+        <label>Get Subgoals Related To Worktrail</label>
+        <locationX>484</locationX>
+        <locationY>4716</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Add_subgoals_to</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Delmål (av hovedmål)</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
-        <description>Set archived to true</description>
+        <description>Update &apos;Is archived&apos; field to true</description>
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
         <locationX>484</locationX>
-        <locationY>4716</locationY>
+        <locationY>6096</locationY>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -1442,13 +1761,6 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>ips_Status__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Ended</stringValue>
-            </value>
-        </filters>
-        <filters>
             <field>IPS_Can_archived__c</field>
             <operator>EqualTo</operator>
             <value>
@@ -1456,10 +1768,10 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
             </value>
         </filters>
         <filters>
-            <field>IPS_Is_Archived__c</field>
+            <field>ips_Status__c</field>
             <operator>EqualTo</operator>
             <value>
-                <booleanValue>false</booleanValue>
+                <stringValue>Ended</stringValue>
             </value>
         </filters>
         <object>Work_Trail__c</object>
@@ -1474,6 +1786,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     </start>
     <status>Draft</status>
     <subflows>
+        <description>Using subflow which creates archive entries. Each archive entry will have split archive data. This subflow is used when the archive data exceeds the maximum limit of the archive data field.</description>
         <name>Create_archive_entries</name>
         <label>Create archive entries</label>
         <locationX>352</locationX>
@@ -1515,7 +1828,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <inputAssignments>
             <name>referenceObject</name>
             <value>
-                <stringValue>Work_Trail__c</stringValue>
+                <stringValue>Worktrail</stringValue>
             </value>
         </inputAssignments>
     </subflows>
@@ -1571,7 +1884,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <locationX>352</locationX>
         <locationY>4176</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_Subgoals_Related_To_Worktrail</targetReference>
         </connector>
         <flowName>IPS_Create_archive_entries</flowName>
         <inputAssignments>
@@ -1611,7 +1924,54 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
             </value>
         </inputAssignments>
     </subflows>
+    <subflows>
+        <name>Create_Archive_Entries_Subgoal</name>
+        <label>Create Archive Entries - Subgoal</label>
+        <locationX>352</locationX>
+        <locationY>5556</locationY>
+        <connector>
+            <targetReference>Update_worktrail</targetReference>
+        </connector>
+        <flowName>IPS_Create_archive_entries</flowName>
+        <inputAssignments>
+            <name>archiveDataToSplit</name>
+            <value>
+                <elementReference>subgoalFileToArchive</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>confidential</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>domain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>fnr</name>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>referenceId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>referenceObject</name>
+            <value>
+                <stringValue>Task - Subgoals</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
+        <description>Worktrail data to be archived</description>
         <name>archiveData</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1694,7 +2054,37 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <objectType>ips_Job__c</objectType>
     </variables>
     <variables>
+        <name>subgoalFileToArchive</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>subgoalJSONOutput</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>subgoalsToArchive</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
+    </variables>
+    <variables>
         <name>tempArchiveJob</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Archive_Entry__c</objectType>
+    </variables>
+    <variables>
+        <name>tempArchiveSubgoal</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -1718,6 +2108,15 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <objectType>Archive_Entry__c</objectType>
     </variables>
     <variables>
+        <name>tempSubgoal</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
+    </variables>
+    <variables>
+        <description>Will be used in subflow : IPS - Create archive entries subflow, to split the data into small chunks that are within the maximum limit.</description>
         <name>worktrailDataToSplit</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
@@ -1740,6 +2139,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <objectType>Work_Trail__c</objectType>
     </variables>
     <variables>
+        <description>Used to add worktrail record. This variable will be used as parameter in Apex class ArchiveHelper.</description>
         <name>worktralCollection</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
