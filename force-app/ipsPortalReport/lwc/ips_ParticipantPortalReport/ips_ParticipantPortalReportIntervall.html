@@ -29,7 +29,7 @@
                     <p tabindex="0">{reportList.reportTrailGoalDescription}</p>
 
                     <template lwc:if={typeValue}>
-                        <h2 tabindex="0">{label.priorityWorkSection}</h2>
+                        <h3 tabindex="0">{label.priorityWorkSection}</h3>
                         <p tabindex="0">{reportList.reportTrailWorkWish}</p>
                     </template>
 
@@ -118,9 +118,9 @@
                     </template>
                 </template>
 
-                <h2 tabindex="0">{label.cooperationParticipantSection}</h2>
+                <h3 tabindex="0">{label.cooperationParticipantSection}</h3>
                 <template lwc:if={isCompleted}>
-                    <h3 tabindex="0">Møter deltaker har deltatt på i perioden:</h3>
+                    <p tabindex="0">Møter deltaker har deltatt på i perioden.</p>
                     <template lwc:if={isMobile}>
                         <template for:each={completedMeetingsList} for:item="com">
                             <c-ips_-participant-portal-readmore key={com.EventId} label={com.Emne}>
@@ -154,7 +154,7 @@
                 </template>
 
                 <template lwc:if={isAbsent}>
-                    <h3 tabindex="0">Møter deltaker ikke har møtt til i perioden:</h3>
+                    <p tabindex="0">Møter deltaker ikke har møtt til i perioden.</p>
                     <template lwc:if={isMobile}>
                         <template for:each={absentMeetingsList} for:item="abs">
                             <c-ips_-participant-portal-readmore key={abs.EventId} label={abs.Emne}>
@@ -192,9 +192,9 @@
                     <p></p>
                 </template>
 
-                <h2 tabindex="0">{label.cooperationEmployerSection}</h2>
+                <h3 tabindex="0">{label.cooperationEmployerSection}</h3>
                 <template lwc:if={isEmployeeCompleted}>
-                    <h3 tabindex="0">Møter gjennomført med arbeidsgiver(e) i perioden:</h3>
+                    <p tabindex="0">Møter gjennomført med arbeidsgiver(e) i perioden.</p>
                     <template lwc:if={isMobile}>
                         <template for:each={employeeMeetingsList} for:item="emp">
                             <c-ips_-participant-portal-readmore key={emp.EventId} label={emp.Emne}>
@@ -244,7 +244,7 @@
                 </template>
 
                 <template lwc:if={isJob}>
-                    <h2 tabindex="0">{label.participantWorkTraining}</h2>
+                    <p tabindex="0">{label.participantWorkTraining}</p>
                     <template for:each={jobsList} for:item="job">
                       
                       <c-ips_-participant-portal-readmore tabindex="0" key={job.JobbId} label={job.Emne}>
@@ -271,7 +271,7 @@
                 </template>
 
                 <template lwc:if={isEducation}>
-                    <h2 tabindex="0">{label.participantEducationSection}</h2>
+                    <h3 tabindex="0">{label.participantEducationSection}</h3>
                     <template for:each={educationList} for:item="edu">
                         <c-ips_-participant-portal-readmore key={edu.UtdanningId} label={edu.UtdanningNavn}>
                             <dl>
@@ -289,8 +289,6 @@
                                 <dd>{edu.Fungerer}</dd>
                                 <dt>Hva fungerte ikke</dt>
                                 <dd>{edu.FungererIkke}</dd>
-                                <dt>Beskrivelse av opplæringsløp</dt>
-                                <dd>{edu.Utdanningslop}</dd>
                             </dl>
                         </c-ips_-participant-portal-readmore>
                     </template>
@@ -379,7 +377,7 @@
                 </template>
 
                 <template lwc:if={reportList.reportParticipantOnBehalfComment}>
-                    <h2 tabindex="0">{label.participantCommentSection}</h2>
+                    <h3 tabindex="0">{label.participantCommentSection}</h3>
                     <p tabindex="0">{reportList.reportParticipantComment}</p>
                     <p tabindex="0">{reportList.reportParticipantOnBehalfComment}</p>
                 </template>
