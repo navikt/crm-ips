@@ -51,6 +51,11 @@
                     <p>{report.reportTrailGoal}</p>
                     <p>{report.reportTrailGoalDescription}</p>
 
+                    <template lwc:if={typeValue}>
+                        <h3 tabindex="0">{label.priorityWorkSection}</h3>
+                        <p tabindex="0">{report.reportTrailWorkWish}</p>
+                    </template>
+
                 <template lwc:if={isPassiv}>
                     <h3>{label.participantPassiveSection}</h3>
                     <template lwc:if={isMobile}>
@@ -175,8 +180,7 @@
 
                     
                     <template lwc:if={isJobEnd}>
-                        <h3>Deltakelse i jobb og arbeidstrening</h3>
-                        <h2 tabindex="0">{label.participantWorkTraining}</h2>
+                        <h3 tabindex="0">{label.participantWorkTraining}</h3>
                         <template for:each={jobsListEnd} for:item="job">
                             <c-ips_-participant-portal-readmore tabindex="0" key={job.JobbId} label={job.Emne}>
                                 <dl>
@@ -202,7 +206,7 @@
                     </template>
     
                     <template lwc:if={isEducationEnd}>
-                        <h2 tabindex="0">{label.participantEducationSection}</h2>
+                        <h3 tabindex="0">{label.participantEducationSection}</h3>
                         <template for:each={educationListEnd} for:item="edu">
                             <c-ips_-participant-portal-readmore key={edu.UtdanningId} label={edu.UtdanningNavn}>
                                 <dl>
@@ -220,8 +224,6 @@
                                     <dd>{edu.Fungerer}</dd>
                                     <dt>Hva fungerte ikke</dt>
                                     <dd>{edu.FungererIkke}</dd>
-                                    <dt>Beskrivelse av opplæringsløp</dt>
-                                    <dd>{edu.Utdanningslop}</dd>
                                 </dl>
                             </c-ips_-participant-portal-readmore>
                         </template>
