@@ -7,8 +7,7 @@
 ISCHANGED( ips_Status__c ),
 ISPICKVAL(PRIORVALUE(ips_Status__c), &quot;Ended&quot;),
 IPS_IsEndCauseSet__c = true,
-$Profile.Name &lt;&gt; &quot;Delegated Administrator - IPS&quot;,
-$Profile.Name &lt;&gt; &quot;Delegated Administrator - Arbeidsforhold&quot;
+NOT($Permission.NAV_brukerstotte) 
 )</errorConditionFormula>
     <errorMessage>Status kan ikke endres etter at jobbsporet er avsluttet.</errorMessage>
 </ValidationRule>
