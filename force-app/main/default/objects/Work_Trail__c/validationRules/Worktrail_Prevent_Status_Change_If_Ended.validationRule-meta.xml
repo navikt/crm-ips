@@ -6,7 +6,9 @@
     <errorConditionFormula>AND(
 ISCHANGED( ips_Status__c ),
 ISPICKVAL(PRIORVALUE(ips_Status__c), &quot;Ended&quot;),
-$Profile.Name &lt;&gt; &quot;Delegated Administrator - IPS&quot;
+IPS_IsEndCauseSet__c = true,
+$Profile.Name &lt;&gt; &quot;Delegated Administrator - IPS&quot;,
+$Profile.Name &lt;&gt; &quot;Delegated Administrator - Arbeidsforhold&quot;
 )</errorConditionFormula>
     <errorMessage>Status kan ikke endres etter at jobbsporet er avsluttet.</errorMessage>
 </ValidationRule>
