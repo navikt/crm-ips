@@ -290,6 +290,10 @@ public with sharing class IPS_viewReportPDFController {
 
     private list<Event> getOpenIntervallActivity(Date sluttDato) {
         List<Event> emplActivity = new List<Event>();
+        Date tempDate = Date.today().addMonths(3);
+        if (sluttDato != null) {
+            tempDate = sluttDato.addMonths(3);
+        }
         emplActivity = [
             SELECT
                 id,
@@ -310,7 +314,8 @@ public with sharing class IPS_viewReportPDFController {
                     'Start up meeting',
                     'First Meeting with Employer'
                 )
-                AND ActivityDate > :sluttDato AND ActivityDate <NEXT_N_MONTHS:3
+                AND ActivityDate > :sluttDato
+                AND ActivityDate < :tempDate
                 AND WhatId = :workTrailId
                 AND IPS_Status1__c IN ('Open')
             ORDER BY ActivityDate ASC
@@ -438,8 +443,8 @@ public with sharing class IPS_viewReportPDFController {
             WHERE
                 ips_Work_Trail__c = :workTrailId
                 AND ips_Status__c = 'Completed'
-                AND (ips_End_Date__c >= :startDate
-                AND ips_End_Date__c <= :endDate)
+                AND ips_End_Date__c >= :startDate
+                AND ips_End_Date__c <= :endDate
             ORDER BY ips_End_Date__c DESC
         ];
 
@@ -747,18 +752,14 @@ public with sharing class IPS_viewReportPDFController {
     private List<IPS_PassivePeriod> getPassivePeriodsWithinDateRange(Datetime startDate, Datetime endDate) {
         List<IPS_PassivePeriod> passivePeriods = getAllPassivePeriods();
         List<IPS_PassivePeriod> filteredPassivePeriods = new List<IPS_PassivePeriod>();
-        if(passivePeriods != null && startDate != null && endDate != null){
+        if (passivePeriods != null && startDate != null && endDate != null) {
             for (IPS_PassivePeriod period : passivePeriods) {
-                if (
-                    (period.startDate <= (endDate + 1)) &&
-                    (period.endDate >= startDate ))
-                 {
+                if ((period.startDate <= (endDate + 1)) && (period.endDate >= startDate)) {
                     filteredPassivePeriods.add(period);
                 }
             }
-
         }
-        
+
         return filteredPassivePeriods;
     }
 
