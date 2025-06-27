@@ -66,10 +66,32 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
+        <description>Get profile id of Nav Bruker</description>
+        <name>Get_Profile_Id</name>
+        <label>Get Profile Id</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_user_info</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>NAV Bruker</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Profile</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_profile_name</name>
         <label>Get profile name</label>
         <locationX>314</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Profile_info</targetReference>
@@ -90,7 +112,7 @@
         <name>Get_user_info</name>
         <label>Get user info</label>
         <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_profile_name</targetReference>
@@ -101,6 +123,13 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>Brukerens_navn</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ProfileId</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>Get_Profile_Id.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -188,7 +217,7 @@
         <allowPause>false</allowPause>
         <backButtonLabel>Forrige</backButtonLabel>
         <connector>
-            <targetReference>Get_user_info</targetReference>
+            <targetReference>Get_Profile_Id</targetReference>
         </connector>
         <fields>
             <name>Brukerens_navn</name>
@@ -206,7 +235,7 @@
         <name>Profile_info</name>
         <label>Profile info</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
