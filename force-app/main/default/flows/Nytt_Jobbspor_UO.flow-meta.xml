@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>1370</locationX>
-        <locationY>1838</locationY>
+        <locationX>1106</locationX>
+        <locationY>2138</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <connector>
@@ -24,10 +24,26 @@
     <apiVersion>59.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
+        <name>Add_confidential_checkbox</name>
+        <label>Add confidential checkbox</label>
+        <locationX>578</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>varIsConfidential</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Participant_Detail</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>addOwnerId</name>
         <label>addOwnerId</label>
-        <locationX>842</locationX>
-        <locationY>1514</locationY>
+        <locationX>578</locationX>
+        <locationY>1814</locationY>
         <assignmentItems>
             <assignToReference>varOwnerId</assignToReference>
             <operator>Assign</operator>
@@ -49,8 +65,8 @@
     <assignments>
         <name>addOwnerId1</name>
         <label>addOwnerId</label>
-        <locationX>1370</locationX>
-        <locationY>1514</locationY>
+        <locationX>1106</locationX>
+        <locationY>1814</locationY>
         <assignmentItems>
             <assignToReference>varOwnerId</assignToReference>
             <operator>Assign</operator>
@@ -108,12 +124,27 @@
             </connector>
             <label>IsConfidential</label>
         </rules>
+        <rules>
+            <name>IsSmallConfidential</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getPersonDetails.INT_Confidential__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>FORTROLIG</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_confidential_checkbox</targetReference>
+            </connector>
+            <label>IsSmallConfidential</label>
+        </rules>
     </decisions>
     <decisions>
         <name>checkIfAddedAge</name>
         <label>checkIfAddedAge</label>
-        <locationX>842</locationX>
-        <locationY>782</locationY>
+        <locationX>578</locationX>
+        <locationY>1082</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
         </defaultConnector>
@@ -162,8 +193,8 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>842</locationX>
-        <locationY>1190</locationY>
+        <locationX>578</locationX>
+        <locationY>1490</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -187,8 +218,8 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>1106</locationX>
-        <locationY>1406</locationY>
+        <locationX>842</locationX>
+        <locationY>1706</locationY>
         <defaultConnector>
             <targetReference>addOwnerId1</targetReference>
         </defaultConnector>
@@ -235,9 +266,17 @@
         <name>varParticipantAddress</name>
         <dataType>String</dataType>
         <expression>IF(
-ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
-&apos;&apos;,
-{!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c}
+ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
+{!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c},
+&apos;&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>varParticipantConfidentialAdress</name>
+        <dataType>String</dataType>
+        <expression>IF(ISPICKVAL({!getPersonDetails.INT_Confidential__c},&apos;FORTROLIG&apos;),
+{!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c},
+&apos;&apos;
 )</expression>
     </formulas>
     <formulas>
@@ -284,8 +323,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>1106</locationX>
-        <locationY>1838</locationY>
+        <locationX>842</locationX>
+        <locationY>2138</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -316,8 +355,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1370</locationX>
-        <locationY>1622</locationY>
+        <locationX>1106</locationX>
+        <locationY>1922</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorktrailName1</targetReference>
@@ -345,9 +384,21 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>IPS_isParticipantConfidential__c</field>
+            <value>
+                <elementReference>varIsConfidential</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>IPS_ownerNameText__c</field>
             <value>
                 <elementReference>varOwnerName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_participant_skjerming_address__c</field>
+            <value>
+                <elementReference>varParticipantConfidentialAdress</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -385,8 +436,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>842</locationX>
-        <locationY>1622</locationY>
+        <locationX>578</locationX>
+        <locationY>1922</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorktrailName</targetReference>
@@ -413,9 +464,21 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>IPS_isParticipantConfidential__c</field>
+            <value>
+                <elementReference>varIsConfidential</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>IPS_ownerNameText__c</field>
             <value>
                 <elementReference>varOwnerName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_participant_skjerming_address__c</field>
+            <value>
+                <elementReference>varParticipantConfidentialAdress</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -459,8 +522,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>842</locationX>
-        <locationY>1082</locationY>
+        <locationX>578</locationX>
+        <locationY>1382</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -531,8 +594,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordUpdates>
         <name>updateWorktrailName</name>
         <label>updateWorktrailName</label>
-        <locationX>842</locationX>
-        <locationY>1730</locationY>
+        <locationX>578</locationX>
+        <locationY>2030</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -555,8 +618,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <recordUpdates>
         <name>updateWorktrailName1</name>
         <label>updateWorktrailName</label>
-        <locationX>1370</locationX>
-        <locationY>1730</locationY>
+        <locationX>1106</locationX>
+        <locationY>2030</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -580,8 +643,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>alertIsExisting</name>
         <label>alertIsExisting</label>
-        <locationX>578</locationX>
-        <locationY>1298</locationY>
+        <locationX>314</locationX>
+        <locationY>1598</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -601,8 +664,8 @@ ISBLANK({!getPersonDetails.INT_ResidentialAddress__c}),
     <screens>
         <name>alertUnder18</name>
         <label>alertUnder18</label>
-        <locationX>710</locationX>
-        <locationY>890</locationY>
+        <locationX>446</locationX>
+        <locationY>1190</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -695,8 +758,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>1106</locationX>
-        <locationY>1730</locationY>
+        <locationX>842</locationX>
+        <locationY>2030</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -719,8 +782,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>842</locationX>
-        <locationY>1838</locationY>
+        <locationX>578</locationX>
+        <locationY>2138</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -743,8 +806,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>842</locationX>
-        <locationY>674</locationY>
+        <locationX>578</locationX>
+        <locationY>974</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -879,8 +942,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>1106</locationX>
-        <locationY>1298</locationY>
+        <locationX>842</locationX>
+        <locationY>1598</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -974,8 +1037,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createCreatorHistory</name>
         <label>createCreatorHistory</label>
-        <locationX>1106</locationX>
-        <locationY>2162</locationY>
+        <locationX>842</locationX>
+        <locationY>2462</locationY>
         <connector>
             <targetReference>createOwnerHistory</targetReference>
         </connector>
@@ -1015,8 +1078,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createOwnerHistory</name>
         <label>createOwnerHistory</label>
-        <locationX>1106</locationX>
-        <locationY>2270</locationY>
+        <locationX>842</locationX>
+        <locationY>2570</locationY>
         <connector>
             <targetReference>createSupervisorHistory</targetReference>
         </connector>
@@ -1056,8 +1119,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createStatusHistory</name>
         <label>createStatusHistory</label>
-        <locationX>1106</locationX>
-        <locationY>2486</locationY>
+        <locationX>842</locationX>
+        <locationY>2786</locationY>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
             <name>varDescription</name>
@@ -1094,8 +1157,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createSupervisorHistory</name>
         <label>createSupervisorHistory</label>
-        <locationX>1106</locationX>
-        <locationY>2378</locationY>
+        <locationX>842</locationX>
+        <locationY>2678</locationY>
         <connector>
             <targetReference>createStatusHistory</targetReference>
         </connector>
@@ -1168,6 +1231,16 @@ LEN( {!ips_participants_scn}) == 11
     </variables>
     <variables>
         <name>varConsent</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varIsConfidential</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
