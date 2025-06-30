@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>61.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <description>Subflow - can be called from another flow.</description>
     <environments>Default</environments>
     <interviewLabel>IPS subflow create task {!$Flow.CurrentDateTime}</interviewLabel>
@@ -41,6 +42,12 @@
             <field>IPS_Subcategory_Type_UO__c</field>
             <value>
                 <elementReference>varAMSSubtype</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_eventId__c</field>
+            <value>
+                <elementReference>varEventId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -165,6 +172,13 @@
     <variables>
         <name>varDueDate</name>
         <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varEventId</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
