@@ -40,6 +40,49 @@
             <targetReference>Create_application_log</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <description>Assigning blank value as task related will be deleted.</description>
+        <name>Assign_blank_value_to_task_id</name>
+        <label>Assign Blank Value to Task Id</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Get_related_employer_meeting.IPS_taskId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_employer_meeting</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Check whether related employer meeting is found.</description>
+        <name>Employer_Meeting</name>
+        <label>Employer Meeting ?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Delete_records</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Employer Meeting Not Found</defaultConnectorLabel>
+        <rules>
+            <name>Employer_Meeting_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_related_employer_meeting</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_blank_value_to_task_id</targetReference>
+            </connector>
+            <label>Employer Meeting Found</label>
+        </rules>
+    </decisions>
     <decisions>
         <description>Deletes when record type is ArbeidsgiverTask</description>
         <name>Is_ArbeidsgiverTask</name>
@@ -58,7 +101,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Delete_records</targetReference>
+                <targetReference>Get_related_employer_meeting</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -126,6 +169,37 @@
         <object>RecordType</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Get_related_employer_meeting</name>
+        <label>Get Related Employer Meeting</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Employer_Meeting</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.IPS_eventId__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Event</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_employer_meeting</name>
+        <label>Update employer meeting</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Delete_records</targetReference>
+        </connector>
+        <inputReference>Get_related_employer_meeting</inputReference>
+    </recordUpdates>
     <start>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -158,7 +232,7 @@
         <schedule>
             <frequency>Daily</frequency>
             <startDate>2025-07-07</startDate>
-            <startTime>06:00:00.000Z</startTime>
+            <startTime>05:00:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
