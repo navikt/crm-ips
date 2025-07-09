@@ -12,7 +12,7 @@
                         <valueListItems>
                             <value>ChangeOwnerOne</value>
                             <visibilityRule>
-                                <booleanFilter>(1 OR 2 OR 3) AND 4</booleanFilter>
+                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
                                 <criteria>
                                     <leftValue>{!$User.Profile.Name}</leftValue>
                                     <operator>EQUAL</operator>
@@ -27,11 +27,6 @@
                                     <leftValue>{!$User.Profile.Name}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>NAV IPS Metodeveileder</rightValue>
-                                </criteria>
-                                <criteria>
-                                    <leftValue>{!Record.ips_Status__c}</leftValue>
-                                    <operator>NE</operator>
-                                    <rightValue>Ended</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
@@ -276,6 +271,23 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_Main_goal__c</fieldItem>
                 <identifier>Recordips_Main_goal_cField1</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.IPS_Is_healthcare_related__c</fieldItem>
+                <identifier>RecordIPS_Is_healthcare_related_cField</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <name>Facet-17ee4600-8ac3-4453-a2d9-e859f79a1ff1</name>
