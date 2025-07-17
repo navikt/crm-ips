@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>61.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <decisions>
         <name>checkEndCauseValues</name>
         <label>Check endcause values</label>
         <locationX>182</locationX>
-        <locationY>650</locationY>
+        <locationY>242</locationY>
         <defaultConnector>
             <targetReference>displayInformationEnded</targetReference>
         </defaultConnector>
@@ -40,31 +41,6 @@
             <label>isValuesSet</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>checkIfWorkTrailIsManuallyShared</name>
-        <label>Check if worktril is manually shared</label>
-        <locationX>182</locationX>
-        <locationY>350</locationY>
-        <defaultConnector>
-            <targetReference>checkEndCauseValues</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>notShared</defaultConnectorLabel>
-        <rules>
-            <name>isShared</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getManualSharing</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>deleteManuallySharedRecords</targetReference>
-            </connector>
-            <label>isShared</label>
-        </rules>
-    </decisions>
     <description>Viser sluttdato, sluttårsak og detaljer når deltaker i jobbsporet blir satt til
         avsluttet.</description>
     <environments>Default</environments>
@@ -89,44 +65,6 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <recordDeletes>
-        <name>deleteManuallySharedRecords</name>
-        <label>Delete manually shared records</label>
-        <locationX>50</locationX>
-        <locationY>458</locationY>
-        <connector>
-            <targetReference>checkEndCauseValues</targetReference>
-        </connector>
-        <inputReference>getManualSharing</inputReference>
-    </recordDeletes>
-    <recordLookups>
-        <name>getManualSharing</name>
-        <label>Get manual sharing</label>
-        <locationX>182</locationX>
-        <locationY>242</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkIfWorkTrailIsManuallyShared</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ParentId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>getWorkTrailValues.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>RowCause</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Manual</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Work_Trail__Share</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <name>getWorkTrailValues</name>
         <label>Get worktrail values</label>
@@ -134,7 +72,7 @@
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getManualSharing</targetReference>
+            <targetReference>checkEndCauseValues</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -152,14 +90,17 @@
         <name>updateBasedOnUserInput</name>
         <label>Update based on userinput</label>
         <locationX>314</locationX>
-        <locationY>866</locationY>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>IPS_removes_any_manually_shared_records</targetReference>
+        </connector>
         <inputReference>getWorkTrailValues</inputReference>
     </recordUpdates>
     <screens>
         <name>displayInformation</name>
         <label>displayInformation</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -184,7 +125,7 @@
         <name>displayInformationEnded</name>
         <label>displayInformationEnded</label>
         <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationY>350</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -235,6 +176,19 @@
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>IPS_removes_any_manually_shared_records</name>
+        <label>Removes any manually shared records</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <flowName>IPS_worktrail_subflow_delete_shared_records</flowName>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>getWorkTrailValues.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>

@@ -5,7 +5,7 @@
         <name>IPS_sendCustomNotificationAction</name>
         <label>Send Custom Notification Action</label>
         <locationX>50</locationX>
-        <locationY>792</locationY>
+        <locationY>900</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -47,7 +47,7 @@
     <assignments>
         <name>IPS_set_activity_text</name>
         <label>Set activity text</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>468</locationY>
         <assignmentItems>
             <assignToReference>varActivityOnReport</assignToReference>
@@ -85,7 +85,7 @@
         <name>IPS_set_recipient_id</name>
         <label>Set recipient id</label>
         <locationX>50</locationX>
-        <locationY>684</locationY>
+        <locationY>792</locationY>
         <assignmentItems>
             <assignToReference>varOwnerIds</assignToReference>
             <operator>Add</operator>
@@ -101,7 +101,7 @@
         <description>Check if duedate is passed and set status back to open.</description>
         <name>IPS_check_if_date_is_passed</name>
         <label>check if date is passed</label>
-        <locationX>182</locationX>
+        <locationX>336</locationX>
         <locationY>252</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -118,6 +118,28 @@
                 <targetReference>IPS_get_custom_notification_id</targetReference>
             </connector>
             <label>isPassed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IPS_check_if_user_is_not_deactivated</name>
+        <label>Check if user is not deactivated</label>
+        <locationX>182</locationX>
+        <locationY>684</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isNotDeactivated</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_workTrailName__r.Owner:User.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IPS_set_recipient_id</targetReference>
+            </connector>
+            <label>isNotDeactivated</label>
         </rules>
     </decisions>
     <description>Scheduled flow that check if duedate is passed. Set status back to Open for report. This prevent reports to be shared with participant in experience cloud when its not supposed to be shared.</description>
@@ -161,7 +183,7 @@
     <recordLookups>
         <name>IPS_get_custom_notification_id</name>
         <label>Get custom notification id</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>360</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -183,10 +205,10 @@
     <recordUpdates>
         <name>IPS_update_status_to_open</name>
         <label>Update status to open</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>576</locationY>
         <connector>
-            <targetReference>IPS_set_recipient_id</targetReference>
+            <targetReference>IPS_check_if_user_is_not_deactivated</targetReference>
         </connector>
         <inputAssignments>
             <field>IPS_Activity__c</field>
@@ -203,7 +225,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>210</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IPS_check_if_date_is_passed</targetReference>
