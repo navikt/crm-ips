@@ -6,8 +6,8 @@ sf org create scratch --alias $1 --set-default --definition-file ../config/proje
 sf force:org:open --target-org $1
 
 echo "INSTALLERER"
-echo "Installerer crm-platform-base 0.274.0"
-sf force:package:install --package 04tQC000000ovHdYAI -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-base 0.276.0"
+sf force:package:install --package 04tQC000000rfMnYAI -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -51,18 +51,18 @@ sf force:package:install --package 04tQC000000ocN3YAI -r --installation-key $3 -
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-journal-utilities 0.47.0.."
-sf force:package:install --package 04tQC000000o4A5YAI -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-journal-utilities 0.49.0.."
+sf force:package:install --package 04tQC000000rg2jYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-oppgave 0.64.0"
-sf force:package:install --package 04tKB000000YB09YAG -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-oppgave 0.65.0"
+sf force:package:install --package 04tQC000000rfOPYAY -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-arbeidsgiver-base 1.575.0"
-sf force:package:install --package 04tQC000000ovpVYAQ -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.584.0"
+sf force:package:install --package 04tQC000000spyPYAQ -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -71,18 +71,18 @@ sf force:package:install --package 04tQC000000ocOfYAI -r --installation-key $3 -
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-shared-user-notification 0.24.0"
-sf force:package:install --package 04t7U000000Y4jZQAS -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-shared-user-notification 0.25.0"
+sf force:package:install --package 04tQC000000tKMHYA2 -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-henvendelse 0.171.0"
-sf force:package:install --package 04tQC000000lJDiYAM -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-henvendelse 0.176.0"
+sf force:package:install --package 04tQC000000sbU1YAI -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-ips 0.504.0"
-sf force:package:install --package 04tQC000000p9ndYAA -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-ips 0.506.0.1"
+sf force:package:install --package 04tQC000000sjhhYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "TILDELER"
