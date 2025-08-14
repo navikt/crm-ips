@@ -89,7 +89,7 @@
         <name>Subgoals_to_JSON</name>
         <label>Subgoals to JSON</label>
         <locationX>484</locationX>
-        <locationY>5232</locationY>
+        <locationY>5532</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -151,7 +151,7 @@
         <name>Add_subgoals_to_archive_file</name>
         <label>Add subgoals to archive file</label>
         <locationX>484</locationX>
-        <locationY>5340</locationY>
+        <locationY>5640</locationY>
         <assignmentItems>
             <assignToReference>subgoalFileToArchive</assignToReference>
             <operator>Add</operator>
@@ -383,7 +383,7 @@
         <name>Archive_Entry_Subgoals</name>
         <label>Archive Entry - Subgoals</label>
         <locationX>616</locationX>
-        <locationY>5556</locationY>
+        <locationY>5856</locationY>
         <assignmentItems>
             <assignToReference>tempArchiveSubgoal.Confidential__c</assignToReference>
             <operator>Assign</operator>
@@ -885,10 +885,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Log_kontakt_fields</name>
+        <label>Log kontakt fields</label>
+        <locationX>572</locationX>
+        <locationY>5148</locationY>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.Samtalereferat__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.Samtalereferat__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Subgoal_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Subgoal_collection</name>
         <label>Subgoal collection</label>
-        <locationX>572</locationX>
-        <locationY>5040</locationY>
+        <locationX>704</locationX>
+        <locationY>5340</locationY>
         <assignmentItems>
             <assignToReference>subgoalsToArchive</assignToReference>
             <operator>Add</operator>
@@ -904,7 +920,7 @@
         <description>Subgoal with selected fields</description>
         <name>Subgoal_to_archive</name>
         <label>Subgoal to archive</label>
-        <locationX>572</locationX>
+        <locationX>704</locationX>
         <locationY>4932</locationY>
         <assignmentItems>
             <assignToReference>tempSubgoal.Id</assignToReference>
@@ -970,7 +986,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Subgoal_collection</targetReference>
+            <targetReference>Task_Logg_kontakt</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -1267,7 +1283,7 @@
         <name>Is</name>
         <label>Is Subgoals Exceed Max Limit ?</label>
         <locationX>484</locationX>
-        <locationY>5448</locationY>
+        <locationY>5748</locationY>
         <defaultConnector>
             <targetReference>Archive_Entry_Subgoals</targetReference>
         </defaultConnector>
@@ -1362,6 +1378,32 @@
                 <targetReference>Create_archive_entries</targetReference>
             </connector>
             <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Adds samtalereferat field to task record.</description>
+        <name>Task_Logg_kontakt</name>
+        <label>Task - Logg kontakt</label>
+        <locationX>704</locationX>
+        <locationY>5040</locationY>
+        <defaultConnector>
+            <targetReference>Subgoal_collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Logg_kontakt</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Add_subgoals_to.Type_of_Task_IPSUO__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Logg kontakt</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Log_kontakt_fields</targetReference>
+            </connector>
+            <label>Logg kontakt</label>
         </rules>
     </decisions>
     <decisions>
@@ -1590,7 +1632,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>Application_log_Subgoals</name>
         <label>Application log - Subgoals</label>
         <locationX>880</locationX>
-        <locationY>5772</locationY>
+        <locationY>6072</locationY>
         <inputAssignments>
             <field>Application_Domain__c</field>
             <value>
@@ -1662,7 +1704,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>Create_archive_entry_Subgoals</name>
         <label>Create archive entry - Subgoals</label>
         <locationX>616</locationX>
-        <locationY>5664</locationY>
+        <locationY>5964</locationY>
         <connector>
             <targetReference>Update_worktrail</targetReference>
         </connector>
@@ -1714,15 +1756,16 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <description>Gets subgoals(Delmål), tasks(Oppgave), contact log(Kontaktlogg) related to worktrail.</description>
         <name>Get_Subgoals_Related_To_Worktrail</name>
-        <label>Get Subgoals Related To Worktrail</label>
+        <label>Get Tasks Related To Worktrail</label>
         <locationX>484</locationX>
         <locationY>4716</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Add_subgoals_to</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND (2 OR 3 OR 4)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -1737,6 +1780,20 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
                 <stringValue>Delmål (av hovedmål)</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Oppgave</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Logg kontakt</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -1746,7 +1803,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
         <locationX>484</locationX>
-        <locationY>6096</locationY>
+        <locationY>6396</locationY>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -1928,7 +1985,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>Create_Archive_Entries_Subgoal</name>
         <label>Create Archive Entries - Subgoal</label>
         <locationX>352</locationX>
-        <locationY>5556</locationY>
+        <locationY>5856</locationY>
         <connector>
             <targetReference>Update_worktrail</targetReference>
         </connector>
