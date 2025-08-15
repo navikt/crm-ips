@@ -30,6 +30,34 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
+        <name>Educations_to_JSON</name>
+        <label>Educations to JSON</label>
+        <locationX>484</locationX>
+        <locationY>6912</locationY>
+        <actionName>ArchiveHelper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Archive_Entry_Educations</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__recordsList</typeName>
+            <typeValue>ips_Education__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordsList</name>
+            <value>
+                <elementReference>edusToArchive</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ArchiveHelper</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>eduJSONOutput</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Events_to_JSON</name>
         <label>Events to JSON</label>
         <locationX>484</locationX>
@@ -264,6 +292,64 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Archive_Entry_Educations</name>
+        <label>Archive Entry - Educations</label>
+        <locationX>484</locationX>
+        <locationY>7020</locationY>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Confidential__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Archive_Data__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>eduJSONOutput</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Fnr__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Domain__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Reference_Id__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Reference_Object__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Education</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Theme__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Jobbspor</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_archive_entry_Educations</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Archive_Entry_Events</name>
         <label>Archive Entry - Events</label>
         <locationX>616</locationX>
@@ -435,6 +521,129 @@
         </assignmentItems>
         <connector>
             <targetReference>Create_archive_entry_Subgoals</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Education_collection</name>
+        <label>Education collection</label>
+        <locationX>572</locationX>
+        <locationY>6720</locationY>
+        <assignmentItems>
+            <assignToReference>edusToArchive</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>eduToArchive</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_education_to_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Education_to_archive</name>
+        <label>Education to archive</label>
+        <locationX>572</locationX>
+        <locationY>6612</locationY>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Education_Courses__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Education_Courses__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Education_Subject__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Education_Subject__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Education_Support_Plan__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Education_Support_Plan__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Educational_programs__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Educational_programs__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Start_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Start_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_End_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_End_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Form_of_Education__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Form_of_Education__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Name_of_the_Education_Institution__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Name_of_the_Education_Institution__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Status__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_What_did_work_with_this_education__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_What_did_work_with_this_education__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_What_did_not_work_with_thiseducation__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_What_did_not_work_with_thiseducation__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Work_Trail__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Work_Trail__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.Level_of_chosen_Education__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.Level_of_chosen_Education__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Education_collection</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -1471,6 +1680,20 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <interviewLabel>IPS - Archive worktrail {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Archive worktrail</label>
     <loops>
+        <name>Add_education_to_collection</name>
+        <label>Add education to collection</label>
+        <locationX>484</locationX>
+        <locationY>6504</locationY>
+        <collectionReference>Get_education_related_to_worktrail</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Education_to_archive</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Educations_to_JSON</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>Add_jobs_to_collection</name>
         <label>Add jobs to collection</label>
         <locationX>484</locationX>
@@ -1557,6 +1780,38 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         </inputAssignments>
         <inputAssignments>
             <field>Source_Function__c</field>
+            <value>
+                <stringValue>IPS - Archive worktrail</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Application_log_Education</name>
+        <label>Application log - Education</label>
+        <locationX>1144</locationX>
+        <locationY>7236</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_Info__c</field>
+            <value>
+                <stringValue>Create archive entry - Education</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
             <value>
                 <stringValue>IPS - Archive worktrail</stringValue>
             </value>
@@ -1675,6 +1930,19 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <inputReference>tempArchvieEntry</inputReference>
     </recordCreates>
     <recordCreates>
+        <name>Create_archive_entry_Educations</name>
+        <label>Create archive entry - Educations</label>
+        <locationX>484</locationX>
+        <locationY>7128</locationY>
+        <connector>
+            <targetReference>Update_worktrail</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Application_log_Education</targetReference>
+        </faultConnector>
+        <inputReference>tempArchiveEdu</inputReference>
+    </recordCreates>
+    <recordCreates>
         <name>Create_archive_entry_Event</name>
         <label>Create archive entry - Event</label>
         <locationX>616</locationX>
@@ -1706,13 +1974,34 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <locationX>616</locationX>
         <locationY>5964</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_education_related_to_worktrail</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Application_log_Subgoals</targetReference>
         </faultConnector>
         <inputReference>tempArchiveSubgoal</inputReference>
     </recordCreates>
+    <recordLookups>
+        <name>Get_education_related_to_worktrail</name>
+        <label>Get education related to worktrail</label>
+        <locationX>484</locationX>
+        <locationY>6396</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Add_education_to_collection</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Education__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_job_related_to_worktrail</name>
         <label>Get job related to worktrail</label>
@@ -1803,7 +2092,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
         <locationX>484</locationX>
-        <locationY>6396</locationY>
+        <locationY>7236</locationY>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -1987,7 +2276,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <locationX>352</locationX>
         <locationY>5856</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_education_related_to_worktrail</targetReference>
         </connector>
         <flowName>IPS_Create_archive_entries</flowName>
         <inputAssignments>
@@ -2049,6 +2338,29 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <scale>0</scale>
+    </variables>
+    <variables>
+        <name>eduJSONOutput</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>edusToArchive</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Education__c</objectType>
+    </variables>
+    <variables>
+        <name>eduToArchive</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Education__c</objectType>
     </variables>
     <variables>
         <name>eventJsonOutput</name>
@@ -2131,6 +2443,14 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Task</objectType>
+    </variables>
+    <variables>
+        <name>tempArchiveEdu</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Archive_Entry__c</objectType>
     </variables>
     <variables>
         <name>tempArchiveJob</name>
