@@ -11,18 +11,18 @@ call sf org create scratch --alias %ORG_ALIAS% --set-default --definition-file c
 call sf force:org:open --target-org %ORG_ALIAS%
 
 echo "INSTALLERER"
-echo "Installerer crm-platform-base 268"
-call sf force:package:install --package 04tQC000000jJ6XYAU -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-base 277"
+call sf force:package:install --package 04tQC000000tXUnYAM -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-access-control 160"
-call sf force:package:install --package 04tKB000000YBLfYAO -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-access-control 162"
+call sf force:package:install --package 04tQC000000tlPhYAI -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-thread-view 0.5.0.."
-call sf force:package:install --package 04tKB000000Y8nqYAC -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-thread-view 0.7.0.."
+call sf force:package:install --package 04tQC000000nfmnYAA -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -31,8 +31,8 @@ call sf force:package:install --package 04tKB000000YAWDYA4 -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-shared-timeline 1.31.0.."
-call sf force:package:install --package 04tQC000000jE3dYAE -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-shared-timeline 1.35.0.."
+call sf force:package:install --package 04tQC000000obpBYAQ -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
@@ -47,48 +47,48 @@ call sf force:package:install --package 04t7U0000008qz4QAA -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-henvendelse-base 0.31.0.."
-call sf force:package:install --package 04tKB000000Y9AdYAK -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-henvendelse-base 0.34.0.."
+call sf force:package:install --package 04tQC000000rfppYAA -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-integration  154"
-call sf force:package:install --package 04tQC000000ierNYAQ -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-integration  157"
+call sf force:package:install --package 04tQC000000ocN3YAI -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-journal-utilities 0.43.0.."
-call sf force:package:install --package 04tKB000000Y9WtYAK -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-journal-utilities 0.50.0.."
+call sf force:package:install --package 04tQC000000tl6LYAQ -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-oppgave 0.64.0.."
-call sf force:package:install --package 04tKB000000YB09YAG -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-oppgave 0.65.0.."
+call sf force:package:install --package 04tQC000000rfOPYAY -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-arbeidsgiver-base 1.559.0.."
-call sf force:package:install --package 04tQC000000jX6HYAU -r --installation-key %1 --wait 10 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.587.0.."
+call sf force:package:install --package 04tQC000000tkdJYAQ -r --installation-key %1 --wait 10 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-community-base 121."
-call sf force:package:install --package 04tQC000000ieEfYAI -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-community-base 128."
+call sf force:package:install --package 04tQC000000ocOfYAI -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-shared-user-notification 0.24.0"
-call sf force:package:install --package 04t7U000000Y4jZQAS -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-shared-user-notification 0.25.0"
+call sf force:package:install --package 04tQC000000tKMHYA2 -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-henvendelse 0.169.0"
-call sf force:package:install --package 04tQC000000ieWPYAY -r --installation-key %1 --wait 5 --publish-wait 4
+echo "Installerer crm-henvendelse 0.176.0"
+call sf force:package:install --package 04tQC000000sbU1YAI -r --installation-key %1 --wait 5 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-ips 0.492-beta 1."
-call sf force:package:install --package 04tQC000000jzNVYAY -r --installation-key %1 --wait 10 --publish-wait 10
+echo "Installerer crm-ips 0.506."
+call sf force:package:install --package 04tQC000000tfVZYAY -r --installation-key %1 --wait 10 --publish-wait 10
 
 echo ""
 echo "TILDELER"
