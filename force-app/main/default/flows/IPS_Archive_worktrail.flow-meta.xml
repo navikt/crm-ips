@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>AMS_Educations_to_JSON</name>
+        <label>AMS Educations to JSON</label>
+        <locationX>616</locationX>
+        <locationY>7452</locationY>
+        <actionName>ArchiveHelper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Create_archive_entry_AMS_Education</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__recordsList</typeName>
+            <typeValue>AMS_Vocational_education_and_training__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordsList</name>
+            <value>
+                <elementReference>AMS_Education_fields</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ArchiveHelper</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Converting worktrail record collection to JSON using Apex class - ArchiveHelper. ArchiveHelper accepts only record collection as a parameter.</description>
         <name>Convert_worktrail_to_JSON</name>
         <label>Convert worktrail to JSON</label>
@@ -1819,9 +1844,41 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Application_log_AMS_Education</name>
+        <label>Application log - AMS Education</label>
+        <locationX>1276</locationX>
+        <locationY>7668</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_Info__c</field>
+            <value>
+                <stringValue>Create archive entry - AMS Education</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - Archive worktrail</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Application_log_Education</name>
         <label>Application log - Education</label>
-        <locationX>1276</locationX>
+        <locationX>1540</locationX>
         <locationY>7236</locationY>
         <inputAssignments>
             <field>Application_Domain__c</field>
@@ -1961,12 +2018,68 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <inputReference>tempArchvieEntry</inputReference>
     </recordCreates>
     <recordCreates>
+        <name>Create_archive_entry_AMS_Education</name>
+        <label>Create archive entry - AMS Education</label>
+        <locationX>616</locationX>
+        <locationY>7560</locationY>
+        <connector>
+            <targetReference>Update_worktrail</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Application_log_AMS_Education</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Archive_Data__c</field>
+            <value>
+                <elementReference>AMS_Educations_to_JSON</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Confidential__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Fnr__c</field>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Reference_Id__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Reference_Object__c</field>
+            <value>
+                <stringValue>Vocational education</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Theme__c</field>
+            <value>
+                <stringValue>Jobbspor</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Archive_Entry__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_archive_entry_Educations</name>
         <label>Create archive entry - Educations</label>
         <locationX>616</locationX>
         <locationY>7128</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_AMS_education_related_to_worktrail</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Application_log_Education</targetReference>
@@ -2012,6 +2125,27 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         </faultConnector>
         <inputReference>tempArchiveSubgoal</inputReference>
     </recordCreates>
+    <recordLookups>
+        <name>Get_AMS_education_related_to_worktrail</name>
+        <label>Get AMS education related to worktrail</label>
+        <locationX>616</locationX>
+        <locationY>7236</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AMS_Education_fields</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AMS_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AMS_Vocational_education_and_training__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_education_related_to_worktrail</name>
         <label>Get education related to worktrail</label>
@@ -2123,7 +2257,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
         <locationX>616</locationX>
-        <locationY>7236</locationY>
+        <locationY>7668</locationY>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -2138,17 +2272,17 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>IPS_Can_archived__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
             <field>ips_Status__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Ended</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Can_archived__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>Work_Trail__c</object>
@@ -2347,6 +2481,114 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
             </value>
         </inputAssignments>
     </subflows>
+    <transforms>
+        <description>Selected fields from AMS Education to archive</description>
+        <name>AMS_Education_fields</name>
+        <label>AMS Education fields</label>
+        <locationX>616</locationX>
+        <locationY>7344</locationY>
+        <connector>
+            <targetReference>AMS_Educations_to_JSON</targetReference>
+        </connector>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <objectType>AMS_Vocational_education_and_training__c</objectType>
+        <scale>0</scale>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <transformValues>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Description__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Description__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Education_Support_Plan__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Education_Support_Plan__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Educational_program__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Educational_program__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_End_Date__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_End_Date__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Form_of_Study__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Form_of_Study__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Name_of_the_Education_institution__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Name_of_the_Education_institution__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Start_Date__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Start_Date__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Status__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Status__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_What_did_not_work_with_the_education__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_What_did_not_work_with_the_education__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_What_did_work_with_the_education__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_What_did_work_with_the_education__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Work_Trail__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Work_Trail__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Id</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].Id</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Name</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].Name</elementReference>
+                </value>
+            </transformValueActions>
+        </transformValues>
+    </transforms>
     <variables>
         <description>Worktrail data to be archived</description>
         <name>archiveData</name>
