@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>AMS_Educations_to_JSON</name>
+        <label>AMS Educations to JSON</label>
+        <locationX>594</locationX>
+        <locationY>8568</locationY>
+        <actionName>ArchiveHelper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Create_archive_entry_AMS_Education</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__recordsList</typeName>
+            <typeValue>AMS_Vocational_education_and_training__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordsList</name>
+            <value>
+                <elementReference>AMS_Education_fields</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ArchiveHelper</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Converting worktrail record collection to JSON using Apex class - ArchiveHelper. ArchiveHelper accepts only record collection as a parameter.</description>
         <name>Convert_worktrail_to_JSON</name>
         <label>Convert worktrail to JSON</label>
-        <locationX>484</locationX>
+        <locationX>506</locationX>
         <locationY>792</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
@@ -30,10 +55,38 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
+        <name>Educations_to_JSON</name>
+        <label>Educations to JSON</label>
+        <locationX>638</locationX>
+        <locationY>7596</locationY>
+        <actionName>ArchiveHelper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Archive_Entry_Educations</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__recordsList</typeName>
+            <typeValue>ips_Education__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordsList</name>
+            <value>
+                <elementReference>edusToArchive</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ArchiveHelper</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>eduJSONOutput</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Events_to_JSON</name>
         <label>Events to JSON</label>
-        <locationX>484</locationX>
-        <locationY>2472</locationY>
+        <locationX>770</locationX>
+        <locationY>2580</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -60,8 +113,8 @@
     <actionCalls>
         <name>Jobs_to_JSON</name>
         <label>Jobs to JSON</label>
-        <locationX>484</locationX>
-        <locationY>3852</locationY>
+        <locationX>660</locationX>
+        <locationY>4152</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -88,8 +141,8 @@
     <actionCalls>
         <name>Subgoals_to_JSON</name>
         <label>Subgoals to JSON</label>
-        <locationX>484</locationX>
-        <locationY>5232</locationY>
+        <locationX>902</locationX>
+        <locationY>6024</locationY>
         <actionName>ArchiveHelper</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -118,8 +171,8 @@
     <assignments>
         <name>Add_events_to_archive</name>
         <label>Add events to archive</label>
-        <locationX>484</locationX>
-        <locationY>2580</locationY>
+        <locationX>770</locationX>
+        <locationY>2688</locationY>
         <assignmentItems>
             <assignToReference>eventsFileToArchive</assignToReference>
             <operator>Add</operator>
@@ -134,8 +187,8 @@
     <assignments>
         <name>Add_jobs_to_archive</name>
         <label>Add jobs to archive</label>
-        <locationX>484</locationX>
-        <locationY>3960</locationY>
+        <locationX>660</locationX>
+        <locationY>4260</locationY>
         <assignmentItems>
             <assignToReference>jobsFileToArchive</assignToReference>
             <operator>Add</operator>
@@ -150,8 +203,8 @@
     <assignments>
         <name>Add_subgoals_to_archive_file</name>
         <label>Add subgoals to archive file</label>
-        <locationX>484</locationX>
-        <locationY>5340</locationY>
+        <locationX>902</locationX>
+        <locationY>6132</locationY>
         <assignmentItems>
             <assignToReference>subgoalFileToArchive</assignToReference>
             <operator>Add</operator>
@@ -167,7 +220,7 @@
         <description>Adding output from ArchiveHelper to a collection.</description>
         <name>Add_worktrail_to_archive</name>
         <label>Add Worktrail To Archive</label>
-        <locationX>484</locationX>
+        <locationX>506</locationX>
         <locationY>900</locationY>
         <assignmentItems>
             <assignToReference>worktrailDataToSplit</assignToReference>
@@ -184,7 +237,7 @@
         <description>Adding AMS related fields from Worktrail object</description>
         <name>AMS_Worktrail_fields</name>
         <label>AMS Worktrail fields</label>
-        <locationX>616</locationX>
+        <locationX>638</locationX>
         <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>worktrailToArchive.ips_UO_Service__c</assignToReference>
@@ -208,7 +261,7 @@
         <description>Assigning values to the archive entry fields.</description>
         <name>Archive_entry</name>
         <label>Archive entry</label>
-        <locationX>616</locationX>
+        <locationX>638</locationX>
         <locationY>1116</locationY>
         <assignmentItems>
             <assignToReference>tempArchvieEntry.Archive_Data__c</assignToReference>
@@ -264,10 +317,68 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Archive_Entry_Educations</name>
+        <label>Archive Entry - Educations</label>
+        <locationX>638</locationX>
+        <locationY>7704</locationY>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Confidential__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Archive_Data__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>eduJSONOutput</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Fnr__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Domain__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Reference_Id__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Reference_Object__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Education</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempArchiveEdu.Theme__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Jobbspor</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_archive_entry_Educations</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Archive_Entry_Events</name>
         <label>Archive Entry - Events</label>
-        <locationX>616</locationX>
-        <locationY>2796</locationY>
+        <locationX>902</locationX>
+        <locationY>2904</locationY>
         <assignmentItems>
             <assignToReference>tempEventArchiveEvent.Archive_Data__c</assignToReference>
             <operator>Assign</operator>
@@ -324,8 +435,8 @@
     <assignments>
         <name>Archive_Entry_Jobs</name>
         <label>Archive Entry - Jobs</label>
-        <locationX>616</locationX>
-        <locationY>4176</locationY>
+        <locationX>792</locationX>
+        <locationY>4476</locationY>
         <assignmentItems>
             <assignToReference>tempArchiveJob.Confidential__c</assignToReference>
             <operator>Assign</operator>
@@ -382,8 +493,8 @@
     <assignments>
         <name>Archive_Entry_Subgoals</name>
         <label>Archive Entry - Subgoals</label>
-        <locationX>616</locationX>
-        <locationY>5556</locationY>
+        <locationX>1034</locationX>
+        <locationY>6348</locationY>
         <assignmentItems>
             <assignToReference>tempArchiveSubgoal.Confidential__c</assignToReference>
             <operator>Assign</operator>
@@ -438,10 +549,133 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Education_collection</name>
+        <label>Education collection</label>
+        <locationX>726</locationX>
+        <locationY>7404</locationY>
+        <assignmentItems>
+            <assignToReference>edusToArchive</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>eduToArchive</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_education_to_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Education_to_archive</name>
+        <label>Education to archive</label>
+        <locationX>726</locationX>
+        <locationY>7296</locationY>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Education_Courses__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Education_Courses__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Education_Subject__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Education_Subject__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Education_Support_Plan__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Education_Support_Plan__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Educational_programs__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Educational_programs__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Start_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Start_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_End_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_End_Date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Form_of_Education__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Form_of_Education__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Name_of_the_Education_Institution__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Name_of_the_Education_Institution__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Status__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_What_did_work_with_this_education__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_What_did_work_with_this_education__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_What_did_not_work_with_thiseducation__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_What_did_not_work_with_thiseducation__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.ips_Work_Trail__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.ips_Work_Trail__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.Level_of_chosen_Education__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.Level_of_chosen_Education__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>eduToArchive.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_education_to_collection.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Education_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>employer_meeting_related_fields</name>
         <label>Employer meeting related fields</label>
-        <locationX>572</locationX>
-        <locationY>2088</locationY>
+        <locationX>858</locationX>
+        <locationY>2196</locationY>
         <assignmentItems>
             <assignToReference>eventToArchive.IPS_employerName__c</assignToReference>
             <operator>Assign</operator>
@@ -463,8 +697,8 @@
     <assignments>
         <name>Event_to_archive</name>
         <label>Event to archive</label>
-        <locationX>704</locationX>
-        <locationY>1872</locationY>
+        <locationX>990</locationX>
+        <locationY>1980</locationY>
         <assignmentItems>
             <assignToReference>eventToArchive.Id</assignToReference>
             <operator>Assign</operator>
@@ -577,8 +811,8 @@
     <assignments>
         <name>Events_collection</name>
         <label>Events collection</label>
-        <locationX>704</locationX>
-        <locationY>2280</locationY>
+        <locationX>990</locationX>
+        <locationY>2388</locationY>
         <assignmentItems>
             <assignToReference>eventsToArchive</assignToReference>
             <operator>Add</operator>
@@ -594,7 +828,7 @@
         <description>Adding IPS related fields from Worktrial object</description>
         <name>IPS_Worktrail_fields</name>
         <label>IPS Worktrail fields</label>
-        <locationX>352</locationX>
+        <locationX>374</locationX>
         <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>worktrailToArchive.ips_Contact_when_not_showing__c</assignToReference>
@@ -743,8 +977,8 @@
     <assignments>
         <name>Job_to_archive</name>
         <label>Job to archive</label>
-        <locationX>572</locationX>
-        <locationY>3552</locationY>
+        <locationX>748</locationX>
+        <locationY>3852</locationY>
         <assignmentItems>
             <assignToReference>jobToArchive.Id</assignToReference>
             <operator>Assign</operator>
@@ -871,8 +1105,8 @@
     <assignments>
         <name>Jobs_collection</name>
         <label>Jobs collection</label>
-        <locationX>572</locationX>
-        <locationY>3660</locationY>
+        <locationX>748</locationX>
+        <locationY>3960</locationY>
         <assignmentItems>
             <assignToReference>jobsToArchive</assignToReference>
             <operator>Add</operator>
@@ -885,10 +1119,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Log_kontakt_fields</name>
+        <label>Log kontakt fields</label>
+        <locationX>990</locationX>
+        <locationY>5640</locationY>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.Samtalereferat__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.Samtalereferat__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Subgoal_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Subgoal_collection</name>
         <label>Subgoal collection</label>
-        <locationX>572</locationX>
-        <locationY>5040</locationY>
+        <locationX>1254</locationX>
+        <locationY>5832</locationY>
         <assignmentItems>
             <assignToReference>subgoalsToArchive</assignToReference>
             <operator>Add</operator>
@@ -901,11 +1151,27 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Subgoal with selected fields</description>
+        <name>Subgoal_fields</name>
+        <label>Subgoal fields</label>
+        <locationX>1254</locationX>
+        <locationY>5640</locationY>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.ips_Due_Date_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.ips_Due_Date_Time__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Subgoal_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Task with selected fields</description>
         <name>Subgoal_to_archive</name>
-        <label>Subgoal to archive</label>
-        <locationX>572</locationX>
-        <locationY>4932</locationY>
+        <label>Task to archive</label>
+        <locationX>1254</locationX>
+        <locationY>5424</locationY>
         <assignmentItems>
             <assignToReference>tempSubgoal.Id</assignToReference>
             <operator>Assign</operator>
@@ -925,13 +1191,6 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>Add_subgoals_to.CompletedDateTime</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>tempSubgoal.ips_Due_Date_Time__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Add_subgoals_to.ips_Due_Date_Time__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -969,15 +1228,22 @@
                 <elementReference>Add_subgoals_to.WhatId</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempSubgoal.ActivityDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Add_subgoals_to.ActivityDate</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Subgoal_collection</targetReference>
+            <targetReference>Task_Logg_kontakt</targetReference>
         </connector>
     </assignments>
     <assignments>
         <description>Adding worktrail record to a worktrail record collection variable.</description>
         <name>Worktrail_collection_to_convert_to_JSON</name>
         <label>Worktrail collection to convert to JSON</label>
-        <locationX>484</locationX>
+        <locationX>506</locationX>
         <locationY>684</locationY>
         <assignmentItems>
             <assignToReference>worktralCollection</assignToReference>
@@ -994,7 +1260,7 @@
         <description>Selected fields from Worktrail object.</description>
         <name>Worktrail_to_archive</name>
         <label>Worktrail to archive</label>
-        <locationX>484</locationX>
+        <locationX>506</locationX>
         <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>worktrailToArchive.Name</assignToReference>
@@ -1241,7 +1507,7 @@
     <decisions>
         <name>IPS_or_AMS</name>
         <label>IPS or AMS</label>
-        <locationX>484</locationX>
+        <locationX>506</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <targetReference>AMS_Worktrail_fields</targetReference>
@@ -1266,8 +1532,8 @@
     <decisions>
         <name>Is</name>
         <label>Is Subgoals Exceed Max Limit ?</label>
-        <locationX>484</locationX>
-        <locationY>5448</locationY>
+        <locationX>902</locationX>
+        <locationY>6240</locationY>
         <defaultConnector>
             <targetReference>Archive_Entry_Subgoals</targetReference>
         </defaultConnector>
@@ -1289,10 +1555,60 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_AMS_Education_empty</name>
+        <label>Is AMS Education empty ?</label>
+        <locationX>506</locationX>
+        <locationY>8352</locationY>
+        <defaultConnector>
+            <targetReference>AMS_Education_fields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Empty_Ams_Edu</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_AMS_education_related_to_worktrail</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_worktrail</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_educations_empty</name>
+        <label>Is educations empty ?</label>
+        <locationX>506</locationX>
+        <locationY>7080</locationY>
+        <defaultConnector>
+            <targetReference>Add_education_to_collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_empty_educations</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_education_related_to_worktrail</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_AMS_education_related_to_worktrail</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Events_Exceed_Max_Limit</name>
         <label>Is Events Exceed Max Limit ?</label>
-        <locationX>484</locationX>
-        <locationY>2688</locationY>
+        <locationX>770</locationX>
+        <locationY>2796</locationY>
         <defaultConnector>
             <targetReference>Archive_Entry_Events</targetReference>
         </defaultConnector>
@@ -1314,10 +1630,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_jobs_empty</name>
+        <label>Is jobs empty ?</label>
+        <locationX>506</locationX>
+        <locationY>3636</locationY>
+        <defaultConnector>
+            <targetReference>Add_jobs_to_collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_empty_jobs</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_job_related_to_worktrail</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Subgoals_Related_To_Worktrail</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Jobs_Exceed_Max_Limit</name>
         <label>Is Jobs Exceed Max Limit ?</label>
-        <locationX>484</locationX>
-        <locationY>4068</locationY>
+        <locationX>660</locationX>
+        <locationY>4368</locationY>
         <defaultConnector>
             <targetReference>Archive_Entry_Jobs</targetReference>
         </defaultConnector>
@@ -1339,10 +1680,60 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_meetings_empty</name>
+        <label>Is meetings empty ?</label>
+        <locationX>506</locationX>
+        <locationY>1764</locationY>
+        <defaultConnector>
+            <targetReference>Add_meetings_to_collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_meetings_related_to_worktrail</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_job_related_to_worktrail</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Tasks_Empty</name>
+        <label>Is Tasks Empty ?</label>
+        <locationX>506</locationX>
+        <locationY>5208</locationY>
+        <defaultConnector>
+            <targetReference>Add_subgoals_to</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Empty_Tasks</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Subgoals_Related_To_Worktrail</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_education_related_to_worktrail</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Maximum length of the archive data field is 130000 characters. Formula field isWorktrailExceedsMaxLimit is used to check for maximum limit.</description>
         <name>Is_worktrail_exceeds_maxlimit</name>
         <label>Is worktrail exceeds maxlimit ?</label>
-        <locationX>484</locationX>
+        <locationX>506</locationX>
         <locationY>1008</locationY>
         <defaultConnector>
             <targetReference>Archive_entry</targetReference>
@@ -1365,11 +1756,52 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Adds samtalereferat field to task record.</description>
+        <name>Task_Logg_kontakt</name>
+        <label>Task - Logg kontakt</label>
+        <locationX>1254</locationX>
+        <locationY>5532</locationY>
+        <defaultConnector>
+            <targetReference>Subgoal_collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Logg_kontakt</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Add_subgoals_to.Type_of_Task_IPSUO__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Logg kontakt</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Log_kontakt_fields</targetReference>
+            </connector>
+            <label>Logg kontakt</label>
+        </rules>
+        <rules>
+            <name>Subgoal</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Add_subgoals_to.Type_of_Task_IPSUO__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Delmål (av hovedmål)</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subgoal_fields</targetReference>
+            </connector>
+            <label>Subgoal</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Adding fields according to the type of meeting</description>
         <name>Type_of_meeting</name>
         <label>Type of meeting</label>
-        <locationX>704</locationX>
-        <locationY>1980</locationY>
+        <locationX>990</locationX>
+        <locationY>2088</locationY>
         <defaultConnector>
             <targetReference>Events_collection</targetReference>
         </defaultConnector>
@@ -1429,10 +1861,24 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <interviewLabel>IPS - Archive worktrail {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Archive worktrail</label>
     <loops>
+        <name>Add_education_to_collection</name>
+        <label>Add education to collection</label>
+        <locationX>638</locationX>
+        <locationY>7188</locationY>
+        <collectionReference>Get_education_related_to_worktrail</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Education_to_archive</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Educations_to_JSON</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>Add_jobs_to_collection</name>
         <label>Add jobs to collection</label>
-        <locationX>484</locationX>
-        <locationY>3444</locationY>
+        <locationX>660</locationX>
+        <locationY>3744</locationY>
         <collectionReference>Get_job_related_to_worktrail</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1445,8 +1891,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <loops>
         <name>Add_meetings_to_collection</name>
         <label>Add meetings to collection</label>
-        <locationX>484</locationX>
-        <locationY>1764</locationY>
+        <locationX>770</locationX>
+        <locationY>1872</locationY>
         <collectionReference>Get_meetings_related_to_worktrail</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1459,8 +1905,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <loops>
         <name>Add_subgoals_to</name>
         <label>Add subgoals to collection</label>
-        <locationX>484</locationX>
-        <locationY>4824</locationY>
+        <locationX>902</locationX>
+        <locationY>5316</locationY>
         <collectionReference>Get_Subgoals_Related_To_Worktrail</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1493,7 +1939,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <description>Creates an log when creating archive entry fails.</description>
         <name>Application_log</name>
         <label>Application log</label>
-        <locationX>880</locationX>
+        <locationX>902</locationX>
         <locationY>1332</locationY>
         <inputAssignments>
             <field>Application_Domain__c</field>
@@ -1523,10 +1969,74 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Application_log_AMS_Education</name>
+        <label>Application log - AMS Education</label>
+        <locationX>858</locationX>
+        <locationY>8784</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_Info__c</field>
+            <value>
+                <stringValue>Create archive entry - AMS Education</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - Archive worktrail</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Application_log_Education</name>
+        <label>Application log - Education</label>
+        <locationX>902</locationX>
+        <locationY>7920</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_Info__c</field>
+            <value>
+                <stringValue>Create archive entry - Education</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - Archive worktrail</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Application_log_Events</name>
         <label>Application log - Events</label>
-        <locationX>880</locationX>
-        <locationY>3012</locationY>
+        <locationX>1166</locationX>
+        <locationY>3120</locationY>
         <inputAssignments>
             <field>Application_Domain__c</field>
             <value>
@@ -1557,8 +2067,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <recordCreates>
         <name>Application_log_Jobs</name>
         <label>Application log - Jobs</label>
-        <locationX>880</locationX>
-        <locationY>4392</locationY>
+        <locationX>1056</locationX>
+        <locationY>4692</locationY>
         <inputAssignments>
             <field>Application_Domain__c</field>
             <value>
@@ -1589,8 +2099,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <recordCreates>
         <name>Application_log_Subgoals</name>
         <label>Application log - Subgoals</label>
-        <locationX>880</locationX>
-        <locationY>5772</locationY>
+        <locationX>1298</locationX>
+        <locationY>6564</locationY>
         <inputAssignments>
             <field>Application_Domain__c</field>
             <value>
@@ -1622,7 +2132,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <description>Creating an archive entry which will be sent to archive using a record triggered flow.</description>
         <name>Create_archive_entry</name>
         <label>Create archive entry</label>
-        <locationX>616</locationX>
+        <locationX>638</locationX>
         <locationY>1224</locationY>
         <connector>
             <targetReference>Get_meetings_related_to_worktrail</targetReference>
@@ -1633,10 +2143,79 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <inputReference>tempArchvieEntry</inputReference>
     </recordCreates>
     <recordCreates>
+        <name>Create_archive_entry_AMS_Education</name>
+        <label>Create archive entry - AMS Education</label>
+        <locationX>594</locationX>
+        <locationY>8676</locationY>
+        <connector>
+            <targetReference>Update_worktrail</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Application_log_AMS_Education</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Archive_Data__c</field>
+            <value>
+                <elementReference>AMS_Educations_to_JSON</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Confidential__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Fnr__c</field>
+            <value>
+                <elementReference>$Record.IPS_Personnummer__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Reference_Id__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Reference_Object__c</field>
+            <value>
+                <stringValue>Vocational education</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Theme__c</field>
+            <value>
+                <stringValue>Jobbspor</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Archive_Entry__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_archive_entry_Educations</name>
+        <label>Create archive entry - Educations</label>
+        <locationX>638</locationX>
+        <locationY>7812</locationY>
+        <connector>
+            <targetReference>Get_AMS_education_related_to_worktrail</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Application_log_Education</targetReference>
+        </faultConnector>
+        <inputReference>tempArchiveEdu</inputReference>
+    </recordCreates>
+    <recordCreates>
         <name>Create_archive_entry_Event</name>
         <label>Create archive entry - Event</label>
-        <locationX>616</locationX>
-        <locationY>2904</locationY>
+        <locationX>902</locationX>
+        <locationY>3012</locationY>
         <connector>
             <targetReference>Get_job_related_to_worktrail</targetReference>
         </connector>
@@ -1648,8 +2227,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <recordCreates>
         <name>Create_archive_entry_Job</name>
         <label>Create archive entry - Job</label>
-        <locationX>616</locationX>
-        <locationY>4284</locationY>
+        <locationX>792</locationX>
+        <locationY>4584</locationY>
         <connector>
             <targetReference>Get_Subgoals_Related_To_Worktrail</targetReference>
         </connector>
@@ -1661,10 +2240,10 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <recordCreates>
         <name>Create_archive_entry_Subgoals</name>
         <label>Create archive entry - Subgoals</label>
-        <locationX>616</locationX>
-        <locationY>5664</locationY>
+        <locationX>1034</locationX>
+        <locationY>6456</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_education_related_to_worktrail</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Application_log_Subgoals</targetReference>
@@ -1672,13 +2251,55 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <inputReference>tempArchiveSubgoal</inputReference>
     </recordCreates>
     <recordLookups>
-        <name>Get_job_related_to_worktrail</name>
-        <label>Get job related to worktrail</label>
-        <locationX>484</locationX>
-        <locationY>3336</locationY>
+        <name>Get_AMS_education_related_to_worktrail</name>
+        <label>Get AMS education related to worktrail</label>
+        <locationX>506</locationX>
+        <locationY>8244</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Add_jobs_to_collection</targetReference>
+            <targetReference>Is_AMS_Education_empty</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AMS_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AMS_Vocational_education_and_training__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_education_related_to_worktrail</name>
+        <label>Get education related to worktrail</label>
+        <locationX>506</locationX>
+        <locationY>6972</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_educations_empty</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Work_Trail__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Education__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_job_related_to_worktrail</name>
+        <label>Get job related to worktrail</label>
+        <locationX>506</locationX>
+        <locationY>3528</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_jobs_empty</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1695,11 +2316,11 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <recordLookups>
         <name>Get_meetings_related_to_worktrail</name>
         <label>Get meetings related to worktrail</label>
-        <locationX>484</locationX>
+        <locationX>506</locationX>
         <locationY>1656</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Add_meetings_to_collection</targetReference>
+            <targetReference>Is_meetings_empty</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1714,15 +2335,16 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <description>Gets subgoals(Delmål), tasks(Oppgave), contact log(Kontaktlogg) related to worktrail.</description>
         <name>Get_Subgoals_Related_To_Worktrail</name>
-        <label>Get Subgoals Related To Worktrail</label>
-        <locationX>484</locationX>
-        <locationY>4716</locationY>
+        <label>Get Tasks Related To Worktrail</label>
+        <locationX>506</locationX>
+        <locationY>5100</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Add_subgoals_to</targetReference>
+            <targetReference>Is_Tasks_Empty</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND (2 OR 3 OR 4)</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -1737,6 +2359,20 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
                 <stringValue>Delmål (av hovedmål)</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Oppgave</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type_of_Task_IPSUO__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Logg kontakt</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -1745,8 +2381,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <description>Update &apos;Is archived&apos; field to true</description>
         <name>Update_worktrail</name>
         <label>Update worktrail</label>
-        <locationX>484</locationX>
-        <locationY>6096</locationY>
+        <locationX>506</locationX>
+        <locationY>9108</locationY>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -1761,17 +2397,17 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>IPS_Can_archived__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
             <field>ips_Status__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Ended</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Can_archived__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>Work_Trail__c</object>
@@ -1789,7 +2425,7 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <description>Using subflow which creates archive entries. Each archive entry will have split archive data. This subflow is used when the archive data exceeds the maximum limit of the archive data field.</description>
         <name>Create_archive_entries</name>
         <label>Create archive entries</label>
-        <locationX>352</locationX>
+        <locationX>374</locationX>
         <locationY>1116</locationY>
         <connector>
             <targetReference>Get_meetings_related_to_worktrail</targetReference>
@@ -1835,8 +2471,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <subflows>
         <name>Create_archive_entries_Event</name>
         <label>Create Archive Entries - Event</label>
-        <locationX>352</locationX>
-        <locationY>2796</locationY>
+        <locationX>638</locationX>
+        <locationY>2904</locationY>
         <connector>
             <targetReference>Get_job_related_to_worktrail</targetReference>
         </connector>
@@ -1881,8 +2517,8 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <subflows>
         <name>Create_Archive_Entries_Job</name>
         <label>Create Archive Entries - Job</label>
-        <locationX>352</locationX>
-        <locationY>4176</locationY>
+        <locationX>528</locationX>
+        <locationY>4476</locationY>
         <connector>
             <targetReference>Get_Subgoals_Related_To_Worktrail</targetReference>
         </connector>
@@ -1927,10 +2563,10 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
     <subflows>
         <name>Create_Archive_Entries_Subgoal</name>
         <label>Create Archive Entries - Subgoal</label>
-        <locationX>352</locationX>
-        <locationY>5556</locationY>
+        <locationX>770</locationX>
+        <locationY>6348</locationY>
         <connector>
-            <targetReference>Update_worktrail</targetReference>
+            <targetReference>Get_education_related_to_worktrail</targetReference>
         </connector>
         <flowName>IPS_Create_archive_entries</flowName>
         <inputAssignments>
@@ -1970,6 +2606,114 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
             </value>
         </inputAssignments>
     </subflows>
+    <transforms>
+        <description>Selected fields from AMS Education to archive</description>
+        <name>AMS_Education_fields</name>
+        <label>AMS Education fields</label>
+        <locationX>594</locationX>
+        <locationY>8460</locationY>
+        <connector>
+            <targetReference>AMS_Educations_to_JSON</targetReference>
+        </connector>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <objectType>AMS_Vocational_education_and_training__c</objectType>
+        <scale>0</scale>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <transformValues>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Description__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Description__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Education_Support_Plan__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Education_Support_Plan__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Educational_program__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Educational_program__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_End_Date__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_End_Date__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Form_of_Study__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Form_of_Study__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Name_of_the_Education_institution__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Name_of_the_Education_institution__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Start_Date__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Start_Date__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Status__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Status__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_What_did_not_work_with_the_education__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_What_did_not_work_with_the_education__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_What_did_work_with_the_education__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_What_did_work_with_the_education__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>AMS_Work_Trail__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].AMS_Work_Trail__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Id</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].Id</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Name</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_AMS_education_related_to_worktrail[$EachItem].Name</elementReference>
+                </value>
+            </transformValueActions>
+        </transformValues>
+    </transforms>
     <variables>
         <description>Worktrail data to be archived</description>
         <name>archiveData</name>
@@ -1992,6 +2736,29 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <scale>0</scale>
+    </variables>
+    <variables>
+        <name>eduJSONOutput</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>edusToArchive</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Education__c</objectType>
+    </variables>
+    <variables>
+        <name>eduToArchive</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Education__c</objectType>
     </variables>
     <variables>
         <name>eventJsonOutput</name>
@@ -2074,6 +2841,14 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Task</objectType>
+    </variables>
+    <variables>
+        <name>tempArchiveEdu</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Archive_Entry__c</objectType>
     </variables>
     <variables>
         <name>tempArchiveJob</name>
