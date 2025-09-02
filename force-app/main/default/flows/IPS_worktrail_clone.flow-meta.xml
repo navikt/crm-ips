@@ -3,8 +3,8 @@
     <actionCalls>
         <name>IPS_workTrailClonedNotification</name>
         <label>Work trail cloned notification</label>
-        <locationX>842</locationX>
-        <locationY>4394</locationY>
+        <locationX>1106</locationX>
+        <locationY>4610</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -42,14 +42,15 @@
             </value>
         </inputParameters>
         <nameSegment>customNotificationAction</nameSegment>
-        <versionSegment>1</versionSegment>
+        <offset>0</offset>
     </actionCalls>
     <apiVersion>61.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>Add_record_to_list</name>
         <label>Add record to list</label>
-        <locationX>798</locationX>
-        <locationY>3086</locationY>
+        <locationX>1062</locationX>
+        <locationY>3302</locationY>
         <assignmentItems>
             <assignToReference>varGoalList</assignToReference>
             <operator>Add</operator>
@@ -65,8 +66,8 @@
         <description>Legger til recordId for nytt jobbspor og valgt eier.</description>
         <name>addDatavaluesGoals</name>
         <label>Add datavalues</label>
-        <locationX>798</locationX>
-        <locationY>2978</locationY>
+        <locationX>1062</locationX>
+        <locationY>3194</locationY>
         <assignmentItems>
             <assignToReference>loopingGoals.OwnerId</assignToReference>
             <operator>Assign</operator>
@@ -89,8 +90,8 @@
         <description>Legger til recordId for nytt jobbspor</description>
         <name>addDatavaluesJobs</name>
         <label>Add data values</label>
-        <locationX>798</locationX>
-        <locationY>3686</locationY>
+        <locationX>1062</locationX>
+        <locationY>3902</locationY>
         <assignmentItems>
             <assignToReference>loopingJobs.ips_Work_Trail__c</assignToReference>
             <operator>Assign</operator>
@@ -105,8 +106,8 @@
     <assignments>
         <name>addJobRecordToList</name>
         <label>Add job record to list</label>
-        <locationX>798</locationX>
-        <locationY>3794</locationY>
+        <locationX>1062</locationX>
+        <locationY>4010</locationY>
         <assignmentItems>
             <assignToReference>varJobList</assignToReference>
             <operator>Add</operator>
@@ -121,8 +122,8 @@
     <assignments>
         <name>Assign_recordtype</name>
         <label>Assign recordtype</label>
-        <locationX>842</locationX>
-        <locationY>2546</locationY>
+        <locationX>1106</locationX>
+        <locationY>2762</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.RecordTypeId</assignToReference>
             <operator>Assign</operator>
@@ -138,8 +139,8 @@
         <description>Legger inn data om deltaker fra person objektet</description>
         <name>assignParticipantsData</name>
         <label>Assign participants data</label>
-        <locationX>842</locationX>
-        <locationY>1082</locationY>
+        <locationX>1106</locationX>
+        <locationY>1298</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.ips_Participant__c</assignToReference>
             <operator>Assign</operator>
@@ -203,8 +204,8 @@
     <assignments>
         <name>assignUserInput</name>
         <label>Assign user input</label>
-        <locationX>842</locationX>
-        <locationY>1922</locationY>
+        <locationX>1106</locationX>
+        <locationY>2138</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.ips_Referred_date__c</assignToReference>
             <operator>Assign</operator>
@@ -261,8 +262,8 @@
     <assignments>
         <name>setAMSfields</name>
         <label>Set AMS fields</label>
-        <locationX>578</locationX>
-        <locationY>2354</locationY>
+        <locationX>842</locationX>
+        <locationY>2570</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.Personal_Qualities__c</assignToReference>
             <operator>Assign</operator>
@@ -354,6 +355,13 @@
                 <elementReference>getWorktrailRecord.ips_Work_experience__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_ownerNameText__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_add_owner_lookup.recordName</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Assign_recordtype</targetReference>
         </connector>
@@ -362,8 +370,8 @@
         <description>Sikrer at verdier blir satt/nullet ut. Gjelder begge tjenester</description>
         <name>setDefaultValues</name>
         <label>Set default values</label>
-        <locationX>842</locationX>
-        <locationY>2030</locationY>
+        <locationX>1106</locationX>
+        <locationY>2246</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.ips_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -378,8 +386,8 @@
     <assignments>
         <name>setIPSFields</name>
         <label>Set IPS fields</label>
-        <locationX>842</locationX>
-        <locationY>2354</locationY>
+        <locationX>1106</locationX>
+        <locationY>2570</locationY>
         <assignmentItems>
             <assignToReference>varNewWorkTrailRecord.Personal_Qualities__c</assignToReference>
             <operator>Assign</operator>
@@ -534,6 +542,13 @@
                 <elementReference>getWorktrailRecord.ips_job_edu_support_network__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.IPS_ownerNameText__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IPS_add_owner_lookup.recordName</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Assign_recordtype</targetReference>
         </connector>
@@ -582,8 +597,8 @@
         <description>Sjekker om jobbsporet er avsluttet og har en sluttdato som er eldre enn 12 måneder.</description>
         <name>ageCheck</name>
         <label>Age check</label>
-        <locationX>578</locationX>
-        <locationY>866</locationY>
+        <locationX>842</locationX>
+        <locationY>1082</locationY>
         <defaultConnector>
             <targetReference>getParticipantsData</targetReference>
         </defaultConnector>
@@ -612,11 +627,36 @@
         </rules>
     </decisions>
     <decisions>
+        <name>check_if_participant_have_an_active_end_report</name>
+        <label>check if participant have an active end report</label>
+        <locationX>578</locationX>
+        <locationY>974</locationY>
+        <defaultConnector>
+            <targetReference>ageCheck</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isReportActive</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_report_that_is_active</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Participant_have_an_active_report</targetReference>
+            </connector>
+            <label>isReportActive</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Sjekker om det eksisterer en manuell deling på jobbsporet.</description>
         <name>Check_if_worktrail_have_an_manual_sharing</name>
         <label>Check if worktrail have an manual sharing</label>
         <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <defaultConnector>
             <targetReference>checkIfParticipantHaveAnActiveTrail</targetReference>
         </defaultConnector>
@@ -640,8 +680,8 @@
     <decisions>
         <name>checkIfGoalsIsNotEmpty</name>
         <label>Check if goals is not empty</label>
-        <locationX>842</locationX>
-        <locationY>2762</locationY>
+        <locationX>1106</locationX>
+        <locationY>2978</locationY>
         <defaultConnector>
             <targetReference>checkIfJobIsNotEmpty</targetReference>
         </defaultConnector>
@@ -665,8 +705,8 @@
     <decisions>
         <name>checkIfJobIsNotEmpty</name>
         <label>Check if job is not empty</label>
-        <locationX>842</locationX>
-        <locationY>3470</locationY>
+        <locationX>1106</locationX>
+        <locationY>3686</locationY>
         <defaultConnector>
             <targetReference>createCloneHistory</targetReference>
         </defaultConnector>
@@ -692,9 +732,9 @@
         <name>checkIfParticipantHaveAnActiveTrail</name>
         <label>Check if participant have an active trail</label>
         <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationY>866</locationY>
         <defaultConnector>
-            <targetReference>ageCheck</targetReference>
+            <targetReference>check_if_participant_have_an_active_end_report</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>noActive</defaultConnectorLabel>
         <rules>
@@ -717,8 +757,8 @@
         <description>Sjekker hvilket menyvalg som er valgt.</description>
         <name>checkMenuChoice</name>
         <label>Check menu choice</label>
-        <locationX>842</locationX>
-        <locationY>1406</locationY>
+        <locationX>1106</locationX>
+        <locationY>1622</locationY>
         <defaultConnector>
             <targetReference>IPS_Information_screen</targetReference>
         </defaultConnector>
@@ -758,8 +798,8 @@
         <description>Basert på valg av posttype/tjeneste, skal det tildeles og slettes informasjon i klonet jobbspor</description>
         <name>checkServiceInput</name>
         <label>Check service input</label>
-        <locationX>842</locationX>
-        <locationY>2138</locationY>
+        <locationX>1106</locationX>
+        <locationY>2354</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
             <name>isAMS</name>
@@ -832,8 +872,8 @@
         <description>Løper gjennom for å legge til korrekte verdier</description>
         <name>loopingGoals</name>
         <label>Looping goals</label>
-        <locationX>710</locationX>
-        <locationY>2870</locationY>
+        <locationX>974</locationX>
+        <locationY>3086</locationY>
         <collectionReference>getActiveGoals</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -846,8 +886,8 @@
     <loops>
         <name>loopingJobs</name>
         <label>Looping jobs</label>
-        <locationX>710</locationX>
-        <locationY>3578</locationY>
+        <locationX>974</locationX>
+        <locationY>3794</locationY>
         <collectionReference>getActiveJobs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -880,8 +920,8 @@
         <description>Oppretter aktive delmål knyttet til nytt jobbspor</description>
         <name>Create_goals</name>
         <label>Create goals</label>
-        <locationX>710</locationX>
-        <locationY>3278</locationY>
+        <locationX>974</locationX>
+        <locationY>3494</locationY>
         <connector>
             <targetReference>checkIfJobIsNotEmpty</targetReference>
         </connector>
@@ -890,8 +930,8 @@
     <recordCreates>
         <name>createJobs</name>
         <label>Create Jobs</label>
-        <locationX>710</locationX>
-        <locationY>3986</locationY>
+        <locationX>974</locationX>
+        <locationY>4202</locationY>
         <connector>
             <targetReference>createCloneHistory</targetReference>
         </connector>
@@ -900,8 +940,8 @@
     <recordCreates>
         <name>createNewWorkTrailRecord</name>
         <label>createNewWorkTrailRecord</label>
-        <locationX>842</locationX>
-        <locationY>2654</locationY>
+        <locationX>1106</locationX>
+        <locationY>2870</locationY>
         <connector>
             <targetReference>checkIfGoalsIsNotEmpty</targetReference>
         </connector>
@@ -912,18 +952,67 @@
         <name>removeSharing</name>
         <label>Remove sharing</label>
         <locationX>182</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <connector>
             <targetReference>checkIfParticipantHaveAnActiveTrail</targetReference>
         </connector>
         <inputReference>get_shared_worktrail</inputReference>
     </recordDeletes>
     <recordLookups>
+        <name>Get_report_that_is_active</name>
+        <label>Get report that is active</label>
+        <locationX>314</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_shared_worktrail</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR 5)</filterLogic>
+        <filters>
+            <field>IPS_workTrailName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>With comment</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Without comment</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Shared report</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_report__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Check if cloned work_trail have an manual sharing</description>
         <name>get_shared_worktrail</name>
         <label>get shared worktrail</label>
         <locationX>314</locationX>
-        <locationY>242</locationY>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getAllRecordsBasedOnSCN</targetReference>
@@ -951,8 +1040,8 @@
         <description>Henter aktive delmål</description>
         <name>getActiveGoals</name>
         <label>Get active goals</label>
-        <locationX>798</locationX>
-        <locationY>1514</locationY>
+        <locationX>1062</locationX>
+        <locationY>1730</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getActiveJobs</targetReference>
@@ -987,8 +1076,8 @@
         <description>Henter aktive jobber</description>
         <name>getActiveJobs</name>
         <label>Get active jobs</label>
-        <locationX>798</locationX>
-        <locationY>1622</locationY>
+        <locationX>1062</locationX>
+        <locationY>1838</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>addData</targetReference>
@@ -1010,7 +1099,7 @@
         <name>getAllRecordsBasedOnSCN</name>
         <label>Get all records based on SCN</label>
         <locationX>314</locationX>
-        <locationY>350</locationY>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_if_worktrail_have_an_manual_sharing</targetReference>
@@ -1037,8 +1126,8 @@
     <recordLookups>
         <name>getNotificationId</name>
         <label>getNotificationId</label>
-        <locationX>842</locationX>
-        <locationY>4286</locationY>
+        <locationX>1106</locationX>
+        <locationY>4502</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IPS_workTrailClonedNotification</targetReference>
@@ -1061,8 +1150,8 @@
         <description>Henter data som fødselsdato, adresse, telefon og epost</description>
         <name>getParticipantsData</name>
         <label>Get participants data</label>
-        <locationX>842</locationX>
-        <locationY>974</locationY>
+        <locationX>1106</locationX>
+        <locationY>1190</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>assignParticipantsData</targetReference>
@@ -1082,8 +1171,8 @@
     <recordLookups>
         <name>getRecordTypeId</name>
         <label>getRecordTypeId</label>
-        <locationX>842</locationX>
-        <locationY>2246</locationY>
+        <locationX>1106</locationX>
+        <locationY>2462</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>setIPSFields</targetReference>
@@ -1105,8 +1194,8 @@
     <recordLookups>
         <name>getRecordTypeIdAMS</name>
         <label>getRecordTypeId</label>
-        <locationX>578</locationX>
-        <locationY>2246</locationY>
+        <locationX>842</locationX>
+        <locationY>2462</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>setAMSfields</targetReference>
@@ -1133,7 +1222,7 @@
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>get_shared_worktrail</targetReference>
+            <targetReference>Get_report_that_is_active</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1153,8 +1242,8 @@
 Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <name>addData</name>
         <label>3. Add data</label>
-        <locationX>842</locationX>
-        <locationY>1814</locationY>
+        <locationX>1106</locationX>
+        <locationY>2030</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1310,7 +1399,7 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <name>Copy_2_of_Worktrail_is_too_old</name>
         <label>Participant have an active worktrail</label>
         <locationX>50</locationX>
-        <locationY>866</locationY>
+        <locationY>974</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1384,8 +1473,8 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
     <screens>
         <name>displayInformation</name>
         <label>displayInformation</label>
-        <locationX>842</locationX>
-        <locationY>4502</locationY>
+        <locationX>1106</locationX>
+        <locationY>4718</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1406,8 +1495,8 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <description>Gir bruker tilgang til å endre tjeneste</description>
         <name>informationAboutService</name>
         <label>2. Information about service</label>
-        <locationX>842</locationX>
-        <locationY>1298</locationY>
+        <locationX>1106</locationX>
+        <locationY>1514</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1444,8 +1533,8 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <description>Valget bruker gjorde kvalifiserte ikke med kriterier</description>
         <name>IPS_Information_screen</name>
         <label>Information screen</label>
-        <locationX>1062</locationX>
-        <locationY>1514</locationY>
+        <locationX>1326</locationX>
+        <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1466,8 +1555,8 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <description>Hvis jobbsporet er avsluttet og sluttdato er eldre enn 1 år skal det ikke være mulig klone jobbsporet.</description>
         <name>IPS_worktrail_is_too_old</name>
         <label>Worktrail is too old</label>
-        <locationX>314</locationX>
-        <locationY>974</locationY>
+        <locationX>578</locationX>
+        <locationY>1190</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1485,11 +1574,86 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>Participant_have_an_active_report</name>
+        <label>Participant have an active report</label>
+        <locationX>314</locationX>
+        <locationY>1082</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Copy_2_of_Copy_2_of_Copy_1_of_Title2</name>
+            <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Copy_2_of_displayInformationWarning0</name>
+            <fieldText>&lt;p&gt;Det finne en veilederrapport som ikke er journalført eller delt med deltaker.&lt;/p&gt;&lt;p&gt;Kan ikke klone jobbsporet før rapport er journalført.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>activeReport</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>ips_report__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Aktiv veilederrapport</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>NO_SELECTION</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_report_that_is_active</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-3264&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Veilederrapport nummer&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;&quot;,&quot;guid&quot;:&quot;column-63af&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <description>Menyvalg</description>
         <name>startMenu</name>
         <label>1. Start menu</label>
-        <locationX>842</locationX>
-        <locationY>1190</locationY>
+        <locationX>1106</locationX>
+        <locationY>1406</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1528,8 +1692,8 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
     <subflows>
         <name>createCloneHistory</name>
         <label>Create clone history</label>
-        <locationX>842</locationX>
-        <locationY>4178</locationY>
+        <locationX>1106</locationX>
+        <locationY>4394</locationY>
         <connector>
             <targetReference>getNotificationId</targetReference>
         </connector>
