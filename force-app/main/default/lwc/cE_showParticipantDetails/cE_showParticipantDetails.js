@@ -35,6 +35,6 @@ export default class Ips_showParticipantDetail extends LightningElement {
             
         });
         
-        this.sectionLabel = this.toggle ? "Show participant details" : "Hide participant details";
+        this.sectionLabel = this.toggle ? "Vis deltakerdetaljer" : "Skjul deltakerdetaljer";
     }
 }
