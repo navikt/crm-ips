@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>IPS_hashUserId</name>
+        <name>Hash_user_id1</name>
         <label>Hash user id</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <actionName>IPS_StringHasherController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>IPS_checkIfUserIsDeactivated</targetReference>
+            <targetReference>Create_platform_event2</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -19,7 +19,58 @@
         </inputParameters>
         <nameSegment>IPS_StringHasherController</nameSegment>
         <offset>0</offset>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputParameters>
+            <assignToReference>varHashedUserId</assignToReference>
+            <name>hashString</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Hash_user_id2</name>
+        <label>Hash user id</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_StringHasherController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>IPS_createPlatformEvent</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_StringHasherController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>varHashedUserId</assignToReference>
+            <name>hashString</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>IPS_hashUserId</name>
+        <label>Hash user id</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_StringHasherController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Create_platform_event1</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_StringHasherController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>varHashedUserId</assignToReference>
+            <name>hashString</name>
+        </outputParameters>
     </actionCalls>
     <apiVersion>64.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
@@ -78,7 +129,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_platform_event1</targetReference>
+                <targetReference>IPS_hashUserId</targetReference>
             </connector>
             <label>isActiveChanged</label>
         </rules>
@@ -110,7 +161,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_platform_event2</targetReference>
+                <targetReference>Hash_user_id1</targetReference>
             </connector>
             <label>isProfileChangeOutside</label>
         </rules>
@@ -196,12 +247,12 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IPS_createPlatformEvent</targetReference>
+                <targetReference>Hash_user_id2</targetReference>
             </connector>
             <label>IsRoleChanges</label>
         </rules>
     </decisions>
-    <description>Flow is triggered when a user get a new role - send to IPS platform event user role</description>
+    <description>Flow is triggered when a user get a new role, profile, changes in isActive and has jobbspor profile  - send to IPS platform event user role</description>
     <environments>Default</environments>
     <formulas>
         <name>forExternRole</name>
@@ -370,7 +421,7 @@ FALSE
         <inputAssignments>
             <field>UserId__c</field>
             <value>
-                <elementReference>IPS_hashUserId.hashString</elementReference>
+                <elementReference>varHashedUserId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -453,7 +504,7 @@ FALSE
         <inputAssignments>
             <field>UserId__c</field>
             <value>
-                <elementReference>IPS_hashUserId.hashString</elementReference>
+                <elementReference>varHashedUserId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -533,7 +584,7 @@ FALSE
         <inputAssignments>
             <field>UserId__c</field>
             <value>
-                <elementReference>IPS_hashUserId.hashString</elementReference>
+                <elementReference>varHashedUserId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -579,7 +630,7 @@ FALSE
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>IPS_hashUserId</targetReference>
+            <targetReference>IPS_checkIfUserIsDeactivated</targetReference>
         </connector>
         <filterLogic>or</filterLogic>
         <filters>
@@ -608,6 +659,13 @@ FALSE
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>varHashedUserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>varUserId</name>
         <dataType>String</dataType>
