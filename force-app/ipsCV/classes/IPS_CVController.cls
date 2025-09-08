@@ -34,10 +34,11 @@ public with sharing class IPS_CVController {
         }
     }
     // https://github.com/navikt/crm-platform-base/blob/main/force-app/application-monitoring/classes/LoggerUtility.cls
+    // https://github.com/navikt/crm-platform-base/blob/main/force-app/main/default/classes/CRM_ApplicationDomain.cls
     private static String logError(HttpResponse resp, String message) {
         String errorRef = '';
         LoggerUtility logger = new LoggerUtility();
-        logger.httpError(message, resp, null, 'IPS');
+        logger.httpError(message, resp, null, CRM_ApplicationDomain.Domain.IPS);
         errorRef = logger.peek().UUID__c;
         logger.publish();
         return errorRef;
