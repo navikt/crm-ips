@@ -33,11 +33,11 @@ public with sharing class IPS_CVController {
             throw new CVException(e.getMessage());
         }
     }
-
+    // https://github.com/navikt/crm-platform-base/blob/main/force-app/application-monitoring/classes/LoggerUtility.cls
     private static String logError(HttpResponse resp, String message) {
         String errorRef = '';
         LoggerUtility logger = new LoggerUtility();
-        logger.httpError(message, resp, null, null);
+        logger.httpError(message, resp, null, 'IPS');
         errorRef = logger.peek().UUID__c;
         logger.publish();
         return errorRef;
