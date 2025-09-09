@@ -2,6 +2,43 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>64.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Assign_WorkTrail</name>
+        <label>Assign Work Trail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_selectedWorkTrail</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>currentItem_Filter_ForRelatedWorkTrails</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_ShowRelevantRecordDetails</targetReference>
+        </connector>
+    </assignments>
+    <collectionProcessors>
+        <name>Filter_ForRelatedWorkTrails</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filter for Related Work Trails</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNextValueToReference>currentItem_Filter_ForRelatedWorkTrails</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_RelatedWorkTrails</collectionReference>
+        <conditionLogic>and</conditionLogic>
+        <conditions>
+            <leftValueReference>currentItem_Filter_ForRelatedWorkTrails.Id</leftValueReference>
+            <operator>EqualTo</operator>
+            <rightValue>
+                <elementReference>list_relatedWorkTrails.firstSelectedRow.Id</elementReference>
+            </rightValue>
+        </conditions>
+        <connector>
+            <targetReference>Assign_WorkTrail</targetReference>
+        </connector>
+    </collectionProcessors>
     <customProperties>
         <name>ScreenProgressIndicator</name>
         <value>
@@ -55,8 +92,19 @@
         <queriedFields>IPS_ownerName__c</queriedFields>
         <queriedFields>End_Cause__c</queriedFields>
         <queriedFields>ips_End_Date__c</queriedFields>
+        <queriedFields>Name</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_WorkTrail</name>
+        <label>Update Work Trail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Screen_NavigtateToSelectedRecord</targetReference>
+        </connector>
+        <inputReference>var_selectedWorkTrail</inputReference>
+    </recordUpdates>
     <screens>
         <name>Screen_EnterPersonNumberScreen</name>
         <label>Enter Person Number Screen</label>
@@ -80,7 +128,7 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Screen_NavToSelectedRecord</name>
+        <name>Screen_NavigtateToSelectedRecord</name>
         <label>Navigtate To Selected Record</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -119,7 +167,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Screen_NavToSelectedRecord</targetReference>
+            <targetReference>Filter_ForRelatedWorkTrails</targetReference>
         </connector>
         <fields>
             <name>list_relatedWorkTrails</name>
@@ -156,12 +204,132 @@
             <inputParameters>
                 <name>columns</name>
                 <value>
-                    <stringValue>[{&quot;apiName&quot;:&quot;CreatedDate&quot;,&quot;guid&quot;:&quot;column-ca19&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Created Date&quot;,&quot;type&quot;:&quot;customDateTime&quot;},{&quot;apiName&quot;:&quot;IPS_ownerName__c&quot;,&quot;guid&quot;:&quot;column-0ec4&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Owner&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;IPS_ownerName&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;End_Cause__c&quot;,&quot;guid&quot;:&quot;column-21b9&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;End Cause&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_End_Date__c&quot;,&quot;guid&quot;:&quot;column-b05e&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;End Date&quot;,&quot;type&quot;:&quot;date-local&quot;}]</stringValue>
+                    <stringValue>[{&quot;apiName&quot;:&quot;CreatedDate&quot;,&quot;guid&quot;:&quot;column-ca19&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Created Date&quot;,&quot;type&quot;:&quot;customDateTime&quot;},{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-7d84&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Work Trail Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;IPS_ownerName__c&quot;,&quot;guid&quot;:&quot;column-0ec4&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Owner&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;IPS_ownerName&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;ips_Status__c&quot;,&quot;guid&quot;:&quot;column-999c&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;End_Cause__c&quot;,&quot;guid&quot;:&quot;column-21b9&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;End Cause&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_End_Date__c&quot;,&quot;guid&quot;:&quot;column-b05e&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:5,&quot;label&quot;:&quot;End Date&quot;,&quot;type&quot;:&quot;date-local&quot;}]</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Offers the option to correct the start- and end dates, status and end causes.</description>
+        <name>Screen_ShowRelevantRecordDetails</name>
+        <label>Show Relevant Record Details</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Update_WorkTrail</targetReference>
+        </connector>
+        <fields>
+            <name>displayText_workTrailName</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Selected Work Trail:  {!currentItem_Filter_ForRelatedWorkTrails.Name}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;{!var_selectedWorkTrail.Name}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ShowRelevantRecordDetails_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Screen_ShowRelevantRecordDetails_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayText_currentValueHeader</name>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Current Value&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>displayText_status</name>
+                    <fieldText>&lt;p&gt;{!currentItem_Filter_ForRelatedWorkTrails.ips_Status__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>display_startDate</name>
+                    <dataType>Date</dataType>
+                    <defaultValue>
+                        <elementReference>currentItem_Filter_ForRelatedWorkTrails.ips_Start_Date__c</elementReference>
+                    </defaultValue>
+                    <fieldText>Start Date</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+                    <isReadOnly>
+                        <booleanValue>true</booleanValue>
+                    </isReadOnly>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>display_EndDate</name>
+                    <dataType>Date</dataType>
+                    <defaultValue>
+                        <elementReference>currentItem_Filter_ForRelatedWorkTrails.ips_End_Date__c</elementReference>
+                    </defaultValue>
+                    <fieldText>End Date</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+                    <isReadOnly>
+                        <booleanValue>true</booleanValue>
+                    </isReadOnly>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>displayText_endCause</name>
+                    <fieldText>&lt;p&gt;{!currentItem_Filter_ForRelatedWorkTrails.End_Cause__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Screen_ShowRelevantRecordDetails_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>displayText_newValueHeader</name>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;New Value&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <fieldType>ObjectProvided</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
+                    <objectFieldReference>var_selectedWorkTrail.ips_Status__c</objectFieldReference>
+                </fields>
+                <fields>
+                    <fieldType>ObjectProvided</fieldType>
+                    <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
+                    <objectFieldReference>var_selectedWorkTrail.ips_Start_Date__c</objectFieldReference>
+                </fields>
+                <fields>
+                    <fieldType>ObjectProvided</fieldType>
+                    <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
+                    <objectFieldReference>var_selectedWorkTrail.ips_End_Date__c</objectFieldReference>
+                </fields>
+                <fields>
+                    <fieldType>ObjectProvided</fieldType>
+                    <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
+                    <objectFieldReference>var_selectedWorkTrail.End_Cause__c</objectFieldReference>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -174,4 +342,21 @@
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>currentItem_Filter_ForRelatedWorkTrails</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Work_Trail__c</objectType>
+    </variables>
+    <variables>
+        <description>The Work Trail the user has selected and may want to modify, e.g. change the end date for.</description>
+        <name>var_selectedWorkTrail</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Work_Trail__c</objectType>
+    </variables>
 </Flow>
