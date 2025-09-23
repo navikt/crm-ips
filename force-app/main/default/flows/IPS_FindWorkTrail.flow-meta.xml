@@ -32,14 +32,14 @@
             <assignToReference>var_applicationLog.Referrence_ID__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>currentItem_Fetch_SelectedRecord.IPS_Personnummer__c</elementReference>
+                <elementReference>sObj_selectedWorkTrail.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>var_applicationLog.Id</assignToReference>
+            <assignToReference>var_applicationLog.Referrence_ID__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>currentItem_Fetch_SelectedRecord.Id</elementReference>
+                <elementReference>sObj_selectedWorkTrail.IPS_Personnummer__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -142,8 +142,8 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Check_IfWorkTrialReadOnly</name>
-        <label>Check If Work Trial Read-Only</label>
+        <name>Check_IfWorkTrailIsReadOnly</name>
+        <label>Check If Work Trail Is Read-Only</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
@@ -151,7 +151,7 @@
         </defaultConnector>
         <defaultConnectorLabel>Work Trail is open for editing</defaultConnectorLabel>
         <rules>
-            <name>Check_IfWorkTrialReadOnly_Yes</name>
+            <name>Check_IfWorkTrailIsReadOnly_Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>sObj_selectedWorkTrail.IPS_IsEndCauseSet__c</leftValueReference>
@@ -190,7 +190,7 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
             <targetReference>Assign_WorkTrail</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Check_IfWorkTrialReadOnly</targetReference>
+            <targetReference>Check_IfWorkTrailIsReadOnly</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -233,7 +233,7 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
             <field>IPS_Personnummer__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Input_PersonNumber</elementReference>
+                <elementReference>var_personNumber</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -265,14 +265,14 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
             <targetReference>Get_RelatedWorkTrails</targetReference>
         </connector>
         <fields>
-            <name>display_customHeader</name>
+            <name>s_title1</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!$Label.IPS_FindWorkTrail_FlowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>Input_PersonNumber</name>
+            <name>var_personNumber</name>
             <dataType>String</dataType>
-            <fieldText>{!$Label. IPS_FindWorkTrail_EnterPersonNumber}</fieldText>
+            <fieldText>Oppgi Personnummeret til deltakeren:</fieldText>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
@@ -323,25 +323,30 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
             <targetReference>Check_IfUserWantToReopenWorktrail</targetReference>
         </connector>
         <fields>
+            <name>s_displayFlowTitle3</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;{!$Label.IPS_FindWorkTrail_FlowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>var_OpenForEditing</name>
             <extensionName>flowruntime:toggle</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <elementReference>$Label.IPS_FindWorkTrail_FlowTitle</elementReference>
+                    <stringValue>Åpne Jobbspor for redigering?</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>messageToggleActive</name>
                 <value>
-                    <booleanValue>true</booleanValue>
+                    <elementReference>$Label.IPS_FindWorkTrail_OpenWorkTrailForEditing_Yes</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>messageToggleInactive</name>
                 <value>
-                    <booleanValue>false</booleanValue>
+                    <elementReference>$Label.IPS_FindWorkTrail_OpenWorkTrailForEditing_No</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -350,18 +355,12 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
                     <elementReference>var_makeWorkTrailWritable</elementReference>
                 </value>
             </inputParameters>
-            <inputParameters>
-                <name>disabled</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Screen_RelatedWorkTrails</name>
@@ -375,8 +374,8 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
             <targetReference>Fetch_SelectedRecord</targetReference>
         </connector>
         <fields>
-            <name>header2</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!$Label.IPS_FindWorkTrail_FlowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <name>s_displayFlowTitle2</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 16px;&quot;&gt;{!$Label.IPS_FindWorkTrail_FlowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -390,13 +389,13 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <elementReference>$Label.IPS_FindWorkTrail_FlowTitle</elementReference>
+                    <stringValue>Tilknyttede jobbspor</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>selectionMode</name>
                 <value>
-                    <stringValue>MULTI_SELECT</stringValue>
+                    <stringValue>SINGLE_SELECT</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -415,6 +414,12 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
                 <name>columns</name>
                 <value>
                     <stringValue>[{&quot;apiName&quot;:&quot;CreatedDate&quot;,&quot;guid&quot;:&quot;column-ca19&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Created Date&quot;,&quot;type&quot;:&quot;customDateTime&quot;},{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-7d84&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Work Trail Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;IPS_ownerName__c&quot;,&quot;guid&quot;:&quot;column-0ec4&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Owner&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;IPS_ownerName&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;ips_Status__c&quot;,&quot;guid&quot;:&quot;column-999c&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;End_Cause__c&quot;,&quot;guid&quot;:&quot;column-21b9&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;End Cause&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_End_Date__c&quot;,&quot;guid&quot;:&quot;column-b05e&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:5,&quot;label&quot;:&quot;End Date&quot;,&quot;type&quot;:&quot;date-local&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -437,7 +442,7 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
             <targetReference>Screen_EnterPersonNumberScreen</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>currentItem_Fetch_SelectedRecord</name>
         <dataType>SObject</dataType>
@@ -479,16 +484,6 @@ If the Work Trail is ended and closed for editing, we offer to open it.</descrip
         <isOutput>false</isOutput>
         <value>
             <booleanValue>false</booleanValue>
-        </value>
-    </variables>
-    <variables>
-        <name>var_openForEditingText</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>Åpne jobbspor for redigering?</stringValue>
         </value>
     </variables>
 </Flow>

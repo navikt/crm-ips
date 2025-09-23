@@ -3,8 +3,8 @@
     <apiVersion>64.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <name>Assign_UserNewDetails</name>
-        <label>Assign User New Details</label>
+        <name>Assign_NewUserDetails</name>
+        <label>Assign New User Details</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
@@ -58,6 +58,13 @@
                 <stringValue>IPS Admin Give User Access</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_applicationLog.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sObj_User.Id</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Create_ApplicationLog</targetReference>
         </connector>
@@ -70,7 +77,7 @@
     </customProperties>
     <environments>Default</environments>
     <interviewLabel>IPS Admin Give User Access {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS Admin Give User Access</label>
+    <label>IPS - Admin Give User Access</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -221,6 +228,7 @@
         </faultConnector>
         <inputReference>sObj_User</inputReference>
     </recordUpdates>
+    <runInMode>DefaultMode</runInMode>
     <screens>
         <name>screen_chooseUsersAndRole</name>
         <label>Choose Users and Role</label>
@@ -230,8 +238,13 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Assign_UserNewDetails</targetReference>
+            <targetReference>Assign_NewUserDetails</targetReference>
         </connector>
+        <fields>
+            <name>s_displayText2</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!$Label.IPS_GiveUserAccess_FlowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>dataTable_jobbspesialistUser</name>
             <dataTypeMappings>
@@ -395,7 +408,7 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Screen_EnterUserDetails</name>
@@ -408,6 +421,11 @@
         <connector>
             <targetReference>GET_Jobbspesialist_User</targetReference>
         </connector>
+        <fields>
+            <name>s_displayText1</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!$Label.IPS_GiveUserAccess_FlowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>var_jobbspesialistName</name>
             <dataType>String</dataType>
@@ -433,7 +451,7 @@
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>0</locationX>
@@ -442,7 +460,7 @@
             <targetReference>Screen_EnterUserDetails</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>sObj_applicationLog</name>
         <dataType>SObject</dataType>
