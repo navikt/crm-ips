@@ -68,7 +68,7 @@ call sf force:package:install --package 04tQC000000rfOPYAY -r --installation-key
 echo ""
 echo "INSTALLERER"
 echo "Installerer crm-arbeidsgiver-base 1.587.0.."
-call sf force:package:install --package 04tQC000000tkdJYAQ -r --installation-key %1 --wait 10 --publish-wait 4
+call sf force:package:install --package 04tQC000000x6MLYAY -r --installation-key %1 --wait 10 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
