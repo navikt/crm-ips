@@ -521,12 +521,13 @@ public with sharing class IPS_ParticipantPortalReportController{
     private static List<IPS_ParticipantPortalTask> getReportOpenGoals(id recordId, Date reportDateTo){
         List<IPS_ParticipantPortalTask> wrapperTempList = new List<IPS_ParticipantPortalTask>();
         Date tempDate = reportDateTo.addMonths(3);
+        Date today = Date.today();
 
         List<Task> tempGoalList = new List<Task>();
         String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Open\' ';
         String goalId = ' AND WhatId = :recordId';
-        String goalFilter = ' AND ActivityDate > :reportDateTo  AND ActivityDate < :tempDate';
+        String goalFilter = ' AND ActivityDate > :today  AND ActivityDate < :tempDate';
         String goalSort = ' ORDER BY ActivityDate ASC';
         String query = goalSelect + goalWhere + goalId + goalFilter + goalSort;
         tempGoalList = Database.query(query);

@@ -225,10 +225,11 @@ public with sharing class IPS_viewReportPDFController {
     }
 
     private list<Task> getopenGoals() {
+        Date today = Date.today();
         String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Open\' ';
         String goalId = ' AND WhatId = :workTrailId';
-        String goalFilter = ' AND ActivityDate > :intervallToDate';
+        String goalFilter = ' AND ActivityDate > :today';
         String goalSort = ' ORDER BY ActivityDate ASC';
         String query = goalSelect + goalWhere + goalId + goalFilter + goalSort;
 
