@@ -291,6 +291,7 @@ public with sharing class IPS_viewReportPDFController {
 
     private list<Event> getOpenIntervallActivity(Date sluttDato) {
         List<Event> emplActivity = new List<Event>();
+        Date today = Date.today();
         Date tempDate = Date.today().addMonths(3);
         if (sluttDato != null) {
             tempDate = sluttDato.addMonths(3);
@@ -315,7 +316,7 @@ public with sharing class IPS_viewReportPDFController {
                     'Start up meeting',
                     'First Meeting with Employer'
                 )
-                AND ActivityDate > :sluttDato
+                AND ActivityDate > :today
                 AND ActivityDate < :tempDate
                 AND WhatId = :workTrailId
                 AND IPS_Status1__c IN ('Open')

@@ -564,6 +564,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     private static List<IPS_ParticipantPortalEvent> getReportOpenMeetings(id recordId, Date reportDateTo){
         List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
         Date tempDate = reportDateTo.addMonths(3);
+        Date today = Date.today();
         List<Event> emplActivity = new List<Event>();
         emplActivity = [
             SELECT
@@ -579,7 +580,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                     'Start up meeting',
                     'First Meeting with Employer'
                 )
-                AND ActivityDate > :reportDateTo AND ActivityDate < :tempDate
+                AND ActivityDate > :today AND ActivityDate < :tempDate
                 AND WhatId = :recordId
                 AND IPS_Status1__c ='Open'
             ORDER BY ActivityDate ASC
