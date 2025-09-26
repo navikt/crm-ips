@@ -521,12 +521,13 @@ public with sharing class IPS_ParticipantPortalReportController{
     private static List<IPS_ParticipantPortalTask> getReportOpenGoals(id recordId, Date reportDateTo){
         List<IPS_ParticipantPortalTask> wrapperTempList = new List<IPS_ParticipantPortalTask>();
         Date tempDate = reportDateTo.addMonths(3);
+        Date today = Date.today();
 
         List<Task> tempGoalList = new List<Task>();
         String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Open\' ';
         String goalId = ' AND WhatId = :recordId';
-        String goalFilter = ' AND ActivityDate > :reportDateTo  AND ActivityDate < :tempDate';
+        String goalFilter = ' AND ActivityDate > :today  AND ActivityDate < :tempDate';
         String goalSort = ' ORDER BY ActivityDate ASC';
         String query = goalSelect + goalWhere + goalId + goalFilter + goalSort;
         tempGoalList = Database.query(query);
@@ -563,6 +564,7 @@ public with sharing class IPS_ParticipantPortalReportController{
     private static List<IPS_ParticipantPortalEvent> getReportOpenMeetings(id recordId, Date reportDateTo){
         List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
         Date tempDate = reportDateTo.addMonths(3);
+        Date today = Date.today();
         List<Event> emplActivity = new List<Event>();
         emplActivity = [
             SELECT
@@ -578,7 +580,7 @@ public with sharing class IPS_ParticipantPortalReportController{
                     'Start up meeting',
                     'First Meeting with Employer'
                 )
-                AND ActivityDate > :reportDateTo AND ActivityDate < :tempDate
+                AND ActivityDate > :today AND ActivityDate < :tempDate
                 AND WhatId = :recordId
                 AND IPS_Status1__c ='Open'
             ORDER BY ActivityDate ASC
