@@ -121,15 +121,15 @@ public class IPS_ParticipantPortalReportContTest {
         ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'ips_Supported_Employment' LIMIT 1]?.id;
 
         Task participantGoalsCompleted = IPS_TestDataFactory.creategoal(workTrailId);
-        participantGoalsCompleted.ips_Due_Date_Time__c = System.today().addDays(-7);
-        participantGoalsCompleted.ActivityDate = System.today().addDays(-7);
+        participantGoalsCompleted.ips_Due_Date_Time__c = System.today().addDays(7);
+        participantGoalsCompleted.ActivityDate = System.today().addDays(7);
         participantGoalsCompleted.Status = 'Open' ;
         insert participantGoalsCompleted;
 
         List<IPS_ParticipantPortalTask> tasksOpen = IPS_ParticipantPortalReportController.getParticipantsReportOpenGoals(
             workTrailId,
             'Intervall',
-            Date.today().addDays(-30)
+            Date.today().addDays(-10)
         );
 
 
@@ -194,7 +194,7 @@ public class IPS_ParticipantPortalReportContTest {
         List<IPS_ParticipantPortalEvent> meetingsOpen = IPS_ParticipantPortalReportController.getParticipantsReportOpenMeetings(
             workTrailId,
             'Intervall',
-            Date.today().addDays(-30)
+            Date.today().addDays(-1)
         );
 
         // Assert
