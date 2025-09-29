@@ -87,16 +87,16 @@ sf force:package:install --package 04tQC000000sjhhYAA -r --installation-key $3 -
 echo ""
 echo "TILDELER"
 echo "Tildel tilatelsessett til brukeren - IPS_management.."
-sf force:user:permset:assign --perm-set-name IPS_management
+sf org assign permset --name IPS_management
 
 echo ""
 echo "TILDELER"
 echo "Tildel tilatelsessett til brukeren IPS_Utvidet_oppf_lging_management.."
-sf force:user:permset:assign --perm-set-name IPS_Utvidet_oppf_lging_management
+sf org assign permset --name IPS_Utvidet_oppf_lging_management
 
 echo ""
 echo "TILDELER"
 echo "Tildel tilatelsessett til brukeren IPS_Config.."
-sf force:user:permset:assign --perm-set-name IPS_Config
+sf org assign permset --name IPS_Config
 
 echo "************************* FERDIG *********************************"
