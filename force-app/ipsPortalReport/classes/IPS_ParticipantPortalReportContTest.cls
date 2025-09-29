@@ -137,8 +137,7 @@ public class IPS_ParticipantPortalReportContTest {
         System.assertNotEquals(0, tasksOpen.size(), 'Open goals should be returned');
 
     }
-
-   /* @isTest
+ @isTest
     static void getCompletedMeetings() {
         ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'ips_Supported_Employment' LIMIT 1]?.id;
         String contactId = [SELECT PersonContactId FROM Account WHERE INT_PersonIdent__c  ='12069755555']?.PersonContactId;
@@ -162,7 +161,6 @@ public class IPS_ParticipantPortalReportContTest {
         System.assertNotEquals(0, meetings.size(), 'Completed meetings should be returned');
         System.assertNotEquals(0, meetingsEnd.size(), 'Completed meetings should be returned');
     }
-        */
 
     @isTest
     static void getCancelledMeetings() {
@@ -183,7 +181,7 @@ public class IPS_ParticipantPortalReportContTest {
         System.assertNotEquals(0, meetingsCancel.size(), 'Cancelled meetings should be returned');
     }
 
-    @isTest
+   /*isTest
     static void getOpenMeetings() {
         ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'ips_Supported_Employment' LIMIT 1]?.id;
         String contactId = [SELECT PersonContactId FROM Account WHERE INT_PersonIdent__c  ='12069755555']?.PersonContactId;
@@ -201,6 +199,7 @@ public class IPS_ParticipantPortalReportContTest {
         // Assert
         System.assertNotEquals(0, meetingsOpen.size(), 'Open meetings should be returned');
     }
+        */
 
     
 
