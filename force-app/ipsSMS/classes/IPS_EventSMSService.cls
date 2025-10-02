@@ -142,7 +142,7 @@ public without sharing class IPS_EventSMSService {
                 event.IPS_IsSendChangeSMS__c = false;
             }
         }
-        Database.update(eventList, true);
+        Database.update(eventList, false);
         Database.insert(smsList, false);
     }
 
