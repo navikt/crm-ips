@@ -55,8 +55,8 @@ public without sharing class IPS_EventSMSService {
                 event.IPS_IsCreatedSMSSendt__c = true;
             }
         }
-        Database.update(eventList, true);
-        Database.insert(smsList, true);
+        Database.update(eventList, false);
+        Database.insert(smsList, false);
     }
 
     private static String constructCreatedMessage(Event event) {
@@ -94,8 +94,8 @@ public without sharing class IPS_EventSMSService {
                 event.IPS_IsReminderSMSSendt__c = true;
             }
         }
-        Database.update(eventList, true);
-        Database.insert(smsList, true);
+        Database.update(eventList, false);
+        Database.insert(smsList, false);
     }
 
     private static String constructReminderMessage(Event event) {
@@ -141,8 +141,8 @@ public without sharing class IPS_EventSMSService {
                 event.IPS_IsSendChangeSMS__c = false;
             }
         }
-        Database.update(eventList, true);
-        Database.insert(smsList, true);
+        Database.update(eventList, false);
+        Database.insert(smsList, false);
     }
 
     private static String construcChangedMessage(Event event) {
