@@ -2,6 +2,22 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>61.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>End_details_registered_date</name>
+        <label>End details registered date</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>getWorkTrailValues.IPS_End_Details_Registered_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>TODAY</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateBasedOnUserInput</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>checkEndCauseValues</name>
         <label>Check endcause values</label>
@@ -35,6 +51,13 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>getWorkTrailValues.IPS_IsEndCauseSet__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>displayInformation</targetReference>
             </connector>
@@ -44,6 +67,11 @@
     <description>Viser sluttdato, sluttårsak og detaljer når deltaker i jobbsporet blir satt til
         avsluttet.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>TODAY</name>
+        <dataType>Date</dataType>
+        <expression>Today()</expression>
+    </formulas>
     <interviewLabel>IPS - work trail set endcause and enddate {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - work trail set endcause and enddate</label>
     <processMetadataValues>
@@ -90,7 +118,7 @@
         <name>updateBasedOnUserInput</name>
         <label>Update based on userinput</label>
         <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <connector>
             <targetReference>IPS_removes_any_manually_shared_records</targetReference>
         </connector>
@@ -130,7 +158,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>updateBasedOnUserInput</targetReference>
+            <targetReference>End_details_registered_date</targetReference>
         </connector>
         <fields>
             <name>displayInformationEndTitle</name>
@@ -180,7 +208,7 @@
         <name>IPS_removes_any_manually_shared_records</name>
         <label>Removes any manually shared records</label>
         <locationX>314</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <flowName>IPS_worktrail_subflow_delete_shared_records</flowName>
         <inputAssignments>
             <name>recordId</name>
