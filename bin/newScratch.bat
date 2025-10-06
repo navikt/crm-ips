@@ -52,8 +52,8 @@ call sf force:package:install --package 04tQC000000uSXtYAM -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-integration  163"
-call sf force:package:install --package 04tQC000000yDYfYAM -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer crm-platform-integration  161"
+call sf force:package:install --package 04tQC000000xdbdYAA -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
