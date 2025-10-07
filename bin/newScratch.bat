@@ -3,7 +3,7 @@ set ORG_ALIAS=CRM-IPS
 set ORG_DURATION=30
 
 echo Cleaning previous scratch org...
-call sf org delete scratch --target-org %ORG_ALIAS% 2>NUL
+call sf org delete scratch --target-org %ORG_ALIAS% --no-prompt 2>NUL
 
 echo "Oppretter scratch org"
 call sf org create scratch --alias %ORG_ALIAS% --set-default --definition-file config/project-scratch-def.json --duration-days %ORG_DURATION% --wait 10
@@ -52,8 +52,29 @@ call sf force:package:install --package 04tQC000000uSXtYAM -r --installation-key
 
 echo ""
 echo "INSTALLERER"
-echo "Installerer crm-platform-integration  161"
-call sf force:package:install --package 04tQC000000xdbdYAA -r --installation-key %1 --wait 4 --publish-wait 4
+echo "Installerer platform-data-model  0.1.2.1"
+call sf force:package:install --package 04tQC000000oHLpYAM -r --wait 4 --publish-wait 4
+
+echo ""
+echo "INSTALLERER"
+echo "Installerer custom-metadata-dao  0.1.2.1"
+call sf force:package:install --package 04tQC000000oHKDYA2 -r --wait 4 --publish-wait 4
+
+echo ""
+echo "INSTALLERER"
+echo "Installerer custom-permission-helper  0.1.2.1"
+call sf force:package:install --package 04tQC000000oGw2YAE -r --wait 4 --publish-wait 4
+
+echo ""
+echo "INSTALLERER"
+echo "Installerer feature-toggle  0.1.3.1"
+call sf force:package:install --package 04tQC000000oHP3YAM -r --wait 4 --publish-wait 4
+
+
+echo ""
+echo "INSTALLERER"
+echo "Installerer crm-platform-integration  163"
+call sf force:package:install --package 04tQC000000yDYfYAM -r --installation-key %1 --wait 4 --publish-wait 4
 
 echo ""
 echo "INSTALLERER"
