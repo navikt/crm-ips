@@ -1457,24 +1457,18 @@ public with sharing class IPS_ParticipantPortalReportController{
     List<IPS_ParticipantPortalTask> wrapperTempList = new List<IPS_ParticipantPortalTask>();
     List<Task> tempGoalList = new List<Task>();
     List<Task> tempIntervalDueDateGoals = new List<Task>();
-    List<Task> tempIntervalCompletedGoals = new List<Task>();
     List<Task> tempIntervalGoals = new List<Task>();
 
     String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,IPS_subjectAndDate__c ,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
     String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
     String goalId = ' AND WhatId = :recordId';
     String goalDueDateFilter = ' AND ActivityDate >= :reportDateFrom AND ActivityDate <= :reportDateTo';
-    String goalCompletedDateFilter = ' AND DAY_ONLY(CompletedDateTime) >= :reportDateFrom AND DAY_ONLY(CompletedDateTime) <= :reportDateTo';
     String goalSort = ' ORDER BY ActivityDate ASC';
     String endQuery = '';
     String dueDateQuery = '';
-    String completedDateQuery = '';
 
     dueDateQuery = goalSelect + goalWhere + goalId + goalDueDateFilter + goalSort;
     tempIntervalDueDateGoals = Database.query(dueDateQuery);
-
-    completedDateQuery = goalSelect + goalWhere + goalId + goalCompletedDateFilter + goalSort;
-    tempIntervalCompletedGoals = Database.query(completedDateQuery);
 
     tempIntervalGoals.addAll(tempIntervalDueDateGoals);
     tempGoalList = tempIntervalGoals;
@@ -1491,21 +1485,6 @@ public with sharing class IPS_ParticipantPortalReportController{
         wrapperTempList.add(tempList);
     }
 
-
-    // Adding unique completed goals to the list of goals queried by due date
-    for (Task task : tempIntervalCompletedGoals) {
-        if (!tempGoalList.contains(task)) {
-            IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
-            tempList.Emne = task.Subject;
-            tempList.EmneOgDato = task.IPS_subjectAndDate__c ;
-            tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(task.ActivityDate);
-            tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(task.CreatedDate));
-            tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(task.CompletedDateTime));
-            tempList.ReferatKommentar = task.Description;
-            tempList.OppgaveId = task.id;
-            wrapperTempList.add(tempList);
-        }
-    }
     return wrapperTempList;
     }
 

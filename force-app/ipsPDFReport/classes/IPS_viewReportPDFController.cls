@@ -189,11 +189,9 @@ public with sharing class IPS_viewReportPDFController {
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
         String goalId = ' AND WhatId = :workTrailId';
         String goalDueDateFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
-        String goalCompletedDateFilter = ' AND DAY_ONLY(CompletedDateTime) >= :intervallFromDate AND DAY_ONLY(CompletedDateTime) <= :intervallToDate';
-        String goalSort = ' ORDER BY ActivityDate DESC';
+        String goalSort = ' ORDER BY ActivityDate ASC';
         String endQuery = '';
         String dueDateQuery = '';
-        String completedDateQuery = '';
 
         if (isEndReport) {
             endQuery = goalSelect + goalWhere + goalId + goalSort;
@@ -204,22 +202,10 @@ public with sharing class IPS_viewReportPDFController {
          has a due date within the intervall with status completed */
         if (isIntervallReport) {
             dueDateQuery = goalSelect + goalWhere + goalId + goalDueDateFilter + goalSort;
-            completedDateQuery = goalSelect + goalWhere + goalId + goalCompletedDateFilter + goalSort;
             tempIntervalDueDateGoals = Database.query(dueDateQuery);
-            tempIntervalCompletedGoals = Database.query(completedDateQuery);
+
             tempIntervalGoals.addAll(tempIntervalDueDateGoals);
             userGoal = tempIntervalGoals;
-        }
-        // Adding unique completed goals to the list of goals queried by due date
-        for (Task task : tempIntervalCompletedGoals) {
-            if (!userGoal.contains(task)) {
-                userGoal.add(task);
-            }
-        }
-        for (Task task : tempIntervalCompletedGoals) {
-            if (!userGoal.contains(task)) {
-                userGoal.add(task);
-            }
         }
         return userGoal;
     }

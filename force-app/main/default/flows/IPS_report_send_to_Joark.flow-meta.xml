@@ -3,8 +3,8 @@
     <actionCalls>
         <name>generateDocument</name>
         <label>generateDocument</label>
-        <locationX>182</locationX>
-        <locationY>890</locationY>
+        <locationX>336</locationX>
+        <locationY>1490</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -24,17 +24,17 @@
             </value>
         </inputParameters>
         <nameSegment>CRM_JournalUtilities</nameSegment>
+        <offset>0</offset>
         <outputParameters>
             <assignToReference>PDF_DOCUMENT</assignToReference>
             <name>documentString</name>
         </outputParameters>
-        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>logFailure</name>
         <label>logFailure</label>
-        <locationX>314</locationX>
-        <locationY>1754</locationY>
+        <locationX>468</locationX>
+        <locationY>2354</locationY>
         <actionName>LoggerUtility</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -73,13 +73,13 @@
             </value>
         </inputParameters>
         <nameSegment>LoggerUtility</nameSegment>
-        <versionSegment>1</versionSegment>
+        <offset>0</offset>
     </actionCalls>
     <actionCalls>
         <name>Post_Journal_Request</name>
         <label>Post Journal Request</label>
-        <locationX>182</locationX>
-        <locationY>1430</locationY>
+        <locationX>336</locationX>
+        <locationY>2030</locationY>
         <actionName>CRM_JournalUtilities</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -111,6 +111,7 @@
             </value>
         </inputParameters>
         <nameSegment>CRM_JournalUtilities</nameSegment>
+        <offset>0</offset>
         <outputParameters>
             <assignToReference>varErrorMessage</assignToReference>
             <name>errorMessage</name>
@@ -127,14 +128,14 @@
             <assignToReference>varbolSuccess</assignToReference>
             <name>success</name>
         </outputParameters>
-        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>addJournalEntryData</name>
         <label>addJournalEntryData</label>
-        <locationX>182</locationX>
-        <locationY>566</locationY>
+        <locationX>336</locationX>
+        <locationY>1166</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry.CRM_Journal_Post_Type__c</assignToReference>
             <operator>Assign</operator>
@@ -191,8 +192,8 @@
     <assignments>
         <name>Assign_Journal_Documents</name>
         <label>Assign Journal Documents</label>
-        <locationX>182</locationX>
-        <locationY>1106</locationY>
+        <locationX>336</locationX>
+        <locationY>1706</locationY>
         <assignmentItems>
             <assignToReference>Journal_Documents.dokumentvarianter</assignToReference>
             <operator>Add</operator>
@@ -214,8 +215,8 @@
     <assignments>
         <name>Assign_Journal_Sak</name>
         <label>Assign Journal Sak</label>
-        <locationX>182</locationX>
-        <locationY>1214</locationY>
+        <locationX>336</locationX>
+        <locationY>1814</locationY>
         <assignmentItems>
             <assignToReference>Journal_Sak.sakstype</assignToReference>
             <operator>Assign</operator>
@@ -244,8 +245,8 @@
     <assignments>
         <name>Journal_Entry_Wrapper</name>
         <label>Journal Entry Wrapper</label>
-        <locationX>182</locationX>
-        <locationY>1322</locationY>
+        <locationX>336</locationX>
+        <locationY>1922</locationY>
         <assignmentItems>
             <assignToReference>JournalRequest.tittel</assignToReference>
             <operator>Assign</operator>
@@ -344,8 +345,8 @@
     <assignments>
         <name>PDF_Variant_Assignment</name>
         <label>PDF Variant Assignment</label>
-        <locationX>182</locationX>
-        <locationY>998</locationY>
+        <locationX>336</locationX>
+        <locationY>1598</locationY>
         <assignmentItems>
             <assignToReference>Document_Variant_PDF.filtype</assignToReference>
             <operator>Assign</operator>
@@ -374,8 +375,8 @@
     <assignments>
         <name>setJournalEntryFailedValues</name>
         <label>setJournalEntryFailedValues</label>
-        <locationX>314</locationX>
-        <locationY>1646</locationY>
+        <locationX>468</locationX>
+        <locationY>2246</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -390,8 +391,8 @@
     <assignments>
         <name>setJournalEntryValues</name>
         <label>setJournalEntryValues</label>
-        <locationX>50</locationX>
-        <locationY>1754</locationY>
+        <locationX>204</locationX>
+        <locationY>2354</locationY>
         <assignmentItems>
             <assignToReference>Journal_Entry.Journal_Entry_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -406,8 +407,8 @@
     <assignments>
         <name>setReportValues</name>
         <label>setReportValues</label>
-        <locationX>50</locationX>
-        <locationY>1646</locationY>
+        <locationX>204</locationX>
+        <locationY>2246</locationY>
         <assignmentItems>
             <assignToReference>getReport.IPS_status__c</assignToReference>
             <operator>Assign</operator>
@@ -429,7 +430,7 @@
     <decisions>
         <name>checkIfParticipantIsInformed</name>
         <label>checkIfParticipantIsInformed</label>
-        <locationX>380</locationX>
+        <locationX>534</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>displayWarningText</targetReference>
@@ -446,7 +447,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>getAccountInfo</targetReference>
+                <targetReference>checkTypeOfReport</targetReference>
             </connector>
             <label>isInformed</label>
         </rules>
@@ -454,8 +455,8 @@
     <decisions>
         <name>checkPostStatus</name>
         <label>checkPostStatus</label>
-        <locationX>182</locationX>
-        <locationY>1538</locationY>
+        <locationX>336</locationX>
+        <locationY>2138</locationY>
         <defaultConnector>
             <targetReference>setJournalEntryFailedValues</targetReference>
         </defaultConnector>
@@ -474,6 +475,77 @@
                 <targetReference>setReportValues</targetReference>
             </connector>
             <label>isSuccess</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkTrailStatus</name>
+        <label>checkTrailStatus</label>
+        <locationX>182</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>getAccountInfo</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Ended</defaultConnectorLabel>
+        <rules>
+            <name>isStatusNotEnded</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>getReport.IPS_workTrailName__r.ips_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ended</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getReport.IPS_workTrailName__r.ips_End_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getReport.IPS_workTrailName__r.End_Cause__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getReport.IPS_workTrailName__r.ips_Other_end_cases__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>displayNotEndedWarningText</targetReference>
+            </connector>
+            <label>isStatusNotEnded</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checkTypeOfReport</name>
+        <label>checkTypeOfReport</label>
+        <locationX>336</locationX>
+        <locationY>350</locationY>
+        <defaultConnector>
+            <targetReference>getAccountInfo</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>isIntervall</defaultConnectorLabel>
+        <rules>
+            <name>isEndRport</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getReport.IPS_report_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>End report</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>checkTrailStatus</targetReference>
+            </connector>
+            <label>isEndRport</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -506,8 +578,8 @@
     <recordCreates>
         <name>create_journal_entry</name>
         <label>create journal entry</label>
-        <locationX>182</locationX>
-        <locationY>674</locationY>
+        <locationX>336</locationX>
+        <locationY>1274</locationY>
         <connector>
             <targetReference>displayOverview</targetReference>
         </connector>
@@ -516,8 +588,8 @@
     <recordLookups>
         <name>getAccountInfo</name>
         <label>getAccountInfo</label>
-        <locationX>182</locationX>
-        <locationY>350</locationY>
+        <locationX>336</locationX>
+        <locationY>950</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getRecordTypeId</targetReference>
@@ -537,8 +609,8 @@
     <recordLookups>
         <name>getRecordTypeId</name>
         <label>getRecordTypeId</label>
-        <locationX>182</locationX>
-        <locationY>458</locationY>
+        <locationX>336</locationX>
+        <locationY>1058</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>addJournalEntryData</targetReference>
@@ -561,7 +633,7 @@
         <description>Henter rapport informasjon fra jobbspor rapport</description>
         <name>getReport</name>
         <label>getReport</label>
-        <locationX>380</locationX>
+        <locationX>534</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -582,8 +654,8 @@
     <recordUpdates>
         <name>updateJournalEntry</name>
         <label>updateJournalEntry</label>
-        <locationX>50</locationX>
-        <locationY>1862</locationY>
+        <locationX>204</locationX>
+        <locationY>2462</locationY>
         <connector>
             <targetReference>updateReport</targetReference>
         </connector>
@@ -592,17 +664,48 @@
     <recordUpdates>
         <name>updateReport</name>
         <label>updateReport</label>
-        <locationX>50</locationX>
-        <locationY>1970</locationY>
+        <locationX>204</locationX>
+        <locationY>2570</locationY>
         <inputReference>getReport</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
+        <description>Viser advarsel til bruker at jobbsporet ikke er avsluttet og sluttdetaljer fylt inn</description>
+        <name>displayNotEndedWarningText</name>
+        <label>displayNotEndedWarningText</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Kopi_1_av_displayWarningTitle</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>noEndedDetails</name>
+            <extensionName>c:crmAlertBanner</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Jobbsporet er ikke satt til avsluttet eller sluttdetaljer satt</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <description>Henter saksid&apos;er fra Joark basert på deltakers id</description>
         <name>displayOverview</name>
         <label>displayJournals</label>
-        <locationX>182</locationX>
-        <locationY>782</locationY>
+        <locationX>336</locationX>
+        <locationY>1382</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -836,11 +939,11 @@
     <screens>
         <name>displayWarningText</name>
         <label>displayWarningText</label>
-        <locationX>578</locationX>
+        <locationX>732</locationX>
         <locationY>350</locationY>
-        <allowBack>true</allowBack>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>displayWarningTitle</name>
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;{!varTitle}&lt;/span&gt;&lt;/p&gt;</fieldText>
@@ -866,8 +969,8 @@
     <screens>
         <name>errorScreen</name>
         <label>errorScreen</label>
-        <locationX>314</locationX>
-        <locationY>1862</locationY>
+        <locationX>468</locationX>
+        <locationY>2462</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -885,7 +988,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>254</locationX>
+        <locationX>408</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getReport</targetReference>
