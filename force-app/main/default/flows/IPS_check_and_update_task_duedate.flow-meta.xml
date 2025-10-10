@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>57.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <decisions>
         <name>compareDates</name>
         <label>compareDates</label>
         <locationX>182</locationX>
-        <locationY>335</locationY>
+        <locationY>623</locationY>
         <defaultConnectorLabel>noChanges</defaultConnectorLabel>
         <rules>
             <name>isDateChanged</name>
@@ -21,6 +22,38 @@
                 <targetReference>updateTask</targetReference>
             </connector>
             <label>isDateChanged</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Custom_Completed_datetime_empty</name>
+        <label>Is Custom Completed datetime empty ?</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>compareDates</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_Completed_Date_Time__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Task_With_Completed_Date</targetReference>
+            </connector>
+            <label>Yes</label>
         </rules>
     </decisions>
     <description>Check if duedate and duedatetime is the same date and update for IPS task delmål</description>
@@ -52,10 +85,26 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
+        <name>Update_Task_With_Completed_Date</name>
+        <label>Update Task With Completed Date</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>compareDates</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>IPS_Completed_Date_Time__c</field>
+            <value>
+                <elementReference>$Record.CompletedDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>updateTask</name>
         <label>updateTask</label>
         <locationX>50</locationX>
-        <locationY>455</locationY>
+        <locationY>731</locationY>
         <inputAssignments>
             <field>ActivityDate</field>
             <value>
@@ -68,7 +117,7 @@
         <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>compareDates</targetReference>
+            <targetReference>Is_Custom_Completed_datetime_empty</targetReference>
         </connector>
         <filterLogic>or</filterLogic>
         <filters>
