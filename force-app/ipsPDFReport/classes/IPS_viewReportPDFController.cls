@@ -199,8 +199,11 @@ public with sharing class IPS_viewReportPDFController {
             userGoal = Database.query(endQuery);
         }
 
-        /* Getting goals that are completed within the intervall and
-         has a due date within the intervall with status completed */
+        /**
+         * Get goals that are completed and 
+         * custom completed date
+         * within the given intervall
+         */ 
         if (isIntervallReport) {
             dueDateQuery = goalSelect + goalWhere + goalId + goalCompletedDateFilter + goalSort;
             tempIntervalDueDateGoals = Database.query(dueDateQuery);
