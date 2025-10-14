@@ -176,20 +176,21 @@ public with sharing class IPS_viewReportPDFController {
 
     /**
      * Returns a list of unique goals that are completed either
-     * within the given intervall or the whole period of the worktrail.
+     * within the given intervall or the whole period of the worktrail
+     * depending on the type of report.
      *
-     * @return  List of task
+     * @return  List of task (sub-goals)
      */
     private List<Task> getCompletedGoals() {
         List<Task> userGoal = new List<Task>();
         List<Task> tempIntervalGoals = new List<Task>();
         List<Task> tempIntervalDueDateGoals = new List<Task>();
         List<Task> tempIntervalCompletedGoals = new List<Task>();
-        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
+        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,IPS_Completed_Date_Time__c,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
         String goalId = ' AND WhatId = :workTrailId';
-        String goalDueDateFilter = ' AND ActivityDate >= :intervallFromDate AND ActivityDate <= :intervallToDate';
-        String goalSort = ' ORDER BY ActivityDate ASC';
+        String goalCompletedDateFilter = ' AND IPS_Completed_Date_Time__c >= :intervallFromDate AND IPS_Completed_Date_Time__c <= :intervallToDate';
+        String goalSort = ' ORDER BY IPS_Completed_Date_Time__c ASC';
         String endQuery = '';
         String dueDateQuery = '';
 
@@ -198,10 +199,13 @@ public with sharing class IPS_viewReportPDFController {
             userGoal = Database.query(endQuery);
         }
 
-        /* Getting goals that are completed within the intervall and
-         has a due date within the intervall with status completed */
+        /**
+         * Get goals that are completed and 
+         * custom completed date
+         * within the given intervall
+         */ 
         if (isIntervallReport) {
-            dueDateQuery = goalSelect + goalWhere + goalId + goalDueDateFilter + goalSort;
+            dueDateQuery = goalSelect + goalWhere + goalId + goalCompletedDateFilter + goalSort;
             tempIntervalDueDateGoals = Database.query(dueDateQuery);
 
             tempIntervalGoals.addAll(tempIntervalDueDateGoals);

@@ -128,21 +128,15 @@
                     <table style="width: 100%; border: 1px solid #262626; table-layout: fixed">
                         <tr style="vertical-align: top; background-color: #f1f1f1">
                             <th style="width: 20%">Emne</th>
-                            <th style="width: 10%">Opprettet dato</th>
-                            <th style="width: 10%">Frist</th>
-                            <th style="width: 50%">Beskrivelse av målet</th>
+                            <th style="width: 15%">Fullført</th>
+                            <th style="width: 65%">Beskrivelse av aktiviteten</th>
                         </tr>
                         <apex:repeat value="{!closedGoal}" var="goal">
                             <tr style="vertical-align: top; border: 1px solid #ff0000">
                                 <td style="border: 1px solid #f1f1f1"><apex:outputField value="{!goal.Subject}" /></td>
                                 <td style="border: 1px solid #f1f1f1">
                                     <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
-                                        <apex:param value="{!goal.CreatedDate}" />
-                                    </apex:outputText>
-                                </td>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
-                                        <apex:param value="{!goal.ActivityDate}" />
+                                        <apex:param value="{!goal.IPS_Completed_Date_Time__c}" />
                                     </apex:outputText>
                                 </td>
                                 <td style="border: 1px solid #f1f1f1; word-wrap: break-word">
@@ -479,19 +473,13 @@
                     <table style="width: 100%; border: 1px solid #262626">
                         <tr style="background-color: #f1f1f1">
                             <th style="width: 20%">Emne</th>
-                            <th style="width: 10%">Opprettet dato</th>
-                            <th style="width: 10%">Frist</th>
-                            <th style="width: 50%">Beskrivelse av målet</th>
+                            <th style="width: 15%">Frist</th>
+                            <th style="width: 65%">Beskrivelse av aktiviteten</th>
                         </tr>
                         <apex:repeat value="{!openGoal}" var="plangoal">
                             <tr style="vertical-align: top; border: 1px solid #ff0000">
                                 <td style="border: 1px solid #f1f1f1">
                                     <apex:outputField value="{!plangoal.Subject}" />
-                                </td>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
-                                        <apex:param value="{!plangoal.CreatedDate}" />
-                                    </apex:outputText>
                                 </td>
                                 <td style="border: 1px solid #f1f1f1">
                                     <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
@@ -781,21 +769,15 @@
                     <table style="width: 100%; border: 1px solid #262626; table-layout: fixed">
                         <tr style="vertical-align: top; background-color: #f1f1f1">
                             <th style="width: 20%">Emne</th>
-                            <th style="width: 10%">Opprettet dato</th>
-                            <th style="width: 10%">Frist</th>
-                            <th>Beskrivelse av målet</th>
+                            <th style="width: 15%">Fullført</th>
+                            <th style="width: 65%">Beskrivelse av aktiviteten</th>
                         </tr>
                         <apex:repeat value="{!closedGoal}" var="goal">
                             <tr style="vertical-align: top; border: 1px solid #ff0000">
                                 <td style="border: 1px solid #f1f1f1"><apex:outputField value="{!goal.Subject}" /></td>
                                 <td style="border: 1px solid #f1f1f1">
                                     <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
-                                        <apex:param value="{!goal.CreatedDate}" />
-                                    </apex:outputText>
-                                </td>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
-                                        <apex:param value="{!goal.ActivityDate}" />
+                                        <apex:param value="{!goal.IPS_Completed_Date_Time__c}" />
                                     </apex:outputText>
                                 </td>
                                 <td style="border: 1px solid #f1f1f1; word-wrap: break-word">
