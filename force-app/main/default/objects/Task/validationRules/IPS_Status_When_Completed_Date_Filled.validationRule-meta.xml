@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_Status_When_Completed_Date_Filled</fullName>
+    <active>true</active>
+    <description>Status is required when completed date is not blank</description>
+    <errorConditionFormula>AND( ISPICKVAL( Status , &quot;OPEN&quot;), 
+!ISBLANK( IPS_Completed_Date_Time__c ))</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>Sett status til fullført eller ikke aktuelt</errorMessage>
+</ValidationRule>
