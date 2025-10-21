@@ -267,7 +267,7 @@
         <dataType>String</dataType>
         <expression>IF(
 ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
-{!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c},
+{!getPersonDetails.INT_ResidentialAddress__c}&amp;&apos;, &apos;&amp;{!getPersonDetails.INT_ResidentialZipCode__c}&amp;&apos;, &apos;&amp;{!getPersonDetails.INT_ResidentialPlace__c},
 &apos;&apos;
 )</expression>
     </formulas>
@@ -282,7 +282,7 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <formulas>
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
-        <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;,{!getPersonDetails.INT_Phone1__c})</expression>
+        <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;, LEFT(SUBSTITUTE({!getPersonDetails.INT_Phone1__c}, &quot; &quot;,&quot;&quot;),21))</expression>
     </formulas>
     <formulas>
         <name>varStatusDescription</name>
@@ -572,7 +572,7 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     </recordLookups>
     <recordLookups>
         <name>getPersonDetails</name>
-        <label>getPersonDetails</label>
+        <label>Get Person Details</label>
         <locationX>314</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
