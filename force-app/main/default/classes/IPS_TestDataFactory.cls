@@ -65,7 +65,7 @@ public with sharing class IPS_TestDataFactory {
         trail.ips_Participant__c = participantId;
         trail.ips_Status__c = 'In Education';
         trail.ips_Passive__c = false;
-        trail.IPS_Partticipant_phone_number__c = '987 65 432';
+        trail.IPS_Partticipant_phone_number__c = '98765431';
         trail.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
         return trail;
     }
@@ -75,7 +75,7 @@ public with sharing class IPS_TestDataFactory {
         trailUO.ips_Participant__c = participantId;
         trailUO.ips_Status__c = 'Initial contact';
         trailUO.ips_UO_Service__c = 'AMS';
-        trailUO.IPS_Partticipant_phone_number__c = '987 65 432';
+        trailUO.IPS_Partticipant_phone_number__c = '+4798765432';
         trailUO.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName()
             .get('ips_Supported_Employment')
             .getRecordTypeId();
@@ -114,7 +114,7 @@ public with sharing class IPS_TestDataFactory {
      */
     public static Task creategoal(String jobbsporId) {
         Id devRecordTypeId1 = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
-       
+
         Task taskGoal = new Task(
             WhatId = jobbsporId,
             RecordTypeId = devRecordTypeId1,
@@ -122,7 +122,7 @@ public with sharing class IPS_TestDataFactory {
             ips_Due_Date_Time__c = system.Datetime.now().addMonths(1),
             ActivityDate = system.Date.today().addMonths(1),
             Subject = 'Ett delmål',
-            Status = 'Open' 
+            Status = 'Open'
         );
         return taskGoal;
     }
@@ -206,7 +206,7 @@ public with sharing class IPS_TestDataFactory {
         return createEvent;
     }
 
-     /**
+    /**
      * Creates Event, type Meeting with Participant
      * Activities related to worktrail
      * @param contactid, jobbsporId,status worktrail id of the event
@@ -330,7 +330,7 @@ public with sharing class IPS_TestDataFactory {
             IPS_intervallReport__c = 'Underveisnotat',
             IPS_report_Type__c = 'Intervall',
             IPS_workTrailName__c = workTrailId,
-            IPS_intervallDateFrom__c =System.today().addMonths(-3),
+            IPS_intervallDateFrom__c = System.today().addMonths(-3),
             IPS_intervallDateTo__c = System.today().addDays(-1)
         );
         return intervallReport;
