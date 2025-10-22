@@ -291,7 +291,7 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <dataType>String</dataType>
         <expression>IF(
 ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;UGRADERT&apos;)
-,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c}
+,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c}
 ,&apos;&apos;
 )</expression>
     </formulas>
@@ -309,8 +309,8 @@ ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;UGRADERT&apos;)
         <expression>IF(
 ISBLANK({!getPersonDetail.INT_Phone1__c})
 ,&apos;&apos;,
-{!getPersonDetail.INT_Phone1__c}
-)</expression>
+LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
+, 21))</expression>
     </formulas>
     <formulas>
         <name>varStatusHistoryDescription</name>
@@ -606,7 +606,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     </recordLookups>
     <recordLookups>
         <name>getPersonDetail</name>
-        <label>getPersonDetail</label>
+        <label>Get Person Detail</label>
         <locationX>314</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
