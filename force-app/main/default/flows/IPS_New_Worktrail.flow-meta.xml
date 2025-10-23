@@ -4,11 +4,11 @@
         <name>Redirect</name>
         <label>Redirect</label>
         <locationX>1106</locationX>
-        <locationY>2138</locationY>
+        <locationY>2030</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>createCreatorhistory</targetReference>
+            <targetReference>Create_platform_event_record</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -272,6 +272,11 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <scale>0</scale>
     </formulas>
     <formulas>
+        <name>var_CreatedDateToday</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <formulas>
         <name>varCreateHistoryDescription</name>
         <dataType>String</dataType>
         <expression>&apos;Jobbsporet opprettet av &apos;&amp;{!$User.NKS_FullName__c}</expression>
@@ -291,7 +296,7 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <dataType>String</dataType>
         <expression>IF(
 ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;UGRADERT&apos;)
-,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c}
+,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c}
 ,&apos;&apos;
 )</expression>
     </formulas>
@@ -309,8 +314,8 @@ ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;UGRADERT&apos;)
         <expression>IF(
 ISBLANK({!getPersonDetail.INT_Phone1__c})
 ,&apos;&apos;,
-LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
-, 21))</expression>
+{!getPersonDetail.INT_Phone1__c}
+)</expression>
     </formulas>
     <formulas>
         <name>varStatusHistoryDescription</name>
@@ -387,7 +392,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <locationY>1922</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>updateWorkTrailName_0_0</targetReference>
+            <targetReference>Redirect</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -427,6 +432,12 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
             <field>IPS_participant_skjerming_address__c</field>
             <value>
                 <elementReference>varParticipantConfidentialAdress</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -513,6 +524,12 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
             <field>IPS_participant_skjerming_address__c</field>
             <value>
                 <elementReference>varParticipantConfidentialAdress</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -606,7 +623,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     </recordLookups>
     <recordLookups>
         <name>getPersonDetail</name>
-        <label>Get Person Detail</label>
+        <label>getPersonDetail</label>
         <locationX>314</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -632,30 +649,6 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <locationY>2030</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>varWorkTrailId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Name</field>
-            <value>
-                <elementReference>varWorkTrailName</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Work_Trail__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>updateWorkTrailName_0_0</name>
-        <label>updateWorkTrailName</label>
-        <locationX>1106</locationX>
-        <locationY>2030</locationY>
-        <connector>
-            <targetReference>Redirect</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -783,7 +776,7 @@ LEN( {!ips_participants_scn}) == 11
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>createCreatorhistory</targetReference>
+            <targetReference>Create_platform_event_record</targetReference>
         </connector>
         <fields>
             <name>displayTxtCreated</name>
@@ -1051,10 +1044,68 @@ LEN( {!ips_participants_scn}) == 11
     </start>
     <status>Active</status>
     <subflows>
+        <name>Create_platform_event_record</name>
+        <label>Create platform event record</label>
+        <locationX>842</locationX>
+        <locationY>2462</locationY>
+        <connector>
+            <targetReference>createCreatorhistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <inputAssignments>
+            <name>input_JobbsporApplyingDepartment</name>
+            <value>
+                <elementReference>Behandlingsteam_Innsatsteam</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporCreated</name>
+            <value>
+                <elementReference>var_CreatedDateToday</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporReferredDate</name>
+            <value>
+                <elementReference>IPS_referred_date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporSCN</name>
+            <value>
+                <elementReference>ips_participants_scn</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporService</name>
+            <value>
+                <elementReference>RecordTypeName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporStatus</name>
+            <value>
+                <elementReference>var_WorktTrailStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_OwnerId</name>
+            <value>
+                <elementReference>EierCheckbox.recordId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
         <name>createCreatorhistory</name>
         <label>createCreatorhistory</label>
         <locationX>842</locationX>
-        <locationY>2462</locationY>
+        <locationY>2570</locationY>
         <connector>
             <targetReference>createOwnerHistory</targetReference>
         </connector>
@@ -1095,7 +1146,7 @@ LEN( {!ips_participants_scn}) == 11
         <name>createHistoryStatus</name>
         <label>createHistoryStatus</label>
         <locationX>842</locationX>
-        <locationY>2786</locationY>
+        <locationY>2894</locationY>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
             <name>varDescription</name>
@@ -1133,7 +1184,7 @@ LEN( {!ips_participants_scn}) == 11
         <name>createOwnerHistory</name>
         <label>createOwnerHistory</label>
         <locationX>842</locationX>
-        <locationY>2570</locationY>
+        <locationY>2678</locationY>
         <connector>
             <targetReference>createSupervisorHistory</targetReference>
         </connector>
@@ -1174,7 +1225,7 @@ LEN( {!ips_participants_scn}) == 11
         <name>createSupervisorHistory</name>
         <label>createSupervisorHistory</label>
         <locationX>842</locationX>
-        <locationY>2678</locationY>
+        <locationY>2786</locationY>
         <connector>
             <targetReference>createHistoryStatus</targetReference>
         </connector>
@@ -1234,6 +1285,16 @@ LEN( {!ips_participants_scn}) == 11
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_WorktTrailStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Henvist</stringValue>
+        </value>
     </variables>
     <variables>
         <name>varConsent</name>
