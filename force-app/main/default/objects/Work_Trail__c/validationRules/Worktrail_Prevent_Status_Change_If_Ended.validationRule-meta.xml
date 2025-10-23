@@ -3,11 +3,20 @@
     <fullName>Worktrail_Prevent_Status_Change_If_Ended</fullName>
     <active>true</active>
     <description>Prevents from status change when worktrail is ended.</description>
-    <errorConditionFormula>AND(
+    <errorConditionFormula>OR(
+AND(
 ISCHANGED( ips_Status__c ),
 ISPICKVAL(PRIORVALUE(ips_Status__c), &quot;Ended&quot;),
 IPS_IsEndCauseSet__c = true,
 NOT($Permission.NAV_brukerstotte) 
+)
+,
+AND(
+ISCHANGED( ips_Status__c ),
+ISPICKVAL(PRIORVALUE(ips_Status__c), &quot;Ended&quot;),
+ISPICKVAL(ips_Status__c, &quot;Referred&quot;),
+NOT($Permission.NAV_brukerstotte) 
+)
 )</errorConditionFormula>
     <errorMessage>Status kan ikke endres etter at jobbsporet er avsluttet.</errorMessage>
 </ValidationRule>

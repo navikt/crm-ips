@@ -77,6 +77,9 @@
         <label>Application log</label>
         <locationX>490</locationX>
         <locationY>758</locationY>
+        <connector>
+            <targetReference>Error_display</targetReference>
+        </connector>
         <inputAssignments>
             <field>Application_Domain__c</field>
             <value>
@@ -87,6 +90,12 @@
             <field>Log_Message__c</field>
             <value>
                 <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_ID__c</field>
+            <value>
+                <elementReference>getWorkTrailValues.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -179,6 +188,23 @@
         <nextOrFinishButtonLabel>Lagre</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Error_display</name>
+        <label>Error display</label>
+        <locationX>490</locationX>
+        <locationY>866</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>display_error_msg</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Det har oppstått en feil !&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Vennligst meld feilen via porten.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
     </screens>
     <start>
         <locationX>56</locationX>
