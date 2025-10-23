@@ -107,7 +107,7 @@
                         <valueListItems>
                             <value>Work_Trail__c.IPS_Endre_Sluttdetaljer</value>
                             <visibilityRule>
-                                <booleanFilter>1 OR 2</booleanFilter>
+                                <booleanFilter>1 OR (2 AND 3)</booleanFilter>
                                 <criteria>
                                     <leftValue>{!Record.IPS_Show_edit_enddetails_action__c}</leftValue>
                                     <operator>EQUAL</operator>
@@ -115,6 +115,11 @@
                                 </criteria>
                                 <criteria>
                                     <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>true</rightValue>
                                 </criteria>
