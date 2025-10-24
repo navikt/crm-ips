@@ -72,41 +72,6 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <recordCreates>
-        <name>Application_log</name>
-        <label>Application log</label>
-        <locationX>490</locationX>
-        <locationY>758</locationY>
-        <connector>
-            <targetReference>Error_display</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Application_Domain__c</field>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Referrence_ID__c</field>
-            <value>
-                <elementReference>getWorkTrailValues.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>IPS - Work trail set endcause and enddate</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Application_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
     <recordLookups>
         <name>getWorkTrailValues</name>
         <label>Get worktrail values</label>
@@ -137,7 +102,7 @@
             <targetReference>IPS_removes_any_manually_shared_records</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Application_log</targetReference>
+            <targetReference>Error_display</targetReference>
         </faultConnector>
         <inputReference>getWorkTrailValues</inputReference>
     </recordUpdates>
@@ -193,10 +158,13 @@
         <name>Error_display</name>
         <label>Error display</label>
         <locationX>490</locationX>
-        <locationY>866</locationY>
+        <locationY>758</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Application_log</targetReference>
+        </connector>
         <fields>
             <name>display_error_msg</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Det har oppstått en feil !&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Vennligst meld feilen via porten.&lt;/strong&gt;&lt;/p&gt;</fieldText>
@@ -214,6 +182,37 @@
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Application_log</name>
+        <label>Application log</label>
+        <locationX>490</locationX>
+        <locationY>866</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>getWorkTrailValues.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - worktrail set endcause and enddate</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
     <subflows>
         <name>IPS_removes_any_manually_shared_records</name>
         <label>Removes any manually shared records</label>
