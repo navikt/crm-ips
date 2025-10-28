@@ -50,7 +50,7 @@
         <actionName>IPS_StringHasherController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Assign_data</targetReference>
+            <targetReference>Check_if_Status_is_empty</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -90,6 +90,126 @@
             <name>hashString</name>
         </outputParameters>
     </actionCalls>
+    <actionCalls>
+        <name>IPS_translate_Status</name>
+        <label>Translate status</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_FlowUtilityTranslateController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_if_maingoals_is_empty</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>fieldCategory</name>
+            <value>
+                <stringValue>STATUS</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>input_JobbsporStatus</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_FlowUtilityTranslateController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>var_JobbsporStatus</assignToReference>
+            <name>outputString</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>IPS_translateEndCause</name>
+        <label>Translate end cause</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_FlowUtilityTranslateController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_if_end_cause_detail_is_empty</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>fieldCategory</name>
+            <value>
+                <stringValue>ENDCAUSE</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>input_JobbsporEndCause</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_FlowUtilityTranslateController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>var_JobbsporetEndCause</assignToReference>
+            <name>outputString</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>IPS_translateEnddetails</name>
+        <label>Translate enddetails</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_FlowUtilityTranslateController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Assign_data</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>fieldCategory</name>
+            <value>
+                <stringValue>ENDDETAILCAUSE</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>input_JobbsporEndDetailReason</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_FlowUtilityTranslateController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>var_JobbsporetEndDetailReson</assignToReference>
+            <name>outputString</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>IPS_translateMainGoals</name>
+        <label>Translate maingoals</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_FlowUtilityTranslateController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_if_end_cause_is_empty</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>fieldCategory</name>
+            <value>
+                <stringValue>MAINGOAL</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>Input_JobbsporMainGoals</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_FlowUtilityTranslateController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>var_MainGoals</assignToReference>
+            <name>outputString</name>
+        </outputParameters>
+    </actionCalls>
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
@@ -115,7 +235,7 @@
             <assignToReference>JobbsporList.JobbsporStatus__c</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>input_JobbsporStatus</elementReference>
+                <elementReference>var_JobbsporStatus</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -153,31 +273,213 @@
                 <elementReference>var_JobbsporReferredDate</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.ParticipantsMainGoal__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_MainGoals</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.ParticipantStartDate__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_JobbsporStartDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.JobbsporEndDate__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_JobbsporEndDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.JobbsporEndReason__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_JobbsporetEndCause</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.JobbsporEndReasonDetail__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_JobbsporetEndDetailReson</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.ParticipantPassiveDate__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_JobbsporPassiveDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.ParticipantPassive__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>input_JobbsporPassive</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.JobbsporNumberOfDaysEmployeer__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>input_JobbsporNumberOfDaysEmployeer</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Create_jobbspor_platform_event</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Check_if_end_cause_detail_is_empty</name>
+        <label>Check if end cause detail is empty</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>IPS_translateEnddetails</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>notEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEmptyEndDetails</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>input_JobbsporEndDetailReason</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_data</targetReference>
+            </connector>
+            <label>isEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_if_end_cause_is_empty</name>
+        <label>Check if end cause is empty</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>IPS_translateEndCause</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>notEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEmptyEndCause</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>input_JobbsporEndCause</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_if_end_cause_detail_is_empty</targetReference>
+            </connector>
+            <label>isEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_if_maingoals_is_empty</name>
+        <label>Check if maingoals is empty</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>IPS_translateMainGoals</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>notEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEmptyMainGoals</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Input_JobbsporMainGoals</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_if_end_cause_is_empty</targetReference>
+            </connector>
+            <label>isEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_if_Status_is_empty</name>
+        <label>Check if Status is empty</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>IPS_translate_Status</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>notEmpty</defaultConnectorLabel>
+        <rules>
+            <name>isEmptyStatus</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>input_JobbsporStatus</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_if_maingoals_is_empty</targetReference>
+            </connector>
+            <label>isEmpty</label>
+        </rules>
+    </decisions>
     <description>Create an new record in IPSJobbsporEvent__e object</description>
     <environments>Default</environments>
     <formulas>
         <description>Omgjør dato til text på dette formatet 2025-10-31</description>
         <name>var_JobbsporCreatedDate</name>
         <dataType>String</dataType>
-        <expression>TEXT(YEAR({!input_JobbsporCreated}))
+        <expression>if(!ISBLANK({!input_JobbsporCreatedDate}),
+  TEXT(YEAR(DATEVALUE({!input_JobbsporCreatedDate})))
+  &amp;&apos;-&apos;&amp;
+  TEXT(MONTH(DATEVALUE({!input_JobbsporCreatedDate})))
+  &amp;&apos;-&apos;&amp;
+  TEXT(DAY(DATEVALUE({!input_JobbsporCreatedDate}))),
+&apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>var_JobbsporEndDate</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK({!input_JobbsporEndDate}),
+TEXT(YEAR({!input_JobbsporEndDate}))
 &amp;&apos;-&apos;&amp;
-TEXT(MONTH({!input_JobbsporCreated}))
+TEXT(MONTH({!input_JobbsporEndDate}))
 &amp;&apos;-&apos;&amp;
-TEXT(DAY({!input_JobbsporCreated}))</expression>
+TEXT(DAY({!input_JobbsporEndDate})),
+&apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>var_JobbsporPassiveDate</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK({!input_JobbsporPassiveDate}),
+TEXT(YEAR({!input_JobbsporPassiveDate}))
+&amp;&apos;-&apos;&amp;
+TEXT(MONTH({!input_JobbsporPassiveDate}))
+&amp;&apos;-&apos;&amp;
+TEXT(DAY({!input_JobbsporPassiveDate})),
+&apos;&apos;)</expression>
     </formulas>
     <formulas>
         <description>Omgjør henvist dato til format 2025-10-31</description>
         <name>var_JobbsporReferredDate</name>
         <dataType>String</dataType>
-        <expression>TEXT(YEAR({!input_JobbsporReferredDate}))
+        <expression>IF(!ISBLANK({!input_JobbsporReferredDate}),
+TEXT(YEAR({!input_JobbsporReferredDate}))
 &amp;&apos;-&apos;&amp;
 TEXT(MONTH({!input_JobbsporReferredDate}))
 &amp;&apos;-&apos;&amp;
-TEXT(DAY({!input_JobbsporReferredDate}))</expression>
+TEXT(DAY({!input_JobbsporReferredDate})),
+&apos;&apos;)</expression>
     </formulas>
     <formulas>
         <description>Gjør om posttype til 3 bokstavs kode for AMS, IPS, VTO</description>
@@ -187,7 +489,18 @@ TEXT(DAY({!input_JobbsporReferredDate}))</expression>
 &apos;IPS&apos;, &apos;IPS&apos;,
 &apos;ips_Supported_Employment&apos;,&apos;AMS&apos;,
 &apos;CE_Customized_Employment&apos;,&apos;VTO&apos;,
-&apos; &apos;)</expression>
+&apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>var_JobbsporStartDate</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK({!Input_JobbsporStartDate}),
+TEXT(YEAR({!Input_JobbsporStartDate}))
+&amp;&apos;-&apos;&amp;
+TEXT(MONTH({!Input_JobbsporStartDate}))
+&amp;&apos;-&apos;&amp;
+TEXT(DAY({!Input_JobbsporStartDate})),
+&apos;&apos;)</expression>
     </formulas>
     <interviewLabel>IPS - subflow create jobbspor platform event {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - platform event subflow create jobbspor</label>
@@ -238,9 +551,29 @@ TEXT(DAY({!input_JobbsporReferredDate}))</expression>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <description>Opprettelse av jobbspor dato</description>
-        <name>input_JobbsporCreated</name>
+        <name>input_JobbsporCreatedDate</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>input_JobbsporEndCause</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>input_JobbsporEndDate</name>
         <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>input_JobbsporEndDetailReason</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
@@ -249,6 +582,38 @@ TEXT(DAY({!input_JobbsporReferredDate}))</expression>
         <description>Unike id for jobbsporet (SF id)</description>
         <name>input_JobbsporId</name>
         <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Input_JobbsporMainGoals</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>input_JobbsporNumberOfDaysEmployeer</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>input_JobbsporPassive</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>input_JobbsporPassiveDate</name>
+        <dataType>Date</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
@@ -273,6 +638,13 @@ TEXT(DAY({!input_JobbsporReferredDate}))</expression>
         <description>Posttypen for tjenesten. IPS, ips_Supported_Employment, CE_Customized_Employment</description>
         <name>input_JobbsporService</name>
         <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Input_JobbsporStartDate</name>
+        <dataType>Date</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
@@ -309,7 +681,35 @@ TEXT(DAY({!input_JobbsporReferredDate}))</expression>
         <objectType>IPSJobbsporEvent__e</objectType>
     </variables>
     <variables>
+        <name>var_JobbsporetEndCause</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_JobbsporetEndDetailReson</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>var_JobbsporId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_JobbsporStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_MainGoals</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
