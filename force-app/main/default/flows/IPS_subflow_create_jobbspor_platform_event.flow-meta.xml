@@ -91,41 +91,11 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <name>IPS_translate_Status</name>
-        <label>Translate status</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <actionName>IPS_FlowUtilityTranslateController</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Check_if_maingoals_is_empty</targetReference>
-        </connector>
-        <flowTransactionModel>Automatic</flowTransactionModel>
-        <inputParameters>
-            <name>fieldCategory</name>
-            <value>
-                <stringValue>STATUS</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>inputString</name>
-            <value>
-                <elementReference>input_JobbsporStatus</elementReference>
-            </value>
-        </inputParameters>
-        <nameSegment>IPS_FlowUtilityTranslateController</nameSegment>
-        <offset>0</offset>
-        <outputParameters>
-            <assignToReference>var_JobbsporStatus</assignToReference>
-            <name>outputString</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
         <name>IPS_translateEndCause</name>
         <label>Translate end cause</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <actionName>IPS_FlowUtilityTranslateController</actionName>
+        <actionName>IPS_UtilityFlowTranslateController</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Check_if_end_cause_detail_is_empty</targetReference>
@@ -134,7 +104,7 @@
         <inputParameters>
             <name>fieldCategory</name>
             <value>
-                <stringValue>ENDCAUSE</stringValue>
+                <elementReference>input_JobbsporEndCause</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -143,7 +113,7 @@
                 <elementReference>input_JobbsporEndCause</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>IPS_FlowUtilityTranslateController</nameSegment>
+        <nameSegment>IPS_UtilityFlowTranslateController</nameSegment>
         <offset>0</offset>
         <outputParameters>
             <assignToReference>var_JobbsporetEndCause</assignToReference>
@@ -151,11 +121,11 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <name>IPS_translateEnddetails</name>
-        <label>Translate enddetails</label>
+        <name>IPS_translateEndDetails</name>
+        <label>Translate end details</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <actionName>IPS_FlowUtilityTranslateController</actionName>
+        <actionName>IPS_UtilityFlowTranslateController</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Assign_data</targetReference>
@@ -164,7 +134,7 @@
         <inputParameters>
             <name>fieldCategory</name>
             <value>
-                <stringValue>ENDDETAILCAUSE</stringValue>
+                <stringValue>ENDDETAILSCAUSE</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -173,7 +143,7 @@
                 <elementReference>input_JobbsporEndDetailReason</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>IPS_FlowUtilityTranslateController</nameSegment>
+        <nameSegment>IPS_UtilityFlowTranslateController</nameSegment>
         <offset>0</offset>
         <outputParameters>
             <assignToReference>var_JobbsporetEndDetailReson</assignToReference>
@@ -185,7 +155,7 @@
         <label>Translate maingoals</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <actionName>IPS_FlowUtilityTranslateController</actionName>
+        <actionName>IPS_UtilityFlowTranslateController</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Check_if_end_cause_is_empty</targetReference>
@@ -203,10 +173,40 @@
                 <elementReference>Input_JobbsporMainGoals</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>IPS_FlowUtilityTranslateController</nameSegment>
+        <nameSegment>IPS_UtilityFlowTranslateController</nameSegment>
         <offset>0</offset>
         <outputParameters>
             <assignToReference>var_MainGoals</assignToReference>
+            <name>outputString</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>IPS_translateStatus</name>
+        <label>Translate status</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_UtilityFlowTranslateController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_if_maingoals_is_empty</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>fieldCategory</name>
+            <value>
+                <stringValue>STATUS</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>input_JobbsporStatus</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_UtilityFlowTranslateController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>var_JobbsporStatus</assignToReference>
             <name>outputString</name>
         </outputParameters>
     </actionCalls>
@@ -339,7 +339,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>IPS_translateEnddetails</targetReference>
+            <targetReference>IPS_translateEndDetails</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>notEmpty</defaultConnectorLabel>
         <rules>
@@ -414,7 +414,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>IPS_translate_Status</targetReference>
+            <targetReference>IPS_translateStatus</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>notEmpty</defaultConnectorLabel>
         <rules>
