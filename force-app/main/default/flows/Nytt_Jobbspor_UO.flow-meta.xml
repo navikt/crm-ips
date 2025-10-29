@@ -3,12 +3,12 @@
     <actionCalls>
         <name>Redirect_0_0</name>
         <label>Redirect</label>
-        <locationX>1106</locationX>
-        <locationY>2138</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>createCreatorHistory</targetReference>
+            <targetReference>IPS_createPlatformEventRecord</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -21,13 +21,13 @@
         <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>Add_confidential_checkbox</name>
         <label>Add confidential checkbox</label>
-        <locationX>578</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>varIsConfidential</assignToReference>
             <operator>Assign</operator>
@@ -42,8 +42,8 @@
     <assignments>
         <name>addOwnerId</name>
         <label>addOwnerId</label>
-        <locationX>578</locationX>
-        <locationY>1814</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>varOwnerId</assignToReference>
             <operator>Assign</operator>
@@ -65,8 +65,8 @@
     <assignments>
         <name>addOwnerId1</name>
         <label>addOwnerId</label>
-        <locationX>1106</locationX>
-        <locationY>1814</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>varOwnerId</assignToReference>
             <operator>Assign</operator>
@@ -88,9 +88,9 @@
     <decisions>
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
-        <label>checkForConfidential</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
+        <label>Sjekk deltakers konfidensialitet</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
         </defaultConnector>
@@ -142,9 +142,9 @@
     </decisions>
     <decisions>
         <name>checkIfAddedAge</name>
-        <label>checkIfAddedAge</label>
-        <locationX>578</locationX>
-        <locationY>1082</locationY>
+        <label>Sjekk deltakers alder</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
         </defaultConnector>
@@ -167,9 +167,9 @@
     </decisions>
     <decisions>
         <name>checkIfEmpty</name>
-        <label>checkIfEmpty</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
+        <label>Sjekk om deltaker finnes</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>checkForConfidential</targetReference>
         </defaultConnector>
@@ -192,9 +192,9 @@
     </decisions>
     <decisions>
         <name>If_worktrail_exists</name>
-        <label>If worktrail exists</label>
-        <locationX>578</locationX>
-        <locationY>1490</locationY>
+        <label>Sjekk om det finnes ett aktivt eksisterende jobbspor</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -217,9 +217,9 @@
     </decisions>
     <decisions>
         <name>Owner_Selected</name>
-        <label>Owner Selected</label>
-        <locationX>842</locationX>
-        <locationY>1706</locationY>
+        <label>Eier beslutning</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>addOwnerId1</targetReference>
         </defaultConnector>
@@ -240,12 +240,18 @@
             <label>ownerIsNotUser</label>
         </rules>
     </decisions>
-    <description>Opprettelse av nytt Jobbspor for Utvidet Oppfølging</description>
+    <description>Opprettelse av nytt Jobbspor for Arbeid med støtte.
+Oppretter også platform event som går til datavarehus</description>
     <environments>Default</environments>
     <formulas>
         <name>UserId</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>var_CreatedDateToday</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
     </formulas>
     <formulas>
         <name>varCreateHistoryDescription</name>
@@ -282,7 +288,7 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <formulas>
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
-        <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;, LEFT(SUBSTITUTE({!getPersonDetails.INT_Phone1__c}, &quot; &quot;,&quot;&quot;),21))</expression>
+        <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;,LEFT(SUBSTITUTE({!getPersonDetails.INT_Phone1__c}, &quot; &quot;,&quot;&quot;),21))</expression>
     </formulas>
     <formulas>
         <name>varStatusDescription</name>
@@ -300,7 +306,7 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetails.INT_FirstName__c}&amp;&apos; &apos;&amp;{!getPersonDetails.INT_LastName__c}</expression>
     </formulas>
     <interviewLabel>Nytt Jobbspor {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - opprett nytt jobbspor for deltaker UO</label>
+    <label>IPS - Worktrail create new trail AMS</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -323,8 +329,8 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>842</locationX>
-        <locationY>2138</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -355,8 +361,8 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1106</locationX>
-        <locationY>1922</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorktrailName1</targetReference>
@@ -404,7 +410,7 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         <inputAssignments>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>RecordTypeId</elementReference>
+                <elementReference>var_recordTypeId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -436,8 +442,8 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>578</locationX>
-        <locationY>1922</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorktrailName</targetReference>
@@ -490,7 +496,7 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         <inputAssignments>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>RecordTypeId</elementReference>
+                <elementReference>var_recordTypeId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -522,8 +528,8 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>578</locationX>
-        <locationY>1382</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -548,33 +554,10 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_RecordTypeId</name>
-        <label>Get RecordTypeId</label>
-        <locationX>314</locationX>
-        <locationY>134</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>New_Worktrail</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>RecordTypeName</elementReference>
-            </value>
-        </filters>
-        <object>RecordType</object>
-        <outputAssignments>
-            <assignToReference>RecordTypeId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
         <name>getPersonDetails</name>
-        <label>Get Person Details</label>
-        <locationX>314</locationX>
-        <locationY>350</locationY>
+        <label>Hent detaljer om deltaker</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkIfEmpty</targetReference>
@@ -584,18 +567,42 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
             <field>Name</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>ips_participants_scn</elementReference>
+                <elementReference>ips_participants_ssn</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Person__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <description>Henter recordId for posttype navn ips_Supported_Employment</description>
+        <name>IPS_getRecordTypeId</name>
+        <label>Hent posttype id</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IPS_newWorktrail</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_recordTypeName</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>var_recordTypeId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <recordUpdates>
         <name>updateWorktrailName</name>
         <label>updateWorktrailName</label>
-        <locationX>578</locationX>
-        <locationY>2030</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
@@ -618,8 +625,8 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <recordUpdates>
         <name>updateWorktrailName1</name>
         <label>updateWorktrailName</label>
-        <locationX>1106</locationX>
-        <locationY>2030</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Redirect_0_0</targetReference>
         </connector>
@@ -643,14 +650,14 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <screens>
         <name>alertIsExisting</name>
         <label>alertIsExisting</label>
-        <locationX>314</locationX>
-        <locationY>1598</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>displayTitle5</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -664,8 +671,8 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <screens>
         <name>alertUnder18</name>
         <label>alertUnder18</label>
-        <locationX>446</locationX>
-        <locationY>1190</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -674,7 +681,7 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         </connector>
         <fields>
             <name>displayTxtAlertAge</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -703,14 +710,14 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <screens>
         <name>confidentialScreen</name>
         <label>confidentialScreen</label>
-        <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>DisplayTitle2</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -722,10 +729,10 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>New_Worktrail</name>
+        <name>IPS_newWorktrail</name>
         <label>Nytt Jobbspor</label>
-        <locationX>314</locationX>
-        <locationY>242</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -734,21 +741,21 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         </connector>
         <fields>
             <name>DisplayTxtTitle1</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>ips_participants_scn</name>
+            <name>ips_participants_ssn</name>
             <dataType>String</dataType>
             <fieldText>Deltakers fødselsnummer</fieldText>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: var(--slds-g-color-neutral-base-100, var(--lwc-colorBackgroundInput,rgb(255, 255, 255))); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, Helvetica, Arial, sans-serif, &apos;Apple Color Emoji&apos;, &apos;Segoe UI Emoji&apos;, &apos;Segoe UI Symbol&apos;);&quot;&gt;Fødselsnummer kan kun inneholde 11 numeriske verdier uten mellomrom og spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;font-family: var(--lwc-fontFamily,-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, Helvetica, Arial, sans-serif, &apos;Apple Color Emoji&apos;, &apos;Segoe UI Emoji&apos;, &apos;Segoe UI Symbol&apos;); font-size: var(--lwc-fontSize3,0.8125rem); background-color: var(--slds-g-color-neutral-base-100, var(--lwc-colorBackgroundInput,rgb(255, 255, 255))); color: rgb(255, 0, 0);&quot;&gt;Fødselsnummer kan kun inneholde 11 numeriske verdier uten mellomrom og spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>AND(
-NOT(REGEX( {!ips_participants_scn},&quot;^[a-z A-Z]*$&quot;)), 
-LEN( {!ips_participants_scn}) == 11 
+NOT(REGEX( {!ips_participants_ssn},&quot;^[a-z A-Z]*$&quot;)), 
+LEN( {!ips_participants_ssn}) == 11 
 )</formulaExpression>
             </validationRule>
         </fields>
@@ -758,8 +765,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>842</locationX>
-        <locationY>2030</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -768,7 +775,7 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
         <fields>
             <name>displayTitle7</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -782,17 +789,17 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>578</locationX>
-        <locationY>2138</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>createCreatorHistory</targetReference>
+            <targetReference>IPS_createPlatformEventRecord</targetReference>
         </connector>
         <fields>
             <name>displayTitle6</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -806,8 +813,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>578</locationX>
-        <locationY>974</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -816,7 +823,7 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
         <fields>
             <name>DisplayTitle3</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -894,24 +901,6 @@ LEN( {!ips_participants_scn}) == 11
             <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
         <fields>
-            <name>IPS_Ung</name>
-            <dataType>Boolean</dataType>
-            <fieldText>IPS ung</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>isAlwaysFalse</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <booleanValue>true</booleanValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
-        </fields>
-        <fields>
             <name>Behandlingsteam_Innsatsteam</name>
             <dataType>String</dataType>
             <fieldText>Innsøkende avdeling</fieldText>
@@ -942,8 +931,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>842</locationX>
-        <locationY>1598</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -952,7 +941,7 @@ LEN( {!ips_participants_scn}) == 11
         </connector>
         <fields>
             <name>display</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1008,37 +997,37 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>screenIsEmpty</name>
         <label>screenIsEmpty</label>
-        <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>Copy_1_of_DisplayTitle2</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!var_Title}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>displaytxtEmpty</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Det finnes ingen forekomst med dette fødselsnummer {!ips_participants_scn}.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Det finnes ingen forekomst med dette fødselsnummer {!ips_participants_ssn}.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>188</locationX>
+        <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_RecordTypeId</targetReference>
+            <targetReference>IPS_getRecordTypeId</targetReference>
         </connector>
     </start>
     <status>Active</status>
     <subflows>
         <name>createCreatorHistory</name>
         <label>createCreatorHistory</label>
-        <locationX>842</locationX>
-        <locationY>2462</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>createOwnerHistory</targetReference>
         </connector>
@@ -1078,8 +1067,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createOwnerHistory</name>
         <label>createOwnerHistory</label>
-        <locationX>842</locationX>
-        <locationY>2570</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>createSupervisorHistory</targetReference>
         </connector>
@@ -1119,8 +1108,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createStatusHistory</name>
         <label>createStatusHistory</label>
-        <locationX>842</locationX>
-        <locationY>2786</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
             <name>varDescription</name>
@@ -1157,8 +1146,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createSupervisorHistory</name>
         <label>createSupervisorHistory</label>
-        <locationX>842</locationX>
-        <locationY>2678</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>createStatusHistory</targetReference>
         </connector>
@@ -1195,6 +1184,64 @@ LEN( {!ips_participants_scn}) == 11
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <subflows>
+        <name>IPS_createPlatformEventRecord</name>
+        <label>Create platform event record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>createCreatorHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <inputAssignments>
+            <name>input_JobbsporApplyingDepartment</name>
+            <value>
+                <elementReference>Behandlingsteam_Innsatsteam</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporCreatedDate</name>
+            <value>
+                <elementReference>var_CreatedDateToday</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporReferredDate</name>
+            <value>
+                <elementReference>IPS_referred_date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporSCN</name>
+            <value>
+                <elementReference>ips_participants_ssn</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporService</name>
+            <value>
+                <elementReference>var_recordTypeName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporStatus</name>
+            <value>
+                <elementReference>var_JobbsporStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_OwnerId</name>
+            <value>
+                <elementReference>EierCheckbox.recordId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>isAlwaysFalse</name>
         <dataType>Boolean</dataType>
@@ -1206,28 +1253,48 @@ LEN( {!ips_participants_scn}) == 11
         </value>
     </variables>
     <variables>
-        <name>RecordTypeId</name>
+        <name>UORecordType</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>RecordTypeName</name>
+        <name>var_JobbsporStatus</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Referred</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>var_recordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_recordTypeName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
             <stringValue>ips_Supported_Employment</stringValue>
         </value>
     </variables>
     <variables>
-        <name>UORecordType</name>
+        <name>var_Title</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+        <value>
+            <stringValue>Opprett nytt jobbspor</stringValue>
+        </value>
     </variables>
     <variables>
         <name>varConsent</name>
@@ -1270,16 +1337,6 @@ LEN( {!ips_participants_scn}) == 11
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <scale>0</scale>
-    </variables>
-    <variables>
-        <name>varTitle</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>Opprett nytt jobbspor</stringValue>
-        </value>
     </variables>
     <variables>
         <name>varWorkTrailId</name>

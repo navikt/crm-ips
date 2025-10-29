@@ -3,12 +3,12 @@
     <actionCalls>
         <name>Redirect</name>
         <label>Redirect</label>
-        <locationX>1106</locationX>
-        <locationY>2138</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>createCreatorhistory</targetReference>
+            <targetReference>Create_platform_event_record</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -21,13 +21,13 @@
         <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>58.0</apiVersion>
+    <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>Add_confidential_checkbox</name>
         <label>Add confidential checkbox</label>
-        <locationX>578</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>varIsConfidential</assignToReference>
             <operator>Assign</operator>
@@ -42,8 +42,8 @@
     <assignments>
         <name>AddOwnerId</name>
         <label>AddOwnerId</label>
-        <locationX>1106</locationX>
-        <locationY>1814</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>varOwnerId</assignToReference>
             <operator>Assign</operator>
@@ -65,8 +65,8 @@
     <assignments>
         <name>addOwnerId1</name>
         <label>addOwnerId</label>
-        <locationX>578</locationX>
-        <locationY>1814</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>varOwnerId</assignToReference>
             <operator>Assign</operator>
@@ -88,8 +88,8 @@
     <decisions>
         <name>checkAge</name>
         <label>checkAge</label>
-        <locationX>578</locationX>
-        <locationY>1082</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
         </defaultConnector>
@@ -114,8 +114,8 @@
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
         </defaultConnector>
@@ -169,8 +169,8 @@
         <description>Hvis sjekk er tom - betyr det at det er feil fødselsnummer eller person ikke eksisterer</description>
         <name>checkIfEmpty</name>
         <label>checkIfEmpty</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>checkForConfidential</targetReference>
         </defaultConnector>
@@ -194,8 +194,8 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>578</locationX>
-        <locationY>1490</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -219,8 +219,8 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>842</locationX>
-        <locationY>1706</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>AddOwnerId</targetReference>
         </defaultConnector>
@@ -272,6 +272,11 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <scale>0</scale>
     </formulas>
     <formulas>
+        <name>var_CreatedDateToday</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <formulas>
         <name>varCreateHistoryDescription</name>
         <dataType>String</dataType>
         <expression>&apos;Jobbsporet opprettet av &apos;&amp;{!$User.NKS_FullName__c}</expression>
@@ -291,8 +296,7 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <dataType>String</dataType>
         <expression>IF(
 ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;UGRADERT&apos;)
-,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c}
-,&apos;&apos;
+,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c},&apos;&apos;
 )</expression>
     </formulas>
     <formulas>
@@ -310,7 +314,8 @@ ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;UGRADERT&apos;)
 ISBLANK({!getPersonDetail.INT_Phone1__c})
 ,&apos;&apos;,
 LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
-, 21))</expression>
+, 21)
+)</expression>
     </formulas>
     <formulas>
         <name>varStatusHistoryDescription</name>
@@ -328,7 +333,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetail.INT_FirstName__c}&amp;&apos; &apos;&amp;{!getPersonDetail.INT_LastName__c}</expression>
     </formulas>
     <interviewLabel>New Worktrail {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - opprett nytt jobbspor for deltaker IPS</label>
+    <label>IPS - worktrail create trail IPS</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -351,8 +356,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>842</locationX>
-        <locationY>2138</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -383,11 +388,11 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1106</locationX>
-        <locationY>1922</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>updateWorkTrailName_0_0</targetReference>
+            <targetReference>Redirect</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -427,6 +432,12 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
             <field>IPS_participant_skjerming_address__c</field>
             <value>
                 <elementReference>varParticipantConfidentialAdress</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -470,8 +481,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>578</locationX>
-        <locationY>1922</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
             <targetReference>updateWorkTrailName_0</targetReference>
@@ -516,6 +527,12 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>OwnerId</field>
             <value>
                 <elementReference>varOwnerId</elementReference>
@@ -556,8 +573,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>578</locationX>
-        <locationY>1382</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -584,8 +601,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>314</locationX>
-        <locationY>134</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>New_Worktrail</targetReference>
@@ -606,9 +623,9 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     </recordLookups>
     <recordLookups>
         <name>getPersonDetail</name>
-        <label>Get Person Detail</label>
-        <locationX>314</locationX>
-        <locationY>350</locationY>
+        <label>getPersonDetail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkIfEmpty</targetReference>
@@ -628,34 +645,10 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <recordUpdates>
         <name>updateWorkTrailName_0</name>
         <label>updateWorkTrailName</label>
-        <locationX>578</locationX>
-        <locationY>2030</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>varWorkTrailId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Name</field>
-            <value>
-                <elementReference>varWorkTrailName</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Work_Trail__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>updateWorkTrailName_0_0</name>
-        <label>updateWorkTrailName</label>
-        <locationX>1106</locationX>
-        <locationY>2030</locationY>
-        <connector>
-            <targetReference>Redirect</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -677,8 +670,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <screens>
         <name>alertIsExisting</name>
         <label>alertIsExisting</label>
-        <locationX>314</locationX>
-        <locationY>1598</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -698,8 +691,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <screens>
         <name>confidentialScreen</name>
         <label>confidentialScreen</label>
-        <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -719,8 +712,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt jobbspor</label>
-        <locationX>314</locationX>
-        <locationY>242</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -753,8 +746,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>842</locationX>
-        <locationY>2030</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -777,13 +770,13 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Opprettet</name>
         <label>Opprettet</label>
-        <locationX>578</locationX>
-        <locationY>2138</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>createCreatorhistory</targetReference>
+            <targetReference>Create_platform_event_record</targetReference>
         </connector>
         <fields>
             <name>displayTxtCreated</name>
@@ -801,8 +794,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>578</locationX>
-        <locationY>974</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -919,8 +912,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>842</locationX>
-        <locationY>1598</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -985,8 +978,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>screenIsEmpty</name>
         <label>screenIsEmpty</label>
-        <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1006,8 +999,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>varAlertAddedAge</name>
         <label>varAlertAddedAge</label>
-        <locationX>446</locationX>
-        <locationY>1190</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1043,7 +1036,7 @@ LEN( {!ips_participants_scn}) == 11
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>188</locationX>
+        <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
@@ -1051,10 +1044,68 @@ LEN( {!ips_participants_scn}) == 11
     </start>
     <status>Active</status>
     <subflows>
+        <name>Create_platform_event_record</name>
+        <label>Create platform event record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>createCreatorhistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <inputAssignments>
+            <name>input_JobbsporApplyingDepartment</name>
+            <value>
+                <elementReference>Behandlingsteam_Innsatsteam</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporCreatedDate</name>
+            <value>
+                <elementReference>var_CreatedDateToday</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporReferredDate</name>
+            <value>
+                <elementReference>IPS_referred_date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporSCN</name>
+            <value>
+                <elementReference>ips_participants_scn</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporService</name>
+            <value>
+                <elementReference>RecordTypeName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_JobbsporStatus</name>
+            <value>
+                <elementReference>var_WorktTrailStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>input_OwnerId</name>
+            <value>
+                <elementReference>EierCheckbox.recordId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
         <name>createCreatorhistory</name>
         <label>createCreatorhistory</label>
-        <locationX>842</locationX>
-        <locationY>2462</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>createOwnerHistory</targetReference>
         </connector>
@@ -1094,8 +1145,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createHistoryStatus</name>
         <label>createHistoryStatus</label>
-        <locationX>842</locationX>
-        <locationY>2786</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
             <name>varDescription</name>
@@ -1132,8 +1183,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createOwnerHistory</name>
         <label>createOwnerHistory</label>
-        <locationX>842</locationX>
-        <locationY>2570</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>createSupervisorHistory</targetReference>
         </connector>
@@ -1173,8 +1224,8 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createSupervisorHistory</name>
         <label>createSupervisorHistory</label>
-        <locationX>842</locationX>
-        <locationY>2678</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>createHistoryStatus</targetReference>
         </connector>
@@ -1234,6 +1285,16 @@ LEN( {!ips_participants_scn}) == 11
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_WorktTrailStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Referred</stringValue>
+        </value>
     </variables>
     <variables>
         <name>varConsent</name>
