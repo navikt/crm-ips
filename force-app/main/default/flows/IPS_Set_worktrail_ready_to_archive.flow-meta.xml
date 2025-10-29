@@ -5,7 +5,7 @@
     <decisions>
         <name>Ready_for_archive</name>
         <label>Ready for archive</label>
-        <locationX>182</locationX>
+        <locationX>314</locationX>
         <locationY>252</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -29,9 +29,7 @@
     <formulas>
         <name>readyForArchive</name>
         <dataType>Boolean</dataType>
-        <expression>IF(({!$Record.ips_End_Date__c} + 373 ) &gt;= TODAY() ,
-TRUE,
-FALSE)</expression>
+        <expression>({!$Record.ips_End_Date__c} + 373 ) &gt;= TODAY()</expression>
     </formulas>
     <interviewLabel>IPS - Set worktrail ready to archive {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Set worktrail ready to archive</label>
@@ -60,6 +58,9 @@ FALSE)</expression>
         <label>Update worktrail</label>
         <locationX>50</locationX>
         <locationY>360</locationY>
+        <faultConnector>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>IPS_Can_archived__c</field>
             <value>
@@ -69,7 +70,7 @@ FALSE)</expression>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Ready_for_archive</targetReference>
@@ -97,10 +98,10 @@ FALSE)</expression>
             </value>
         </filters>
         <filters>
-            <field>IPS_IsEndCauseSet__c</field>
-            <operator>EqualTo</operator>
+            <field>ips_End_Date__c</field>
+            <operator>LessThan</operator>
             <value>
-                <booleanValue>true</booleanValue>
+                <dateValue>2023-12-31</dateValue>
             </value>
         </filters>
         <object>Work_Trail__c</object>
@@ -111,5 +112,36 @@ FALSE)</expression>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
+    <subflows>
+        <name>Application_log</name>
+        <label>Application log</label>
+        <locationX>314</locationX>
+        <locationY>468</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Set worktrail ready to archive</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
 </Flow>
