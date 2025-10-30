@@ -8,7 +8,7 @@
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>createCreatorhistory</targetReference>
+            <targetReference>IPS_createPlatformeEventJobbspor</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -241,7 +241,8 @@
             <label>ownerIsNotUser</label>
         </rules>
     </decisions>
-    <description>Oppretter nytt jobbspor på deltaker for IPS</description>
+    <description>Opprettelse av nytt Jobbspor for IPS.
+Oppretter også platform event som går til datavarehus</description>
     <environments>Default</environments>
     <formulas>
         <name>adjustfor100</name>
@@ -771,7 +772,7 @@ LEN( {!ips_participants_scn}) == 11
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>createCreatorhistory</targetReference>
+            <targetReference>IPS_createPlatformeEventJobbspor</targetReference>
         </connector>
         <fields>
             <name>displayTxtCreated</name>
@@ -1198,6 +1199,22 @@ LEN( {!ips_participants_scn}) == 11
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>IPS_createPlatformeEventJobbspor</name>
+        <label>Create platform event jobbspor</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>createCreatorhistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <inputAssignments>
+            <name>input_JobbsporId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
     </subflows>
     <variables>
         <name>RecordTypeId</name>
