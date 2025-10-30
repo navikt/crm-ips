@@ -708,7 +708,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+            <targetReference>createCloneHistory</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
@@ -835,19 +835,6 @@
     <description>Clones a worktrail, set correct dates, status and remove manual sharings</description>
     <environments>Default</environments>
     <formulas>
-        <name>var_CreatedDateToday</name>
-        <dataType>DateTime</dataType>
-        <expression>NOW()</expression>
-    </formulas>
-    <formulas>
-        <name>var_MainGoals</name>
-        <dataType>String</dataType>
-        <expression>IF(!ISBLANK(TEXT({!varNewWorkTrailRecord.ips_Main_Goal_list__c})),TEXT({!varNewWorkTrailRecord.ips_Main_Goal_list__c}),
-IF(!ISBLANK(TEXT({!varNewWorkTrailRecord.ips_UO_Service__c})),TEXT({!varNewWorkTrailRecord.ips_UO_Service__c}),
-&apos;&apos;)
-)</expression>
-    </formulas>
-    <formulas>
         <name>varDaysSinceEnded</name>
         <dataType>Number</dataType>
         <expression>TODAY() - {!getWorktrailRecord.ips_End_Date__c}</expression>
@@ -946,7 +933,7 @@ IF(!ISBLANK(TEXT({!varNewWorkTrailRecord.ips_UO_Service__c})),TEXT({!varNewWorkT
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+            <targetReference>createCloneHistory</targetReference>
         </connector>
         <inputReference>varJobList</inputReference>
     </recordCreates>
@@ -1742,76 +1729,6 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-    </subflows>
-    <subflows>
-        <name>IPS_createPlatformEventJobbspor</name>
-        <label>Create platform event Jobbspor</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <connector>
-            <targetReference>createCloneHistory</targetReference>
-        </connector>
-        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
-        <inputAssignments>
-            <name>input_JobbsporCreatedDate</name>
-            <value>
-                <elementReference>var_CreatedDateToday</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporId</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Input_JobbsporMainGoals</name>
-            <value>
-                <elementReference>var_MainGoals</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporNumberOfDaysEmployeer</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.Days_before_first_employer_meeting__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporReferredDate</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.ips_Referred_date__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporSCN</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.IPS_Personnummer__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporService</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.RecordType.DeveloperName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Input_JobbsporStartDate</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.Oppstartsdato__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporStatus</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.ips_Status__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_OwnerId</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.OwnerId</elementReference>
-            </value>
-        </inputAssignments>
     </subflows>
     <textTemplates>
         <name>varInformationRecordTypes</name>

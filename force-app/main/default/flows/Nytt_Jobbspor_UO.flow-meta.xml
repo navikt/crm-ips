@@ -8,7 +8,7 @@
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>IPS_createPlatformEventRecord</targetReference>
+            <targetReference>createCreatorHistory</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -247,11 +247,6 @@ Oppretter også platform event som går til datavarehus</description>
         <name>UserId</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
-    </formulas>
-    <formulas>
-        <name>var_CreatedDateToday</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
     </formulas>
     <formulas>
         <name>varCreateHistoryDescription</name>
@@ -795,7 +790,7 @@ LEN( {!ips_participants_ssn}) == 11
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>IPS_createPlatformEventRecord</targetReference>
+            <targetReference>createCreatorHistory</targetReference>
         </connector>
         <fields>
             <name>displayTitle6</name>
@@ -1184,64 +1179,6 @@ LEN( {!ips_participants_ssn}) == 11
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
-    <subflows>
-        <name>IPS_createPlatformEventRecord</name>
-        <label>Create platform event record</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <connector>
-            <targetReference>createCreatorHistory</targetReference>
-        </connector>
-        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
-        <inputAssignments>
-            <name>input_JobbsporApplyingDepartment</name>
-            <value>
-                <elementReference>Behandlingsteam_Innsatsteam</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporCreatedDate</name>
-            <value>
-                <elementReference>var_CreatedDateToday</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporId</name>
-            <value>
-                <elementReference>varWorkTrailId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporReferredDate</name>
-            <value>
-                <elementReference>IPS_referred_date</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporSCN</name>
-            <value>
-                <elementReference>ips_participants_ssn</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporService</name>
-            <value>
-                <elementReference>var_recordTypeName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_JobbsporStatus</name>
-            <value>
-                <elementReference>var_JobbsporStatus</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>input_OwnerId</name>
-            <value>
-                <elementReference>EierCheckbox.recordId</elementReference>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <name>isAlwaysFalse</name>
         <dataType>Boolean</dataType>
@@ -1258,16 +1195,6 @@ LEN( {!ips_participants_ssn}) == 11
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>var_JobbsporStatus</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>Referred</stringValue>
-        </value>
     </variables>
     <variables>
         <name>var_recordTypeId</name>
