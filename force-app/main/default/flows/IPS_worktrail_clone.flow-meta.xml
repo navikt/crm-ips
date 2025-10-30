@@ -8,7 +8,7 @@
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
-            <targetReference>displayInformation</targetReference>
+            <targetReference>IPS_deleteSharedRecords</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -652,32 +652,6 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Sjekker om det eksisterer en manuell deling på jobbsporet.</description>
-        <name>Check_if_worktrail_have_an_manual_sharing</name>
-        <label>Check if worktrail have an manual sharing</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>checkIfParticipantHaveAnActiveTrail</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>notShared</defaultConnectorLabel>
-        <rules>
-            <name>isShared</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>get_shared_worktrail</leftValueReference>
-                <operator>IsEmpty</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>removeSharing</targetReference>
-            </connector>
-            <label>isShared</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>checkIfGoalsIsNotEmpty</name>
         <label>Check if goals is not empty</label>
         <locationX>0</locationX>
@@ -708,7 +682,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>createCloneHistory</targetReference>
+            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
@@ -832,7 +806,8 @@
             <label>isIPS</label>
         </rules>
     </decisions>
-    <description>Clones a worktrail, set correct dates, status and remove manual sharings</description>
+    <description>Kloner ett jobbspor basert på et avsluttet jobbspor, overfører spesifikke data, status og fjerner manuell deling av gammelt jobbsporet
+Oppretter en platform event jobbspor</description>
     <environments>Default</environments>
     <formulas>
         <name>varDaysSinceEnded</name>
@@ -933,7 +908,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>createCloneHistory</targetReference>
+            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
         </connector>
         <inputReference>varJobList</inputReference>
     </recordCreates>
@@ -947,17 +922,6 @@
         </connector>
         <inputReference>varNewWorkTrailRecord</inputReference>
     </recordCreates>
-    <recordDeletes>
-        <description>Fjerner deling på eksisterende jobbspor, hvis den er manuelt delt med noen andre Jobbspesialister</description>
-        <name>removeSharing</name>
-        <label>Remove sharing</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <connector>
-            <targetReference>checkIfParticipantHaveAnActiveTrail</targetReference>
-        </connector>
-        <inputReference>get_shared_worktrail</inputReference>
-    </recordDeletes>
     <recordLookups>
         <name>Get_report_that_is_active</name>
         <label>Get report that is active</label>
@@ -965,7 +929,7 @@
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>get_shared_worktrail</targetReference>
+            <targetReference>getAllRecordsBasedOnSCN</targetReference>
         </connector>
         <filterLogic>1 AND (2 OR 3 OR 4 OR 5)</filterLogic>
         <filters>
@@ -1005,35 +969,6 @@
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>ips_report__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <description>Check if cloned work_trail have an manual sharing</description>
-        <name>get_shared_worktrail</name>
-        <label>get shared worktrail</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>getAllRecordsBasedOnSCN</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ParentId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>RowCause</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Manual</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Work_Trail__Share</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -1102,7 +1037,7 @@
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Check_if_worktrail_have_an_manual_sharing</targetReference>
+            <targetReference>checkIfParticipantHaveAnActiveTrail</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1730,6 +1665,38 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <subflows>
+        <name>IPS_createPlatformEventJobbspor</name>
+        <label>Create platform event jobbspor</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>createCloneHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <inputAssignments>
+            <name>input_JobbsporId</name>
+            <value>
+                <elementReference>varNewWorkTrailRecord.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>IPS_deleteSharedRecords</name>
+        <label>Delete shared records on old worktrail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>displayInformation</targetReference>
+        </connector>
+        <flowName>IPS_worktrail_subflow_delete_shared_records</flowName>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <textTemplates>
         <name>varInformationRecordTypes</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
@@ -1749,13 +1716,6 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <value>
             <booleanValue>false</booleanValue>
         </value>
-    </variables>
-    <variables>
-        <name>newWorkTrailId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>recordId</name>
@@ -1798,13 +1758,6 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
     </variables>
     <variables>
         <name>varNewRecordId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>varNewWorktrailId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

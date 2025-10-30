@@ -8,7 +8,7 @@
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>createCreatorHistory</targetReference>
+            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -790,7 +790,7 @@ LEN( {!ips_participants_ssn}) == 11
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>createCreatorHistory</targetReference>
+            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
         </connector>
         <fields>
             <name>displayTitle6</name>
@@ -1178,6 +1178,22 @@ LEN( {!ips_participants_ssn}) == 11
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>IPS_createPlatformEventJobbspor</name>
+        <label>Create platform event jobbspor</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>createCreatorHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <inputAssignments>
+            <name>input_JobbsporId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
     </subflows>
     <variables>
         <name>isAlwaysFalse</name>

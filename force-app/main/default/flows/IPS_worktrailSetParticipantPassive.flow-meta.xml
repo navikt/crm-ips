@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <description>Setting the following field to true, displays the &quot;Passive&quot; flag in worktrail</description>
         <name>Activate_passive_flag</name>
         <label>Activate passive period</label>
-        <locationX>1304</locationX>
-        <locationY>1232</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>getWorktrail.Passive_activate__c</assignToReference>
             <operator>Assign</operator>
@@ -43,8 +44,8 @@
         <description>Setting the following field to false, disables the &quot;Passive&quot; flag from worktrail.</description>
         <name>Deactivate_passive_flag</name>
         <label>Deactivate passive period</label>
-        <locationX>50</locationX>
-        <locationY>782</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>getWorktrail.Passive_deactivate__c</assignToReference>
             <operator>Assign</operator>
@@ -60,8 +61,8 @@
         <description>Assigns value to the fields related the passive period</description>
         <name>Extend_passive_period</name>
         <label>Extend passive period</label>
-        <locationX>578</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>getWorktrail.Passive_deactivate__c</assignToReference>
             <operator>Assign</operator>
@@ -98,8 +99,8 @@
         <description>Setting fields related to passive period to blank.</description>
         <name>Remove_passive_period_dates</name>
         <label>Remove passive period</label>
-        <locationX>1018</locationX>
-        <locationY>782</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>getWorktrail.Passive_activate__c</assignToReference>
             <operator>Assign</operator>
@@ -178,8 +179,8 @@
     <decisions>
         <name>Change_future_period</name>
         <label>Change future period</label>
-        <locationX>1062</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes_change_future_period</name>
@@ -215,8 +216,8 @@
     <decisions>
         <name>Deactivate_or_extend</name>
         <label>Deactivate or Extend</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Extend_screen</targetReference>
         </defaultConnector>
@@ -255,8 +256,8 @@
     <decisions>
         <name>Future_passive_period</name>
         <label>Future passive period ?</label>
-        <locationX>1304</locationX>
-        <locationY>350</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>setParticipantAsPassive</targetReference>
         </defaultConnector>
@@ -281,8 +282,8 @@
         <description>Checks whether the participant is already active ?</description>
         <name>Is_participant_passive</name>
         <label>Is participant passive ?</label>
-        <locationX>809</locationX>
-        <locationY>242</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Future_passive_period</targetReference>
         </defaultConnector>
@@ -303,7 +304,8 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Gjelder kun for IPS hvor JS kan sette deltaker i en passiv tilstand</description>
+    <description>Gjelder kun for IPS hvor JS kan sette deltaker i en passiv tilstand
+Oppretter platform event jobbspor</description>
     <environments>Default</environments>
     <formulas>
         <description>If activating, it sets the follow-up date to varAddDateFollowUp from Set participant active screen. 
@@ -393,8 +395,8 @@ If extending, it sets the subject from Extend screen.</description>
         <description>Getting worktrail to update passive period.</description>
         <name>getWorktrail</name>
         <label>Get worktrail</label>
-        <locationX>809</locationX>
-        <locationY>134</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_participant_passive</targetReference>
@@ -414,15 +416,18 @@ If extending, it sets the subject from Extend screen.</description>
     <recordUpdates>
         <name>updateWorktrail</name>
         <label>updateWorktrail</label>
-        <locationX>809</locationX>
-        <locationY>1532</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+        </connector>
         <inputReference>getWorktrail</inputReference>
     </recordUpdates>
     <screens>
         <name>Deactivate_screen</name>
         <label>Deactivate screen</label>
-        <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -485,8 +490,8 @@ If extending, it sets the subject from Extend screen.</description>
     <screens>
         <name>Extend_screen</name>
         <label>Extend screen</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -639,8 +644,8 @@ If extending, it sets the subject from Extend screen.</description>
     <screens>
         <name>Has_future_passive_period</name>
         <label>Has future passive period</label>
-        <locationX>1062</locationX>
-        <locationY>458</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -696,8 +701,8 @@ If extending, it sets the subject from Extend screen.</description>
         <description>Provides alternative for deactivating or extending passive period.</description>
         <name>Manage_passive_status</name>
         <label>Manage passive status</label>
-        <locationX>314</locationX>
-        <locationY>350</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -752,8 +757,8 @@ If extending, it sets the subject from Extend screen.</description>
     <screens>
         <name>Passiv_periode_deactivated</name>
         <label>Passive periode deactivated</label>
-        <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -773,8 +778,8 @@ If extending, it sets the subject from Extend screen.</description>
     <screens>
         <name>Passive_period_changed_information</name>
         <label>Passive period changed information</label>
-        <locationX>578</locationX>
-        <locationY>782</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -819,8 +824,8 @@ If extending, it sets the subject from Extend screen.</description>
     <screens>
         <name>Passive_period_information</name>
         <label>Passive period information</label>
-        <locationX>1304</locationX>
-        <locationY>1340</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -894,8 +899,8 @@ If extending, it sets the subject from Extend screen.</description>
     <screens>
         <name>Passive_period_removed</name>
         <label>Passive period removed</label>
-        <locationX>1018</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -915,8 +920,8 @@ If extending, it sets the subject from Extend screen.</description>
     <screens>
         <name>setParticipantAsPassive</name>
         <label>Set participant as passive</label>
-        <locationX>1304</locationX>
-        <locationY>1124</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1047,8 +1052,8 @@ ISBLANK({!Passiv_periode_slutter}),
         <description>Update followup task to not applicable.</description>
         <name>Update_followup_task</name>
         <label>Update followup task</label>
-        <locationX>314</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1067,13 +1072,26 @@ ISBLANK({!Passiv_periode_slutter}),
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>683</locationX>
+        <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorktrail</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>IPS_createPlatformEventJobbspor</name>
+        <label>Create platform event jobbspor</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <inputAssignments>
+            <name>input_JobbsporId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>

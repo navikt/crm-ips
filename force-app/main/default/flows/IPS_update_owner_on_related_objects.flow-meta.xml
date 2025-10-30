@@ -4,8 +4,8 @@
         <description>Changes owner on all open events that is open and related to a work trail, assigns it to new work trail owner</description>
         <name>Change_owner_on_event</name>
         <label>Change owner on event</label>
-        <locationX>308</locationX>
-        <locationY>971</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -37,14 +37,14 @@
             </value>
         </inputParameters>
         <nameSegment>IPS_changeOwnerOnActivityController</nameSegment>
-        <versionSegment>1</versionSegment>
+        <offset>0</offset>
     </actionCalls>
     <actionCalls>
         <description>Changes owner on all open task (delmål) that is open, assigns it to new work trail owner</description>
         <name>Change_owner_on_task</name>
         <label>Change owner on task</label>
-        <locationX>308</locationX>
-        <locationY>863</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <actionName>IPS_changeOwnerOnActivityController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -70,14 +70,15 @@
             </value>
         </inputParameters>
         <nameSegment>IPS_changeOwnerOnActivityController</nameSegment>
-        <versionSegment>1</versionSegment>
+        <offset>0</offset>
     </actionCalls>
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <name>setOldOwner</name>
-        <label>setOldOwner</label>
-        <locationX>308</locationX>
-        <locationY>647</locationY>
+        <name>Assign_owner_variables</name>
+        <label>Assign owner variables</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>varOldOwner</assignToReference>
             <operator>Assign</operator>
@@ -99,41 +100,52 @@
                 <elementReference>$Record.IPS_ownerName__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>recordId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>getOldUserName</targetReference>
         </connector>
     </assignments>
-    <decisions>
-        <name>checkOwnerType</name>
-        <label>checkOwnerType</label>
-        <locationX>176</locationX>
-        <locationY>431</locationY>
-        <defaultConnector>
-            <targetReference>getWorkTrailDetails</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>isQueue</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getOwnerType</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <label>isQueue</label>
-        </rules>
-    </decisions>
-    <description>Update owner on related object when work trail owner changes.</description>
+    <description>Oppdaterer eier på åpne delmål og møter når jobbspor bytter eier
+Oppretter platform event jobbspor</description>
     <environments>Default</environments>
+    <formulas>
+        <name>var_JobbsporApplyingDepartment</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK({!$Record.ips_Applying_Department__c}),{!$Record.ips_Applying_Department__c},
+IF(!ISBLANK({!$Record.ips_Behandlingsteam__c}),{!$Record.ips_Behandlingsteam__c},
+&apos;Ingen avdeling spesifisert&apos;
+)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>var_mainGoal</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK(TEXT({!$Record.ips_Main_Goal_list__c})),TEXT({!$Record.ips_Main_Goal_list__c}),
+IF(ISBLANK(TEXT({!$Record.ips_UO_Service__c})),TEXT({!$Record.ips_UO_Service__c}),
+&apos;&apos;
+)
+)</expression>
+    </formulas>
     <formulas>
         <name>varDescription</name>
         <dataType>String</dataType>
         <expression>&apos;Endrer eier til &apos;&amp; {!varNewOwnerName}</expression>
     </formulas>
     <interviewLabel>IPS - update owner on related objects {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - update owner on related objects</label>
+    <label>IPS - worktrail update owner on related objects</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -156,8 +168,8 @@
     <recordLookups>
         <name>getOldUserName</name>
         <label>getOldUserName</label>
-        <locationX>308</locationX>
-        <locationY>755</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Change_owner_on_task</targetReference>
@@ -172,74 +184,25 @@
         </filters>
         <object>User</object>
         <outputAssignments>
+            <assignToReference>varOldOwnerActive</assignToReference>
+            <field>IsActive</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>varOldOwnerName</assignToReference>
             <field>Name</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>getOwnerType</name>
-        <label>getOwnerType</label>
-        <locationX>176</locationX>
-        <locationY>323</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>checkOwnerType</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Name</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>IPS Fortrolig</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Type</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Queue</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Group</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>getWorkTrailDetails</name>
-        <label>getWorkTrailDetails</label>
-        <locationX>308</locationX>
-        <locationY>539</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>setOldOwner</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
-        <object>Work_Trail__c</object>
-        <outputAssignments>
-            <assignToReference>varNewOwnerName</assignToReference>
-            <field>IPS_ownerName__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>recordId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>varOwnerId</assignToReference>
-            <field>OwnerId</field>
         </outputAssignments>
     </recordLookups>
     <recordUpdates>
         <name>update_ownerTextField</name>
         <label>update ownerTextField</label>
-        <locationX>308</locationX>
-        <locationY>1187</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Log_error_update_owner</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>IPS_ownerNameText__c</field>
             <value>
@@ -249,10 +212,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>getOwnerType</targetReference>
+            <targetReference>Assign_owner_variables</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -277,8 +240,8 @@
     <subflows>
         <name>create_owner_history</name>
         <label>create owner history</label>
-        <locationX>308</locationX>
-        <locationY>1079</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>update_ownerTextField</targetReference>
         </connector>
@@ -315,8 +278,71 @@
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <subflows>
+        <name>IPS_createPlatformEventJobbspor</name>
+        <label>Create platform event jobbspor</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <inputAssignments>
+            <name>input_JobbsporId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Log_error_update_owner</name>
+        <label>Log error update owner</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>Flow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>Application_Domain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Error_Payload</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Error_Source</name>
+            <value>
+                <stringValue>IPS - worktrail update owner on related objects</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Message</name>
+            <value>
+                <stringValue>Oppdatering av textfelt feiler</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Reference_Object</name>
+            <value>
+                <stringValue>Work_Trail__c</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ReferenceID</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_mainGoalTranslated</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -335,6 +361,16 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varOldOwnerActive</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>varOldOwnerName</name>
