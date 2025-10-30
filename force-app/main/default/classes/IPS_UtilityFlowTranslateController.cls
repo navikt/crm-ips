@@ -57,7 +57,7 @@ public with sharing class IPS_UtilityFlowTranslateController {
                             when 'Job development CE' { output.outputString = 'Tilpasset jobbutvikling'; }
                             when 'Adapted training and training in the workplace' { output.outputString = 'Tilpasset opplæring og trening på arbeidsplassen'; }
                             when 'Long-term available follow-up and career development' { output.outputString = 'Langvarig tilgjengelig oppfølging og karriereutvikling'; }
-                            when 'Ended' { output.outputString = 'Ended'; }
+                            when 'Ended' { output.outputString = 'Sluttet'; }
                             when else { output.outputString = 'Ukjent status'; }
                         }
                     }
