@@ -1257,7 +1257,7 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Selected fields from Worktrail object.</description>
+        <description>Selected fields from Worktrail object to archive.</description>
         <name>Worktrail_to_archive</name>
         <label>Worktrail to archive</label>
         <locationX>506</locationX>
@@ -1827,36 +1827,23 @@
     <formulas>
         <name>eventsExceedMaxLimit</name>
         <dataType>Boolean</dataType>
-        <expression>IF(LEN({!eventJsonOutput}) &gt; 100,
-TRUE,
-FALSE
-)</expression>
+        <expression>LEN({!eventJsonOutput}) &gt; 100000</expression>
     </formulas>
     <formulas>
         <description>Returns true when archive data exceeds max limit. Archive data is output from the ArchiveHelper Apex class.</description>
         <name>isWorktrailExceedsMaxLimit</name>
         <dataType>Boolean</dataType>
-        <expression>IF(LEN({!archiveData}) &gt; 100,
-TRUE,
-FALSE)</expression>
-    </formulas>
-    <formulas>
-        <description>The field storing archive data is -  Long Text Area(131072). 
-Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 encoding is applied.</description>
-        <name>isWorktrailFileTooLong</name>
-        <dataType>Boolean</dataType>
-        <expression>IF(LEN({!worktrailFileToPost}) &gt; 100
-,TRUE,FALSE)</expression>
+        <expression>LEN({!archiveData}) &gt; 100000</expression>
     </formulas>
     <formulas>
         <name>jobsExceedMaxLimit</name>
         <dataType>Boolean</dataType>
-        <expression>IF(LEN({!jobsJSONOutput}) &gt; 100, TRUE, FALSE)</expression>
+        <expression>LEN({!jobsJSONOutput}) &gt; 100000</expression>
     </formulas>
     <formulas>
         <name>subgoalsExceedMaxLimit</name>
         <dataType>Boolean</dataType>
-        <expression>IF(LEN({!subgoalJSONOutput}) &gt; 100, TRUE, FALSE)</expression>
+        <expression>LEN({!subgoalJSONOutput}) &gt; 100000</expression>
     </formulas>
     <interviewLabel>IPS - Archive worktrail {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Archive worktrail</label>
@@ -2383,6 +2370,9 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <label>Update worktrail</label>
         <locationX>506</locationX>
         <locationY>9108</locationY>
+        <faultConnector>
+            <targetReference>Application_log_worktrail</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>IPS_Is_Archived__c</field>
             <value>
@@ -2396,13 +2386,6 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         <locationY>0</locationY>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
-        <filters>
-            <field>ips_Status__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Ended</stringValue>
-            </value>
-        </filters>
         <filters>
             <field>IPS_Can_archived__c</field>
             <operator>EqualTo</operator>
@@ -2420,7 +2403,38 @@ Limited to 90,000 characters to avoid exceeding the maximum limit when Base64 en
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
+    <subflows>
+        <name>Application_log_worktrail</name>
+        <label>Application log - worktrail</label>
+        <locationX>1562</locationX>
+        <locationY>9216</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Archive worktrail</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
     <subflows>
         <description>Using subflow which creates archive entries. Each archive entry will have split archive data. This subflow is used when the archive data exceeds the maximum limit of the archive data field.</description>
         <name>Create_archive_entries</name>
