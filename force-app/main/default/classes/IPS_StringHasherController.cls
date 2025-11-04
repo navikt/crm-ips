@@ -1,4 +1,4 @@
-public with sharing class IPS_StringHasherController {
+public without sharing class IPS_StringHasherController {
         @InvocableMethod(label='IPS string hasher' description='Input a string and the string will be hashed with SHA-256')
         public static List<FlowOutput> hashString(List<eventRequest> request){
         List<FlowOutput> flowOutput = new List<FlowOutput>();
