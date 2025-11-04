@@ -32,43 +32,14 @@
             <targetReference>Update_User</targetReference>
         </connector>
     </assignments>
-    <assignments>
-        <name>Set_ApplicationLog</name>
-        <label>Set Application Log</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>sObj_applicationLog.Application_Domain__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sObj_applicationLog.Log_Message__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sObj_applicationLog.Source_Class__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>IPS Admin Give User Access</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sObj_applicationLog.Id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>sObj_User.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Create_ApplicationLog</targetReference>
-        </connector>
-    </assignments>
+    <constants>
+        <description>The title of the flow, in Norwegian</description>
+        <name>const_flowTitle</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Gi tilgang til Jobbsporet</stringValue>
+        </value>
+    </constants>
     <customProperties>
         <name>ScreenProgressIndicator</name>
         <value>
@@ -97,13 +68,6 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <recordCreates>
-        <name>Create_ApplicationLog</name>
-        <label>Create Application Log</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <inputReference>sObj_applicationLog</inputReference>
-    </recordCreates>
     <recordLookups>
         <name>GET_Jobbspesialist_User</name>
         <label>GET Jobbspesialist User</label>
@@ -132,7 +96,7 @@
             <field>Name</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>var_jobbspesialistName</elementReference>
+                <elementReference>var_theUserToGiveAccessTo</elementReference>
             </value>
         </filters>
         <filters>
@@ -224,7 +188,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <faultConnector>
-            <targetReference>Set_ApplicationLog</targetReference>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
         </faultConnector>
         <inputReference>sObj_User</inputReference>
     </recordUpdates>
@@ -242,7 +206,7 @@
         </connector>
         <fields>
             <name>s_displayText2</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!$Label.IPS_GiveUserAccess_FlowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -280,7 +244,7 @@
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Velg jobbspesialist</stringValue>
+                    <stringValue>Velg bruker som skal få tilgang</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -310,7 +274,7 @@
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Velg leder</stringValue>
+                    <stringValue>Velg lederen til brukeren</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -364,7 +328,7 @@
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Velg rolle</stringValue>
+                    <stringValue>Velg rolle til brukeren</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -423,16 +387,16 @@
         </connector>
         <fields>
             <name>s_displayText1</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!$Label.IPS_GiveUserAccess_FlowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>var_jobbspesialistName</name>
+            <name>var_theUserToGiveAccessTo</name>
             <dataType>String</dataType>
-            <fieldText>Jobbspesialist</fieldText>
+            <fieldText>Bruker som skal få tilgang</fieldText>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>var_roleName</name>
@@ -440,7 +404,7 @@
             <fieldText>Rolle</fieldText>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>var_leaderName</name>
@@ -448,7 +412,7 @@
             <fieldText>Personalansvarlig leder</fieldText>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -461,6 +425,61 @@
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>sfl_CreateApplicationLog</name>
+        <label>Create Application Log</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>Flow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>Application_Domain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Error_Payload</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Error_Source</name>
+            <value>
+                <stringValue>IPS Admin Give User Access (Flow)</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Category</name>
+            <value>
+                <stringValue>Admin</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Level</name>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Message</name>
+            <value>
+                <stringValue>Error when giving user access to Jobbsporet </stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Reference_Object</name>
+            <value>
+                <stringValue>User</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ReferenceID</name>
+            <value>
+                <elementReference>sObj_User.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>sObj_applicationLog</name>
         <dataType>SObject</dataType>
