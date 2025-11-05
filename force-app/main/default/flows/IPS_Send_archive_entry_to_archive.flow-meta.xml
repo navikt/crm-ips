@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Post_to_archive</name>
         <label>Post to archive</label>
-        <locationX>666</locationX>
+        <locationX>440</locationX>
         <locationY>276</locationY>
         <actionName>ArchiveHandler</actionName>
         <actionType>apex</actionType>
@@ -69,7 +69,7 @@
         <description>Flags the record as ready for deletion.</description>
         <name>Set_status_to_completed</name>
         <label>Set status to completed</label>
-        <locationX>314</locationX>
+        <locationX>176</locationX>
         <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>$Record.Status__c</assignToReference>
@@ -92,7 +92,7 @@
     <assignments>
         <name>Set_status_to_failed</name>
         <label>Set status to failed</label>
-        <locationX>1282</locationX>
+        <locationX>968</locationX>
         <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>$Record.Status__c</assignToReference>
@@ -116,7 +116,7 @@
     <decisions>
         <name>Archived</name>
         <label>Archived ?</label>
-        <locationX>666</locationX>
+        <locationX>440</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -146,42 +146,6 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Archived_Success</name>
-        <label>Ready For Deletion</label>
-        <locationX>314</locationX>
-        <locationY>708</locationY>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
-        <rules>
-            <name>Yes_Delete</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Ready_for_Deletion__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Domain__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>IPS</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Delete_Archive_Record</targetReference>
-            </connector>
-            <label>Yes</label>
-        </rules>
-    </decisions>
     <environments>Default</environments>
     <interviewLabel>IPS - Send archive entry to archive {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Send archive entry to archive</label>
@@ -207,7 +171,7 @@
     <recordCreates>
         <name>Create_application_log</name>
         <label>Create application log</label>
-        <locationX>1282</locationX>
+        <locationX>968</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>Set_status_to_failed</targetReference>
@@ -239,32 +203,15 @@
         <object>Application_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordDeletes>
-        <name>Delete_Archive_Record</name>
-        <label>Delete Archive Record</label>
-        <locationX>50</locationX>
-        <locationY>816</locationY>
-        <faultConnector>
-            <targetReference>Application_log</targetReference>
-        </faultConnector>
-        <inputReference>$Record</inputReference>
-    </recordDeletes>
     <recordUpdates>
         <name>Update_archive_entry</name>
         <label>Update archive entry</label>
-        <locationX>314</locationX>
+        <locationX>176</locationX>
         <locationY>600</locationY>
-        <connector>
-            <targetReference>Archived_Success</targetReference>
-        </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Application_log</targetReference>
-        </faultConnector>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>100</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -285,37 +232,6 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
-    <subflows>
-        <name>Application_log</name>
-        <label>Application log</label>
-        <locationX>314</locationX>
-        <locationY>924</locationY>
-        <flowName>IPS_Subflow_Create_Application_Log</flowName>
-        <inputAssignments>
-            <name>applicationDomain</name>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>faultMessage</name>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>recordId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>sourceFunction</name>
-            <value>
-                <stringValue>IPS - Send archive entry to archive</stringValue>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <name>archiveResponce</name>
         <dataType>String</dataType>
