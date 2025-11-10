@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>65.0</apiVersion>
+    <apiVersion>61.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>End_details_registered_date</name>
+        <label>End details registered date</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>getWorkTrailValues.IPS_End_Details_Registered_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>TODAY</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateBasedOnUserInput</targetReference>
+        </connector>
+    </assignments>
     <decisions>
-        <name>checkEndCauseValues</name>
-        <label>Check endcause values</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <name>Is_end_details_registered_date_empty</name>
+        <label>Is end details registered date empty ?</label>
+        <locationX>182</locationX>
+        <locationY>350</locationY>
         <defaultConnector>
-            <targetReference>displayInformationEnded</targetReference>
+            <targetReference>updateBasedOnUserInput</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
-            <name>isValuesSet</name>
+            <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getWorkTrailValues.ips_End_Date__c</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>getWorkTrailValues.IPS_End_Details_Registered_Date__c</leftValueReference>
+                <operator>IsBlank</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getWorkTrailValues.End_Cause__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getWorkTrailValues.ips_Other_end_cases__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>displayInformation</targetReference>
+                <targetReference>End_details_registered_date</targetReference>
             </connector>
-            <label>isValuesSet</label>
+            <label>Yes</label>
         </rules>
     </decisions>
-    <description>Viser sluttdato, sluttårsak og detaljer når deltaker i jobbsporet blir satt til avsluttet.
-Oppretter platform event jobbspor</description>
+    <description>Viser sluttdato, sluttårsak og detaljer når deltaker i jobbsporet blir satt til
+        avsluttet.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>TODAY</name>
+        <dataType>Date</dataType>
+        <expression>Today()</expression>
+    </formulas>
     <interviewLabel>IPS - work trail set endcause and enddate {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - work trail set endcause and enddate</label>
     <processMetadataValues>
@@ -68,11 +75,11 @@ Oppretter platform event jobbspor</description>
     <recordLookups>
         <name>getWorkTrailValues</name>
         <label>Get worktrail values</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>182</locationX>
+        <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>checkEndCauseValues</targetReference>
+            <targetReference>displayInformationEnded</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -89,48 +96,27 @@ Oppretter platform event jobbspor</description>
     <recordUpdates>
         <name>updateBasedOnUserInput</name>
         <label>Update based on userinput</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>182</locationX>
+        <locationY>650</locationY>
         <connector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+            <targetReference>Create_platform_event_jobbspor</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Error_display</targetReference>
+        </faultConnector>
         <inputReference>getWorkTrailValues</inputReference>
     </recordUpdates>
-    <screens>
-        <name>displayInformation</name>
-        <label>displayInformation</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>displayInformationEndText</name>
-            <extensionName>c:crmAlertBanner</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>message</name>
-                <value>
-                    <stringValue>Sluttdato og sluttårsak er fylt ut</stringValue>
-                </value>
-            </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <showFooter>false</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
+    <runInMode>DefaultMode</runInMode>
     <screens>
         <name>displayInformationEnded</name>
         <label>displayInformationEnded</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>updateBasedOnUserInput</targetReference>
+            <targetReference>Is_end_details_registered_date_empty</targetReference>
         </connector>
         <fields>
             <name>displayInformationEndTitle</name>
@@ -168,8 +154,28 @@ Oppretter platform event jobbspor</description>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
+    <screens>
+        <name>Error_display</name>
+        <label>Error display</label>
+        <locationX>490</locationX>
+        <locationY>758</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Application_log</targetReference>
+        </connector>
+        <fields>
+            <name>display_error_msg</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Det har oppstått en feil !&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Vennligst meld feilen via porten.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
-        <locationX>0</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorkTrailValues</targetReference>
@@ -177,10 +183,41 @@ Oppretter platform event jobbspor</description>
     </start>
     <status>Active</status>
     <subflows>
-        <name>IPS_createPlatformEventJobbspor</name>
+        <name>Application_log</name>
+        <label>Application log</label>
+        <locationX>490</locationX>
+        <locationY>866</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>getWorkTrailValues.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - worktrail set endcause and enddate</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Create_platform_event_jobbspor</name>
         <label>Create platform event jobbspor</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>182</locationX>
+        <locationY>758</locationY>
         <connector>
             <targetReference>IPS_removes_any_manually_shared_records</targetReference>
         </connector>
@@ -195,8 +232,8 @@ Oppretter platform event jobbspor</description>
     <subflows>
         <name>IPS_removes_any_manually_shared_records</name>
         <label>Removes any manually shared records</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>182</locationX>
+        <locationY>866</locationY>
         <flowName>IPS_worktrail_subflow_delete_shared_records</flowName>
         <inputAssignments>
             <name>recordId</name>
