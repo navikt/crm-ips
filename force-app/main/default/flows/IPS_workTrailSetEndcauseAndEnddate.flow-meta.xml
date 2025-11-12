@@ -43,8 +43,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Viser sluttdato, sluttårsak og detaljer når deltaker i jobbsporet blir satt til
-        avsluttet.</description>
+    <description>Viser sluttdato, sluttårsak og detaljer når deltaker i jobbsporet blir satt til avsluttet.</description>
     <environments>Default</environments>
     <formulas>
         <name>TODAY</name>
@@ -73,6 +72,7 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
+        <description>Gets worktrail details</description>
         <name>getWorkTrailValues</name>
         <label>Get worktrail values</label>
         <locationX>182</locationX>
@@ -99,7 +99,7 @@
         <locationX>182</locationX>
         <locationY>650</locationY>
         <connector>
-            <targetReference>Create_platform_event_jobbspor</targetReference>
+            <targetReference>IPS_removes_any_manually_shared_records</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Error_display</targetReference>
@@ -214,26 +214,10 @@
         </inputAssignments>
     </subflows>
     <subflows>
-        <name>Create_platform_event_jobbspor</name>
-        <label>Create platform event jobbspor</label>
-        <locationX>182</locationX>
-        <locationY>758</locationY>
-        <connector>
-            <targetReference>IPS_removes_any_manually_shared_records</targetReference>
-        </connector>
-        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
-        <inputAssignments>
-            <name>input_JobbsporId</name>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </inputAssignments>
-    </subflows>
-    <subflows>
         <name>IPS_removes_any_manually_shared_records</name>
         <label>Removes any manually shared records</label>
         <locationX>182</locationX>
-        <locationY>866</locationY>
+        <locationY>758</locationY>
         <flowName>IPS_worktrail_subflow_delete_shared_records</flowName>
         <inputAssignments>
             <name>recordId</name>

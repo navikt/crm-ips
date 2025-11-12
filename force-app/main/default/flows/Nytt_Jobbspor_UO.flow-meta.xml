@@ -8,7 +8,7 @@
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+            <targetReference>createCreatorHistory</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -240,8 +240,7 @@
             <label>ownerIsNotUser</label>
         </rules>
     </decisions>
-    <description>Opprettelse av nytt Jobbspor for Arbeid med støtte.
-Oppretter også platform event som går til datavarehus</description>
+    <description>Opprettelse av nytt Jobbspor for Arbeid med støtte.</description>
     <environments>Default</environments>
     <formulas>
         <name>UserId</name>
@@ -790,7 +789,7 @@ LEN( {!ips_participants_ssn}) == 11
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+            <targetReference>createCreatorHistory</targetReference>
         </connector>
         <fields>
             <name>displayTitle6</name>
@@ -1178,22 +1177,6 @@ LEN( {!ips_participants_ssn}) == 11
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-    </subflows>
-    <subflows>
-        <name>IPS_createPlatformEventJobbspor</name>
-        <label>Create platform event jobbspor</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <connector>
-            <targetReference>createCreatorHistory</targetReference>
-        </connector>
-        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
-        <inputAssignments>
-            <name>input_JobbsporId</name>
-            <value>
-                <elementReference>varWorkTrailId</elementReference>
-            </value>
-        </inputAssignments>
     </subflows>
     <variables>
         <name>isAlwaysFalse</name>
