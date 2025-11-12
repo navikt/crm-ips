@@ -682,7 +682,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+            <targetReference>createCloneHistory</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
@@ -806,8 +806,7 @@
             <label>isIPS</label>
         </rules>
     </decisions>
-    <description>Kloner ett jobbspor basert på et avsluttet jobbspor, overfører spesifikke data, status og fjerner manuell deling av gammelt jobbsporet
-Oppretter en platform event jobbspor</description>
+    <description>Kloner ett jobbspor basert på et avsluttet jobbspor, overfører spesifikke data, status og fjerner manuell deling av gammelt jobbsporet</description>
     <environments>Default</environments>
     <formulas>
         <name>varDaysSinceEnded</name>
@@ -908,7 +907,7 @@ Oppretter en platform event jobbspor</description>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
+            <targetReference>createCloneHistory</targetReference>
         </connector>
         <inputReference>varJobList</inputReference>
     </recordCreates>
@@ -1664,22 +1663,6 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-    </subflows>
-    <subflows>
-        <name>IPS_createPlatformEventJobbspor</name>
-        <label>Create platform event jobbspor</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <connector>
-            <targetReference>createCloneHistory</targetReference>
-        </connector>
-        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
-        <inputAssignments>
-            <name>input_JobbsporId</name>
-            <value>
-                <elementReference>varNewWorkTrailRecord.Id</elementReference>
-            </value>
-        </inputAssignments>
     </subflows>
     <subflows>
         <name>IPS_deleteSharedRecords</name>
