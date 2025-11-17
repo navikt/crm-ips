@@ -354,11 +354,6 @@ FALSE
 ,&apos;NONE&apos;)
 )</expression>
     </formulas>
-    <formulas>
-        <name>forUserStatus</name>
-        <dataType>String</dataType>
-        <expression>IF({!$Record.IsActive},&apos;Active&apos;,&apos;Deactivated&apos;)</expression>
-    </formulas>
     <interviewLabel>IPS Platform event user role {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Platform event user role</label>
     <processMetadataValues>
@@ -455,9 +450,9 @@ FALSE
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>UserStatus__c</field>
+            <field>isUserActive__c</field>
             <value>
-                <elementReference>forUserStatus</elementReference>
+                <elementReference>$Record.IsActive</elementReference>
             </value>
         </inputAssignments>
         <object>IPSRoleUserEvent__e</object>
@@ -538,9 +533,9 @@ FALSE
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>UserStatus__c</field>
+            <field>isUserActive__c</field>
             <value>
-                <stringValue>Deactivated</stringValue>
+                <booleanValue>false</booleanValue>
             </value>
         </inputAssignments>
         <object>IPSRoleUserEvent__e</object>
@@ -618,9 +613,9 @@ FALSE
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>UserStatus__c</field>
+            <field>isUserActive__c</field>
             <value>
-                <elementReference>forUserStatus</elementReference>
+                <elementReference>$Record.IsActive</elementReference>
             </value>
         </inputAssignments>
         <object>IPSRoleUserEvent__e</object>
