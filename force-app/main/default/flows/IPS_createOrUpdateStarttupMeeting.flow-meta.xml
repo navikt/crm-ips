@@ -306,8 +306,7 @@
     </decisions>
     <description>Oppdaterering på oppstartsmøte
 Setter startdato på jobbsporet når møtet er satt til fullført
-Setter kontaktid
-Lager platform event jobbspor</description>
+Setter kontaktid</description>
     <environments>Default</environments>
     <formulas>
         <name>isDateTimeChanged</name>
@@ -404,9 +403,6 @@ Lager platform event jobbspor</description>
         <label>updateStartUpDate</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <connector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
-        </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>First_meeting_with_employer_validation_error</targetReference>
@@ -468,7 +464,7 @@ Lager platform event jobbspor</description>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>IPS_createPlatformEventJobbspor1</targetReference>
+            <targetReference>UpdateEvent</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -541,35 +537,6 @@ Lager platform event jobbspor</description>
             <assignToReference>varContactId</assignToReference>
             <name>varContactId</name>
         </outputAssignments>
-    </subflows>
-    <subflows>
-        <name>IPS_createPlatformEventJobbspor</name>
-        <label>Create platform event jobbspor</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
-        <inputAssignments>
-            <name>input_JobbsporId</name>
-            <value>
-                <elementReference>$Record.WhatId</elementReference>
-            </value>
-        </inputAssignments>
-    </subflows>
-    <subflows>
-        <name>IPS_createPlatformEventJobbspor1</name>
-        <label>Create platform event jobbspor</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <connector>
-            <targetReference>UpdateEvent</targetReference>
-        </connector>
-        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
-        <inputAssignments>
-            <name>input_JobbsporId</name>
-            <value>
-                <elementReference>$Record.WhatId</elementReference>
-            </value>
-        </inputAssignments>
     </subflows>
     <variables>
         <name>varContactId</name>

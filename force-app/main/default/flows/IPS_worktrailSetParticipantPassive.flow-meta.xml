@@ -401,6 +401,10 @@ If extending, it sets the subject from Extend screen.</description>
         <connector>
             <targetReference>Is_participant_passive</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_display</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -418,9 +422,9 @@ If extending, it sets the subject from Extend screen.</description>
         <label>updateWorktrail</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <connector>
-            <targetReference>IPS_createPlatformEventJobbspor</targetReference>
-        </connector>
+        <faultConnector>
+            <targetReference>Error_display</targetReference>
+        </faultConnector>
         <inputReference>getWorktrail</inputReference>
     </recordUpdates>
     <screens>
@@ -486,6 +490,26 @@ If extending, it sets the subject from Extend screen.</description>
         <nextOrFinishButtonLabel>Deaktiver</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Error_display</name>
+        <label>Error display</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Application_log</targetReference>
+        </connector>
+        <fields>
+            <name>errorMessage</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Det har oppstått en feil !&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Vennligst meld feilen via porten.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Extend_screen</name>
@@ -1080,15 +1104,33 @@ ISBLANK({!Passiv_periode_slutter}),
     </start>
     <status>Active</status>
     <subflows>
-        <name>IPS_createPlatformEventJobbspor</name>
-        <label>Create platform event jobbspor</label>
+        <name>Application_log</name>
+        <label>Application log</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
         <inputAssignments>
-            <name>input_JobbsporId</name>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - worktrail Set Participant Passive</stringValue>
             </value>
         </inputAssignments>
     </subflows>
