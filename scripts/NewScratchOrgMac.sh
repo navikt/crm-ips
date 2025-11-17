@@ -9,8 +9,8 @@ echo "Installerer crm-platform-base 0.291.0"
 sf package install --package 04tQC0000011Ey1YAE -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer platform-access-controll 0.162.0"
-sf package install --package 04tQC000000tlPhYAI -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer platform-access-controll 0.163.0"
+sf package install --package 04tQC0000010m7JYAQ -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "Installerer crm-thread-view 0.8.0.."
@@ -64,8 +64,8 @@ echo "Installerer crm-platform-oppgave 0.65.0"
 sf package install --package 04tQC000000rfOPYAY -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-arbeidsgiver-base 1.614.0"
-sf package install --package 04tQC0000011EwPYAU -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.616.0"
+sf package install --package 04tQC0000012WT3YAM -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "Installerer crm-community-base 0.132.0"
@@ -81,7 +81,7 @@ sf package install --package 04tQC0000011b1lYAA -r --installation-key $3 --wait 
 
 echo ""
 echo "Installerer crm-ips 0.517.0"
-sf package install --package 04tQC0000010YU9YAM -r --installation-key $3 --wait 4 --publish-wait 4
+sf package install --package 04tQC0000012WUfYAM -r --installation-key $3 --wait 4 --publish-wait 4
 
 # Assign permission sets
 echo "TILDELER"
@@ -101,6 +101,6 @@ sf org assign permset --name IPS_Config
 
 # Opprett testdata
 echo ".. Oppretter testdata.."
-sf apex run --file scripts/apex/createTestData.apex
+sf apex run --file apex/createTestData.apex
 
 echo "************************* FERDIG *********************************"
