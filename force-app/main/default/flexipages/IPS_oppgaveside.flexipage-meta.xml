@@ -22,10 +22,21 @@
                         <valueListItems>
                             <value>Delete</value>
                             <visibilityRule>
+                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
                                 <criteria>
                                     <leftValue>{!$User.UserRole.Name}</leftValue>
                                     <operator>CONTAINS</operator>
                                     <rightValue>Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>CONTAINS</operator>
+                                    <rightValue>Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
