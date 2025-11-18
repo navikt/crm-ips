@@ -16,7 +16,7 @@
         </assignmentItems>
         <connector>
             <isGoTo>true</isGoTo>
-            <targetReference>sfl_LogErrors</targetReference>
+            <targetReference>s_errorScreen</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -32,7 +32,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>sfl_LogErrors</targetReference>
+            <targetReference>s_errorScreen</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -61,6 +61,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>var_Oppstartsdato</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_StartupMeeting.IPS_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Start up meeting</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -114,6 +121,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>CHECK_If_StartupEventIsFound</name>
+        <label>CHECK If Start-up Event Is Found</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>s_successScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Found</defaultConnectorLabel>
+        <rules>
+            <name>CHECK_If_StartupEventIsFound_True</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_StartupMeeting</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SET_UpdatedStartupDateOnStartupMeeting</targetReference>
+            </connector>
+            <label>Startup-event was found</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>CHECK_If_StartupMeetingShouldBeUpdated</name>
         <label>CHECK If Startup Meeting Should Be Updated</label>
         <locationX>0</locationX>
@@ -130,7 +162,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>SET_UpdatedStartupDateOnStartupMeeting</targetReference>
+                <targetReference>CHECK_If_StartupEventIsFound</targetReference>
             </connector>
             <label>Update Startup Meeting</label>
         </rules>
@@ -224,6 +256,9 @@
         <label>Update Event</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>s_successScreen</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>assign_FaultStepOnEventUpdate</targetReference>
         </faultConnector>
@@ -243,6 +278,30 @@
         <inputReference>sObj_Work_Trail</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithSharing</runInMode>
+    <screens>
+        <name>s_errorScreen</name>
+        <label>Error Screen</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>sfl_LogErrors</targetReference>
+        </connector>
+        <fields>
+            <name>s_displayFlowTitle4</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowHeader}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>text_errorText</name>
+            <fieldText>&lt;p&gt;Jobbsporet ble ikke oppdatert🚫&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Følgende feil oppsto:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(241, 5, 5);&quot;&gt;{!var_faultStep} - {!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>s_setNewStartupDate</name>
         <label>Set New Startup Date</label>
@@ -273,6 +332,27 @@
                 <errorMessage>&lt;p&gt;{!const_Oppstartsdato_ValidationMessage}&lt;/p&gt;</errorMessage>
                 <formulaExpression>IF({!var_Oppstartsdato} &gt; {!sObj_Work_Trail.ips_First_meeting_with_the_Employer_held__c}, FALSE, TRUE)</formulaExpression>
             </validationRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>s_successScreen</name>
+        <label>Success Screen</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>s_displayFlowTitle3</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowHeader}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>text_successText</name>
+            <fieldText>&lt;p&gt;Jobbsporet ble oppdatert✅&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -324,16 +404,6 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>sObj_Work_Trail.Oppstartsdato__c</leftValueReference>
-                    <operator>IsNull</operator>
-                    <rightValue>
-                        <booleanValue>false</booleanValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
