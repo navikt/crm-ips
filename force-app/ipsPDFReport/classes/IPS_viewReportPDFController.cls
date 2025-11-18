@@ -611,26 +611,20 @@ public with sharing class IPS_viewReportPDFController {
         }
         if (isIntervallReport == true) {
             for (AMS_Vocational_education_and_training__c a : allAmsEdu) {
-                if (a.AMS_Status__c == 'Ongoing' || a.AMS_Status__c == 'Pågående') {
+
+                Date eduStart = a.AMS_Start_Date__c;
+                Date eduEnd   = a.AMS_End_Date__c;
+
+                // If the end date is null, treat it as ongoing
+                if (eduEnd == null) {
+                    eduEnd = Date.newInstance(9999, 12, 31);
+                }
+
+                // Overlap check:
+                // A period overlaps the report range if:
+                // Start <= report end date AND End >= report start date
+                if (eduStart <= endDate && eduEnd >= startDate) {
                     amsEduList.add(a);
-                } else {
-                    if (
-                        a.AMS_End_Date__c != null &&
-                        ((a.AMS_End_Date__c >= startDate || a.AMS_End_Date__c >= endDate) &&
-                        (a.AMS_Status__c == 'Completed' ||
-                        a.AMS_Status__c == 'Fullført'))
-                    ) {
-                        amsEduList.add(a);
-                    }
-                    if (
-                        a.AMS_End_Date__c == null &&
-                        ((a.AMS_Status__c == 'Completed' ||
-                        a.AMS_Status__c == 'Fullført') &&
-                        a.AMS_Start_Date__c >= startDate &&
-                        a.AMS_Start_Date__c <= endDate)
-                    ) {
-                        amsEduList.add(a);
-                    }
                 }
             }
         }
