@@ -11,6 +11,12 @@ public without sharing class IPS_EventReminderSMSBatch implements Database.Batch
         database.executebatch(instance, 10);
     }
 
+    /**
+     * @description Start method for batch processing of Event reminder SMS
+     * @author Carl Huseby Fosli | 01/12/2023
+     * @param bc BatchableContext
+     * @return Database.QueryLocator
+     **/
     public Database.QueryLocator start(Database.BatchableContext bc) {
         Datetime now = Datetime.now();
         Date horizonDate = Date.today().addDays(2);
@@ -31,6 +37,12 @@ public without sharing class IPS_EventReminderSMSBatch implements Database.Batch
         return Database.getQueryLocator(query);
     }
 
+    /**
+     * @description Executes the Batch to send reminder SMS for Events
+     * @author Carl Huseby Fosli | 01/12/2023
+     * @param bc BatchableContext
+     * @param records Events to process
+     **/
     public void execute(Database.BatchableContext bc, List<Event> records) {
         try {
             IPS_EventSMSService.reminderSMS(records);
@@ -41,6 +53,11 @@ public without sharing class IPS_EventReminderSMSBatch implements Database.Batch
         }
     }
 
+    /**
+     * @description Finish method to reschedule the batch for future execution
+     * @author Carl Huseby Fosli | 01/12/2023
+     * @param bc BatchableContext
+     **/
     public void finish(Database.BatchableContext bc) {
         Long minutes = IPS_EventSMSService.getMinutesUntilNextSMSBatch();
         if (!Test.isRunningTest()) {
