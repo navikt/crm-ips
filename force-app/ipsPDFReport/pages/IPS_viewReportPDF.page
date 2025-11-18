@@ -358,10 +358,11 @@
                     </div>
                 </apex:repeat>
             </apex:outputpanel>
+
             <!-- Opplæringsløp -->
             <apex:outputpanel rendered="{!OR (activeAmsEducations.size != 0,activeParticipantsEducations.size != 0)}">
                 <apex:outputText><h3>Opplæringsløp</h3></apex:outputText>
-                <div style="page-break-inside: avoid">
+                <div >
                     <apex:repeat value="{!activeAmsEducations}" var="amsedu">
                         <apex:outputText><h4>{!amsedu.Name} - {!amsedu.AMS_Status__c}</h4></apex:outputText>
                         <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
@@ -401,8 +402,44 @@
                                     <apex:outputField value="{!amsedu.AMS_Description__c}" />
                                 </td>
                             </tr>
+                            <apex:outputText><h4>Jobb i opplæringsløp</h4></apex:outputText>
+                        </table>
+
+                    <!-- Jobb i opplæringsløp -->
+                     
+                     <apex:repeat value="{!amsedu.apprentice_Job__r}" var="job">
+                        <apex:outputText><h4>{!job.Name}</h4></apex:outputText>
+                        <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Arbeidsgiver</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!job.AMS_Employer__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Startdato</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!job.AMS_Start_Date__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Sluttdato</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!job.AMS_End_Date__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Beskrivelse av lærling jobb</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!job.AMS_Description_of_the_apprentice_job__c}" />
+                                </td>
+                            </tr>
                         </table>
                     </apex:repeat>
+
+                    </apex:repeat>
+                      
+                  
 
                     <apex:repeat value="{!activeParticipantsEducations}" var="edu">
                         <apex:outputText><h4>{!edu.Name} - {!edu.ips_Status__c}</h4></apex:outputText>
@@ -563,7 +600,7 @@
 
             <apex:outputpanel rendered="{!plannedAmsEductions.size !=0}">
                 <apex:outputText><h3>Planlagte opplæringsløp</h3></apex:outputText>
-                <div style="page-break-inside: avoid">
+                <div>
                     <apex:repeat value="{!plannedAmsEductions}" var="plan">
                         <apex:outputText><h4>{!plan.Name} - {!plan.AMS_Status__c}</h4></apex:outputText>
                         <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
@@ -603,7 +640,40 @@
                                     <apex:outputField value="{!plan.AMS_Description__c}" />
                                 </td>
                             </tr>
+                              <apex:outputText><h4>Jobb i opplæringsløp</h4></apex:outputText>
                         </table>
+
+                        <!-- Jobb i opplæringsløp -->
+                     
+                     <apex:repeat value="{!plan.apprentice_Job__r}" var="job">
+                        <apex:outputText><h4>{!job.Name}</h4></apex:outputText>
+                        <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Arbeidsgiver</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!job.AMS_Employer__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Startdato</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!job.AMS_Start_Date__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Sluttdato</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!job.AMS_End_Date__c}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Beskrivelse av lærling jobb</th>
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputField value="{!job.AMS_Description_of_the_apprentice_job__c}" />
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:repeat>
                     </apex:repeat>
                 </div>
             </apex:outputpanel>
@@ -847,6 +917,7 @@
             <div style="padding-bottom: 5px"></div>
             <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField>
 
+            <!--Deltakelse i jobb og arbeidstrening-->
             <apex:outputText><h3>Deltakelse i jobb og arbeidstrening</h3></apex:outputText>
             <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
 
