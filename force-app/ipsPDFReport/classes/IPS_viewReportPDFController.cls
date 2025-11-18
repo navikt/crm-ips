@@ -600,7 +600,17 @@ public with sharing class IPS_viewReportPDFController {
                 AMS_Form_of_Study__c,
                 AMS_Name_of_the_Education_institution__c,
                 AMS_Start_Date__c,
-                toLabel(AMS_Status__c)
+                toLabel(AMS_Status__c),
+                   (
+            SELECT
+                Id,
+                Name,
+                AMS_Start_Date__c,
+                AMS_End_Date__c,
+                AMS_Employer__c,
+                AMS_Description_of_the_apprentice_job__c
+            FROM Apprentice_Job__r
+        )
             FROM AMS_Vocational_education_and_training__c
             WHERE AMS_Work_Trail__c = :workTrailId AND AMS_Status__c IN ('Ongoing', 'Completed', 'Canceled')
             ORDER BY AMS_Start_Date__c DESC
@@ -654,7 +664,17 @@ public with sharing class IPS_viewReportPDFController {
                 AMS_Form_of_Study__c,
                 AMS_Name_of_the_Education_institution__c,
                 AMS_Start_Date__c,
-                toLabel(AMS_Status__c)
+                toLabel(AMS_Status__c),
+           (
+            SELECT
+                Id,
+                Name,
+                AMS_Start_Date__c,
+                AMS_End_Date__c,
+                AMS_Employer__c,
+                AMS_Description_of_the_apprentice_job__c
+            FROM Apprentice_Job__r
+        )
             FROM AMS_Vocational_education_and_training__c
             WHERE AMS_Work_Trail__c = :workTrailId AND AMS_Status__c = 'Planned' AND AMS_Start_Date__c > :endDate
             ORDER BY AMS_Start_Date__c DESC
@@ -665,6 +685,9 @@ public with sharing class IPS_viewReportPDFController {
         }
         return eduList;
     }
+
+    /****************** Apprentice job **************************/
+
 
     /****************** Passive periods **************************/
 
