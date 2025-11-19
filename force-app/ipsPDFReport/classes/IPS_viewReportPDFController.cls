@@ -608,7 +608,7 @@ public with sharing class IPS_viewReportPDFController {
                 AMS_Start_Date__c,
                 AMS_End_Date__c,
                 AMS_Employer__c,
-                AMS_Description_of_the_apprentice_job__c
+                AMS_Status__c
             FROM Apprentice_Job__r
         )
             FROM AMS_Vocational_education_and_training__c
@@ -672,7 +672,7 @@ public with sharing class IPS_viewReportPDFController {
                 AMS_Start_Date__c,
                 AMS_End_Date__c,
                 AMS_Employer__c,
-                AMS_Description_of_the_apprentice_job__c
+                AMS_Status__c
             FROM Apprentice_Job__r
         )
             FROM AMS_Vocational_education_and_training__c
@@ -685,9 +685,6 @@ public with sharing class IPS_viewReportPDFController {
         }
         return eduList;
     }
-
-    /****************** Apprentice job **************************/
-
 
     /****************** Passive periods **************************/
 
