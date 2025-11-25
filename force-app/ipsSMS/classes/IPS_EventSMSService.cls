@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            : hkavli
+ * @group             :
+ * @last modified on  : 11-25-2025
+ * @last modified by  : hkavli
+ **/
 public without sharing class IPS_EventSMSService {
     private static Map<Event, Work_Trail__c> getEventWorkTailMap(List<Event> eventList) {
         Set<Id> workTrailIdSet = new Set<Id>();
@@ -98,6 +105,7 @@ public without sharing class IPS_EventSMSService {
         Database.insert(smsList, false);
     }
 
+    @TestVisible
     private static String constructReminderMessage(Event event) {
         String message = 'Husk ' + event.ips_uo_Kanal__c.toLowerCase() + ' møte med jobbspesialisten din.';
         message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
@@ -106,6 +114,7 @@ public without sharing class IPS_EventSMSService {
         return message;
     }
 
+    @TestVisible
     private static String setLocation(Event event) {
         if (event.Location != null) {
             return event.Location.left(30);
@@ -145,6 +154,7 @@ public without sharing class IPS_EventSMSService {
         Database.insert(smsList, false);
     }
 
+    @TestVisible
     private static String construcChangedMessage(Event event) {
         String message =
             'Møte er endret. Ny tid for' +
@@ -155,6 +165,7 @@ public without sharing class IPS_EventSMSService {
         return message;
     }
 
+    @TestVisible
     private static String formatTimePeriod(Datetime startDate) {
         String timePeriod =
             startDate.date().format() +
