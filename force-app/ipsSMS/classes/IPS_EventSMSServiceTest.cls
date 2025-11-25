@@ -109,4 +109,14 @@ public with sharing class IPS_EventSMSServiceTest {
             'Reminder message should inform that replies are not possible'
         );
     }
+    @IsTest
+    public static void getMinutesUntilNextSMSBatchTest() {
+        // Given
+        Long minutes = IPS_EventSMSService.getMinutesUntilNextSMSBatch();
+
+        // Then
+        Assert.isInstanceOfType(minutes, Long.class, 'Expected minutes to be of type Long');
+        Assert.isNotNull(minutes, 'Expected minutes to be not null');
+        Assert.isTrue(minutes > 0, 'Minutes until next SMS batch should be greater than 0');
+    }
 }

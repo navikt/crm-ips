@@ -177,6 +177,7 @@ public without sharing class IPS_EventSMSService {
         return timePeriod;
     }
 
+    @TestVisible
     public static Long getMinutesUntilNextSMSBatch() {
         Long minutes = 60;
         Datetime now = Datetime.now();
