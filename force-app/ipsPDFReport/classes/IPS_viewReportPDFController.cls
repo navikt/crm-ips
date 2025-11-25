@@ -608,8 +608,14 @@ public with sharing class IPS_viewReportPDFController {
                 AMS_Start_Date__c,
                 AMS_End_Date__c,
                 AMS_Employer__c,
-                AMS_Status__c
+                AMS_Status__c,
+                Form_Of_Employment__c,
+                AMS_Description_of_the_apprentice_job__c,
+                AMS_Apprentice_Job_Support_Plan__c,
+                AMS_What_did_work_at_the_workplace__c,
+                AMS_What_did_not_work_at_the_workplace__c
             FROM Apprentice_Job__r
+            ORDER BY AMS_Start_Date__c DESC
         )
             FROM AMS_Vocational_education_and_training__c
             WHERE AMS_Work_Trail__c = :workTrailId AND AMS_Status__c IN ('Ongoing', 'Completed', 'Canceled')
