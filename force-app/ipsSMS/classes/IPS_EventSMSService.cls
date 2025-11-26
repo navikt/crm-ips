@@ -2,7 +2,7 @@
  * @description       :
  * @author            : hkavli
  * @group             :
- * @last modified on  : 11-25-2025
+ * @last modified on  : 11-26-2025
  * @last modified by  : hkavli
  **/
 public without sharing class IPS_EventSMSService {
@@ -65,7 +65,7 @@ public without sharing class IPS_EventSMSService {
         Database.update(eventList, false);
         Database.insert(smsList, false);
     }
-
+    @TestVisible
     private static String constructCreatedMessage(Event event) {
         String message =
             'Det er satt opp et ' +

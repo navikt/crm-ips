@@ -2,7 +2,7 @@
  * @description       : Test class for IPS_EventSMSService
  * @author            : hkavli
  * @group             : ipsSMS
- * @last modified on  : 11-25-2025
+ * @last modified on  : 11-26-2025
  * @last modified by  : hkavli
  **/
 @IsTest
@@ -82,6 +82,32 @@ public with sharing class IPS_EventSMSServiceTest {
         Assert.areEqual(location1, 'Oslo Office, Meeting Room 123', 'Expected Location to be set from Event.Location');
         Assert.areEqual(location2, 'Video Call via Teams', 'Expected Location to be set from Event.ips_uo_Kanal__c');
         Assert.areEqual(location3, 'Ikke oppgitt', 'Expected Location to be "Ikke oppgitt" when neither field is set');
+    }
+
+    @IsTest
+    public static void constructCreatedMessageTest() {
+        // Given
+        Event testEvent = new Event(
+            ips_uo_Kanal__c = 'Fysisk',
+            StartDateTime = Datetime.newInstance(2025, 12, 5, 10, 0, 0)
+        );
+
+        // When
+        String createdMessage = IPS_EventSMSService.constructCreatedMessage(testEvent);
+
+        // Then
+        Assert.isTrue(
+            createdMessage.contains('Det er satt opp et fysisk møte med jobbspesialisten din.'),
+            'Created message should contain the correct meeting setup text'
+        );
+        Assert.isTrue(
+            createdMessage.contains('Tidspunkt: 05.12.2025, kl 10:00'),
+            'Created message should contain the correctly formatted date and time'
+        );
+        Assert.isTrue(
+            createdMessage.contains('Logg inn på NAV for detaljer. Du kan ikke svare på denne meldingen.'),
+            'Created message should inform that replies are not possible'
+        );
     }
 
     @IsTest
