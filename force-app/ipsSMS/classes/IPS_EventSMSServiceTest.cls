@@ -2,28 +2,57 @@
  * @description       : Test class for IPS_EventSMSService
  * @author            : hkavli
  * @group             : ipsSMS
- * @last modified on  : 11-26-2025
+ * @last modified on  : 11-28-2025
  * @last modified by  : hkavli
  **/
 @IsTest
 public with sharing class IPS_EventSMSServiceTest {
-    /*    @IsTest
+    @IsTest
     public static void createTestData() {
+        List<Account> accountsInTest = new List<Account>();
+        Map<Id, Account> accountsByAccountIds = new Map<Id, Account>();
+
+        // Create Persons
         List<Person__c> persons = new List<Person__c>();
-        persons.add(IPS_TestDataFactory.createPersons('G54321'));
-        persons.add(IPS_TestDataFactory.createPersons('G54322'));
+        persons.add(IPS_TestDataFactory.createPerson('G54321'));
+        persons.add(IPS_TestDataFactory.createPerson('G54322'));
 
-        List
-        Event testEvent = IPS_TestDataFactory.createParticipantEvent();
+        insert persons;
 
-        List<Work_Trail__c> workTrailList = new List<Work_Trail__c>();
-        IPS_TestDataFactory.createWorkTrails(workTrailList, personList);
-        insert workTrailList;
+        List<Work_trail__c> workTrails = new List<Work_Trail__c>();
 
+        // Create Work Trails
+        for (Account personAccounts : [SELECT Id, PersonContactId FROM Account WHERE CRM_Person__c IN :persons]) {
+            Work_Trail__c workTrail = IPS_TestDataFactory.createJobbspor(personAccounts.Id);
+            workTrails.add(workTrail);
+            accountsByAccountIds.put(personAccounts.Id, personAccounts);
+        }
+
+        insert workTrails;
+
+        // Map WorkTrail Id to Person Account
+        /*         for (Work_Trail__c workTrail : workTrails) {
+         personAccountByWorkTrailId.put(workTrail.Id, */
+
+        // Create Events
         List<Event> eventList = new List<Event>();
-        IPS_TestDataFactory.createEvents(eventList, workTrailList);
+        for (Work_Trail__c workTrail : workTrails) {
+            Assert.isNotNull(
+                accountsByAccountIds.get(workTrail.ips_Participant__c).PersonContactId,
+                'PersonContactId should not be null'
+            );
+            Event eventRecord = IPS_TestDataFactory.createParticipantEvent(
+                accountsByAccountIds.get(workTrail.ips_Participant__c).PersonContactId,
+                workTrail.Id
+            );
+            eventList.add(eventRecord);
+        }
         insert eventList;
-    } */
+
+        Assert.isNotNull(persons, 'Persons should be created for testing');
+        Assert.isNotNull(workTrails, 'Work Trails should be created for testing');
+        Assert.isNotNull(eventList, 'Events should be created for testing');
+    }
 
     @IsTest
     public static void construcChangedMessageTest() {
