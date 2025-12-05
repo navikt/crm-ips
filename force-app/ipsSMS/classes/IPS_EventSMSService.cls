@@ -62,8 +62,13 @@ public without sharing class IPS_EventSMSService {
                 event.IPS_IsCreatedSMSSendt__c = true;
             }
         }
-        Database.update(eventList, false);
-        Database.insert(smsList, false);
+        CRM_DatabaseOperations cdoSMS = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
+        cdoSMS.insertRecords(smsList);
+
+        // Loop over inserted SMS to set the event flags
+
+        CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
+        cdoEvents.updateRecords(eventList);
     }
     @TestVisible
     private static String constructCreatedMessage(Event event) {

@@ -1,9 +1,11 @@
 /**
- * @description       : Test class for IPS_EventSMSService
- * @author            : hkavli
- * @group             : ipsSMS
- * @last modified on  : 11-28-2025
- * @last modified by  : hkavli
+ * @description  : Test class for IPS_EventSMSService
+ * @author       : Carl Huseby Fosli
+ * @since        : 0.1
+ * @author       : Håkon Kavli
+ * @since        : 0.522.0
+ * @version      : 0.2
+ * @see          : IPS_EventSMSService
  **/
 @IsTest
 public with sharing class IPS_EventSMSServiceTest {
