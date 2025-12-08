@@ -124,6 +124,9 @@
         <label>Update Status</label>
         <locationX>314</locationX>
         <locationY>552</locationY>
+        <faultConnector>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>AMS_Status__c</field>
             <value>
@@ -162,6 +165,37 @@
         <triggerType>Scheduled</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Application_Log</name>
+        <label>Application Log</label>
+        <locationX>842</locationX>
+        <locationY>660</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Vocational Job Status Update</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>varStatus</name>
         <dataType>String</dataType>

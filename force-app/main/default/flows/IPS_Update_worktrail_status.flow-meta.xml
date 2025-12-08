@@ -6,7 +6,7 @@
         <description>Decision to update status according to the recordtype of the worktrail.</description>
         <name>IPS_or_AMS</name>
         <label>IPS or AMS ?</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Other recordtypes</defaultConnectorLabel>
         <rules>
@@ -90,7 +90,7 @@ AMS -&gt; Career mapping and career planning</description>
         <description>Getting worktrail information related to the triggering event to access the status of the worktrail</description>
         <name>Get_worktrail</name>
         <label>Get worktrail</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -112,8 +112,12 @@ AMS -&gt; Career mapping and career planning</description>
         <description>Updating worktrail status to &quot;career mapping and career planning&quot;.</description>
         <name>Update_AMS_worktrail_status</name>
         <label>Update AMS worktrail status</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>539</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -136,6 +140,9 @@ AMS -&gt; Career mapping and career planning</description>
         <label>Update worktrail status</label>
         <locationX>50</locationX>
         <locationY>539</locationY>
+        <faultConnector>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -153,7 +160,7 @@ AMS -&gt; Career mapping and career planning</description>
         <object>Work_Trail__c</object>
     </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_worktrail</targetReference>
@@ -186,4 +193,35 @@ AMS -&gt; Career mapping and career planning</description>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Application_Log</name>
+        <label>Application Log</label>
+        <locationX>314</locationX>
+        <locationY>647</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>Get_worktrail.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - worktrail update status</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
 </Flow>
