@@ -396,7 +396,21 @@ private static List<IPS_ParticipantPortalEducation> getOpenEducationsTraining(Id
             AMS_Start_Date__c, 
             AMS_End_Date__c, 
             AMS_Education_Support_Plan__c, 
-            AMS_Form_of_Study__c
+            AMS_Form_of_Study__c,
+            (
+                SELECT
+                Id,
+                Name,
+                AMS_Start_Date__c,
+                AMS_End_Date__c,
+                AMS_Employer__r.Name,
+                Form_Of_Employment__c,
+                AMS_Apprentice_Job_Support_Plan__c,
+                AMS_Status__c,
+                AMS_Number_of_hours_per_week__c
+            FROM Apprentice_Job__r
+            ORDER BY AMS_Start_Date__c DESC
+            )
         FROM AMS_Vocational_education_and_training__c 
         WHERE AMS_Work_Trail__c =:trailRecordId
         AND AMS_Status__c  = 'Ongoing'
@@ -411,6 +425,24 @@ private static List<IPS_ParticipantPortalEducation> getOpenEducationsTraining(Id
             tempList.UtdanningStart = e.AMS_Start_Date__c;
             tempList.UtdanningSlutt = e.AMS_End_Date__c;
             tempList.Plan = e.AMS_Education_Support_Plan__c;
+
+            //Apprentice jobs
+            List<IPS_ParticipantPortalApprentice> jobList = new List<IPS_ParticipantPortalApprentice>();
+            for (AMS_Apprentice_Job__c job : e.Apprentice_Job__r) {
+                IPS_ParticipantPortalApprentice jobWrapper = new IPS_ParticipantPortalApprentice();
+                jobWrapper.Id = job.Id;
+                jobWrapper.Name = job.Name;
+                jobWrapper.Subject = job.Name + ' - ' + job.AMS_Employer__r.Name;
+                jobWrapper.StartDate = job.AMS_Start_Date__c;
+                jobWrapper.EndDate = job.AMS_End_Date__c;
+                jobWrapper.Employer = job.AMS_Employer__r.Name;
+                jobWrapper.NoOfHours = job.AMS_Number_of_hours_per_week__c;
+                jobWrapper.FormOfEmployment = IPS_ParticipantPortalUtility.formatTypeOf(job.Form_Of_Employment__c);
+                jobWrapper.SupportPlan = job.AMS_Apprentice_Job_Support_Plan__c;
+                jobWrapper.Status = IPS_ParticipantPortalUtility.formatJobStatus(job.AMS_Status__c);
+                jobList.add(jobWrapper);
+            }
+            tempList.ApprenticeJobs = jobList;
             tempWrapperList.add(tempList);
          }
          return tempWrapperList;
