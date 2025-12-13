@@ -78,7 +78,7 @@ public without sharing class IPS_ParticipantPortalUtility{
         if(typeOf =='practice candidate'){return 'Praksiskandidat';}
         if(typeOf =='Teaching candidate'){return 'Lærerkandidat';}
         if(typeOf =='Upper Secondary Education for Adults (VOV)'){return 'Videregående opplæring for voksne (VOV)';}
-        else{return 'Ingen valgt';}
+        else{return 'Ingen type valgt';}
     }
 
     public static String replaceBr( String textToReplace) {
