@@ -1,7 +1,7 @@
 /**
  * @description  : Test class for IPS_EventSMSService
  * @author       : Carl Huseby Fosli
- * @since        : 0.1
+ * @since        : version 0.1
  * @author       : Håkon Kavli
  * @since        : 0.522.0
  * @version      : 0.2
@@ -39,7 +39,7 @@ public with sharing class IPS_EventSMSServiceTest {
         // Create Events
         List<Event> eventList = new List<Event>();
         for (Work_Trail__c workTrail : workTrails) {
-            Assert.isNotNull(
+            System.Assert.isNotNull(
                 accountsByAccountIds.get(workTrail.ips_Participant__c).PersonContactId,
                 'PersonContactId should not be null'
             );
@@ -51,28 +51,9 @@ public with sharing class IPS_EventSMSServiceTest {
         }
         insert eventList;
 
-        Assert.isNotNull(persons, 'Persons should be created for testing');
-        Assert.isNotNull(workTrails, 'Work Trails should be created for testing');
-        Assert.isNotNull(eventList, 'Events should be created for testing');
-    }
-
-    @IsTest
-    public static void construcChangedMessageTest() {
-        // Given
-        List<Person__c> persons = new List<Person__c>();
-        //   persons.add(IPS_TestDataFactory.createPersons('G54321'));
-        //   persons.add(IPS_TestDataFactory.createPersons('G54322'));
-
-        //        insert persons;
-
-        //  List<
-        //  Event testEvent = IPS_TestDataFactory.createParticipantEvent();
-
-        // When
-        //  String actualMessage = IPS_EventSMSService.constructChangedMessage(testEvent);
-
-        // Then
-        //Assert.isTrue(actualMessage.contains('Din avtale er endret'), 'Message should contain notification of change');
+        System.Assert.isNotNull(persons, 'Persons should be created for testing');
+        System.Assert.isNotNull(workTrails, 'Work Trails should be created for testing');
+        System.Assert.isNotNull(eventList, 'Events should be created for testing');
     }
 
     @IsTest
@@ -86,12 +67,12 @@ public with sharing class IPS_EventSMSServiceTest {
         String formattedTime2 = IPS_EventSMSService.formatTimePeriod(startDateTime2);
 
         // Then
-        Assert.areEqual(
+        System.Assert.areEqual(
             formattedTime1,
             '23.11.2025, kl 14:30',
             'Expected formatted time period to be "23.11.2025, kl 14:30"'
         );
-        Assert.isTrue(
+        System.Assert.isTrue(
             formattedTime2 == '01.01.2026, kl 09:00',
             'Expected formatted time period to be "01.01.2026, kl 09:00'
         );
@@ -110,9 +91,21 @@ public with sharing class IPS_EventSMSServiceTest {
         String location3 = IPS_EventSMSService.setLocation(eventWithNeither);
 
         // Then
-        Assert.areEqual(location1, 'Oslo Office, Meeting Room 123', 'Expected Location to be set from Event.Location');
-        Assert.areEqual(location2, 'Video Call via Teams', 'Expected Location to be set from Event.ips_uo_Kanal__c');
-        Assert.areEqual(location3, 'Ikke oppgitt', 'Expected Location to be "Ikke oppgitt" when neither field is set');
+        System.Assert.areEqual(
+            location1,
+            'Oslo Office, Meeting Room 123',
+            'Expected Location to be set from Event.Location'
+        );
+        System.Assert.areEqual(
+            location2,
+            'Video Call via Teams',
+            'Expected Location to be set from Event.ips_uo_Kanal__c'
+        );
+        System.Assert.areEqual(
+            location3,
+            'Ikke oppgitt',
+            'Expected Location to be "Ikke oppgitt" when neither field is set'
+        );
     }
 
     @IsTest
@@ -127,15 +120,15 @@ public with sharing class IPS_EventSMSServiceTest {
         String createdMessage = IPS_EventSMSService.constructCreatedMessage(testEvent);
 
         // Then
-        Assert.isTrue(
+        System.Assert.isTrue(
             createdMessage.contains('Det er satt opp et fysisk møte med jobbspesialisten din.'),
             'Created message should contain the correct meeting setup text'
         );
-        Assert.isTrue(
+        System.Assert.isTrue(
             createdMessage.contains('Tidspunkt: 05.12.2025, kl 10:00'),
             'Created message should contain the correctly formatted date and time'
         );
-        Assert.isTrue(
+        System.Assert.isTrue(
             createdMessage.contains('Logg inn på NAV for detaljer. Du kan ikke svare på denne meldingen.'),
             'Created message should inform that replies are not possible'
         );
@@ -153,15 +146,19 @@ public with sharing class IPS_EventSMSServiceTest {
         String reminderMessage = IPS_EventSMSService.constructReminderMessage(testEvent);
 
         // Then
-        Assert.isTrue(
-            reminderMessage.contains('Husk fysisk møte med jobbspesialisten din.'),
+        System.Assert.isTrue(
+            reminderMessage.contains('Husk møte med jobbspesialisten din.'),
             'Reminder message should contain the correct reminder text'
         );
-        Assert.isTrue(
+        System.Assert.isTrue(
             reminderMessage.contains('Tidspunkt: 05.12.2025, kl 10:00'),
             'Reminder message should contain the correctly formatted date and time'
         );
-        Assert.isTrue(
+        System.Assert.isTrue(
+            reminderMessage.contains('Logg inn på NAV for detaljer.'),
+            'Reminder message should prompt to log in for details'
+        );
+        System.Assert.isTrue(
             reminderMessage.contains('Du kan ikke svare på denne meldingen.'),
             'Reminder message should inform that replies are not possible'
         );
@@ -172,8 +169,8 @@ public with sharing class IPS_EventSMSServiceTest {
         Long minutes = IPS_EventSMSService.getMinutesUntilNextSMSBatch();
 
         // Then
-        Assert.isInstanceOfType(minutes, Long.class, 'Expected minutes to be of type Long');
-        Assert.isNotNull(minutes, 'Expected minutes to be not null');
-        Assert.isTrue(minutes > 0, 'Minutes until next SMS batch should be greater than 0');
+        System.Assert.isInstanceOfType(minutes, Long.class, 'Expected minutes to be of type Long');
+        System.Assert.isNotNull(minutes, 'Expected minutes to be not null');
+        System.Assert.isTrue(minutes > 0, 'Minutes until next SMS batch should be greater than 0');
     }
 }
