@@ -173,4 +173,62 @@ public with sharing class IPS_EventSMSServiceTest {
         System.Assert.isNotNull(minutes, 'Expected minutes to be not null');
         System.Assert.isTrue(minutes > 0, 'Minutes until next SMS batch should be greater than 0');
     }
+
+    @IsTest
+    public static void createEventSMSWrappers() {
+        // Given
+        createTestData();
+        List<Event> events = [SELECT Id, StartDateTime, Location, ips_uo_Kanal__c, WhatId FROM Event LIMIT 2];
+
+        // When
+        IPS_EventSMSService.EventSMSWrapper createdWrapper = IPS_EventSMSService.createEventSMSWrapper(
+            events,
+            IPS_EventSMSService.SMSType.CREATED
+        );
+        IPS_EventSMSService.EventSMSWrapper reminderWrapper = IPS_EventSMSService.createEventSMSWrapper(
+            events,
+            IPS_EventSMSService.SMSType.REMINDER
+        );
+        IPS_EventSMSService.EventSMSWrapper changedWrapper = IPS_EventSMSService.createEventSMSWrapper(
+            events,
+            IPS_EventSMSService.SMSType.CHANGED
+        );
+
+        // Then
+        System.Assert.isNotNull(reminderWrapper, 'Expected EventSMSWrapper to be not null');
+        System.Assert.isNotNull(createdWrapper, 'Expected EventSMSWrapper to be not null');
+        System.Assert.isNotNull(changedWrapper, 'Expected EventSMSWrapper to be not null');
+
+        System.Assert.isInstanceOfType(
+            createdWrapper.smsType,
+            IPS_EventSMSService.SMSType.class,
+            'Expected smsType to be of type SMSType'
+        );
+        System.Assert.isInstanceOfType(
+            reminderWrapper.smsType,
+            IPS_EventSMSService.SMSType.class,
+            'Expected smsType to be of type SMSType'
+        );
+        System.Assert.isInstanceOfType(
+            changedWrapper.smsType,
+            IPS_EventSMSService.SMSType.class,
+            'Expected smsType to be of type SMSType'
+        );
+
+        System.Assert.areEqual(
+            createdWrapper.smsList.size(),
+            events.size(),
+            'Expected number of SMS records to match number of Events'
+        );
+        System.Assert.areEqual(
+            reminderWrapper.smsList.size(),
+            events.size(),
+            'Expected number of SMS records to match number of Events'
+        );
+        System.Assert.areEqual(
+            changedWrapper.smsList.size(),
+            events.size(),
+            'Expected number of SMS records to match number of Events'
+        );
+    }
 }

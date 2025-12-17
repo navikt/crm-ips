@@ -168,17 +168,16 @@ public without sharing class IPS_EventSMSService {
 
         wrapper.eventList = eventList;
         wrapper.smsList = smsList;
+        wrapper.smsType = smsType;
         return wrapper;
     }
-
-    @TestVisible
-    private class EventSMSWrapper {
-        List<Event> eventList = new List<Event>();
-        List<SMS__c> smsList = new List<SMS__c>();
-        SMSType smsType;
+    public class EventSMSWrapper {
+        public List<Event> eventList = new List<Event>();
+        public List<SMS__c> smsList = new List<SMS__c>();
+        public IPS_EventSMSService.SMSType smsType;
     }
 
-    private EventSMSWrapper createEventSMSWrapper(List<Event> eventList, List<SMS__c> smsList, SMSType smsType) {
+    public EventSMSWrapper createEventSMSWrapper(List<Event> eventList, List<SMS__c> smsList, SMSType smsType) {
         EventSMSWrapper wrapper = new EventSMSWrapper();
         wrapper.eventList = eventList;
         wrapper.smsList = smsList;
@@ -188,7 +187,7 @@ public without sharing class IPS_EventSMSService {
 
     @TestVisible
     private static String constructReminderMessage(Event event) {
-        String message = 'Husk møtet med jobbspesialisten din.';
+        String message = 'Husk møte med jobbspesialisten din.';
         message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
         message += '\n\nHvor: ' + setLocation(event);
         message += '\n\nLogg inn på NAV for detaljer.';
