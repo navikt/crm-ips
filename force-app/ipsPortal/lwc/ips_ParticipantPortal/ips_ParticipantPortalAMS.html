@@ -182,8 +182,10 @@
                                 </dl>
 
                                 <!-- Apprentice Jobs -->
-                                <h2>Jobb i Fag- og yrkesopplæring</h2>
-                                <template for:each={utd.ApprenticeJobs} for:item="jobb">
+                                 <template lwc:if={utd.ApprenticeJobs.length}>
+                                     <h2 >Jobb i Fag- og yrkesopplæring</h2>
+                                 </template>                          
+                                <template for:each={utd.ApprenticeJobs} for:item="jobb">  
                                     <c-readmore key={jobb.Id} label={jobb.Subject}>
                                         <dl>
                                             <dt>Periode</dt>
