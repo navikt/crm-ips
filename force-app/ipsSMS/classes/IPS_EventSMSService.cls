@@ -11,7 +11,8 @@ public without sharing class IPS_EventSMSService {
         REMINDER,
         CHANGED
     }
-    private static Map<Event, Work_Trail__c> getEventWorkTailMap(List<Event> eventList) {
+    @TestVisible
+    private static Map<Event, Work_Trail__c> getWorktrailByEventMap(List<Event> eventList) {
         // Initialize collections
         Set<Id> workTrailIdSet = new Set<Id>();
         Map<Id, Work_Trail__c> workTrailMap = new Map<Id, Work_Trail__c>();
@@ -44,7 +45,7 @@ public without sharing class IPS_EventSMSService {
 
     public static void createSMS(List<Event> eventList) {
         List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
+        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
 
         for (Event event : eventList) {
             Work_Trail__c workTrail = eventWorkTailMap.get(event);
@@ -73,11 +74,11 @@ public without sharing class IPS_EventSMSService {
                 event.IPS_IsCreatedSMSSendt__c = true;
             }
         }
+        // Insert SMS records
         CRM_DatabaseOperations cdoSMS = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
         cdoSMS.insertRecords(smsList);
 
-        // Loop over inserted SMS to set the event flags
-
+        // Loop over inserted SMS to set the created flag on Events
         CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
         cdoEvents.updateRecords(eventList);
     }
@@ -132,7 +133,7 @@ public without sharing class IPS_EventSMSService {
         // Initialize collections
         EventSMSWrapper wrapper = new EventSMSWrapper();
         Map<Id, Event> eventMap = new Map<Id, Event>(eventList);
-        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
+        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
         List<SMS__c> smsList = new List<SMS__c>();
 
         // Build SMS Messages
@@ -208,7 +209,7 @@ public without sharing class IPS_EventSMSService {
 
     public static void changeSMS(List<Event> eventList) {
         List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
+        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
 
         for (Event event : eventList) {
             Work_Trail__c workTrail = eventWorkTailMap.get(event);
