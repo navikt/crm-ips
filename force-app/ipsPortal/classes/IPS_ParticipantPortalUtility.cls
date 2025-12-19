@@ -63,6 +63,7 @@ public without sharing class IPS_ParticipantPortalUtility{
         if(typeOf =='Temporary employment'){return 'Tidsbegrenset ansettelse';}
         if(typeOf =='work training'){return 'Arbeidstrening';}
         if(typeOf =='Zero hours contrac'){return 'Tilkalling ekstrajobb';}
+        if(typeOf =='Zero hours contract'){return 'Tilkalling ekstrajobb';}
         //education types
         if(typeOf =='Certificate of Apprenticeship'){return 'Lærling';}
         if(typeOf =='Full-time Study'){return 'Heltidsstudie';}
@@ -93,7 +94,9 @@ public without sharing class IPS_ParticipantPortalUtility{
     public static String formatJobStatus(String jobStatus){
         if(jobStatus == 'Planned'){return 'Planlagt';}
         if(jobStatus == 'Ongoing'){return 'Pågående';}
+        if(jobStatus == 'Aborted'){ return 'Avbrutt';}
         if(jobStatus == 'Completed'){return 'Avsluttet';}
+        if(jobStatus == 'Ended'){return 'Avsluttet';}
         else {return 'Ingen status valgt';}
     }
 

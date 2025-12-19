@@ -1,5 +1,5 @@
 /*
-* wrapperclass used by IPS_ParticipantPortalActivityController
+* Wrapperclass used by IPS_ParticipantPortalActivityController
 * experience cloud for participant
 **/
 
@@ -15,5 +15,7 @@ public class IPS_ParticipantPortalEducation {
     @AuraEnabled public String Fungerer{get; set;}
     @AuraEnabled public String Status {get; set;}
     @AuraEnabled public String Utdanningslop{get; set;}
+    @AuraEnabled public List<IPS_ParticipantPortalApprentice> ApprenticeJobs { get; set; }
+
    
 }
