@@ -650,7 +650,7 @@ LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Screen_SuccsessfullyCreated</targetReference>
+            <targetReference>Opprettet</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -768,6 +768,30 @@ LEN( {!ips_participants_scn}) == 11
         <fields>
             <name>Errormessage</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Kunne ikke opprettes. Kontakt din administrator&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Opprettet</name>
+        <label>Succsessfully Created Screen</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>createCreatorhistory</targetReference>
+        </connector>
+        <fields>
+            <name>displayTxtCreated</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>CreatedMessage</name>
+            <fieldText>&lt;p&gt;Jobbspor har blitt opprettet&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -958,30 +982,6 @@ LEN( {!ips_participants_scn}) == 11
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Screen_SuccsessfullyCreated</name>
-        <label>Succsessfully Created Screen</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <allowBack>false</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>createCreatorhistory</targetReference>
-        </connector>
-        <fields>
-            <name>displayTxtCreated</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>CreatedMessage</name>
-            <fieldText>&lt;p&gt;Jobbspor har blitt opprettet&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
         <name>screenIsEmpty</name>
         <label>screenIsEmpty</label>
         <locationX>0</locationX>
@@ -1048,7 +1048,7 @@ LEN( {!ips_participants_scn}) == 11
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>createCreatorhistory</name>
         <label>createCreatorhistory</label>
