@@ -86,19 +86,19 @@
         </connector>
     </assignments>
     <decisions>
-        <name>checkAge</name>
-        <label>checkAge</label>
+        <name>Check_ParticipantsAge</name>
+        <label>Check Participants Age</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Get_existing</targetReference>
+            <targetReference>Get_ExistingWorkTrails</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>ageOK</defaultConnectorLabel>
+        <defaultConnectorLabel>Is Adult</defaultConnectorLabel>
         <rules>
             <name>isAgeUnder18</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getPersonDetail.CRM_AgeNumber__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.CRM_AgeNumber__c</leftValueReference>
                 <operator>LessThan</operator>
                 <rightValue>
                     <numberValue>18.0</numberValue>
@@ -107,7 +107,7 @@
             <connector>
                 <targetReference>varAlertAddedAge</targetReference>
             </connector>
-            <label>isAgeUnder18</label>
+            <label>Is Under 18</label>
         </rules>
     </decisions>
     <decisions>
@@ -124,21 +124,21 @@
             <name>IsConfidential</name>
             <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
-                <leftValueReference>getPersonDetail.INT_Confidential__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.INT_Confidential__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>getPersonDetail.INT_Confidential__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.INT_Confidential__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>STRENGT_FORTROLIG</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>getPersonDetail.INT_Confidential__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.INT_Confidential__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>STRENGT_FORTROLIG_UTLAND</stringValue>
@@ -153,7 +153,7 @@
             <name>IsSmallConfidential</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getPersonDetail.INT_Confidential__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.INT_Confidential__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>FORTROLIG</stringValue>
@@ -179,7 +179,7 @@
             <name>isEmptyCheck</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getPersonDetail</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -204,7 +204,7 @@
             <name>Exists</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_existing</leftValueReference>
+                <leftValueReference>Get_ExistingWorkTrails</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -241,7 +241,8 @@
             <label>ownerIsNotUser</label>
         </rules>
     </decisions>
-    <description>Opprettelse av nytt Jobbspor for IPS.</description>
+    <description>Opprettelse av nytt Jobbspor for IPS.
+** Bruke telefonnummer på Person hentet fra KRR</description>
     <environments>Default</environments>
     <formulas>
         <name>adjustfor100</name>
@@ -254,11 +255,11 @@
     <formulas>
         <name>participantDOB</name>
         <dataType>Date</dataType>
-        <expression>IF(NOT(ISBLANK({!getPersonDetail.Name})),
+        <expression>IF(NOT(ISBLANK({!Get_RelatedPersonRecord.Name})),
 DATE(
-VALUE(&quot;20&quot;&amp;MID({!getPersonDetail.Name},5,2)),
-VALUE(MID({!getPersonDetail.Name},3,2)),
-VALUE(MID({!getPersonDetail.Name},1,2))
+VALUE(&quot;20&quot;&amp;MID({!Get_RelatedPersonRecord.Name},5,2)),
+VALUE(MID({!Get_RelatedPersonRecord.Name},3,2)),
+VALUE(MID({!Get_RelatedPersonRecord.Name},1,2))
 ),null)</expression>
     </formulas>
     <formulas>
@@ -290,15 +291,15 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <name>varParticipantAddress</name>
         <dataType>String</dataType>
         <expression>IF(
-ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;UGRADERT&apos;)
-,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos;, &apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c},&apos;&apos;
+ISPICKVAL({!Get_RelatedPersonRecord.INT_Confidential__c},&apos;UGRADERT&apos;)
+,{!Get_RelatedPersonRecord.INT_ResidentialAddress__c}&amp;&apos;, &apos;&amp;{!Get_RelatedPersonRecord.INT_ResidentialZipCode__c}&amp;&apos;, &apos;&amp;{!Get_RelatedPersonRecord.INT_ResidentialPlace__c},&apos;&apos;
 )</expression>
     </formulas>
     <formulas>
         <name>varParticipantConfidentialAdress</name>
         <dataType>String</dataType>
-        <expression>IF(ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;FORTROLIG&apos;)
-,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c}
+        <expression>IF(ISPICKVAL({!Get_RelatedPersonRecord.INT_Confidential__c},&apos;FORTROLIG&apos;)
+,{!Get_RelatedPersonRecord.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!Get_RelatedPersonRecord.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!Get_RelatedPersonRecord.INT_ResidentialPlace__c}
 ,&apos;&apos;
 )</expression>
     </formulas>
@@ -306,9 +307,9 @@ ISPICKVAL({!getPersonDetail.INT_Confidential__c},&apos;UGRADERT&apos;)
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
         <expression>IF(
-ISBLANK({!getPersonDetail.INT_Phone1__c})
+ISBLANK({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c})
 ,&apos;&apos;,
-LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
+LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,&quot;&quot;)
 , 21)
 )</expression>
     </formulas>
@@ -325,7 +326,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     <formulas>
         <name>varWorkTrailName</name>
         <dataType>String</dataType>
-        <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetail.INT_FirstName__c}&amp;&apos; &apos;&amp;{!getPersonDetail.INT_LastName__c}</expression>
+        <expression>&apos;Jobbsporet - &apos;&amp;{!Get_RelatedPersonRecord.INT_FirstName__c}&amp;&apos; &apos;&amp;{!Get_RelatedPersonRecord.INT_LastName__c}</expression>
     </formulas>
     <interviewLabel>New Worktrail {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - worktrail create trail IPS</label>
@@ -349,7 +350,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
-        <name>Create_Error_log</name>
+        <name>Create_ErrorLog</name>
         <label>Create Error log</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -362,19 +363,25 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <inputAssignments>
             <field>Log_Level__c</field>
             <value>
-                <stringValue>INFO</stringValue>
+                <stringValue>ERROR</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <stringValue>Duplicate creation stopped</stringValue>
+                <elementReference>$Flow.FaultMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Referrence_ID__c</field>
             <value>
-                <elementReference>Get_existing.Id</elementReference>
+                <elementReference>Get_ExistingWorkTrails.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - worktrail create trail IPS</stringValue>
             </value>
         </inputAssignments>
         <object>Application_Log__c</object>
@@ -396,7 +403,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <inputAssignments>
             <field>IPS_DOB__c</field>
             <value>
-                <elementReference>getPersonDetail.INT_DateOfBirth__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.INT_DateOfBirth__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -462,7 +469,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
-                <elementReference>getPersonDetail.CRM_Account__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.CRM_Account__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -480,7 +487,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>updateWorkTrailName_0</targetReference>
+            <targetReference>update_WorkTrailName</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Noe_gikk_galt</targetReference>
@@ -488,7 +495,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <inputAssignments>
             <field>IPS_DOB__c</field>
             <value>
-                <elementReference>getPersonDetail.INT_DateOfBirth__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.INT_DateOfBirth__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -554,7 +561,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
-                <elementReference>getPersonDetail.CRM_Account__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.CRM_Account__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -566,8 +573,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <object>Work_Trail__c</object>
     </recordCreates>
     <recordLookups>
-        <name>Get_existing</name>
-        <label>Get existing</label>
+        <name>Get_ExistingWorkTrails</name>
+        <label>Get Existing Work Trails</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -579,7 +586,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
             <field>ips_Participant__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>getPersonDetail.CRM_Account__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.CRM_Account__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -617,8 +624,8 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>getPersonDetail</name>
-        <label>getPersonDetail</label>
+        <name>Get_RelatedPersonRecord</name>
+        <label>Get Related Person Record</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -638,13 +645,17 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>updateWorkTrailName_0</name>
-        <label>updateWorkTrailName</label>
+        <name>update_WorkTrailName</name>
+        <label>Update Work Trail Name</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Noe_gikk_galt</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -713,7 +724,7 @@ LEFT(SUBSTITUTE({!getPersonDetail.INT_Phone1__c}, &quot; &quot;,&quot;&quot;)
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>getPersonDetail</targetReference>
+            <targetReference>Get_RelatedPersonRecord</targetReference>
         </connector>
         <fields>
             <name>DisplayTxt1</name>
@@ -747,7 +758,7 @@ LEN( {!ips_participants_scn}) == 11
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_Error_log</targetReference>
+            <targetReference>Create_ErrorLog</targetReference>
         </connector>
         <fields>
             <name>displayTxtWarning</name>
@@ -764,7 +775,7 @@ LEN( {!ips_participants_scn}) == 11
     </screens>
     <screens>
         <name>Opprettet</name>
-        <label>Opprettet</label>
+        <label>Succsessfully Created Screen</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <allowBack>false</allowBack>
@@ -795,7 +806,7 @@ LEN( {!ips_participants_scn}) == 11
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>checkAge</targetReference>
+            <targetReference>Check_ParticipantsAge</targetReference>
         </connector>
         <fields>
             <name>DisplayTxt3</name>
@@ -847,7 +858,7 @@ LEN( {!ips_participants_scn}) == 11
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Name</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetail.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetail.Name}&lt;/p&gt;&lt;p&gt;Alder: {!getPersonDetail.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!Get_RelatedPersonRecord.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!Get_RelatedPersonRecord.Name}&lt;/p&gt;&lt;p&gt;Alder: {!Get_RelatedPersonRecord.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -1000,7 +1011,7 @@ LEN( {!ips_participants_scn}) == 11
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Get_existing</targetReference>
+            <targetReference>Get_ExistingWorkTrails</targetReference>
         </connector>
         <fields>
             <name>displayTxtAlertAge</name>

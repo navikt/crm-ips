@@ -240,7 +240,8 @@
             <label>ownerIsNotUser</label>
         </rules>
     </decisions>
-    <description>Opprettelse av nytt Jobbspor for Arbeid med støtte.</description>
+    <description>Opprettelse av nytt Jobbspor for Arbeid med støtte.
+** Bruke telefonnummer på Person hentet fra KRR</description>
     <environments>Default</environments>
     <formulas>
         <name>UserId</name>
@@ -282,7 +283,12 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
     <formulas>
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
-        <expression>IF(ISBLANK({!getPersonDetails.INT_Phone1__c}),&apos;&apos;,LEFT(SUBSTITUTE({!getPersonDetails.INT_Phone1__c}, &quot; &quot;,&quot;&quot;),21))</expression>
+        <expression>IF(
+ISBLANK({!getPersonDetails.INT_KrrMobilePhone__c})
+,&apos;&apos;,
+LEFT(SUBSTITUTE({!getPersonDetails.INT_KrrMobilePhone__c}, &quot; &quot;,&quot;&quot;)
+,21)
+)</expression>
     </formulas>
     <formulas>
         <name>varStatusDescription</name>
@@ -334,13 +340,13 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         <inputAssignments>
             <field>Log_Level__c</field>
             <value>
-                <stringValue>INFO</stringValue>
+                <stringValue>ERROR</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <stringValue>Duplicate creation stopped</stringValue>
+                <elementReference>$Flow.FaultMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -600,6 +606,10 @@ ISPICKVAL({!getPersonDetails.INT_Confidential__c}, &apos;UGRADERT&apos;),
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Noe_gikk_galt</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>

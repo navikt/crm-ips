@@ -101,6 +101,6 @@ sf org assign permset --name IPS_Config
 
 # Opprett testdata
 echo ".. Oppretter testdata.."
-sf apex run --file apex/createTestData.apex
+sf apex run --file ./scripts/apex/createTestData.apexapex/createTestData.apex
 
 echo "************************* FERDIG *********************************"

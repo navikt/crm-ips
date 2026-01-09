@@ -1,11 +1,30 @@
+/**
+ * @description       :
+ * @author            : hkavli
+ * @group             :
+ * @last modified on  : 11-26-2025
+ * @last modified by  : hkavli
+ **/
 public without sharing class IPS_EventSMSService {
-    private static Map<Event, Work_Trail__c> getEventWorkTailMap(List<Event> eventList) {
+    public enum SMSType {
+        CREATED,
+        REMINDER,
+        CHANGED
+    }
+    @TestVisible
+    private static Map<Event, Work_Trail__c> getWorktrailByEventMap(List<Event> eventList) {
+        // Initialize collections
         Set<Id> workTrailIdSet = new Set<Id>();
+        Map<Id, Work_Trail__c> workTrailMap = new Map<Id, Work_Trail__c>();
+        Map<Event, Work_Trail__c> eventWorkTailMap = new Map<Event, Work_Trail__c>();
+
+        // Collect Work_Trail__c Ids from Events
         for (Event event : eventList) {
             workTrailIdSet.add(event.WhatId);
         }
 
-        List<Work_Trail__c> workTrailList = [
+        // Cet related Work_Trail__c records
+        for (Work_Trail__c workTrail : [
             SELECT
                 Id,
                 ips_Participant__c,
@@ -14,16 +33,10 @@ public without sharing class IPS_EventSMSService {
                 IPS_Partticipant_phone_number__c
             FROM Work_Trail__c
             WHERE Id IN :workTrailIdSet
-        ];
-
-        Map<Id, Work_Trail__c> workTrailMap = new Map<Id, Work_Trail__c>();
-
-        for (Work_Trail__c workTrail : workTrailList) {
+        ]) {
             workTrailMap.put(workTrail.Id, workTrail);
         }
-
-        Map<Event, Work_Trail__c> eventWorkTailMap = new Map<Event, Work_Trail__c>();
-
+        // Map Work Trails by their correpsonding Events
         for (Event event : eventList) {
             eventWorkTailMap.put(event, workTrailMap.get(event.WhatId));
         }
@@ -32,10 +45,16 @@ public without sharing class IPS_EventSMSService {
 
     public static void createSMS(List<Event> eventList) {
         List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
+        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
 
         for (Event event : eventList) {
             Work_Trail__c workTrail = eventWorkTailMap.get(event);
+            if (
+                workTrail.IPS_Partticipant_phone_number__c == null &&
+                workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c != null
+            ) {
+                workTrail.IPS_Partticipant_phone_number__c = workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c;
+            }
             if (
                 workTrail.ips_Participant__c != null &&
                 workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
@@ -55,10 +74,15 @@ public without sharing class IPS_EventSMSService {
                 event.IPS_IsCreatedSMSSendt__c = true;
             }
         }
-        Database.update(eventList, false);
-        Database.insert(smsList, false);
-    }
+        // Insert SMS records
+        CRM_DatabaseOperations cdoSMS = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
+        cdoSMS.insertRecords(smsList);
 
+        // Loop over inserted SMS to set the created flag on Events
+        CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
+        cdoEvents.updateRecords(eventList);
+    }
+    @TestVisible
     private static String constructCreatedMessage(Event event) {
         String message =
             'Det er satt opp et ' +
@@ -69,12 +93,61 @@ public without sharing class IPS_EventSMSService {
         return message;
     }
 
+    /**
+     * @description Creates SMS messages to remind participants of upcoming Events
+     * @author Håkon Kavli | 12-17-2025
+     * @param eventList List of Events to create reminder SMS messages for
+     **/
     public static void reminderSMS(List<Event> eventList) {
-        List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
+        Map<Id, Event> eventMap = new Map<Id, Event>(eventList);
+        List<Id> insertedSMSrecordIds = new List<Id>();
 
+        List<Event> eventsToUpdate = new List<Event>();
+
+        // Create Wrapper with SMS messages to insert and Events to update
+        EventSMSWrapper wrapper = createEventSMSWrapper(eventList, SMSType.REMINDER);
+
+        // Insert SMS records
+        List<Database.SaveResult> insertedSMSRecords = Database.insert(wrapper.smsList, false);
+
+        // Retrieve SMS Ids for sent SMS's
+        for (Database.SaveResult sr : insertedSMSRecords) {
+            if (sr.isSuccess()) {
+                insertedSMSrecordIds.add(sr.getId());
+            }
+        }
+        // Update Events to reflect sent SMS
+        for (SMS__c smsRecord : [SELECT Id, EventId__c FROM SMS__c WHERE Id IN :insertedSMSrecordIds]) {
+            Event relatedEvent = eventMap.get(smsRecord.EventId__c);
+            if (relatedEvent != null) {
+                relatedEvent.IPS_IsReminderSMSSendt__c = true;
+                eventsToUpdate.add(relatedEvent);
+            }
+        }
+        CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
+        cdoEvents.updateRecords(eventsToUpdate);
+    }
+
+    @TestVisible
+    private static EventSMSWrapper createEventSMSWrapper(List<Event> eventList, SMSType smsType) {
+        // Initialize collections
+        EventSMSWrapper wrapper = new EventSMSWrapper();
+        Map<Id, Event> eventMap = new Map<Id, Event>(eventList);
+        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
+        List<SMS__c> smsList = new List<SMS__c>();
+
+        // Build SMS Messages
         for (Event event : eventList) {
             Work_Trail__c workTrail = eventWorkTailMap.get(event);
+
+            // Use phone number from KRR if not already set
+            if (
+                workTrail.ips_Participant__c != null &&
+                workTrail.IPS_Partticipant_phone_number__c == null &&
+                workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c != null
+            ) {
+                workTrail.IPS_Partticipant_phone_number__c = workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c;
+            }
             if (
                 workTrail.ips_Participant__c != null &&
                 workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
@@ -91,21 +164,39 @@ public without sharing class IPS_EventSMSService {
                         workTrail.Id
                     )
                 );
-                event.IPS_IsReminderSMSSendt__c = true;
             }
         }
-        Database.update(eventList, false);
-        Database.insert(smsList, false);
+
+        wrapper.eventList = eventList;
+        wrapper.smsList = smsList;
+        wrapper.smsType = smsType;
+        return wrapper;
+    }
+    public class EventSMSWrapper {
+        public List<Event> eventList = new List<Event>();
+        public List<SMS__c> smsList = new List<SMS__c>();
+        public IPS_EventSMSService.SMSType smsType;
     }
 
+    public EventSMSWrapper createEventSMSWrapper(List<Event> eventList, List<SMS__c> smsList, SMSType smsType) {
+        EventSMSWrapper wrapper = new EventSMSWrapper();
+        wrapper.eventList = eventList;
+        wrapper.smsList = smsList;
+        wrapper.smsType = smsType;
+        return wrapper;
+    }
+
+    @TestVisible
     private static String constructReminderMessage(Event event) {
-        String message = 'Husk ' + event.ips_uo_Kanal__c.toLowerCase() + ' møte med jobbspesialisten din.';
+        String message = 'Husk møte med jobbspesialisten din.';
         message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
         message += '\n\nHvor: ' + setLocation(event);
+        message += '\n\nLogg inn på NAV for detaljer.';
         message += '\n\nDu kan ikke svare på denne meldingen.';
         return message;
     }
 
+    @TestVisible
     private static String setLocation(Event event) {
         if (event.Location != null) {
             return event.Location.left(30);
@@ -118,7 +209,7 @@ public without sharing class IPS_EventSMSService {
 
     public static void changeSMS(List<Event> eventList) {
         List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getEventWorkTailMap(eventList);
+        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
 
         for (Event event : eventList) {
             Work_Trail__c workTrail = eventWorkTailMap.get(event);
@@ -134,18 +225,19 @@ public without sharing class IPS_EventSMSService {
                         workTrail.ips_Participant__c,
                         event.Id,
                         workTrail.IPS_Partticipant_phone_number__c,
-                        construcChangedMessage(event),
+                        constructChangedMessage(event),
                         workTrail.Id
                     )
                 );
                 event.IPS_IsSendChangeSMS__c = false;
             }
         }
-        Database.update(eventList, false);
         Database.insert(smsList, false);
+        Database.update(eventList, false);
     }
 
-    private static String construcChangedMessage(Event event) {
+    @TestVisible
+    private static String constructChangedMessage(Event event) {
         String message =
             'Møte er endret. Ny tid for' +
             event.ips_uo_Kanal__c.toLowerCase() +
@@ -155,6 +247,7 @@ public without sharing class IPS_EventSMSService {
         return message;
     }
 
+    @TestVisible
     private static String formatTimePeriod(Datetime startDate) {
         String timePeriod =
             startDate.date().format() +
@@ -166,6 +259,7 @@ public without sharing class IPS_EventSMSService {
         return timePeriod;
     }
 
+    @TestVisible
     public static Long getMinutesUntilNextSMSBatch() {
         Long minutes = 60;
         Datetime now = Datetime.now();

@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Redirect</name>
         <label>Redirect</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>1838</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
@@ -20,13 +20,13 @@
         <nameSegment>c:IPS_redirect</nameSegment>
         <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>58.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>AddOwnerId</name>
         <label>AddOwnerId</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>1514</locationY>
         <assignmentItems>
             <assignToReference>varOwnerId</assignToReference>
@@ -72,7 +72,7 @@
     <decisions>
         <name>checkAge</name>
         <label>checkAge</label>
-        <locationX>842</locationX>
+        <locationX>908</locationX>
         <locationY>782</locationY>
         <defaultConnector>
             <targetReference>Get_existing</targetReference>
@@ -98,7 +98,7 @@
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
-        <locationX>578</locationX>
+        <locationX>611</locationX>
         <locationY>566</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
@@ -145,7 +145,7 @@
         <description>Hvis sjekk er tom - betyr det at det er feil fødselsnummer eller person ikke eksisterer</description>
         <name>checkIfEmpty</name>
         <label>checkIfEmpty</label>
-        <locationX>314</locationX>
+        <locationX>330</locationX>
         <locationY>458</locationY>
         <defaultConnector>
             <targetReference>checkForConfidential</targetReference>
@@ -170,7 +170,7 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>842</locationX>
+        <locationX>908</locationX>
         <locationY>1190</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
@@ -195,7 +195,7 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>1406</locationY>
         <defaultConnector>
             <targetReference>AddOwnerId</targetReference>
@@ -217,6 +217,8 @@
             <label>ownerIsNotUser</label>
         </rules>
     </decisions>
+    <description>Opprettelse av nytt Jobbspor for CE.
+** Bruke telefonnummer på Person hentet fra KRR</description>
     <environments>Default</environments>
     <formulas>
         <name>adjustfor100</name>
@@ -274,9 +276,10 @@ ISBLANK({!getPersonDetail.INT_ResidentialAddress__c})
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
         <expression>IF(
-ISBLANK({!getPersonDetail.INT_Phone1__c})
+ISBLANK({!getPersonDetail.INT_KrrMobilePhone__c})
 ,&apos;&apos;,
-{!getPersonDetail.INT_Phone1__c}
+LEFT(SUBSTITUTE({!getPersonDetail.INT_KrrMobilePhone__c}, &quot; &quot;,&quot;&quot;)
+,21)
 )</expression>
     </formulas>
     <formulas>
@@ -318,7 +321,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordCreates>
         <name>Create_Error_log</name>
         <label>Create Error log</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>1838</locationY>
         <inputAssignments>
             <field>Category__c</field>
@@ -329,13 +332,13 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <inputAssignments>
             <field>Log_Level__c</field>
             <value>
-                <stringValue>INFO</stringValue>
+                <stringValue>ERROR</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <stringValue>Duplicate creation stopped</stringValue>
+                <elementReference>$Flow.FaultMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -350,7 +353,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>1622</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
@@ -499,7 +502,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordLookups>
         <name>Get_existing</name>
         <label>Get existing</label>
-        <locationX>842</locationX>
+        <locationX>908</locationX>
         <locationY>1082</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -527,7 +530,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>314</locationX>
+        <locationX>330</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -550,7 +553,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordLookups>
         <name>getPersonDetail</name>
         <label>getPersonDetail</label>
-        <locationX>314</locationX>
+        <locationX>330</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -576,6 +579,10 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <connector>
             <targetReference>Opprettet</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Noe_gikk_galt</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -595,7 +602,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordUpdates>
         <name>updateWorkTrailName_0_0</name>
         <label>updateWorkTrailName</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>1730</locationY>
         <connector>
             <targetReference>Redirect</targetReference>
@@ -662,7 +669,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt jobbspor</label>
-        <locationX>314</locationX>
+        <locationX>330</locationX>
         <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -696,7 +703,7 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>1730</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -744,7 +751,7 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>842</locationX>
+        <locationX>908</locationX>
         <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -862,7 +869,7 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>1298</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -949,7 +956,7 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>varAlertAddedAge</name>
         <label>varAlertAddedAge</label>
-        <locationX>710</locationX>
+        <locationX>776</locationX>
         <locationY>890</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -986,7 +993,7 @@ LEN( {!ips_participants_scn}) == 11
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>188</locationX>
+        <locationX>204</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
@@ -996,7 +1003,7 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createCreatorhistory</name>
         <label>createCreatorhistory</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>2162</locationY>
         <connector>
             <targetReference>createOwnerHistory</targetReference>
@@ -1037,7 +1044,7 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createHistoryStatus</name>
         <label>createHistoryStatus</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>2486</locationY>
         <flowName>IPS_subflow_create_task_history</flowName>
         <inputAssignments>
@@ -1075,7 +1082,7 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createOwnerHistory</name>
         <label>createOwnerHistory</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>2270</locationY>
         <connector>
             <targetReference>createSupervisorHistory</targetReference>
@@ -1116,7 +1123,7 @@ LEN( {!ips_participants_scn}) == 11
     <subflows>
         <name>createSupervisorHistory</name>
         <label>createSupervisorHistory</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>2378</locationY>
         <connector>
             <targetReference>createHistoryStatus</targetReference>
