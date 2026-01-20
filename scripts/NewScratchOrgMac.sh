@@ -64,8 +64,8 @@ echo "Installerer crm-platform-oppgave 0.65.0"
 sf package install --package 04tQC000000rfOPYAY -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-arbeidsgiver-base 1.616.0"
-sf package install --package 04tQC0000012WT3YAM -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.640.0"
+sf package install --package 04tQC0000012tRFYAY -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "Installerer crm-community-base 0.132.0"
@@ -80,8 +80,8 @@ echo "Installerer crm-henvendelse 0.190.0"
 sf package install --package 04tQC0000011b1lYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-ips 0.517.0"
-sf package install --package 04tQC0000012WUfYAM -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-ips 0.523.0"
+sf package install --package 04tQC0000012sGfYAI -r --installation-key $3 --wait 4 --publish-wait 4
 
 # Assign permission sets
 echo "TILDELER"
