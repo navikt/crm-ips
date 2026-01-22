@@ -3,44 +3,6 @@
     <apiVersion>64.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <description>Assigning application log record values</description>
-        <name>Application_log</name>
-        <label>Application log</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>varApplicationLog.Application_Domain__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varApplicationLog.Source_Function__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>IPS - Delete Task AG</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varApplicationLog.Log_Message__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varApplicationLog.Referrence_ID__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Create_application_log</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <description>Assigning blank value as task related will be deleted.</description>
         <name>Assign_blank_value_to_task_id</name>
         <label>Assign Blank Value to Task Id</label>
@@ -129,13 +91,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordCreates>
-        <name>Create_application_log</name>
-        <label>Create application log</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <inputReference>varApplicationLog</inputReference>
-    </recordCreates>
     <recordDeletes>
         <description>Delete records with status - Not applicable from arbeidsgiver record page timeline.</description>
         <name>Delete_records</name>
@@ -143,7 +98,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <faultConnector>
-            <targetReference>Application_log</targetReference>
+            <targetReference>Application_Log_Task</targetReference>
         </faultConnector>
         <inputReference>$Record</inputReference>
     </recordDeletes>
@@ -198,6 +153,9 @@
         <connector>
             <targetReference>Delete_records</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Application_Log_Meeting</targetReference>
+        </faultConnector>
         <inputReference>Get_related_employer_meeting</inputReference>
     </recordUpdates>
     <start>
@@ -237,6 +195,68 @@
         <triggerType>Scheduled</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Application_Log_Meeting</name>
+        <label>Application Log</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>Get_related_employer_meeting.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Delete Task AG</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Application_Log_Task</name>
+        <label>Application Log</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Delete Task AG</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>varApplicationLog</name>
         <dataType>SObject</dataType>
