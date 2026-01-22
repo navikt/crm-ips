@@ -65,7 +65,7 @@
     <actionCalls>
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
-        <locationX>1106</locationX>
+        <locationX>1502</locationX>
         <locationY>1121</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
@@ -145,7 +145,7 @@
     <assignments>
         <name>Copy_1_of_addPublicFalse</name>
         <label>addPublicFalse</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
@@ -168,7 +168,7 @@
     <assignments>
         <name>Copy_1_of_addPublicTrue</name>
         <label>addPublicTrue</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
@@ -261,7 +261,7 @@
     <decisions>
         <name>checkTasks</name>
         <label>checkTasks</label>
-        <locationX>1106</locationX>
+        <locationX>1502</locationX>
         <locationY>1337</locationY>
         <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
         <rules>
@@ -283,7 +283,7 @@
     <decisions>
         <name>isEventNew</name>
         <label>isEventNew</label>
-        <locationX>710</locationX>
+        <locationX>908</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>isParticipantsAdded</targetReference>
@@ -308,7 +308,7 @@
     <decisions>
         <name>isParticipantsAdded</name>
         <label>isParticipantsAdded</label>
-        <locationX>1106</locationX>
+        <locationX>1502</locationX>
         <locationY>647</locationY>
         <defaultConnector>
             <targetReference>createUpdateTravelTime</targetReference>
@@ -347,8 +347,7 @@
             <label>isFalse</label>
         </rules>
     </decisions>
-    <description>Create or update on meeting type Meeting with Employer and First meeting with employer
-- create/update employee meeting
+    <description>Create or update on meeting type Meeting with Employer 
 - create IPS/AMS møte task
 - create/update traveltime
 - update startdate</description>
@@ -401,7 +400,7 @@
     <recordLookups>
         <name>Get_work_trail_info</name>
         <label>Get work trail info</label>
-        <locationX>710</locationX>
+        <locationX>908</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -422,7 +421,7 @@
     <recordLookups>
         <name>getRecordTypeTravelTime</name>
         <label>getRecordTypeTravelTime</label>
-        <locationX>710</locationX>
+        <locationX>908</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -445,12 +444,16 @@
     <recordLookups>
         <name>getTasksid</name>
         <label>getTasksid</label>
-        <locationX>1106</locationX>
+        <locationX>1502</locationX>
         <locationY>1229</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkTasks</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -466,11 +469,15 @@
     <recordUpdates>
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>863</locationY>
         <connector>
             <targetReference>createUpdateTravelTime</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>IsVisibleInSelfService</field>
             <value>
@@ -490,6 +497,9 @@
         <label>Update event</label>
         <locationX>314</locationX>
         <locationY>1463</locationY>
+        <faultConnector>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>F_rste_arbeidsgiverm_te__c</field>
             <value>
@@ -519,8 +529,12 @@
     <recordUpdates>
         <name>UpdateTask</name>
         <label>UpdateTask</label>
-        <locationX>974</locationX>
+        <locationX>1238</locationX>
         <locationY>1445</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -556,7 +570,7 @@
         <object>Task</object>
     </recordUpdates>
     <start>
-        <locationX>584</locationX>
+        <locationX>782</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getRecordTypeTravelTime</targetReference>
@@ -604,7 +618,7 @@
     <subflows>
         <name>Add_contactid_into_event1</name>
         <label>Add contactid into event</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>755</locationY>
         <connector>
             <targetReference>Copy_1_of_addPublicTrue</targetReference>
@@ -620,6 +634,37 @@
             <assignToReference>varContactId</assignToReference>
             <name>varContactId</name>
         </outputAssignments>
+    </subflows>
+    <subflows>
+        <name>Application_log</name>
+        <label>Application log</label>
+        <locationX>842</locationX>
+        <locationY>1571</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - create or update employee meeting</stringValue>
+            </value>
+        </inputAssignments>
     </subflows>
     <subflows>
         <name>IPS_createTaskBasedOnMeetingAMS</name>
@@ -646,6 +691,12 @@
             <name>varDueDate</name>
             <value>
                 <elementReference>$Record.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varEventId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -693,19 +744,13 @@
         <inputAssignments>
             <name>varSubject</name>
             <value>
-                <stringValue>IPS/AMS Møte</stringValue>
+                <stringValue>IPS/AMS Møte - Relasjonsbygging / Oppfølging</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <name>varWhatId</name>
             <value>
                 <elementReference>$Record.RelatedToAccount__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>varEventId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
             </value>
         </inputAssignments>
         <outputAssignments>
@@ -791,7 +836,7 @@
         <inputAssignments>
             <name>varSubject</name>
             <value>
-                <stringValue>IPS/AMS Møte</stringValue>
+                <stringValue>IPS/AMS Møte - Jobbstøtte / Jobbutvikling</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
