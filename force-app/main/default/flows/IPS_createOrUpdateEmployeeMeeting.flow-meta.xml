@@ -353,6 +353,25 @@
 - update startdate</description>
     <environments>Default</environments>
     <formulas>
+        <description>Subject is chosen according to the subcategory type</description>
+        <name>amsSubject</name>
+        <dataType>String</dataType>
+        <expression>IF(
+( ISPICKVAL({!$Record.IPS_Subcategory_Type_UO__c}, &quot;Relationship building&quot;)), 
+&quot;IPS/AMS Møte - Jobbutvikling / Relasjonsbygging&quot;,
+&quot;IPS/AMS Møte - Jobbstøtte / Oppfølging&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>ipsSubject</name>
+        <dataType>String</dataType>
+        <expression>IF(
+( ISPICKVAL({!$Record.ips_Subcategory_Type_IPS__c}, &quot;Job development&quot;)), 
+&quot;IPS/AMS Møte - Jobbutvikling / Relasjonsbygging&quot;,
+&quot;IPS/AMS Møte - Jobbstøtte / Oppfølging&quot;
+)</expression>
+    </formulas>
+    <formulas>
         <name>isDateTimeChanged</name>
         <dataType>Boolean</dataType>
         <expression>IsChanged({!$Record.StartDateTime} ) || isChanged({!$Record.EndDateTime})</expression>
@@ -744,7 +763,7 @@
         <inputAssignments>
             <name>varSubject</name>
             <value>
-                <stringValue>IPS/AMS Møte - Relasjonsbygging / Oppfølging</stringValue>
+                <elementReference>amsSubject</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -836,7 +855,7 @@
         <inputAssignments>
             <name>varSubject</name>
             <value>
-                <stringValue>IPS/AMS Møte - Jobbstøtte / Jobbutvikling</stringValue>
+                <elementReference>ipsSubject</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
