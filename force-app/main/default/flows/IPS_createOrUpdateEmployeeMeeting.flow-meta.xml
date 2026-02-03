@@ -259,25 +259,36 @@
         </rules>
     </decisions>
     <decisions>
-        <name>checkTasks</name>
-        <label>checkTasks</label>
+        <description>Checks whether the task is found to update</description>
+        <name>Is_Task_Found</name>
+        <label>Is Task Found ?</label>
         <locationX>1502</locationX>
         <locationY>1337</locationY>
-        <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
+        <defaultConnector>
+            <targetReference>UpdateTask</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Yes</defaultConnectorLabel>
         <rules>
-            <name>isNotEmpty</name>
-            <conditionLogic>and</conditionLogic>
+            <name>TaskNotFound</name>
+            <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>getTasksid</leftValueReference>
+                <leftValueReference>getTasksid.Id</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getTasksid.Id</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>UpdateTask</targetReference>
+                <targetReference>Application_Log_Task_Not_Found</targetReference>
             </connector>
-            <label>isNotEmpty</label>
+            <label>No</label>
         </rules>
     </decisions>
     <decisions>
@@ -306,6 +317,7 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Checks &quot;Participant related to meeting&quot;  checkbox.</description>
         <name>isParticipantsAdded</name>
         <label>isParticipantsAdded</label>
         <locationX>1502</locationX>
@@ -387,6 +399,7 @@
         <expression>ISNEW()</expression>
     </formulas>
     <formulas>
+        <description>Sets Task status according to status of the meeting triggered.</description>
         <name>varRecordStatus</name>
         <dataType>String</dataType>
         <expression>CASE({!$Record.IPS_Status1__c}, 
@@ -394,6 +407,19 @@
 &apos;Participant Absent&apos;, &apos;Not applicable&apos;,
 &apos;Completed&apos;, &apos;Completed&apos;, 
 &apos;Open&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>Subject depending upon the subcategory</description>
+        <name>varSubject</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    OR(
+        ISPICKVAL({!$Record.IPS_Subcategory_Type_UO__c}, &quot;Relationship building&quot;),
+        ISPICKVAL({!$Record.ips_Subcategory_Type_IPS__c}, &quot;Job development&quot;)
+    ),
+    &quot;IPS/AMS Møte - Jobbutvikling / Relasjonsbygging&quot;,
+    &quot;IPS/AMS Møte - Jobbstøtte / Oppfølging&quot;
+)</expression>
     </formulas>
     <interviewLabel>IPS - create or update employee meeting {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - create or update employee meeting</label>
@@ -467,7 +493,7 @@
         <locationY>1229</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>checkTasks</targetReference>
+            <targetReference>Is_Task_Found</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -481,7 +507,7 @@
                 <elementReference>$Record.IPS_taskId__c</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
@@ -548,7 +574,7 @@
     <recordUpdates>
         <name>UpdateTask</name>
         <label>UpdateTask</label>
-        <locationX>1238</locationX>
+        <locationX>1634</locationX>
         <locationY>1445</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -578,6 +604,12 @@
             <field>Status</field>
             <value>
                 <elementReference>varRecordStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>varSubject</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -682,6 +714,37 @@
             <name>sourceFunction</name>
             <value>
                 <stringValue>IPS - create or update employee meeting</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Application_Log_Task_Not_Found</name>
+        <label>Application Log - Task Not Found</label>
+        <locationX>1370</locationX>
+        <locationY>1445</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <stringValue>Task related to employer meeting not found !</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Create or update employee meeting</stringValue>
             </value>
         </inputAssignments>
     </subflows>
