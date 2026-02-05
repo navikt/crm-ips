@@ -24,11 +24,11 @@ echo "Installer feature-toggle ver. 0.1.3"
 sf package install --package 04tQC000000oHP3YAM --no-prompt --wait 30 --publish-wait 30
 
 echo ""
-echo "Installerer platform-access-controll 0.168.0"
-sf package install --package 04tQC0000012rajYAA -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer platform-access-controll 0.169.0"
+sf package install --package 04tQC0000013mh3YAA -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-thread-view 0.9.0.."
+echo "Installerer crm-thread-view 0.8.0.."
 sf package install --package 04tQC0000011athYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
@@ -52,8 +52,8 @@ echo "Installerer crm-henvendelse-base 0.36.0.."
 sf package install --package 04tQC000000uSXtYAM -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-platform-integration 0.167.0"
-sf package install --package 04tQC0000012rMDYAY --no-prompt --installation-key $3  --wait 30 --publish-wait 30
+echo "Installerer crm-platform-integration 0.168.0"
+sf package install --package 04tQC0000014FG1YAM --no-prompt --installation-key $3  --wait 30 --publish-wait 30
 
 echo ""
 echo "Installerer crm-journal-utilities 0.55.0.."
@@ -64,8 +64,8 @@ echo "Installerer crm-platform-oppgave 0.67.0"
 sf package install --package 04tQC0000012qwPYAQ -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-arbeidsgiver-base 1.616.0"
-sf package install --package 04tQC0000012WT3YAM -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.649.0"
+sf package install --package 04tQC0000015BWvYAM -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "Installerer crm-community-base 0.139.0"
@@ -80,8 +80,8 @@ echo "Installerer crm-henvendelse 0.196.0"
 sf package install --package 04tQC0000013NNhYAM -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-ips 0.523.0"
-sf package install --package 04tQC0000012sGfYAI -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-ips 0.525.0.3"
+sf package install --package 04tQC0000015YWjYAM -r --installation-key $3 --wait 4 --publish-wait 4
 
 # Assign permission sets
 echo "TILDELER"
