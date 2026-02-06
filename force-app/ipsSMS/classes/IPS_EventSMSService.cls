@@ -1,7 +1,10 @@
 /**
- * @description       : Service class for handling SMS related to Events in IPS, including creation of SMS messages for new Events, reminders, and changes to existing Events.
- * @author            : hkavli
- * @group             : IPS SMS Service
+ * @description  : Service class for handling SMS related to Events in IPS, including creation of SMS messages for new Events, reminders, and changes to existing Events.
+ * @author       : Carl Huseby Fosli
+ * @since        : Version 0.1
+ * @author       : Håkon Kavli
+ * @since        : 0.522.0
+ * @see          : IPS_EventSMSServices
  * @last modified on  : 11-26-2025
  * @last modified by  : hkavli
  **/
