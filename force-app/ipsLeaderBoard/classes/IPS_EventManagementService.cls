@@ -1,3 +1,9 @@
+/**
+ * @description  : Service class for handling Event management in IPS, including fetching events for the current week and related participant information.
+ * @author       : Balendra Sounthararajan
+ * @since        : 0.522.0
+ * @author       : Håkon Kavli
+ **/
 public without sharing class IPS_EventManagementService {
     /**
      * Fetches a list of custom events happening within the next 7 days, starting from today.
@@ -58,29 +64,25 @@ public without sharing class IPS_EventManagementService {
             }
         }
 
-        Map<Id, Work_Trail__c> workTrailIdByWorkTrail = new Map<Id, Work_Trail__c>();
-        for (Work_Trail__c workTrail : [
-            SELECT id, IPS_Participants_home_address__c, ips_Participant__r.INT_PersonIdent__c, ips_Participant__r.Name
-            FROM Work_Trail__c
-            WHERE Id IN :workTrailIds
-        ]) {
-            workTrailIdByWorkTrail.put(workTrail.Id, workTrail);
-        }
+        Map<Id, Work_Trail__c> workTrailMap = new Map<Id, Work_Trail__c>(
+            [
+                SELECT
+                    id,
+                    IPS_Participants_home_address__c,
+                    ips_Participant__r.INT_PersonIdent__c,
+                    ips_Participant__r.Name
+                FROM Work_Trail__c
+                WHERE Id IN :workTrailIds
+            ]
+        );
 
         //loop trough all events and add informaration obut participants
         for (IPS_ManagerEvent me : managerEvents) {
-            Work_Trail__C realtedWorkTrail = workTrailIdByWorkTrail.get(me.workTrailId);
+            Work_Trail__C realtedWorkTrail = workTrailMap.get(me.workTrailId);
             me.participantIdent = realtedWorkTrail.ips_Participant__r.INT_PersonIdent__c;
             me.participantName = realtedWorkTrail.ips_Participant__r.Name;
             me.participantAddress = realtedWorkTrail.IPS_Participants_home_address__c;
         }
         return managerEvents;
     }
-
-    /*
-    private static DateTime getWeekStart(Date weekDate){
-        Date weekStart = weekDate.toStartofWeek();
-        return DateTime.newInstance(weekStart.year(),weekStart.month(), weekStart.day());
-    }
-*/
 }
