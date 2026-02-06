@@ -1,7 +1,6 @@
 /**
- * @description  : Controller class for IPS Manager Trail component, responsible for fetching and aggregating data related to work trails for display in the IPS Manager dashboard.
- * @author       : Håkon Kavli
- * @since        : 0.522.0
+ * @description  : Controller class for managing aggregated Work Trail data for managers in IPS.
+ * @author       : Ann Kristin Olsen, Balendra Sounthararajan
  **/
 public without sharing class IPS_ManagerTrailController {
     @AuraEnabled(cacheable=true)
@@ -11,13 +10,11 @@ public without sharing class IPS_ManagerTrailController {
         List<AggregateResult> aggList = new List<AggregateResult>();
 
         aggList = [
-            SELECT COUNT(Id) Antall, toLabel(ips_Status__c) Status, RecordType.Name Tjeneste
+            SELECT count(id) Antall, toLabel(ips_Status__c) Status, recordtype.name Tjeneste
             FROM work_trail__c
-            WHERE
-                OwnerId IN :IPS_Utility.getMyEmployeesUserId()
-                AND ips_status__c IN :IPS_Utility.WORK_TRAIL_ACTIVE_STATUSES
-            GROUP BY ips_status__c, RecordType.Name
-            ORDER BY RecordType.Name
+            WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_status__c NOT IN ('Ended', 'Referred')
+            GROUP BY ips_status__c, recordtype.name
+            ORDER BY recordtype.name
         ];
 
         if (aggList.size() > 0) {
@@ -41,13 +38,11 @@ public without sharing class IPS_ManagerTrailController {
         List<AggregateResult> aggList = new List<AggregateResult>();
 
         aggList = [
-            SELECT count(id) Antall, toLabel(ips_status__c) Status, RecordType.Name Tjeneste, End_Cause__c Cause
+            SELECT count(id) Antall, toLabel(ips_status__c) Status, recordtype.name Tjeneste, End_Cause__c Cause
             FROM work_trail__c
-            WHERE
-                OwnerId IN :IPS_Utility.getMyEmployeesUserId()
-                AND ips_status__c IN :IPS_Utility.WORK_TRAIL_ACTIVE_STATUSES
-            GROUP BY ips_status__c, RecordType.Name, End_Cause__c
-            ORDER BY RecordType.Name
+            WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_status__c IN ('Ended', 'Referred')
+            GROUP BY ips_status__c, recordtype.name, End_Cause__c
+            ORDER BY recordtype.name
         ];
 
         if (aggList.size() > 0) {
@@ -111,9 +106,7 @@ public without sharing class IPS_ManagerTrailController {
         aggList = [
             SELECT count(id) Antall, owner.name OwnerName
             FROM work_trail__c
-            WHERE
-                OwnerId IN :IPS_Utility.getMyEmployeesUserId()
-                AND ips_status__c IN :IPS_Utility.WORK_TRAIL_ACTIVE_STATUSES
+            WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_status__c NOT IN ('Ended', 'Referred')
             GROUP BY owner.name
         ];
 
@@ -142,7 +135,7 @@ public without sharing class IPS_ManagerTrailController {
             WHERE
                 OwnerId IN :IPS_Utility.getMyEmployeesUserId()
                 AND ips_UO_Service__c = 'UO Training'
-                AND ips_status__c IN :IPS_Utility.WORK_TRAIL_ACTIVE_STATUSES
+                AND ips_status__c NOT IN ('Ended', 'Referred')
         ];
 
         if (aggList.size() > 0) {
