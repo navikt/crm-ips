@@ -15,7 +15,6 @@ public without sharing class IPS_EventSMSService {
     private static Map<Event, Work_Trail__c> getWorktrailByEventMap(List<Event> eventList) {
         // Initialize collections
         Set<Id> workTrailIdSet = new Set<Id>();
-        Map<Id, Work_Trail__c> workTrailMap = new Map<Id, Work_Trail__c>();
         Map<Event, Work_Trail__c> eventWorkTailMap = new Map<Event, Work_Trail__c>();
 
         // Collect Work_Trail__c Ids from Events
@@ -24,18 +23,19 @@ public without sharing class IPS_EventSMSService {
         }
 
         // Cet related Work_Trail__c records
-        for (Work_Trail__c workTrail : [
-            SELECT
-                Id,
-                ips_Participant__c,
-                ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c,
-                ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c,
-                IPS_Partticipant_phone_number__c
-            FROM Work_Trail__c
-            WHERE Id IN :workTrailIdSet
-        ]) {
-            workTrailMap.put(workTrail.Id, workTrail);
-        }
+        Map<Id, Work_Trail__c> workTrailMap = new Map<Id, Work_Trail__c>(
+            [
+                SELECT
+                    Id,
+                    ips_Participant__c,
+                    ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c,
+                    ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c,
+                    IPS_Partticipant_phone_number__c
+                FROM Work_Trail__c
+                WHERE Id IN :workTrailIdSet
+            ]
+        );
+
         // Map Work Trails by their correpsonding Events
         for (Event event : eventList) {
             eventWorkTailMap.put(event, workTrailMap.get(event.WhatId));
@@ -176,14 +176,6 @@ public without sharing class IPS_EventSMSService {
         public List<Event> eventList = new List<Event>();
         public List<SMS__c> smsList = new List<SMS__c>();
         public IPS_EventSMSService.SMSType smsType;
-    }
-
-    public EventSMSWrapper createEventSMSWrapper(List<Event> eventList, List<SMS__c> smsList, SMSType smsType) {
-        EventSMSWrapper wrapper = new EventSMSWrapper();
-        wrapper.eventList = eventList;
-        wrapper.smsList = smsList;
-        wrapper.smsType = smsType;
-        return wrapper;
     }
 
     @TestVisible
