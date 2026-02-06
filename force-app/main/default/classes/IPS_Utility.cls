@@ -1,4 +1,33 @@
+/**
+ * @description  : Utility class for IPS, containing common methods and constants used across multiple classes in the IPS application.
+ * @author       : Ann Kristin Olsen, Balendra Sounthararajan
+ * @author       : Håkon Kavli
+ * @since        : 0.526.0
+ **/
 public without sharing class IPS_Utility {
+    public static final List<String> EVENT_RECORD_TYPES = new List<String>{
+        'IPS_Event',
+        'Ips_uo_Deltakermote',
+        'ips_UO_m_ter'
+    };
+    public static final List<String> WORK_TRAIL_ACTIVE_STATUSES = new List<String>{
+        'Adapted training and training in the workplace',
+        'Career mapping and career planning',
+        'Discovery',
+        'Downsizing',
+        'Education and training in and / or outside the workplace',
+        'Find a suitable job / Collaborate with AG',
+        'In Education',
+        'Information and decision support',
+        'Initial contact',
+        'Job development CE',
+        'Job development',
+        'Long-term available follow-up and career development',
+        'Mapping',
+        'Working'
+    };
+    public static final List<String> WORK_TRAIL_INACTIVE_STATUSES = new List<String>{ 'Ended', 'Refferred' };
+
     public static List<User> getPersonAccountId(String userId) {
         List<User> userList = new List<User>();
         String confidential = 'UGRADERT';
