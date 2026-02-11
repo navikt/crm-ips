@@ -159,6 +159,11 @@
 DATEVALUE(NOW()),
  {!Get_Last_Recruitment_Program.End_Date__c})</expression>
     </formulas>
+    <formulas>
+        <name>isEndDateValid</name>
+        <dataType>Boolean</dataType>
+        <expression>{!recruitmentProgram.End_Date__c} &lt; {!recruitmentProgram.Start_Date__c}</expression>
+    </formulas>
     <interviewLabel>IPS - Recruitment Program {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Recruitment Program</label>
     <processMetadataValues>
@@ -188,6 +193,10 @@ DATEVALUE(NOW()),
         <connector>
             <targetReference>Update_RP_Field_In_Worktrail_True</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Enddate_Validation</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>Description__c</field>
             <value>
@@ -273,6 +282,9 @@ DATEVALUE(NOW()),
         <connector>
             <targetReference>Update_RP_Field</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Enddate_Validation</targetReference>
+        </faultConnector>
         <inputReference>Get_Last_Recruitment_Program</inputReference>
     </recordUpdates>
     <recordUpdates>
@@ -296,6 +308,27 @@ DATEVALUE(NOW()),
         </inputAssignments>
         <object>Work_Trail__c</object>
     </recordUpdates>
+    <screens>
+        <name>Enddate_Validation</name>
+        <label>Enddate Validation</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>endDateAfterStartDate</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(189, 24, 24); font-size: 14px;&quot;&gt;Sluttdato må være etter startdato!&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>infoDisplay</name>
+            <fieldText>&lt;p&gt;&lt;em style=&quot;font-size: 14px;&quot;&gt;Trykk &lt;/em&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;&lt;em&gt;Tilbake&lt;/em&gt;&lt;/strong&gt;&lt;em style=&quot;font-size: 14px;&quot;&gt; for å endre datoene.&lt;/em&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <screens>
         <name>RP_Details</name>
         <label>RP - Details</label>
