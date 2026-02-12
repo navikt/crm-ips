@@ -48,6 +48,8 @@ public with sharing class IPS_viewReportPDFController {
     public List<IPS_PassivePeriod> getPassivePeriodsWithinDateRange { get; set; }
     public Task getFollowUpParticipantTask { get; set; }
     public Boolean isParticipantPassive { get; set; }
+    public List<Recruitment_Program__c> getAllRecruitmentPrograms { get; set;}
+    public List<Recruitment_Program__c> getRecruitmentProgramsWithinDateRange { get; set; }
 
     public IPS_viewReportPDFController(ApexPages.StandardController sc) {
         this.currentRecordId = sc.getRecord().Id;
@@ -76,6 +78,8 @@ public with sharing class IPS_viewReportPDFController {
         this.getPassivePeriodsWithinDateRange = getPassivePeriodsWithinDateRange(intervallFromDate, intervallToDate);
         this.getFollowUpParticipantTask = getFollowUpParticipantTask();
         this.isParticipantPassive = isParticipantPassive();
+        this.getAllRecruitmentPrograms = getAllRecruitmentPrograms();
+        this.getRecruitmentProgramsWithinDateRange = getRecruitmentProgramsWithinDateRange(intervallFromDate, intervallToDate);
 
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename=' + this.pdfTitle + '.pdf');
     }
@@ -780,6 +784,27 @@ public with sharing class IPS_viewReportPDFController {
 
         return filteredPassivePeriods;
     }
+
+    private List<Recruitment_Program__c> getAllRecruitmentPrograms(){
+        List<Recruitment_Program__c> recruitmentPrograms = [
+            SELECT id, Name, Start_Date__c, End_Date__c, Description__c, Work_Trail__c
+            FROM Recruitment_Program__c
+            WHERE Work_Trail__c = :workTrailId 
+        ];
+        return recruitmentPrograms;
+    }
+
+    private List<Recruitment_Program__c> getRecruitmentProgramsWithinDateRange(Date startDate, Date endDate) {
+
+        return [
+            SELECT Id, Name, Start_Date__c, End_Date__c, Description__c, Work_Trail__c
+            FROM Recruitment_Program__c
+            WHERE Work_Trail__c = :workTrailId
+            AND Start_Date__c <= :endDate
+            AND (End_Date__c = NULL OR End_Date__c >= :startDate)
+        ];
+    }
+
 
     /*********************** **************************/
     public static String formatDate(Date d, DateTime dt) {
