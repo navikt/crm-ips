@@ -119,6 +119,42 @@
                 </table>
             </apex:outputPanel>
 
+            <!-- Recruitment Programs Interval report AMS -->
+            <apex:outputPanel rendered="{!AND (getRecruitmentProgramsWithinDateRange.size != 0, isUO)}" layout="block">
+                <h3>Rekrutteringsprogram</h3>
+
+                <table style="width: 100%; border: 1px solid #262626; table-layout: fixed">
+                    <tr style="vertical-align: top; background-color: #f1f1f1">
+                        <th style="width: 25%">Navn</th>
+                        <th style="width: 15%">Startdato</th>
+                        <th style="width: 15%">Sluttdato</th>
+                        <th style="width: 45%">Beskrivelse</th>
+                    </tr>
+                    <apex:repeat value="{!getRecruitmentProgramsWithinDateRange}" var="program">
+                        <tr style="vertical-align: top; border: 1px solid #ff0000">
+                            <td style="border: 1px solid #f1f1f1">
+                                <apex:outputField value="{!program.Name}" />
+                            </td>
+
+                            <td style="border: 1px solid #f1f1f1">
+                                <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                    <apex:param value="{!program.Start_Date__c}" />
+                                </apex:outputText>
+                            </td>
+
+                            <td style="border: 1px solid #f1f1f1">
+                                <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                    <apex:param value="{!program.End_Date__c}" />
+                                </apex:outputText>
+                            </td>
+                            <td style="border: 1px solid #f1f1f1">
+                                <apex:outputField value="{!program.Description__c}" />
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </apex:outputPanel>
+
             <!-- Delmål interval -->
             <!--<div style="page-break-inside: avoid;">   -->
             <div>
@@ -362,7 +398,7 @@
             <!-- Opplæringsløp -->
             <apex:outputpanel rendered="{!OR (activeAmsEducations.size != 0,activeParticipantsEducations.size != 0)}">
                 <apex:outputText><h3>Opplæringsløp</h3></apex:outputText>
-                <div >
+                <div>
                     <apex:repeat value="{!activeAmsEducations}" var="amsedu">
                         <apex:outputText><h4>{!amsedu.Name} - {!amsedu.AMS_Status__c}</h4></apex:outputText>
                         <table style="vertical-align: top; width: 100%; border: 1px solid #262626">
@@ -402,83 +438,96 @@
                                     <apex:outputField value="{!amsedu.AMS_Description__c}" />
                                 </td>
                             </tr>
-                   
                         </table>
 
-                    <!-- Jobb i Opplæringsløp underveisrapport -->
-                     <apex:outputPanel rendered="{!amsedu.apprentice_Job__r.size > 0}">
-                        <apex:outputText><h4>Jobb i opplæringsløp</h4></apex:outputText>
-                     </apex:outputPanel>
-                    
-                     
-                     <apex:repeat value="{!amsedu.apprentice_Job__r}" var="job">
-                        <table style="vertical-align: top; width: 100%; border: 1px solid #262626; margin-bottom:5px;">
-                              <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Jobbnavn</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.Name}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Arbeidsgiver</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Employer__c}" />
-                                </td>
-                            </tr>
-                             <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Status</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Status__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Startdato</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Start_Date__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Sluttdato</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_End_Date__c}" />
-                                </td>
-                            </tr>
-                             <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Ansettelsesform</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.Form_Of_Employment__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Beskrivelse av jobb</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Description_of_the_apprentice_job__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Plan for jobbstøtte</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Apprentice_Job_Support_Plan__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Positive erfaringer</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_What_did_work_at_the_workplace__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Negative erfaringer</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_What_did_not_work_at_the_workplace__c}" />
-                                </td>
-                            </tr>
-                        </table>
-                    </apex:repeat>
+                        <!-- Jobb i Opplæringsløp underveisrapport -->
+                        <apex:outputPanel rendered="{!amsedu.apprentice_Job__r.size > 0}">
+                            <apex:outputText><h4>Jobb i opplæringsløp</h4></apex:outputText>
+                        </apex:outputPanel>
 
+                        <apex:repeat value="{!amsedu.apprentice_Job__r}" var="job">
+                            <table
+                                style="vertical-align: top; width: 100%; border: 1px solid #262626; margin-bottom: 5px"
+                            >
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Jobbnavn</th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.Name}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Arbeidsgiver
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Employer__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Status</th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Status__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Startdato
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Start_Date__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Sluttdato
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_End_Date__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Ansettelsesform
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.Form_Of_Employment__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Beskrivelse av jobb
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Description_of_the_apprentice_job__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Plan for jobbstøtte
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Apprentice_Job_Support_Plan__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Positive erfaringer
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_What_did_work_at_the_workplace__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Negative erfaringer
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_What_did_not_work_at_the_workplace__c}" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </apex:repeat>
                     </apex:repeat>
-                      
-                  
 
                     <apex:repeat value="{!activeParticipantsEducations}" var="edu">
                         <apex:outputText><h4>{!edu.Name} - {!edu.ips_Status__c}</h4></apex:outputText>
@@ -637,7 +686,7 @@
                 </div>
             </apex:outputpanel>
 
-        <!-- Planlagte opplæringsløp -->
+            <!-- Planlagte opplæringsløp -->
             <apex:outputpanel rendered="{!plannedAmsEductions.size !=0}">
                 <apex:outputText><h3>Planlagte opplæringsløp</h3></apex:outputText>
                 <div>
@@ -680,80 +729,95 @@
                                     <apex:outputField value="{!plan.AMS_Description__c}" />
                                 </td>
                             </tr>
-                              
                         </table>
 
-                    <!-- Jobb i opplæringsløp kommende periode i underveisrapport-->
-                     <apex:outputPanel rendered="{!plan.apprentice_Job__r.size > 0}">
-                          <apex:outputText><h4>Jobb i opplæringsløp</h4></apex:outputText>
-                     </apex:outputPanel>
-                  
-                     <apex:repeat value="{!plan.apprentice_Job__r}" var="job">
-                        <table style="vertical-align: top; width: 100%; border: 1px solid #262626; margin-bottom:5px; " >
-                             <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Jobbnavn</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.Name}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 10%; background-color: #f1f1f1">Arbeidsgiver</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Employer__c}" />
-                                </td>
-                            </tr>
-                              <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Status</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Status__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Startdato</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Start_Date__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Sluttdato</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_End_Date__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Ansettelsesform</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.Form_Of_Employment__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Beskrivelse av jobb</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Description_of_the_apprentice_job__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Plan for jobbstøtte</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Apprentice_Job_Support_Plan__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Positive erfaringer</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_What_did_work_at_the_workplace__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Negative erfaringer</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_What_did_not_work_at_the_workplace__c}" />
-                                </td>
-                            </tr>
-                          
-                        </table>
-                   
-                    </apex:repeat>
+                        <!-- Jobb i opplæringsløp kommende periode i underveisrapport-->
+                        <apex:outputPanel rendered="{!plan.apprentice_Job__r.size > 0}">
+                            <apex:outputText><h4>Jobb i opplæringsløp</h4></apex:outputText>
+                        </apex:outputPanel>
+
+                        <apex:repeat value="{!plan.apprentice_Job__r}" var="job">
+                            <table
+                                style="vertical-align: top; width: 100%; border: 1px solid #262626; margin-bottom: 5px"
+                            >
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Jobbnavn</th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.Name}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 10%; background-color: #f1f1f1">
+                                        Arbeidsgiver
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Employer__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Status</th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Status__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Startdato
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Start_Date__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Sluttdato
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_End_Date__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Ansettelsesform
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.Form_Of_Employment__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Beskrivelse av jobb
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Description_of_the_apprentice_job__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Plan for jobbstøtte
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Apprentice_Job_Support_Plan__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Positive erfaringer
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_What_did_work_at_the_workplace__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Negative erfaringer
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_What_did_not_work_at_the_workplace__c}" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </apex:repeat>
                     </apex:repeat>
                 </div>
             </apex:outputpanel>
@@ -864,6 +928,42 @@
             </apex:outputpanel>
             <div style="padding-bottom: 10px"></div>
             <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
+
+            <!-- Recruitment Programs End report AMS -->
+            <apex:outputPanel rendered="{!AND (getAllRecruitmentPrograms.size != 0, isUO)}" layout="block">
+                <h3>Rekrutteringsprogram</h3>
+
+                <table style="width: 100%; border: 1px solid #262626; table-layout: fixed">
+                    <tr style="vertical-align: top; background-color: #f1f1f1">
+                        <th style="width: 25%">Navn</th>
+                        <th style="width: 15%">Startdato</th>
+                        <th style="width: 15%">Sluttdato</th>
+                        <th style="width: 45%">Beskrivelse</th>
+                    </tr>
+                    <apex:repeat value="{!getAllRecruitmentPrograms}" var="program">
+                        <tr style="vertical-align: top; border: 1px solid #ff0000">
+                            <td style="border: 1px solid #f1f1f1">
+                                <apex:outputField value="{!program.Name}" />
+                            </td>
+
+                            <td style="border: 1px solid #f1f1f1">
+                                <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                    <apex:param value="{!program.Start_Date__c}" />
+                                </apex:outputText>
+                            </td>
+
+                            <td style="border: 1px solid #f1f1f1">
+                                <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                    <apex:param value="{!program.End_Date__c}" />
+                                </apex:outputText>
+                            </td>
+                            <td style="border: 1px solid #f1f1f1">
+                                <apex:outputField value="{!program.Description__c}" />
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </apex:outputPanel>
 
             <!-- Passive Periods -->
             <apex:outputPanel rendered="{!AND (getAllPassivePeriods.size != 0,isIPS)}">
@@ -1049,7 +1149,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Positive erfaringer</th>
+                            <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                Positive erfaringer
+                            </th>
                             <td style="border: 1px solid #f1f1f1">
                                 <apex:outputField value="{!jobs.ips_What_did_work_at_the_workplace__c}" />
                             </td>
@@ -1112,76 +1214,93 @@
                             </tr>
                         </table>
 
-                    <!-- Jobb i opplæringløp endreport -->
-                     <apex:outputPanel rendered="{!amsedu.apprentice_Job__r.size > 0}">
-                        <apex:outputText><h4>Jobb i opplæringsløp</h4></apex:outputText>
-                     </apex:outputPanel>
-                       
+                        <!-- Jobb i opplæringløp endreport -->
+                        <apex:outputPanel rendered="{!amsedu.apprentice_Job__r.size > 0}">
+                            <apex:outputText><h4>Jobb i opplæringsløp</h4></apex:outputText>
+                        </apex:outputPanel>
+
                         <apex:repeat value="{!amsedu.apprentice_Job__r}" var="job">
-                        <table style="vertical-align: top; width: 100%; border: 1px solid #262626; margin-bottom:5px; " >
-                             <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Jobbnavn</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.Name}" />
-                                </td>
-                            </tr>
-                             <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Status</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Status__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 10%; background-color: #f1f1f1">Arbeidsgiver</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Employer__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Startdato</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Start_Date__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Sluttdato</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_End_Date__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Ansettelsesform</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.Form_Of_Employment__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Beskrivelse av jobb</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Description_of_the_apprentice_job__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Plan for jobbstøtte</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_Apprentice_Job_Support_Plan__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Positive erfaringer</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_What_did_work_at_the_workplace__c}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Negative erfaringer</th>
-                                <td style="border: 1px solid #f1f1f1">
-                                    <apex:outputField value="{!job.AMS_What_did_not_work_at_the_workplace__c}" />
-                                </td>
-                            </tr>
-                         
-                        </table>
-                    </apex:repeat>
+                            <table
+                                style="vertical-align: top; width: 100%; border: 1px solid #262626; margin-bottom: 5px"
+                            >
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Jobbnavn</th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.Name}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">Status</th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Status__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 10%; background-color: #f1f1f1">
+                                        Arbeidsgiver
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Employer__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Startdato
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Start_Date__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Sluttdato
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_End_Date__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Ansettelsesform
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.Form_Of_Employment__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Beskrivelse av jobb
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Description_of_the_apprentice_job__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Plan for jobbstøtte
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_Apprentice_Job_Support_Plan__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Positive erfaringer
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_What_did_work_at_the_workplace__c}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: top; width: 20%; background-color: #f1f1f1">
+                                        Negative erfaringer
+                                    </th>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!job.AMS_What_did_not_work_at_the_workplace__c}" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </apex:repeat>
                     </apex:repeat>
 
                     <!--history for Ams -->
