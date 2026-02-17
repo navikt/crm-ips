@@ -1,0 +1,21 @@
+/*
+* Wrapperclass used by IPS_ParticipantPortalActivityController
+* experience cloud for participant
+**/
+
+public class IPS_ParticipantPortalEducation {
+    @AuraEnabled public Date UtdanningStart{get; set;}
+    @AuraEnabled public Date UtdanningSlutt{get; set;}
+    @AuraEnabled public String Utdanningsform{get; set;}
+    @AuraEnabled public String Plan{get; set;}
+    @AuraEnabled public String UtdanningId{get; set;}
+    @AuraEnabled public String UtdanningNavn{get; set;}
+    @AuraEnabled public String UtdanningSted{get; set;}
+    @AuraEnabled public String FungererIkke{get; set;}
+    @AuraEnabled public String Fungerer{get; set;}
+    @AuraEnabled public String Status {get; set;}
+    @AuraEnabled public String Utdanningslop{get; set;}
+    @AuraEnabled public List<IPS_ParticipantPortalApprentice> ApprenticeJobs { get; set; }
+
+   
+}

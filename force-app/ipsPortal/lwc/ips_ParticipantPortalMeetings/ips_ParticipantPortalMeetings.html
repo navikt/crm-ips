@@ -1,0 +1,59 @@
+<template>
+    <div class="breadcrumb-container">
+        <img src={homeImg} alt="" class="breadcrumb-img" />
+        <c-breadcrumbs url-list={breadcrumbs}></c-breadcrumbs>
+    </div>
+    <template if:true={isMeeting}>
+        <div class="container responsive">
+            <h1>Gjennomførte møter</h1>
+                <template for:each={meetingRecords} for:item="event">
+                    <div key={event.EventId} >
+                        <c-readmore label={event.Emne}>
+                            <dl>
+                                <dt>Tidspunkt</dt>
+                                <dd tabindex="0">
+                                    <lightning-formatted-date-time
+                                        value={event.FraTidDato}
+                                        hour="2-digit"
+                                        minute="2-digit"
+                                        hour12={isTwelveHours}
+                                        time-zone="Europe/Paris"
+                                    >
+                                    </lightning-formatted-date-time>
+                                    &nbsp;-&nbsp;
+                                    <lightning-formatted-date-time
+                                        value={event.TilTidDato}
+                                        hour="2-digit"
+                                        minute="2-digit"
+                                        hour12={isTwelveHours}
+                                        time-zone="Europe/Paris"
+                                    >
+                                    </lightning-formatted-date-time>
+                                </dd>
+                                <dt>Sted</dt>
+                                <dd tabindex="0">{event.Lokasjon}</dd>
+                                <template lwc:if={event.Arbeidsgiver}>
+                                    <dt>Arbeidsgiver</dt>
+                                    <dd>{event.Arbeidsgiver}</dd>
+                                </template>
+                                <dt>Referat</dt>
+                                <dd tabindex="0">{event.ReferatKommentar}</dd>
+                            </dl>
+                        </c-readmore>
+                    </div>
+                </template>
+        </div>
+    </template>
+    <template if:false={isMeeting}>
+        <div class="container responsive warningContainer">
+                <div class="responsive">
+                    <div class="colorWarning">
+                        <div class="spaceAround" tabindex="0" role="status">
+                                <img src={warningIcon} alt="Dine møter varsel" /> 
+                                &nbsp;&nbsp;{warningText}
+                        </div>  
+                    </div>
+                </div>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <customErrors>
+        <name>Error_message</name>
+        <label>Error message</label>
+        <locationX>50</locationX>
+        <locationY>611</locationY>
+        <customErrorMessages>
+            <errorMessage>Det er kun mulig å registrere ett &apos;Første møte med arbeidsgiver&apos;</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <description>Checking if there is a date in the &apos;First Meeting with the Employer
+            Held&apos; field.</description>
+        <name>Is_it_first_meeting</name>
+        <label>Is it first meeting</label>
+        <locationX>182</locationX>
+        <locationY>503</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>not_first_meeting</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Worktrail_details.ips_First_meeting_with_the_Employer_held__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>No_of_first_meeting_with_employer.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Error_message</targetReference>
+            </connector>
+            <label>not first meeting</label>
+        </rules>
+    </decisions>
+    <description>Allows only one &quot;First meeting with the Employer&quot; meeting type.</description>
+    <environments>Default</environments>
+    <interviewLabel>IPS - Is first employer meeting {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - Is first employer meeting</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>No of meetings of the type &quot;first meeting with employer&quot;</description>
+        <name>No_of_first_meeting_with_employer</name>
+        <label>No of first meeting with employer</label>
+        <locationX>182</locationX>
+        <locationY>395</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_it_first_meeting</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>First Meeting with Employer</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Worktrail_details.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Event</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Fetching work trail details to access the field - &quot;First meeting with the
+            Employer held&quot;</description>
+        <name>Worktrail_details</name>
+        <label>Get worktrail details</label>
+        <locationX>182</locationX>
+        <locationY>287</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>No_of_first_meeting_with_employer</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Worktrail_details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>First Meeting with Employer</stringValue>
+            </value>
+        </filters>
+        <object>Event</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

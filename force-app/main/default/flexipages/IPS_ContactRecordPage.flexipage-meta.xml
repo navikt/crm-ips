@@ -10,10 +10,14 @@
                             <value>Edit</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Delete</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>ChangeOwnerOne</value>
+                            <value>Contact.Tidligere_ansatt</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.TAG_Former_Employee__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>false</rightValue>
+                                </criteria>
+                            </visibilityRule>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
@@ -35,7 +39,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>numVisibleActions</name>
-                    <value>3</value>
+                    <value>6</value>
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>force_highlightsPanel</identifier>
@@ -227,6 +231,10 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Tabs</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>tabs</name>
                     <value>maintabs</value>
                 </componentInstanceProperties>
@@ -282,6 +290,18 @@
                     <value>Aktiviteter</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>hideMyActivitiesFilter</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>includeAmountInTitle</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>logEvent</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>picklistFilter1Label</name>
                     <value>UnderKategri møter</value>
                 </componentInstanceProperties>
@@ -300,7 +320,7 @@
         <name>sidebar</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>IPS ContactRecordPage</masterLabel>
+    <masterLabel>IPS Contact Record Page</masterLabel>
     <parentFlexiPage>sfa__Contact_rec_L</parentFlexiPage>
     <sobjectType>Contact</sobjectType>
     <template>

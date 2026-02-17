@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <customErrors>
+        <name>Error_message_startup_meeting</name>
+        <label>Error message</label>
+        <locationX>50</locationX>
+        <locationY>611</locationY>
+        <customErrorMessages>
+            <errorMessage>Det er kun mulig å registrere ett &apos;Oppstartsmøte&apos;</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <description>Checking if there is a date in the &quot;Oppstartsdato&quot; field and the
+            status of the meeting is &quot;Open&quot;</description>
+        <name>Is_it_first_startup_meeting</name>
+        <label>Is it first startup meeting</label>
+        <locationX>182</locationX>
+        <locationY>503</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>not_first_startup_meeting</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Worktrail_details.Oppstartsdato__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>No_of_startup_meetings.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Error_message_startup_meeting</targetReference>
+            </connector>
+            <label>not first startup meeting</label>
+        </rules>
+    </decisions>
+    <description>Allows only one startup meeting in worktrail</description>
+    <environments>Default</environments>
+    <interviewLabel>IPS - Is first startup meeting {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - Is first startup meeting</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>No of meetings of the type &quot;startup&quot;</description>
+        <name>No_of_startup_meetings</name>
+        <label>No of startup meetings</label>
+        <locationX>182</locationX>
+        <locationY>395</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_it_first_startup_meeting</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Start up meeting</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Worktrail_details.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Event</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Fetching work trail details to access the field - &quot;Oppstartsdato&quot;</description>
+        <name>Worktrail_details</name>
+        <label>Get worktrail details</label>
+        <locationX>182</locationX>
+        <locationY>287</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>No_of_startup_meetings</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Worktrail_details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Start up meeting</stringValue>
+            </value>
+        </filters>
+        <object>Event</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

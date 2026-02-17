@@ -4,11 +4,11 @@
         <name>createTravelTime</name>
         <label>createTravelTime</label>
         <locationX>314</locationX>
-        <locationY>1031</locationY>
+        <locationY>1355</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>checkRelatedTo</targetReference>
+            <targetReference>updateEvent</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -32,7 +32,7 @@
         <inputParameters>
             <name>recordtypeId</name>
             <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeIdTravelTime</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -60,17 +60,17 @@
             </value>
         </inputParameters>
         <nameSegment>IPS_eventTravelTimeController</nameSegment>
-        <versionSegment>1</versionSegment>
+        <offset>0</offset>
     </actionCalls>
     <actionCalls>
         <name>createUpdateTravelTime</name>
         <label>createUpdateTravelTime</label>
-        <locationX>1370</locationX>
-        <locationY>431</locationY>
+        <locationX>1502</locationX>
+        <locationY>1121</locationY>
         <actionName>IPS_eventTravelTimeController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>checkIfFirstMeeting</targetReference>
+            <targetReference>getTasksid</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -94,7 +94,7 @@
         <inputParameters>
             <name>recordtypeId</name>
             <value>
-                <elementReference>$Record.RecordTypeId</elementReference>
+                <elementReference>varRecordTypeIdTravelTime</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -122,60 +122,15 @@
             </value>
         </inputParameters>
         <nameSegment>IPS_eventTravelTimeController</nameSegment>
-        <versionSegment>1</versionSegment>
+        <offset>0</offset>
     </actionCalls>
-    <apiVersion>59.0</apiVersion>
-    <assignments>
-        <name>addAccountId</name>
-        <label>addAccountId</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
-        <assignmentItems>
-            <assignToReference>varRelatedToAccount</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.WhatId</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varWhatId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.WhatId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>createTravelTime</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>addAssignmentsFromRecord</name>
-        <label>addAssignmentsFromRecord</label>
-        <locationX>1370</locationX>
-        <locationY>839</locationY>
-        <assignmentItems>
-            <assignToReference>varRelatedToAccount</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.RelatedToAccount__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varWhatId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.WhatId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>isParticipantsAdded</targetReference>
-        </connector>
-    </assignments>
+    <apiVersion>61.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>addPublicTrue</name>
         <label>addPublicTrue</label>
         <locationX>182</locationX>
-        <locationY>1355</locationY>
+        <locationY>1163</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -184,37 +139,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>checkTasks1</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Copy_1_of_addAccountId</name>
-        <label>addAccountId</label>
-        <locationX>578</locationX>
-        <locationY>539</locationY>
-        <assignmentItems>
-            <assignToReference>varRelatedToAccount</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.RelatedToAccount__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varWhatId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.WhatId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>checkMeetingCriteria</targetReference>
+            <targetReference>createTravelTime</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Copy_1_of_addPublicFalse</name>
         <label>addPublicFalse</label>
         <locationX>1370</locationX>
-        <locationY>1055</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -237,7 +169,7 @@
         <name>Copy_1_of_addPublicTrue</name>
         <label>addPublicTrue</label>
         <locationX>1106</locationX>
-        <locationY>1163</locationY>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>varPublicTrue</assignToReference>
             <operator>Assign</operator>
@@ -251,41 +183,34 @@
         </connector>
     </assignments>
     <decisions>
-        <name>checkIfFirstMeeting</name>
-        <label>checkIfFirstMeeting</label>
-        <locationX>1370</locationX>
-        <locationY>539</locationY>
+        <name>check_if_participant_is_added</name>
+        <label>check if participant is added</label>
+        <locationX>314</locationX>
+        <locationY>947</locationY>
         <defaultConnector>
-            <targetReference>addAssignmentsFromRecord</targetReference>
+            <targetReference>createTravelTime</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>anything else</defaultConnectorLabel>
+        <defaultConnectorLabel>isFalse</defaultConnectorLabel>
         <rules>
-            <name>IsFirstMeetingFinished</name>
+            <name>isTrue</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <leftValueReference>$Record.IPS_participant_related_to_meeting__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.IPS_Type__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>First Meeting with Employer</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>updateWorkTrail</targetReference>
+                <targetReference>Add_contactid_into_event</targetReference>
             </connector>
-            <label>IsFirstMeetingFinished</label>
+            <label>isTrue</label>
         </rules>
     </decisions>
     <decisions>
         <name>checkMeetingCriteria</name>
         <label>checkMeetingCriteria</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>647</locationY>
         <defaultConnectorLabel>nothing</defaultConnectorLabel>
         <rules>
@@ -334,107 +259,45 @@
         </rules>
     </decisions>
     <decisions>
-        <name>checkRelatedTo</name>
-        <label>checkRelatedTo</label>
-        <locationX>314</locationX>
-        <locationY>1139</locationY>
+        <description>Checks whether the task is found to update</description>
+        <name>Is_Task_Found</name>
+        <label>Is Task Found ?</label>
+        <locationX>1502</locationX>
+        <locationY>1337</locationY>
         <defaultConnector>
-            <targetReference>checkTasks1</targetReference>
+            <targetReference>UpdateTask</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>isFalse</defaultConnectorLabel>
+        <defaultConnectorLabel>Yes</defaultConnectorLabel>
         <rules>
-            <name>isTrue</name>
-            <conditionLogic>and</conditionLogic>
+            <name>TaskNotFound</name>
+            <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.IPS_participant_related_to_meeting__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>getTasksid.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getTasksid.Id</leftValueReference>
+                <operator>IsBlank</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Add_contactid_into_event</targetReference>
+                <targetReference>Application_Log_Task_Not_Found</targetReference>
             </connector>
-            <label>isTrue</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkTasks</name>
-        <label>checkTasks</label>
-        <locationX>1370</locationX>
-        <locationY>1529</locationY>
-        <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
-        <rules>
-            <name>isNotEmpty</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getTasksid</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>UpdateTask</targetReference>
-            </connector>
-            <label>isNotEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>checkTasks1</name>
-        <label>checkTasks</label>
-        <locationX>314</locationX>
-        <locationY>1547</locationY>
-        <defaultConnectorLabel>isEmpty</defaultConnectorLabel>
-        <rules>
-            <name>isNotEmpty1</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varOutputTaskId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateMeetingWithId</targetReference>
-            </connector>
-            <label>isNotEmpty</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <description>check type of meeting</description>
-        <name>checkType</name>
-        <label>checkType</label>
-        <locationX>314</locationX>
-        <locationY>431</locationY>
-        <defaultConnector>
-            <targetReference>Copy_1_of_addAccountId</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>anything else</defaultConnectorLabel>
-        <rules>
-            <name>isArbeidsgiver</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.IPS_Type__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Arbeidsgivermøte</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>addAccountId</targetReference>
-            </connector>
-            <label>isArbeidsgiver</label>
+            <label>No</label>
         </rules>
     </decisions>
     <decisions>
         <name>isEventNew</name>
         <label>isEventNew</label>
-        <locationX>842</locationX>
-        <locationY>323</locationY>
+        <locationX>908</locationX>
+        <locationY>539</locationY>
         <defaultConnector>
-            <targetReference>createUpdateTravelTime</targetReference>
+            <targetReference>isParticipantsAdded</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -448,18 +311,19 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>checkType</targetReference>
+                <targetReference>checkMeetingCriteria</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
     </decisions>
     <decisions>
+        <description>Checks &quot;Participant related to meeting&quot;  checkbox.</description>
         <name>isParticipantsAdded</name>
         <label>isParticipantsAdded</label>
-        <locationX>1370</locationX>
-        <locationY>947</locationY>
+        <locationX>1502</locationX>
+        <locationY>647</locationY>
         <defaultConnector>
-            <targetReference>getTasksid</targetReference>
+            <targetReference>createUpdateTravelTime</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>noChanges</defaultConnectorLabel>
         <rules>
@@ -495,17 +359,39 @@
             <label>isFalse</label>
         </rules>
     </decisions>
-    <description>Create or update when using employee meeting or calendar
-- create/update employee meeting
-- create task
+    <description>Create or update on meeting type Meeting with Employer 
+- create IPS/AMS møte task
 - create/update traveltime
-- update startdate
-- set public true</description>
+- update startdate</description>
     <environments>Default</environments>
+    <formulas>
+        <description>Subject is chosen according to the subcategory type</description>
+        <name>amsSubject</name>
+        <dataType>String</dataType>
+        <expression>IF(
+( ISPICKVAL({!$Record.IPS_Subcategory_Type_UO__c}, &quot;Relationship building&quot;)), 
+&quot;IPS/AMS Møte - Jobbutvikling / Relasjonsbygging&quot;,
+&quot;IPS/AMS Møte - Jobbstøtte / Oppfølging&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>ipsSubject</name>
+        <dataType>String</dataType>
+        <expression>IF(
+( ISPICKVAL({!$Record.ips_Subcategory_Type_IPS__c}, &quot;Job development&quot;)), 
+&quot;IPS/AMS Møte - Jobbutvikling / Relasjonsbygging&quot;,
+&quot;IPS/AMS Møte - Jobbstøtte / Oppfølging&quot;
+)</expression>
+    </formulas>
     <formulas>
         <name>isDateTimeChanged</name>
         <dataType>Boolean</dataType>
         <expression>IsChanged({!$Record.StartDateTime} ) || isChanged({!$Record.EndDateTime})</expression>
+    </formulas>
+    <formulas>
+        <name>isFirstEmployerMeeting</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!Get_work_trail_info.ips_First_meeting_with_the_Employer_held__c}), &quot;Ja&quot;, &quot;Nei&quot;)</expression>
     </formulas>
     <formulas>
         <name>isNew</name>
@@ -513,12 +399,27 @@
         <expression>ISNEW()</expression>
     </formulas>
     <formulas>
+        <description>Sets Task status according to status of the meeting triggered.</description>
         <name>varRecordStatus</name>
         <dataType>String</dataType>
         <expression>CASE({!$Record.IPS_Status1__c}, 
-&apos;Cancelled&apos;, &apos;Completed&apos;, 
-&apos;Participant Absent&apos;, &apos;Completed&apos;,
-&apos;Completed&apos;, &apos;Completed&apos;, &apos;Open&apos;)</expression>
+&apos;Cancelled&apos;, &apos;Not applicable&apos;, 
+&apos;Participant Absent&apos;, &apos;Not applicable&apos;,
+&apos;Completed&apos;, &apos;Completed&apos;, 
+&apos;Open&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>Subject depending upon the subcategory</description>
+        <name>varSubject</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    OR(
+        ISPICKVAL({!$Record.IPS_Subcategory_Type_UO__c}, &quot;Relationship building&quot;),
+        ISPICKVAL({!$Record.ips_Subcategory_Type_IPS__c}, &quot;Job development&quot;)
+    ),
+    &quot;IPS/AMS Møte - Jobbutvikling / Relasjonsbygging&quot;,
+    &quot;IPS/AMS Møte - Jobbstøtte / Oppfølging&quot;
+)</expression>
     </formulas>
     <interviewLabel>IPS - create or update employee meeting {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - create or update employee meeting</label>
@@ -542,14 +443,62 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <name>getTasksid</name>
-        <label>getTasksid</label>
-        <locationX>1370</locationX>
-        <locationY>1421</locationY>
+        <name>Get_work_trail_info</name>
+        <label>Get work trail info</label>
+        <locationX>908</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>checkTasks</targetReference>
+            <targetReference>isEventNew</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getRecordTypeTravelTime</name>
+        <label>getRecordTypeTravelTime</label>
+        <locationX>908</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_work_trail_info</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varRecordTypeNameTravelTime</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>varRecordTypeIdTravelTime</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>getTasksid</name>
+        <label>getTasksid</label>
+        <locationX>1502</locationX>
+        <locationY>1229</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Task_Found</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -558,7 +507,7 @@
                 <elementReference>$Record.IPS_taskId__c</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
@@ -566,20 +515,18 @@
         <name>Update_meeting_with_Id1</name>
         <label>Update meeting with Id</label>
         <locationX>1370</locationX>
-        <locationY>1163</locationY>
+        <locationY>863</locationY>
         <connector>
-            <targetReference>getTasksid</targetReference>
+            <targetReference>createUpdateTravelTime</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
         <inputAssignments>
-            <field>IsVisibleInSelfService__c</field>
+            <field>IsVisibleInSelfService</field>
             <value>
                 <elementReference>varPublicTrue</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>RelatedToAccount__c</field>
-            <value>
-                <elementReference>varRelatedToAccount</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -591,10 +538,19 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>updateMeetingWithId</name>
-        <label>Update meeting with Id</label>
-        <locationX>182</locationX>
-        <locationY>1655</locationY>
+        <name>updateEvent</name>
+        <label>Update event</label>
+        <locationX>314</locationX>
+        <locationY>1463</locationY>
+        <faultConnector>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>F_rste_arbeidsgiverm_te__c</field>
+            <value>
+                <elementReference>isFirstEmployerMeeting</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>IPS_taskId__c</field>
             <value>
@@ -602,21 +558,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>IsVisibleInSelfService__c</field>
+            <field>IsVisibleInSelfService</field>
             <value>
                 <elementReference>varPublicTrue</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>RelatedToAccount__c</field>
-            <value>
-                <elementReference>varRelatedToAccount</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WhatId</field>
-            <value>
-                <elementReference>varWhatId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -630,8 +574,12 @@
     <recordUpdates>
         <name>UpdateTask</name>
         <label>UpdateTask</label>
-        <locationX>1238</locationX>
-        <locationY>1637</locationY>
+        <locationX>1634</locationX>
+        <locationY>1445</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -646,65 +594,44 @@
                 <elementReference>$Record.ActivityDate</elementReference>
             </value>
         </inputAssignments>
-        <object>Task</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>updateWorkTrail</name>
-        <label>updateWorkTrail</label>
-        <locationX>1238</locationX>
-        <locationY>647</locationY>
-        <connector>
-            <targetReference>addAssignmentsFromRecord</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.WhatId</elementReference>
-            </value>
-        </filters>
         <inputAssignments>
-            <field>ips_First_meeting_with_the_Employer_held__c</field>
+            <field>RelatedToAccount__c</field>
             <value>
-                <elementReference>$Record.StartDateTime</elementReference>
+                <elementReference>$Record.RelatedToAccount__c</elementReference>
             </value>
         </inputAssignments>
-        <object>Work_Trail__c</object>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <elementReference>varRecordStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>varSubject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>$Record.RelatedToAccount__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
     </recordUpdates>
     <start>
-        <locationX>716</locationX>
+        <locationX>782</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>isEventNew</targetReference>
+            <targetReference>getRecordTypeTravelTime</targetReference>
         </connector>
-        <filterLogic>1 AND 5 AND (2 OR 3 OR 4)</filterLogic>
-        <filters>
-            <field>Subject</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Reisetid</stringValue>
-            </value>
-        </filters>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>IPS_Type__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Meeting with Employer</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>IPS_Type__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Arbeidsgivermøte</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>IPS_Type__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>First Meeting with Employer</stringValue>
             </value>
         </filters>
         <filters>
@@ -723,7 +650,7 @@
         <name>Add_contactid_into_event</name>
         <label>Add contactid into event</label>
         <locationX>182</locationX>
-        <locationY>1247</locationY>
+        <locationY>1055</locationY>
         <connector>
             <targetReference>addPublicTrue</targetReference>
         </connector>
@@ -743,7 +670,7 @@
         <name>Add_contactid_into_event1</name>
         <label>Add contactid into event</label>
         <locationX>1106</locationX>
-        <locationY>1055</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>Copy_1_of_addPublicTrue</targetReference>
         </connector>
@@ -760,12 +687,74 @@
         </outputAssignments>
     </subflows>
     <subflows>
+        <name>Application_log</name>
+        <label>Application log</label>
+        <locationX>842</locationX>
+        <locationY>1571</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - create or update employee meeting</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Application_Log_Task_Not_Found</name>
+        <label>Application Log - Task Not Found</label>
+        <locationX>1370</locationX>
+        <locationY>1445</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <stringValue>Task related to employer meeting not found !</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Create or update employee meeting</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
         <name>IPS_createTaskBasedOnMeetingAMS</name>
         <label>Create task based on meeting - AMS</label>
-        <locationX>314</locationX>
+        <locationX>50</locationX>
         <locationY>755</locationY>
         <connector>
-            <targetReference>createTravelTime</targetReference>
+            <targetReference>check_if_participant_is_added</targetReference>
         </connector>
         <flowName>IPS_subflowCreateTask</flowName>
         <inputAssignments>
@@ -784,6 +773,12 @@
             <name>varDueDate</name>
             <value>
                 <elementReference>$Record.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varEventId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -813,7 +808,7 @@
         <inputAssignments>
             <name>varRelatedToAccount</name>
             <value>
-                <elementReference>varRelatedToAccount</elementReference>
+                <elementReference>$Record.RelatedToAccount__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -823,15 +818,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>varStatus</name>
+            <value>
+                <elementReference>varRecordStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>varSubject</name>
             <value>
-                <stringValue>IPS/AMS Møte</stringValue>
+                <elementReference>amsSubject</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <name>varWhatId</name>
             <value>
-                <elementReference>varRelatedToAccount</elementReference>
+                <elementReference>$Record.RelatedToAccount__c</elementReference>
             </value>
         </inputAssignments>
         <outputAssignments>
@@ -842,10 +843,10 @@
     <subflows>
         <name>IPS_createTaskBasedOnMeetingIPS</name>
         <label>Create task based on meeting - IPS</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>755</locationY>
         <connector>
-            <targetReference>createTravelTime</targetReference>
+            <targetReference>check_if_participant_is_added</targetReference>
         </connector>
         <flowName>IPS_subflowCreateTask</flowName>
         <inputAssignments>
@@ -858,6 +859,12 @@
             <name>varDueDate</name>
             <value>
                 <elementReference>$Record.StartDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varEventId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -893,7 +900,7 @@
         <inputAssignments>
             <name>varRelatedToAccount</name>
             <value>
-                <elementReference>varRelatedToAccount</elementReference>
+                <elementReference>$Record.RelatedToAccount__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -903,15 +910,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>varStatus</name>
+            <value>
+                <elementReference>varRecordStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>varSubject</name>
             <value>
-                <stringValue>IPS/AMS Møte</stringValue>
+                <elementReference>ipsSubject</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <name>varWhatId</name>
             <value>
-                <elementReference>varRelatedToAccount</elementReference>
+                <elementReference>$Record.RelatedToAccount__c</elementReference>
             </value>
         </inputAssignments>
         <outputAssignments>
@@ -969,6 +982,13 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>varMeetingWithEmployerHeld</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varOutputTaskId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -998,6 +1018,23 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordTypeIdTravelTime</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varRecordTypeNameTravelTime</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>IPS_Traveltime</stringValue>
+        </value>
     </variables>
     <variables>
         <name>varRelatedToAccount</name>

@@ -16,6 +16,9 @@
                             <value>ips_report__c.IPS_onBehalfOf</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>ips_report__c.IPS_shareReportParticipant</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>ips_report__c.IPS_archiveReport</value>
                         </valueListItems>
                     </valueList>
@@ -70,6 +73,16 @@
                         <valueListItems>
                             <value>CustomButton.ips_report__c.IPS_printReport</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>ips_report__c.IPS_unshareReportParticipant</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.IPS_status__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Shared report</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
@@ -110,6 +123,37 @@
                         <leftValue>{!Record.IPS_status__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>Shared report</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Jobbsporet må avsluttes før journalføring</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Warning</value>
+                </componentInstanceProperties>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IPS_report_Type__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>End report</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isTrailEnded__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -168,10 +212,17 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.OwnerId</fieldItem>
-                <identifier>RecordOwnerIdField</identifier>
+                <fieldItem>Record.IPS_dueDateBack__c</fieldItem>
+                <identifier>RecordIPS_dueDateBack_cField</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Shared report</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <name>Facet-032c8351-bb84-4618-8692-166dbe35e9da</name>
@@ -670,35 +721,11 @@
                     <name>uiBehavior</name>
                     <value>readonly</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.IPS_intervallReport__c</fieldItem>
-                <identifier>RecordIPS_intervallReport_cField2</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.IPS_report_Type__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Intervall</rightValue>
-                    </criteria>
-                </visibilityRule>
+                <fieldItem>Record.IPS_Activity__c</fieldItem>
+                <identifier>RecordIPS_Activity_cField</identifier>
             </fieldInstance>
         </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>readonly</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.IPS_endReport__c</fieldItem>
-                <identifier>RecordIPS_endReport_cField2</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.IPS_report_Type__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>End report</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </fieldInstance>
-        </itemInstances>
-        <name>Facet-995e868b-a2d4-4492-9b39-77fa530b2ce3</name>
+        <name>Facet-432c184a-120f-42e7-9d59-f04501a21aaa</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -706,13 +733,13 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
-                    <value>Facet-995e868b-a2d4-4492-9b39-77fa530b2ce3</value>
+                    <value>Facet-432c184a-120f-42e7-9d59-f04501a21aaa</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:column</componentName>
                 <identifier>flexipage_column7</identifier>
             </componentInstance>
         </itemInstances>
-        <name>Facet-ab9393a9-513e-4941-8a58-decbe73a2fa4</name>
+        <name>Facet-ad657868-bc96-4bf9-97c9-6a7dc30c1b1b</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -1124,7 +1151,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>columns</name>
-                    <value>Facet-ab9393a9-513e-4941-8a58-decbe73a2fa4</value>
+                    <value>Facet-ad657868-bc96-4bf9-97c9-6a7dc30c1b1b</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>horizontalAlignment</name>
@@ -1132,7 +1159,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Gammel versjon</value>
+                    <value>{!$Label.IPS_activitySectionReport}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection7</identifier>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_PhoneNumber_Norwegian_NumberLength</fullName>
+    <active>true</active>
+    <description>Norwegian Phone Numbers should be 8 Digits</description>
+    <errorConditionFormula>AND(
+ NOT ISBLANK(IPS_Partticipant_phone_number__c), 
+ LEFT(IPS_Partticipant_phone_number__c, 1) != &quot;+&quot;,
+ LEN(IPS_Partticipant_phone_number__c) != 8
+)</errorConditionFormula>
+    <errorDisplayField>IPS_Partticipant_phone_number__c</errorDisplayField>
+    <errorMessage>Norwegian Phone Numbers should be 8 charachters long. For International Numbers, please include the country code at the beginning (e.g. &quot;+47&quot;).</errorMessage>
+</ValidationRule>

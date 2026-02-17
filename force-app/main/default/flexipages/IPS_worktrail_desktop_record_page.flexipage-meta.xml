@@ -10,85 +10,120 @@
                             <value>Edit</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Work_Trail__c.IPS_setParticipantPassive</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>PrintableView</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.Sms_reservation</value>
-                        </valueListItems>
-                    </valueList>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>collapsed</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>enableActionsConfiguration</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>enableActionsInNative</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>hideChatterActions</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>numVisibleActions</name>
-                    <value>5</value>
-                </componentInstanceProperties>
-                <componentName>force:highlightsPanel</componentName>
-                <identifier>highlightsPanel</identifier>
-                <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
-                    <criteria>
-                        <leftValue>{!$User.Profile.Name}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>NAV IPS Jobbspesialist</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!$User.Profile.Name}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>NAV UO Jobbspesialist</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>actionNames</name>
-                    <valueList>
-                        <valueListItems>
-                            <value>Edit</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Work_Trail__c.IPS_setParticipantPassive</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Share</value>
-                        </valueListItems>
-                        <valueListItems>
                             <value>ChangeOwnerOne</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>PrintableView</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Clone</value>
                             <visibilityRule>
+                                <booleanFilter>1 OR 2 OR 3</booleanFilter>
                                 <criteria>
-                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
                                     <operator>EQUAL</operator>
-                                    <rightValue>Ended</rightValue>
+                                    <rightValue>NAV IPS Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV UO Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
                         <valueListItems>
                             <value>Work_Trail__c.Sms_reservation</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Work_Trail__c.IPS_setParticipantPassive</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Work_Trail__c.IPS_cloneWorkTrail</value>
+                            <visibilityRule>
+                                <booleanFilter>(1 OR 2 OR 4) AND 3</booleanFilter>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV IPS Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Ended</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV UO Metodeveileder</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Share</value>
+                            <visibilityRule>
+                                <booleanFilter>(1 OR 2 OR 3) AND 4</booleanFilter>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV IPS Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$User.Profile.Name}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>NAV UO Metodeveileder</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>Ended</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>RecordShareHierarchy</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>PrintableView</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Delete</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Work_Trail__c.IPS_Endre_Sluttdetaljer</value>
+                            <visibilityRule>
+                                <booleanFilter>(1  AND 3) OR (2 AND 3)</booleanFilter>
+                                <criteria>
+                                    <leftValue>{!Record.IPS_Show_edit_enddetails_action__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                            </visibilityRule>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
@@ -114,51 +149,27 @@
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>force_highlightsPanel</identifier>
-                <visibilityRule>
-                    <booleanFilter>1 OR 2 OR 3 OR 4 OR 5</booleanFilter>
-                    <criteria>
-                        <leftValue>{!$User.Profile.Name}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>NAV IPS Metodeveileder</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!$User.Profile.Name}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>NAV UO Metodeveileder</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!$User.Profile.Name}</leftValue>
-                        <operator>CONTAINS</operator>
-                        <rightValue>Delegated Administrator</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!$User.Profile.Name}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Systemadministrator</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!$User.Profile.Name}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>System Administrator</rightValue>
-                    </criteria>
-                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
                     <name>message</name>
-                    <value>Passiv</value>
+                    <value>Passive</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>type</name>
                     <value>Warning</value>
                 </componentInstanceProperties>
-                <componentName>crmAlertBanner</componentName>
-                <identifier>c_crmAlertBanner1</identifier>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner</identifier>
                 <visibilityRule>
                     <criteria>
-                        <leftValue>{!Record.ips_Passive__c}</leftValue>
+                        <leftValue>{!Record.passive_status__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>true</rightValue>
                     </criteria>
@@ -175,11 +186,36 @@
                     <name>type</name>
                     <value>Info</value>
                 </componentInstanceProperties>
-                <componentName>crmAlertBanner</componentName>
-                <identifier>c_crmAlertBanner</identifier>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner2</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.IPS_isSMSReserved__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Deltaker er skjermet. Vis aktsomhet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>size</name>
+                    <value>L</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Warning</value>
+                </componentInstanceProperties>
+                <componentName>ips_alertBanner</componentName>
+                <identifier>c_ips_alertBanner3</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>true</rightValue>
                     </criteria>
@@ -199,10 +235,43 @@
                 <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
                 <identifier>pathAssistant</identifier>
                 <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
-                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Large</rightValue>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>message</name>
+                    <value>Jobbsporet er avsluttet</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>type</name>
+                    <value>Info</value>
+                </componentInstanceProperties>
+                <componentName>crmAlertBanner</componentName>
+                <identifier>c_crmAlertBanner</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -215,10 +284,10 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Name</fieldItem>
-                <identifier>field1</identifier>
+                <fieldItem>Record.ips_Participant__c</fieldItem>
+                <identifier>field2</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -227,8 +296,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.ips_Participant__c</fieldItem>
-                <identifier>field2</identifier>
+                <fieldItem>Record.IPS_Personnummer__c</fieldItem>
+                <identifier>RecordIPS_Personnummer_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -249,6 +318,13 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.IPS_Participants_home_address__c</fieldItem>
                 <identifier>RecordIPS_Participants_home_address_cField</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -271,11 +347,29 @@
                 <identifier>RecordIPS_Participant_email_address_cField</identifier>
             </fieldInstance>
         </itemInstances>
+        <name>Facet-c74dff87-fb77-490e-90f3-ad5a0df8f00d</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-c74dff87-fb77-490e-90f3-ad5a0df8f00d</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>column</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-b41f7e21-182e-43ef-ab87-a055ae5c3388</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_Referred_date__c</fieldItem>
                 <identifier>Recordips_Referred_date_cField</identifier>
@@ -285,7 +379,7 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.Oppstartsdato__c</fieldItem>
                 <identifier>field6</identifier>
@@ -309,67 +403,6 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.Days_before_first_employer_meeting__c</fieldItem>
                 <identifier>RecordDays_before_first_employer_meeting_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.ips_Status__c</fieldItem>
-                <identifier>field7</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.End_Cause__c</fieldItem>
-                <identifier>field8</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.ips_Status__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Ended</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.ips_Other_end_cases__c</fieldItem>
-                <identifier>Recordips_Other_end_cases_cField</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.ips_Status__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Ended</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.ips_End_Date__c</fieldItem>
-                <identifier>field9</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.ips_Status__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Ended</rightValue>
-                    </criteria>
-                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -412,7 +445,7 @@
                 <identifier>field12</identifier>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-c74dff87-fb77-490e-90f3-ad5a0df8f00d</name>
+        <name>Facet-6dc8d14c-1563-4217-9a7d-98f2c4629653</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -420,13 +453,61 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
-                    <value>Facet-c74dff87-fb77-490e-90f3-ad5a0df8f00d</value>
+                    <value>Facet-6dc8d14c-1563-4217-9a7d-98f2c4629653</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:column</componentName>
-                <identifier>column</identifier>
+                <identifier>flexipage_column</identifier>
             </componentInstance>
         </itemInstances>
-        <name>Facet-b41f7e21-182e-43ef-ab87-a055ae5c3388</name>
+        <name>Facet-74ac410f-3a3b-4cea-884c-3c7b1297c60f</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_End_Date__c</fieldItem>
+                <identifier>field9</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.End_Cause__c</fieldItem>
+                <identifier>field8</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.ips_Other_end_cases__c</fieldItem>
+                <identifier>Recordips_Other_end_cases_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-6024d1aa-dde1-4d4a-815e-b2f65df3c7e9</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-6024d1aa-dde1-4d4a-815e-b2f65df3c7e9</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-02c9be1f-a0b7-4838-9aea-473f01e92692</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -442,10 +523,53 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Informasjon</value>
+                    <value>{!$Label.IPS_participant_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>fieldSection</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-74ac410f-3a3b-4cea-884c-3c7b1297c60f</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>{!$Label.IPS_information_section_worktrail}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-02c9be1f-a0b7-4838-9aea-473f01e92692</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>{!$Label.IPS_ended_section_worktrail}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>Facet-79d5d477-556a-4d05-9567-5bb4455eba26</name>
@@ -542,7 +666,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Åpenhet</value>
+                    <value>{!$Label.IPS_openness_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>fieldSection12</identifier>
@@ -646,26 +770,6 @@
                 <identifier>field40</identifier>
             </fieldInstance>
         </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.ips_Plan__c</fieldItem>
-                <identifier>field41</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.ips_Transition_to_work__c</fieldItem>
-                <identifier>field42</identifier>
-            </fieldInstance>
-        </itemInstances>
         <name>Facet-cbd393e2-d95d-4291-b16f-d73f0cedad07</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -696,50 +800,13 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Økonomiske rammer før oppstart i jobb</value>
+                    <value>{!$Label.IPS_financial_framework_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>fieldSection11</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!$Client.formFactor}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Large</rightValue>
-                    </criteria>
-                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>Facet-fdteczpc48</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>parentFieldApiName</name>
-                    <value>Work_Trail__c.Id</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListApiName</name>
-                    <value>AttachedContentDocuments</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
-                    <value>ADVGRID</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>relatedListSingleContainer3</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-889c5354-b554-420f-b6e2-d0f6f4d6d840</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -751,7 +818,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Informasjon</value>
+                    <value>{!$Label.IPS_information_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>name</name>
@@ -769,7 +836,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Åpenhet</value>
+                    <value>{!$Label.IPS_openness_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>name</name>
@@ -787,7 +854,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Samarbeid</value>
+                    <value>{!$Label.IPS_cooperation_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>name</name>
@@ -805,7 +872,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Økonomiske rammer før oppstart i jobb</value>
+                    <value>{!$Label.IPS_financial_framework_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>name</name>
@@ -815,24 +882,6 @@
                 <identifier>flexipage_accordionSection4</identifier>
             </componentInstance>
         </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-889c5354-b554-420f-b6e2-d0f6f4d6d840</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>Dokumenter</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>name</name>
-                    <value>accordionSection--f62q4xbodpu</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:accordionSection</componentName>
-                <identifier>flexipage_accordionSection6</identifier>
-            </componentInstance>
-        </itemInstances>
         <name>Facet-1dfc73f4-1943-470b-bdfa-2bc7297decc9</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -840,23 +889,72 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>lookupFieldName</name>
-                    <value>Id</value>
+                    <name>default</name>
+                    <value>true</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>titleFieldName</name>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>updateQuickActionName</name>
-                    <value>Work_Trail__c.work_trail_name</value>
-                </componentInstanceProperties>
-                <componentName>console:relatedRecord</componentName>
-                <identifier>console_relatedRecord1</identifier>
+                <componentName>ips_showParticipantDetail</componentName>
+                <identifier>c_ips_showParticipantDetail</identifier>
                 <visibilityRule>
                     <criteria>
-                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <leftValue>{!Record.IPS_isParticipantConfidential__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Small</rightValue>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>flowArguments</name>
+                    <value>[{&quot;label&quot;:&quot;sObj_Work_Trail&quot;,&quot;dataType&quot;:&quot;SObject&quot;,&quot;supportsRecordId&quot;:true,&quot;value&quot;:&quot;{!Record.Id}&quot;}]</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>flowLayout</name>
+                    <value>oneColumn</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>flowName</name>
+                    <value>IPS_Admin_EditWorkTrail</value>
+                </componentInstanceProperties>
+                <componentName>flowruntime:interview</componentName>
+                <identifier>flowruntime_interview2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Permission.CustomPermission.IPS_Admin_FindAndEditWorkTrails}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>flowArguments</name>
+                    <value>[{&quot;label&quot;:&quot;recordId&quot;,&quot;dataType&quot;:&quot;String&quot;,&quot;supportsRecordId&quot;:true,&quot;value&quot;:&quot;{!Record.Id}&quot;}]</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>flowLayout</name>
+                    <value>oneColumn</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>flowName</name>
+                    <value>IPS_workTrailSetEndcauseAndEnddate</value>
+                </componentInstanceProperties>
+                <componentName>flowruntime:interview</componentName>
+                <identifier>flowruntime_interview</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.ips_Status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ended</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -1071,6 +1169,23 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
+                <fieldItem>Record.IPS_Is_healthcare_related__c</fieldItem>
+                <identifier>RecordIPS_Is_healthcare_related__cField</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.ips_Priority_career_wishes__c</fieldItem>
                 <identifier>field30</identifier>
             </fieldInstance>
@@ -1159,7 +1274,11 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfMonthsToLoad</name>
-                    <value>3</value>
+                    <value>36</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToOpen</name>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfRecords</name>
@@ -1209,11 +1328,22 @@
                     <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>initialQueryLimit</name>
+                    <value>50</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>logEvent</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>picklistFilter1Label</name>
                     <value>Fullført/ikke fullført</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>picklistFilter2Label</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showHideLabel</name>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>timelineParentField</name>
@@ -1234,11 +1364,15 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>amountOfMonths</name>
-                    <value>3</value>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfMonthsToLoad</name>
                     <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToOpen</name>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfRecords</name>
@@ -1290,12 +1424,23 @@
                     <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>initialQueryLimit</name>
+                    <value>50</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>logEvent</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>picklistFilter1Label</name>
                     <value>Type oppgave</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>picklistFilter2Label</name>
                     <value>Status</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showHideLabel</name>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>timelineParentField</name>
@@ -1316,11 +1461,15 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>amountOfMonths</name>
-                    <value>3</value>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfMonthsToLoad</name>
                     <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToOpen</name>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfRecords</name>
@@ -1371,12 +1520,23 @@
                     <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>initialQueryLimit</name>
+                    <value>50</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>logEvent</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>picklistFilter1Label</name>
                     <value>Møtetype</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>picklistFilter2Label</name>
                     <value>Status</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showHideLabel</name>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>timelineParentField</name>
@@ -1397,11 +1557,15 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>amountOfMonths</name>
-                    <value>3</value>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfMonthsToLoad</name>
                     <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToOpen</name>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfRecords</name>
@@ -1453,12 +1617,19 @@
                     <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>logEvent</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>picklistFilter1Label</name>
                     <value>Ansettelsesform</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>picklistFilter2Label</name>
                     <value>Status</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showHideLabel</name>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>timelineParentField</name>
@@ -1479,11 +1650,15 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>amountOfMonths</name>
-                    <value>3</value>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfMonthsToLoad</name>
                     <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToOpen</name>
+                    <value>1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>amountOfRecords</name>
@@ -1535,12 +1710,19 @@
                     <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>logEvent</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>picklistFilter1Label</name>
                     <value>Utdanningsform</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>picklistFilter2Label</name>
                     <value>Status</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showHideLabel</name>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>timelineParentField</name>
@@ -1607,8 +1789,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.ips_Network__c</fieldItem>
-                <identifier>field37</identifier>
+                <fieldItem>Record.ips_job_edu_support_network__c</fieldItem>
+                <identifier>Recordips_job_edu_support_network_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-972fee0b-01de-4e19-bfe6-f58db06da3a1</name>
@@ -1707,75 +1889,38 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>ips_CV</componentName>
+                <identifier>c_ips_CV</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-2d5d2dd9-5f07-45fd-a103-fed950edcda9</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
-                    <name>amountOfMonths</name>
-                    <value>3</value>
+                    <name>parentFieldApiName</name>
+                    <value>Work_Trail__c.Id</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>amountOfMonthsToLoad</name>
-                    <value>5</value>
+                    <name>relatedListApiName</name>
+                    <value>Histories</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>amountOfRecords</name>
-                    <value>10</value>
+                    <name>relatedListComponentOverride</name>
+                    <value>ADVGRID</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>amountOfRecordsToLoad</name>
-                    <value>5</value>
+                    <name>rowsToDisplay</name>
+                    <value>20</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>amountOfRecordsToOpen</name>
-                    <value>5</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>buttonIsHidden</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>configId</name>
-                    <value>IPS_historical_timeline</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>customEmptySubtitle</name>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>filterIsActive</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>headerIcon</name>
-                    <value>custom:custom18</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>headerTitleEnglish</name>
-                    <value>Historical overview - log call, email and SMS</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>headerTitleNorwegian</name>
-                    <value>Historikk Logg samtale, epost-, og SMS</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>hideMyActivitiesFilter</name>
+                    <name>showActionBar</name>
                     <value>false</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>includeAmountInTitle</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>picklistFilter1Label</name>
-                    <value>Type logg</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>picklistFilter2Label</name>
-                    <value>Status</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>timelineParentField</name>
-                    <value>Id</value>
-                </componentInstanceProperties>
-                <componentName>timeline</componentName>
-                <identifier>c_timeline3</identifier>
+                <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer3</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-afc646be-680f-49b6-a9b4-fc07e69e601c</name>
@@ -1790,7 +1935,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Karriereprofil</value>
+                    <value>{!$Label.IPS_career_profile_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>tab7</identifier>
@@ -1808,7 +1953,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Jobbutvikling</value>
+                    <value>{!$Label.IPS_job_development_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>tab8</identifier>
@@ -1822,7 +1967,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Jobb-/utdanningstøtte</value>
+                    <value>{!$Label.IPS_job_education_support_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>tab9</identifier>
@@ -1836,10 +1981,24 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Veilederrapport</value>
+                    <value>{!$Label.IPS_supervisor_report_section}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-2d5d2dd9-5f07-45fd-a103-fed950edcda9</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>{!$Label.IPS_Tab_CV_section_worktrail}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1850,7 +2009,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Historikk</value>
+                    <value>{!$Label.IPS_history_section_worktrail}</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab2</identifier>
@@ -1863,18 +2022,15 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Tabs</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>tabs</name>
                     <value>Facet-a645aa81-399a-4831-9469-6d5362a9856c</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
                 <identifier>tabset2</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!$Client.formFactor}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Large</rightValue>
-                    </criteria>
-                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>main</name>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <description>Decision to update status according to the recordtype of the worktrail.</description>
+        <name>IPS_or_AMS</name>
+        <label>IPS or AMS ?</label>
+        <locationX>578</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Other recordtypes</defaultConnectorLabel>
+        <rules>
+            <name>IPS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_worktrail.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>IPS</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_worktrail.ips_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Referred</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_worktrail_status</targetReference>
+            </connector>
+            <label>IPS</label>
+        </rules>
+        <rules>
+            <name>AMS</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_worktrail.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ips_Supported_Employment</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_worktrail.ips_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Referred</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_worktrail.ips_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Initial contact</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_AMS_worktrail_status</targetReference>
+            </connector>
+            <label>AMS</label>
+        </rules>
+    </decisions>
+    <description>Update worktrail status when startup meeting is completed.
+IPS -&gt; Mapping
+AMS -&gt; Career mapping and career planning</description>
+    <environments>Default</environments>
+    <interviewLabel>IPS - Update worktrail status {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - worktrail update status</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Getting worktrail information related to the triggering event to access the status of the worktrail</description>
+        <name>Get_worktrail</name>
+        <label>Get worktrail</label>
+        <locationX>578</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IPS_or_AMS</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Updating worktrail status to &quot;career mapping and career planning&quot;.</description>
+        <name>Update_AMS_worktrail_status</name>
+        <label>Update AMS worktrail status</label>
+        <locationX>578</locationX>
+        <locationY>539</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_worktrail.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ips_Status__c</field>
+            <value>
+                <stringValue>Career mapping and career planning</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Updating worktrail status to &quot;Mapping&quot;</description>
+        <name>Update_worktrail_status</name>
+        <label>Update worktrail status</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <faultConnector>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_worktrail.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ips_Status__c</field>
+            <value>
+                <stringValue>Mapping</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>452</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_worktrail</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IPS_Status1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Start up meeting</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_isFromTimeline__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Event</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <name>Application_Log</name>
+        <label>Application Log</label>
+        <locationX>314</locationX>
+        <locationY>647</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>Get_worktrail.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - worktrail update status</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+</Flow>

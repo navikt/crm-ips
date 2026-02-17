@@ -3,10 +3,13 @@
     <actionCalls>
         <name>Redirect</name>
         <label>Redirect</label>
-        <locationX>1370</locationX>
-        <locationY>1730</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <actionName>c:IPS_redirect</actionName>
         <actionType>component</actionType>
+        <connector>
+            <targetReference>createCreatorhistory</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
@@ -15,24 +18,87 @@
             </value>
         </inputParameters>
         <nameSegment>c:IPS_redirect</nameSegment>
+        <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-        <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>58.0</apiVersion>
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Add_confidential_checkbox</name>
+        <label>Add confidential checkbox</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varIsConfidential</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Participant_Detail</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>AddOwnerId</name>
+        <label>AddOwnerId</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOwnerName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.NKS_FullName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Worktrail_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>addOwnerId1</name>
+        <label>addOwnerId</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EierCheckbox.recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOwnerName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EierCheckbox.recordName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Worktrail_0_0</targetReference>
+        </connector>
+    </assignments>
     <decisions>
-        <name>checkAge</name>
-        <label>checkAge</label>
-        <locationX>842</locationX>
-        <locationY>782</locationY>
+        <name>Check_ParticipantsAge</name>
+        <label>Check Participants Age</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Get_existing</targetReference>
+            <targetReference>Get_ExistingWorkTrails</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>ageOK</defaultConnectorLabel>
+        <defaultConnectorLabel>Is Adult</defaultConnectorLabel>
         <rules>
             <name>isAgeUnder18</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getPersonDetail.CRM_AgeNumber__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.CRM_AgeNumber__c</leftValueReference>
                 <operator>LessThan</operator>
                 <rightValue>
                     <numberValue>18.0</numberValue>
@@ -41,45 +107,38 @@
             <connector>
                 <targetReference>varAlertAddedAge</targetReference>
             </connector>
-            <label>isAgeUnder18</label>
+            <label>Is Under 18</label>
         </rules>
     </decisions>
     <decisions>
         <description>If person has confidential rating it should not create a new worktrail</description>
         <name>checkForConfidential</name>
         <label>checkForConfidential</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Participant_Detail</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>IsNotconfidential</defaultConnectorLabel>
         <rules>
             <name>IsConfidential</name>
-            <conditionLogic>1 AND (2 OR 3 OR 4)</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
-                <leftValueReference>getPersonDetail.INT_Confidential__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.INT_Confidential__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>getPersonDetail.INT_Confidential__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>FORTROLIG</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>getPersonDetail.INT_Confidential__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.INT_Confidential__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>STRENGT_FORTROLIG</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>getPersonDetail.INT_Confidential__c</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord.INT_Confidential__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>STRENGT_FORTROLIG_UTLAND</stringValue>
@@ -90,13 +149,28 @@
             </connector>
             <label>IsConfidential</label>
         </rules>
+        <rules>
+            <name>IsSmallConfidential</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_RelatedPersonRecord.INT_Confidential__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>FORTROLIG</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_confidential_checkbox</targetReference>
+            </connector>
+            <label>IsSmallConfidential</label>
+        </rules>
     </decisions>
     <decisions>
         <description>Hvis sjekk er tom - betyr det at det er feil fødselsnummer eller person ikke eksisterer</description>
         <name>checkIfEmpty</name>
         <label>checkIfEmpty</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>checkForConfidential</targetReference>
         </defaultConnector>
@@ -105,7 +179,7 @@
             <name>isEmptyCheck</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>getPersonDetail</leftValueReference>
+                <leftValueReference>Get_RelatedPersonRecord</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -120,8 +194,8 @@
     <decisions>
         <name>If_worktrail_exists</name>
         <label>If worktrail exists</label>
-        <locationX>842</locationX>
-        <locationY>1190</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
             <targetReference>Registrer_Jobbspor</targetReference>
         </defaultConnector>
@@ -130,7 +204,7 @@
             <name>Exists</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_existing</leftValueReference>
+                <leftValueReference>Get_ExistingWorkTrails</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -145,10 +219,10 @@
     <decisions>
         <name>Owner_Selected</name>
         <label>Owner Selected</label>
-        <locationX>1106</locationX>
-        <locationY>1406</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Create_Worktrail_0</targetReference>
+            <targetReference>AddOwnerId</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Owner is user</defaultConnectorLabel>
         <rules>
@@ -162,12 +236,13 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Worktrail_0_0</targetReference>
+                <targetReference>addOwnerId1</targetReference>
             </connector>
             <label>ownerIsNotUser</label>
         </rules>
     </decisions>
-    <description>Oppretter nytt jobbspor på deltaker for IPS</description>
+    <description>Opprettelse av nytt Jobbspor for IPS.
+** Bruke telefonnummer på Person hentet fra KRR</description>
     <environments>Default</environments>
     <formulas>
         <name>adjustfor100</name>
@@ -180,11 +255,11 @@
     <formulas>
         <name>participantDOB</name>
         <dataType>Date</dataType>
-        <expression>IF(NOT(ISBLANK({!getPersonDetail.Name})),
+        <expression>IF(NOT(ISBLANK({!Get_RelatedPersonRecord.Name})),
 DATE(
-VALUE(&quot;20&quot;&amp;MID({!getPersonDetail.Name},5,2)),
-VALUE(MID({!getPersonDetail.Name},3,2)),
-VALUE(MID({!getPersonDetail.Name},1,2))
+VALUE(&quot;20&quot;&amp;MID({!Get_RelatedPersonRecord.Name},5,2)),
+VALUE(MID({!Get_RelatedPersonRecord.Name},3,2)),
+VALUE(MID({!Get_RelatedPersonRecord.Name},1,2))
 ),null)</expression>
     </formulas>
     <formulas>
@@ -198,9 +273,14 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <scale>0</scale>
     </formulas>
     <formulas>
-        <name>UserId</name>
+        <name>varCreateHistoryDescription</name>
         <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
+        <expression>&apos;Jobbsporet opprettet av &apos;&amp;{!$User.NKS_FullName__c}</expression>
+    </formulas>
+    <formulas>
+        <name>varOwnerHistoryDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Eier av jobbsporet - &apos;&amp;{!varOwnerName}</expression>
     </formulas>
     <formulas>
         <name>varOwnerSelected</name>
@@ -211,27 +291,45 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <name>varParticipantAddress</name>
         <dataType>String</dataType>
         <expression>IF(
-ISBLANK({!getPersonDetail.INT_ResidentialAddress__c})
+ISPICKVAL({!Get_RelatedPersonRecord.INT_Confidential__c},&apos;UGRADERT&apos;)
+,{!Get_RelatedPersonRecord.INT_ResidentialAddress__c}&amp;&apos;, &apos;&amp;{!Get_RelatedPersonRecord.INT_ResidentialZipCode__c}&amp;&apos;, &apos;&amp;{!Get_RelatedPersonRecord.INT_ResidentialPlace__c},&apos;&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>varParticipantConfidentialAdress</name>
+        <dataType>String</dataType>
+        <expression>IF(ISPICKVAL({!Get_RelatedPersonRecord.INT_Confidential__c},&apos;FORTROLIG&apos;)
+,{!Get_RelatedPersonRecord.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!Get_RelatedPersonRecord.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!Get_RelatedPersonRecord.INT_ResidentialPlace__c}
 ,&apos;&apos;
-,{!getPersonDetail.INT_ResidentialAddress__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialZipCode__c}&amp;&apos; ,&apos;&amp;{!getPersonDetail.INT_ResidentialPlace__c}
 )</expression>
     </formulas>
     <formulas>
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
         <expression>IF(
-ISBLANK({!getPersonDetail.INT_Phone1__c})
+ISBLANK({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c})
 ,&apos;&apos;,
-{!getPersonDetail.INT_Phone1__c}
+LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,&quot;&quot;)
+, 21)
 )</expression>
+    </formulas>
+    <formulas>
+        <name>varStatusHistoryDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Status - Henvist&apos;</expression>
+    </formulas>
+    <formulas>
+        <name>varSupervisorDescription</name>
+        <dataType>String</dataType>
+        <expression>&apos;Veileder endret til - &apos;&amp;{!IPS_nav_supervisor}</expression>
     </formulas>
     <formulas>
         <name>varWorkTrailName</name>
         <dataType>String</dataType>
-        <expression>&apos;Jobbsporet - &apos;&amp;{!getPersonDetail.INT_FirstName__c}&amp;&apos; &apos;&amp;{!getPersonDetail.INT_LastName__c}</expression>
+        <expression>&apos;Jobbsporet - &apos;&amp;{!Get_RelatedPersonRecord.INT_FirstName__c}&amp;&apos; &apos;&amp;{!Get_RelatedPersonRecord.INT_LastName__c}</expression>
     </formulas>
     <interviewLabel>New Worktrail {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - opprett nytt jobbspor for deltaker IPS</label>
+    <label>IPS - worktrail create trail IPS</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -252,10 +350,10 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
-        <name>Create_Error_log</name>
+        <name>Create_ErrorLog</name>
         <label>Create Error log</label>
-        <locationX>1106</locationX>
-        <locationY>1730</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -265,19 +363,25 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <inputAssignments>
             <field>Log_Level__c</field>
             <value>
-                <stringValue>INFO</stringValue>
+                <stringValue>ERROR</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <stringValue>Duplicate creation stopped</stringValue>
+                <elementReference>$Flow.FaultMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Referrence_ID__c</field>
             <value>
-                <elementReference>Get_existing.Id</elementReference>
+                <elementReference>Get_ExistingWorkTrails.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - worktrail create trail IPS</stringValue>
             </value>
         </inputAssignments>
         <object>Application_Log__c</object>
@@ -286,11 +390,11 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordCreates>
         <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
-        <locationX>1370</locationX>
-        <locationY>1514</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>updateWorkTrailName_0_0</targetReference>
+            <targetReference>Redirect</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -299,13 +403,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <inputAssignments>
             <field>IPS_DOB__c</field>
             <value>
-                <elementReference>getPersonDetail.INT_DateOfBirth__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>IPS_Participant_age__c</field>
-            <value>
-                <elementReference>getPersonDetail.CRM_AgeNumber__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.INT_DateOfBirth__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -318,6 +416,36 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             <field>IPS_Partticipant_phone_number__c</field>
             <value>
                 <elementReference>varParticipantsPhone</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_isParticipantConfidential__c</field>
+            <value>
+                <elementReference>varIsConfidential</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_ownerNameText__c</field>
+            <value>
+                <elementReference>varOwnerName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_participant_skjerming_address__c</field>
+            <value>
+                <elementReference>varParticipantConfidentialAdress</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>varOwnerId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -341,7 +469,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
-                <elementReference>getPersonDetail.CRM_Account__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.CRM_Account__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -355,11 +483,11 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordCreates>
         <name>Create_Worktrail_0_0</name>
         <label>Create Worktrail</label>
-        <locationX>842</locationX>
-        <locationY>1514</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>Opprettet</targetReference>
+            <targetReference>update_WorkTrailName</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Noe_gikk_galt</targetReference>
@@ -367,13 +495,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <inputAssignments>
             <field>IPS_DOB__c</field>
             <value>
-                <elementReference>getPersonDetail.INT_DateOfBirth__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>IPS_Participant_age__c</field>
-            <value>
-                <elementReference>getPersonDetail.CRM_AgeNumber__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.INT_DateOfBirth__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -389,9 +511,33 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>IPS_isParticipantConfidential__c</field>
+            <value>
+                <elementReference>varIsConfidential</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_ownerNameText__c</field>
+            <value>
+                <elementReference>varOwnerName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IPS_participant_skjerming_address__c</field>
+            <value>
+                <elementReference>varParticipantConfidentialAdress</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varWorkTrailName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>EierCheckbox.recordId</elementReference>
+                <elementReference>varOwnerId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -415,7 +561,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
-                <elementReference>getPersonDetail.CRM_Account__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.CRM_Account__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -427,10 +573,10 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <object>Work_Trail__c</object>
     </recordCreates>
     <recordLookups>
-        <name>Get_existing</name>
-        <label>Get existing</label>
-        <locationX>842</locationX>
-        <locationY>1082</locationY>
+        <name>Get_ExistingWorkTrails</name>
+        <label>Get Existing Work Trails</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_worktrail_exists</targetReference>
@@ -440,7 +586,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             <field>ips_Participant__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>getPersonDetail.CRM_Account__c</elementReference>
+                <elementReference>Get_RelatedPersonRecord.CRM_Account__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -457,8 +603,8 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <recordLookups>
         <name>Get_RecordTypeId</name>
         <label>Get RecordTypeId</label>
-        <locationX>314</locationX>
-        <locationY>134</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>New_Worktrail</targetReference>
@@ -478,10 +624,10 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>getPersonDetail</name>
-        <label>getPersonDetail</label>
-        <locationX>314</locationX>
-        <locationY>350</locationY>
+        <name>Get_RelatedPersonRecord</name>
+        <label>Get Related Person Record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>checkIfEmpty</targetReference>
@@ -499,34 +645,17 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>updateWorkTrailName_0</name>
-        <label>updateWorkTrailName</label>
-        <locationX>842</locationX>
-        <locationY>1730</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>varWorkTrailId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Name</field>
-            <value>
-                <elementReference>varWorkTrailName</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Work_Trail__c</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>updateWorkTrailName_0_0</name>
-        <label>updateWorkTrailName</label>
-        <locationX>1370</locationX>
-        <locationY>1622</locationY>
+        <name>update_WorkTrailName</name>
+        <label>Update Work Trail Name</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Redirect</targetReference>
+            <targetReference>Opprettet</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Noe_gikk_galt</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -547,8 +676,8 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <screens>
         <name>alertIsExisting</name>
         <label>alertIsExisting</label>
-        <locationX>578</locationX>
-        <locationY>1298</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -568,8 +697,8 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <screens>
         <name>confidentialScreen</name>
         <label>confidentialScreen</label>
-        <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -580,7 +709,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
         </fields>
         <fields>
             <name>displaytxt</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 17, 0);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet konfidensialitet.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet konfidensialitet knyttet til bosted. &lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -589,13 +718,13 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
     <screens>
         <name>New_Worktrail</name>
         <label>Nytt jobbspor</label>
-        <locationX>314</locationX>
-        <locationY>242</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>getPersonDetail</targetReference>
+            <targetReference>Get_RelatedPersonRecord</targetReference>
         </connector>
         <fields>
             <name>DisplayTxt1</name>
@@ -607,6 +736,7 @@ ISBLANK({!getPersonDetail.INT_Phone1__c})
             <dataType>String</dataType>
             <fieldText>Deltakers fødselsnummer</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;Fødselsnummer kan kun inneholde 11 numeriske verdier uten mellomrom og spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -622,13 +752,13 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Noe_gikk_galt</name>
         <label>Noe gikk galt</label>
-        <locationX>1106</locationX>
-        <locationY>1622</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_Error_log</targetReference>
+            <targetReference>Create_ErrorLog</targetReference>
         </connector>
         <fields>
             <name>displayTxtWarning</name>
@@ -645,14 +775,14 @@ LEN( {!ips_participants_scn}) == 11
     </screens>
     <screens>
         <name>Opprettet</name>
-        <label>Opprettet</label>
-        <locationX>842</locationX>
-        <locationY>1622</locationY>
+        <label>Succsessfully Created Screen</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>updateWorkTrailName_0</targetReference>
+            <targetReference>createCreatorhistory</targetReference>
         </connector>
         <fields>
             <name>displayTxtCreated</name>
@@ -670,13 +800,13 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Participant_Detail</name>
         <label>Participant Detail</label>
-        <locationX>842</locationX>
-        <locationY>674</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>checkAge</targetReference>
+            <targetReference>Check_ParticipantsAge</targetReference>
         </connector>
         <fields>
             <name>DisplayTxt3</name>
@@ -728,7 +858,7 @@ LEN( {!ips_participants_scn}) == 11
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Name</name>
-                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!getPersonDetail.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!getPersonDetail.Name}&lt;/p&gt;&lt;p&gt;Alder: {!getPersonDetail.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!Get_RelatedPersonRecord.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!Get_RelatedPersonRecord.Name}&lt;/p&gt;&lt;p&gt;Alder: {!Get_RelatedPersonRecord.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
                 </fields>
                 <fields>
@@ -739,6 +869,7 @@ LEN( {!ips_participants_scn}) == 11
                     </defaultValue>
                     <fieldText>Er dette riktig deltaker?</fieldText>
                     <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <validationRule>
                         <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at dette er riktig deltaker.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -761,6 +892,7 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>String</dataType>
             <fieldText>Behandlingsteam/Innsøkende avdeling</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -768,6 +900,7 @@ LEN( {!ips_participants_scn}) == 11
             <dataType>String</dataType>
             <fieldText>Nav veileder</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -776,6 +909,7 @@ LEN( {!ips_participants_scn}) == 11
             <fieldText>Henvist dato</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;Henvist dato skal samsvare med vedtaksdato i Arena.&lt;/span&gt;&lt;/p&gt;</helpText>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -784,8 +918,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>Registrer_Jobbspor</name>
         <label>Registrer Jobbspor</label>
-        <locationX>1106</locationX>
-        <locationY>1298</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -805,6 +939,7 @@ LEN( {!ips_participants_scn}) == 11
             </defaultValue>
             <fieldText>Er bruker informert om sine rettigheter som registrert i applikasjonen</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Du må verifisere at deltaker er informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -849,8 +984,8 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>screenIsEmpty</name>
         <label>screenIsEmpty</label>
-        <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -870,13 +1005,13 @@ LEN( {!ips_participants_scn}) == 11
     <screens>
         <name>varAlertAddedAge</name>
         <label>varAlertAddedAge</label>
-        <locationX>710</locationX>
-        <locationY>890</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Get_existing</targetReference>
+            <targetReference>Get_ExistingWorkTrails</targetReference>
         </connector>
         <fields>
             <name>displayTxtAlertAge</name>
@@ -896,6 +1031,7 @@ LEN( {!ips_participants_scn}) == 11
             </defaultValue>
             <fieldText>Skriftlig samtykke fra foresatt(e) foreligger</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at skriftlig samtykke foreligger når deltaker er under 18 år&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -906,13 +1042,174 @@ LEN( {!ips_participants_scn}) == 11
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>188</locationX>
+        <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_RecordTypeId</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>createCreatorhistory</name>
+        <label>createCreatorhistory</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>createOwnerHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varCreateHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varCreateHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>createHistoryStatus</name>
+        <label>createHistoryStatus</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varStatusHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varStatusHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>createOwnerHistory</name>
+        <label>createOwnerHistory</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>createSupervisorHistory</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varOwnerHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varOwnerHistoryDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>createSupervisorHistory</name>
+        <label>createSupervisorHistory</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>createHistoryStatus</targetReference>
+        </connector>
+        <flowName>IPS_subflow_create_task_history</flowName>
+        <inputAssignments>
+            <name>varDescription</name>
+            <value>
+                <elementReference>varSupervisorDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varOwnerId</name>
+            <value>
+                <elementReference>varOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varRecordTypeDeveloperName</name>
+            <value>
+                <stringValue>IPS_Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varSubject</name>
+            <value>
+                <elementReference>varSupervisorDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varWhatId</name>
+            <value>
+                <elementReference>varWorkTrailId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>RecordTypeId</name>
         <dataType>String</dataType>
@@ -938,6 +1235,16 @@ LEN( {!ips_participants_scn}) == 11
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>var_WorktTrailStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Referred</stringValue>
+        </value>
+    </variables>
+    <variables>
         <name>varConsent</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
@@ -946,6 +1253,30 @@ LEN( {!ips_participants_scn}) == 11
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>varIsConfidential</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varOwnerId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varOwnerName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>varParticipantAge</name>

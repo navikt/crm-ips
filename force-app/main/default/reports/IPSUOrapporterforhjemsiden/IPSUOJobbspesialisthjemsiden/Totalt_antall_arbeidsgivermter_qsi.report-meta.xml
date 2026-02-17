@@ -19,9 +19,6 @@
         <field>Activity.IPS_Status1__c</field>
     </columns>
     <columns>
-        <field>Activity.ips_uo_Kanal__c</field>
-    </columns>
-    <columns>
         <field>LOCATION</field>
     </columns>
     <columns>
@@ -72,16 +69,38 @@
             <operator>equals</operator>
             <value>Fysisk</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Activity.ips_Is_the_employer_decision_maker__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Activity.ips_Subcategory_Type_IPS__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Job support</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Activity.IPS_Subcategory_Type_UO__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Follow-up</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Activity.RelatedToAccount__c</field>
+        <dateGranularity>Week</dateGranularity>
+        <field>DUE_DATE</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
-        <field>DUE_DATE</field>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.RelatedToAccount__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
@@ -89,7 +108,7 @@
         <field>Activity.IPS_Type__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Totalt antall arbeidsgivermøter</name>
+    <name>Tot antall tellende arbeidsgivermøter</name>
     <params>
         <name>closed</name>
         <value>all</value>

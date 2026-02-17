@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Hash_user_id1</name>
+        <label>Hash user id</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_StringHasherController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Create_platform_event2</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_StringHasherController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>varHashedUserId</assignToReference>
+            <name>hashString</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Hash_user_id2</name>
+        <label>Hash user id</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_StringHasherController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>IPS_createPlatformEvent</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_StringHasherController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>varHashedUserId</assignToReference>
+            <name>hashString</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>IPS_hashUserId</name>
+        <label>Hash user id</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_StringHasherController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Create_platform_event1</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>inputString</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_StringHasherController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>varHashedUserId</assignToReference>
+            <name>hashString</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>IPS_checkIfUserIsDeactivated</name>
+        <label>Check if user is deactivated/activated</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>IPS_checkProfileChange</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isActiveChanged</name>
+            <conditionLogic>1 AND (2 OR 3 OR 4 OR 5) AND 6</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IsActive</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV IPS Metodeveileder</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV IPS Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV UO Metodeveileder</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV UO Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.UserRoleId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IPS_hashUserId</targetReference>
+            </connector>
+            <label>isActiveChanged</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IPS_checkProfileChange</name>
+        <label>Check if profile change</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>IPS_checkRoleChanges</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isProfileChangeOutside</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>forProfilePrevious</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>forProfileCurrent</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Hash_user_id1</targetReference>
+            </connector>
+            <label>isProfileChangeOutside</label>
+        </rules>
+        <rules>
+            <name>isProfileChangeInside</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>forProfilePrevious</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>forProfileCurrent</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IPS_checkRoleChanges</targetReference>
+            </connector>
+            <label>isProfileChangeInside</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IPS_checkRoleChanges</name>
+        <label>Check if Role changes</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IsRoleChanges</name>
+            <conditionLogic>1 AND (2 OR 3 OR 4 OR 5) AND 6</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.UserRoleId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV IPS Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV IPS Metodeveileder</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV UO Metodeveileder</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV UO Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Hash_user_id2</targetReference>
+            </connector>
+            <label>IsRoleChanges</label>
+        </rules>
+    </decisions>
+    <description>Flow is triggered when a user get a new role, profile, changes in isActive and has jobbspor profile  - send to IPS platform event user role</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>forExternRole</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(CONTAINS({!$Record.UserRole.Name}, &apos;Ekstern&apos;),TRUE,FALSE)</expression>
+    </formulas>
+    <formulas>
+        <name>forProfileCurrent</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(
+CASE(
+{!$Record.CRM_UserProfileName__c},
+&apos;NAV IPS Metodeveileder&apos;, &apos;true&apos;,
+&apos;NAV IPS Jobbspesialist&apos;, &apos;true&apos;,
+&apos;NAV UO Metodeveileder&apos;, &apos;true&apos;,
+&apos;NAV UO Jobbspesialist&apos;, &apos;true&apos;,
+&apos;false&apos;) =&apos;true&apos;,
+TRUE,
+FALSE
+)</expression>
+    </formulas>
+    <formulas>
+        <name>forProfilePrevious</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(
+CASE(
+{!$Record__Prior.CRM_UserProfileName__c},
+&apos;NAV IPS Metodeveileder&apos;, &apos;true&apos;,
+&apos;NAV IPS Jobbspesialist&apos;, &apos;true&apos;,
+&apos;NAV UO Metodeveileder&apos;, &apos;true&apos;,
+&apos;NAV UO Jobbspesialist&apos;, &apos;true&apos;,
+&apos;false&apos;) =&apos;true&apos;,
+TRUE,
+FALSE
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Tar profilnavn som parameter, sjekker om ordet Metodeveileder eller Jobbspesialist inneholder i profilnavn og setter brukers rolle.</description>
+        <name>forUserRole</name>
+        <dataType>String</dataType>
+        <expression>IF( CONTAINS({!$Record.Profile.Name}, &apos;Metodeveileder&apos;)
+,&apos;Metodeveileder&apos;
+,IF(CONTAINS({!$Record.Profile.Name}, &apos;Jobbspesialist&apos;)
+,&apos;Jobbspesialist&apos;
+,&apos;NONE&apos;)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>forUserRoleName</name>
+        <dataType>String</dataType>
+        <expression>IF( BEGINS({!$Record.UserRole.Name}, &apos;AMS&apos;)    
+,TRIM(SUBSTITUTE(TRIM(SUBSTITUTE(TRIM( RIGHT({!$Record.UserRole.Name}, LEN({!$Record.UserRole.Name}) -4)),&apos;Jobbspesialist&apos;,&apos;&apos;)),&apos;Metodeveileder&apos;,&apos;&apos;))
+, IF( BEGINS({!$Record.UserRole.Name}, &apos;IPS&apos;) 
+,  TRIM(SUBSTITUTE(TRIM(SUBSTITUTE(TRIM( RIGHT({!$Record.UserRole.Name}, LEN({!$Record.UserRole.Name}) -4)),&apos;Jobbspesialist&apos;,&apos;&apos;)),&apos;Metodeveileder&apos;,&apos;&apos;))
+,IF( BEGINS({!$Record.UserRole.Name}, &apos;Fagansvarlig&apos;)
+,RIGHT({!$Record.UserRole.Name}, LEN({!$Record.UserRole.Name}) -13)
+,&apos;NONE&apos;)
+))</expression>
+    </formulas>
+    <formulas>
+        <name>forUserRoleNamePrevious</name>
+        <dataType>String</dataType>
+        <expression>IF( BEGINS({!$Record__Prior.UserRole.Name}, &apos;AMS&apos;)    
+,TRIM(SUBSTITUTE(TRIM(SUBSTITUTE(TRIM( RIGHT({!$Record__Prior.UserRole.Name}, LEN({!$Record__Prior.UserRole.Name}) -4)),&apos;Jobbspesialist&apos;,&apos;&apos;)),&apos;Metodeveileder&apos;,&apos;&apos;))
+, IF( BEGINS({!$Record__Prior.UserRole.Name}, &apos;IPS&apos;) 
+,  TRIM(SUBSTITUTE(TRIM(SUBSTITUTE(TRIM( RIGHT({!$Record__Prior.UserRole.Name}, LEN({!$Record__Prior.UserRole.Name}) -4)),&apos;Jobbspesialist&apos;,&apos;&apos;)),&apos;Metodeveileder&apos;,&apos;&apos;))
+,IF( BEGINS({!$Record__Prior.UserRole.Name}, &apos;Fagansvarlig&apos;)
+,RIGHT({!$Record__Prior.UserRole.Name}, LEN({!$Record__Prior.UserRole.Name}) -13)
+,&apos;NONE&apos;)
+))</expression>
+    </formulas>
+    <formulas>
+        <name>forUserRolePrevious</name>
+        <dataType>String</dataType>
+        <expression>IF( CONTAINS({!$Record__Prior.CRM_UserProfileName__c}, &apos;Metodeveileder&apos;)
+,&apos;Metodeveileder&apos;
+,IF(CONTAINS({!$Record__Prior.CRM_UserProfileName__c}, &apos;Jobbspesialist&apos;)
+,&apos;Jobbspesialist&apos;
+,&apos;NONE&apos;)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>forUserService</name>
+        <dataType>String</dataType>
+        <expression>IF( CONTAINS({!$Record.Profile.Name}, &apos;IPS&apos;)
+,&apos;IPS&apos;
+,IF(CONTAINS({!$Record.Profile.Name}, &apos;AMS&apos;)
+,&apos;AMS&apos;
+,&apos;NONE&apos;)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>forUserServicePrevious</name>
+        <dataType>String</dataType>
+        <expression>IF( CONTAINS({!$Record__Prior.CRM_UserProfileName__c}, &apos;IPS&apos;)
+,&apos;IPS&apos;
+,IF(CONTAINS({!$Record__Prior.CRM_UserProfileName__c}, &apos;AMS&apos;)
+,&apos;AMS&apos;
+,&apos;NONE&apos;)
+)</expression>
+    </formulas>
+    <interviewLabel>IPS Platform event user role {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - Platform event user role</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_platform_event1</name>
+        <label>Create platform event</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IPS_checkProfileChange</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RoleId__c</field>
+            <value>
+                <elementReference>$Record.UserRoleId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RoleLastModifiedDate__c</field>
+            <value>
+                <elementReference>$Record.UserRole.SystemModstamp</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RoleName__c</field>
+            <value>
+                <elementReference>$Record.UserRole.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserDepartmentName__c</field>
+            <value>
+                <elementReference>$Record.CompanyName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserDepartmentNumber__c</field>
+            <value>
+                <elementReference>$Record.Department</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserId__c</field>
+            <value>
+                <elementReference>varHashedUserId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserIsExternal__c</field>
+            <value>
+                <elementReference>forExternRole</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserProfileName__c</field>
+            <value>
+                <elementReference>$Record.Profile.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserRoleName__c</field>
+            <value>
+                <elementReference>forUserRoleName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserRole__c</field>
+            <value>
+                <elementReference>forUserRole</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserService__c</field>
+            <value>
+                <elementReference>forUserService</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>isUserActive__c</field>
+            <value>
+                <elementReference>$Record.IsActive</elementReference>
+            </value>
+        </inputAssignments>
+        <object>IPSRoleUserEvent__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_platform_event2</name>
+        <label>Create platform event</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IPS_checkRoleChanges</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RoleId__c</field>
+            <value>
+                <elementReference>$Record.UserRoleId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RoleLastModifiedDate__c</field>
+            <value>
+                <elementReference>$Record.UserRole.SystemModstamp</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RoleName__c</field>
+            <value>
+                <elementReference>$Record__Prior.UserRole.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserDepartmentName__c</field>
+            <value>
+                <elementReference>$Record__Prior.CompanyName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserDepartmentNumber__c</field>
+            <value>
+                <elementReference>$Record__Prior.Department</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserId__c</field>
+            <value>
+                <elementReference>varHashedUserId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserIsExternal__c</field>
+            <value>
+                <elementReference>forExternRole</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserProfileName__c</field>
+            <value>
+                <elementReference>$Record__Prior.CRM_UserProfileName__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserRoleName__c</field>
+            <value>
+                <elementReference>forUserRoleNamePrevious</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserRole__c</field>
+            <value>
+                <elementReference>forUserRolePrevious</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserService__c</field>
+            <value>
+                <elementReference>forUserServicePrevious</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>isUserActive__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>IPSRoleUserEvent__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>IPS_createPlatformEvent</name>
+        <label>Create platform event</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>RoleId__c</field>
+            <value>
+                <elementReference>$Record.UserRoleId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RoleLastModifiedDate__c</field>
+            <value>
+                <elementReference>$Record.UserRole.SystemModstamp</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RoleName__c</field>
+            <value>
+                <elementReference>$Record.UserRole.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserDepartmentName__c</field>
+            <value>
+                <elementReference>$Record.CompanyName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserDepartmentNumber__c</field>
+            <value>
+                <elementReference>$Record.Department</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserId__c</field>
+            <value>
+                <elementReference>varHashedUserId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserIsExternal__c</field>
+            <value>
+                <elementReference>forExternRole</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserProfileName__c</field>
+            <value>
+                <elementReference>$Record.Profile.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserRoleName__c</field>
+            <value>
+                <elementReference>forUserRoleName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserRole__c</field>
+            <value>
+                <elementReference>forUserRole</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserService__c</field>
+            <value>
+                <elementReference>forUserService</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>isUserActive__c</field>
+            <value>
+                <elementReference>$Record.IsActive</elementReference>
+            </value>
+        </inputAssignments>
+        <object>IPSRoleUserEvent__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IPS_checkIfUserIsDeactivated</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>CRM_UserProfileName__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>UserRoleId</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>User</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>varHashedUserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varUserId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
