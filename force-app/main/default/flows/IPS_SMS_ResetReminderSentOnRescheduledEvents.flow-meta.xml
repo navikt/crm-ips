@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Resets the Reminder Sent Flag when Events are rescheduled</description>
+    <environments>Default</environments>
+    <label>IPS - SMS - Reset Reminder Sent On Rescheduled Events</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Set_ReminderSMSSentFalse</name>
+        <label>Set Reminder SMS Sent False</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>IPS_IsReminderSMSSendt__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Set_ReminderSMSSentFalse</targetReference>
+        </connector>
+        <filterFormula>({!$Record.RecordType.DeveloperName} = &apos;IPS_Event&apos;
+||
+{!$Record.RecordType.DeveloperName} = &apos;Ips_uo_Deltakermote&apos;
+||
+{!$Record.RecordType.DeveloperName} = &apos;ips_UO_m_ter&apos;)
+&amp;&amp;
+ISCHANGED({!$Record.ActivityDateTime})
+&amp;&amp;
+{!$Record.IPS_IsReminderSMSSendt__c} = true</filterFormula>
+        <object>Event</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
