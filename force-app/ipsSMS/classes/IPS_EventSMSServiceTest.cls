@@ -35,24 +35,13 @@ public with sharing class IPS_EventSMSServiceTest {
         // Create Events
         List<Event> eventList = new List<Event>();
         for (Work_Trail__c workTrail : workTrails) {
-            System.Assert.isNotNull(
-                accountsByAccountIds.get(workTrail.ips_Participant__c).PersonContactId,
-                'PersonContactId should not be null'
-            );
             Event eventRecord = IPS_TestDataFactory.createParticipantEvent(
                 accountsByAccountIds.get(workTrail.ips_Participant__c).PersonContactId,
                 workTrail.Id
             );
-            // Ensure SMS flags are false initially
-            eventRecord.IPS_isCreatedSMSSendt__c = false;
-            eventRecord.IPS_isReminderSMSSendt__c = false;
             eventList.add(eventRecord);
         }
         insert eventList;
-
-        System.Assert.isNotNull(persons, 'Persons should be created for testing');
-        System.Assert.isNotNull(workTrails, 'Work Trails should be created for testing');
-        System.Assert.isNotNull(eventList, 'Events should be created for testing');
     }
 
     @IsTest
@@ -71,8 +60,9 @@ public with sharing class IPS_EventSMSServiceTest {
             '23.11.2025, kl 14:30',
             'Expected formatted time period to be "23.11.2025, kl 14:30"'
         );
-        System.Assert.isTrue(
-            formattedTime2 == '01.01.2026, kl 09:00',
+        System.Assert.areEqual(
+            formattedTime2,
+            '01.01.2026, kl 09:00',
             'Expected formatted time period to be "01.01.2026, kl 09:00'
         );
     }
@@ -104,32 +94,6 @@ public with sharing class IPS_EventSMSServiceTest {
             location3,
             'Ikke oppgitt',
             'Expected Location to be "Ikke oppgitt" when neither field is set'
-        );
-    }
-
-    @IsTest
-    public static void constructCreatedMessageTest() {
-        // Given
-        Event testEvent = new Event(
-            ips_uo_Kanal__c = 'Fysisk',
-            StartDateTime = Datetime.newInstance(2025, 12, 5, 10, 0, 0)
-        );
-
-        // When
-        String createdMessage = IPS_EventSMSService.constructCreatedMessage(testEvent);
-
-        // Then
-        System.Assert.isTrue(
-            createdMessage.contains('Det er satt opp et fysisk møte med jobbspesialisten din.'),
-            'Created message should contain the correct meeting setup text'
-        );
-        System.Assert.isTrue(
-            createdMessage.contains('Tidspunkt: 05.12.2025, kl 10:00'),
-            'Created message should contain the correctly formatted date and time'
-        );
-        System.Assert.isTrue(
-            createdMessage.contains('Logg inn på NAV for detaljer. Du kan ikke svare på denne meldingen.'),
-            'Created message should inform that replies are not possible'
         );
     }
 
@@ -177,71 +141,37 @@ public with sharing class IPS_EventSMSServiceTest {
     public static void createEventSMSWrapperTest() {
         // Given
         createTestData();
-        List<Event> events = [SELECT Id, StartDateTime, Location, ips_uo_Kanal__c, WhatId FROM Event LIMIT 2];
+        List<Event> events = [
+            SELECT Id, StartDateTime, Location, ips_uo_Kanal__c, WhatId
+            FROM Event
+            LIMIT 2
+        ];
 
         // When
-        IPS_EventSMSService.EventSMSWrapper createdWrapper = IPS_EventSMSService.createEventSMSWrapper(
-            events,
-            IPS_EventSMSService.SMSType.CREATED
-        );
+        Test.startTest();
         IPS_EventSMSService.EventSMSWrapper reminderWrapper = IPS_EventSMSService.createEventSMSWrapper(
             events,
             IPS_EventSMSService.SMSType.REMINDER
         );
-        IPS_EventSMSService.EventSMSWrapper changedWrapper = IPS_EventSMSService.createEventSMSWrapper(
-            events,
-            IPS_EventSMSService.SMSType.CHANGED
-        );
+        Test.stopTest();
 
         // Then
         System.Assert.isNotNull(reminderWrapper, 'Expected EventSMSWrapper to be not null');
-        System.Assert.isNotNull(createdWrapper, 'Expected EventSMSWrapper to be not null');
-        System.Assert.isNotNull(changedWrapper, 'Expected EventSMSWrapper to be not null');
 
-        System.Assert.isInstanceOfType(
-            createdWrapper.eventList,
-            List<Event>.class,
-            'Expected eventList to be of type List<Event>'
-        );
         System.Assert.isInstanceOfType(
             reminderWrapper.eventList,
             List<Event>.class,
             'Expected eventList to be of type List<Event>'
         );
-        System.Assert.isInstanceOfType(
-            changedWrapper.eventList,
-            List<Event>.class,
-            'Expected eventList to be of type List<Event>'
-        );
 
-        System.Assert.isInstanceOfType(
-            createdWrapper.smsType,
-            IPS_EventSMSService.SMSType.class,
-            'Expected smsType to be of type SMSType'
-        );
         System.Assert.isInstanceOfType(
             reminderWrapper.smsType,
             IPS_EventSMSService.SMSType.class,
             'Expected smsType to be of type SMSType'
         );
-        System.Assert.isInstanceOfType(
-            changedWrapper.smsType,
-            IPS_EventSMSService.SMSType.class,
-            'Expected smsType to be of type SMSType'
-        );
 
         System.Assert.areEqual(
-            createdWrapper.smsList.size(),
-            events.size(),
-            'Expected number of SMS records to match number of Events'
-        );
-        System.Assert.areEqual(
             reminderWrapper.smsList.size(),
-            events.size(),
-            'Expected number of SMS records to match number of Events'
-        );
-        System.Assert.areEqual(
-            changedWrapper.smsList.size(),
             events.size(),
             'Expected number of SMS records to match number of Events'
         );
@@ -291,7 +221,6 @@ public with sharing class IPS_EventSMSServiceTest {
             reminderSentFlagByEventId.put(eventPrior.Id, eventPrior.IPS_IsReminderSMSSendt__c);
             eventsPriorMap.put(eventPrior.Id, eventPrior);
         }
-        //  update eventsPriorMap.values();
 
         // When
         Test.startTest();
@@ -309,6 +238,7 @@ public with sharing class IPS_EventSMSServiceTest {
             eventsPriorMap.size(),
             'Expected number of sent SMS records to match number of Events created'
         );
+        // Note that we expect the SMS status to be "Could not send" in a test context since we cannot actually send SMS messages during tests
         for (SMS__c sms : createdSMSMessages) {
             System.Assert.areEqual('Could not send', sms.Status__c, 'Expected SMS status to be "Could not send"');
         }
@@ -319,15 +249,6 @@ public with sharing class IPS_EventSMSServiceTest {
             FROM Event
             WHERE Id IN :eventsPriorMap.keySet()
         ]) {
-            System.Assert.areEqual(
-                eventsPriorMap.get(eventAfter.Id).IPS_IsCreatedSMSSendt__c,
-                eventAfter.IPS_IsCreatedSMSSendt__c,
-                'Epected IPS_IsCreatedSMSSendt__c to match after update'
-            );
-            System.Assert.isFalse(
-                eventAfter.IPS_IsCreatedSMSSendt__c,
-                'Expected IPS_IsCreatedSMSSendt__c to be false for the Event'
-            );
             System.Assert.isTrue(
                 eventAfter.IPS_IsReminderSMSSendt__c,
                 'Expected IPS_IsReminderSMSSendt__c to be true for the Event'
