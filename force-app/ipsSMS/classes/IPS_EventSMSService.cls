@@ -46,56 +46,6 @@ public without sharing class IPS_EventSMSService {
         return eventWorkTailMap;
     }
 
-    public static void createSMS(List<Event> eventList) {
-        List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
-
-        for (Event event : eventList) {
-            Work_Trail__c workTrail = eventWorkTailMap.get(event);
-            if (
-                workTrail.IPS_Partticipant_phone_number__c == null &&
-                workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c != null
-            ) {
-                workTrail.IPS_Partticipant_phone_number__c = workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c;
-            }
-            if (
-                workTrail.ips_Participant__c != null &&
-                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
-                workTrail.IPS_Partticipant_phone_number__c != null
-            ) {
-                smsList.add(
-                    IPS_SMS.createSMSRecord(
-                        'IPS',
-                        'Meeting Created',
-                        workTrail.ips_Participant__c,
-                        event.Id,
-                        workTrail.IPS_Partticipant_phone_number__c,
-                        constructCreatedMessage(event),
-                        workTrail.Id
-                    )
-                );
-                event.IPS_IsCreatedSMSSendt__c = true;
-            }
-        }
-        // Insert SMS records
-        CRM_DatabaseOperations cdoSMS = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
-        cdoSMS.insertRecords(smsList);
-
-        // Loop over inserted SMS to set the created flag on Events
-        CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
-        cdoEvents.updateRecords(eventList);
-    }
-    @TestVisible
-    private static String constructCreatedMessage(Event event) {
-        String message =
-            'Det er satt opp et ' +
-            event.ips_uo_Kanal__c.toLowerCase() +
-            ' møte med jobbspesialisten din.';
-        message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
-        message += '\n\nLogg inn på NAV for detaljer. Du kan ikke svare på denne meldingen.';
-        return message;
-    }
-
     /**
      * @description Creates SMS messages to remind participants of upcoming Events
      * @author Håkon Kavli | 12-17-2025
@@ -200,46 +150,6 @@ public without sharing class IPS_EventSMSService {
         } else {
             return 'Ikke oppgitt';
         }
-    }
-
-    public static void changeSMS(List<Event> eventList) {
-        List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
-
-        for (Event event : eventList) {
-            Work_Trail__c workTrail = eventWorkTailMap.get(event);
-            if (
-                workTrail.ips_Participant__c != null &&
-                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
-                workTrail.IPS_Partticipant_phone_number__c != null
-            ) {
-                smsList.add(
-                    IPS_SMS.createSMSRecord(
-                        'IPS',
-                        'Meeting Updated',
-                        workTrail.ips_Participant__c,
-                        event.Id,
-                        workTrail.IPS_Partticipant_phone_number__c,
-                        constructChangedMessage(event),
-                        workTrail.Id
-                    )
-                );
-                event.IPS_IsSendChangeSMS__c = false;
-            }
-        }
-        Database.insert(smsList, false);
-        Database.update(eventList, false);
-    }
-
-    @TestVisible
-    private static String constructChangedMessage(Event event) {
-        String message =
-            'Møte er endret. Ny tid for' +
-            event.ips_uo_Kanal__c.toLowerCase() +
-            ' møte med jobbspesialisten din.';
-        message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
-        message += '\n\nDu kan ikke svare på denne meldingen.';
-        return message;
     }
 
     @TestVisible
