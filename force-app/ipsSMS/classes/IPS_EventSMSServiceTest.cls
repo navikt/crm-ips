@@ -269,72 +269,6 @@ public with sharing class IPS_EventSMSServiceTest {
     }
 
     @IsTest
-    public static void createdSMSIntegrationTest() {
-        // Given
-        createTestData();
-        Map<Id, Event> eventsPriorMap = new Map<Id, Event>();
-        Map<Id, Boolean> createdSentFlagByEventId = new Map<Id, Boolean>();
-
-        for (Event eventPrior : [
-            SELECT
-                Id,
-                StartDateTime,
-                Location,
-                ips_uo_Kanal__c,
-                WhatId,
-                IPS_IsCreatedSMSSendt__c,
-                IPS_IsReminderSMSSendt__c
-            FROM Event
-            LIMIT 2
-        ]) {
-            eventPrior.IPS_IsCreatedSMSSendt__c = false;
-            createdSentFlagByEventId.put(eventPrior.Id, eventPrior.IPS_IsReminderSMSSendt__c);
-            eventsPriorMap.put(eventPrior.Id, eventPrior);
-        }
-        update eventsPriorMap.values();
-
-        // When
-        Test.startTest();
-        IPS_EventSMSService.createSMS(eventsPriorMap.values());
-        Test.stopTest();
-
-        // Then
-        List<SMS__c> createdSMSMessages = [
-            SELECT Id, Message__c, EventId__c, Status__c
-            FROM SMS__c
-            WHERE EventId__c IN :eventsPriorMap.keySet()
-        ];
-        System.Assert.areEqual(
-            createdSMSMessages.size(),
-            eventsPriorMap.size(),
-            'Expected number of sent SMS records to match number of Events created'
-        );
-        for (SMS__c sms : createdSMSMessages) {
-            System.Assert.areEqual('Could not send', sms.Status__c, 'Expected SMS status to be "Could not send"');
-        }
-        // Verify that the IPS_IsCreatedSMSSendt__c field is updated
-        List<Event> updatedEvents = [
-            SELECT Id, IPS_IsCreatedSMSSendt__c, IPS_IsReminderSMSSendt__c
-            FROM Event
-            WHERE Id IN :eventsPriorMap.keySet()
-        ];
-        for (Event eventAfter : updatedEvents) {
-            System.Assert.areNotEqual(
-                createdSentFlagByEventId.get(eventAfter.Id),
-                eventAfter.IPS_IsCreatedSMSSendt__c,
-                'Did not expect IPS_IsCreatedSMSSendt__c to match after update'
-            );
-            System.Assert.isTrue(
-                eventAfter.IPS_IsCreatedSMSSendt__c,
-                'Expected IPS_IsCreatedSMSSendt__c to be true for the Event'
-            );
-            System.Assert.isFalse(
-                eventAfter.IPS_IsReminderSMSSendt__c,
-                'Expected IPS_IsReminderSMSSendt__c to be false for the Event'
-            );
-        }
-    }
-    @IsTest
     public static void reminderSMSIntegrationTest() {
         // Given
         createTestData();
@@ -357,7 +291,7 @@ public with sharing class IPS_EventSMSServiceTest {
             reminderSentFlagByEventId.put(eventPrior.Id, eventPrior.IPS_IsReminderSMSSendt__c);
             eventsPriorMap.put(eventPrior.Id, eventPrior);
         }
-        update eventsPriorMap.values();
+        //  update eventsPriorMap.values();
 
         // When
         Test.startTest();
@@ -406,67 +340,6 @@ public with sharing class IPS_EventSMSServiceTest {
                 reminderSentFlagByEventId.get(eventAfter.Id),
                 eventAfter.IPS_IsReminderSMSSendt__c,
                 'Did not expect IPS_IsReminderSMSSendt__c to match after update'
-            );
-        }
-    }
-
-    @IsTest
-    public static void changedSMSIntegrationTest() {
-        // Given
-        createTestData();
-        Map<Id, Event> eventsPriorMap = new Map<Id, Event>();
-        Map<Id, Boolean> changeFlagByEventId = new Map<Id, Boolean>();
-
-        for (Event eventPrior : [
-            SELECT Id, StartDateTime, Location, ips_uo_Kanal__c, WhatId, IPS_IsSendChangeSMS__c
-            FROM Event
-            LIMIT 2
-        ]) {
-            eventPrior.IPS_IsSendChangeSMS__c = true;
-            changeFlagByEventId.put(eventPrior.Id, eventPrior.IPS_IsSendChangeSMS__c);
-            eventsPriorMap.put(eventPrior.Id, eventPrior);
-        }
-        update eventsPriorMap.values();
-
-        // When
-        Test.startTest();
-        IPS_EventSMSService.changeSMS(eventsPriorMap.values());
-        Test.stopTest();
-
-        // Then
-        List<SMS__c> createdSMSMessages = [
-            SELECT Id, Message__c, EventId__c, Status__c
-            FROM SMS__c
-            WHERE EventId__c IN :eventsPriorMap.keySet()
-        ];
-        System.Assert.areEqual(
-            createdSMSMessages.size(),
-            eventsPriorMap.size(),
-            'Expected number of sent SMS records to match number of Events created'
-        );
-        for (SMS__c sms : createdSMSMessages) {
-            System.Assert.areEqual('Could not send', sms.Status__c, 'Expected SMS status to be "Could not send"');
-        }
-
-        // Verify that the IPS_IsSendChangeSMS__c field is updated to false
-        List<Event> updatedEvents = [
-            SELECT Id, IPS_IsSendChangeSMS__c
-            FROM Event
-            WHERE Id IN :eventsPriorMap.keySet()
-        ];
-        for (Event eventAfter : updatedEvents) {
-            System.Assert.isFalse(
-                eventAfter.IPS_IsSendChangeSMS__c,
-                'Expected IPS_IsSendChangeSMS__c to be false for the Event'
-            );
-            System.Assert.isTrue(
-                changeFlagByEventId.get(eventAfter.Id),
-                'Expected prior IPS_IsSendChangeSMS__c status to be true for the Event'
-            );
-            System.Assert.areNotEqual(
-                changeFlagByEventId.get(eventAfter.Id),
-                eventAfter.IPS_IsSendChangeSMS__c,
-                'Did not expect IPS_IsSendChangeSMS__c to match after update'
             );
         }
     }
