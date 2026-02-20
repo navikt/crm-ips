@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>56.0</apiVersion>
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Resets the Reminder Sent Flag when Events are rescheduled</description>
     <environments>Default</environments>
-    <interviewLabel>IPS - Set {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - Set Send Change SMS on Event</label>
+    <label>IPS - SMS - Reset Reminder Sent On Rescheduled Events</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -24,23 +25,23 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>Set_Send_Change_SMS</name>
-        <label>Set Send Change SMS</label>
-        <locationX>176</locationX>
-        <locationY>311</locationY>
+        <name>Set_ReminderSMSSentFalse</name>
+        <label>Set Reminder SMS Sent False</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <inputAssignments>
-            <field>IPS_IsSendChangeSMS__c</field>
+            <field>IPS_IsReminderSMSSendt__c</field>
             <value>
-                <booleanValue>true</booleanValue>
+                <booleanValue>false</booleanValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Set_Send_Change_SMS</targetReference>
+            <targetReference>Set_ReminderSMSSentFalse</targetReference>
         </connector>
         <filterFormula>({!$Record.RecordType.DeveloperName} = &apos;IPS_Event&apos;
 ||
@@ -50,7 +51,7 @@
 &amp;&amp;
 ISCHANGED({!$Record.ActivityDateTime})
 &amp;&amp;
-{!$Record.IPS_IsCreatedSMSSendt__c} = true</filterFormula>
+{!$Record.IPS_IsReminderSMSSendt__c} = true</filterFormula>
         <object>Event</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
