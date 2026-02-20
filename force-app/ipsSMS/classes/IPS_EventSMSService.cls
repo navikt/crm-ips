@@ -18,7 +18,7 @@ public without sharing class IPS_EventSMSService {
     private static Map<Event, Work_Trail__c> getWorktrailByEventMap(List<Event> eventList) {
         // Initialize collections
         Set<Id> workTrailIdSet = new Set<Id>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = new Map<Event, Work_Trail__c>();
+        Map<Event, Work_Trail__c> workTrailByEventMap = new Map<Event, Work_Trail__c>();
 
         // Collect Work_Trail__c Ids from Events
         for (Event event : eventList) {
@@ -41,59 +41,9 @@ public without sharing class IPS_EventSMSService {
 
         // Map Work Trails by their correpsonding Events
         for (Event event : eventList) {
-            eventWorkTailMap.put(event, workTrailMap.get(event.WhatId));
+            workTrailByEventMap.put(event, workTrailMap.get(event.WhatId));
         }
-        return eventWorkTailMap;
-    }
-
-    public static void createSMS(List<Event> eventList) {
-        List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
-
-        for (Event event : eventList) {
-            Work_Trail__c workTrail = eventWorkTailMap.get(event);
-            if (
-                workTrail.IPS_Partticipant_phone_number__c == null &&
-                workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c != null
-            ) {
-                workTrail.IPS_Partticipant_phone_number__c = workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c;
-            }
-            if (
-                workTrail.ips_Participant__c != null &&
-                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
-                workTrail.IPS_Partticipant_phone_number__c != null
-            ) {
-                smsList.add(
-                    IPS_SMS.createSMSRecord(
-                        'IPS',
-                        'Meeting Created',
-                        workTrail.ips_Participant__c,
-                        event.Id,
-                        workTrail.IPS_Partticipant_phone_number__c,
-                        constructCreatedMessage(event),
-                        workTrail.Id
-                    )
-                );
-                event.IPS_IsCreatedSMSSendt__c = true;
-            }
-        }
-        // Insert SMS records
-        CRM_DatabaseOperations cdoSMS = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
-        cdoSMS.insertRecords(smsList);
-
-        // Loop over inserted SMS to set the created flag on Events
-        CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
-        cdoEvents.updateRecords(eventList);
-    }
-    @TestVisible
-    private static String constructCreatedMessage(Event event) {
-        String message =
-            'Det er satt opp et ' +
-            event.ips_uo_Kanal__c.toLowerCase() +
-            ' møte med jobbspesialisten din.';
-        message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
-        message += '\n\nLogg inn på NAV for detaljer. Du kan ikke svare på denne meldingen.';
-        return message;
+        return workTrailByEventMap;
     }
 
     /**
@@ -135,27 +85,28 @@ public without sharing class IPS_EventSMSService {
     private static EventSMSWrapper createEventSMSWrapper(List<Event> eventList, SMSType smsType) {
         // Initialize collections
         EventSMSWrapper wrapper = new EventSMSWrapper();
-        Map<Id, Event> eventMap = new Map<Id, Event>(eventList);
-        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
+        Map<Event, Work_Trail__c> workTrailByEventMap = getWorktrailByEventMap(eventList);
         List<SMS__c> smsList = new List<SMS__c>();
 
         // Build SMS Messages
         for (Event event : eventList) {
-            Work_Trail__c workTrail = eventWorkTailMap.get(event);
+            Work_Trail__c workTrail = workTrailByEventMap.get(event);
+
+            // If the participant has opted out of SMS or if the person record is missing, do not create an SMS record
+            if (
+                workTrail.ips_Participant__c == null ||
+                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == true
+            ) {
+                continue;
+            }
 
             // Use phone number from KRR if not already set
-            if (
-                workTrail.ips_Participant__c != null &&
-                workTrail.IPS_Partticipant_phone_number__c == null &&
-                workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c != null
-            ) {
+            if (shouldUseKRRPhoneNumber(workTrail)) {
                 workTrail.IPS_Partticipant_phone_number__c = workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c;
             }
-            if (
-                workTrail.ips_Participant__c != null &&
-                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
-                workTrail.IPS_Partticipant_phone_number__c != null
-            ) {
+
+            // If there is a phone number available, create an SMS record
+            if (workTrail.IPS_Partticipant_phone_number__c != null) {
                 smsList.add(
                     IPS_SMS.createSMSRecord(
                         'IPS',
@@ -175,6 +126,24 @@ public without sharing class IPS_EventSMSService {
         wrapper.smsType = smsType;
         return wrapper;
     }
+
+    /**
+     * @description Determines if the KRR phone number should be used for the given work trail.
+     * @author Håkon Kavli | 02-19-2026
+     * @param workTrail The work trail record to check.
+     * @return Boolean True if the KRR phone number should be used, false otherwise.
+     **/
+    public static Boolean shouldUseKRRPhoneNumber(Work_Trail__c workTrail) {
+        if (
+            workTrail.ips_Participant__c != null &&
+            workTrail.IPS_Partticipant_phone_number__c == null &&
+            workTrail.ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c != null
+        ) {
+            return true;
+        }
+        return false;
+    }
+
     public class EventSMSWrapper {
         public List<Event> eventList = new List<Event>();
         public List<SMS__c> smsList = new List<SMS__c>();
@@ -200,46 +169,6 @@ public without sharing class IPS_EventSMSService {
         } else {
             return 'Ikke oppgitt';
         }
-    }
-
-    public static void changeSMS(List<Event> eventList) {
-        List<SMS__c> smsList = new List<SMS__c>();
-        Map<Event, Work_Trail__c> eventWorkTailMap = getWorktrailByEventMap(eventList);
-
-        for (Event event : eventList) {
-            Work_Trail__c workTrail = eventWorkTailMap.get(event);
-            if (
-                workTrail.ips_Participant__c != null &&
-                workTrail.ips_Participant__r.CRM_Person__r.IPS_IsReservationAgainstSMS__c == false &&
-                workTrail.IPS_Partticipant_phone_number__c != null
-            ) {
-                smsList.add(
-                    IPS_SMS.createSMSRecord(
-                        'IPS',
-                        'Meeting Updated',
-                        workTrail.ips_Participant__c,
-                        event.Id,
-                        workTrail.IPS_Partticipant_phone_number__c,
-                        constructChangedMessage(event),
-                        workTrail.Id
-                    )
-                );
-                event.IPS_IsSendChangeSMS__c = false;
-            }
-        }
-        Database.insert(smsList, false);
-        Database.update(eventList, false);
-    }
-
-    @TestVisible
-    private static String constructChangedMessage(Event event) {
-        String message =
-            'Møte er endret. Ny tid for' +
-            event.ips_uo_Kanal__c.toLowerCase() +
-            ' møte med jobbspesialisten din.';
-        message += '\n\nTidspunkt: ' + formatTimePeriod(event.StartDateTime);
-        message += '\n\nDu kan ikke svare på denne meldingen.';
-        return message;
     }
 
     @TestVisible
