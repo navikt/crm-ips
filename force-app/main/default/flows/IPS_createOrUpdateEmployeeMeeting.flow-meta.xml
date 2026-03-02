@@ -270,17 +270,65 @@
         <defaultConnectorLabel>Yes</defaultConnectorLabel>
         <rules>
             <name>TaskNotFound</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>(1 OR 2) AND (3 OR 4)</conditionLogic>
             <conditions>
-                <leftValueReference>getTasksid.Id</leftValueReference>
+                <leftValueReference>getTasksid</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>getTasksid.Id</leftValueReference>
+                <leftValueReference>getTasksid</leftValueReference>
                 <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Participant Absent</stringValue>
+                </rightValue>
+            </conditions>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>No</label>
+        </rules>
+        <rules>
+            <name>Employer_Meeting_Active</name>
+            <conditionLogic>( 1 OR 2 ) AND ( 3 OR 4 )</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IPS_Status1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getTasksid</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getTasksid</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
@@ -288,7 +336,8 @@
             <connector>
                 <targetReference>Application_Log_Task_Not_Found</targetReference>
             </connector>
-            <label>No</label>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>No, Employer Meeting Active</label>
         </rules>
     </decisions>
     <decisions>
@@ -488,7 +537,7 @@
     </recordLookups>
     <recordLookups>
         <name>getTasksid</name>
-        <label>getTasksid</label>
+        <label>Get Task Related To Event</label>
         <locationX>1502</locationX>
         <locationY>1229</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -574,7 +623,7 @@
     <recordUpdates>
         <name>UpdateTask</name>
         <label>UpdateTask</label>
-        <locationX>1634</locationX>
+        <locationX>1766</locationX>
         <locationY>1445</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -718,9 +767,10 @@
         </inputAssignments>
     </subflows>
     <subflows>
+        <description>Task not found but the event is active.</description>
         <name>Application_Log_Task_Not_Found</name>
         <label>Application Log - Task Not Found</label>
-        <locationX>1370</locationX>
+        <locationX>1502</locationX>
         <locationY>1445</locationY>
         <flowName>IPS_Subflow_Create_Application_Log</flowName>
         <inputAssignments>
@@ -732,7 +782,7 @@
         <inputAssignments>
             <name>faultMessage</name>
             <value>
-                <stringValue>Task related to employer meeting not found !</stringValue>
+                <stringValue>Event is active and related task not found.</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
