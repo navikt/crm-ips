@@ -2,6 +2,42 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>66.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>New_Jobbspesialist</name>
+        <label>New Jobbspesialist ?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No</name>
+            <conditionLogic>1 AND ( 2 OR 3 )</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Role_Name__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Previous_Team_Lead__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Fagansvarlig</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Previous_Team_Lead__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Metodeveileder</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Worktrails_Related_To_The_User</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
     <description>Triggers when a platform event &apos;Role Changed&apos; is published.</description>
     <environments>Default</environments>
     <interviewLabel>IPS - Update Worktrail Owner When Role Changed {!$Flow.CurrentDateTime}</interviewLabel>
@@ -69,7 +105,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Update_Worktrails_Related_To_The_User</targetReference>
+            <targetReference>New_Jobbspesialist</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Application_Log</targetReference>
