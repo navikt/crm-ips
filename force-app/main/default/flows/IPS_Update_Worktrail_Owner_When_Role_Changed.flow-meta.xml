@@ -2,6 +2,42 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>66.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>New_Jobbspesialist</name>
+        <label>New Jobbspesialist ?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No</name>
+            <conditionLogic>1 AND ( 2 OR 3 )</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Role_Name__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Previous_Team_Lead__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Fagansvarlig</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Previous_Team_Lead__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Metodeveileder</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Worktrails_Related_To_The_User</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
     <description>Triggers when a platform event &apos;Role Changed&apos; is published.</description>
     <environments>Default</environments>
     <interviewLabel>IPS - Update Worktrail Owner When Role Changed {!$Flow.CurrentDateTime}</interviewLabel>
@@ -26,13 +62,54 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Application_Log</name>
+        <label>Application Log</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Referrence_ID__c</field>
+            <value>
+                <elementReference>$Record.ReplayId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>IPS - Update Worktrail Owner When Role Changed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UUID__c</field>
+            <value>
+                <elementReference>$Record.EventUuid</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Application_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>User_Log</name>
         <label>User Log</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Metodeveileder</targetReference>
+            <targetReference>New_Jobbspesialist</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>Current_Profile__c</field>
             <value>
@@ -43,18 +120,6 @@
             <field>Current_Role__c</field>
             <value>
                 <elementReference>$Record.Current_Role__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Previous_Metodeveileder_Id__c</field>
-            <value>
-                <elementReference>$Record.Previous_Metodeveileder_Id__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Previous_Metodeveileder__c</field>
-            <value>
-                <elementReference>$Record.Previous_Metodeveileder__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -70,9 +135,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Role_Id__c</field>
+            <field>Team_Lead__c</field>
             <value>
-                <elementReference>$Record.Role_ID__c</elementReference>
+                <elementReference>$Record.Previous_Team_Lead__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -87,70 +152,43 @@
                 <elementReference>$Record.User_Name__c</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Worktrails_Transferred__c</field>
+            <value>
+                <elementReference>$Record.Worktrails__c</elementReference>
+            </value>
+        </inputAssignments>
         <object>User_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <name>Get_Metodeveileder</name>
-        <label>Get Metodeveileder</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Worktrails_Related_To_User</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>UserRoleId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Previous_Metodeveileder_Id__c</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <sortField>CreatedDate</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Worktrails_Related_To_User</name>
-        <label>Worktrails Related To User</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Update_Worktrails_With_New_Owner</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>OwnerId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.User_Id__c</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Work_Trail__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
-        <name>Update_Worktrails_With_New_Owner</name>
-        <label>Update Worktrails With New Owner</label>
+        <name>Update_Worktrails_Related_To_The_User</name>
+        <label>Update Worktrails Related To The User</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.User_Id__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Ended</stringValue>
             </value>
         </filters>
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>Get_Metodeveileder.Id</elementReference>
+                <elementReference>$Record.Previous_Team_Lead_Id__c</elementReference>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>

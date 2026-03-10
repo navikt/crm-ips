@@ -2,6 +2,109 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>66.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Add_Id_The_Collection</name>
+        <label>Add Id The Collection</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varWorktrailIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Worktrails.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varWorktrailIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>, </stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Worktrails</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Sets Fagansvarlig as the Team Lead</description>
+        <name>Update_Team_Lead_Fagansvarlig</name>
+        <label>Update Team Lead - Fagansvarlig</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>teamLeadId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Fagansvarlig.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>teamLeadRole</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Fagansvarlig.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Worktrails_Related_To_The_User</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Sets Metodeveileder as the Team Lead</description>
+        <name>Update_Team_Lead_Metodeveileder</name>
+        <label>Update Team Lead - Metodeveileder</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>teamLeadId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Metodeveileder.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>teamLeadRole</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Metodeveileder.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Worktrails_Related_To_The_User</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Is_Metodeveileder_Empty</name>
+        <label>Is Metodeveileder Empty ?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Update_Team_Lead_Metodeveileder</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Metodeveileder_Empty</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Metodeveileder</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Metodeveileder</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Fagansvarlig</targetReference>
+            </connector>
+            <label>Metodeveileder Empty</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Role_Changed</name>
         <label>Role Changed ?</label>
@@ -18,20 +121,18 @@
                     <elementReference>$Record__Prior.UserRoleId</elementReference>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.UserRole.Name</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>PO Arbeidsgiver</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>Role_Changed_Platform_Event</targetReference>
+                <targetReference>Get_Metodeveileder</targetReference>
             </connector>
             <label>Role Changed</label>
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>formattedWorktrailId</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!varWorktrailIds}, LEN({!varWorktrailIds}) - 2)</expression>
+    </formulas>
     <formulas>
         <name>userName</name>
         <dataType>String</dataType>
@@ -39,6 +140,20 @@
     </formulas>
     <interviewLabel>IPS - Publish Platform Event Role Changed {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Publish Platform Event Role Changed</label>
+    <loops>
+        <name>Worktrails</name>
+        <label>Worktrails</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Worktrails_Related_To_The_User</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_Id_The_Collection</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Role_Changed_Platform_Event</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -63,6 +178,9 @@
         <label>Role Changed Platform Event</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <faultConnector>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>Current_Profile__c</field>
             <value>
@@ -82,21 +200,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Previous_Metodeveileder_Id__c</field>
-            <value>
-                <elementReference>$Record__Prior.UserRole.ParentRoleId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Previous_Metodeveileder__c</field>
-            <value>
-                <elementReference>$Record__Prior.UserRole.ParentRole.Name</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Previous_Profile__c</field>
             <value>
                 <elementReference>$Record__Prior.Profile.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Previous_Team_Lead_Id__c</field>
+            <value>
+                <elementReference>teamLeadId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Previous_Team_Lead__c</field>
+            <value>
+                <elementReference>teamLeadRole</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -123,16 +241,122 @@
                 <elementReference>userName</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Worktrails__c</field>
+            <value>
+                <elementReference>formattedWorktrailId</elementReference>
+            </value>
+        </inputAssignments>
         <object>Role_Changed__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>Get_Fagansvarlig</name>
+        <label>Get Fagansvarlig</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Team_Lead_Fagansvarlig</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>UserRoleId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record__Prior.UserRole.ParentRole.ParentRoleId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Metodeveileder</name>
+        <label>Get Metodeveileder</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Metodeveileder_Empty</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>UserRoleId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record__Prior.UserRole.ParentRoleId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Worktrails_Related_To_The_User</name>
+        <label>Get Worktrails Related To The User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Worktrails</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OwnerId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Ended</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Role_Changed</targetReference>
         </connector>
-        <filterLogic>(1 OR 2 ) AND 3</filterLogic>
+        <filterLogic>( 1 OR 2 ) AND 3</filterLogic>
         <filters>
             <field>CRM_UserProfileName__c</field>
             <operator>EqualTo</operator>
@@ -159,4 +383,50 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Application_Log</name>
+        <label>Application Log</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS -  Publish Platform Event Role Changed</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <name>teamLeadId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>teamLeadRole</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varWorktrailIds</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
