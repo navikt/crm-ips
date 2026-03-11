@@ -5,8 +5,6 @@ sf org create scratch --alias $1 --set-default --definition-file ../config/proje
 
 sf force:org:open --target-org $1
 
-echo "Installerer crm-platform-base 0.299.0"
-sf package install --package 04tQC0000017zfhYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "Installerer platform-data-model 0.1.2"
@@ -22,6 +20,9 @@ sf package install --package 04tQC000000oGw2YAE --no-prompt --wait 4 --publish-w
 
 echo "Installer feature-toggle ver. 0.1.3"
 sf package install --package 04tQC000000oHP3YAM --no-prompt --wait 30 --publish-wait 30
+
+echo "Installerer crm-platform-base 0.299.0"
+sf package install --package 04tQC0000017zfhYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "Installerer crm-platform-access-controll 0.170.0"
