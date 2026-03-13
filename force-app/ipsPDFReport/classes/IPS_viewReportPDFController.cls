@@ -787,7 +787,7 @@ public with sharing class IPS_viewReportPDFController {
 
     private List<Recruitment_Program__c> getAllRecruitmentPrograms(){
         List<Recruitment_Program__c> recruitmentPrograms = [
-            SELECT id, Name, Start_Date__c, End_Date__c, Description__c, Work_Trail__c
+            SELECT id, Name, Start_Date__c, End_Date__c, Work_Trail__c, toLabel(End_Cause__c), toLabel(Detailed_end_cause__c), Place_Of_Employment__c
             FROM Recruitment_Program__c
             WHERE Work_Trail__c = :workTrailId 
         ];
@@ -797,7 +797,7 @@ public with sharing class IPS_viewReportPDFController {
     private List<Recruitment_Program__c> getRecruitmentProgramsWithinDateRange(Date startDate, Date endDate) {
 
         return [
-            SELECT Id, Name, Start_Date__c, End_Date__c, Description__c, Work_Trail__c
+            SELECT Id, Name, Start_Date__c, End_Date__c, Work_Trail__c, toLabel(End_Cause__c), toLabel(Detailed_end_cause__c), Place_Of_Employment__c
             FROM Recruitment_Program__c
             WHERE Work_Trail__c = :workTrailId
             AND Start_Date__c <= :endDate
