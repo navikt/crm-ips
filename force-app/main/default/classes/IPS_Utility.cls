@@ -51,7 +51,7 @@ public without sharing class IPS_Utility {
      */
     public static List<Id> getMyEmployeesUserId(String employerProfile) {
         List<Id> userIds = new List<Id>();
-        // If jobbspesialist of IPS/UO, metodeveilder of IPS/UO will also be added to the query.
+        // If jobbspesialist of IPS/AMS, metodeveilder of IPS/AMS will also be added to the query.
         List<String> profilesToFetch = new List<String>();
         if (employerProfile == 'NAV UO Jobbspesialist') {
             profilesToFetch.add('NAV UO Jobbspesialist');

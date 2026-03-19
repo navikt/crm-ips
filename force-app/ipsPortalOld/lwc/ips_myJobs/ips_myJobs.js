@@ -3,7 +3,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 import getUserJobs from '@salesforce/apex/IPS_jobController.getCompletedUserJobs';
-/* all logos related to IPS/UO portal */
+/* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myJobs extends NavigationMixin(LightningElement) {

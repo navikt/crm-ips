@@ -124,7 +124,7 @@ public without sharing class IPS_ManagerTrailController {
     }
 
     @AuraEnabled(cacheable=true)
-    /* Aggregerte data - antall i opplæringsløp UO */
+    /* Aggregerte data - antall i opplæringsløp AMS */
     public static List<IPS_ManagerTrail> getUOTraining() {
         List<IPS_ManagerTrail> trainingUO = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();

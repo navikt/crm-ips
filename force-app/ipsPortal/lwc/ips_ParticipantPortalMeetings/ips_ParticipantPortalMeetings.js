@@ -6,7 +6,7 @@ import USER_ACCOUNT_FIELD from '@salesforce/schema/User.AccountId';
 import USER_CONTACT_FIELD from '@salesforce/schema/User.ContactId';
 import getParticipantsMeetings from '@salesforce/apex/IPS_ParticipantPortalActivityController.getParticipantCompletedMeetings';
 import getUserWorkTrailId from '@salesforce/apex/IPS_ParticipantPortalTrailController.getTrail';
-/* all logos related to IPS/UO portal */
+/* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_ParticipantPortalMeetings extends LightningElement {

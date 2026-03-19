@@ -43,7 +43,7 @@ public class IPS_MangagerTrailControllerTest {
     @IsTest
     private static void getUOTraining() {
         List<IPS_ManagerTrail> allTrails = IPS_ManagerTrailController.getUOTraining();
-        System.assertEquals(1, allTrails.size(), 'Expect trail in UO training');
+        System.assertEquals(1, allTrails.size(), 'Expect trail in AMS training');
     }
 
     @IsTest

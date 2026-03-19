@@ -4,7 +4,7 @@ import templateIPS from './ips_trailIPS.html';
 import templateUO from './ips_trailUO.html';
 import { getFieldDisplayValue, getFieldValue, getRecord } from 'lightning/uiRecordApi';
 import Id from '@salesforce/user/Id';
-/* all logos related to IPS/UO portal */
+/* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 /* work_trail__c */
@@ -297,7 +297,7 @@ export default class Ips_trail extends NavigationMixin(LightningElement) {
         }
     }
 
-    /* UO and IPS fields */
+    /* AMS and IPS fields */
     get ownerIds() {
         return getFieldValue(this.workTrailWire, FIELD_OWNERID);
     }
