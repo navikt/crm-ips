@@ -424,6 +424,11 @@
 )</expression>
     </formulas>
     <formulas>
+        <name>faultMessage</name>
+        <dataType>String</dataType>
+        <expression>&apos;Event is active and related task not found. &apos; + &apos;Prior status : &apos; +  TEXT({!$Record__Prior.IPS_Status1__c})</expression>
+    </formulas>
+    <formulas>
         <name>ipsSubject</name>
         <dataType>String</dataType>
         <expression>IF(
@@ -782,7 +787,7 @@
         <inputAssignments>
             <name>faultMessage</name>
             <value>
-                <stringValue>Event is active and related task not found.</stringValue>
+                <elementReference>faultMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
