@@ -3,36 +3,6 @@
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <name>Assignment_4</name>
-        <label>Assignment 4</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>Get_Worktrail.End_Cause__c</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Last_Recruitment_Program</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Update end date when it is blank</description>
-        <name>Update_End_Date</name>
-        <label>Update End Date</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>Get_Last_Recruitment_Program.End_Date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>endDate</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>RP_Details_Screen</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Update_RP_Field</name>
         <label>Update RP Field In Worktrail</label>
         <locationX>0</locationX>
@@ -64,6 +34,70 @@
             <targetReference>Update_Worktrail</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Update_RP_Fields</name>
+        <label>Update RP Fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Last_Recruitment_Program.End_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sluttdato</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Last_Recruitment_Program.End_Cause__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>detailedEndCausePickList.topValue</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Last_Recruitment_Program.Detailed_end_cause__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>detailedEndCausePickList.middleValue</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Last_Recruitment_Program</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <description>Ikke i arbeid</description>
+        <name>ikkeIArbeid</name>
+        <choiceText>Ikke i arbeid</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Ikke i arbeid</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>I Lønnet arbeid</description>
+        <name>ilonnetArbeid</name>
+        <choiceText>I Lønnet arbeid</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>I lønnet arbeid</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>lonnetArbiedMedFagbrev</name>
+        <choiceText>Lønnet arbeid med pågående fagbrev</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Lønnet arbeid med pågående fagbrev</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>lonnetArbiedMedLarelop</name>
+        <choiceText>Lønnet arbeid med fullført læreløp</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Lønnet arbeid med fullført læreløp</stringValue>
+        </value>
+    </choices>
     <customProperties>
         <name>ScreenProgressIndicator</name>
         <value>
@@ -134,7 +168,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_End_Date</targetReference>
+                <targetReference>RP_Details_Screen</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -166,11 +200,10 @@
     </decisions>
     <environments>Default</environments>
     <formulas>
-        <name>endDate</name>
+        <name>endDateToday</name>
         <dataType>Date</dataType>
-        <expression>IF(ISBLANK({!Get_Last_Recruitment_Program.End_Date__c}), 
-DATEVALUE(NOW()),
- {!Get_Last_Recruitment_Program.End_Date__c})</expression>
+        <expression>
+DATEVALUE(NOW())</expression>
     </formulas>
     <formulas>
         <name>isEndDateValid</name>
@@ -207,8 +240,7 @@ DATEVALUE(NOW()),
             <targetReference>Update_RP_Field_In_Worktrail_True</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Enddate_Validation</targetReference>
+            <targetReference>Copy_1_of_Application_Log_RP</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>End_Date__c</field>
@@ -290,7 +322,7 @@ DATEVALUE(NOW()),
             <targetReference>Update_RP_Field</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Enddate_Validation</targetReference>
+            <targetReference>Application_Log_RP</targetReference>
         </faultConnector>
         <inputReference>Get_Last_Recruitment_Program</inputReference>
     </recordUpdates>
@@ -315,27 +347,6 @@ DATEVALUE(NOW()),
         </inputAssignments>
         <object>Work_Trail__c</object>
     </recordUpdates>
-    <screens>
-        <name>Enddate_Validation</name>
-        <label>Enddate Validation</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>endDateAfterStartDate</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(189, 24, 24); font-size: 14px;&quot;&gt;Sluttdato må være etter startdato!&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>infoDisplay</name>
-            <fieldText>&lt;p&gt;&lt;em style=&quot;font-size: 14px;&quot;&gt;Trykk &lt;/em&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;&lt;em&gt;Tilbake&lt;/em&gt;&lt;/strong&gt;&lt;em style=&quot;font-size: 14px;&quot;&gt; for å endre datoene.&lt;/em&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
     <screens>
         <name>RP_Details</name>
         <label>RP - Details</label>
@@ -371,25 +382,63 @@ DATEVALUE(NOW()),
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Assignment_4</targetReference>
+            <targetReference>Update_RP_Fields</targetReference>
         </connector>
         <fields>
-            <fieldType>ObjectProvided</fieldType>
+            <name>Sluttdato</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>endDateToday</elementReference>
+            </defaultValue>
+            <fieldText>Sluttdato</fieldText>
+            <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
-            <objectFieldReference>Get_Last_Recruitment_Program.End_Date__c</objectFieldReference>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(189, 27, 27); font-size: 14px;&quot;&gt;﻿Sluttdato må være etter startdato!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(24, 23, 23); font-size: 14px;&quot;&gt;Startdato er &lt;/span&gt;&lt;strong style=&quot;color: rgb(24, 23, 23); font-size: 14px;&quot;&gt;{!Get_Last_Recruitment_Program.Start_Date__c}&lt;/strong&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>OR(
+    ISBLANK({!Sluttdato}),
+    {!Sluttdato} &gt;= {!Get_Last_Recruitment_Program.Start_Date__c}
+)</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
-            <fieldType>ObjectProvided</fieldType>
+            <name>detailedEndCausePickList</name>
+            <extensionName>flowruntime:dependentPicklists</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>dependencyWrapperApiName</name>
+                <value>
+                    <stringValue>Recruitment_Program__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>topPicklistApiName</name>
+                <value>
+                    <stringValue>End_Cause__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>middlePicklistApiName</name>
+                <value>
+                    <stringValue>Detailed_end_cause__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>topRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>middleRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
-            <objectFieldReference>Get_Last_Recruitment_Program.End_Cause__c</objectFieldReference>
-        </fields>
-        <fields>
-            <fieldType>ObjectProvided</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
-            <objectFieldReference>Get_Last_Recruitment_Program.Detailed_end_cause__c</objectFieldReference>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -494,6 +543,68 @@ DATEVALUE(NOW()),
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Application_Log_RP</name>
+        <label>Application Log - RP</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>Get_Last_Recruitment_Program.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Recruitment Program</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Copy_1_of_Application_Log_RP</name>
+        <label>Copy 1 of Application Log - RP</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <stringValue>Could not create RP Program</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>Get_Worktrail.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Recruitment Program</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
