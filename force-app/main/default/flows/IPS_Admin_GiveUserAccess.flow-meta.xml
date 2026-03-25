@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>64.0</apiVersion>
+    <apiVersion>66.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>Assign_NewUserDetails</name>
@@ -32,6 +32,103 @@
             <targetReference>Update_User</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Assign_Profile_Id_To_Relevant_Jobbspor_User_List</name>
+        <label>Assign Profile Id To Relevant Jobbspor User List</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>coll_Id_relevantProfileIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Relevant_Profiles.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Relevant_Profiles</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_From_Get_Supervisor_User</name>
+        <label>Set Flow Fault Step From Get Supervisor User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Could not find the named Supervisor User</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_Jobbspor_User</name>
+        <label>Set Flow Fault Step On Jobbspor User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Could not find the named Jobbspor User</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_Profiles</name>
+        <label>Set Flow Fault Step On Profiles</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Could not find any relevant profiles</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_Role</name>
+        <label>Set Flow Fault Step On Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Could not find the named Role</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_NavKontorProfile</name>
+        <label>Set Nav Kontor Profile</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_sObj_NavKontorProfile</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Relevant_Profiles</targetReference>
+        </connector>
+    </assignments>
     <constants>
         <description>The title of the flow, in Norwegian</description>
         <name>const_flowTitle</name>
@@ -46,9 +143,48 @@
             <stringValue>{&quot;location&quot;:&quot;top&quot;,&quot;type&quot;:&quot;simple&quot;}</stringValue>
         </value>
     </customProperties>
+    <decisions>
+        <name>Check_If_Nav_Kontor_Profile</name>
+        <label>Check If Nav Kontor Profile</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Profile_Id_To_Relevant_Jobbspor_User_List</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Profile Is Of Other Jobbspor User Type</defaultConnectorLabel>
+        <rules>
+            <name>Check_If_Nav_Kontor_Profile_True</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_Relevant_Profiles.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV Kontor</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_NavKontorProfile</targetReference>
+            </connector>
+            <label>Profile Is Nav Kontor</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>IPS Admin Give User Access {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Admin Give User Access</label>
+    <loops>
+        <name>Loop_Relevant_Profiles</name>
+        <label>Loop Relevant Profiles</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Relevant_Profiles</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_If_Nav_Kontor_Profile</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>GET_Jobbsporet_User</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -69,27 +205,49 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <name>GET_Jobbspesialist_User</name>
-        <label>GET Jobbspesialist User</label>
+        <name>Get_Jobbspor_User_Role</name>
+        <label>Get Jobbspor User Role</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_SupervisorUser</targetReference>
+            <targetReference>screen_chooseUsersAndRole</targetReference>
         </connector>
-        <filterLogic>(1 OR 2) AND 3 AND 4</filterLogic>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_Role</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
-            <field>CRM_UserProfileName__c</field>
+            <field>Name</field>
             <operator>Contains</operator>
             <value>
-                <stringValue>NAV IPS</stringValue>
+                <elementReference>var_roleName</elementReference>
             </value>
         </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>UserRole</object>
+        <sortField>Name</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GET_Jobbsporet_User</name>
+        <label>GET Jobbsporet User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Supervisor_User</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_Jobbspor_User</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
-            <field>CRM_UserProfileName__c</field>
-            <operator>Contains</operator>
+            <field>ProfileId</field>
+            <operator>In</operator>
             <value>
-                <stringValue>NAV UO</stringValue>
+                <elementReference>coll_Id_relevantProfileIds</elementReference>
             </value>
         </filters>
         <filters>
@@ -111,57 +269,79 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_JobspesialistRole</name>
-        <label>Get Jobspesialist Role</label>
+        <name>Get_Relevant_Profiles</name>
+        <label>Get Relevant Profiles</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>screen_chooseUsersAndRole</targetReference>
+            <targetReference>Loop_Relevant_Profiles</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_Profiles</targetReference>
+        </faultConnector>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>Name</field>
-            <operator>Contains</operator>
-            <value>
-                <elementReference>var_roleName</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>UserRole</object>
-        <sortField>Name</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_SupervisorUser</name>
-        <label>Get Supervisor User</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_JobspesialistRole</targetReference>
-        </connector>
-        <filterLogic>(1 OR 2 OR 3) AND 4 AND 5</filterLogic>
-        <filters>
-            <field>CRM_UserProfileName__c</field>
-            <operator>Contains</operator>
+            <operator>EqualTo</operator>
             <value>
                 <stringValue>NAV Kontor</stringValue>
             </value>
         </filters>
         <filters>
-            <field>CRM_UserProfileName__c</field>
-            <operator>Contains</operator>
+            <field>Name</field>
+            <operator>EqualTo</operator>
             <value>
-                <stringValue>IPS</stringValue>
+                <stringValue>NAV UO Jobbspesialist</stringValue>
             </value>
         </filters>
         <filters>
-            <field>CRM_UserProfileName__c</field>
-            <operator>Contains</operator>
+            <field>Name</field>
+            <operator>EqualTo</operator>
             <value>
-                <stringValue>UO</stringValue>
+                <stringValue>NAV UO Metodeveileder</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>NAV IPS Jobbspesialist</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>NAV IPS Metodeveileder</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Profile</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <sortField>Name</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Supervisor_User</name>
+        <label>Get Supervisor User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Jobbspor_User_Role</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_From_Get_Supervisor_User</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ProfileId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_sObj_NavKontorProfile.Id</elementReference>
             </value>
         </filters>
         <filters>
@@ -232,7 +412,7 @@
             <inputParameters>
                 <name>tableData</name>
                 <value>
-                    <elementReference>GET_Jobbspesialist_User</elementReference>
+                    <elementReference>GET_Jobbsporet_User</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -292,7 +472,7 @@
             <inputParameters>
                 <name>tableData</name>
                 <value>
-                    <elementReference>Get_SupervisorUser</elementReference>
+                    <elementReference>Get_Supervisor_User</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -346,7 +526,7 @@
             <inputParameters>
                 <name>tableData</name>
                 <value>
-                    <elementReference>Get_JobspesialistRole</elementReference>
+                    <elementReference>Get_Jobbspor_User_Role</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -383,7 +563,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>GET_Jobbspesialist_User</targetReference>
+            <targetReference>Get_Relevant_Profiles</targetReference>
         </connector>
         <fields>
             <name>s_displayText1</name>
@@ -464,7 +644,7 @@
         <inputAssignments>
             <name>Log_Message</name>
             <value>
-                <stringValue>Error when giving user access to Jobbsporet </stringValue>
+                <elementReference>var_faultStep</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -481,6 +661,14 @@
         </inputAssignments>
     </subflows>
     <variables>
+        <description>Relevant Profile Id&apos;s for &quot;Jobbsporet&quot;-users and their Managers</description>
+        <name>coll_Id_relevantProfileIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>sObj_applicationLog</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -496,5 +684,20 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>User</objectType>
+    </variables>
+    <variables>
+        <name>var_faultStep</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_sObj_NavKontorProfile</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Profile</objectType>
     </variables>
 </Flow>
