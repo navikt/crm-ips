@@ -3,7 +3,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import Id from '@salesforce/user/Id';
 import getUserWorkTrailId from '@salesforce/apex/IPS_myWorkTrailController.getUserWorkTrailId';
 import getAllActivity from '@salesforce/apex/IPS_myActivityController.getAllActivity';
-/* all logos related to IPS/UO portal */
+/* all logos related to IPS/AMS portal */
 import IPS_HOME_LOGOS from '@salesforce/resourceUrl/ips_home_logo';
 
 export default class Ips_myMeetings extends NavigationMixin(LightningElement) {
