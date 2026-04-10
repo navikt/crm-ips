@@ -51,6 +51,9 @@ public with sharing class IPS_viewReportPDFController {
     public List<Recruitment_Program__c> getAllRecruitmentPrograms { get; set;}
     public List<Recruitment_Program__c> getRecruitmentProgramsWithinDateRange { get; set; }
 
+    public Map<String, String> wrappedText { get; set; }
+    public Map<Id, String> wrappedTaskDescription { get; set; }
+
     public IPS_viewReportPDFController(ApexPages.StandardController sc) {
         this.currentRecordId = sc.getRecord().Id;
         this.isEndReport = false;
@@ -80,6 +83,9 @@ public with sharing class IPS_viewReportPDFController {
         this.isParticipantPassive = isParticipantPassive();
         this.getAllRecruitmentPrograms = getAllRecruitmentPrograms();
         this.getRecruitmentProgramsWithinDateRange = getRecruitmentProgramsWithinDateRange(intervallFromDate, intervallToDate);
+
+        this.wrappedText = buildWrappedText();
+        this.wrappedTaskDescription = buildWrappedTaskDescriptions();
 
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename=' + this.pdfTitle + '.pdf');
     }
@@ -817,5 +823,88 @@ public with sharing class IPS_viewReportPDFController {
         }
 
         return returnedDate;
+    }
+
+    private Map<String, String> buildWrappedText() {
+        Map<String, String> m = new Map<String, String>();
+        m.put('summarizeIntervall', breakLongWords(currentRecord.IPS_summarizeIntervallPeriode__c));
+        m.put('summarizeNext', breakLongWords(currentRecord.IPS_summarizeIntervallNextPeriode__c));
+        m.put('endSumm1', breakLongWords(currentRecord.IPS_endReportSumm1__c));
+        m.put('endSumm2', breakLongWords(currentRecord.IPS_endReportSumm2__c));
+        m.put('endSumm3', breakLongWords(currentRecord.IPS_endReportSumm3__c));
+        m.put('endSumm4', breakLongWords(currentRecord.IPS_endReportSumm4__c));
+        m.put('endSumm5', breakLongWords(currentRecord.IPS_endReportSumm5__c));
+        m.put('endSumm6', breakLongWords(currentRecord.IPS_endReportSumm6__c));
+        m.put('endSumm7', breakLongWords(currentRecord.IPS_endReportSumm7__c));
+        m.put('participantsOnBehalf', breakLongWords(currentRecord.IPS_participantsOnBehalf__c));
+        return m;
+    }
+
+    private Map<Id, String> buildWrappedTaskDescriptions() {
+        Map<Id, String> m = new Map<Id, String>();
+        if (closedGoal != null) {
+            for (Task t : closedGoal) {
+                m.put(t.Id, breakLongWords(t.Description));
+            }
+        }
+        if (openGoal != null) {
+            for (Task t : openGoal) {
+                m.put(t.Id, breakLongWords(t.Description));
+            }
+        }
+        return m;
+    }
+
+    @TestVisible
+    static final Integer MAX_WORD_LENGTH = 30;
+    @TestVisible
+    static final Integer CHUNK_SIZE = 15;
+
+    public static String breakLongWords(String text) {
+        if (String.isBlank(text)) {
+            return '';
+        }
+
+        String result = '';
+        Boolean inTag = false;
+        String currentWord = '';
+
+        for (Integer i = 0; i < text.length(); i++) {
+            String ch = text.substring(i, i + 1);
+
+            if (ch == '<') {
+                result += wrapWord(currentWord);
+                currentWord = '';
+                inTag = true;
+                result += ch;
+            } else if (ch == '>' && inTag) {
+                inTag = false;
+                result += ch;
+            } else if (inTag) {
+                result += ch;
+            } else if (ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t') {
+                result += wrapWord(currentWord);
+                currentWord = '';
+                result += ch;
+            } else {
+                currentWord += ch;
+            }
+        }
+        result += wrapWord(currentWord);
+
+        return result;
+    }
+
+    private static String wrapWord(String word) {
+        if (word == null || word.length() <= MAX_WORD_LENGTH) {
+            return word == null ? '' : word;
+        }
+
+        String result = '';
+        for (Integer i = 0; i < word.length(); i += CHUNK_SIZE) {
+            Integer endIdx = Math.min(i + CHUNK_SIZE, word.length());
+            result += '<span>' + word.substring(i, endIdx) + '</span>';
+        }
+        return result;
     }
 }
