@@ -77,7 +77,7 @@
             ></apex:outputField>
 
             <h2>Oppsummering av perioden fra {!startDatoText} - {!sluttDatoText}</h2>
-            <apex:outputField value="{!currentRecord.IPS_summarizeIntervallPeriode__c}"></apex:outputField>
+            <apex:outputText value="{!wrappedText['summarizeIntervall']}" escape="false" />
 
             <!-- Passive Periods -->
             <apex:outputPanel rendered="{!AND (getPassivePeriodsWithinDateRange.size != 0,isIPS)}">
@@ -151,8 +151,8 @@
                                         <apex:param value="{!goal.CompletedDateTime}" />
                                     </apex:outputText>
                                 </td>
-                                <td style="border: 1px solid #f1f1f1; word-wrap: break-word">
-                                    <apex:outputField value="{!goal.Description}" />
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputText value="{!wrappedTaskDescription[goal.Id]}" escape="false" />
                                 </td>
                             </tr>
                         </apex:repeat>
@@ -477,7 +477,7 @@
             </apex:outputpanel>
             <!-- Plan for kommende periode -->
             <apex:outputText><h3>Plan for kommende periode:</h3></apex:outputText>
-            <apex:outputField value="{!currentRecord.IPS_summarizeIntervallNextPeriode__c}"></apex:outputField>
+            <apex:outputText value="{!wrappedText['summarizeNext']}" escape="false" />
             <!-- Delmål -->
             <div style="page-break-inside: avoid">
                 <apex:outputpanel rendered="{!openGoal.size != 0}">
@@ -510,8 +510,8 @@
                                         <apex:param value="{!plangoal.CompletedDateTime}" />
                                     </apex:outputText>
                                 </td>
-                                <td style="border: 1px solid #f1f1f1; word-wrap: break-word">
-                                    <apex:outputField value="{!plangoal.Description}" />
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputText value="{!wrappedTaskDescription[plangoal.Id]}" escape="false" />
                                 </td>
                             </tr>
                         </apex:repeat>
@@ -701,7 +701,7 @@
 
             <!-- Avsluttende oppsummering -->
             <apex:outputText><h2>Avsluttende oppsummering</h2></apex:outputText>
-            <apex:outputField value="{!currentRecord.IPS_endReportSumm5__c}"></apex:outputField>
+            <apex:outputText value="{!wrappedText['endSumm5']}" escape="false" />
             <div style="padding-bottom: 5px"></div>
 
             <!-- Deltakers mål med IPS -->
@@ -737,7 +737,7 @@
                 </table>
             </apex:outputpanel>
             <div style="padding-bottom: 10px"></div>
-            <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm1__c}"></apex:outputField>
+            <apex:outputText rendered="{!isUO}" value="{!wrappedText['endSumm1']}" escape="false" />
 
             <!-- Passive Periods -->
             <apex:outputPanel rendered="{!AND (getAllPassivePeriods.size != 0,isIPS)}">
@@ -816,8 +816,8 @@
                                         <apex:param value="{!goal.CompletedDateTime}" />
                                     </apex:outputText>
                                 </td>
-                                <td style="border: 1px solid #f1f1f1; word-wrap: break-word">
-                                    <apex:outputField value="{!goal.Description}" />
+                                <td style="border: 1px solid #f1f1f1">
+                                    <apex:outputText value="{!wrappedTaskDescription[goal.Id]}" escape="false" />
                                 </td>
                             </tr>
                         </apex:repeat>
@@ -846,7 +846,7 @@
                 >
             </apex:outputpanel>
             <div style="padding-bottom: 10px"></div>
-            <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm2__c}"></apex:outputField>
+            <apex:outputText rendered="{!isUO}" value="{!wrappedText['endSumm2']}" escape="false" />
 
             <apex:outputpanel rendered="{!accountNames !=''}">
                 <apex:outputText><h3>Samarbeid med arbeidsgivere</h3></apex:outputText>
@@ -881,10 +881,10 @@
                 >
             </apex:outputpanel>
             <div style="padding-bottom: 5px"></div>
-            <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField>
+            <apex:outputText rendered="{!isUO}" value="{!wrappedText['endSumm3']}" escape="false" />
 
             <apex:outputText><h3>Deltakelse i jobb og arbeidstrening</h3></apex:outputText>
-            <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
+            <apex:outputText rendered="{!isUO}" value="{!wrappedText['endSumm4']}" escape="false" />
 
             <apex:repeat value="{!activeParticipantsJobs}" var="jobs">
                 <div style="page-break-inside: avoid">
@@ -1064,17 +1064,17 @@
             </apex:outputpanel>
 
             <apex:outputText rendered="{!isIPS}"><h3>Beskriv jobbutviklingsprosessen</h3></apex:outputText>
-            <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm7__c}"></apex:outputField>
+            <apex:outputText rendered="{!isIPS}" value="{!wrappedText['endSumm7']}" escape="false" />
 
             <apex:outputText rendered="{!isIPS}"><h3>Oppsummering av behov for tilrettelegging</h3></apex:outputText>
-            <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm6__c}"></apex:outputField>
+            <apex:outputText rendered="{!isIPS}" value="{!wrappedText['endSumm6']}" escape="false" />
 
             <apex:outputText rendered="{!isIPS}"><h3>Oppsummering av jobb/arbeidstrening</h3></apex:outputText>
-            <apex:outputField rendered="{!isIPS}" value="{!currentRecord.IPS_endReportSumm4__c}"></apex:outputField>
+            <apex:outputText rendered="{!isIPS}" value="{!wrappedText['endSumm4']}" escape="false" />
         </apex:outputPanel>
         <apex:outputpanel rendered="{!currentRecord.IPS_participantsOnBehalf__c!=''}">
             <apex:outputText><h3>Deltakers kommentar</h3></apex:outputText>
-            <apex:outputField value="{!currentRecord.IPS_participantsOnBehalf__c}"></apex:outputField>
+            <apex:outputText value="{!wrappedText['participantsOnBehalf']}" escape="false" />
         </apex:outputpanel>
     </div>
 </apex:page>
