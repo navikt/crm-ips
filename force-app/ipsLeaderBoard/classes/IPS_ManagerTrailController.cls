@@ -12,12 +12,7 @@ public without sharing class IPS_ManagerTrailController {
         'Downsizing',
         'Career mapping and career planning',
         'Find a suitable job / Collaborate with AG',
-        'Education and training in and / or outside the workplace',
-        'Information and decision support',
-        'Discovery',
-        'Job development CE',
-        'Adapted training and training in the workplace',
-        'Long-term available follow-up and career development'
+        'Education and training in and / or outside the workplace'
     };
 
     @AuraEnabled(cacheable=true)

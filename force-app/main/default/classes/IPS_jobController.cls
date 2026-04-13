@@ -1,4 +1,11 @@
 public without sharing class IPS_jobController {
+    private static final List<String> CONTRACT_WORK = new List<String>{
+        'Freelance / self-employed',
+        'Permanent employment',
+        'Temporary employment',
+        'Zero hours contrac'
+    };
+
     /******************************** Work *******************************************/
     /* All completed jobs for participants
         used in experience cloud
@@ -25,13 +32,7 @@ public without sharing class IPS_jobController {
                 FROM ips_Job__c
                 WHERE
                     ips_Work_Trail__c = :workTrailId
-                    AND ips_Form_of_Employment__c IN (
-                        'Freelance / self-employed',
-                        'Apprentice',
-                        'Permanent employment',
-                        'Temporary employment',
-                        'Zero hours contrac'
-                    )
+                    AND ips_Form_of_Employment__c IN :CONTRACT_WORK
                     AND ips_Status__c = 'Completed'
             ];
 
@@ -66,13 +67,7 @@ public without sharing class IPS_jobController {
                 FROM ips_Job__c
                 WHERE
                     ips_Work_Trail__c = :workTrailId
-                    AND ips_Form_of_Employment__c IN (
-                        'Freelance / self-employed',
-                        'Apprentice',
-                        'Permanent employment',
-                        'Temporary employment',
-                        'Zero hours contrac'
-                    )
+                    AND ips_Form_of_Employment__c IN :CONTRACT_WORK
                     AND ips_Status__c = 'Ongoing'
             ];
 
@@ -193,13 +188,7 @@ public without sharing class IPS_jobController {
                 FROM ips_Job__c
                 WHERE
                     ips_status__c = 'Ongoing'
-                    AND ips_Form_of_Employment__c IN (
-                        'Freelance / self-employed',
-                        'Apprentice',
-                        'Permanent employment',
-                        'Temporary employment',
-                        'Zero hours contrac'
-                    )
+                    AND ips_Form_of_Employment__c IN :CONTRACT_WORK
                     AND ips_Work_Trail__r.OwnerId IN :IPS_Utility.getMyEmployeesUserId()
                 GROUP BY ips_form_of_employment__c
             ];

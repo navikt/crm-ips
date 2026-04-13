@@ -232,7 +232,6 @@ public with sharing class IPS_ParticipantPortalActivityController {
                 ips_Work_Trail__c = :trailRecordId
                 AND ips_Form_of_Employment__c IN (
                     'Freelance / self-employed',
-                    'Apprentice',
                     'Permanent employment',
                     'Temporary employment',
                     'Zero hours contrac'
