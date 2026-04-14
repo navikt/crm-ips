@@ -11,6 +11,13 @@
                         </valueListItems>
                         <valueListItems>
                             <value>Work_Trail__c.Recruitment_Program</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.IPS_Beta_Feature_Access}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                            </visibilityRule>
                         </valueListItems>
                         <valueListItems>
                             <value>ChangeOwnerOne</value>
@@ -944,10 +951,16 @@
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab3</identifier>
                 <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.No_of_Recruitment_Periods__c}</leftValue>
                         <operator>GT</operator>
                         <rightValue>0</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!$Permission.CustomPermission.IPS_Beta_Feature_Access}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -1688,12 +1701,7 @@
                 <componentName>crmAlertBanner</componentName>
                 <identifier>c_crmAlertBanner2</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 AND 2 AND 3</booleanFilter>
-                    <criteria>
-                        <leftValue>{!Record.ips_Status__c}</leftValue>
-                        <operator>NE</operator>
-                        <rightValue>Ended</rightValue>
-                    </criteria>
+                    <booleanFilter>1 AND 2</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.IPS_Is_healthcare_related__c}</leftValue>
                         <operator>EQUAL</operator>
