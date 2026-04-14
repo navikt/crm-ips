@@ -3,18 +3,30 @@
  * @author       : Ann Kristin Olsen, Balendra Sounthararajan
  **/
 public without sharing class IPS_ManagerTrailController {
+    private static final List<String> ACTIVE_STATUSES = new List<String>{
+        'Initial contact',
+        'Mapping',
+        'Job development',
+        'In Education',
+        'Working',
+        'Downsizing',
+        'Career mapping and career planning',
+        'Find a suitable job / Collaborate with AG',
+        'Education and training in and / or outside the workplace'
+    };
+
     @AuraEnabled(cacheable=true)
-    /* Aggregerte data - antall jobbspor pr status, not ended and referred*/
+    /* Aggregerte data - antall jobbspor pr status, active statuses only */
     public static List<IPS_ManagerTrail> getAggregatedTrailStatus() {
         List<IPS_ManagerTrail> trailStatuses = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
 
         aggList = [
-            SELECT count(id) Antall, toLabel(ips_Status__c) Status, recordtype.name Tjeneste
-            FROM work_trail__c
-            WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_status__c NOT IN ('Ended', 'Referred')
-            GROUP BY ips_status__c, recordtype.name
-            ORDER BY recordtype.name
+            SELECT COUNT(Id) Antall, toLabel(ips_Status__c) Status, RecordType.Name Tjeneste
+            FROM Work_Trail__c
+            WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_Status__c IN :ACTIVE_STATUSES
+            GROUP BY ips_Status__c, RecordType.Name
+            ORDER BY RecordType.Name
         ];
 
         if (aggList.size() > 0) {
@@ -104,10 +116,10 @@ public without sharing class IPS_ManagerTrailController {
         List<AggregateResult> aggList = new List<AggregateResult>();
 
         aggList = [
-            SELECT count(id) Antall, owner.name OwnerName
-            FROM work_trail__c
-            WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_status__c NOT IN ('Ended', 'Referred')
-            GROUP BY owner.name
+            SELECT COUNT(Id) Antall, Owner.Name OwnerName
+            FROM Work_Trail__c
+            WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_Status__c IN :ACTIVE_STATUSES
+            GROUP BY Owner.Name
         ];
 
         if (aggList.size() > 0) {
@@ -130,12 +142,12 @@ public without sharing class IPS_ManagerTrailController {
         List<AggregateResult> aggList = new List<AggregateResult>();
 
         aggList = [
-            SELECT count(id) Antall
-            FROM work_trail__c
+            SELECT COUNT(Id) Antall
+            FROM Work_Trail__c
             WHERE
                 OwnerId IN :IPS_Utility.getMyEmployeesUserId()
                 AND ips_UO_Service__c = 'UO Training'
-                AND ips_status__c NOT IN ('Ended', 'Referred')
+                AND ips_Status__c IN :ACTIVE_STATUSES
         ];
 
         if (aggList.size() > 0) {
