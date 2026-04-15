@@ -785,23 +785,35 @@ public with sharing class IPS_viewReportPDFController {
         return filteredPassivePeriods;
     }
 
+    /**
+     * Returns all recruitment programs related to the worktrail.
+     * @return  List of recruitment programs
+     */
     private List<Recruitment_Program__c> getAllRecruitmentPrograms(){
         List<Recruitment_Program__c> recruitmentPrograms = [
-            SELECT id, Name, Start_Date__c, End_Date__c, Work_Trail__c, toLabel(End_Cause__c), toLabel(Detailed_end_cause__c), Place_Of_Employment__c
+            SELECT id, Name, Start_Date__c, End_Date__c, Work_Trail__c, toLabel(End_Cause__c), toLabel(Detailed_end_cause__c)
             FROM Recruitment_Program__c
             WHERE Work_Trail__c = :workTrailId 
+            ORDER BY Start_Date__c DESC
         ];
         return recruitmentPrograms;
     }
 
+    /**
+     * Returns recruitment programs related to the worktrail within a given date range.
+     * @param startDate starting date of the date range
+     * @param endDate ending date of the date range
+     * @return  List of filtered recruitment programs
+     */
     private List<Recruitment_Program__c> getRecruitmentProgramsWithinDateRange(Date startDate, Date endDate) {
 
         return [
-            SELECT Id, Name, Start_Date__c, End_Date__c, Work_Trail__c, toLabel(End_Cause__c), toLabel(Detailed_end_cause__c), Place_Of_Employment__c
+            SELECT Id, Name, Start_Date__c, End_Date__c, Work_Trail__c, toLabel(End_Cause__c), toLabel(Detailed_end_cause__c)
             FROM Recruitment_Program__c
             WHERE Work_Trail__c = :workTrailId
             AND Start_Date__c <= :endDate
             AND (End_Date__c = NULL OR End_Date__c >= :startDate)
+            ORDER BY Start_Date__c DESC
         ];
     }
 
