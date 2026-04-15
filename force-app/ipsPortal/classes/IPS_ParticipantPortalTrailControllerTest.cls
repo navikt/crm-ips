@@ -23,8 +23,8 @@ public class IPS_ParticipantPortalTrailControllerTest {
         insert jobbspor;
 
         List<Task> tasksToInsert = new List<Task>();
-        Task delmaal = IPS_TestDataFactory.creategoal(jobbspor.id);
-        Task delmaal2 = IPS_TestDataFactory.creategoal(jobbspor.id);
+        Task delmaal = IPS_TestDataFactory.creategoal(jobbspor.Id);
+        Task delmaal2 = IPS_TestDataFactory.creategoal(jobbspor.Id);
         tasksToInsert.add(delmaal);
         tasksToInsert.add(delmaal2);
         insert tasksToInsert;
@@ -33,20 +33,20 @@ public class IPS_ParticipantPortalTrailControllerTest {
         update delmaal2;
 
         Task log = new task();
-        log.ActivityDate = system.today();
+        log.ActivityDate = System.today();
         log.IsVisibleInSelfService = true;
         log.Type_of_Task_IPSUO__c = 'Logg kontakt';
         log.Subject = 'Oppgave logg';
-        log.WhatId = jobbspor.id;
+        log.WhatId = jobbspor.Id;
         log.Samtalereferat__c = true;
         log.Status = 'Completed';
         insert log;
 
         List<Event> eventsToInsert = new List<Event>();
-        Event meeting = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
+        Event meeting = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.Id);
         eventsToInsert.add(meeting);
 
-        Event meeting2 = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.id);
+        Event meeting2 = IPS_TestDataFactory.createEmployerEventWithParticipant(acc1.id, usr1.id, jobbspor.Id);
         eventsToInsert.add(meeting2);
         insert eventsToInsert;
 
@@ -54,20 +54,20 @@ public class IPS_ParticipantPortalTrailControllerTest {
         update meeting2;
 
         List<ips_Job__c> jobsToInsert = new List<ips_Job__c>();
-        ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Ongoing');
+        ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.Id, 'Ongoing');
         jobsToInsert.add(job1);
 
-        ips_job__c job2 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.id, 'Ongoing');
+        ips_job__c job2 = IPS_TestDataFactory.createJob(acc1.id, jobbspor.Id, 'Ongoing');
         jobsToInsert.add(job2);
         insert jobsToInsert;
 
         job2.ips_Form_of_Employment__c = 'work training';
         update job2;
 
-        ips_education__c edu1 = IPS_TestDataFactory.createEducation(jobbspor.id);
+        ips_education__c edu1 = IPS_TestDataFactory.createEducation(jobbspor.Id);
         insert edu1;
 
-        AMS_Vocational_education_and_training__c eduAMS = IPS_TestDataFactory.createEducationAMS(jobbspor.id);
+        AMS_Vocational_education_and_training__c eduAMS = IPS_TestDataFactory.createEducationAMS(jobbspor.Id);
         insert eduAMS;
     }
 
@@ -85,9 +85,14 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
     @isTest
     static void getLog() {
-        Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
-        List<IPS_ParticipantPortalTask> log = IPS_ParticipantPortalActivityController.getParticipantsLogs(workTrailId);
-        System.Assert.isNotNull(log, 'Logs should not be null');
+        User testUser = [SELECT Id FROM User WHERE Username LIKE '%Sankt.Claus%' LIMIT 1];
+        System.runAs(testUser) {
+            Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
+            List<IPS_ParticipantPortalTask> log = IPS_ParticipantPortalActivityController.getParticipantsLogs(
+                workTrailId
+            );
+            System.Assert.isNotNull(log, 'Logs should not be null');
+        }
     }
 
     @isTest
