@@ -3,38 +3,6 @@
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <name>Update_RP_Field</name>
-        <label>Update RP Field In Worktrail</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>rpStatus</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Worktrail</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Update_RP_Field_In_Worktrail_True</name>
-        <label>Update RP Field In Worktrail</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>rpStatus</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Worktrail</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Update_RP_Fields</name>
         <label>Update RP Fields</label>
         <locationX>0</locationX>
@@ -143,9 +111,55 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Last_Recruitment_Program</targetReference>
+                <targetReference>Recruitment_Record_Found</targetReference>
             </connector>
             <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Recruitment_Program_Period_Registered</name>
+        <label>Recruitment Program Period Registered ?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Worktrail_in_Recruitment_Program</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes_RP_Period_Registered</name>
+            <conditionLogic>( 1 AND 2 AND 3 ) OR 4</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Last_Recruitment_Program.Start_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Last_Recruitment_Program.End_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Last_Recruitment_Program.Start_Date__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Last_Recruitment_Program.End_Date__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Registered_RP_Period</targetReference>
+            </connector>
+            <label>Yes, RP Period Registered</label>
         </rules>
     </decisions>
     <decisions>
@@ -154,7 +168,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Update_RP_Field</targetReference>
+            <targetReference>RP_Period_Ended</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -170,7 +184,52 @@
             <connector>
                 <targetReference>RP_Details_Screen</targetReference>
             </connector>
-            <label>Yes</label>
+            <label>Yes, RP Record Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>RP_Period_Ended</name>
+        <label>RP Period Ended ?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Period_Ended</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Sluttdato</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Worktrail_Opt_Out</targetReference>
+            </connector>
+            <label>Yes, RP Period Ended</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks whether the program has already started ?</description>
+        <name>RP_Period_Started</name>
+        <label>RP Period Started ?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_RP_Period_Started</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recruitmentProgram.Start_Date__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Worktrail_Opt_In</targetReference>
+            </connector>
+            <label>Yes, RP Period Started</label>
         </rules>
     </decisions>
     <decisions>
@@ -184,12 +243,26 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 OR (2 AND 3)</conditionLogic>
             <conditions>
                 <leftValueReference>Get_Worktrail.IPS_Is_healthcare_related__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Last_Recruitment_Program.Start_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Last_Recruitment_Program.Start_Date__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -209,6 +282,11 @@ DATEVALUE(NOW())</expression>
         <name>isEndDateValid</name>
         <dataType>Boolean</dataType>
         <expression>{!recruitmentProgram.End_Date__c} &lt; {!recruitmentProgram.Start_Date__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Today</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
     </formulas>
     <interviewLabel>IPS - Recruitment Program {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Recruitment Program</label>
@@ -237,10 +315,10 @@ DATEVALUE(NOW())</expression>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Update_RP_Field_In_Worktrail_True</targetReference>
+            <targetReference>RP_Period_Started</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Copy_1_of_Application_Log_RP</targetReference>
+            <targetReference>Application_Log_Create_RP</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>End_Date__c</field>
@@ -276,7 +354,7 @@ DATEVALUE(NOW())</expression>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Recruitment_Record_Found</targetReference>
+            <targetReference>Recruitment_Program_Period_Registered</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -299,7 +377,7 @@ DATEVALUE(NOW())</expression>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Worktrail_in_Recruitment_Program</targetReference>
+            <targetReference>Get_Last_Recruitment_Program</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -319,7 +397,7 @@ DATEVALUE(NOW())</expression>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Update_RP_Field</targetReference>
+            <targetReference>RP_Period_Ended</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Application_Log_RP</targetReference>
@@ -327,10 +405,13 @@ DATEVALUE(NOW())</expression>
         <inputReference>Get_Last_Recruitment_Program</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>Update_Worktrail</name>
-        <label>Update Worktrail</label>
+        <name>Update_Worktrail_Opt_In</name>
+        <label>Update Worktrail - Opt In</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <faultConnector>
+            <targetReference>Application_Log_Update_Worktrail</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -342,14 +423,55 @@ DATEVALUE(NOW())</expression>
         <inputAssignments>
             <field>IPS_Is_healthcare_related__c</field>
             <value>
-                <elementReference>rpStatus</elementReference>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Worktrail_Opt_Out</name>
+        <label>Update Worktrail - Opt Out</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_Log_Update_Worktrail</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>IPS_Is_healthcare_related__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </inputAssignments>
         <object>Work_Trail__c</object>
     </recordUpdates>
     <screens>
+        <name>Registered_RP_Period</name>
+        <label>Registered RP Period</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>deleteRegisteredRP</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Du har en registrert periode fra {!Get_Last_Recruitment_Program.Start_Date__c} til {!Get_Last_Recruitment_Program.End_Date__c}﻿. &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Perioden kan endres eller slettes under fanen &lt;strong&gt;Rekrutteringsprogrammet&lt;/strong&gt;.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>RP_Details</name>
-        <label>RP - Details</label>
+        <label>RP - Details Opt In</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <allowBack>true</allowBack>
@@ -375,7 +497,7 @@ DATEVALUE(NOW())</expression>
     </screens>
     <screens>
         <name>RP_Details_Screen</name>
-        <label>RP Details</label>
+        <label>RP Details Opt Out</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <allowBack>true</allowBack>
@@ -544,6 +666,37 @@ DATEVALUE(NOW())</expression>
     </start>
     <status>Active</status>
     <subflows>
+        <name>Application_Log_Create_RP</name>
+        <label>Application Log - Create RP</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <stringValue>Could not create RP Program</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>Get_Worktrail.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - Recruitment Program (Create RP)</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
         <name>Application_Log_RP</name>
         <label>Application Log - RP</label>
         <locationX>0</locationX>
@@ -570,13 +723,13 @@ DATEVALUE(NOW())</expression>
         <inputAssignments>
             <name>sourceFunction</name>
             <value>
-                <stringValue>IPS - Recruitment Program</stringValue>
+                <stringValue>IPS - Recruitment Program (Update Last RP)</stringValue>
             </value>
         </inputAssignments>
     </subflows>
     <subflows>
-        <name>Copy_1_of_Application_Log_RP</name>
-        <label>Copy 1 of Application Log - RP</label>
+        <name>Application_Log_Update_Worktrail</name>
+        <label>Application Log - Update Worktrail</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <flowName>IPS_Subflow_Create_Application_Log</flowName>
@@ -589,7 +742,7 @@ DATEVALUE(NOW())</expression>
         <inputAssignments>
             <name>faultMessage</name>
             <value>
-                <stringValue>Could not create RP Program</stringValue>
+                <elementReference>$Flow.FaultMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -601,7 +754,7 @@ DATEVALUE(NOW())</expression>
         <inputAssignments>
             <name>sourceFunction</name>
             <value>
-                <stringValue>IPS - Recruitment Program</stringValue>
+                <stringValue>IPS - Recruitment Program (Update Worktrail)</stringValue>
             </value>
         </inputAssignments>
     </subflows>
@@ -619,12 +772,5 @@ DATEVALUE(NOW())</expression>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Recruitment_Program__c</objectType>
-    </variables>
-    <variables>
-        <name>rpStatus</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
 </Flow>
