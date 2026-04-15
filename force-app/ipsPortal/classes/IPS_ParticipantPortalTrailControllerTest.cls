@@ -81,7 +81,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest(IsParallel=true)
-    static void getTrailTest() {
+    public static void getTrailTest() {
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
 
         List<IPS_ParticipantPortalWorkTrail> trail = null;
@@ -103,7 +103,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest(IsParallel=true)
-    static void getParticipantsLogsTest() {
+    public static void getParticipantsLogsTest() {
         List<IPS_ParticipantPortalTask> logToRetrieve = new List<IPS_ParticipantPortalTask>();
         testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
         Test.startTest();
@@ -118,7 +118,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest(IsParallel=true)
-    static void getParticipantsGoalsTest() {
+    public static void getParticipantsGoalsTest() {
         workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalTask> goalsToRetrieve = null;
         List<IPS_ParticipantPortalTask> completedGoalToRetrieve = null;
@@ -141,7 +141,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest(IsParallel=true)
-    static void getParticipantOpenMeetingsTest() {
+    public static void getParticipantOpenMeetingsTest() {
         workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         contactId = [SELECT CRM_Account__r.PersonContactId FROM Person__c WHERE Name = '12069755555']
         ?.CRM_Account__r.PersonContactId;
@@ -163,7 +163,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest(IsParallel=true)
-    static void getParticipantOpenJobsTest() {
+    public static void getParticipantOpenJobsTest() {
         ID workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalJob> job = null;
         User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
@@ -180,7 +180,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest(IsParallel=true)
-    static void getJobTrainings() {
+    public static void getJobTrainings() {
         Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalJob> job = null;
         testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
@@ -197,9 +197,9 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest(IsParallel=true)
-    static void getEducationIPS() {
-        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
-        testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+    public static void getEducationIPS() {
+        Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
+        User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
         List<IPS_ParticipantPortalEducation> edu = null;
 
         Test.startTest();
@@ -215,7 +215,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest(IsParallel=true)
-    static void getParticipantOpenEducationTrainingAMSTest() {
+    public static void getParticipantOpenEducationTrainingAMSTest() {
         List<IPS_ParticipantPortalEducation> educationToRetrieve = null;
 
         workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
