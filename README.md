@@ -22,6 +22,10 @@ Pakken er avhengig av følgende pakker:
 - [crm-shared-user-notification](https://github.com/navikt/crm-shared-user-notification)
 - [crm-journal-utilities](https://github.com/navikt/crm-journal-utilities)
 
+## Kode generert av GitHub Copilot
+
+Dette repoet bruker GitHub Copilot til å generere kode.
+
 ## Kontakt
 
 Spørsmål? Ta kontakt i [#crm-jobbsporet](https://nav-it.slack.com/archives/crm-jobbsporet) på Slack.
