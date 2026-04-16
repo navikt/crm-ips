@@ -1,10 +1,7 @@
 /**
- * @description  : 
- * @author       : Håkon Kavli
- * @since        : 0.531.0
- * @version      : 0.531.0
- * @see          : class#member 'text string' <a href='URL'>label</a> 
-**/
+ * @description  : Controller for the IPS Participant Portal, responsible for retrieving work trail information for a given participant record. This controller includes methods to fetch the most recent work trail and its details, which are then used to display relevant information on the participant portal.
+ * @author       :  Ann-Kristin Olsen
+ **/
 public with sharing class IPS_ParticipantPortalTrailController {
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalWorkTrail> getTrail(Id recordId) {
