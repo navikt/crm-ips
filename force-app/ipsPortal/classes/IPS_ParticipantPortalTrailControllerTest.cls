@@ -119,7 +119,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
     @IsTest
     public static void getParticipantsGoalsTest() {
-        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
+        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalTask> goalsToRetrieve = null;
         List<IPS_ParticipantPortalTask> completedGoalToRetrieve = null;
         User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
@@ -142,7 +142,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
     @IsTest
     public static void getParticipantOpenMeetingsTest() {
-        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
+        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         contactId = [SELECT CRM_Account__r.PersonContactId FROM Person__c WHERE Name = '12069755555']
         ?.CRM_Account__r.PersonContactId;
         List<IPS_ParticipantPortalEvent> meeting = null;
@@ -164,7 +164,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
     @IsTest
     public static void getParticipantOpenJobsTest() {
-        ID workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
+        ID workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalJob> job = null;
         User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
 
@@ -181,7 +181,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
     @IsTest
     public static void getJobTrainings() {
-        Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
+        Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalJob> job = null;
         testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
 
@@ -198,7 +198,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
     @IsTest
     public static void getEducationIPS() {
-        Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
+        Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
         List<IPS_ParticipantPortalEducation> edu = null;
 
@@ -218,12 +218,12 @@ public class IPS_ParticipantPortalTrailControllerTest {
     public static void getParticipantOpenEducationTrainingAMSTest() {
         List<IPS_ParticipantPortalEducation> educationToRetrieve = null;
 
-        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
+        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'UO_Jobbspesialist');
         System.runAs(testUser) {
             educationToRetrieve = IPS_ParticipantPortalActivityController.getParticipantOpenEducationTrainingAMS(
                 workTrailId
