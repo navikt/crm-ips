@@ -11,7 +11,7 @@
         </center>
 
         <!-- Heading -->
-        <h1 style="background-color: #F1F1F1 !important;">{!currentRecord.IPS_subject__c}</h1>
+        <h1 style="background-color: #f1f1f1 !important">{!currentRecord.IPS_subject__c}</h1>
 
         <!-- Innledning -->
         <apex:panelGrid columns="2" id="innledning" width="60%">
@@ -125,17 +125,12 @@
 
                 <table style="width: 100%; border: 1px solid #262626; table-layout: fixed">
                     <tr style="vertical-align: top; background-color: #f1f1f1">
-                        <th style="width: 25%">Tjenestested</th>
                         <th style="width: 15%">Startdato</th>
                         <th style="width: 15%">Sluttdato</th>
-                        <th style="width: 45%">Sluttårsak</th>
+                        <th style="width: 45%">Status ved avslutning</th>
                     </tr>
                     <apex:repeat value="{!getRecruitmentProgramsWithinDateRange}" var="program">
                         <tr style="vertical-align: top; border: 1px solid #ff0000">
-                            <td style="border: 1px solid #f1f1f1">
-                                <apex:outputField value="{!program.Place_Of_Employment__c}" />
-                            </td>
-
                             <td style="border: 1px solid #f1f1f1">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!program.Start_Date__c}" />
@@ -935,17 +930,12 @@
 
                 <table style="width: 100%; border: 1px solid #262626; table-layout: fixed">
                     <tr style="vertical-align: top; background-color: #f1f1f1">
-                        <th style="width: 25%">Tjenestested</th>
                         <th style="width: 15%">Startdato</th>
                         <th style="width: 15%">Sluttdato</th>
-                        <th style="width: 45%">Sluttårsak</th>
+                        <th style="width: 45%">Status ved avslutning</th>
                     </tr>
                     <apex:repeat value="{!getAllRecruitmentPrograms}" var="program">
                         <tr style="vertical-align: top; border: 1px solid #ff0000">
-                            <td style="border: 1px solid #f1f1f1">
-                                <apex:outputField value="{!program.Place_Of_Employment__c}" />
-                            </td>
-
                             <td style="border: 1px solid #f1f1f1">
                                 <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
                                     <apex:param value="{!program.Start_Date__c}" />
