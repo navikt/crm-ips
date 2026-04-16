@@ -1,0 +1,15 @@
+name: Sync hovmester
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    uses: navikt/hovmester/.github/workflows/hovmester-sync.yml@main
+    with:
+      collections: "backend, frontend"              # eller "backend", "backend,frontend"
