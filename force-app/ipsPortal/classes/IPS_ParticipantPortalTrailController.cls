@@ -70,67 +70,66 @@ public with sharing class IPS_ParticipantPortalTrailController {
     private static List<IPS_ParticipantPortalWorkTrail> getWorkTrailWrapperList(Id currentRecordId) {
         List<IPS_ParticipantPortalWorkTrail> wrapperTempList = new List<IPS_ParticipantPortalWorkTrail>();
 
-        List<Work_Trail__c> tempTrailList = new List<Work_Trail__c>(
-            [
-                SELECT
-                    Id,
-                    Name,
-                    RecordType.DeveloperName,
-                    IPS_ownerName__c,
-                    ips_End_Date__c,
-                    End_Cause__c,
-                    ips_Other_end_cases__c,
-                    ips_Status__c,
-                    ips_Referred_date__c,
-                    ips_Main_Goal_list__c,
-                    ips_Main_goal__c,
-                    ips_Priority_career_wishes__c,
-                    ips_Framework_for_job_development_search__c,
-                    ips_Preferred_working_hours__c,
-                    ips_Network__c,
-                    ips_Geography__c,
-                    ips_Interests_Hobbies__c,
-                    Personal_Qualities__c,
-                    ips_Cultural_background__c,
-                    ips_Environmental_conditions__c,
-                    ips_Economy__c,
-                    ips_Health__c,
-                    ips_Strategy_before_and_after_work__c,
-                    ips_Facilitation_needs__c,
-                    ips_Early_signs_increased_symptompressur__c,
-                    ips_What_coping_strategies_are_there__c,
-                    ips_job_edu_support_network__c,
-                    ips_Transparency_consent_obtained_date__c,
-                    ips_What_can_be_shared_with_the_employer__c,
-                    What_cannot_be_shared_with_the_employer__c,
-                    ips_NAV_supervisor__c,
-                    ips_Behandlingsteam__c,
-                    ips_Network_partner__c,
-                    ips_Financialframework_before_start_work__c,
-                    ips_Plan__c,
-                    ips_Transition_to_work__c,
-                    ips_Benefits_of_openness_to_the_employer__c,
-                    ips_Disadvantages_of_openness_employe__c,
-                    ips_Desired_profession_industry_career__c,
-                    ips_Desired_working_environment__c,
-                    ips_Desired_work_tasks__c,
-                    ips_UO_Service__c,
-                    ips_Mobility__c,
-                    ips_Economic_conditions__c,
-                    ips_Social_conditions__c,
-                    ips_Other__c,
-                    ips_Education__c,
-                    ips_Work_experience__c
-                FROM Work_Trail__c
-                WHERE
-                    ips_Participant__c = :currentRecordId
-                    AND (ips_End_Date__c = LAST_N_DAYS:365
-                    OR ips_End_Date__c = NULL)
-                WITH USER_MODE
-                ORDER BY CreatedDate DESC
-                LIMIT 1
-            ]
-        );
+        List<Work_Trail__c> tempTrailList = new List<Work_Trail__c>();
+        tempTrailList = [
+            SELECT
+                Id,
+                Name,
+                RecordType.DeveloperName,
+                IPS_ownerName__c,
+                ips_End_Date__c,
+                End_Cause__c,
+                ips_Other_end_cases__c,
+                ips_Status__c,
+                ips_Referred_date__c,
+                ips_Main_Goal_list__c,
+                ips_Main_goal__c,
+                ips_Priority_career_wishes__c,
+                ips_Framework_for_job_development_search__c,
+                ips_Preferred_working_hours__c,
+                ips_Network__c,
+                ips_Geography__c,
+                ips_Interests_Hobbies__c,
+                Personal_Qualities__c,
+                ips_Cultural_background__c,
+                ips_Environmental_conditions__c,
+                ips_Economy__c,
+                ips_Health__c,
+                ips_Strategy_before_and_after_work__c,
+                ips_Facilitation_needs__c,
+                ips_Early_signs_increased_symptompressur__c,
+                ips_What_coping_strategies_are_there__c,
+                ips_job_edu_support_network__c,
+                ips_Transparency_consent_obtained_date__c,
+                ips_What_can_be_shared_with_the_employer__c,
+                What_cannot_be_shared_with_the_employer__c,
+                ips_NAV_supervisor__c,
+                ips_Behandlingsteam__c,
+                ips_Network_partner__c,
+                ips_Financialframework_before_start_work__c,
+                ips_Plan__c,
+                ips_Transition_to_work__c,
+                ips_Benefits_of_openness_to_the_employer__c,
+                ips_Disadvantages_of_openness_employe__c,
+                ips_Desired_profession_industry_career__c,
+                ips_Desired_working_environment__c,
+                ips_Desired_work_tasks__c,
+                ips_UO_Service__c,
+                ips_Mobility__c,
+                ips_Economic_conditions__c,
+                ips_Social_conditions__c,
+                ips_Other__c,
+                ips_Education__c,
+                ips_Work_experience__c
+            FROM Work_Trail__c
+            WHERE
+                ips_Participant__c = :currentRecordId
+                AND (ips_End_Date__c = LAST_N_DAYS:365
+                OR ips_End_Date__c = NULL)
+            WITH USER_MODE
+            ORDER BY CreatedDate DESC
+            LIMIT 1
+        ];
 
         for (Work_Trail__c t : tempTrailList) {
             ips_ParticipantPortalWorkTrail tempList = new ips_ParticipantPortalWorkTrail();
