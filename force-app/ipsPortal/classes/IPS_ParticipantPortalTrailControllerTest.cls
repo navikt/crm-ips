@@ -90,7 +90,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
 
         System.runAs(testUser) {
             trail = IPS_ParticipantPortalTrailController.getTrailWrapperClassList(participantId);
@@ -108,7 +108,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
 
         System.runAs(testUser) {
             logToRetrieve = IPS_ParticipantPortalActivityController.getParticipantsLogs(workTrailId);
@@ -126,7 +126,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
 
         System.runAs(testUser) {
             goalsToRetrieve = IPS_ParticipantPortalActivityController.getParticipantsOpenGoals(workTrailId);
@@ -151,7 +151,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
         System.runAs(testUser) {
             meeting = IPS_ParticipantPortalActivityController.getParticipantOpenMeetings(workTrailId, contactId);
             meeting2 = IPS_ParticipantPortalActivityController.getParticipantCompletedMeetings(workTrailId, contactId);
@@ -170,7 +170,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
 
         System.runAs(testUser) {
             job = IPS_ParticipantPortalActivityController.getParticipantOpenJobs(workTrailId);
@@ -187,7 +187,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
 
         System.runAs(testUser) {
             job = IPS_ParticipantPortalActivityController.getParticipantOpenJobTrainings(workTrailId);
@@ -204,7 +204,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
 
         System.runAs(testUser) {
             edu = IPS_ParticipantPortalActivityController.getParticipantOpenEducations(workTrailId);
@@ -223,7 +223,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
-        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'UO_Jobbspesialist');
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
         System.runAs(testUser) {
             educationToRetrieve = IPS_ParticipantPortalActivityController.getParticipantOpenEducationTrainingAMS(
                 workTrailId
