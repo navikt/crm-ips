@@ -80,7 +80,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         insert eduAMS;
     }
 
-    @IsTest(IsParallel=true)
+    @IsTest
     public static void getTrailTest() {
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
 
@@ -102,7 +102,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         System.Assert.isNotNull(trail2, 'Trail2 should not be null');
     }
 
-    @IsTest(IsParallel=true)
+    @IsTest
     public static void getParticipantsLogsTest() {
         List<IPS_ParticipantPortalTask> logToRetrieve = new List<IPS_ParticipantPortalTask>();
         testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
@@ -117,7 +117,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         System.Assert.isNotNull(logToRetrieve, 'Logs should not be null');
     }
 
-    @IsTest(IsParallel=true)
+    @IsTest
     public static void getParticipantsGoalsTest() {
         workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalTask> goalsToRetrieve = null;
@@ -140,7 +140,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         System.Assert.isNotNull(completedGoalToRetrieve, 'Expected to find a completed goal');
     }
 
-    @IsTest(IsParallel=true)
+    @IsTest
     public static void getParticipantOpenMeetingsTest() {
         workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         contactId = [SELECT CRM_Account__r.PersonContactId FROM Person__c WHERE Name = '12069755555']
@@ -162,7 +162,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         System.Assert.isNotNull(meeting2, 'Completed meetings should not be null');
     }
 
-    @IsTest(IsParallel=true)
+    @IsTest
     public static void getParticipantOpenJobsTest() {
         ID workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalJob> job = null;
@@ -179,7 +179,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         System.Assert.isNotNull(job, 'Open jobs should not be null');
     }
 
-    @IsTest(IsParallel=true)
+    @IsTest
     public static void getJobTrainings() {
         Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalJob> job = null;
@@ -196,7 +196,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         System.Assert.isNotNull(job, 'Open job trainings should not be null');
     }
 
-    @IsTest(IsParallel=true)
+    @IsTest
     public static void getEducationIPS() {
         Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.Id;
         User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
@@ -214,7 +214,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         System.Assert.isNotNull(edu, 'Education IPS should not be null');
     }
 
-    @IsTest(IsParallel=true)
+    @IsTest
     public static void getParticipantOpenEducationTrainingAMSTest() {
         List<IPS_ParticipantPortalEducation> educationToRetrieve = null;
 
