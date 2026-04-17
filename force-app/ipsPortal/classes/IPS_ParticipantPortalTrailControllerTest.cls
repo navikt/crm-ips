@@ -44,7 +44,10 @@ public class IPS_ParticipantPortalTrailControllerTest {
         );
         // Create goals
         Task delmaal = IPS_TestDataFactory.creategoal(workTrailId);
+
         Task delmaal2 = IPS_TestDataFactory.creategoal(workTrailId);
+        delmaal.Subject = 'Få en jobb';
+        delmaal2.Subject = 'Lage en bra test';
         tasksToInsert.add(logToCreate);
         tasksToInsert.add(delmaal);
         tasksToInsert.add(delmaal2);
@@ -139,7 +142,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     @IsTest
     public static void getParticipantsLogsTest() {
         List<IPS_ParticipantPortalTask> logToRetrieve = new List<IPS_ParticipantPortalTask>();
-        testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
         IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
@@ -156,7 +159,8 @@ public class IPS_ParticipantPortalTrailControllerTest {
         workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalTask> goalsToRetrieve = null;
         List<IPS_ParticipantPortalTask> completedGoalToRetrieve = null;
-        User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        // User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
@@ -170,8 +174,63 @@ public class IPS_ParticipantPortalTrailControllerTest {
         }
         Test.stopTest();
 
+        Task expectedCompletedGoal = [
+            SELECT Id, Subject, CompletedDateTime, ActivityDate, CreatedDate, Description
+            FROM Task
+            WHERE WhatId = :workTrailId AND Status = 'Completed' AND Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)'
+            LIMIT 1
+        ];
+
+        Task expectedOpenGoal = [
+            SELECT Id, Subject, Status, CompletedDateTime, ActivityDate, CreatedDate, Description
+            FROM Task
+            WHERE WhatId = :workTrailId AND Status = 'Open' AND Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)'
+            LIMIT 1
+        ];
+
         System.Assert.isNotNull(goalsToRetrieve, 'Open goals should not be null');
         System.Assert.isNotNull(completedGoalToRetrieve, 'Expected to find a completed goal');
+
+        System.Assert.areEqual(1, goalsToRetrieve.size(), 'Expected to find one open goal');
+        System.Assert.areEqual(1, completedGoalToRetrieve.size(), 'Expected to find one completed goal');
+
+        System.Assert.areEqual(
+            expectedOpenGoal.Id,
+            goalsToRetrieve[0].OppgaveId,
+            'Expected open goal Id to match the open one created in test setup'
+        );
+        System.Assert.areEqual(
+            expectedOpenGoal.Subject,
+            goalsToRetrieve[0].Emne,
+            'Expected open goal subject to match the one created in test setup'
+        );
+
+        System.Assert.areEqual(
+            expectedCompletedGoal.Id,
+            completedGoalToRetrieve[0].OppgaveId,
+            'Expected completed goal Id to match the completed one created in test setup'
+        );
+        System.Assert.areEqual(
+            expectedCompletedGoal.Subject,
+            completedGoalToRetrieve[0].Emne,
+            'Expected completed goal subject to match the one created in test setup'
+        );
+        /*   TODO: fix discrepancies      
+        System.Assert.areEqual(
+            IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(expectedCompletedGoal.CompletedDateTime)),
+            completedGoalToRetrieve[0].UtfoertDato,
+            'Expected completed date to match the one created in test setup'
+        ); 
+        System.Assert.areEqual(
+            IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(expectedCompletedGoal.ActivityDate)),
+            completedGoalToRetrieve[0].ForfallsDato,
+            'Expected due date to match the one created in test setup'
+        );
+        System.Assert.areEqual(
+            IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(expectedCompletedGoal.CreatedDate)),
+            completedGoalToRetrieve[0].OpprettelsesDato,
+            'Expected created date to match the one created in test setup'
+        );*/
     }
 
     @IsTest
