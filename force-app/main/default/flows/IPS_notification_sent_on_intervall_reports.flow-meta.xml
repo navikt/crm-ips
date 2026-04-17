@@ -7,6 +7,9 @@
         <locationY>1284</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <faultConnector>
+            <targetReference>Application_Log_SendNotification</targetReference>
+        </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
@@ -158,6 +161,28 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkIfOwnerIsActive</name>
+        <label>checkIfOwnerIsActive</label>
+        <locationX>776</locationX>
+        <locationY>360</locationY>
+        <defaultConnectorLabel>isNotActive</defaultConnectorLabel>
+        <rules>
+            <name>isOwnerActive</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Owner:User.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getIntervallRecords</targetReference>
+            </connector>
+            <label>isOwnerActive</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkTypeOfRecord</name>
         <label>checkTypeOfRecord</label>
         <locationX>776</locationX>
@@ -174,7 +199,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>getIntervallRecords</targetReference>
+                <targetReference>checkIfOwnerIsActive</targetReference>
             </connector>
             <label>isRecordAMS</label>
         </rules>
@@ -235,6 +260,9 @@
         <connector>
             <targetReference>getNotifications</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Application_Log_CreateTask</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>ActivityDate</field>
             <value>
@@ -301,6 +329,9 @@
         <connector>
             <targetReference>checkIfReportExists</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Application_Log_GetIntervall</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>IPS_workTrailName__c</field>
@@ -331,6 +362,9 @@
         <connector>
             <targetReference>SendReportNotifications</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Application_Log_GetNotifications</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
@@ -354,6 +388,9 @@
         <connector>
             <targetReference>create_notification_task</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Application_Log_GetRecordType</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
@@ -398,6 +435,161 @@
         <triggerType>Scheduled</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Application_Log_GetIntervall</name>
+        <label>Application Log</label>
+        <locationX>50</locationX>
+        <locationY>468</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - notification sent on intervall reports</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Application_Log_GetNotifications</name>
+        <label>Application Log</label>
+        <locationX>50</locationX>
+        <locationY>1176</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - notification sent on intervall reports</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Application_Log_GetRecordType</name>
+        <label>Application Log</label>
+        <locationX>50</locationX>
+        <locationY>960</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - notification sent on intervall reports</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Application_Log_CreateTask</name>
+        <label>Application Log</label>
+        <locationX>50</locationX>
+        <locationY>1068</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - notification sent on intervall reports</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Application_Log_SendNotification</name>
+        <label>Application Log</label>
+        <locationX>50</locationX>
+        <locationY>1284</locationY>
+        <flowName>IPS_Subflow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>applicationDomain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sourceFunction</name>
+            <value>
+                <stringValue>IPS - notification sent on intervall reports</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>varDescription</name>
         <dataType>String</dataType>
