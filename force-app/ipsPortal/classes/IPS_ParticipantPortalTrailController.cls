@@ -25,24 +25,21 @@ public with sharing class IPS_ParticipantPortalTrailController {
      **/
     private static List<IPS_ParticipantPortalWorkTrail> getTrailId(Id currentRecordId) {
         List<IPS_ParticipantPortalWorkTrail> wrapperTempList = new List<IPS_ParticipantPortalWorkTrail>();
-        List<Work_Trail__c> tempTrailList = new List<Work_Trail__c>();
-        tempTrailList = [
+        Work_Trail__c tempWorkTrail = [
             SELECT Id
             FROM Work_Trail__c
             WHERE
                 ips_Participant__c = :currentRecordId
                 AND (ips_End_Date__c = LAST_N_DAYS:365
                 OR ips_End_Date__c = NULL)
-            WITH USER_MODE
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
 
-        for (Work_Trail__c t : tempTrailList) {
-            IPS_ParticipantPortalWorkTrail tempList = new IPS_ParticipantPortalWorkTrail();
-            tempList.jobbsporId = t.Id;
-            wrapperTempList.add(tempList);
-        }
+        IPS_ParticipantPortalWorkTrail tempListItem = new IPS_ParticipantPortalWorkTrail();
+        tempListItem.jobbsporId = tempWorkTrail.Id;
+        wrapperTempList.add(tempListItem);
+
         return wrapperTempList;
     }
 
@@ -70,118 +67,115 @@ public with sharing class IPS_ParticipantPortalTrailController {
     private static List<IPS_ParticipantPortalWorkTrail> getWorkTrailWrapperList(Id currentRecordId) {
         List<IPS_ParticipantPortalWorkTrail> wrapperTempList = new List<IPS_ParticipantPortalWorkTrail>();
 
-        List<Work_Trail__c> tempTrailList = new List<Work_Trail__c>();
-        tempTrailList = [
+        Work_Trail__c tempWorkTrail = [
             SELECT
                 Id,
-                Name,
-                RecordType.DeveloperName,
-                IPS_ownerName__c,
-                ips_End_Date__c,
                 End_Cause__c,
-                ips_Other_end_cases__c,
-                ips_Status__c,
-                ips_Referred_date__c,
-                ips_Main_Goal_list__c,
-                ips_Main_goal__c,
-                ips_Priority_career_wishes__c,
-                ips_Framework_for_job_development_search__c,
-                ips_Preferred_working_hours__c,
-                ips_Network__c,
-                ips_Geography__c,
-                ips_Interests_Hobbies__c,
-                Personal_Qualities__c,
-                ips_Cultural_background__c,
-                ips_Environmental_conditions__c,
-                ips_Economy__c,
-                ips_Health__c,
-                ips_Strategy_before_and_after_work__c,
-                ips_Facilitation_needs__c,
-                ips_Early_signs_increased_symptompressur__c,
-                ips_What_coping_strategies_are_there__c,
-                ips_job_edu_support_network__c,
-                ips_Transparency_consent_obtained_date__c,
-                ips_What_can_be_shared_with_the_employer__c,
-                What_cannot_be_shared_with_the_employer__c,
-                ips_NAV_supervisor__c,
                 ips_Behandlingsteam__c,
-                ips_Network_partner__c,
-                ips_Financialframework_before_start_work__c,
-                ips_Plan__c,
-                ips_Transition_to_work__c,
                 ips_Benefits_of_openness_to_the_employer__c,
-                ips_Disadvantages_of_openness_employe__c,
+                ips_Cultural_background__c,
                 ips_Desired_profession_industry_career__c,
-                ips_Desired_working_environment__c,
                 ips_Desired_work_tasks__c,
-                ips_UO_Service__c,
-                ips_Mobility__c,
+                ips_Desired_working_environment__c,
+                ips_Disadvantages_of_openness_employe__c,
+                ips_Early_signs_increased_symptompressur__c,
                 ips_Economic_conditions__c,
-                ips_Social_conditions__c,
-                ips_Other__c,
+                ips_Economy__c,
                 ips_Education__c,
-                ips_Work_experience__c
+                ips_End_Date__c,
+                ips_Environmental_conditions__c,
+                ips_Facilitation_needs__c,
+                ips_Financialframework_before_start_work__c,
+                ips_Framework_for_job_development_search__c,
+                ips_Geography__c,
+                ips_Health__c,
+                ips_Interests_Hobbies__c,
+                ips_job_edu_support_network__c,
+                ips_Main_goal__c,
+                ips_Main_Goal_list__c,
+                ips_Mobility__c,
+                ips_NAV_supervisor__c,
+                ips_Network__c,
+                ips_Network_partner__c,
+                ips_Other__c,
+                ips_Other_end_cases__c,
+                IPS_ownerName__c,
+                ips_Plan__c,
+                ips_Preferred_working_hours__c,
+                ips_Priority_career_wishes__c,
+                ips_Referred_date__c,
+                ips_Social_conditions__c,
+                ips_Status__c,
+                ips_Strategy_before_and_after_work__c,
+                ips_Transition_to_work__c,
+                ips_Transparency_consent_obtained_date__c,
+                ips_UO_Service__c,
+                ips_What_can_be_shared_with_the_employer__c,
+                ips_What_coping_strategies_are_there__c,
+                ips_Work_experience__c,
+                Name,
+                Personal_Qualities__c,
+                RecordType.DeveloperName,
+                What_cannot_be_shared_with_the_employer__c
             FROM Work_Trail__c
             WHERE
                 ips_Participant__c = :currentRecordId
                 AND (ips_End_Date__c = LAST_N_DAYS:365
                 OR ips_End_Date__c = NULL)
-            WITH USER_MODE
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
 
-        for (Work_Trail__c t : tempTrailList) {
-            ips_ParticipantPortalWorkTrail tempList = new ips_ParticipantPortalWorkTrail();
-            tempList.jobbsporId = t.id;
-            tempList.jobbsporNavn = t.Name;
-            tempList.jobbsporPostTypeNavn = t.RecordType.DeveloperName;
-            tempList.jobbsporEierNavn = t.ips_ownerName__c;
-            tempList.jobbsporStatus = t.ips_Status__c;
-            tempList.jobbsporHenvistDato = ips_ParticipantPortalUtility.formatDate(t.ips_Referred_date__c);
-            tempList.ipsHovedmaal = ips_ParticipantPortalUtility.formatMainGoal(t.ips_Main_Goal_list__c);
-            tempList.jobbsporHovedmaalBeskrivelse = t.ips_Main_goal__c;
-            tempList.ipsPrioriterteOnsker = t.ips_Priority_career_wishes__c;
-            tempList.ipsRammerJobbUtvikling = t.ips_Framework_for_job_development_search__c;
-            tempList.ipsArbeidstid = t.ips_Preferred_working_hours__c;
-            tempList.ipsNettverk = t.ips_Network__c;
-            tempList.ipsGeografi = t.ips_Geography__c;
-            tempList.jobbsporHobbyInteresse = t.ips_Interests_Hobbies__c;
-            tempList.jobbsporPersonligeEgenskaper = t.Personal_Qualities__c;
-            tempList.ipsKulturBakgrunn = t.ips_Cultural_background__c;
-            tempList.ipsOmgivelser = t.ips_Environmental_conditions__c;
-            tempList.ipsOekonomi = t.ips_Economy__c;
-            tempList.jobbsporHelse = t.ips_Health__c;
-            tempList.ipsStrategiForJobb = t.ips_Strategy_before_and_after_work__c;
-            tempList.ipsBehovForTillrettelegging = t.ips_Facilitation_needs__c;
-            tempList.ipsTidligSymptomTrykk = t.ips_Early_signs_increased_symptompressur__c;
-            tempList.ipsMestringStrategi = t.ips_What_coping_strategies_are_there__c;
-            tempList.ipsNettverkUtdanningJobb = t.ips_job_edu_support_network__c;
-            tempList.jobbsporAapenhetDato = ips_ParticipantPortalUtility.formatDate(
-                t.ips_Transparency_consent_obtained_date__c
-            );
-            tempList.jobbsporKanDelesMedArbeidsgiver = t.ips_What_can_be_shared_with_the_employer__c;
-            tempList.jobbsporKanIkkeDelesMedArbeidsgiver = t.What_cannot_be_shared_with_the_employer__c;
-            tempList.jobbsporVeileder = t.ips_NAV_supervisor__c;
-            tempList.ipsBehandlingsTeam = t.ips_Behandlingsteam__c;
-            tempList.jobbsporNettverkPartner = t.ips_Network_partner__c;
-            tempList.ipsOkonomiskeRammerVedOvergang = t.ips_Financialframework_before_start_work__c;
-            tempList.ipsRaadgivningGjeld = t.ips_Plan__c;
-            tempList.ipsOvergangTilJobb = t.ips_Transition_to_work__c;
-            tempList.ipsAapenhetFordeler = t.ips_Benefits_of_openness_to_the_employer__c;
-            tempList.ipsAapenhetUlemper = t.ips_Disadvantages_of_openness_employe__c;
-            tempList.amsYrkeBransjeKarriere = t.ips_Desired_profession_industry_career__c;
-            tempList.amsArbeidsmiljoe = t.ips_Desired_working_environment__c;
-            tempList.amsArbeidsoppgaver = t.ips_Desired_work_tasks__c;
-            tempList.amsHovedmaal = IPS_ParticipantPortalUtility.formatMainGoal(t.ips_UO_Service__c);
-            tempList.amsMobilitet = t.ips_Mobility__c;
-            tempList.amsOkonomiskeForhold = t.ips_Economic_conditions__c;
-            tempList.amsSosialeForhold = t.ips_Social_conditions__c;
-            tempList.amsAnnet = t.ips_Other__c;
-            tempList.jobbsporUtdanning = t.ips_Education__c;
-            tempList.jobbsporArbeidserfaring = t.ips_Work_experience__c;
-            wrapperTempList.add(tempList);
-        }
+        ips_ParticipantPortalWorkTrail tempListItem = new ips_ParticipantPortalWorkTrail();
+        tempListItem.jobbsporId = tempWorkTrail.id;
+        tempListItem.jobbsporNavn = tempWorkTrail.Name;
+        tempListItem.jobbsporPostTypeNavn = tempWorkTrail.RecordType.DeveloperName;
+        tempListItem.jobbsporEierNavn = tempWorkTrail.ips_ownerName__c;
+        tempListItem.jobbsporStatus = tempWorkTrail.ips_Status__c;
+        tempListItem.jobbsporHenvistDato = ips_ParticipantPortalUtility.formatDate(tempWorkTrail.ips_Referred_date__c);
+        tempListItem.ipsHovedmaal = ips_ParticipantPortalUtility.formatMainGoal(tempWorkTrail.ips_Main_Goal_list__c);
+        tempListItem.jobbsporHovedmaalBeskrivelse = tempWorkTrail.ips_Main_goal__c;
+        tempListItem.ipsPrioriterteOnsker = tempWorkTrail.ips_Priority_career_wishes__c;
+        tempListItem.ipsRammerJobbUtvikling = tempWorkTrail.ips_Framework_for_job_development_search__c;
+        tempListItem.ipsArbeidstid = tempWorkTrail.ips_Preferred_working_hours__c;
+        tempListItem.ipsNettverk = tempWorkTrail.ips_Network__c;
+        tempListItem.ipsGeografi = tempWorkTrail.ips_Geography__c;
+        tempListItem.jobbsporHobbyInteresse = tempWorkTrail.ips_Interests_Hobbies__c;
+        tempListItem.jobbsporPersonligeEgenskaper = tempWorkTrail.Personal_Qualities__c;
+        tempListItem.ipsKulturBakgrunn = tempWorkTrail.ips_Cultural_background__c;
+        tempListItem.ipsOmgivelser = tempWorkTrail.ips_Environmental_conditions__c;
+        tempListItem.ipsOekonomi = tempWorkTrail.ips_Economy__c;
+        tempListItem.jobbsporHelse = tempWorkTrail.ips_Health__c;
+        tempListItem.ipsStrategiForJobb = tempWorkTrail.ips_Strategy_before_and_after_work__c;
+        tempListItem.ipsBehovForTillrettelegging = tempWorkTrail.ips_Facilitation_needs__c;
+        tempListItem.ipsTidligSymptomTrykk = tempWorkTrail.ips_Early_signs_increased_symptompressur__c;
+        tempListItem.ipsMestringStrategi = tempWorkTrail.ips_What_coping_strategies_are_there__c;
+        tempListItem.ipsNettverkUtdanningJobb = tempWorkTrail.ips_job_edu_support_network__c;
+        tempListItem.jobbsporAapenhetDato = ips_ParticipantPortalUtility.formatDate(
+            tempWorkTrail.ips_Transparency_consent_obtained_date__c
+        );
+        tempListItem.jobbsporKanDelesMedArbeidsgiver = tempWorkTrail.ips_What_can_be_shared_with_the_employer__c;
+        tempListItem.jobbsporKanIkkeDelesMedArbeidsgiver = tempWorkTrail.What_cannot_be_shared_with_the_employer__c;
+        tempListItem.jobbsporVeileder = tempWorkTrail.ips_NAV_supervisor__c;
+        tempListItem.ipsBehandlingsTeam = tempWorkTrail.ips_Behandlingsteam__c;
+        tempListItem.jobbsporNettverkPartner = tempWorkTrail.ips_Network_partner__c;
+        tempListItem.ipsOkonomiskeRammerVedOvergang = tempWorkTrail.ips_Financialframework_before_start_work__c;
+        tempListItem.ipsRaadgivningGjeld = tempWorkTrail.ips_Plan__c;
+        tempListItem.ipsOvergangTilJobb = tempWorkTrail.ips_Transition_to_work__c;
+        tempListItem.ipsAapenhetFordeler = tempWorkTrail.ips_Benefits_of_openness_to_the_employer__c;
+        tempListItem.ipsAapenhetUlemper = tempWorkTrail.ips_Disadvantages_of_openness_employe__c;
+        tempListItem.amsYrkeBransjeKarriere = tempWorkTrail.ips_Desired_profession_industry_career__c;
+        tempListItem.amsArbeidsmiljoe = tempWorkTrail.ips_Desired_working_environment__c;
+        tempListItem.amsArbeidsoppgaver = tempWorkTrail.ips_Desired_work_tasks__c;
+        tempListItem.amsHovedmaal = IPS_ParticipantPortalUtility.formatMainGoal(tempWorkTrail.ips_UO_Service__c);
+        tempListItem.amsMobilitet = tempWorkTrail.ips_Mobility__c;
+        tempListItem.amsOkonomiskeForhold = tempWorkTrail.ips_Economic_conditions__c;
+        tempListItem.amsSosialeForhold = tempWorkTrail.ips_Social_conditions__c;
+        tempListItem.amsAnnet = tempWorkTrail.ips_Other__c;
+        tempListItem.jobbsporUtdanning = tempWorkTrail.ips_Education__c;
+        tempListItem.jobbsporArbeidserfaring = tempWorkTrail.ips_Work_experience__c;
+        wrapperTempList.add(tempListItem);
+
         return wrapperTempList;
     }
 }
