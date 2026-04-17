@@ -84,22 +84,56 @@ public class IPS_ParticipantPortalTrailControllerTest {
     public static void getTrailTest() {
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
 
-        List<IPS_ParticipantPortalWorkTrail> trail = null;
-        List<IPS_ParticipantPortalWorkTrail> trail2 = null;
-        testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        List<IPS_ParticipantPortalWorkTrail> trails1 = null;
+        List<IPS_ParticipantPortalWorkTrail> trails2 = null;
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
+
+        List<Work_Trail__c> jobbspor = [
+            SELECT Id, Name, ips_Participant__c, ips_End_Date__c
+            FROM Work_Trail__c
+            WHERE ips_Participant__c = :participantId
+            LIMIT 1
+        ];
 
         Test.startTest();
-        // Give IPS Jobbspesialist profile access to the test user
+        // Run as system user and Give IPS Jobbspesialist profile access to the test user
         IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
 
         System.runAs(testUser) {
-            trail = IPS_ParticipantPortalTrailController.getTrailWrapperClassList(participantId);
-            trail2 = IPS_ParticipantPortalTrailController.getTrail(participantId);
+            trails1 = IPS_ParticipantPortalTrailController.getTrailWrapperClassList(participantId);
+            trails2 = IPS_ParticipantPortalTrailController.getTrail(participantId);
         }
         Test.stopTest();
 
-        System.Assert.isNotNull(trail, 'Trail should not be null');
-        System.Assert.isNotNull(trail2, 'Trail2 should not be null');
+        Work_Trail__c expectedTrail = [
+            SELECT Id, Name, ips_Participant__c, ips_End_Date__c
+            FROM Work_Trail__c
+            WHERE ips_Participant__c = :participantId
+            LIMIT 1
+        ];
+        System.Assert.isNotNull(trails1, 'Trail should not be null');
+        System.Assert.isNotNull(trails2, 'Trail2 should not be null');
+        System.Assert.areEqual(1, trails1.size(), 'Expected to find one trail');
+        System.Assert.areEqual(1, trails2.size(), 'Expected to find one Id');
+        System.Assert.areEqual(expectedTrail.Id, trails1[0].jobbsporId, 'Expected Jobbspor Id to match');
+        System.Assert.areEqual(expectedTrail.Id, trails2[0].jobbsporId, 'Expected Jobbspor Id to match');
+        System.Assert.areEqual('Jobb', trails1[0].ipsHovedmaal, 'Expected IPS Hovedmål to be Jobb');
+        System.Assert.areEqual(
+            'Ingen hovedmål valgt',
+            trails1[0].amsHovedmaal,
+            'Expected AMS Hovedmål to be Ingen hovedmål valgt'
+        );
+        System.Assert.areEqual(
+            'User User',
+            trails1[0].jobbsporEierNavn,
+            'Expected Jobbspor owner name to be User User'
+        );
+        System.Assert.areEqual('IPS', trails1[0].jobbsporPostTypeNavn, 'Expected Jobbspor post type to be IPS');
+        System.Assert.areEqual(
+            'In Education',
+            trails1[0].jobbsporStatus,
+            'Expected Jobbspor status to be In Education'
+        );
     }
 
     @IsTest
