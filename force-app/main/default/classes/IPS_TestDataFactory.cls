@@ -1,3 +1,11 @@
+/**
+ * @description  :
+ * @author       : Håkon Kavli
+ * @since        : 0.531.0
+ * @version      : 0.531.0
+ * @see          : class#member 'text string' <a href='URL'>label</a>
+ **/
+@SuppressWarnings('PMD.ExcessivePublicCount')
 @istest
 public with sharing class IPS_TestDataFactory {
     public static Person__c createPerson() {
@@ -385,5 +393,22 @@ public with sharing class IPS_TestDataFactory {
     public static void addPermissionsetUser(String userId) {
         PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'IPS_Jobbspesialist'];
         insert new PermissionSetAssignment(AssigneeId = userId, PermissionSetId = ps.Id);
+    }
+
+    /**
+     * @description Assigns a permission set to a user based on the developer name of the permission set
+     * @author Håkon Kavli | 04-15-2026
+     * @param userId The Id of the user to assign the permission set to
+     * @param permissionSetName The developer name of the permission set to assign to the user
+     **/
+    @future(callout = false)
+    public static void givePermissionSetToUserByName(String userId, String permissionSetName) {
+        PermissionSet pg = [
+            SELECT Id
+            FROM PermissionSet
+            WHERE Name = :permissionSetName
+            LIMIT 1
+        ];
+        insert new PermissionSetAssignment(AssigneeId = userId, PermissionSetId = pg.Id);
     }
 }
