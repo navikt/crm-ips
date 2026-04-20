@@ -116,8 +116,10 @@ Bruk kun ARIA når HTML-semantikk ikke er tilstrekkelig:
 // ✅ Navigasjonslandemerker
 <nav aria-label="Brødsmulesti">...</nav>
 
-// ✅ Live-regioner for dynamisk innhold
-<Alert variant="success" role="status">Skjemaet ble sendt inn</Alert>
+// ✅ Live-regioner for dynamisk innhold (Aksel håndterer ARIA automatisk)
+<LocalAlert variant="success">
+  <LocalAlert.Content>Skjemaet ble sendt inn</LocalAlert.Content>
+</LocalAlert>
 
 // ✅ Expanding/collapsing
 <Button aria-expanded={isOpen} aria-controls="panel-id" onClick={() => setIsOpen(!isOpen)}>
