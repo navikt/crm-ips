@@ -152,12 +152,14 @@ export function LoadingPanel(): JSX.Element {
 Vis tydelig feil med både oppsummering og lokal kontekst når skjemaet krever det.
 
 ```tsx
-import { Alert, ErrorSummary, VStack } from "@navikt/ds-react";
+import { ErrorSummary, LocalAlert, VStack } from "@navikt/ds-react";
 
 export function ErrorState(): JSX.Element {
   return (
     <VStack gap="space-16">
-      <Alert variant="error">We could not save your changes.</Alert>
+      <LocalAlert status="error">
+        <LocalAlert.Content>We could not save your changes.</LocalAlert.Content>
+      </LocalAlert>
       <ErrorSummary heading="Fix these fields before retrying:">
         <ErrorSummary.Item href="#name">Name is required</ErrorSummary.Item>
         <ErrorSummary.Item href="#email">Email is invalid</ErrorSummary.Item>
@@ -315,20 +317,20 @@ export default function Page(): JSX.Element {
 
 ## Stablede systemmeldinger
 
-Vis flere `Alert`-er over hverandre når systemet har flere aktive meldinger — bruk `VStack` for konsistent rytme.
+Vis flere `LocalAlert`-er over hverandre når systemet har flere aktive meldinger — bruk `VStack` for konsistent rytme.
 
 ```tsx
-import { Alert, VStack } from "@navikt/ds-react";
+import { LocalAlert, VStack } from "@navikt/ds-react";
 
-type Message = { id: string; severity: "info" | "warning" | "error"; text: string };
+type Message = { id: string; status: "info" | "warning" | "error" | "success"; text: string };
 
 export function SystemMessages({ messages }: { messages: Message[] }): JSX.Element {
   return (
     <VStack gap="space-8">
-      {messages.map(({ id, severity, text }) => (
-        <Alert key={id} variant={severity}>
-          {text}
-        </Alert>
+      {messages.map(({ id, status, text }) => (
+        <LocalAlert key={id} status={status}>
+          <LocalAlert.Content>{text}</LocalAlert.Content>
+        </LocalAlert>
       ))}
     </VStack>
   );

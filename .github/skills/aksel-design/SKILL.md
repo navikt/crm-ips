@@ -15,6 +15,16 @@ Bruk denne skillen når du jobber i Nav-frontend med `@navikt/ds-react`, layout 
 - Dokumentasjon: `aksel.nav.no`
 - Verifiser alltid komponent-API og props før implementasjon
 
+## Hent oppdatert dokumentasjon
+
+Aksel-dokumentasjon er tilgjengelig som LLM-optimaliserte .md-filer. Hent alltid dokumentasjon fra kilden fremfor å anta API fra treningsdata:
+
+```
+https://aksel.nav.no/llm.md
+```
+
+Denne filen er et indeks over alle Aksel-docs. Hent individuelle sider ved behov.
+
 ## Installasjon og oppsett
 
 ```bash
@@ -52,104 +62,42 @@ export function Example(): JSX.Element {
 }
 ```
 
-## Layout-komponenter
+## Kritiske v8-regler
 
-### Box
+Disse overstyrer treningsdata. Verifiser alltid mot `aksel.nav.no/llm.md`.
 
-```tsx
-import { BodyShort, Box } from "@navikt/ds-react";
-
-export function Example(): JSX.Element {
-  return (
-    <Box background="default" borderColor="neutral-subtle" borderRadius="12" borderWidth="1" padding="space-16">
-      <BodyShort>Card content</BodyShort>
-    </Box>
-  );
-}
-```
-
-### VStack
+- **`Alert` er deprecated** (nov 2025): Bruk `LocalAlert`, `GlobalAlert`, `InlineMessage` eller `InfoCard`
+- **Ingen `Button variant="danger"`**: Bruk `data-color="danger"` i stedet
+- **Ingen `Button size="large"`**: Gyldige: `"medium"`, `"small"`, `"xsmall"`
+- **`borderRadius="large"` fjernet**: Bruk `"4"`, `"8"`, `"12"`, `"full"`
+- **CSS-klasseprefiks er `.aksel-`**: Ikke `.navds-`
+- **Aldri override `--ax-*` semantiske tokens** eller `.aksel-*` klasser
+- **VStack/HStack har ingen `padding`-prop**: Wrap i `Box` for padding
+- **`gap` trenger alltid `space-`-prefiks**: `gap="space-16"`, aldri `gap="4"`
 
 ```tsx
-import { BodyShort, Heading, VStack } from "@navikt/ds-react";
+// ❌ Deprecated/feil i v8
+<Alert variant="error">Feil</Alert>
+<Button variant="danger">Slett</Button>
+<Box borderRadius="large">
 
-export function Example(): JSX.Element {
-  return (
-    <VStack gap="space-12">
-      <Heading size="medium" level="2">Section title</Heading>
-      <BodyShort>Supporting text</BodyShort>
-    </VStack>
-  );
-}
+// ✅ Korrekt v8
+<LocalAlert status="error">
+  <LocalAlert.Header>
+    <LocalAlert.Title>Feil</LocalAlert.Title>
+  </LocalAlert.Header>
+  <LocalAlert.Content>Noe gikk galt</LocalAlert.Content>
+</LocalAlert>
+<Button data-color="danger">Slett</Button>
+<Box borderRadius="8">
 ```
 
-### HStack
+## Layout og komponenter
 
-```tsx
-import { Button, HStack } from "@navikt/ds-react";
+Bruk `Box`, `VStack`, `HStack`, `HGrid`, `Show`/`Hide` og `Page`/`Page.Block` for layout. Jobb mobile-first med responsive props (`xs`, `sm`, `md`, `lg`, `xl`).
 
-export function Example(): JSX.Element {
-  return (
-    <HStack gap="space-8" justify="end">
-      <Button variant="secondary">Cancel</Button>
-      <Button>Save</Button>
-    </HStack>
-  );
-}
-```
-
-### HGrid
-
-```tsx
-import { Box, HGrid } from "@navikt/ds-react";
-
-export function Example(): JSX.Element {
-  return (
-    <HGrid columns={{ xs: 1, md: 2, xl: 3 }} gap="space-16">
-      <Box padding="space-16" background="neutral-soft">A</Box>
-      <Box padding="space-16" background="neutral-soft">B</Box>
-      <Box padding="space-16" background="neutral-soft">C</Box>
-    </HGrid>
-  );
-}
-```
-
-## Responsivt design
-
-- Jobb mobile-first med `xs`, `sm`, `md`, `lg`, `xl`
-- Foretrekk responsive props fremfor egne media queries
-- Bruk `Show` / `Hide` når innhold faktisk skal skiftes per breakpoint
-
-```tsx
-import { Box, HGrid, Show } from "@navikt/ds-react";
-
-export function Example(): JSX.Element {
-  return (
-    <HGrid columns={{ xs: 1, md: "2fr 1fr" }} gap={{ xs: "space-12", md: "space-24" }}>
-      <Box padding="space-16" background="default">Main content</Box>
-      <Show above="md">
-        <Box padding="space-16" background="neutral-soft">Sidebar</Box>
-      </Show>
-    </HGrid>
-  );
-}
-```
-
-## Typografi
-
-```tsx
-import { BodyLong, BodyShort, Heading, VStack } from "@navikt/ds-react";
-
-export function Example(): JSX.Element {
-  return (
-    <VStack gap="space-8">
-      <Heading size="large" level="2">Application status</Heading>
-      <BodyShort>Short summary for scanning.</BodyShort>
-      <BodyLong>Longer explanatory text with context and next steps.</BodyLong>
-    </VStack>
-  );
-}
-```
+For komponent-API og eksempler, se `references/components.md`.
+For layout-mønstre (sidebar, kort-grid, skjema), se `references/patterns.md`.
 
 ## Boundaries
 
@@ -159,6 +107,7 @@ export function Example(): JSX.Element {
 - Bruk responsive props når komponenten støtter det
 - Håndter lasting, feil, tomtilstand og suksess eksplisitt
 - Sjekk eksisterende UI-mønstre i repoet først
+- Hent Aksel-docs fra aksel.nav.no/llm.md — aldri stol på treningsdata for komponent-API
 
 ### ⚠️ Spør først
 - Nye UI-avhengigheter utenfor Aksel

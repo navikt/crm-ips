@@ -105,8 +105,8 @@ export function DashboardGrid(): JSX.Element {
 Bruk Aksel `Button` for standard handlinger.
 
 **Nyttige props**
-- `variant`: `primary`, `secondary`, `tertiary`, `danger`
-- `size`
+- `variant`: `primary`, `secondary`, `tertiary`
+- `size`: `medium` (default), `small`, `xsmall` — merk: `large` finnes ikke
 - `loading`
 - `icon`, `iconPosition`
 
@@ -119,7 +119,7 @@ export function SubmitRow(): JSX.Element {
       <Button variant="primary">Submit</Button>
       <Button variant="secondary">Preview</Button>
       <Button variant="tertiary">Back</Button>
-      <Button variant="danger">Delete</Button>
+      <Button data-color="danger">Delete</Button>
     </HStack>
   );
 }
@@ -370,24 +370,31 @@ export function ResponsiveCopy(): JSX.Element {
 }
 ```
 
-## Alert
+## LocalAlert
 
-Bruk `Alert` for statusmeldinger og tydelige tilbakemeldinger.
+> Alert er deprecated (nov 2025). Bruk `LocalAlert`, `GlobalAlert`, `InlineMessage` eller `InfoCard`.
+
+Bruk `LocalAlert` for statusmeldinger og tydelige tilbakemeldinger.
+
+**Nyttige byggesteiner**
+- `LocalAlert`
+- `LocalAlert.Header`, `LocalAlert.Title`
+- `LocalAlert.Content`
 
 **Nyttige props**
-- `variant`: `error`, `warning`, `info`, `success`
-- `size`
-- `inline`
-- `closeButton`
+- `status`: `info`, `success`, `warning`, `error`
 
 ```tsx
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 
 export function SaveConfirmation(): JSX.Element {
   return (
-    <Alert variant="success">
-      Your changes were saved successfully.
-    </Alert>
+    <LocalAlert status="success">
+      <LocalAlert.Header>
+        <LocalAlert.Title>Lagret</LocalAlert.Title>
+      </LocalAlert.Header>
+      <LocalAlert.Content>Endringene dine er lagret.</LocalAlert.Content>
+    </LocalAlert>
   );
 }
 ```
@@ -501,4 +508,4 @@ export function FormErrors(): JSX.Element {
 - `VStack`/`HStack` når du trenger rytme og rekkefølge
 - `HGrid` når layouten faktisk er todelt eller flerkolonne
 - `Dialog` når fokus skal flyttes inn i et kontrollert overlay
-- `Alert` og `ErrorSummary` for eksplisitt state-håndtering
+- `LocalAlert` og `ErrorSummary` for eksplisitt state-håndtering
