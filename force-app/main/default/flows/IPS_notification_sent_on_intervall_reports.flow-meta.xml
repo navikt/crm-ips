@@ -7,6 +7,9 @@
         <locationY>1284</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_SendNotification</targetReference>
+        </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
@@ -88,6 +91,91 @@
             <targetReference>getRecordTypeId</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_GetIntervall</name>
+        <label>Set Flow Fault Step On Get Intervall</label>
+        <locationX>50</locationX>
+        <locationY>468</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed to get Intervall Records</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_GetNotifications</name>
+        <label>Set Flow Fault Step On Get Notifications</label>
+        <locationX>50</locationX>
+        <locationY>1176</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed to get Custom Notification Type</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_GetRecordType</name>
+        <label>Set Flow Fault Step On Get Record Type</label>
+        <locationX>50</locationX>
+        <locationY>960</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed to get Task Record Type</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_CreateTask</name>
+        <label>Set Flow Fault Step On Create Task</label>
+        <locationX>50</locationX>
+        <locationY>1068</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed to create notification Task</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_SendNotification</name>
+        <label>Set Flow Fault Step On Send Notification</label>
+        <locationX>50</locationX>
+        <locationY>1284</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed to send Custom Notification</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>checkDueDate</name>
         <label>checkDueDate</label>
@@ -158,6 +246,28 @@
         </rules>
     </decisions>
     <decisions>
+        <name>checkIfOwnerIsActive</name>
+        <label>checkIfOwnerIsActive</label>
+        <locationX>776</locationX>
+        <locationY>360</locationY>
+        <defaultConnectorLabel>isNotActive</defaultConnectorLabel>
+        <rules>
+            <name>isOwnerActive</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Owner:User.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getIntervallRecords</targetReference>
+            </connector>
+            <label>isOwnerActive</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>checkTypeOfRecord</name>
         <label>checkTypeOfRecord</label>
         <locationX>776</locationX>
@@ -174,7 +284,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>getIntervallRecords</targetReference>
+                <targetReference>checkIfOwnerIsActive</targetReference>
             </connector>
             <label>isRecordAMS</label>
         </rules>
@@ -235,6 +345,9 @@
         <connector>
             <targetReference>getNotifications</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_CreateTask</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>ActivityDate</field>
             <value>
@@ -301,6 +414,9 @@
         <connector>
             <targetReference>checkIfReportExists</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_GetIntervall</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>IPS_workTrailName__c</field>
@@ -331,6 +447,9 @@
         <connector>
             <targetReference>SendReportNotifications</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_GetNotifications</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
@@ -354,6 +473,9 @@
         <connector>
             <targetReference>create_notification_task</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_GetRecordType</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
@@ -398,6 +520,68 @@
         <triggerType>Scheduled</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>sfl_CreateApplicationLog</name>
+        <label>Create Application Log</label>
+        <locationX>50</locationX>
+        <locationY>1284</locationY>
+        <flowName>Flow_Create_Application_Log</flowName>
+        <inputAssignments>
+            <name>Application_Domain</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Error_Payload</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Error_Source</name>
+            <value>
+                <stringValue>IPS - notification sent on intervall reports (Flow)</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Category</name>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Level</name>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Log_Message</name>
+            <value>
+                <elementReference>var_faultStep</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Reference_Object</name>
+            <value>
+                <stringValue>Work_Trail__c</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ReferenceID</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <name>var_faultStep</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>varDescription</name>
         <dataType>String</dataType>

@@ -7,6 +7,16 @@ description: Figma-til-kode for Nav — mapp Figma-design til Aksel-komponenter,
 
 Bruk denne skillen når du har en Figma-lenke eller Figma-referanse og skal implementere designet i Nav-frontend med `@navikt/ds-react`. Skillen forutsetter at Figma MCP-verktøy er tilgjengelig.
 
+## Aksel-dokumentasjon
+
+Hent komponent-API, tokens og props fra live dokumentasjon:
+
+```
+https://aksel.nav.no/llm.md
+```
+
+Mapping-tabellene nedenfor er en hurtigreferanse. Ved tvil — hent fra kilden.
+
 ## Arbeidsflyt
 
 ### 1. Hent designkontekst
@@ -23,7 +33,7 @@ Sjekk om Figma-noder allerede er koblet til `@navikt/ds-react`-komponenter. Når
 
 ### 4. Mapp til Aksel
 
-Oversett Figma-strukturen til Aksel-komponenter og tokens (se mapping-tabellene nedenfor). Bruk `aksel-design`-skillen for komponent-API og props.
+Oversett Figma-strukturen til Aksel-komponenter og tokens (se mapping-tabellene nedenfor). Verifiser komponent-API mot aksel.nav.no/llm.md. Se også `aksel-design`-skillen.
 
 ### 5. Implementer
 
@@ -111,26 +121,9 @@ Bruk `data-color` for fargeoverrides i spesielle kontekster. Aldri hardkod hex-v
 <Box background="accent-soft" borderColor="accent" borderWidth="1">
 ```
 
-### Komponenter: Figma → `@navikt/ds-react`
+### Komponenter
 
-Bruk Code Connect-mappingen når den finnes. For vanlige elementer:
-
-| Figma-komponent | `@navikt/ds-react` |
-|---|---|
-| Button (primary/secondary/tertiary/danger) | `<Button variant="...">` |
-| TextField, TextArea | `<TextField>`, `<Textarea>` |
-| Checkbox, CheckboxGroup | `<CheckboxGroup>` + `<Checkbox>` |
-| Radio, RadioGroup | `<RadioGroup>` + `<Radio>` |
-| Select | `<Select>` |
-| Alert (info/success/warning/error) | `<Alert variant="...">` |
-| Tag | `<Tag variant="...">` |
-| Modal / Dialog | `<Modal>` |
-| Table | `<Table>` med `<Table.Header>`, `<Table.Body>`, `<Table.Row>`, `<Table.DataCell>` |
-| Accordion | `<Accordion>` + `<Accordion.Item>` |
-| Tabs | `<Tabs>` + `<Tabs.List>` + `<Tabs.Tab>` + `<Tabs.Panel>` |
-| Heading (h1–h6) | `<Heading size="..." level="...">` |
-| Body text | `<BodyShort>` / `<BodyLong>` |
-| Link | `<Link>` |
+For komponentmapping, hent fra `aksel.nav.no/llm.md` og sjekk Code Connect-mapping først. Bruk `data-color="danger"` i stedet for variant `danger` på Button. Alert er deprecated — bruk `LocalAlert`, `GlobalAlert`, `InlineMessage` eller `InfoCard`.
 
 ## Code Connect
 
@@ -140,18 +133,7 @@ Sjekk alltid om mappingen allerede finnes før du oppretter en ny. For oppsett o
 
 ## Responsiv mapping
 
-Figma viser ofte kun én breakpoint. Sjekk om det finnes flere frames for mobil/desktop. Mapp til responsive props:
-
-```tsx
-// Figma: desktop har 3 kolonner, mobil har 1
-<HGrid columns={{ xs: 1, md: 3 }} gap={{ xs: "space-16", md: "space-24" }}>
-  {items.map((item) => (
-    <Box key={item.id} padding="space-16" background="default" borderRadius="8" borderWidth="1" borderColor="neutral-subtle">
-      {item.content}
-    </Box>
-  ))}
-</HGrid>
-```
+Figma viser ofte kun én breakpoint. Sjekk om det finnes flere frames for mobil/desktop. Mapp til responsive props (`columns={{ xs: 1, md: 3 }}`, `gap={{ xs: "space-16", md: "space-24" }}`, `padding={{ xs: "space-16", md: "space-32" }}`). Se `aksel-design`-skillens `patterns.md` for fullstendige eksempler.
 
 ## Boundaries
 
