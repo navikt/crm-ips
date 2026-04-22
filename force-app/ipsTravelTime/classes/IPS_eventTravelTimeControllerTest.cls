@@ -1,40 +1,33 @@
 /**
- * @description  : Test class for IPS_eventTravelTimeController. This class contains test methods to validate the functionality of the IPS_eventTravelTimeController, which is responsible for handling travel time calculations for events in the IPS application. The test methods cover scenarios such as creating events with travel time, updating events with travel time, and ensuring that events without travel time are handled correctly.
+ * @Description  : Test class for IPS_eventTravelTimeController. This class contains test methods to valIdate the functionality of the IPS_eventTravelTimeController, which is responsible for handling travel time calculations for events in the IPS application. The test methods cover scenarios such as creating events with travel time, updating events with travel time, and ensuring that events without travel time are handled correctly.
  * @author      : Ann-Kristin Olsen
  * @author       : Håkon Kavli
- * @since        : 0.531.0a>
+ * @since        : 0.531.0
  **/
 @isTest
 public class IPS_eventTravelTimeControllerTest {
     @TestSetup
     static void makeTrailData() {
-        Account acc = new Account();
-        acc.Name = 'Røre Pinne';
-        acc.RecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName()
+        List<Account> accountsToInsert = new List<Account>();
+        Account businessAccount = new Account();
+        businessAccount.Name = 'Røre Pinne';
+        businessAccount.RecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName()
             .get('IPS_UO_account_recordpage')
             .getRecordTypeId();
+        accountsToInsert.add(businessAccount);
 
-        try {
-            insert acc;
-        } catch (Exception e) {
-            System.debug('Dette er arbeidsgiver:' + e);
-        }
-
-        Account acc1 = new Account();
-        acc1.FirstName = 'Petter';
-        acc1.LastName = 'Putte';
-        acc1.RecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName()
+        Account personAccount = new Account();
+        personAccount.FirstName = 'Petter';
+        personAccount.LastName = 'Putte';
+        personAccount.RecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName()
             .get('PersonAccount')
             .getRecordTypeId();
 
-        try {
-            insert acc1;
-        } catch (Exception e) {
-            System.debug('Dette er personkonto:' + e);
-        }
+        accountsToInsert.add(personAccount);
+        insert accountsToInsert;
 
         Work_Trail__c trail = new Work_Trail__c(
-            ips_Participant__c = acc1.id,
+            ips_Participant__c = personAccount.Id,
             ips_Status__c = 'Referred',
             ips_Passive__c = false
         );
@@ -46,38 +39,38 @@ public class IPS_eventTravelTimeControllerTest {
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
-            whatId = acc1.id,
-            RelatedToAccount__c = acc.id,
+            WhatId = personAccount.Id,
+            RelatedToAccount__c = businessAccount.Id,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
             StartDateTime = system.Datetime.now(),
             EndDateTime = system.Datetime.now() + (60 / 1440),
-            Subject = 'Møte med Arbeidsgiver',
+            Subject = 'Møte med ArbeIdsgiver',
             IPS_isFromTimeline__c = true,
             IPS_Type__c = 'Meeting with Employer',
             ips_Subcategory_Type_IPS__c = 'Job support',
             ips_Subcategory_Type__c = 'Job support',
             IPS_Subcategory_Type_UO__c = 'Follow-up',
-            F_rste_arbeidsgiverm_te__c = 'Nei',
+            F_rste_arbeIdsgiverm_te__c = 'Nei',
             Location = 'Fysisk oppmøte',
             Description = 'Møte',
             IPS_Status1__c = 'Completed'
         );
         Event createEvent2 = new Event(
             ips_Travel_time__c = 0,
-            RelatedToAccount__c = acc.id,
-            whatId = acc1.id,
+            RelatedToAccount__c = businessAccount.Id,
+            WhatId = personAccount.Id,
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 0,
             StartDateTime = system.Datetime.now(),
             EndDateTime = system.Datetime.now() + (60 / 1440),
-            Subject = 'Møte med Arbeidsgiver',
+            Subject = 'Møte med ArbeIdsgiver',
             IPS_isFromTimeline__c = true,
             IPS_Type__c = 'Meeting with Employer',
             ips_Subcategory_Type_IPS__c = 'Job support',
             ips_Subcategory_Type__c = 'Job support',
             IPS_Subcategory_Type_UO__c = 'Follow-up',
-            F_rste_arbeidsgiverm_te__c = 'Nei',
+            F_rste_arbeIdsgiverm_te__c = 'Nei',
             Location = 'Fysisk oppmøte',
             Description = 'Møte',
             IPS_Status1__c = 'Open'
@@ -89,25 +82,25 @@ public class IPS_eventTravelTimeControllerTest {
 
     @isTest
     static void createEventTravelTime() {
-        List<Event> travelTimeList = [SELECT id FROM Event];
+        List<Event> travelTimeList = [SELECT Id FROM Event];
         //List should not be empty
-        System.Assert.areNotEquak(travelTimeList.size(), 0, 'List should not be empty');
+        System.Assert.areNotEqual(0, travelTimeList.size(), 'List should not be empty');
     }
 
     @isTest
     static void createwithOutTravelTime() {
         List<Event> noEventTravel = [
             SELECT
-                id,
+                Id,
                 ips_Travel_time__c,
                 IPS_travelTimeFrom__c,
                 StartDateTime,
                 EndDateTime,
-                subject,
-                description,
+                Subject,
+                Description,
                 IPS_Type__c,
                 ips_Subcategory_Type_IPS__c,
-                whatId,
+                WhatId,
                 IPS_eventId__c,
                 IPS_Status1__c
             FROM Event
@@ -121,18 +114,20 @@ public class IPS_eventTravelTimeControllerTest {
 
     @isTest
     static void updateEventTravelTime() {
+        List<Event> eventsToUpdate = new List<Event>();
+
         List<Event> updateEvent = [
             SELECT
-                id,
+                Id,
                 ips_Travel_time__c,
                 IPS_travelTimeFrom__c,
                 StartDateTime,
                 EndDateTime,
-                subject,
-                description,
+                Subject,
+                Description,
                 IPS_Type__c,
                 ips_Subcategory_Type_IPS__c,
-                whatId,
+                WhatId,
                 IPS_eventId__c,
                 IPS_Status1__c
             FROM Event
@@ -141,9 +136,11 @@ public class IPS_eventTravelTimeControllerTest {
         for (Event i : updateEvent) {
             i.StartDateTime.addMinutes(120);
             i.EndDateTime.addMinutes(120);
-            update i;
+            eventsToUpdate.add(i);
         }
-        List<Event> travelTimeList = [SELECT id FROM Event];
+        // Todo: Add assertions to validate the expected behavior before updating events.
+        update eventsToUpdate;
+        List<Event> travelTimeList = [SELECT Id FROM Event];
         //List should not be empty
         System.Assert.areNotEqual(0, travelTimeList.size(), 'List should not be empty');
     }
@@ -151,19 +148,18 @@ public class IPS_eventTravelTimeControllerTest {
     @isTest
     static void updateEventTravelTime1() {
         IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
-
         List<Event> updateEvent = [
             SELECT
-                id,
+                Id,
                 ips_Travel_time__c,
                 IPS_travelTimeFrom__c,
                 StartDateTime,
                 EndDateTime,
-                subject,
-                description,
+                Subject,
+                Description,
                 IPS_Type__c,
                 ips_Subcategory_Type_IPS__c,
-                whatId,
+                WhatId,
                 IPS_eventId__c,
                 IPS_Status1__c
             FROM Event
@@ -181,5 +177,7 @@ public class IPS_eventTravelTimeControllerTest {
             new List<IPS_eventTravelTimeController.evenctRequest>{ firstInput }
         );
         Test.stopTest();
+
+        // Todo: Add assertions to validate the expected behavior after invoking the travel time calculation.
     }
 }
