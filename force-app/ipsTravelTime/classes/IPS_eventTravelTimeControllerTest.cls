@@ -91,7 +91,7 @@ public class IPS_eventTravelTimeControllerTest {
     static void createEventTravelTime() {
         List<Event> travelTimeList = [SELECT id FROM Event];
         //List should not be empty
-        System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty');
+        System.Assert.areNotEquak(travelTimeList.size(), 0, 'List should not be empty');
     }
 
     @isTest
@@ -114,8 +114,8 @@ public class IPS_eventTravelTimeControllerTest {
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c <= 0
         ];
         for (Event j : noEventTravel) {
-            System.assertEquals(j.ips_Travel_time__c, 0, 'No travel time before');
-            System.assertEquals(j.IPS_travelTimeFrom__c, 0, 'No travel time after');
+            System.Assert.areEqual(0, j.ips_Travel_time__c, 'No travel time before');
+            System.Assert.areEqual(0, j.IPS_travelTimeFrom__c, 'No travel time after');
         }
     }
 
@@ -145,7 +145,7 @@ public class IPS_eventTravelTimeControllerTest {
         }
         List<Event> travelTimeList = [SELECT id FROM Event];
         //List should not be empty
-        System.assertNotEquals(travelTimeList.size(), 0, 'List should not be empty');
+        System.Assert.areNotEqual(0, travelTimeList.size(), 'List should not be empty');
     }
 
     @isTest
