@@ -1642,7 +1642,28 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         </fields>
         <fields>
             <name>displayInformationCreated</name>
-            <fieldText>&lt;p&gt;Jobbspor opprettet på bruker.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Jobbspor opprettet på bruker✅&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Information_Error_Page</name>
+        <label>Information - Error Page</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>displayTitle6</name>
+            <fieldText>&lt;p&gt;{!Title}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>displayInformationError</name>
+            <fieldText>&lt;p&gt;Kloningen av jobbsporet feilet⚠️&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Feilmelding:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(240, 11, 39);&quot;&gt;{!var_flowErrorStep} - {!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -1851,6 +1872,9 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
         <label>Create Application Log</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>Information_Error_Page</targetReference>
+        </connector>
         <flowName>Flow_Create_Application_Log</flowName>
         <inputAssignments>
             <name>Application_Domain</name>
