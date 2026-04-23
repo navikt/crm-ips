@@ -1405,6 +1405,7 @@ public with sharing class IPS_ParticipantPortalReportController {
                 ActivityDate,
                 CreatedDate,
                 CompletedDateTime,
+                IPS_Completed_Date_Time__c,
                 IPS_subjectAndDate__c,
                 Subject,
                 Type_of_Task_IPSUO__c,
@@ -1412,7 +1413,7 @@ public with sharing class IPS_ParticipantPortalReportController {
                 Status
             FROM Task
             WHERE Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)' AND Status = 'Completed' AND WhatId = :recordId
-            ORDER BY ActivityDate ASC
+            ORDER BY IPS_Completed_Date_Time__c ASC
         ];
 
         for (Task ta : tempGoalList) {
@@ -1421,7 +1422,7 @@ public with sharing class IPS_ParticipantPortalReportController {
             tempList.EmneOgDato = ta.IPS_subjectAndDate__c;
             tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(ta.ActivityDate);
             tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(ta.CreatedDate));
-            tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(ta.CompletedDateTime));
+            tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(ta.IPS_Completed_Date_Time__c));
             tempList.ReferatKommentar = ta.Description;
             tempList.OppgaveId = ta.id;
             wrapperTempList.add(tempList);
@@ -1454,11 +1455,11 @@ public with sharing class IPS_ParticipantPortalReportController {
         List<Task> tempIntervalDueDateGoals = new List<Task>();
         List<Task> tempIntervalGoals = new List<Task>();
 
-        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,IPS_subjectAndDate__c ,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
+        String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,IPS_Completed_Date_Time__c,IPS_subjectAndDate__c ,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
         String goalId = ' AND WhatId = :recordId';
-        String goalDueDateFilter = ' AND ActivityDate >= :reportDateFrom AND ActivityDate <= :reportDateTo';
-        String goalSort = ' ORDER BY ActivityDate ASC';
+        String goalDueDateFilter = ' AND IPS_Completed_Date_Time__c >= :reportDateFrom AND IPS_Completed_Date_Time__c <= :reportDateTo';
+        String goalSort = ' ORDER BY IPS_Completed_Date_Time__c ASC';
         String endQuery = '';
         String dueDateQuery = '';
 
@@ -1474,7 +1475,7 @@ public with sharing class IPS_ParticipantPortalReportController {
             tempList.EmneOgDato = t.IPS_subjectAndDate__c;
             tempList.ForfallsDato = IPS_ParticipantPortalUtility.formatDate(t.ActivityDate);
             tempList.OpprettelsesDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(t.CreatedDate));
-            tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(t.CompletedDateTime));
+            tempList.UtfoertDato = IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(t.IPS_Completed_Date_Time__c));
             tempList.ReferatKommentar = t.Description;
             tempList.OppgaveId = t.id;
             wrapperTempList.add(tempList);
