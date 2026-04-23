@@ -98,7 +98,7 @@ public class IPS_ParticipantPortalReportContTest {
         participantGoalsCompleted.ips_Due_Date_Time__c = System.today().addDays(-7);
         participantGoalsCompleted.ActivityDate = System.today().addDays(-7);
         participantGoalsCompleted.IPS_Completed_Date_Time__c= System.today().addDays(-7);
-        participantGoalsCompleted.Status = 'Completed' ;
+        participantGoalsCompleted.Status = 'Completed';
         insert participantGoalsCompleted;
    
         List<IPS_ParticipantPortalTask> tasks = IPS_ParticipantPortalReportController.getParticipantsReportCompletedGoals(

@@ -1458,7 +1458,7 @@ public with sharing class IPS_ParticipantPortalReportController {
         String goalSelect = 'SELECT id,ActivityDate,CreatedDate,CompletedDateTime,IPS_Completed_Date_Time__c,IPS_subjectAndDate__c ,Subject,Type_of_Task_IPSUO__c,Description,Status FROM Task ';
         String goalWhere = ' WHERE Type_of_Task_IPSUO__c = \'Delmål (av hovedmål)\' AND Status = \'Completed\' ';
         String goalId = ' AND WhatId = :recordId';
-        String goalDueDateFilter = ' AND IPS_Completed_Date_Time__c >= :reportDateFrom AND IPS_Completed_Date_Time__c <= :reportDateTo';
+        String goalDueDateFilter = ' AND DAY_ONLY(IPS_Completed_Date_Time__c) >= :reportDateFrom AND DAY_ONLY(IPS_Completed_Date_Time__c) <= :reportDateTo';
         String goalSort = ' ORDER BY IPS_Completed_Date_Time__c ASC';
         String endQuery = '';
         String dueDateQuery = '';
