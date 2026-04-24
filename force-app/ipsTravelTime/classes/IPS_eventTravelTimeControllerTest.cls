@@ -1,5 +1,5 @@
 /**
- * @Description  : Test class for IPS_eventTravelTimeController. This class contains test methods to valIdate the functionality of the IPS_eventTravelTimeController, which is responsible for handling travel time calculations for events in the IPS application. The test methods cover scenarios such as creating events with travel time, updating events with travel time, and ensuring that events without travel time are handled correctly.
+ * @Description  : Test class for IPS_eventTravelTimeController. This class contains test methods to validate the functionality of the IPS_eventTravelTimeController, which is responsible for handling travel time calculations for events in the IPS application. The test methods cover scenarios such as creating events with travel time, updating events with travel time, and ensuring that events without travel time are handled correctly.
  * @author      : Ann-Kristin Olsen
  * @author       : Håkon Kavli
  * @since        : 0.531.0
@@ -44,8 +44,8 @@ public class IPS_eventTravelTimeControllerTest {
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 20,
             StartDateTime = system.Datetime.now(),
-            EndDateTime = system.Datetime.now() + (60 / 1440),
-            Subject = 'Møte med ArbeIdsgiver',
+            EndDateTime = system.Datetime.now().addMinutes(60),
+            Subject = 'Møte med Arbeidsgiver',
             IPS_isFromTimeline__c = true,
             IPS_Type__c = 'Meeting with Employer',
             ips_Subcategory_Type_IPS__c = 'Job support',
@@ -63,8 +63,8 @@ public class IPS_eventTravelTimeControllerTest {
             RecordTypeId = devRecordTypeId,
             IPS_travelTimeFrom__c = 0,
             StartDateTime = system.Datetime.now(),
-            EndDateTime = system.Datetime.now() + (60 / 1440),
-            Subject = 'Møte med ArbeIdsgiver',
+            EndDateTime = system.Datetime.now().addMinutes(60),
+            Subject = 'Møte med Arbeidsgiver',
             IPS_isFromTimeline__c = true,
             IPS_Type__c = 'Meeting with Employer',
             ips_Subcategory_Type_IPS__c = 'Job support',
