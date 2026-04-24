@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_13_checkSubcategoryEducation</fullName>
+    <active>true</active>
+    <description>Sjekker at underkategori er valgt på møter med utdanningsinstitusjon.</description>
+    <errorConditionFormula>AND(
+        RecordType.DeveloperName = &quot;IPS_Education_Event&quot;,
+        ISPICKVAL(ips_Subcategory_Type_Education__c,&apos;&apos;)
+        )</errorConditionFormula>
+    <errorDisplayField>ips_Subcategory_Type_Education__c</errorDisplayField>
+    <errorMessage>Underkategori må velges.</errorMessage>
+</ValidationRule>
