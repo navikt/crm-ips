@@ -162,8 +162,13 @@ public class IPS_ParticipantPortalTrailControllerTest {
         List<IPS_ParticipantPortalTask> completedGoalToRetrieve = null;
         // User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
         testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
-        Task taskToUpdate = [SELECT Id, ips_Status1__c FROM Task WHERE Subject = 'Lage en bra test' LIMIT 1];
-        taskToUpdate.ips_Status1__c = 'Completed';
+        Task taskToUpdate = [
+            SELECT Id, Status
+            FROM Task
+            WHERE Subject = 'Lage en bra test' AND WhatId = :workTrailId
+            LIMIT 1
+        ];
+        taskToUpdate.Status = 'Completed';
         update taskToUpdate;
 
         Test.startTest();
@@ -219,12 +224,12 @@ public class IPS_ParticipantPortalTrailControllerTest {
             completedGoalToRetrieve[0].Emne,
             'Expected completed goal subject to match the one created in test setup'
         );
-        /*   TODO: fix discrepancies      
+        /*   TODO: fix discrepancies   
         System.Assert.areEqual(
             IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(expectedCompletedGoal.CompletedDateTime)),
             completedGoalToRetrieve[0].UtfoertDato,
             'Expected completed date to match the one created in test setup'
-        ); 
+        );
         System.Assert.areEqual(
             IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(expectedCompletedGoal.ActivityDate)),
             completedGoalToRetrieve[0].ForfallsDato,
@@ -234,7 +239,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
             IPS_ParticipantPortalUtility.formatDate(Date.ValueOf(expectedCompletedGoal.CreatedDate)),
             completedGoalToRetrieve[0].OpprettelsesDato,
             'Expected created date to match the one created in test setup'
-        );*/
+        );  */
     }
 
     @IsTest
