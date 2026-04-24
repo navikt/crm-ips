@@ -2,40 +2,63 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>57.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
-    <decisions>
-        <name>compareDates</name>
-        <label>compareDates</label>
+    <assignments>
+        <name>Update_Activity_Date</name>
+        <label>Update Activity Date</label>
         <locationX>182</locationX>
-        <locationY>623</locationY>
-        <defaultConnectorLabel>noChanges</defaultConnectorLabel>
-        <rules>
-            <name>isDateChanged</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.ActivityDate</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <elementReference>dueDateNow</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>updateTask</targetReference>
-            </connector>
-            <label>isDateChanged</label>
-        </rules>
-    </decisions>
+        <locationY>887</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ActivityDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dueDate</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Update_Completed_DateTime</name>
+        <label>Update Completed DateTime</label>
+        <locationX>50</locationX>
+        <locationY>395</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.IPS_Completed_Date_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is_Due_Date_Greater_Than_Completed_Date</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Due_Date</name>
+        <label>Update Due Date</label>
+        <locationX>50</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ips_Due_Date_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.IPS_Completed_Date_Time__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Activity_Date</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Is_Custom_Completed_datetime_empty</name>
         <label>Is Custom Completed datetime empty ?</label>
         <locationX>182</locationX>
-        <locationY>323</locationY>
+        <locationY>287</locationY>
         <defaultConnector>
-            <targetReference>compareDates</targetReference>
+            <targetReference>Is_Due_Date_Greater_Than_Completed_Date</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND ( 2 OR 3 )</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.IPS_Completed_Date_Time__c</leftValueReference>
                 <operator>IsBlank</operator>
@@ -50,16 +73,65 @@
                     <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Not applicable</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Update_Task_With_Completed_Date</targetReference>
+                <targetReference>Update_Completed_DateTime</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Check if duedate and duedatetime is the same date and update for IPS task delmål</description>
+    <decisions>
+        <name>Is_Due_Date_Greater_Than_Completed_Date</name>
+        <label>Is Due Date Greater Than Completed Date ?</label>
+        <locationX>182</locationX>
+        <locationY>587</locationY>
+        <defaultConnector>
+            <targetReference>Update_Activity_Date</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Greater</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ips_Due_Date_Time__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Record.IPS_Completed_Date_Time__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Not applicable</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Due_Date</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>Updates
+- activity date from custom due datetime
+- Completed datetime from current datetime
+- Due date when due datetime is greater than completed datetime</description>
     <environments>Default</environments>
     <formulas>
-        <name>dueDateNow</name>
+        <name>dueDate</name>
         <dataType>Date</dataType>
         <expression>DATEVALUE({!$Record.ips_Due_Date_Time__c})</expression>
     </formulas>
@@ -84,35 +156,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordUpdates>
-        <name>Update_Task_With_Completed_Date</name>
-        <label>Update Task With Completed Date</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
-        <connector>
-            <targetReference>compareDates</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>IPS_Completed_Date_Time__c</field>
-            <value>
-                <elementReference>$Record.CompletedDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>updateTask</name>
-        <label>updateTask</label>
-        <locationX>50</locationX>
-        <locationY>731</locationY>
-        <inputAssignments>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>dueDateNow</elementReference>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
     <start>
         <locationX>56</locationX>
         <locationY>0</locationY>
@@ -136,7 +179,7 @@
         </filters>
         <object>Task</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
-        <triggerType>RecordAfterSave</triggerType>
+        <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
 </Flow>
