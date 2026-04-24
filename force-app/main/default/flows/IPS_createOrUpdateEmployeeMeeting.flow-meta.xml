@@ -360,7 +360,33 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>checkMeetingCriteria</targetReference>
+                <targetReference>isEducationMeeting</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Education meetings have no subcategory, so skip checkMeetingCriteria and go straight to the participant check so WhoId is set on create.</description>
+        <name>isEducationMeeting</name>
+        <label>isEducationMeeting</label>
+        <locationX>908</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>checkMeetingCriteria</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.IPS_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Møte med Utd. Ins.</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>check_if_participant_is_added</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
