@@ -63,9 +63,6 @@ public class IPS_ParticipantPortalTrailControllerTest {
         eventsToInsert.add(meeting2);
         insert eventsToInsert;
 
-        meeting2.ips_Status1__c = 'Completed';
-        update meeting2;
-
         List<ips_Job__c> jobsToInsert = new List<ips_Job__c>();
         ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, workTrailId, 'Ongoing');
         ips_job__c job2 = IPS_TestDataFactory.createJob(acc1.id, workTrailId, 'Ongoing');
@@ -109,7 +106,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         Test.stopTest();
 
         Work_Trail__c expectedTrail = [
-            SELECT Id, Name, ips_Participant__c, ips_End_Date__c
+            SELECT Id, Name, ips_Participant__c, ips_End_Date__c, RecordType.DeveloperName, IPS_ownerName__c
             FROM Work_Trail__c
             WHERE ips_Participant__c = :participantId
             LIMIT 1
@@ -127,11 +124,15 @@ public class IPS_ParticipantPortalTrailControllerTest {
             'Expected AMS Hovedmål to be Ingen hovedmål valgt'
         );
         System.Assert.areEqual(
-            'User User',
+            expectedTrail.IPS_ownerName__c,
             trails1[0].jobbsporEierNavn,
-            'Expected Jobbspor owner name to be User User'
+            'Expected Jobbspor owner name to match'
         );
-        System.Assert.areEqual('IPS', trails1[0].jobbsporPostTypeNavn, 'Expected Jobbspor post type to be IPS');
+        System.Assert.areEqual(
+            expectedTrail.RecordType.DeveloperName,
+            trails1[0].jobbsporPostTypeNavn,
+            'Expected Jobbspor post type to match'
+        );
         System.Assert.areEqual(
             'In Education',
             trails1[0].jobbsporStatus,
@@ -161,6 +162,9 @@ public class IPS_ParticipantPortalTrailControllerTest {
         List<IPS_ParticipantPortalTask> completedGoalToRetrieve = null;
         // User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
         testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
+        Task taskToUpdate = [SELECT Id, ips_Status1__c FROM Task WHERE Subject = 'Lage en bra test' LIMIT 1];
+        taskToUpdate.ips_Status1__c = 'Completed';
+        update taskToUpdate;
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
