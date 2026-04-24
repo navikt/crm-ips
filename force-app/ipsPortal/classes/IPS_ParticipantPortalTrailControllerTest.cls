@@ -26,8 +26,12 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
 
+        List<Work_Trail__c> workTrailsToCreate = new List<Work_Trail__c>();
         Work_Trail__c jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
-        insert jobbspor;
+        Work_Trail__c amsWorkTrail = IPS_TestDataFactory.createUOJobbspor(participantId);
+        workTrailsToCreate.add(jobbspor);
+        workTrailsToCreate.add(amsWorkTrail);
+        insert workTrailsToCreate;
 
         workTrailId = jobbspor.Id;
 
@@ -53,6 +57,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         tasksToInsert.add(delmaal2);
         insert tasksToInsert;
 
+        // Set one goal to completed to test retrieval of both open and completed goals
         delmaal2.Status = 'Completed';
         update delmaal2;
 
@@ -62,6 +67,10 @@ public class IPS_ParticipantPortalTrailControllerTest {
         eventsToInsert.add(meeting);
         eventsToInsert.add(meeting2);
         insert eventsToInsert;
+
+        // Complete one meeting to test retrieval of both open and completed meetings
+        meeting2.IPS_Status1__c = 'Completed';
+        update meeting2;
 
         List<ips_Job__c> jobsToInsert = new List<ips_Job__c>();
         ips_job__c job1 = IPS_TestDataFactory.createJob(acc1.id, workTrailId, 'Ongoing');
@@ -76,7 +85,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         ips_education__c edu1 = IPS_TestDataFactory.createEducation(workTrailId);
         insert edu1;
 
-        AMS_Vocational_education_and_training__c eduAMS = IPS_TestDataFactory.createEducationAMS(workTrailId);
+        AMS_Vocational_education_and_training__c eduAMS = IPS_TestDataFactory.createEducationAMS(amsWorkTrail.Id);
         insert eduAMS;
     }
 
@@ -162,14 +171,6 @@ public class IPS_ParticipantPortalTrailControllerTest {
         List<IPS_ParticipantPortalTask> completedGoalToRetrieve = null;
         // User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
         testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
-        Task taskToUpdate = [
-            SELECT Id, Status
-            FROM Task
-            WHERE Subject = 'Lage en bra test' AND WhatId = :workTrailId
-            LIMIT 1
-        ];
-        taskToUpdate.Status = 'Completed';
-        update taskToUpdate;
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
@@ -249,8 +250,8 @@ public class IPS_ParticipantPortalTrailControllerTest {
         ?.CRM_Account__r.PersonContactId;
         List<IPS_ParticipantPortalEvent> meeting = null;
         List<IPS_ParticipantPortalEvent> meeting2 = null;
-        testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
-
+        // User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
         IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
@@ -262,30 +263,45 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         System.Assert.isNotNull(meeting, 'Open meetings should not be null');
         System.Assert.isNotNull(meeting2, 'Completed meetings should not be null');
+        System.Assert.areEqual(1, meeting.size(), 'Expected to find 1 open meeting');
+        System.Assert.areEqual(1, meeting2.size(), 'Expected to find 1 completed meeting');
     }
 
     @IsTest
     public static void getParticipantOpenJobsTest() {
         ID workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalJob> job = null;
-        User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
-
+        // User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
         Test.startTest();
-        // Give IPS Jobbspesialist profile access to the test user
+        // Give IPS Jobbspesialist profile access to the test users
         IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
 
         System.runAs(testUser) {
             job = IPS_ParticipantPortalActivityController.getParticipantOpenJobs(workTrailId);
         }
         Test.stopTest();
+        List<ips_Job__c> expectedJobs = [
+            SELECT Id, Name, ips_Form_of_Employment__c
+            FROM ips_Job__c
+            WHERE ips_Work_Trail__c = :workTrailId AND ips_Status__c = 'Ongoing'
+            LIMIT 1
+        ];
         System.Assert.isNotNull(job, 'Open jobs should not be null');
+        System.Assert.areNotEqual(0, job.size(), 'Expected at least one open job');
+        System.Assert.areEqual(
+            expectedJobs[0].Id,
+            job[0].JobbId,
+            'Expected job Id to match the one created in test setup'
+        );
     }
 
     @IsTest
     public static void getJobTrainings() {
         Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
         List<IPS_ParticipantPortalJob> job = null;
-        testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        //testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
@@ -295,13 +311,27 @@ public class IPS_ParticipantPortalTrailControllerTest {
             job = IPS_ParticipantPortalActivityController.getParticipantOpenJobTrainings(workTrailId);
         }
         Test.stopTest();
+        ips_Job__c expectedJob = [
+            SELECT Id, Name, ips_Form_of_Employment__c
+            FROM ips_Job__c
+            WHERE ips_Work_Trail__c = :workTrailId AND ips_Form_of_Employment__c = 'work training'
+            LIMIT 1
+        ];
+
         System.Assert.isNotNull(job, 'Open job trainings should not be null');
+        System.Assert.areNotEqual(0, job.size(), 'Expected at least one open job training');
+        System.Assert.areEqual(
+            expectedJob.Id,
+            job[0].JobbId,
+            'Expected job training Id to match the one created in test setup'
+        );
     }
 
     @IsTest
     public static void getEducationIPS() {
         Id workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
-        User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        //        User testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        User testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
         List<IPS_ParticipantPortalEducation> edu = null;
 
         Test.startTest();
@@ -314,14 +344,16 @@ public class IPS_ParticipantPortalTrailControllerTest {
         Test.stopTest();
 
         System.Assert.isNotNull(edu, 'Education IPS should not be null');
+        System.Assert.areNotEqual(0, edu.size(), 'Expected at least one open education IPS');
     }
 
     @IsTest
     public static void getParticipantOpenEducationTrainingAMSTest() {
         List<IPS_ParticipantPortalEducation> educationToRetrieve = null;
 
-        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
-        testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        workTrailId = [SELECT Id FROM Work_Trail__c WHERE ips_UO_Service__c = 'AMS' LIMIT 1]?.Id;
+        // testUser = [SELECT Id FROM User WHERE Name = 'Sankt Claus' LIMIT 1];
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
 
         Test.startTest();
         // Give IPS Jobbspesialist profile access to the test user
@@ -333,6 +365,23 @@ public class IPS_ParticipantPortalTrailControllerTest {
         }
         Test.stopTest();
 
+        List<AMS_Vocational_education_and_training__c> expectedEducation = [
+            SELECT Id, AMS_Start_Date__c
+            FROM AMS_Vocational_education_and_training__c
+            WHERE AMS_Work_Trail__c = :workTrailId AND AMS_Status__c = 'Ongoing'
+        ];
+
         System.Assert.isNotNull(educationToRetrieve, 'Education AMS should not be null');
+        System.Assert.areNotEqual(0, educationToRetrieve.size(), 'Expected at least one open education AMS');
+        System.Assert.areEqual(
+            expectedEducation[0].Id,
+            educationToRetrieve[0].UtdanningId,
+            'Expected education AMS Id to match the one created in test setup'
+        );
+        System.Assert.areEqual(
+            expectedEducation[0].AMS_Start_Date__c,
+            educationToRetrieve[0].UtdanningStart,
+            'Expected education AMS start date to match the one created in test setup'
+        );
     }
 }
