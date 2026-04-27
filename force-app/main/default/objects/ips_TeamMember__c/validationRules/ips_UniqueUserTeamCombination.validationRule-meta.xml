@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ips_UniqueUserTeamCombination</fullName>
-    <active>true</active>
-    <description>Prevents a user from being added to the same team more than once.</description>
-    <errorConditionFormula>AND(ISNEW(), NOT(ISBLANK(VLOOKUP($ObjectType.ips_TeamMember__c.Fields.ips_UniqueUserTeamKey__c, $ObjectType.ips_TeamMember__c.Fields.ips_UniqueUserTeamKey__c, ips_SalesforceUser__c &amp; &apos;-&apos; &amp; ips_Team__c))))</errorConditionFormula>
-    <errorMessage>Denne brukeren er allerede medlem av dette teamet.</errorMessage>
-</ValidationRule>
