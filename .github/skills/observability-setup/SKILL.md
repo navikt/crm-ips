@@ -1,194 +1,419 @@
 ---
 name: observability-setup
-description: Observability for Nav-apper — metrikker, logging, tracing, alerts, Micrometer, PromQL/LogQL og Faro for backend/frontend
+description: Sett opp Prometheus-metrikker, OpenTelemetry-tracing og health check-endepunkter for Nais-applikasjoner
+license: MIT
+compatibility: Application deployed on Nais
+metadata:
+  domain: observability
+  tags: prometheus opentelemetry health metrics
 ---
 
-# Sett opp observability
+# Observability Setup Skill
 
-Bruk denne skillen når du skal etablere eller forbedre observability i en Nav-applikasjon. Hold hovedreglene korte. Bruk `references/` for detaljer.
+This skill provides patterns for setting up observability in Nais applications.
 
-## Kort intro
-
-- **Metrikker** forteller *hva* som skjer
-- **Logger** forklarer *hvorfor* det skjedde
-- **Traces** viser *hvor* i flyten det skjedde
-- Verifiser alltid eksisterende oppsett i repoet før du legger til nye målepunkter, labels eller varsler
-
-## Arbeidsflyt
-
-1. Les NAIS-manifest, `application*.yaml`, `build.gradle.kts` eller `package.json` for eksisterende observability-oppsett.
-2. Finn etablerte mønstre for Micrometer, `prom-client`, strukturert logging, health-endepunkter og tracing.
-3. Verifiser hvilke endepunkter som faktisk brukes (`/isalive`, `/isready`, `/metrics`, `/internal/*`, `/actuator/*`).
-4. Start med standardmålinger og utvid med domenemetrikker som gir operativ verdi.
-5. Legg til dashboards og varsler når metrikkene og label-settet er stabile.
-
-## Navngivning for metrikker og labels
-
-### Metrikker
-- Bruk `snake_case`
-- Bruk enhetssuffiks når det er relevant: `_seconds`, `_bytes`, `_milliseconds`
-- Countere skal ha suffikset `_total`
-- Bruk navn som beskriver domenet
-- Unngå `camelCase`, forkortelser uten mening og miljøspesifikke navn
-
-### Nav-label-konvensjoner
-
-Nais-plattformen legger automatisk på et sett med labels. Ikke dupliser disse på egne metrikker — bruk dem konsistent i queries, dashboards og varsler:
-
-- `app` — applikasjonsnavn fra Nais-manifestet
-- `team` — eierskapsteam (brukes til alert-ruting og DORA-metrikker)
-- `namespace` — Kubernetes-namespace, typisk teamnavn
-- `env` — miljø (`dev`, `prod`)
-- `cluster` — Nais-cluster (`dev-gcp`, `prod-gcp`, `dev-fss`, `prod-fss`)
-
-Egne labels bør dekke domeneaspekter:
-- Gode: `method`, `route`, `status`, `event_type`, `result`, `consumer_group`, `topic`
-- Dårlige: `user_id`, `email`, `fnr`, `trace_id`, `transaction_id`, rå URL-er med dynamiske segmenter
-- Foretrekk normaliserte verdier som `/api/oppgaver/:id`
-- Hver unik label-kombinasjon gir en ny tidsserie: legg bare til labels som brukes i dashboards, varsler eller feilsøking
-
-## Backend (Kotlin/Spring)
-
-- Aktiver Prometheus/Micrometer og behold eksisterende registry-oppsett hvis det finnes
-- Sørg for health- og metrics-endepunkter som stemmer med NAIS-manifestet
-- Bruk `Counter`, `Timer`, `Gauge` og `DistributionSummary` bevisst
-- Mål viktige domenehendelser, køstørrelser, feilrater og behandlingstid
-- Aktiver OpenTelemetry auto-instrumentation i NAIS før du legger til manuelle spans
-
-Se `references/micrometer.md` for Kotlin/Spring-eksempler, health-oppsett og domenemetrikker.
-
-## Frontend (Next.js)
-
-- Bruk Faro når appen trenger frontend-feil, brukerhendelser eller innsikt i web-vitals
-- Skill mellom tekniske hendelser og reelle domenehendelser
-- Send aldri persondata, tokens eller andre hemmeligheter til frontend-observability
-- Samordne event-navn og felter med backend der korrelasjon er viktig
-
-Se `references/alerting.md` for Faro-oppsett og varslingsmønstre.
-
-## Korrelasjons-ID for Nav-stacken
-
-Korrelasjons-ID lar deg følge en forespørsel på tvers av tjenester, Kafka-meldinger og logger.
-
-### Headers
-- `Nav-Callid` — Nav-konvensjon, propager gjennom alle HTTP-kall
-- `X-Correlation-ID` — aksepter som fallback for eksterne integrasjoner
-- W3C `traceparent` — settes automatisk av OpenTelemetry-agenten
-
-Ved innkommende request: les `Nav-Callid` (eller `X-Correlation-ID`, eller generer en UUID), og send samme verdi videre på alle utgående HTTP-kall og Kafka-headere.
-
-### MDC i JVM
-
-Legg korrelasjonsfelt på MDC slik at logback-encoder automatisk inkluderer dem i alle logger i request-scope:
+## Required Health Endpoints
 
 ```kotlin
-MDC.put("callId", callId)
-MDC.put("trace_id", Span.current().spanContext.traceId)
-try {
-    // handle request
-} finally {
-    MDC.clear()
+import io.ktor.server.application.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import io.ktor.http.*
+
+fun Application.configureHealthEndpoints(
+    dataSource: HikariDataSource,
+    kafkaProducer: KafkaProducer<String, String>
+) {
+    routing {
+        get("/isalive") {
+            call.respondText("Alive", ContentType.Text.Plain)
+        }
+
+        get("/isready") {
+            val databaseHealthy = checkDatabase(dataSource)
+            val kafkaHealthy = checkKafka(kafkaProducer)
+
+            if (databaseHealthy && kafkaHealthy) {
+                call.respondText("Ready", ContentType.Text.Plain)
+            } else {
+                call.respondText(
+                    "Not ready",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.ServiceUnavailable
+                )
+            }
+        }
+    }
+}
+
+fun checkDatabase(dataSource: HikariDataSource): Boolean {
+    return try {
+        dataSource.connection.use { it.isValid(1) }
+    } catch (e: Exception) {
+        false
+    }
+}
+
+fun checkKafka(producer: KafkaProducer<String, String>): Boolean {
+    return try {
+        producer.partitionsFor("health-check-topic").isNotEmpty()
+    } catch (e: Exception) {
+        false
+    }
 }
 ```
 
-I Ktor/Spring brukes ofte en `CallIdPlugin` eller filter som gjør dette automatisk.
+## Prometheus Metrics Setup
 
-### Structured logging
-Inkluder `trace_id`, `span_id` og `callId` i alle logger slik at Loki kan korrelere med Tempo (klikkbare trace-IDer i Grafana).
+```kotlin
+import io.micrometer.core.instrument.Clock
+import io.micrometer.core.instrument.binder.jvm.*
+import io.micrometer.prometheus.PrometheusConfig
+import io.micrometer.prometheus.PrometheusMeterRegistry
+import io.prometheus.client.CollectorRegistry
+import io.ktor.server.metrics.micrometer.*
+import io.ktor.server.response.*
+import io.ktor.http.*
 
-## Logging og tracing
+val meterRegistry = PrometheusMeterRegistry(
+    PrometheusConfig.DEFAULT,
+    CollectorRegistry.defaultRegistry,
+    Clock.SYSTEM
+)
 
-- Logg strukturert JSON til stdout/stderr — Nais-loki henter automatisk
-- Følg eksisterende mønstre med MDC, `kv()` eller tilsvarende strukturerte argumenter
-- Inkluder `trace_id`, `span_id` og `callId` når loggingoppsettet støtter det
-- Ikke bruk logger som erstatning for metrikker; metrikker skal svare på frekvens, volum og varighet
-- Bruk tracing for request-kjeder, Kafka-flyt og kall mot databaser eller eksterne tjenester
+fun Application.configureMetrics() {
+    install(MicrometerMetrics) {
+        registry = meterRegistry
+        // Production pattern from navikt/ao-oppfolgingskontor
+        meterBinders = listOf(
+            JvmMemoryMetrics(),        // Heap, non-heap memory
+            JvmGcMetrics(),            // Garbage collection
+            ProcessorMetrics(),        // CPU usage
+            UptimeMetrics()            // Application uptime
+        )
+    }
 
-### JSON-format for Nais-loki
-
-Nais-loki forventer én JSON-linje per logg på stdout. Felter som Loki parser og indekserer:
-
-```json
-{
-  "@timestamp": "2026-04-14T10:23:45.123Z",
-  "level": "INFO",
-  "message": "Payment processed",
-  "logger_name": "no.nav.payment.PaymentService",
-  "thread_name": "eventLoopGroupProxy-4-1",
-  "trace_id": "2f2f2264a8b6df9f8b3d614f4c9ce111",
-  "span_id": "b3d614f4c9ce111a",
-  "callId": "abc-123",
-  "event_type": "payment_processed",
-  "payment_id": "p-42"
+    routing {
+        get("/metrics") {
+            call.respondText(
+                meterRegistry.scrape(),
+                ContentType.parse("text/plain; version=0.0.4")
+            )
+        }
+    }
 }
 ```
 
-Minimumsfelt: `@timestamp`, `level`, `message`. Legg domenedata i top-level felt (Loki JSON-parser eksponerer dem som labels i LogQL), ikke nøstet under `context`. Aldri PII, tokens eller fnr.
+## Business Metrics
 
-Bruk `logstash-logback-encoder` (JVM) eller `pino` (Node) med Nais-preset. Autonmatiske Loki-labels: `app`, `namespace`, `cluster`, `container`, `pod`, `stream` — ikke dupliser disse i payloaden.
+```kotlin
+import io.micrometer.core.instrument.Counter
+import io.micrometer.core.instrument.Timer
 
-## Grafana-dashboards for Nais-apper
+class UserService(private val meterRegistry: PrometheusMeterRegistry) {
+    private val userCreatedCounter = Counter.builder("users_created_total")
+        .description("Total users created")
+        .register(meterRegistry)
 
-Hver Nais-app bør ha et dashboard med følgende paneler som baseline. Bruk `app`, `namespace` og `cluster` som template-variabler.
+    private val userCreationTimer = Timer.builder("user_creation_duration_seconds")
+        .description("User creation duration")
+        .register(meterRegistry)
 
-### Golden signals
-- **Request rate** — `sum(rate(http_server_requests_seconds_count{app="$app"}[5m]))` (per `route`/`method`)
-- **Error rate** — 5xx-andel av total trafikk, både som prosent og absolutt rate
-- **Latency p95/p99** — `histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket[5m])) by (le, route))`
+    fun createUser(user: User) {
+        userCreationTimer.record {
+            repository.save(user)
+        }
+        userCreatedCounter.increment()
+    }
+}
+```
 
-### Ressurser
-- **Pool usage** — `hikaricp_connections_active / hikaricp_connections_max` for databasen
-- **JVM heap og GC** — `jvm_memory_used_bytes`, `rate(jvm_gc_pause_seconds_sum[5m])`
-- **Pod restarts** — `increase(kube_pod_container_status_restarts_total{app="$app"}[1h])`
+## OpenTelemetry Tracing
 
-### Kafka (hvis aktuelt)
-- **Consumer lag** — `kafka_consumer_lag` eller `kafka_consumergroup_lag` per `topic` og `consumer_group`
-- **Consumer/producer rate** og feil per topic
+Nais enables OpenTelemetry auto-instrumentation by default. For manual spans:
 
-### Domene
-- Hendelser prosessert per minutt, per `event_type`
-- Feilrate per flyt (`result="failure"`)
-- Køstørrelse og behandlingstid for kritiske operasjoner
+```kotlin
+import io.opentelemetry.api.GlobalOpenTelemetry
+import io.opentelemetry.api.trace.Span
+import io.opentelemetry.api.trace.StatusCode
 
-Se `references/promql-logql.md` for komplette PromQL- og LogQL-eksempler.
+val tracer = GlobalOpenTelemetry.getTracer("my-app")
 
-## Varsling
+fun processPayment(paymentId: String) {
+    val span = tracer.spanBuilder("processPayment")
+        .setAttribute("payment.id", paymentId)
+        .startSpan()
 
-- Varsle på brukeropplevde symptomer først: feilrate, latency, utilgjengelighet og restarts
-- Bruk runbook-lenker og tydelige annotasjoner
-- Hold terskler forsiktige til du kjenner trafikkmønstrene
-- Skill mellom `warning`, `critical` og informative varsler
+    try {
+        // Business logic
+        val payment = repository.findPayment(paymentId)
+        span.setAttribute("payment.amount", payment.amount)
 
-Se `references/alerting.md` for Prometheus-regler, Slack-integrasjon og vanlige varslingsmønstre.
+        processPaymentInternal(payment)
+        span.setStatus(StatusCode.OK)
+    } catch (e: Exception) {
+        span.setStatus(StatusCode.ERROR, "Payment processing failed")
+        span.recordException(e)
+        throw e
+    } finally {
+        span.end()
+    }
+}
+```
 
-## Sjekkliste
+## Structured Logging
 
-- [ ] Health-, readiness- og metrics-endepunkter stemmer med NAIS-manifestet
-- [ ] Auto-instrumentation er vurdert eller aktivert for riktig runtime
-- [ ] Strukturert JSON-logging til stdout med `trace_id`, `span_id`, `callId`
-- [ ] Korrelasjons-ID (`Nav-Callid`) leses, propageres og legges på MDC
-- [ ] Viktige domenemetrikker er definert med stabile navn og labels
-- [ ] Dashboards dekker request rate, error rate, latency p95/p99, pool usage og Kafka lag
-- [ ] Varsler finnes for høy feilrate, høy latency, pod restarts og kritiske avhengigheter
-- [ ] Logger, traces og labels på metrikker inneholder ikke sensitive data
+```kotlin
+import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 
-## Boundaries
+private val logger = KotlinLogging.logger {}
 
-### Alltid
-- Bruk `snake_case` og enhetssuffiks for metrikker
-- Bruk lave og begrensede label-verdier
-- Logg strukturert JSON til stdout (ikke filer)
-- Propager `Nav-Callid` og legg `trace_id` i logger
-- Følg eksisterende logging- og metrikkmønstre i repoet
-- Verifiser health paths, scrape paths og tracing-oppsett mot faktisk konfigurasjon
+fun processOrder(orderId: String) {
+    logger.info(
+        "Processing order",
+        kv("order_id", orderId),
+        kv("timestamp", LocalDateTime.now())
+    )
 
-### Spør først
-- Nye labels som kan øke kardinalitet vesentlig
-- Endring av produksjonsterskler for varsler
-- Nye dashboards, mapper eller varslingskanaler som påvirker teamets arbeidsflyt
+    try {
+        orderService.process(orderId)
 
-### Aldri
-- Logg eller eksponer PII, tokens, passord, fnr eller andre hemmeligheter
-- Bruk `camelCase` i metric-navn
-- Bruk labels med høy kardinalitet (`user_id`, `fnr`, `transaction_id`, `trace_id`)
-- Legg til observability-kode som ikke kan forklares operativt eller brukes i praksis
+        logger.info(
+            "Order processed successfully",
+            kv("order_id", orderId)
+        )
+    } catch (e: Exception) {
+        logger.error(
+            "Order processing failed",
+            kv("order_id", orderId),
+            kv("error", e.message),
+            e
+        )
+        throw e
+    }
+}
+```
+
+## Nais Manifest
+
+```yaml
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+  namespace: myteam
+  labels:
+    team: myteam
+spec:
+  image: ghcr.io/navikt/my-app:latest
+  port: 8080
+
+  # Health checks
+  liveness:
+    path: /isalive
+    initialDelay: 10
+    timeout: 1
+    periodSeconds: 10
+    failureThreshold: 3
+
+  readiness:
+    path: /isready
+    initialDelay: 10
+    timeout: 1
+    periodSeconds: 10
+    failureThreshold: 3
+
+  # Prometheus scraping
+  prometheus:
+    enabled: true
+    path: /metrics
+
+  # OpenTelemetry auto-instrumentation
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java # Instruments Ktor, JDBC, Kafka automatically
+    logging:
+      destinations:
+        - id: loki # Automatic Loki shipping
+        - id: team-logs # Optional: private team logs
+
+  # Resources (for metrics alerting)
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+```
+
+## Alert Configuration
+
+Create `.nais/alert.yml`:
+
+```yaml
+apiVersion: nais.io/v1
+kind: Alert
+metadata:
+  name: my-app-alerts
+  namespace: myteam
+  labels:
+    team: myteam
+spec:
+  receivers:
+    slack:
+      channel: "#team-alerts"
+      prependText: "@here "
+  alerts:
+    - alert: HighErrorRate
+      expr: |
+        (sum(rate(http_requests_total{app="my-app",status=~"5.."}[5m]))
+        / sum(rate(http_requests_total{app="my-app"}[5m]))) > 0.05
+      for: 5m
+      description: "Error rate is {{ $value | humanizePercentage }}"
+      action: "Check logs in Grafana Loki"
+      documentation: https://teamdocs/runbooks/high-error-rate
+      sla: "Respond within 15 minutes"
+      severity: critical
+
+    - alert: HighResponseTime
+      expr: |
+        histogram_quantile(0.95,
+          rate(http_request_duration_seconds_bucket{app="my-app"}[5m])
+        ) > 1
+      for: 10m
+      description: "95th percentile response time is {{ $value }}s"
+      action: "Check Tempo traces for slow requests"
+      severity: warning
+
+    - alert: PodCrashLooping
+      expr: |
+        rate(kube_pod_container_status_restarts_total{
+          pod=~"my-app-.*"
+        }[15m]) > 0
+      for: 5m
+      description: "Pod {{ $labels.pod }} is crash looping"
+      action: "Check logs: kubectl logs {{ $labels.pod }}"
+      severity: critical
+
+    - alert: HighMemoryUsage
+      expr: |
+        (container_memory_working_set_bytes{app="my-app"}
+        / container_spec_memory_limit_bytes{app="my-app"}) > 0.9
+      for: 10m
+      description: "Memory usage is {{ $value | humanizePercentage }}"
+      action: "Check for memory leaks, increase limits if needed"
+      severity: warning
+```
+
+## Complete Example
+
+```kotlin
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import io.micrometer.core.instrument.Timer
+import io.opentelemetry.api.GlobalOpenTelemetry
+import io.opentelemetry.api.trace.StatusCode
+
+fun main() {
+    val env = Environment.from(System.getenv())
+    val dataSource = createDataSource(env.databaseUrl)
+
+    // Run database migrations
+    runMigrations(dataSource)
+
+    // Setup metrics
+    val meterRegistry = setupMetrics()
+
+    embeddedServer(Netty, port = 8080) {
+        configureHealthEndpoints(dataSource)
+        configureMetrics(meterRegistry)
+        configureRouting(dataSource, meterRegistry)
+    }.start(wait = true)
+}
+
+fun Application.configureRouting(
+    dataSource: HikariDataSource,
+    meterRegistry: PrometheusMeterRegistry
+) {
+    val tracer = GlobalOpenTelemetry.getTracer("my-app")
+
+    routing {
+        get("/api/users") {
+            val requestTimer = Timer.sample()
+            val requestCounter = meterRegistry.counter(
+                "http_requests_total",
+                "method", "GET",
+                "endpoint", "/api/users"
+            )
+
+            val span = tracer.spanBuilder("getUsersRequest")
+                .setAttribute("http.method", "GET")
+                .setAttribute("http.route", "/api/users")
+                .startSpan()
+
+            try {
+                val users = userRepository.findAll()
+                span.setAttribute("user.count", users.size.toLong())
+                span.setStatus(StatusCode.OK)
+
+                requestCounter.increment()
+                requestTimer.stop(meterRegistry.timer(
+                    "http_request_duration_seconds",
+                    "method", "GET",
+                    "endpoint", "/api/users",
+                    "status", "200"
+                ))
+
+                call.respond(users)
+            } catch (e: Exception) {
+                span.setStatus(StatusCode.ERROR, "Failed to get users")
+                span.recordException(e)
+
+                meterRegistry.counter(
+                    "http_requests_total",
+                    "method", "GET",
+                    "endpoint", "/api/users",
+                    "status", "500"
+                ).increment()
+
+                logger.error(
+                    "Failed to get users",
+                    kv("trace_id", span.spanContext.traceId),
+                    kv("span_id", span.spanContext.spanId),
+                    e
+                )
+
+                throw e
+            } finally {
+                span.end()
+            }
+        }
+    }
+}
+```
+
+## Grafana & Loki & Tempo Queries
+
+See [references/grafana-queries.md](references/grafana-queries.md) for PromQL dashboard panels, LogQL query examples, and Tempo trace search patterns.
+
+## Monitoring Checklist
+
+- [ ] `/isalive` endpoint implemented
+- [ ] `/isready` endpoint with dependency checks (database, Kafka)
+- [ ] `/metrics` endpoint exposing Prometheus metrics
+- [ ] Health checks configured in Nais manifest
+- [ ] Business metrics instrumented (counters, timers, gauges)
+- [ ] Structured logging with correlation IDs (trace_id, span_id)
+- [ ] OpenTelemetry auto-instrumentation enabled in Nais manifest
+- [ ] Alert rules created in `.nais/alert.yml`
+- [ ] Slack channel configured for alerts
+- [ ] Grafana dashboard created
+- [ ] No sensitive data in logs or metrics (verify in Grafana)
+- [ ] High-cardinality labels avoided (no user_ids, transaction_ids)
+
+## Production Patterns & DORA Metrics
+
+See [references/production-patterns.md](references/production-patterns.md) for real-world patterns from navikt repositories and DORA metric implementation examples.
