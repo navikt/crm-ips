@@ -1,6 +1,6 @@
 ---
 name: accessibility-review
-description: Tilgjengelighet-review for Nav-løsninger — WCAG 2.1/2.2 AA, UU (universell utforming), uutilsynet, Aksel og manuell + automatisk testing før PR
+description: "UU/WCAG-review for Nav-frontend — tastaturflyt, skjermleser, axe, kontrast, fokus, feilmeldinger, skjema og Aksel-bruk. Brukes via /accessibility-review før PR eller release."
 ---
 # Tilgjengelighet-review
 

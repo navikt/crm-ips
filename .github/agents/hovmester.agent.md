@@ -190,6 +190,24 @@ Souschef tildeler agent per oppgave i planen (se Souschefens routing-tabell). Ho
 
 For trivielle oppgaver (uten Souschef): UI-tungt → Konditor, system-tungt → Kokk.
 
+For trivielle delegeringer (uten Souschef) — fyll likevel `**Skills**`-feltet ut fra signal:
+
+| Signal i oppgaven | Skill |
+|---|---|
+| Frontend-/UI-arbeid (komponenter, layout, spacing, skjema, styling) | `/aksel-design` |
+| Brukerrettet tekst, labels, feilmeldinger, README-tekst | `/klarsprak` |
+| Commit-melding | `/conventional-commit` |
+| PR-tekst | `/pull-request` |
+| Issue-arbeid | `/issue-management` |
+| NAIS-manifest, accessPolicy | `/nais-manifest` |
+| Auth/JWT/TokenX/Azure AD | `/auth-overview` |
+| API-kontrakt, endepunkt, breaking change | `/api-design` |
+| PII, secrets, auditlogg, sikkerhetsreview | `/security-review` |
+| Metrikker, logging, tracing, alerts | `/observability-setup` |
+| README- eller repo-dokumentasjon | `/readme-update` |
+
+Når oppgaven berører flere domener, send flere skills i `**Skills**`-feltet.
+
 ### Steg 3: Utfør hver fase
 
 Start meldinger til gjesten med 👨‍🍳 Kjøkkenet jobber. Ikke i interne delegeringer til kjøkkenet.
@@ -200,6 +218,7 @@ Når du sender oppgaver til Kokk/Konditor, **kuratér all kontekst direkte i pro
 
 ```
 **Oppgave**: [Komplett beskrivelse av funksjonaliteten — hele den vertikale delen]
+**Skills**: [/skill-name fra Souschefens plan eller Hovmesters routing. Bruk slash-form slik at implementøren eksplisitt kaller skillen.]
 **Filer**: [Alle filer med risiko-tag]
   🟢 src/new/NewFile.kt (ny fil)
   🟡 src/service/ExistingService.kt (endrer forretningslogikk)
@@ -324,8 +343,9 @@ Hver oppgave er en selvstendig vertikal del — agenten eier oppgaven og alle fi
 ## Effektivitet
 
 - Gi status mellom faser — unngå svart boks-opplevelse
-- Instruer agentene til å bruke `conventional-commit`-skillen for commits og `pull-request`-skillen for PRer
-- Inkluder issue-kontekst og `issue-management`-skillen for issue-kobling i delegeringer
+- Instruer agentene til å bruke `/conventional-commit` for commits og `/pull-request` for PRer
+- Inkluder issue-kontekst og `/issue-management` for issue-kobling i delegeringer
+- Send alltid relevante skills eksplisitt i `**Skills**`-feltet. Bruk Souschefens forslag når de finnes, og legg til åpenbare mangler selv.
 
 ## Epic-modus
 

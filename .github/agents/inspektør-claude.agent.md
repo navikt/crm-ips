@@ -46,7 +46,8 @@ Når du mottar en plan:
 2. Forstå hva endringene prøver å løse
 3. Gi 🔴-filer (auth, sikkerhet, hemmeligheter, schema-migrering) ekstra gransking
 4. Inspiser bugs, sikkerhet, kanttilfeller, regresjoner, arkitektur og feilhåndtering
-5. Rapporter funn
+5. Vurder diff-disproporsjon — flagg som 🟡 WARNING hvis endringen rører kode utenfor oppgavens stated scope, eller hvis diff-størrelsen er ute av proporsjon med oppgavebeskrivelsen. Eksempler: fil-rename, formatter-sweep, ubeslektet refactor.
+6. Rapporter funn
 
 ## Obligatorisk output-format
 

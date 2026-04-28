@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Utforsk et problem og land på et design før planlegging. Brukes for å forstå hva som skal bygges, vurdere alternativer og bli enig om tilnærming — FØR kode skrives eller plan lages. Dekker også ny tjeneste, ny arketype, modernisering og kravavdekking for Nav-prosjekter.
+description: "Idémyldring og avklaring før planlegging — nye tjenester, modernisering, arkitekturvalg, alternativer, avveininger og kravavdekking. Brukes via /brainstorm når problem, krav eller løsning er uklar."
 ---
 
 # Brainstorm — fra idé til design

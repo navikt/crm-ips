@@ -1,6 +1,6 @@
 ---
 name: kafka-topic
-description: Sett opp Kafka-topic, consumer og producer i Nav — stack-agnostisk rådgivning med mønstre for plain Kafka, Spring Kafka og Rapids & Rivers
+description: "Kafka-oppsett i Nav — topics, Kafkarator, consumer, producer, schema registry, plain Kafka, Spring Kafka eller Rapids & Rivers. Brukes via /kafka-topic ved nye eller endrede Kafka-oppsett."
 ---
 
 # Kafka — Topic, Consumer og Producer

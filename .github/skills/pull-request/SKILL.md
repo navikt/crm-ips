@@ -1,6 +1,6 @@
 ---
 name: pull-request
-description: Opprett pull requests med semantisk tittel, issue-kobling og sjekkliste
+description: "PR-oppretting og -oppdatering — semantisk tittel, kort beskrivelse, issue-kobling, teststatus, risiko, sjekkliste og reviewer-kontekst. Brukes via /pull-request ved nye eller oppdaterte PR-er."
 ---
 
 # Pull request
