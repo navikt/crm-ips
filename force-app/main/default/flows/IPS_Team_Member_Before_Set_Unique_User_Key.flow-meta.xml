@@ -18,14 +18,15 @@
             <targetReference>Update_Records</targetReference>
         </connector>
     </assignments>
+    <description>Sets the ips_Unique_User_Key__c based on the Nav Ident and team name to prevent duplicate team members</description>
     <environments>Default</environments>
     <formulas>
         <name>formula_navIdentAndTeamName</name>
         <dataType>String</dataType>
         <expression>{!$Record.ips_NAV_Ident__c} &amp; &apos;_&apos;  &amp; {!$Record.ips_Team__r.Name}</expression>
     </formulas>
-    <interviewLabel>IPS_TeamMember_Before_Set {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS_TeamMember_Before_Set_ips_UniqueUserKey</label>
+    <interviewLabel>IPS Team Member Before Set Unique User Key {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS Team Member - Before - Set Unique User Key</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -79,7 +80,7 @@
                 <booleanValue>false</booleanValue>
             </value>
         </filters>
-        <object>ips_TeamMember__c</object>
+        <object>ips_Team_Member__c</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
