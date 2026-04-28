@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Test-driven development med red-green-refactor. Brukes ved feature-utvikling, bugfiks med tester først, eller når "red-green-refactor" nevnes.
+description: "Testdrevet utvikling — test-first, red-green-refactor, bugfiks med reproduksjonstest og ny funksjonalitet med tester først. Brukes via /tdd ved testdrevet arbeidsflyt."
 ---
 
 # Testdrevet utvikling

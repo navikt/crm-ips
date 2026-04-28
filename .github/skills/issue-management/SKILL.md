@@ -1,6 +1,6 @@
 ---
 name: issue-management
-description: Opprett og administrer GitHub Issues, epics, sub-issues og avhengigheter
+description: "GitHub Issues-håndtering — issue-maler, epics, sub-issues, dependencies, prosjektboard, status, ferdigmelding og PR-kobling. Brukes via /issue-management ved oppretting eller håndtering av issues."
 ---
 
 # Issue-håndtering
@@ -47,6 +47,16 @@ gh api repos/navikt/REPO_NAVN/issues \
 
 Se `references/issue-types.md` for detaljer om issue-typer.
 
+### 4b. Legg issue inn i prosjektboard (hvis konfigurert)
+
+Etter programmatisk opprettelse: les issue-malen i målrepoet og se etter `projects:`-linjen.
+
+- Hvis issue-malen i repoet ikke har en `projects:`-linje, hopp over dette steget uten å feile
+- Hvis prosjekt er konfigurert, legg issuet inn i boardet og oppdag prosjekt, felter og opsjoner dynamisk
+- Ikke hardkod felt-ID-er, option-ID-er eller statusnavn per repo
+
+Se `references/projects.md` for workflow og feilhåndtering.
+
 ### 5. Epic-håndtering
 
 For store oppgaver som brytes ned:
@@ -79,6 +89,8 @@ Når en epic skal løses stegvis:
    - Hvis flere kandidater → foreslå valgbare eller parallelle alternativer
    - Hvis ingen kandidater → forklar hva som blokkerer videre arbeid
 4. **Løs oppgaven** — følg normal arbeidsflyt for valgt issue
+   - Når arbeid starter, oppdater prosjekt-status til `In Progress`/tilsvarende via mønsteret i `references/projects.md`
+   - Hvis repo, prosjekt eller statusfelt ikke er konfigurert, hopp over uten å feile
 5. **Gjenta** — etter fullføring, vurder neste kjørbare oppgave
 
 ### 7. Ferdigmelding på issues

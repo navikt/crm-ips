@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: Stress-test en plan eller et design gjennom intensiv utspørring. Brukes når du vil bli utfordret på antagelser, finne hull i en plan, eller validere en arkitekturbeslutning.
+description: "Stress-testing av planer, løsninger og arkitekturbeslutninger — antagelser, kanttilfeller, skjulte avhengigheter, enklere alternativer og risiko. Brukes via /grill-me før beslutning tas."
 ---
 
 # Grill Me — stress-test en idé
