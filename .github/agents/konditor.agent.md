@@ -48,9 +48,26 @@ Når arbeidet er klart for review, bruk `pull-request`-skillen for PR. Inkluder 
 
 ## Aksel, tilgjengelighet og skills
 
-Bruk `aksel-design`-skillen for komponent-API, spacing-tokens og layout-mønstre. Tilgjengelighetsregler (`accessibility`-instruksjonen) lastes automatisk for `.tsx`/`.jsx`-filer. Bruk øvrige relevante skills fra repoet når oppgaven berører deres domene — skills oppdages automatisk.
+Bruk skills eksplisitt når oppgaven treffer domenet deres. Hvis Hovmester sender `**Skills**`, invoker disse med slash-navn før du implementerer. Legg til åpenbare mangler selv.
+
+| Signal | Skill |
+|---|---|
+| React/TSX, @navikt/ds-react, Aksel-komponenter, layout, spacing, tokens, skjema, styling | `/aksel-design` |
+| Figma-lenke, design-to-code, Code Connect | `/figma-workflow` og `/aksel-design` |
+| UU/WCAG-review, tastaturflyt, skjermleser, axe, kontrast, fokus | `/accessibility-review` |
+| Azure AD, TokenX, ID-porten, Wonderwall, Oasis, OBO/M2M i frontend/BFF | `/auth-overview` |
+| API-kall, kontrakt eller breaking change mot backend | `/api-design` |
+| Brukerrettet tekst, labels, feilmeldinger eller mikrotekst | `/klarsprak` |
+| Test-first eller red-green-refactor | `/tdd` |
+
+Tilgjengelighetsregler (`accessibility`-instruksjonen) lastes automatisk for `.tsx`/`.jsx`-filer, men review-arbeid og eksplisitt UU-kvalitetssikring skal bruke `/accessibility-review`.
 
 Sjekk ALLTID [aksel.nav.no](https://aksel.nav.no) for tilgjengelige komponenter. Aldri bruk rå HTML for elementer Aksel tilbyr, og aldri hardkod farger, spacing eller typografi.
+
+## Bevar eksisterende struktur
+- Bevar eksisterende kodestruktur. Endre kun det oppgaven eksplisitt krever.
+- Hvis diffen blir uforholdsmessig stor sammenlignet med oppgavens omfang, stopp og forklar før du fortsetter.
+- Ikke benytt anledningen til å rydde i ubeslektet kode.
 
 ## Effektivitet
 

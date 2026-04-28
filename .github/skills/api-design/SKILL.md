@@ -1,214 +1,90 @@
 ---
 name: api-design
-description: REST API-designmønstre, versjonering, feilhåndtering (RFC 7807) og OpenAPI-konvensjoner for Nav-tjenester
-license: MIT
-compatibility: Go or Kotlin backend on Nais
-metadata:
-  domain: backend
-  tags: api rest design openapi error-handling
+description: "API-kontrakter, endepunkter og konsumenttilgang — accessPolicy.inbound, TokenX-inbound, versjonering, breaking changes og API-katalog. Brukes via /api-design ved nye eller endrede API-er."
 ---
 
-# API Design Skill
+# API Design — Nav-konvensjoner
 
-REST API design for Nav services. Covers naming conventions, error handling with ProblemDetail, versioning, pagination, and OpenAPI spec.
+Dette dokumentet dekker **Nav-spesifikke** konvensjoner for API-design. Generelle REST-/HTTP-mønstre er ikke dekket her — bruk teamets etablerte praksis.
 
-## URL Conventions
+## accessPolicy.inbound — hvem får kalle API-et?
 
-```
-# ✅ Correct
-GET    /api/vedtak                    # List
-GET    /api/vedtak/{id}               # Get by ID
-POST   /api/vedtak                    # Create
-PUT    /api/vedtak/{id}               # Full update
-PATCH  /api/vedtak/{id}               # Partial update
-DELETE /api/vedtak/{id}               # Delete
+Nav-API-er eksponert via nais må eksplisitt liste hvilke andre applikasjoner som har tilgang. Ingen implisitt "alle Nav-apper". Navngi team og app.
 
-# ✅ Sub-resources
-GET    /api/vedtak/{id}/aktiviteter   # List child resources
-POST   /api/vedtak/{id}/aktiviteter   # Create child resource
-
-# ✅ Actions (verb as sub-resource)
-POST   /api/vedtak/{id}/godkjenn      # State transition
-
-# ❌ Wrong
-GET    /api/getVedtak                 # Verb in URL
-GET    /api/vedtak/hentAlle           # Verb in URL
-POST   /api/createVedtak              # Verb in URL
-GET    /api/Vedtak                    # PascalCase
+```yaml
+# nais.yaml (utdrag — teknologiagnostisk: samme prinsipp gjelder uansett rammeverk)
+spec:
+  accessPolicy:
+    inbound:
+      rules:
+        - application: saksbehandling-frontend
+          namespace: team-vedtak
+          cluster: prod-gcp
+        - application: oppfolging-api
+          namespace: team-oppfolging
+          cluster: prod-gcp
 ```
 
-## Error Handling (RFC 7807 / ProblemDetail)
+### Regler
+- **Aldri** tom `inbound` på intern-API uten å mene det: tom inbound stenger API-et helt (Nais krever eksplisitt liste — også for kallere i samme namespace).
+- **Aldri** `*` wildcard uten eksplisitt begrunnelse + sikkerhetsreview.
+- Koordiner med konsumerende team **før** du legger dem til — de må også ha `outbound`-regel mot deg.
+- Fjern konsumenter som ikke lenger bruker API-et (revideres kvartalsvis).
 
-```kotlin
-// Spring Boot 3+ — built-in ProblemDetail support
+## TokenX-inbound-validering
 
-@RestControllerAdvice
-class ErrorHandler {
-    @ExceptionHandler(ResourceNotFoundException::class)
-    fun handleNotFound(ex: ResourceNotFoundException): ProblemDetail =
-        ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message ?: "Resource not found").apply {
-            title = "Resource not found"
-            setProperty("resourceType", ex.resourceType)
-            setProperty("resourceId", ex.resourceId)
-        }
+API-er som eksponeres for frontend via TokenX må validere token på serversiden. Rammeverket (Ktor, Spring, annet) er uvesentlig — valideringsreglene er like:
 
-    @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidation(ex: MethodArgumentNotValidException): ProblemDetail =
-        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed").apply {
-            title = "Invalid request"
-            setProperty("errors", ex.bindingResult.fieldErrors.map {
-                mapOf("field" to it.field, "message" to it.defaultMessage)
-            })
-        }
-}
-```
+- **Issuer**: matcher TokenX-issuer for riktig miljø (dev-gcp / prod-gcp).
+- **Audience (`aud`)**: matcher din applikasjons client-id.
+- **Signatur**: verifiser mot TokenX JWKS-endpoint.
+- **`pid`-claim**: inneholder brukerens fødselsnummer — bruk denne som autoritativ brukeridentitet, **ikke** noe som kommer fra request body.
+- **`acr`-claim**: sjekk nivå (`Level4` / `idporten-loa-high`) hvis API-et krever høyt innloggingsnivå.
+- **Exp/nbf**: standard gyldighetssjekk.
 
-For Ktor, use the `StatusPages` plugin:
+Logg aldri hele tokenet. Logg `sub`/`jti` for sporbarhet hvis nødvendig.
 
-```kotlin
-install(StatusPages) {
-    exception<ResourceNotFoundException> { call, cause ->
-        call.respond(HttpStatusCode.NotFound, ProblemResponse(
-            title = "Resource not found",
-            status = 404,
-            detail = cause.message ?: "Resource not found",
-            instance = call.request.uri,
-        ))
-    }
-    exception<ValidationException> { call, cause ->
-        call.respond(HttpStatusCode.BadRequest, ProblemResponse(
-            title = "Invalid request",
-            status = 400,
-            detail = "Validation failed",
-            errors = cause.errors,
-        ))
-    }
-}
-```
+## API-versjonering — koordiner med andre team
 
-Response format (RFC 7807):
+Breaking changes på API-er som andre Nav-team konsumerer er et **koordineringsproblem**, ikke bare et teknisk problem.
 
-```json
-{
-  "type": "about:blank",
-  "title": "Resource not found",
-  "status": 404,
-  "detail": "Vedtak with id 123 does not exist",
-  "instance": "/api/vedtak/123",
-  "resourceType": "vedtak",
-  "resourceId": "123"
-}
-```
+### Før brudd-endring
+1. **Identifiser konsumenter** via `accessPolicy.inbound` + faktisk trafikk (logger/metrics).
+2. **Varsle team eksplisitt** — Slack, e-post, eller teamets foretrukne kanal. Ikke anta at de leser changelog.
+3. **Avtal overgangsvindu** — typisk 1–3 måneder der begge versjoner lever parallelt.
+4. **Versjoner URL-en** (`/v1/` → `/v2/`) eller bruk annen mekanisme teamet ditt har etablert.
+5. **Deprecering først**: merk gammel versjon som deprecated, gi konsumentene tid.
 
-## Pagination
+### Ikke-brudd-endringer (trygge)
+- Legge til nye felter i response.
+- Gjøre nye request-felter valgfrie.
+- Legge til nye endpoints.
 
-Use offset-based pagination with consistent parameter names:
+Disse kan rulles ut uten koordinering, men dokumenter dem.
 
-```kotlin
-@GetMapping("/api/vedtak")
-fun list(
-    @RequestParam(defaultValue = "0") page: Int,
-    @RequestParam(defaultValue = "20") size: Int,
-    @RequestParam(defaultValue = "opprettetDato") sort: String,
-    @RequestParam(defaultValue = "desc") order: String,
-): Page<VedtakDTO> {
-    require(size in 1..100) { "size must be between 1 and 100" }
-    val pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort))
-    return vedtakService.findAll(pageable)
-}
-```
+## API-katalog
 
-Response:
+Registrer API-et i [apikatalog.nav.no](https://apikatalog.nav.no) slik at andre team kan finne det. Særlig viktig for API-er som kan ha bredere nytte enn umiddelbare konsumenter.
 
-```json
-{
-  "content": [...],
-  "page": {
-    "size": 20,
-    "number": 0,
-    "totalElements": 142,
-    "totalPages": 8
-  }
-}
-```
+## Dokumentasjon — bruk teamets format
 
-## Input Validation
+Dokumenter API-ene i formatet **teamet allerede bruker** (OpenAPI/Swagger, Postman-collection, Markdown, AsyncAPI for event-drevne API-er, tilsvarende). Ikke påtving ett bestemt format. Målet er at konsumenter finner og forstår kontrakten — ikke formatvalget i seg selv.
 
-```kotlin
-data class CreateVedtakRequest(
-    @field:NotBlank(message = "Title is required")
-    val tittel: String,
+## Grenser
 
-    @field:Size(min = 11, max = 11, message = "FNR must be 11 digits")
-    @field:Pattern(regexp = "\\d{11}", message = "FNR must consist of digits")
-    val fnr: String,
+### Alltid
+- Eksplisitt `accessPolicy.inbound` med navngitte team/apper.
+- TokenX-validering (issuer, audience, signatur, `pid`) for frontend-API-er.
+- Koordinere brudd-endringer med konsumerende team før release.
+- Aldri PII (FNR, navn) i URL-er eller query params — bruk `pid` fra token.
 
-    @field:Positive(message = "Amount must be positive")
-    val belop: BigDecimal,
+### Spør først
+- Fjerning av konsument fra `accessPolicy.inbound`.
+- Brudd-endring i kontrakt.
+- Eksponering av API utenfor `cluster` (ekstern tilgang).
 
-    @field:NotNull(message = "Start date is required")
-    val fom: LocalDate,
-)
-```
-
-## HTTP Status Codes
-
-| Code | Usage |
-|---|---|
-| `200 OK` | Successful GET, PUT, PATCH |
-| `201 Created` | Successful POST (new resource) |
-| `204 No Content` | Successful DELETE |
-| `400 Bad Request` | Invalid input / validation failed |
-| `401 Unauthorized` | Missing or invalid token |
-| `403 Forbidden` | Valid token, but no access |
-| `404 Not Found` | Resource does not exist |
-| `409 Conflict` | Duplicate / state conflict |
-| `422 Unprocessable Entity` | Semantic error (valid format, wrong content) |
-| `500 Internal Server Error` | Unexpected server error |
-
-## OpenAPI / Swagger
-
-```kotlin
-// Spring Boot + springdoc-openapi
-@Operation(
-    summary = "Hent vedtak",
-    description = "Henter vedtak basert på ID",
-    responses = [
-        ApiResponse(responseCode = "200", description = "Vedtak funnet"),
-        ApiResponse(responseCode = "404", description = "Vedtak ikke funnet"),
-    ]
-)
-@GetMapping("/{id}")
-fun getById(@PathVariable id: UUID): ResponseEntity<VedtakDTO>
-```
-
-## Versioning
-
-Use URL-based versioning when breaking changes are necessary:
-
-```kotlin
-// v1 — original
-@RestController
-@RequestMapping("/api/v1/vedtak")
-class VedtakV1Controller
-
-// v2 — ny kontrakt
-@RestController
-@RequestMapping("/api/v2/vedtak")
-class VedtakV2Controller
-```
-
-Alternatively, avoid versioning by:
-- Only adding new fields (never removing)
-- Making new fields optional
-- Deprecating fields with `@Deprecated` before removal
-
-## Rules
-
-- **Use nouns** in URLs, not verbs
-- **Use kebab-case** for multi-word URL segments: `/api/vedtak-perioder`
-- **Use camelCase** for JSON fields: `opprettetDato`, `brukerId`
-- **Always return ProblemDetail** on errors (not plain text)
-- **Validate input** at controller level with `@Valid`
-- **Never log PII** in request/response — log correlation ID
-- **Set `Content-Type: application/json`** on all responses
+### Aldri
+- Tom eller wildcard `inbound` uten sikkerhetsreview.
+- Stole på brukeridentitet fra request body — bruk token-claim.
+- Silent breaking changes.
+- Logge hele tokens eller PII.
