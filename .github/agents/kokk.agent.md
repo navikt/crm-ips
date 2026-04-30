@@ -63,9 +63,31 @@ Når arbeidet er klart for review, bruk `pull-request`-skillen for PR. Inkluder 
 - Valider all input ved grenser
 - Ingen hemmeligheter i kode
 
+### Bevar eksisterende struktur
+- Bevar eksisterende kodestruktur. Endre kun det oppgaven eksplisitt krever.
+- Hvis diffen blir uforholdsmessig stor sammenlignet med oppgavens omfang, stopp og forklar før du fortsetter.
+- Ikke benytt anledningen til å rydde i ubeslektet kode.
+
 ### Relevante skills
 
-Bruk relevante skills fra repoet når oppgaven berører deres domene. Skills oppdages automatisk — du trenger ikke huske dem.
+Bruk skills eksplisitt når oppgaven treffer domenet deres. Hvis Hovmester sender `**Skills**`, invoker disse med slash-navn før du implementerer. Legg til åpenbare mangler selv.
+
+| Signal | Skill |
+|---|---|
+| Ktor | `/kotlin-ktor` |
+| Spring Boot | `/kotlin-spring` |
+| Auth, JWT, Azure AD, TokenX, ID-porten, Maskinporten, Wonderwall, Texas, Oasis | `/auth-overview` |
+| API-kontrakt, endpoint, konsumenttilgang, breaking change | `/api-design` |
+| NAIS-manifest, accessPolicy, ingress, resources, Naisjob | `/nais-manifest` |
+| Flyway schema-endring eller datamigrering | `/flyway-migration` |
+| PostgreSQL query, indeks, pool, N+1, EXPLAIN | `/postgresql-review` |
+| Kafka topic, consumer, producer, Rapids & Rivers | `/kafka-topic` |
+| PII, secrets, auditlogg, DPIA, sikkerhetsreview | `/security-review` |
+| Metrikker, logging, tracing, alerts | `/observability-setup` |
+| Runtime-feil i miljø | `/nav-troubleshoot` |
+| Brukerrettet tekst i feilmeldinger, log-output, README, PR-tekst | `/klarsprak` |
+| README- eller repo-dokumentasjon | `/readme-update` |
+| Test-first eller red-green-refactor | `/tdd` |
 
 ## Boundaries
 

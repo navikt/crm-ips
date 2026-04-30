@@ -1,6 +1,6 @@
 ---
 name: auth-overview
-description: Sett opp autentisering i en Nav-applikasjon — Azure AD, TokenX, ID-porten, Maskinporten, Wonderwall-sidecar, Texas (Kotlin) og Oasis (TypeScript)
+description: "Autentisering og autorisering i Nav — Azure AD, TokenX, ID-porten, Maskinporten, Wonderwall, Texas, Oasis, OBO/M2M, JWT-validering og accessPolicy-samspill. Brukes via /auth-overview ved auth-oppsett eller -feilsøking."
 ---
 
 # Autentiseringsoversikt — Nav

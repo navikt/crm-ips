@@ -1,6 +1,6 @@
 ---
 name: readme-update
-description: Opprett eller oppdater README-filer for Nav-repoer basert på faktisk kode, stack, NAIS-manifest og integrasjoner. Brukes når bruker vil lage README, oppdatere README eller dokumentere et repo.
+description: "README og repo-dokumentasjon — faktisk stack, lokal kjøring, tester, deploy, NAIS-manifest, integrasjoner og eierskap. Brukes via /readme-update når dokumentasjon skal lages eller oppdateres."
 ---
 
 # README-oppdatering for Nav-repoer
@@ -11,7 +11,7 @@ Bruk denne skillen når README skal opprettes eller oppdateres i et Nav-repo. RE
 
 Les faktiske kilder før du skriver én linje README:
 
-1. **Eksisterende README** — bevar manuelt innhold, lenker, Slack-kanaler og lokale kjørekommandoer som fortsatt er riktige.
+1. **Eksisterende README** — bevar manuelt innhold, lenker, Slack-kanaler og stabile utviklingsdetaljer som lokal URL eller peker til discovery-kommandoer som fortsatt er riktige.
 2. **Stack og bygg** — les `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `build.gradle.kts`, `pom.xml`, `Dockerfile` eller tilsvarende.
 3. **NAIS-manifest** — les `.nais/` for miljøer, `ingresses`, databaser, Kafka, `accessPolicy`, TokenX/Azure/ID-porten og eventuelle eksterne avhengigheter.
 4. **Kode** — les `src/`, `app/`, `server/`, `api/` eller tilsvarende for endepunkter, konsumenter, produsenter, databaser og frontend/backend-koblinger.
@@ -21,7 +21,7 @@ Les faktiske kilder før du skriver én linje README:
 Avklar minst dette før du skriver:
 
 - Hva er repoets hovedformål?
-- Er dette frontend, backend eller monorepo?
+- Hvilken repo-type er dette: frontend, backend, monorepo, library, dokumentasjon eller Naisjob?
 - Hvilke miljøer finnes faktisk?
 - Eksponerer repoet REST/GraphQL/API?
 - Konsumerer eller produserer det Kafka?
@@ -40,15 +40,16 @@ Avklar minst dette før du skriver:
 | Kafka | Hvis consumer/producer | Topics, retning, lagring/videre publisering |
 | Mikrofronter-tabell | Hvis monorepo | App-navn, backend, deploybar enhet |
 | Utviklerverktøy (mise) | Hvis `.mise.toml`, `mise.toml` eller `.tool-versions` finnes | Verktøyversjoner, `mise install` og `mise tasks` for tilgjengelige oppgaver |
-| Utvikling | Alltid | Kommandoer, lokal URL, test/lint/verifisering |
+| Utvikling | Alltid | Kort seksjon nederst med stabil lokal URL, for eksempel `http://localhost:3000`, og hvor leseren finner ferske kommandoer. README skal ikke liste konkrete build/test/run-kommandoer som `./gradlew test` eller `pnpm dev`. Pek i stedet til repoets discovery-mekanisme — foretrekk `mise tasks` hvis `mise` finnes; ellers `pnpm run`, `make help` eller `./gradlew tasks` — slik at leseren kjører den selv og alltid ser oppdatert liste |
 | Les mer | Hvis docs finnes | Lenker til `docs/`, arkitektur og workflow-dokumentasjon |
-| For Nav-ansatte | Alltid | Slack-kanal, team-info eller intern lenke hvis kjent |
+| For Nav-ansatte | Alltid | Kontaktlenke til team-Slack som siste seksjon i README, pluss eventuell intern team-info. For team-esyfo er `[#esyfo på Slack](https://nav-it.slack.com/archives/C012X796B4L)` standard når ikke annet er kjent |
 
 ### Betingede råd
 
 - **Frontend-repo:** prioriter miljølenker, backend-avhengigheter, lokal kjøring og hvordan appen nås.
 - **Backend-repo:** prioriter API, Kafka, database, auth og hvordan andre tjenester kaller appen.
 - **Monorepo:** vis struktur først, deretter tabell over delapper/mikrofronter og felles docs-lenker.
+- **Dokumentasjons-repo:** prioriter innhold, struktur, navigasjon og lenker. Dropp build-, run- og testseksjoner når repoet bare er dokumentasjon.
 
 ## Steg 3: Generer eller oppdater
 
@@ -59,19 +60,42 @@ Avklar minst dette før du skriver:
 - Bevar manuelle detaljer som Slack-kanaler, wiki-lenker og driftstips hvis de fortsatt stemmer.
 - Hvis eksisterende README har nyttige seksjoner som ikke finnes i denne skillen, behold dem når de gir verdi.
 
+### Tittelvalg
+
+- Foreslå alltid 3 README-titler og spør brukeren via `ask_user` før du låser tittelen.
+- Alternativ 1: app-/repo-navnet slik det er i dag.
+- Alternativ 2: et domenenært forslag basert på hva appen faktisk gjør.
+- Alternativ 3: et annet domenenært forslag med en annen vinkling, for eksempel mer brukerrettet eller mer teknisk.
+- Alternativ 4: brukeren skriver en egen tittel.
+- Begrunn kort valget: appnavn kan være kryptiske, mens en domenenær tittel gjør README-en forståelig på få sekunder for nye lesere.
+- Ikke anta at app-/repo-navnet er beste tittel.
+
 ### Ved ny README
 
-- Start med det viktigste: tittel, badges, formål, diagram og utvikling.
-- Bruk et beskrivende appnavn som tittel — ikke bare reponavnet. Eksempel: «Mikrofronter for Min side» i stedet for «esyfo-microfrontends».
+- Inkluder alltid: tittel, badges, formål, diagram og utvikling.
 - Ta kun med seksjoner som repoet faktisk trenger.
 - Bruk repoets egne navn på apper, topics, databaser og miljøer i innholdet.
 
 ### Kvalitetsregler
 
+- Kognitiv trakt: tittel → formål/kontekst → integrasjoner/API → utvikling → meta. Lesere skanner ovenfra og ned.
 - Ikke finn på miljølenker, topics, API-er eller Slack-kanaler.
 - Ikke påstå auth-oppsett uten å ha sett det i kode eller manifest.
 - Hvis info mangler for en "alltid"-seksjon, bevar eksisterende tekst eller spør brukeren.
+- I utviklingsseksjonen: pek til repoets discovery-mekanisme for kommandoer. Foretrekk `mise tasks` hvis `mise` finnes; ellers `pnpm run`, `make help` eller `./gradlew tasks`. Ikke kopier konkrete build/test/run-kommandoer inn i README.
+- Når du skriver eller forbedrer prosa i README, bruk `/klarsprak` for formålsbeskrivelse, utviklingsseksjon, kontaktseksjon og annen brukerrettet tekst.
 - Skriv kort og konkret; README er inngangsport, ikke komplett internwiki.
+
+## Anti-mønstre å se etter
+
+- Template cargo-culting: kopiert mal uten tilpasning til faktisk repo.
+- Zombie sections: utdaterte seksjoner som aldri fjernes.
+- Badge wall: mer enn 5 badges på rad uten tydelig signalverdi.
+- README bloat: over 500 linjer — splitt heller innholdet i docs.
+- Command cargo-culting: kopierte build/test/run-kommandoer fra `mise`, `pnpm`-scripts, `Makefile` eller Gradle i stedet for å peke til discovery.
+- Stale examples: kommandoer eller paths som ikke virker lenger.
+- Aspirational docs: beskriver det som burde finnes, ikke det som finnes.
+- Happy-path only: mangler feilhåndtering eller troubleshooting.
 
 ## Badges
 

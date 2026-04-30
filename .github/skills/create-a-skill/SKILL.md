@@ -1,6 +1,6 @@
 ---
 name: create-a-skill
-description: Opprett nye agent-skills med riktig struktur, progressiv disclosure og medfølgende ressurser. Brukes når bruker vil lage, skrive eller bygge en ny skill.
+description: "Oppretting og forbedring av skills — SKILL.md-frontmatter, triggerbeskrivelse, progressiv disclosure, references, scripts og validering. Brukes via /create-a-skill ved ny eller eksisterende skill."
 ---
 
 # Lage skills
