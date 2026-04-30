@@ -1,6 +1,6 @@
 ---
 name: figma-workflow
-description: Figma-til-kode for Nav — mapp Figma-design til Aksel-komponenter, tokens og layout-primitives med Code Connect
+description: "Design-til-kode-arbeidsflyt — Figma-lenker, Code Connect og mapping fra design til Aksel-komponenter, tokens og responsiv layout. Brukes via /figma-workflow når oppgaven har Figma-lenke eller design-to-code."
 ---
 
 # Figma → Aksel-kode

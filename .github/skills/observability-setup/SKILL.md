@@ -1,6 +1,6 @@
 ---
 name: observability-setup
-description: Observability for Nav-apper — metrikker, logging, tracing, alerts, Micrometer, PromQL/LogQL og Faro for backend/frontend
+description: "Observability-oppsett og -forbedring — metrikker, strukturert logging, tracing, alerts, Micrometer, PromQL/LogQL, Grafana og Faro. Brukes via /observability-setup ved etablering eller forbedring av overvåkning."
 ---
 
 # Sett opp observability

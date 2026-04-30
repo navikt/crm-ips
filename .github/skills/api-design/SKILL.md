@@ -1,6 +1,6 @@
 ---
 name: api-design
-description: Nav-konvensjoner for API-design — accessPolicy.inbound, TokenX-inbound-validering, API-versjonering koordinert med andre team. Teknologiagnostisk.
+description: "API-kontrakter, endepunkter og konsumenttilgang — accessPolicy.inbound, TokenX-inbound, versjonering, breaking changes og API-katalog. Brukes via /api-design ved nye eller endrede API-er."
 ---
 
 # API Design — Nav-konvensjoner

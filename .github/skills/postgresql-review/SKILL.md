@@ -1,6 +1,6 @@
 ---
 name: postgresql-review
-description: PostgreSQL-gjennomgang for Nav — HikariCP for Nais-containere, indekser, N+1, Flyway-migrasjoner og koordinering av delte schemas
+description: "PostgreSQL-design og -review — HikariCP, connection pools i Nais, indekser, N+1, trege queries, EXPLAIN, Flyway-samspill og delte schemas. Brukes via /postgresql-review ved database-arbeid."
 ---
 # PostgreSQL-gjennomgang
 

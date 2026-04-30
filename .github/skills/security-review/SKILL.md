@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Sikkerhetsgjennomgang for Nav-apper — PII-klassifisering, accessPolicy-vurdering og eskalering til sikkerhetschampion. Progressive disclosure for dyp trusselmodellering.
+description: "Sikkerhetsgjennomgang for Nav-applikasjoner — PII, FNR, helseopplysninger, secrets, logging, auditlogg, accessPolicy, eksterne integrasjoner, DPIA og sikkerhetschampion. Brukes via /security-review ved sikkerhetsreview."
 ---
 
 # Sikkerhetsgjennomgang — Nav

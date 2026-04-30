@@ -401,8 +401,8 @@ public with sharing class IPS_TestDataFactory {
      * @param userId The Id of the user to assign the permission set to
      * @param permissionSetName The developer name of the permission set to assign to the user
      **/
-    @future(callout = false)
-    public static void givePermissionSetToUserByName(String userId, String permissionSetName) {
+    @future(callout=false)
+    public static void givePermissionSetToUserByName(Id userId, String permissionSetName) {
         PermissionSet pg = [
             SELECT Id
             FROM PermissionSet

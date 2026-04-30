@@ -1,6 +1,6 @@
 ---
 name: nav-troubleshoot
-description: Diagnostiske trær for kjøre-tids-symptomer i Nav-apper — pod crash, OOMKilled, 401/403, Kafka lag, DB-feil
+description: "Feilsøking av runtime-problemer i Nav-miljø — pod crash, OOMKilled, 401/403, auth-feil, Kafka lag, DB-timeout, Flyway-feil, logger og Nais-diagnostikk. Brukes via /nav-troubleshoot ved driftsfeil."
 ---
 
 # Nav Troubleshoot — plattform-diagnostikk

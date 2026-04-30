@@ -1,6 +1,6 @@
 ---
 name: nav-architecture-review
-description: Architecture Decision Record (ADR) og arkitektur-review for Nav-apper med 3-perspektiv-sjekk (arkitektur, sikkerhet, plattform) — Nais, TokenX, accessPolicy, Datatilsynet/DPIA, Nav arkitekturprinsipper
+description: "Arkitektur-review og ADR for Nav — systemgrenser, eierskap, dataflyt, plattform, sikkerhet, DPIA, TokenX, accessPolicy og beslutningsdokumentasjon. Brukes via /nav-architecture-review ved arkitekturbeslutninger."
 ---
 
 # Nav Architecture Review — ADR + 3-perspektiv

@@ -1,6 +1,6 @@
 ---
 name: flyway-migration
-description: Opprett en Flyway-databasemigrering etter riktige konvensjoner
+description: "Flyway-databasemigreringer — V__ SQL-filer, schema-endringer, backfill, indeksmigrering, rollback-plan og produksjonssikker rekkefølge. Brukes via /flyway-migration ved nye eller endrede migreringer."
 ---
 
 # Flyway-migrering
