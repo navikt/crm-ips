@@ -3,6 +3,10 @@ permissions:
   contents: read
 on:
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
     inputs:
       branchName:
         description: "New branch (or pick existing above)"
