@@ -138,14 +138,14 @@ public class IPS_eventTravelTimeControllerTest {
             i.EndDateTime = i.EndDateTime.addMinutes(120);
             eventsToUpdate.add(i);
         }
-        System.Assert.areNotEqual(0, updateEvent.size(), 'Event list to update should not be empty');
+        System.Assert.isFalse(updateEvent.isEmpty(), 'Event list to update should not be empty');
         update eventsToUpdate;
         List<Event> updatedEvents = [
             SELECT Id, StartDateTime
             FROM Event
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
         ];
-        System.Assert.areNotEqual(0, updatedEvents.size(), 'Updated event list should not be empty');
+        System.Assert.isFalse(updatedEvents.isEmpty(), 'Updated event list should not be empty');
         for (Event e : updatedEvents) {
             System.Assert.isTrue(e.StartDateTime > System.now(), 'StartDateTime should be shifted forward after update');
         }
@@ -189,7 +189,7 @@ public class IPS_eventTravelTimeControllerTest {
             FROM Event
             WHERE IPS_eventId__c = :baseEvent.Id
         ];
-        System.Assert.areNotEqual(0, travelTimeEvents.size(), 'Travel time events should have been created');
+        System.Assert.isFalse(travelTimeEvents.isEmpty(), 'Travel time events should have been created');
         for (Event e : travelTimeEvents) {
             System.Assert.areEqual('Reisetid', e.Subject, 'Travel time event subject should be Reisetid');
             System.Assert.areEqual(baseEvent.Id, e.IPS_eventId__c, 'Travel time event should reference the base event');
