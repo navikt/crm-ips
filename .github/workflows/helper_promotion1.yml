@@ -1,10 +1,6 @@
 name: "[HELPER] Promote Package"
 on:
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}
-  cancel-in-progress: true
     inputs:
       packageId:
         description: "Package ID"
@@ -12,6 +8,11 @@ concurrency:
       comment:
         description: "Release Comment"
         required: true
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   debug:
     name: Debug Information

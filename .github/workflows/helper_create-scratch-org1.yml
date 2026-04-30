@@ -3,13 +3,13 @@ permissions:
   contents: read
 on:
   workflow_dispatch:
+    inputs:
+      branchName:
+        description: "New branch (or pick existing above)"
 
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
-    inputs:
-      branchName:
-        description: "New branch (or pick existing above)"
 jobs:
   create-scratch-org:
     name: Create Scratch Org
