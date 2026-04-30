@@ -8,15 +8,12 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>var_endDate</assignToReference>
+            <assignToReference>$Record.End_Date__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Flow.CurrentDate</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Update_Record</targetReference>
-        </connector>
     </assignments>
     <assignments>
         <name>Set_Start_Date</name>
@@ -24,15 +21,12 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>var_startDate</assignToReference>
+            <assignToReference>$Record.Start_Date__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Flow.CurrentDate</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Update_Record</targetReference>
-        </connector>
     </assignments>
     <decisions>
         <name>Check_If_End_Date_Is_Today</name>
@@ -104,11 +98,6 @@
         </rules>
     </decisions>
     <environments>Default</environments>
-    <formulas>
-        <name>formula_navIdentAndTeamName</name>
-        <dataType>String</dataType>
-        <expression>{!$Record.ips_NAV_Ident__c} &amp; &apos;_&apos;  &amp; {!$Record.ips_Team__r.Name}</expression>
-    </formulas>
     <interviewLabel>IPS Team Member Before Set Inactive {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS Team Member Before Set Inactive</label>
     <processMetadataValues>
@@ -130,31 +119,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordUpdates>
-        <name>Update_Record</name>
-        <label>Update Record</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <inputAssignments>
-            <field>End_Date__c</field>
-            <value>
-                <elementReference>var_endDate</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Is_Inactive__c</field>
-            <value>
-                <elementReference>$Record.Is_Inactive__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Start_Date__c</field>
-            <value>
-                <elementReference>var_startDate</elementReference>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
     <start>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -175,24 +139,4 @@
     </start>
     <status>Active</status>
     <triggerOrder>1</triggerOrder>
-    <variables>
-        <name>var_endDate</name>
-        <dataType>Date</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>$Record__Prior.End_Date__c</elementReference>
-        </value>
-    </variables>
-    <variables>
-        <name>var_startDate</name>
-        <dataType>Date</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>$Record__Prior.Start_Date__c</elementReference>
-        </value>
-    </variables>
 </Flow>
