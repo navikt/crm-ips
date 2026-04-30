@@ -8,6 +8,11 @@ on:
       comment:
         description: "Release Comment"
         required: true
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   debug:
     name: Debug Information

@@ -6,7 +6,11 @@ on:
         description: "Package ID"
         required: true
         type: string
-    
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   deploy-to-production:
     name: Deploy to Production
