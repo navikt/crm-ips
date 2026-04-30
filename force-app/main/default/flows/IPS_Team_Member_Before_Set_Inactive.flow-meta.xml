@@ -8,7 +8,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>$Record.End_Date__c</assignToReference>
+            <assignToReference>$Record.ips_End_Date__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Flow.CurrentDate</elementReference>
@@ -21,7 +21,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>$Record.Start_Date__c</assignToReference>
+            <assignToReference>$Record.ips_Start_Date__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Flow.CurrentDate</elementReference>
@@ -38,7 +38,7 @@
             <name>Check_If_End_Date_Is_Today_false</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.End_Date__c</leftValueReference>
+                <leftValueReference>$Record.ips_End_Date__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <elementReference>$Flow.CurrentDate</elementReference>
@@ -60,7 +60,7 @@
             <name>Check_If_Start_Date_Is_Today_false</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Start_Date__c</leftValueReference>
+                <leftValueReference>$Record.ips_Start_Date__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <elementReference>$Flow.CurrentDate</elementReference>
@@ -85,7 +85,7 @@
             <name>Team_Member_Is_Inactivated</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Is_Inactive__c</leftValueReference>
+                <leftValueReference>$Record.ips_Is_Inactive__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -127,7 +127,7 @@
         </connector>
         <filterLogic>or</filterLogic>
         <filters>
-            <field>Is_Inactive__c</field>
+            <field>ips_Is_Inactive__c</field>
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
