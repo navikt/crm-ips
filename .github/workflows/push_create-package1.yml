@@ -6,6 +6,10 @@ on:
       - master
     paths:
       - "force-app/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   create-package:
     name: Run Package Creation
