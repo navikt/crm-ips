@@ -157,7 +157,6 @@ teams.add(new ips_Team__c(Name ='IPS Hadeland', Region__c = 'Øst-Viken', Method
 teams.add(new ips_Team__c(Name ='IPS Halden', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Hamar', Region__c = 'Innlandet', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Haugaland', Region__c = 'Rogaland', Methodology__c = 'IPS'));
-teams.add(new ips_Team__c(Name ='IPS Haugaland', Region__c = 'Rogaland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Horten og Holmestrand', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Indre-Østfold', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Jæren', Region__c = 'Rogaland', Methodology__c = 'IPS'));
