@@ -134,8 +134,8 @@ public class IPS_eventTravelTimeControllerTest {
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
         ];
         for (Event i : updateEvent) {
-            i.StartDateTime.addMinutes(120);
-            i.EndDateTime.addMinutes(120);
+            i.StartDateTime = i.StartDateTime.addMinutes(120);
+            i.EndDateTime = i.EndDateTime.addMinutes(120);
             eventsToUpdate.add(i);
         }
         // Todo: Add assertions to validate the expected behavior before updating events.
