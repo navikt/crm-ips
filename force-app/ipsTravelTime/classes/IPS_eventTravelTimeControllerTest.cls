@@ -138,46 +138,61 @@ public class IPS_eventTravelTimeControllerTest {
             i.EndDateTime = i.EndDateTime.addMinutes(120);
             eventsToUpdate.add(i);
         }
-        // Todo: Add assertions to validate the expected behavior before updating events.
+        System.Assert.areNotEqual(0, updateEvent.size(), 'Event list to update should not be empty');
         update eventsToUpdate;
-        List<Event> travelTimeList = [SELECT Id FROM Event];
-        //List should not be empty
-        System.Assert.areNotEqual(0, travelTimeList.size(), 'List should not be empty');
+        List<Event> updatedEvents = [
+            SELECT Id, StartDateTime
+            FROM Event
+            WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
+        ];
+        System.Assert.areNotEqual(0, updatedEvents.size(), 'Updated event list should not be empty');
+        for (Event e : updatedEvents) {
+            System.Assert.isTrue(e.StartDateTime > System.now(), 'StartDateTime should be shifted forward after update');
+        }
     }
 
     @isTest
     static void updateEventTravelTime1() {
-        IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
-        List<Event> updateEvent = [
+        Event baseEvent = [
             SELECT
                 Id,
                 ips_Travel_time__c,
                 IPS_travelTimeFrom__c,
                 StartDateTime,
                 EndDateTime,
-                Subject,
-                Description,
-                IPS_Type__c,
-                ips_Subcategory_Type_IPS__c,
-                WhatId,
-                IPS_eventId__c,
+                OwnerId,
+                RecordTypeId,
                 IPS_Status1__c
             FROM Event
-            WHERE IPS_eventId__c != NULL
+            WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
+            LIMIT 1
         ];
-        for (Event i : updateEvent) {
-            firstInput.startDate = i.StartDateTime;
-            firstInput.endDate = i.EndDateTime;
-            firstInput.currentRecord = i.Id;
-            firstInput.travelTimeBefore = Integer.valueOf(i.ips_Travel_time__c);
-            firstInput.travelTimeAfter = Integer.valueOf(i.IPS_travelTimeFrom__c);
-        }
+
+        IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
+        firstInput.startDate = baseEvent.StartDateTime;
+        firstInput.endDate = baseEvent.EndDateTime;
+        firstInput.currentRecord = baseEvent.Id;
+        firstInput.travelTimeBefore = Integer.valueOf(baseEvent.ips_Travel_time__c);
+        firstInput.travelTimeAfter = Integer.valueOf(baseEvent.IPS_travelTimeFrom__c);
+        firstInput.ownerId = baseEvent.OwnerId;
+        firstInput.recordtypeId = baseEvent.RecordTypeId;
+        firstInput.status = baseEvent.IPS_Status1__c;
+
         Test.startTest();
         IPS_eventTravelTimeController.invokeTravelTime(
             new List<IPS_eventTravelTimeController.evenctRequest>{ firstInput }
         );
         Test.stopTest();
 
-        // Todo: Add assertions to validate the expected behavior after invoking the travel time calculation.
+        List<Event> travelTimeEvents = [
+            SELECT Id, Subject, IPS_eventId__c
+            FROM Event
+            WHERE IPS_eventId__c = :baseEvent.Id
+        ];
+        System.Assert.areNotEqual(0, travelTimeEvents.size(), 'Travel time events should have been created');
+        for (Event e : travelTimeEvents) {
+            System.Assert.areEqual('Reisetid', e.Subject, 'Travel time event subject should be Reisetid');
+            System.Assert.areEqual(baseEvent.Id, e.IPS_eventId__c, 'Travel time event should reference the base event');
+        }
     }
 }
