@@ -5,7 +5,10 @@
     <description>‘Deltaker møtte ikke’ kun kan velges etter at deltakerens oppmøte er bekreftet.</description>
     <errorConditionFormula>AND( ISPICKVAL(IPS_Status1__c, &apos;Participant Absent&apos;) ,
   NOT(IPS_participant_related_to_meeting__c),
-				   ISPICKVAL(IPS_Type__c, &apos;Meeting with Employer&apos;) 
+				   OR(
+				       ISPICKVAL(IPS_Type__c, &apos;Meeting with Employer&apos;),
+				       ISPICKVAL(IPS_Type__c, &apos;Møte med Utd. Ins.&apos;)
+				   )
 	)</errorConditionFormula>
     <errorDisplayField>IPS_participant_related_to_meeting__c</errorDisplayField>
     <errorMessage>Bekreft oppmøte før status endres til ‘Deltaker møtte ikke’</errorMessage>
