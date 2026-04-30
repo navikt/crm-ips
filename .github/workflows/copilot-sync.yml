@@ -3,6 +3,10 @@ on:
   schedule:
     - cron: '0 7 * * 1'  # Weekly on Mondays at 07:00 UTC
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   sync:
     uses: navikt/copilot/.github/workflows/copilot-customization-sync.yml@main

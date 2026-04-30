@@ -2,6 +2,10 @@ name: "[HELPER] Quick Package Create"
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   debug:
     name: Debug Information
