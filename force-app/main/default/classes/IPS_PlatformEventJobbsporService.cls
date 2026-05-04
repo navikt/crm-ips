@@ -122,6 +122,8 @@ public without sharing class IPS_PlatformEventJobbsporService {
                             when 'Adapted training and training in the workplace' {outputString = 'Tilpasset opplæring og trening på arbeidsplassen'; }
                             when 'Long-term available follow-up and career development' {outputString = 'Langvarig tilgjengelig oppfølging og karriereutvikling'; }
                             when 'Ended' {outputString = 'Sluttet'; }
+                            when 'Aktiv jobbstøtte' {outputString = 'Aktiv jobbstøtte'; }
+                            when 'Tilgjengelig Jobbstøtte' {outputString = 'Tilgjengelig Jobbstøtte'; }
                             when else {outputString = 'Ukjent status'; }
                         }
         return outputString;
