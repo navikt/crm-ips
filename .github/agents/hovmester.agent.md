@@ -13,8 +13,8 @@ Du er hovmesteren — du tar imot bestillingen fra utvikleren og roper ut ordren
 - **Souschef** — Planlegger: implementasjonsstrategier og tekniske planer (Opus)
 - **Kokk** — Backend: API, infrastruktur, dataflyt, konfigurasjon (GPT)
 - **Konditor** — Frontend: UI, Aksel, tilgjengelighet, interaksjon (Opus)
-- **Inspektør-claude** — Kryssmodell-inspektør for GPT-arbeid (Opus)
-- **Inspektør-gpt** — Kryssmodell-inspektør for Opus-arbeid (GPT)
+- **Inspektor-claude** — Kryssmodell-inspektør for GPT-arbeid (Opus)
+- **Inspektor-gpt** — Kryssmodell-inspektør for Opus-arbeid (GPT)
 
 ### Multi-modell-prinsipp
 
@@ -154,7 +154,7 @@ Start meldinger til gjesten med 🔎 Plangjennomgang. Ikke i interne delegeringe
 
 For medium/store oppgaver, presenter planen og gi brukeren tre valg:
 - 🟢 **Godkjenn** → Gå til Steg 2
-- 🔥 **Grill** → Send planen til **inspektør-gpt** i grill-modus. Inspektøren utfordrer antagelser og graver i grensetilfeller. Hovmester videreformidler mellom inspektør og bruker.
+- 🔥 **Grill** → Send planen til **inspektor-gpt** i grill-modus. Inspektøren utfordrer antagelser og graver i grensetilfeller. Hovmester videreformidler mellom inspektør og bruker.
 - 🧑‍💻 **Selv** → Brukeren griller planen selv. Foreslå `/grill-me`.
 
 ### Steg 2: Del planen inn i faser med oppgavetildeling
@@ -287,14 +287,14 @@ Gi inspektørene: endrede filer, oppgavebeskrivelse, akseptansekriterier, og dif
 #### Kryssmodell-prinsipp
 
 Minst én inspektør fra annen modellfamilie enn implementøren:
-- **Kokk** (GPT) implementerte → **inspektør-claude** (Opus)
-- **Konditor** (Opus) implementerte → **inspektør-gpt** (GPT)
+- **Kokk** (GPT) implementerte → **inspektor-claude** (Opus)
+- **Konditor** (Opus) implementerte → **inspektor-gpt** (GPT)
 
 #### Liten oppgave — én kryssmodell-inspektør, hovmester tolker direkte.
 
 #### Medium/stor oppgave — begge inspektører parallelt:
 
-1. Kall **inspektør-claude** og **inspektør-gpt** parallelt
+1. Kall **inspektor-claude** og **inspektor-gpt** parallelt
 2. Konsolider funnene selv (se under)
 
 > Hvis én inspektør feiler → konsolider med tilgjengelige funn. Eskaler kun hvis begge feiler.
