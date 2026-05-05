@@ -1,45 +1,42 @@
 ---
-applyTo: ".github/workflows/*.{yml,yaml}"
+description: "GitHub Actions CI/CD-standarder — SHA-pinning, Nais deploy, sikkerhet"
+applyTo: ".github/workflows/**"
 ---
 
-# GitHub Actions CI/CD Standards
+# GitHub Actions — Nav
 
-Standarder for CI/CD-workflows med GitHub Actions på Nais: SHA-pinning, Nais deploy og caching.
+Standarder for CI/CD-workflows med GitHub Actions på Nais. Sjekk om teamet har et repo med gjenbrukbare workflows før du skriver egne.
 
 ## Action Pinning
 
-Pin all actions to full commit SHA, never just a major tag:
+Pin alle actions til full commit SHA:
 
 ```yaml
-# ✅ Correct — pinned to SHA
+# ✅ Pinnet til SHA
 - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 - uses: nais/deploy/actions/deploy@bf80eb8dba46797adb4909901e629bca8595a027 # v2
 
-# ❌ Wrong — unpinned tag can be compromised
+# ❌ Upinnet tag kan kompromitteres
 - uses: actions/checkout@v4
-- uses: nais/deploy/actions/deploy@v2
 ```
 
-## Minimal Permissions
+> **Unntak**: `nais/*`-actions (f.eks. `nais/docker-build-push`, `nais/deploy`) er interne Nav-actions som bruker stabile semver-tags. Disse trenger ikke SHA-pinning, men bør ha versjonskommentar.
 
-Always set explicit permissions — never rely on defaults:
+## Minimale tilganger
 
 ```yaml
 permissions:
-  contents: read       # Only read repo content
-  id-token: write      # For OIDC/Nais deploy
+  contents: read
+  id-token: write
 
-# ❌ Wrong — overly broad permissions
+# ❌ Aldri
 permissions: write-all
 ```
 
-## Nais Deploy Workflow
-
-Standard deploy workflow for Nav apps:
+## Nais Deploy
 
 ```yaml
 name: Build and deploy
-
 on:
   push:
     branches: [main]
@@ -55,13 +52,10 @@ jobs:
       image: ${{ steps.docker-build-push.outputs.image }}
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
       - uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
-          team: mitt-team
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          team: <myteam>
 
   deploy-dev:
     needs: build
@@ -90,103 +84,35 @@ jobs:
 
 ```yaml
 # Gradle
-- uses: actions/setup-java@v4
+- uses: actions/setup-java@v4 # erstatt med SHA i produksjon
   with:
     distribution: temurin
     java-version: 21
     cache: gradle
 
 # Node/pnpm
-- uses: actions/setup-node@v4
+- uses: actions/setup-node@v4 # erstatt med SHA i produksjon
   with:
     node-version: 22
     cache: pnpm
-
-# Go
-- uses: actions/setup-go@v5
-  with:
-    go-version-file: go.mod
-    cache: true
 ```
 
-## Matrix Builds
+## Sikkerhet
 
 ```yaml
-strategy:
-  fail-fast: false
-  matrix:
-    app: [my-app, my-other-app]
-steps:
-  - run: cd apps/${{ matrix.app }} && ./gradlew build
-```
-
-## Reusable Workflows
-
-```yaml
-# .github/workflows/deploy-nais.yml (reusable)
-on:
-  workflow_call:
-    inputs:
-      cluster:
-        required: true
-        type: string
-      resource:
-        required: true
-        type: string
-      image:
-        required: true
-        type: string
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: ${{ inputs.cluster }}
-          RESOURCE: ${{ inputs.resource }}
-          VAR: image=${{ inputs.image }}
-```
-
-## Secrets
-
-```yaml
-# ✅ Korrekt — bruk GitHub Secrets
-env:
-  API_KEY: ${{ secrets.MY_API_KEY }}
-
-# ❌ Feil — hardkodet hemmelighet
-env:
-  API_KEY: "sk-1234567890"
-
-# ❌ Feil — logg hemmeligheter
-- run: echo ${{ secrets.MY_API_KEY }}
-```
-
-## Workflow Security
-
-```yaml
-# Begrens concurrency — unngå parallelle deploys
+# Concurrency — unngå parallelle deploys
 concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
 
-# Timeout — unngå hengende jobs
+# Timeout
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-```
 
-## Scanning
-
-```yaml
-# Vulnerability scanning med trivy
-- uses: aquasecurity/trivy-action@0.28.0
+# Scanning
+- uses: aquasecurity/trivy-action@0.28.0 # pin SHA
   with:
     scan-type: fs
     severity: HIGH,CRITICAL
@@ -196,24 +122,22 @@ jobs:
 - run: pipx run zizmor .github/workflows/
 ```
 
-## Boundaries
+## Grenser
 
-### ✅ Always
-
+### Alltid
 - Pin actions til SHA med kommentar for versjon
 - Sett eksplisitte `permissions` per job
 - Bruk `timeout-minutes` på alle jobs
 - Bruk `concurrency` for deploy-workflows
+- Sjekk teamets gjenbrukbare workflows før du skriver egen
 
-### ⚠️ Ask First
-
+### Spør først
 - Nye secrets eller environment variables
 - Endringer i deploy-rekkefølge (dev → prod)
-- Nye reusable workflows
+- Nye gjenbrukbare workflows
 
-### 🚫 Never
-
+### Aldri
 - `permissions: write-all`
-- Upinnede action-versjoner (`@v4`)
+- Upinnede 3rd-party action-versjoner uten SHA (unntak: `nais/*`-actions)
 - Logg secrets i workflow-output
 - `pull_request_target` med `actions/checkout` av PR-branch (code injection)
