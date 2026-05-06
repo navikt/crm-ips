@@ -1,114 +1,196 @@
 ---
 name: prototype
-description: "Lager raske Figma-prototyper med Aksel-komponenter for Nav-designere. Brukes via /prototype når et konsept skal visualiseres."
+description: "Utforsk designkonsepter visuelt med Aksel-tema i nettleser, og lever som Figma-skisse. Brukes via /prototype når et konsept skal visualiseres."
 ---
 
 # Prototype — fra konsept til synlig skisse
 
-Visualiser et designkonsept i Figma med Aksel-komponenter.
+Utforsk designkonsepter interaktivt i nettleseren, iterer med designeren,
+og lever som Figma-skisse med ekte Aksel-komponenter.
 
 ## Når brukes denne?
 
 - Designer vil se et konsept visuelt (ikke bare beskrevet)
-- Et UI-mønster skal utforskes før det bygges i kode
-- Rask validering av layout, hierarki eller flyt
 - Variant-sammenlikning for å velge retning
+- Rask validering av layout, hierarki eller flyt
 - Situasjonsdesign — vis alle situasjoner brukeren kan møte
 
-## Figma-prototype
+### Når gå rett til Figma (hopp over Fase 1)
 
-Opprett en Figma-fil med Aksel-komponenter direkte via MCP.
+- Du itererer videre på et eksisterende Figma-design
+- Oppgaven er detaljjustering eller finpuss (spacing, farger, typografi)
+- Designeren allerede vet hva de vil og trenger Figma-komponenter
+- Komponentbygging og produksjonsnære leveranser
 
-**Krav**: Figma MCP-verktøy tilgjengelig.
+Visual Companion er best for **tidlig utforsking** — når retningen er uklar og du vil se 2-3 konsepter raskt. Når retningen er valgt, gå rett til Figma.
 
-Flyt: `whoami` → `create_new_file` → **del Figma-URL med designeren** → `search_design_system` → `use_figma` → del oppdatert lenke ved milepæler.
+## Fase 1: Visuell utforsking (Visual Companion)
 
-Se `references/figma-prototype.md` for Nav-spesifikke detaljer.
+Interaktivt nettleserverktøy for å utforske designkonsepter med Aksel-styling.
+
+### Oppstart
+
+### Forutsetninger
+
+- Node.js ≥ 18 (for HTTP-server)
+- `@navikt/ds-css` i node_modules (for Aksel-styling; fungerer uten, men viser advarsel)
+
+1. Sørg for at avhengigheter er installert (kreves for Aksel CSS):
+   ```bash
+   [ -d node_modules/@navikt/ds-css ] || pnpm install
+   ```
+2. Start serveren:
+   ```bash
+   node .github/skills/prototype/scripts/server.js --project-dir .
+   ```
+3. Les startup-JSON fra stdout — den inneholder `url`, `screen_dir`, `state_dir`
+4. Gi designeren URL umiddelbart
+
+### Tilby visual companion
+
+Spør designeren én gang, som egen melding:
+
+> «Noe av det vi skal jobbe med er enklere å vise enn å beskrive. Jeg kan
+> sette opp en nettleservisning der du ser mockups og klikker for å velge.
+> Vil du prøve det?»
+
+Vent på svar. Hvis nei — jobb kun med tekst og Figma.
+
+### Bestemme per spørsmål: nettleser eller chat?
+
+**Nettleser** — innholdet ER visuelt:
+- Wireframes, mockups, layout-sammenlikninger
+- Side-by-side designvarianter
+- Komponenteksempler
+
+**Chat** — innholdet er tekst:
+- Kravspørsmål, scope-avklaringer
+- Konseptuelle valg beskrevet i ord
+- Avveininger
+
+### Skrive innhold
+
+Skriv HTML-fragmenter til `screen_dir`. Serveren wrapper automatisk i
+Aksel-temat og laster ekte `@navikt/ds-css` fra prosjektets node_modules.
+
+**VIKTIG — Aksel-korrekthet:**
+
+Før du skriver en HTML-mockup, sjekk alltid `/aksel-design` skill for:
+- Riktige komponentnavn og struktur
+- Korrekt spacing (token = pixelverdi, f.eks. `--ax-space-16` = 16px)
+- Korrekt fargebruk (`--ax-bg-*`, `--ax-text-*`, `--ax-border-*`)
+
+Serveren laster ekte Aksel CSS. Du kan bruke:
+1. **Ekte Aksel-klasser** (`.aksel-button`, `.aksel-text-field`, etc.) for high-fidelity
+2. **`.mock-*` snarvei-klasser** for raske wireframes (se visual-companion.md)
+
+Tokens i v8: `--ax-space-{px}` (f.eks. `--ax-space-16` = 16px, `--ax-space-24` = 24px).
+Radius: `--ax-radius-4`, `--ax-radius-8`, `--ax-radius-12`.
+
+Se `references/visual-companion.md` for alle CSS-klasser og eksempler.
+
+**Regler:**
+- Semantiske filnavn: `konsept-a.html`, `layout-v2.html`
+- Aldri gjenbruk filnavn
+- 2–4 alternativer per skjerm
+- Forklar spørsmålet på siden: «Hvilken tilnærming passer best?»
+- Skaler fidelitet etter spørsmålet — wireframe for layout, detaljer for detaljer
+
+### Les brukervalg
+
+Etter at designeren har sett skjermen:
+1. Les `$STATE_DIR/events` for klikk-data
+2. Kombiner med designerens tekstrespons
+3. Iterer eller gå videre
 
 ### Variant-utforskning
 
-1. Lag 2–3 varianter som separate frames i samme Figma-fil
-2. Del Figma-lenke
-3. Spør: "Hvilken variant foretrekker du?" med beskrivende navn per variant (f.eks. A «med stegindikator», B «alt på én side», C «med sidepanel»)
-4. Iterer på valgt variant
-5. Slett forkastede varianter
+1. Lag 2–3 varianter som valgalternativer på skjermen
+2. Spør: «Hvilken variant foretrekker du?» med beskrivende navn
+3. Iterer på valgt variant
+4. Når konseptet er valgt — gå til Fase 2
 
 ### Situasjoner brukeren møter
 
-Et skjema eller en side ser ikke likt ut hele tiden — brukeren møter ulike situasjoner. Spør: "Hvilke situasjoner kan brukeren havne i?"
+Vis ulike situasjoner som separate mockups eller som sekvens:
+- Normaltilstand (bruker kan handle)
+- Venter (lasting/spinner)
+- Feil (hva kan bruker gjøre?)
+- Tom tilstand (ingenting å vise ennå)
+- Ferdig / bekreftelse
 
-Vanlige situasjoner å vise:
-- Normaltilstand (alt er klart, brukeren kan handle)
-- Venter på svar (lasting/spinner)
-- Noe gikk galt (feilmelding, hva kan brukeren gjøre?)
-- Ingenting å vise ennå (tom liste, første besøk)
-- Ikke tilgjengelig (deaktivert, mangler tilgang)
-- Ferdig / bekreftelse (handlingen lyktes)
+## Fase 2: Figma-leveranse
 
-Lag hver situasjon som egen frame i Figma. For hver, noter:
-- **Hva skjedde?** Hva førte brukeren hit?
-- **Hva skjer videre?** Forsvinner dette av seg selv, eller må brukeren gjøre noe?
-- **Hva kan brukeren gjøre?** Knapper, lenker, handlinger
-- **Hvor havner oppmerksomheten?** Fokus og eventuell skjermleser-annonsering
+Når konseptet er valgt, bygg en Figma-skisse av den valgte varianten.
 
-### Import av eksisterende side
+### Krav
 
-For å forankre et redesign i nåtilstand. Prioritert rekkefølge:
+Figma MCP-verktøy tilgjengelig.
 
-1. **Lokal app via Playwright** (standard) — Start dev-server, naviger, ta screenshot, last opp til Figma
-2. **Figma-lenke** — Hent kontekst via `get_design_context`. Bruk `use_figma` for å jobbe videre i eksisterende fil.
-3. **Offentlig URL** — Importer via `generate_figma_design`. NB: dette oppretter en ny Figma-fil. Bruk `use_figma` for å jobbe videre i eksisterende fil.
-4. **Manuell fallback** — Be designer om skjermbilde
+### Flyt
 
-**Lokal capture (Playwright MCP)**:
-1. Les `package.json` + sjekk lockfil (`pnpm-lock.yaml`/`yarn.lock`/`package-lock.json`) → finn package manager og dev-server-kommando
-2. **Next.js**: Sjekk `basePath` i `next.config.js`/`next.config.mjs` — URL = `localhost:<port><basePath>/sti`
-3. Start server, vent på `ready` / `compiled`
-4. Naviger med `browser_navigate`, ta `browser_take_screenshot`
-5. Last opp til Figma med `upload_assets` eller bruk som visuell referanse
-6. Stopp server når ferdig
+1. `whoami` → finn planKey
+2. `create_new_file` → opprett fil, **del URL med designeren**
+3. `search_design_system` → finn relevante Aksel-komponenter
+4. `use_figma` **preflight** → importer + logg varianter, tekst-node-navn og fonter (se referanse)
+5. `use_figma` → bygg skissen med eksakte variant-navn og node-navn fra preflight
+6. **`get_screenshot`** → verifiser visuelt (se referanse for sjekkliste)
+7. Fiks eventuelle problemer, del oppdatert lenke ved milepæler
 
-Hvis dev-server feiler → informer kort og fall tilbake til neste metode. Ikke feilsøk build-problemer.
-Hvis Playwright MCP ikke er tilgjengelig → hopp til metode 2 (Figma-lenke), 3 (offentlig URL) eller 4 (manuell fallback).
+**Aldri hopp over preflight** — det forhindrer gjetting og feil-runder. Se `references/figma-prototype.md` for detaljer.
 
-### Hybrid kontekst-validering (for endring på eksisterende side)
+Bygg kun den nye komponenten/endringen — ikke hele siden. Bruk ekte Aksel-komponenter, riktige tokens, og vis varianter som egne frames.
 
-Når du har importert nåtilstand, bruk denne flyten for å validere nye komponenter i kontekst:
+### Komponent-gate
 
-1. Last opp screenshot av eksisterende side som referanse-frame i Figma
-2. Utforsk 2–3 isolerte varianter av den nye komponenten som separate frames
-3. Plasser valgt variant-frame over referanse-bildet (z-rekkefølge) for visuell kontekst-validering
-4. Ta screenshot av resultatet og vis designeren for bekreftelse før videre iterasjon
+Før du bygger i Figma, søk Aksel-biblioteket:
 
-Denne flyten sikrer at komponenter ser riktige ut i helhet — ikke bare isolert.
+```
+search_design_system(query: "<komponentnavn>", fileKey: "<key>")
+```
+
+Finnes komponenten? → Bruk den.
+Finnes den ikke? → Bygg custom, men med Aksel-tokens.
+
+### Komponent-instansiering
+
+- **Preflight først**: Importer + logg varianter og tekst-noder i ETT kall
+- **Eksakt navnematch** for variant, `defaultVariant` som fallback
+- **Tekst**: `findOne` med eksakt name — IKKE `setProperties()` (ustabile nøkler)
+- **`layoutSizingHorizontal = "FILL"`** kun etter append til auto-layout
+- **Farger**: Slå opp via `search_design_system` — aldri gjett RGB
+
+Se `references/figma-prototype.md` for fullstendige regler og eksempler.
+
+## Valgfritt: Kodeprototype
+
+> «Vil du se dette bygget med ekte Aksel-komponenter i appen?»
+> → Deleger til konditor for å bygge på en prototype-branch. Designer-agenten skriver **aldri** kode selv.
 
 ## Iterasjon
 
-1. Vis resultat (Figma-lenke)
-2. Designer gir feedback
-3. Juster og vis på nytt
-4. Gjenta til fornøyd
+Vis resultat → designer gir feedback → juster → gjenta til fornøyd.
 
-## UU etter designleveranse
+## UU, opprydding og degradation
 
-Dette er en designmessig forhåndssjekk av struktur, kontrast og innhold. Etter leveranse skal utviklere gjøre live-validering i kode via `/accessibility-review` før release.
-
-## Graceful degradation
-
-**Med Figma MCP**: Full flyt — opprett filer, søk Aksel-komponenter, bygg skisser.
-**Uten Figma MCP**: Figma-skissering er utilgjengelig. Tilby konseptbeskrivelse og designoppgave (Issue).
+- Sjekk kontrast og semantikk i designet. Full WCAG: `/accessibility-review` ved overlevering.
+- Etter leveranse: `server.js --project-dir . --cleanup` fjerner `.visual-companion/`.
+- Uten Figma MCP → beskriv konseptet, lever som Issue.
+- Uten Node.js → Chat + Figma direkte (hopp over Visual Companion).
+- Uten Playwright → manuelt skjermbilde fra designer.
 
 ## Boundaries
 
 ### ✅ Alltid
-- Bruk Aksel-komponenter (aldri custom styling for standard UI)
-- Returner Figma-lenke for nye design
+- Bruk Aksel-komponenter og -tokens
+- Returner URL / Figma-lenke for resultater
 - Bruk handlingsspråk — aldri verktøynavn
 - Spør designer før større endringer
+- Del lenker umiddelbart etter opprettelse
 
 ### 🚫 Aldri
-- Bygg lokale prototyper (HTML, npx serve, temp-filer)
-- Lagre filer i prosjektets kildekode
+- Skriv kode i prosjektets kildekode (deleger til konditor)
 - Lever prototype som ferdig kode
 - Eksponer verktøynavn til designeren
-- Feilsøk build-problemer i dev-server (fall tilbake til neste metode)
+- Feilsøk build-problemer (fall tilbake til neste metode)
+- Hopp over UU-sjekk ved leveranse
