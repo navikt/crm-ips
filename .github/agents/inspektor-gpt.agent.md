@@ -1,7 +1,7 @@
 ---
 name: inspektor-gpt
 description: "(internt) Kryssmodell-inspektør for Opus-arbeid — mønstre, API-korrekthet, konsistens"
-model: "gpt-5.4"
+model: "gpt-5.5"
 user-invocable: false
 tools: ["view", "grep", "glob"]
 ---

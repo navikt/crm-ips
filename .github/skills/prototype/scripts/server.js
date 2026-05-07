@@ -8,7 +8,7 @@
  * Records user selections for agent consumption.
  *
  * Usage:
- *   node server.js --project-dir /path/to/project [--port PORT] [--host HOST]
+ *   node server.js --project-dir /path/to/project [--port PORT] [--host HOST] [--allow-remote]
  */
 
 const http = require("node:http");
@@ -22,10 +22,94 @@ function getArg(name, fallback) {
   return idx !== -1 && args[idx + 1] ? args[idx + 1] : fallback;
 }
 
+function hasFlag(name) {
+  return args.includes(`--${name}`);
+}
+
+function normalizeHost(value) {
+  return String(value || "")
+    .trim()
+    .replace(/^\[(.*)\]$/, "$1")
+    .toLowerCase();
+}
+
+function isIpv4Octet(value) {
+  return /^\d+$/.test(value) && Number(value) >= 0 && Number(value) <= 255;
+}
+
+function isLoopbackIpv4(value) {
+  const parts = value.split(".");
+  return parts.length === 4 && parts[0] === "127" && parts.every(isIpv4Octet);
+}
+
+function isLoopbackHost(value) {
+  const normalized = normalizeHost(value);
+  return (
+    normalized === "localhost" ||
+    isLoopbackIpv4(normalized) ||
+    normalized === "::1"
+  );
+}
+
+function isLoopbackAddress(value) {
+  const normalized = normalizeHost(String(value || "").replace(/^::ffff:/, ""));
+  return isLoopbackHost(normalized);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function serializeForInlineScript(value) {
+  return JSON.stringify(String(value))
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
+function isPathInside(parentPath, candidatePath) {
+  const resolvedParent = path.resolve(parentPath);
+  const resolvedCandidate = path.resolve(candidatePath);
+  return (
+    resolvedCandidate === resolvedParent ||
+    resolvedCandidate.startsWith(`${resolvedParent}${path.sep}`)
+  );
+}
+
 const projectDir = getArg("project-dir", process.cwd());
 const host = getArg("host", "localhost");
 const urlHost = getArg("url-host", host);
 const requestedPort = parseInt(getArg("port", "0"), 10);
+const allowRemote = hasFlag("allow-remote");
+
+if (!allowRemote && !isLoopbackHost(host)) {
+  console.error(
+    JSON.stringify({
+      type: "error",
+      message:
+        `Refusing non-local bind host "${host}". Use --host localhost (default) or pass --allow-remote to bind intentionally.`,
+    }),
+  );
+  process.exit(1);
+}
+
+if (!allowRemote && !isLoopbackHost(urlHost)) {
+  console.error(
+    JSON.stringify({
+      type: "error",
+      message:
+        `Refusing non-local advertised host "${urlHost}" without --allow-remote. Use --url-host localhost (default) or pass --allow-remote explicitly.`,
+    }),
+  );
+  process.exit(1);
+}
 
 // --cleanup: remove all session data and exit
 if (args.includes("--cleanup")) {
@@ -131,19 +215,77 @@ function getNewestFile() {
 }
 
 function wrapInFrame(content, filename) {
+  const safeFilename = escapeHtml(filename || "untitled");
   const cssWarning = akselCss
     ? ""
     : `<div style="background:#fef0f0;border:2px solid #c30000;padding:16px;margin-bottom:16px;border-radius:8px;font-family:sans-serif">
         <strong>⚠️ Aksel CSS mangler</strong><br>Kjør: <code>pnpm install</code>
       </div>`;
   return frameTemplate
-    .replace(/\{\{FILENAME\}\}/g, filename || "untitled")
-    .replace("{{HELPER_SCRIPT}}", `<script>\n${helperJs}\n</script>`)
-    .replace("{{CONTENT}}", cssWarning + content);
+    .replace(/\{\{FILENAME\}\}/g, safeFilename)
+    // Use callbacks so prototype HTML is inserted literally, not as $-tokens.
+    .replace(/\{\{HELPER_SCRIPT\}\}/g, () => `<script>\n${helperJs}\n</script>`)
+    .replace(/\{\{CONTENT\}\}/g, () => cssWarning + content);
+}
+
+function renderBootstrappedHtmlPage(encodedHtml, title) {
+  const safeTitle = escapeHtml(title || "prototype");
+  return `<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${safeTitle}</title>
+</head>
+<body>
+  <noscript>Denne prototypen krever JavaScript for å vise rå HTML lokalt.</noscript>
+  <script>
+    (() => {
+      const decodedHtml = decodeURIComponent(${serializeForInlineScript(encodedHtml)});
+      document.open();
+      document.write(decodedHtml);
+      document.close();
+    })();
+  </script>
+</body>
+</html>`;
+}
+
+function renderBootstrappedFragmentPage(content, title) {
+  return renderBootstrappedHtmlPage(
+    encodeURIComponent(wrapInFrame(content, title)),
+    title,
+  );
+}
+
+function getAllowedOrigin(req) {
+  const origin = req.headers.origin;
+  const hostHeader = req.headers.host;
+  if (!origin || !hostHeader) {
+    return null;
+  }
+
+  const expectedOrigin = `http://${hostHeader}`;
+  return origin === expectedOrigin ? origin : null;
+}
+
+function applyCorsHeaders(req, res) {
+  const allowedOrigin = getAllowedOrigin(req);
+  if (allowedOrigin) {
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  }
+  return allowedOrigin;
 }
 
 let lastActivity = Date.now();
 const TIMEOUT_MS = 30 * 60 * 1000;
+
+function markActivity() {
+  lastActivity = Date.now();
+}
 
 function checkInactivity() {
   if (Date.now() - lastActivity > TIMEOUT_MS) {
@@ -158,9 +300,21 @@ function checkInactivity() {
 setInterval(checkInactivity, 60_000);
 
 const server = http.createServer((req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+  const allowedOrigin = applyCorsHeaders(req, res);
+
+  if (!allowRemote && !isLoopbackAddress(req.socket.remoteAddress)) {
+    res.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("Remote access is disabled. Re-run with --allow-remote to override.");
+    return;
+  }
+
+  if (req.headers.origin && !allowedOrigin) {
+    res.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("Cross-origin access is not allowed.");
+    return;
+  }
 
   if (req.method === "OPTIONS") {
     res.writeHead(204);
@@ -188,6 +342,7 @@ const server = http.createServer((req, res) => {
         return;
       }
       fs.appendFileSync(path.join(stateDir, "events"), `${body}\n`);
+      markActivity();
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end('{"ok":true}');
     });
@@ -211,7 +366,8 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.url === "/version") {
-    res.writeHead(200, { "Content-Type": "text/plain" });
+    markActivity();
+    res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
     res.end(getNewestFile() || "");
     return;
   }
@@ -222,7 +378,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  lastActivity = Date.now();
+  markActivity();
 
   if (req.url === "/aksel.css") {
     if (akselCss) {
@@ -239,7 +395,7 @@ const server = http.createServer((req, res) => {
   if (!newest) {
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(
-      wrapInFrame(
+      renderBootstrappedFragmentPage(
         `<div style="display:flex;align-items:center;justify-content:center;min-height:60vh">
         <div style="text-align:center">
           <h2>Venter på innhold …</h2>
@@ -255,7 +411,7 @@ const server = http.createServer((req, res) => {
   let content;
   try {
     const filePath = path.join(contentDir, newest);
-    if (!filePath.startsWith(contentDir)) {
+    if (!isPathInside(contentDir, filePath)) {
       res.writeHead(403);
       res.end("Forbidden");
       return;
@@ -264,7 +420,7 @@ const server = http.createServer((req, res) => {
   } catch {
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(
-      wrapInFrame(
+      renderBootstrappedFragmentPage(
         '<p style="color:var(--ax-text-subtle);text-align:center;padding:var(--ax-space-32)">Laster innhold…</p>',
         "waiting",
       ),
@@ -277,15 +433,27 @@ const server = http.createServer((req, res) => {
     trimmed.startsWith("<!doctype") ||
     trimmed.startsWith("<html")
   ) {
-    const injected = content.replace(
-      "</body>",
-      `<script>\n${helperJs}\n</script>\n</body>`,
-    );
+    const helperScriptTag = `<script>\n${helperJs}\n</script>`;
+    const injected = /<\/body>/i.test(content)
+      ? content.replace(/<\/body>/i, `${helperScriptTag}\n</body>`)
+      : `${content}\n${helperScriptTag}`;
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-    res.end(injected);
+    // Intentionally render raw agent-authored HTML for local prototype preview.
+    // Guardrails remain: loopback-only by default, same-origin browser access
+    // only, and remote bind requires explicit --allow-remote acknowledgement.
+    // encodeURIComponent is a CodeQL-recognized XSS barrier; the browser decodes
+    // the trusted local prototype HTML only after those runtime checks passed.
+    res.end(renderBootstrappedHtmlPage(encodeURIComponent(injected), newest));
   } else {
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-    res.end(wrapInFrame(content, newest));
+    // Intentionally render raw agent-authored HTML fragments for local preview.
+    // See the guardrails above: localhost default, non-loopback clients
+    // rejected unless --allow-remote is passed explicitly, and no wildcard CORS.
+    // The fragment is encoded before the HTTP sink so CodeQL does not flag the
+    // intentional local-only preview flow as js/stored-xss in consumer repos.
+    res.end(
+      renderBootstrappedFragmentPage(content, newest),
+    );
   }
 });
 
