@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Designskisse — {{FILENAME}}</title>
+  <!-- Load real Aksel CSS from node_modules (served by Visual Companion server) -->
+  <link rel="stylesheet" href="/aksel.css">
+  <style>
+    /*
+     * Visual Companion wireframe classes.
+     * Real Aksel CSS is loaded via /aksel.css (from node_modules/@navikt/ds-css).
+     * The :root fallbacks below ONLY kick in if ds-css failed to load.
+     * They are intentionally minimal — run `pnpm install` for correct styling.
+     */
+    :root {
+      --vc-font-family: "Source Sans 3", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --ax-radius-full: 9999px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--vc-font-family);
+      background: var(--ax-bg-sunken);
+      color: var(--ax-text-default);
+      font-size: 1.125rem;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* --- Header --- */
+    .vc-header {
+      background: var(--ax-bg-default);
+      border-bottom: 1px solid var(--ax-border-subtle);
+      padding: var(--ax-space-12) var(--ax-space-24);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .vc-header-left {
+      display: flex;
+      align-items: center;
+      gap: var(--ax-space-12);
+    }
+    .vc-logo {
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--ax-text-default);
+    }
+    .vc-badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      background: var(--ax-bg-accent-soft);
+      color: var(--ax-text-accent);
+      border-radius: var(--ax-radius-4);
+      font-weight: 600;
+    }
+
+    /* --- Selection indicator --- */
+    .vc-indicator {
+      background: var(--ax-bg-accent-strong);
+      color: var(--ax-text-contrast);
+      padding: var(--ax-space-8) var(--ax-space-16);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--ax-radius-4);
+      display: none;
+      align-items: center;
+      gap: var(--ax-space-8);
+    }
+    .vc-indicator.visible { display: flex; }
+
+    /* --- Content --- */
+    .vc-content {
+      max-width: 960px;
+      margin: var(--ax-space-32) auto;
+      padding: 0 var(--ax-space-24);
+    }
+
+    /* --- Typography --- */
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: var(--ax-space-8);
+    }
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: var(--ax-space-4);
+    }
+    .subtitle {
+      color: var(--ax-text-subtle);
+      font-size: 1.125rem;
+      margin-bottom: var(--ax-space-24);
+    }
+    .section { margin-bottom: var(--ax-space-32); }
+    .label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ax-text-default);
+      margin-bottom: var(--ax-space-8);
+    }
+
+    /* --- Options (A/B/C choices) --- */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ax-space-16);
+    }
+    .option {
+      display: flex;
+      gap: var(--ax-space-16);
+      padding: var(--ax-space-24);
+      background: var(--ax-bg-default);
+      border: 2px solid var(--ax-border-subtle);
+      border-radius: var(--ax-radius-8);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.03);
+    }
+    .option:hover {
+      border-color: var(--ax-border-accent);
+      background: var(--ax-bg-default);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .option:focus-visible {
+      outline: 3px solid var(--ax-border-accent);
+      outline-offset: 2px;
+    }
+    .option.selected {
+      border-color: var(--ax-border-accent);
+      background: var(--ax-bg-accent-soft);
+    }
+    .option .letter {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--ax-radius-full);
+      background: var(--ax-bg-default);
+      border: 2px solid var(--ax-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+      color: var(--ax-text-subtle);
+    }
+    .option.selected .letter {
+      background: var(--ax-bg-accent-strong);
+      border-color: var(--ax-bg-accent-strong);
+      color: var(--ax-text-contrast);
+    }
+    .option .content { flex: 1; }
+    .option .content p {
+      color: var(--ax-text-subtle);
+      margin-top: var(--ax-space-4);
+      font-size: 1rem;
+    }
+
+    /* --- Cards (visual designs) --- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--ax-space-16);
+    }
+    .card {
+      background: var(--ax-bg-sunken);
+      border: 2px solid var(--ax-border-subtle);
+      border-radius: var(--ax-radius-8);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .card:hover {
+      border-color: var(--ax-border-accent);
+      background: var(--ax-bg-default);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card:focus-visible {
+      outline: 3px solid var(--ax-border-accent);
+      outline-offset: 2px;
+    }
+    .card.selected {
+      border-color: var(--ax-border-accent);
+      background: var(--ax-bg-accent-soft);
+    }
+    .card-image {
+      padding: var(--ax-space-16);
+      background: var(--ax-bg-sunken);
+      min-height: 160px;
+    }
+    .card-body { padding: var(--ax-space-16); }
+    .card-body p {
+      color: var(--ax-text-subtle);
+      margin-top: var(--ax-space-4);
+    }
+
+    /* --- Mockup container --- */
+    .mockup {
+      background: var(--ax-bg-default);
+      border: 1px solid var(--ax-border-subtle);
+      border-radius: var(--ax-radius-8);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .mockup-header {
+      background: var(--ax-bg-sunken);
+      padding: var(--ax-space-8) var(--ax-space-16);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--ax-text-subtle);
+      border-bottom: 1px solid var(--ax-border-subtle);
+    }
+    .mockup-body { padding: var(--ax-space-16); }
+
+    /* --- Split view --- */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--ax-space-16);
+    }
+    @media (max-width: 640px) {
+      .split { grid-template-columns: 1fr; }
+    }
+
+    /* --- Pros / Cons --- */
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--ax-space-16);
+    }
+    @media (max-width: 640px) {
+      .pros-cons { grid-template-columns: 1fr; }
+    }
+    .pros, .cons {
+      padding: var(--ax-space-16);
+      border-radius: var(--ax-radius-8);
+    }
+    .pros { background: var(--ax-bg-success-soft); }
+    .cons { background: var(--ax-bg-danger-soft); }
+    .pros h4, .cons h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: var(--ax-space-8);
+    }
+    .pros ul, .cons ul { padding-left: var(--ax-space-20); }
+    .pros li, .cons li {
+      margin-bottom: var(--ax-space-4);
+      font-size: 1rem;
+    }
+
+    /* --- Mock elements (wireframe building blocks) --- */
+    /* Matches Aksel component sizing: Button 48px, TextField 48px, Textarea 120px+ */
+    .mock-nav {
+      background: var(--ax-bg-inverted);
+      color: var(--ax-text-on-inverted);
+      padding: var(--ax-space-12) var(--ax-space-16);
+      border-radius: var(--ax-radius-8) var(--ax-radius-8) 0 0;
+      font-size: 1rem;
+    }
+    .mock-sidebar {
+      background: var(--ax-bg-sunken);
+      padding: var(--ax-space-16);
+      min-width: 200px;
+      border-right: 1px solid var(--ax-border-subtle);
+    }
+    .mock-content {
+      padding: var(--ax-space-16);
+      flex: 1;
+    }
+    .mock-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      padding: var(--ax-space-12) var(--ax-space-24);
+      background: var(--ax-bg-accent-strong);
+      color: var(--ax-text-contrast);
+      border: none;
+      border-radius: var(--ax-radius-4);
+      font-family: var(--vc-font-family);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .mock-button:hover { background: var(--ax-bg-accent-strong-hover); }
+    .mock-button--secondary {
+      background: transparent;
+      color: var(--ax-text-accent);
+      border: 2px solid var(--ax-border-accent);
+    }
+    .mock-button--secondary:hover {
+      background: var(--ax-bg-accent-soft);
+    }
+    .mock-input {
+      width: 100%;
+      height: 48px;
+      padding: var(--ax-space-12) var(--ax-space-12);
+      border: 1px solid var(--ax-border-default);
+      border-radius: var(--ax-radius-4);
+      font-family: var(--vc-font-family);
+      font-size: 1.125rem;
+      background: var(--ax-bg-default);
+    }
+    .mock-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--ax-border-accent);
+    }
+    .mock-textarea {
+      width: 100%;
+      padding: var(--ax-space-12);
+      border: 1px solid var(--ax-border-default);
+      border-radius: var(--ax-radius-4);
+      font-family: var(--vc-font-family);
+      font-size: 1.125rem;
+      min-height: 120px;
+      resize: vertical;
+      background: var(--ax-bg-default);
+    }
+    .mock-textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--ax-border-accent);
+    }
+    .placeholder {
+      background: var(--ax-bg-sunken);
+      border: 2px dashed var(--ax-border-subtle);
+      padding: var(--ax-space-32);
+      text-align: center;
+      color: var(--ax-text-subtle);
+      border-radius: var(--ax-radius-8);
+    }
+
+    /* --- Aksel-like alerts (matches LocalAlert pattern) --- */
+    .mock-alert {
+      padding: var(--ax-space-16);
+      border-radius: var(--ax-radius-8);
+      border-left: 4px solid;
+      margin-bottom: var(--ax-space-16);
+      font-size: 1rem;
+    }
+    .mock-alert--info {
+      background: var(--ax-bg-accent-soft);
+      border-color: var(--ax-border-accent);
+    }
+    .mock-alert--success {
+      background: var(--ax-bg-success-soft);
+      border-color: var(--ax-border-success);
+    }
+    .mock-alert--warning {
+      background: var(--ax-bg-warning-soft);
+      border-color: var(--ax-border-warning);
+    }
+    .mock-alert--error {
+      background: var(--ax-bg-danger-soft);
+      border-color: var(--ax-border-danger);
+    }
+
+    /* --- Aksel-like checkboxes / radios --- */
+    .mock-checkbox, .mock-radio {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--ax-space-8);
+      margin-bottom: var(--ax-space-8);
+      cursor: default;
+    }
+    .mock-checkbox input[type="checkbox"],
+    .mock-radio input[type="radio"] {
+      width: 24px;
+      height: 24px;
+      margin-top: 2px;
+      accent-color: var(--ax-bg-accent-strong);
+    }
+    .mock-checkbox label, .mock-radio label { font-size: 1.125rem; }
+    .mock-checkbox .description, .mock-radio .description {
+      font-size: 1rem;
+      color: var(--ax-text-subtle);
+      margin-top: var(--ax-space-4);
+    }
+
+    /* --- Refresh toast --- */
+    .vc-refresh {
+      position: fixed;
+      bottom: var(--ax-space-16);
+      right: var(--ax-space-16);
+      background: var(--ax-bg-accent-strong);
+      color: var(--ax-text-contrast);
+      padding: var(--ax-space-8) var(--ax-space-12);
+      border-radius: var(--ax-radius-4);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+    .vc-refresh.visible { opacity: 1; }
+  </style>
+</head>
+<body data-color="neutral">
+  <header class="vc-header">
+    <div class="vc-header-left">
+      <span class="vc-logo">Designskisse</span>
+      <span class="vc-badge" data-color="accent">Prototype</span>
+    </div>
+    <div class="vc-indicator" id="indicator" role="status" aria-live="polite">
+      <span aria-hidden="true">✓</span>
+      <span id="indicator-text">Valgt</span>
+    </div>
+  </header>
+
+  <main class="vc-content">
+    {{CONTENT}}
+  </main>
+
+  <div class="vc-refresh" id="refresh-indicator">Oppdatert!</div>
+
+  {{HELPER_SCRIPT}}
+</body>
+</html>
