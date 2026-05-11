@@ -28,7 +28,7 @@ public without sharing class IPS_Utility {
         'Tilgjengelig Jobbstøtte',
         'Working'
     };
-    public static final List<String> WORK_TRAIL_INACTIVE_STATUSES = new List<String>{ 'Ended', 'Refferred' };
+    public static final List<String> WORK_TRAIL_INACTIVE_STATUSES = new List<String>{ 'Ended', 'Referred' };
 
     public static List<User> getPersonAccountId(String userId) {
         List<User> userList = new List<User>();
