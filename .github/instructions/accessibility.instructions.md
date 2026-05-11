@@ -1,24 +1,28 @@
 ---
-description: "Universell utforming (UU) — WCAG 2.1 AA med Aksel-komponenter for Nav-frontend"
-applyTo: "**/*.tsx, **/*.jsx"
+applyTo: "src/**/*.{tsx,jsx}"
 ---
 
-# Tilgjengelighet (UU) — WCAG 2.1 AA
+# Accessibility (UU) Standards
 
 Universell utforming er lovpålagt i Norge. All frontend-kode i Nav skal oppfylle WCAG 2.1 AA.
 
+> For comprehensive WCAG tables, Aksel component patterns, and manual testing checklists, use `@accessibility-agent`. This instruction covers the essential code rules applied automatically when editing React/TSX files.
+
 ## Aksel-komponenter har innebygd UU
 
-Aksel-komponenter (`@navikt/ds-react`) håndterer mange tilgjengelighetskrav automatisk: roller, ARIA-attributter, tastaturnavigasjon, fokushåndtering og fargekontrast.
+Aksel-komponenter (`@navikt/ds-react`) håndterer mange a11y-krav automatisk:
+
+- Korrekt rolle/aria-attributter
+- Keyboard-navigasjon
+- Fokus-håndtering
+- Fargekontrast
 
 **Bruk alltid Aksel-komponenter fremfor egne `<div>`/`<button>`-løsninger.**
 
 ## Semantisk HTML
 
-Bruk `<main>`, `<nav>`, `<article>`, `<section>` — ikke generiske `<div>`-er.
-
 ```tsx
-// ✅ Semantiske elementer
+// ✅ Korrekt — semantiske elementer
 <main>
   <nav aria-label="Hovednavigasjon">...</nav>
   <article>
@@ -27,7 +31,7 @@ Bruk `<main>`, `<nav>`, `<article>`, `<section>` — ikke generiske `<div>`-er.
   </article>
 </main>
 
-// ❌ Div-suppe uten semantikk
+// ❌ Feil — div-suppe uten semantikk
 <div className="main">
   <div className="nav">...</div>
   <div className="content">
@@ -38,180 +42,117 @@ Bruk `<main>`, `<nav>`, `<article>`, `<section>` — ikke generiske `<div>`-er.
 
 ## Heading-hierarki
 
-Overskriftsnivåer skal være logiske og uten hopp (h1 → h2 → h3).
-
 ```tsx
-// ✅ Sammenhengende nivåer
+// ✅ h1 → h2 → h3, ingen hopp
 <Heading size="large" level="1">Sidetittel</Heading>
   <Heading size="medium" level="2">Seksjon</Heading>
-    <Heading size="small" level="3">Underseksjon</Heading>
 
 // ❌ Hopper fra h1 til h3
 <Heading size="large" level="1">Sidetittel</Heading>
   <Heading size="small" level="3">Underseksjon</Heading>
 ```
 
-## Skjemaer
-
-Bruk Aksel-skjemaelementer (`TextField`, `Select`) — de har innebygd label-kobling. Vis `ErrorSummary` øverst ved feil.
-
-```tsx
-import { TextField, Select, ErrorSummary } from "@navikt/ds-react";
-
-// ✅ Aksel-skjemaelementer har innebygd label-kobling
-<TextField
-  label="Fødselsnummer"
-  description="11 siffer"
-  error={errors.fnr}
-  autoComplete="off"
-/>
-
-// ✅ Feiloppsummering øverst i skjemaet
-<ErrorSummary heading="Du må rette disse feilene før du kan sende inn">
-  <ErrorSummary.Item href="#fnr">Fødselsnummer er påkrevd</ErrorSummary.Item>
-</ErrorSummary>
-```
-
 ## Bilder og ikoner
 
-Meningsbærende bilder trenger beskrivende `alt`-tekst, dekorative bilder får `alt=""`. Ikonknapper må ha tilgjengelig navn via `title`-prop.
-
 ```tsx
-// ✅ Meningsbærende bilder
+// ✅ Meningsbærende bilder — alt-tekst som beskriver innholdet
 <img src="/chart.png" alt="Bruksstatistikk siste 30 dager: 450 aktive brukere" />
 
-// ✅ Dekorative bilder
+// ✅ Dekorative bilder — tom alt, eller aria-hidden
 <img src="/decoration.svg" alt="" />
+<DecorativeIcon aria-hidden="true" />
 
-// ✅ Ikoner med mening
+// ✅ Ikoner med mening — bruk title eller sr-only tekst
 <Button variant="tertiary" icon={<TrashIcon title="Slett element" />} />
 
-// ❌ Ikonknapp uten tilgjengelig navn
+// ❌ Feil — ikonknapp uten tilgjengelig navn
 <Button variant="tertiary" icon={<TrashIcon />} />
 ```
 
 ## Interaktive elementer
 
-Alle klikkbare elementer trenger synlig fokusindikator og tilgjengelig navn. Bruk beskrivende lenketekst, aldri "Klikk her".
-
 ```tsx
-// ✅ Synlig fokusindikator, tilgjengelig navn
+// ✅ Korrekt — synlig fokusindikator, tilgjengelig navn
 <Button variant="primary">Send inn</Button>
+<Link href="/oversikt">Gå til oversikt</Link>
 
-// ✅ Lenkebeskrivelse med kontekst
-<Link href={`/sak/${id}`}>Se detaljer for sak {saksnummer}</Link>
+// ✅ Korrekt — lenkebeskrivelse med kontekst
+<Link href={`/sak/${id}`}>
+  Se detaljer for sak {saksnummer}
+</Link>
 
-// ❌ Generisk lenketekst
+// ❌ Feil — generisk lenketekst
 <Link href={`/sak/${id}`}>Klikk her</Link>
+<Link href={`/sak/${id}`}>Les mer</Link>
 
-// ❌ onClick på div uten rolle/keyboard
+// ❌ Feil — onClick på div uten rolle/keyboard
 <div onClick={handleClick}>Klikk meg</div>
 ```
 
-## ARIA-attributter
-
-Bruk kun ARIA når HTML-semantikk ikke er tilstrekkelig:
+## ARIA — kun når nødvendig
 
 ```tsx
-// ✅ Navigasjonslandemerker
-<nav aria-label="Brødsmulesti">...</nav>
+// ✅ Live-regioner for dynamisk innhold
+<Alert variant="success" role="status">
+  Skjemaet ble sendt inn
+</Alert>
 
-// ✅ Live-regioner for dynamisk innhold (Aksel håndterer ARIA automatisk)
-<LocalAlert variant="success">
-  <LocalAlert.Content>Skjemaet ble sendt inn</LocalAlert.Content>
-</LocalAlert>
-
-// ✅ Expanding/collapsing
-<Button aria-expanded={isOpen} aria-controls="panel-id" onClick={() => setIsOpen(!isOpen)}>
-  Vis detaljer
-</Button>
-
-// ✅ Loading-tilstander
+// ✅ Loading-tilstand
 <div aria-busy={isLoading} aria-live="polite">
   {isLoading ? <Loader title="Laster" /> : <DataTable data={data} />}
 </div>
-```
 
-## Modal med fokusfelle
-
-```tsx
-// ✅ Fokusfelle i modal — Aksel Modal håndterer dette
-<Modal open={isOpen} onClose={() => setIsOpen(false)} header={{ heading: "Bekreft sletting" }}>
-  <Modal.Body>Er du sikker?</Modal.Body>
-  <Modal.Footer>
-    <Button onClick={handleDelete}>Slett</Button>
-    <Button variant="secondary" onClick={() => setIsOpen(false)}>Avbryt</Button>
-  </Modal.Footer>
-</Modal>
+// ✅ Expanding/collapsing
+<Button aria-expanded={isOpen} aria-controls="panel-id">
+  Vis detaljer
+</Button>
 ```
 
 ## Fargekontrast
 
-- **Tekst**: Minimum 4.5:1 (AA)
-- **Stor tekst** (>=18px bold / >=24px): Minimum 3:1
-- **Ikke-tekst UI**: Minimum 3:1
-- Bruk Aksel semantiske farger — de oppfyller kontrastkrav automatisk
-- Aldri bruk farge alene for å formidle informasjon
-
-## Tastaturnavigasjon
-
-- `Tab` / `Shift+Tab`: Naviger mellom elementer
-- `Enter` / `Space`: Aktiver knapper og lenker
-- `Escape`: Lukk modaler og menyer
-- `Arrow keys`: Naviger i lister, tabs og menyer
-
-Aksel Modal håndterer fokusfelle automatisk.
+- **Tekst**: 4.5:1 (AA), **stor tekst**: 3:1
+- **UI-komponenter**: 3:1
+- Bruk Aksel semantiske farger — de oppfyller kontrastkrav
+- **Aldri farge alene** for å formidle informasjon
 
 ## Testing
 
-Bruk `jest-axe` for enhetstesting, Playwright + `@axe-core/playwright` for E2E, og Lighthouse CLI for CI-sjekker.
-
 ```tsx
-// jest-axe (enhetstest)
-import { axe, toHaveNoViolations } from "jest-axe";
+import { axe, toHaveNoViolations } from "vitest-axe";
+
 expect.extend(toHaveNoViolations);
 
 it("should have no accessibility violations", async () => {
   const { container } = render(<MyComponent />);
-  expect(await axe(container)).toHaveNoViolations();
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
 });
 ```
 
-```tsx
-// Playwright + axe-core (E2E)
-import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
+## Boundaries
 
-test("side har ingen tilgjengelighetsfeil", async ({ page }) => {
-  await page.goto("/skjema");
-  const results = await new AxeBuilder({ page }).analyze();
-  expect(results.violations).toEqual([]);
-});
-```
+### ✅ Always
 
-## Sjekkliste
-
-- Heading-nivåer er logiske (h1 → h2 → h3, ingen hopp)
-- Alle skjema-elementer har synlige labels
-- Alle bilder har meningsfull `alt`-tekst eller `alt=""`
-- Alle interaktive elementer har tilgjengelig navn
-- Ingen informasjon formidles kun med farge
-- Siden er fullt brukbar med kun tastatur
-- Dynamisk innhold annonseres med `aria-live`
-- Feilmeldinger er koblet til rett felt og samlet i en oppsummering
-
-## Grenser
-
-### Alltid
-- Bruk Aksel-komponenter — de har innebygd tilgjengelighet
+- Bruk Aksel-komponenter — de har innebygd a11y
 - Test med tastatur (Tab gjennom hele siden)
 - Sjekk heading-hierarki
 
-### Spør først
-- Egendefinerte ARIA-roller utover standard HTML-semantikk
+### ⚠️ Ask First
+
+- Custom ARIA-roller utover standard HTML-semantikk
 - Avvik fra Aksel-mønster for tilgjengelighet
 
-### Aldri
+### 🚫 Never
+
 - `<div onClick>` uten `role="button"` og `tabIndex`
-- Ikonknapper uten tilgjengelig navn
-- Fjern fokusindikator (`outline: none`) uten erstatning
+- Ikonknapper uten tilgjengelig navn (title eller sr-only tekst)
+- Fjern fokus-indikator (`outline: none`) uten erstatning
+- `tabIndex` > 0
+
+## Related
+
+| Resource | Use For |
+|----------|---------|
+| `@accessibility-agent` | Expert guidance on complex WCAG requirements |
+| `@aksel-agent` | Aksel component patterns with built-in a11y |
+| `playwright-testing` skill | E2E accessibility testing with axe-core |
