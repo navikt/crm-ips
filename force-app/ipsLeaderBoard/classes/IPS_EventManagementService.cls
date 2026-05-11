@@ -5,6 +5,16 @@
  * @author       : Håkon Kavli
  **/
 public without sharing class IPS_EventManagementService {
+    public static final List<String> IPS_WHATID_RECORD_TYPES = new List<String>{
+        'IPS',
+        'ips_Supported_Employment',
+        'Employer'
+    };
+    public static final List<String> IPS_EVENT_RECORD_TYPES = new List<String>{
+        'IPS_Event',
+        'IPS_UO_Arbeidsgiver',
+        'ips_UO_m_ter'
+    };
     /**
      * Fetches a list of custom events happening within the next 7 days, starting from today.
      * @return  list of custom events.
@@ -12,10 +22,31 @@ public without sharing class IPS_EventManagementService {
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerEvent> getEventsForCurrentWeek() {
         List<IPS_ManagerEvent> managerEvents = new List<IPS_ManagerEvent>();
-        Set<Id> workTrailIds = new Set<Id>();
-        DateTime startTime = date.today();
-        DateTime endTime = date.today().addDays(7);
-        for (Event employeeEvent : [
+        List<Event> employeeEvents = getEventsForEmployeesCurrentWeek();
+        for (Event employeeEvent : employeeEvents) {
+            IPS_ManagerEvent managerEvent = new IPS_ManagerEvent();
+            managerEvent.eventId = employeeEvent.Id;
+            managerEvent.employeeName = employeeEvent.Owner.Name;
+            managerEvent.profileName = employeeEvent.Owner.Profile.Name;
+            managerEvent.subject = employeeEvent.Subject;
+            managerEvent.location = employeeEvent.Location;
+            managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
+            managerEvent.accountName = employeeEvent.IPS_employerName__c;
+            managerEvent.accountContactName = employeeEvent.Konto_kontakt__r.Name;
+            managerEvent.isParticipantAttending = employeeEvent.IPS_participant_related_to_meeting__c;
+            managerEvent.workTrailId = employeeEvent.WhatId;
+            managerEvent.startTime = formatTime(employeeEvent.StartDateTime);
+            managerEvent.participantIdent = employeeEvent.What.ips_Participant__r.INT_PersonIdent__c;
+            managerEvent.participantName = employeeEvent.What.ips_Participant__r.Name;
+            managerEvent.participantAddress = employeeEvent.What.IPS_Participants_home_address__c;
+
+            managerEvents.add(managerEvent);
+        }
+        return managerEvents;
+    }
+    @TestVisible
+    private static List<Event> getEventsForEmployeesCurrentWeek() {
+        return [
             SELECT
                 Id,
                 WhatId,
@@ -24,65 +55,38 @@ public without sharing class IPS_EventManagementService {
                 Owner.Profile.Name,
                 Location,
                 StartDateTime,
-                toLabel(IPS_Type__c),
+                IPS_Type__c,
                 IPS_employerName__c,
                 Konto_kontakt__r.name,
-                IPS_participant_related_to_meeting__c
+                IPS_participant_related_to_meeting__c,
+                TYPEOF What
+                    WHEN Work_Trail__c THEN
+                        IPS_Participants_home_address__c,
+                        ips_Participant__r.INT_PersonIdent__c,
+                        ips_Participant__r.Name
+
+                END
             FROM Event
             WHERE
                 OwnerId IN :IPS_Utility.getMyEmployeesUserId()
-                AND StartDateTime > :startTime
-                AND StartDateTime < :endTime
-                AND WhatID != NULL
+                AND StartDateTime >= :date.today()
+                AND StartDateTime <= :date.today().addDays(7)
+                AND WhatId != NULL
+                AND WhatId.RecordType.DeveloperName IN :IPS_WHATID_RECORD_TYPES
+                AND RecordType.DeveloperName IN :IPS_EVENT_RECORD_TYPES
             ORDER BY StartDateTime, OwnerId
-        ]) {
-            if (employeeEvent.WhatID.getSObjectType().getDescribe().getName() == 'Work_Trail__c') {
-                IPS_ManagerEvent managerEvent = new IPS_ManagerEvent();
-                managerEvent.eventId = employeeEvent.Id;
-                managerEvent.employeeName = employeeEvent.Owner.Name;
-                managerEvent.profileName = employeeEvent.Owner.Profile.Name;
-                managerEvent.subject = employeeEvent.Subject;
-                managerEvent.location = employeeEvent.Location;
-                managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
-                managerEvent.accountName = employeeEvent.IPS_employerName__c;
-                managerEvent.accountContactName = employeeEvent.Konto_kontakt__r.name;
-                managerEvent.isParticipantAttending = employeeEvent.IPS_participant_related_to_meeting__c;
-                managerEvent.workTrailId = employeeEvent.WhatId;
-                Datetime eventTime = employeeEvent.StartDateTime;
-                managerEvent.startTime =
-                    eventTime.format('dd') +
-                    '.' +
-                    eventTime.format('MM') +
-                    '.' +
-                    eventTime.format('yyyy') +
-                    ' ' +
-                    eventTime.format('HH') +
-                    ':' +
-                    eventTime.format('mm');
-                managerEvents.add(managerEvent);
-                workTrailIds.add(employeeEvent.WhatId);
-            }
-        }
+        ];
+    }
 
-        Map<Id, Work_Trail__c> workTrailMap = new Map<Id, Work_Trail__c>(
-            [
-                SELECT
-                    id,
-                    IPS_Participants_home_address__c,
-                    ips_Participant__r.INT_PersonIdent__c,
-                    ips_Participant__r.Name
-                FROM Work_Trail__c
-                WHERE Id IN :workTrailIds
-            ]
-        );
-
-        //loop trough all events and add informaration obut participants
-        for (IPS_ManagerEvent me : managerEvents) {
-            Work_Trail__C realtedWorkTrail = workTrailMap.get(me.workTrailId);
-            me.participantIdent = realtedWorkTrail.ips_Participant__r.INT_PersonIdent__c;
-            me.participantName = realtedWorkTrail.ips_Participant__r.Name;
-            me.participantAddress = realtedWorkTrail.IPS_Participants_home_address__c;
-        }
-        return managerEvents;
+    private static String formatTime(Datetime dt) {
+        return dt.format('dd') +
+            '.' +
+            dt.format('MM') +
+            '.' +
+            dt.format('yyyy') +
+            ' ' +
+            dt.format('HH') +
+            ':' +
+            dt.format('mm');
     }
 }
