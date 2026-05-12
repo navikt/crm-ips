@@ -4,7 +4,7 @@
  * @since        : 0.522.0
  * @author       : Håkon Kavli
  **/
-public without sharing class IPS_EventManagementService {
+public with sharing class IPS_EventManagementService {
     public static final List<String> IPS_WHATID_RECORD_TYPES = new List<String>{ 'IPS', 'ips_Supported_Employment' };
     public static final List<String> IPS_EVENT_RECORD_TYPES = new List<String>{
         'IPS_Event',
