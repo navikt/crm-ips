@@ -56,33 +56,6 @@ public without sharing class IPS_EventManagementService {
     }
 
     /**
-     * @description Creates an IPS_ManagerEvent DTO from a given Event record and its related Work_Trail__c record. The method populates the fields of the IPS_ManagerEvent with relevant information from both the Event and Work_Trail__c records, such as employee name, profile, event details, participant information, and formatted start time. This transformation allows for a comprehensive representation of the event data for display on the manager's leaderboard.
-     * @author Håkon Kavli | 05-12-2026
-     * @param employeeEvent The Event record from which to create the IPS_ManagerEvent DTO, containing details about the event and its owner.
-     * @param relatedWorkTrail The related Work_Trail__c record that provides additional context about the participant associated with the event, including their name, address, and participant identifier.
-     * @return IPS_ManagerEvent The resulting IPS_ManagerEvent DTO that encapsulates the combined information from the Event and related Work_Trail__c records for display purposes.
-     **/
-    @TestVisible
-    private static IPS_ManagerEvent createEmployeeEvent(Event employeeEvent, Work_Trail__c relatedWorkTrail) {
-        IPS_ManagerEvent managerEvent = new IPS_ManagerEvent();
-        managerEvent.eventId = employeeEvent.Id;
-        managerEvent.employeeName = employeeEvent.Owner.Name;
-        managerEvent.profileName = employeeEvent.Owner.Profile.Name;
-        managerEvent.subject = employeeEvent.Subject;
-        managerEvent.location = employeeEvent.Location;
-        managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
-        managerEvent.accountName = employeeEvent.IPS_employerName__c;
-        managerEvent.accountContactName = employeeEvent.Konto_kontakt__r.Name;
-        managerEvent.isParticipantAttending = employeeEvent.IPS_participant_related_to_meeting__c;
-        managerEvent.workTrailId = employeeEvent.WhatId;
-        managerEvent.startTime = formatTime(employeeEvent.StartDateTime);
-        managerEvent.participantIdent = relatedWorkTrail.ips_Participant__r.INT_PersonIdent__c;
-        managerEvent.participantName = relatedWorkTrail.ips_Participant__r.Name;
-        managerEvent.participantAddress = relatedWorkTrail.IPS_Participants_home_address__c;
-        return managerEvent;
-    }
-
-    /**
      * @description Returns a list of Event records for the current week that are owned by the employees reporting to the manager thats currently using the "Jobbsporet Lederbrett". The events are filtered based on specific criteria, including the WhatId, StartDateTime, and RecordType.
      * @author Håkon Kavli | 05-12-2026
      * @return List<Event> Resulting list of Event records that match the specified criteria for the current week.
@@ -116,25 +89,13 @@ public without sharing class IPS_EventManagementService {
         ];
     }
 
-    @TestVisible
-    private static Set<Id> extractWorkTrailIds(List<Event> events) {
-        Set<Id> workTrailIds = new Set<Id>();
-        for (Event event : events) {
-            if (event.WhatId != null && IPS_EVENT_RECORD_TYPES.contains(event.RecordType.DeveloperName)) {
-                workTrailIds.add(event.WhatId);
-            }
-        }
-        return workTrailIds;
-    }
-
     /**
-    * @description Creates a map of Work_Trail__c records keyed by their Ids. This method retrieves the Work_Trail__c records based on the provided set of workTrailIds and organizes them into a map for easy access.
-    * @author Håkon Kavli | 05-12-2026 
-    * @param workTrailIds 
-    * @return Map<Id, Work_Trail__c>
-* @Todo add the WITH_SHARING keyboard to enforce sharing rules once a new permission set is created for the Managers that will use the "Jobbsporet Lederbrett". This will ensure that managers only see events for their direct reports and not for all employees in the organization.
- 
-    **/
+     * @description Creates a map of Work_Trail__c records keyed by their Ids. This method retrieves the Work_Trail__c records based on the provided set of workTrailIds and organizes them into a map for easy access.
+     * @author Håkon Kavli | 05-12-2026
+     * @param workTrailIds The set of Work_Trail__c Ids for which to retrieve the records and create the map.
+     * @return Map<Id, Work_Trail__c> The resulting map of Work_Trail__c records keyed by their Ids, allowing for efficient lookup when creating IPS_ManagerEvent DTOs.
+     * @Todo add the WITH_SHARING keyboard to enforce sharing rules once a new permission set is created for the Managers that will use the "Jobbsporet Lederbrett". This will ensure that managers only see events for their direct reports and not for all employees in the organization.
+     **/
     @TestVisible
     private static Map<Id, Work_Trail__c> getRelatedWorkTrailMap(Set<Id> workTrailIds) {
         return new Map<Id, Work_Trail__c>(
@@ -149,6 +110,49 @@ public without sharing class IPS_EventManagementService {
                 ORDER BY CreatedDate DESC
             ]
         );
+    }
+
+    /**
+     * @description Creates an IPS_ManagerEvent DTO from a given Event record and its related Work_Trail__c record. The method populates the fields of the IPS_ManagerEvent with relevant information from both the Event and Work_Trail__c records, such as employee name, profile, event details, participant information, and formatted start time. This transformation allows for a comprehensive representation of the event data for display on the manager's leaderboard.
+     * @author Håkon Kavli | 05-12-2026
+     * @param employeeEvent The Event record from which to create the IPS_ManagerEvent DTO, containing details about the event and its owner.
+     * @param relatedWorkTrail The related Work_Trail__c record that provides additional context about the participant associated with the event, including their name, address, and participant identifier.
+     * @return IPS_ManagerEvent The resulting IPS_ManagerEvent DTO that encapsulates the combined information from the Event and related Work_Trail__c records for display purposes.
+     **/
+    @TestVisible
+    private static IPS_ManagerEvent createEmployeeEvent(Event employeeEvent, Work_Trail__c relatedWorkTrail) {
+        IPS_ManagerEvent managerEvent = new IPS_ManagerEvent();
+        managerEvent.eventId = employeeEvent.Id;
+        managerEvent.employeeName = employeeEvent.Owner.Name;
+        managerEvent.profileName = employeeEvent.Owner.Profile.Name;
+        managerEvent.subject = employeeEvent.Subject;
+        managerEvent.location = employeeEvent.Location;
+        managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
+        managerEvent.accountName = employeeEvent.IPS_employerName__c;
+        managerEvent.accountContactName = employeeEvent.Konto_kontakt__r.Name;
+        managerEvent.isParticipantAttending = employeeEvent.IPS_participant_related_to_meeting__c;
+        managerEvent.workTrailId = employeeEvent.WhatId;
+        managerEvent.startTime = formatTime(employeeEvent.StartDateTime);
+        managerEvent.participantIdent = relatedWorkTrail.ips_Participant__r.INT_PersonIdent__c;
+        managerEvent.participantName = relatedWorkTrail.ips_Participant__r.Name;
+        managerEvent.participantAddress = relatedWorkTrail.IPS_Participants_home_address__c;
+        return managerEvent;
+    }
+    /**
+     * @description Creates a set of unique WhatId values from the provided list of Event records that are associated with the specified IPS_EVENT_RECORD_TYPES. This method iterates through the list of events, checks if the WhatId is not null and if the RecordType of the event matches one of the specified types, and collects the unique WhatId values into a set for further processing.
+     * @author Håkon Kavli | 05-12-2026
+     * @param events The list of Event records to process.
+     * @return Set<Id> A set of unique Work_Trail__c Id values from the provided Event records.
+     **/
+    @TestVisible
+    private static Set<Id> extractWorkTrailIds(List<Event> events) {
+        Set<Id> workTrailIds = new Set<Id>();
+        for (Event event : events) {
+            if (event.WhatId != null && IPS_EVENT_RECORD_TYPES.contains(event.RecordType.DeveloperName)) {
+                workTrailIds.add(event.WhatId);
+            }
+        }
+        return workTrailIds;
     }
 
     /**
