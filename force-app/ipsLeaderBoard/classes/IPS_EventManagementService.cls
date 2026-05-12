@@ -94,7 +94,6 @@ public with sharing class IPS_EventManagementService {
      * @author Håkon Kavli | 05-12-2026
      * @param workTrailIds The set of Work_Trail__c Ids for which to retrieve the records and create the map.
      * @return Map<Id, Work_Trail__c> The resulting map of Work_Trail__c records keyed by their Ids, allowing for efficient lookup when creating IPS_ManagerEvent DTOs.
-     * @Todo add the WITH_SHARING keyboard to enforce sharing rules once a new permission set is created for the Managers that will use the "Jobbsporet Lederbrett". This will ensure that managers only see events for their direct reports and not for all employees in the organization.
      **/
     @TestVisible
     private static Map<Id, Work_Trail__c> getRelatedWorkTrailMap(Set<Id> workTrailIds) {
