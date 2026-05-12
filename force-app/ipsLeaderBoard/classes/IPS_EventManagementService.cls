@@ -103,7 +103,8 @@ public with sharing class IPS_EventManagementService {
                     Id,
                     IPS_Participants_home_address__c,
                     ips_Participant__r.INT_PersonIdent__c,
-                    ips_Participant__r.Name
+                    ips_Participant__r.Name,
+                    RecordType.DeveloperName
                 FROM Work_Trail__c
                 WHERE Id IN :workTrailIds
                 WITH USER_MODE
