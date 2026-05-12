@@ -1,45 +1,70 @@
 ---
 name: flyway-migration
-description: Databasemigrasjonsmønstre med Flyway og versjonerte SQL-skript
-license: MIT
-compatibility: Kotlin or Java with Flyway
-metadata:
-  domain: backend
-  tags: database flyway sql migration
+description: "Flyway-databasemigreringer — V__ SQL-filer, schema-endringer, backfill, indeksmigrering, rollback-plan og produksjonssikker rekkefølge. Brukes via /flyway-migration ved nye eller endrede migreringer."
 ---
 
-# Flyway Migration Skill
+# Flyway-migrering
 
-This skill provides patterns for managing database schema changes with Flyway.
+Opprett en ny Flyway-migreringsfil etter teamets konvensjoner.
 
-## Migration File Naming
+## Steg
 
-```text
-db/migration/V{version}__{description}.sql
-```
+1. Finn migreringsmappen ved å søke etter eksisterende `V*__*.sql`-filer under `src/main/resources/db/`, eller sjekk `flyway.locations` i applikasjonskonfigurasjonen. List deretter eksisterende migreringer for å finne neste versjonsnummer.
+2. Les den nyeste migreringen for å forstå navngivings- og stilkonvensjonene
+3. Opprett den nye migreringsfilen med riktig navn: `V{next}__{description}.sql`
 
-Examples:
+## Konvensjoner
 
-- `V1__create_users_table.sql`
-- `V2__add_email_to_users.sql`
-- `V3__create_payments_table.sql`
-- `V1.1__add_phone_to_users.sql`
+- Foretrekk fail-fast i versjonerte migreringer — bruk `IF NOT EXISTS` / `IF EXISTS` bare når du bevisst vil gjøre migreringen idempotent
+- Bruk `TIMESTAMPTZ` for tidsstempler (med `DEFAULT NOW()`)
+- Bruk `UUID` med `gen_random_uuid()` for primærnøkler der det passer
+- Bruk `TEXT` i stedet for `VARCHAR`
+- Legg til indekser for kolonner det søkes ofte på
+- Én fokusert endring per migrering
 
-## Creating Tables
+## Mal
 
 ```sql
--- V1__create_users_table.sql
-CREATE TABLE users (
-    id BIGSERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+-- V{number}__{description}.sql
+CREATE TABLE table_name (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
-CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_table_name_field ON table_name(field);
+```
 
--- Automatic updated_at trigger
+## CONCURRENTLY-indekser
+
+Bruk egen migrering når du må opprette indeks på stor tabell i produksjon uten å blokkere skriving.
+
+```sql
+-- V5__add_index_concurrently.sql
+-- NB: CREATE INDEX CONCURRENTLY kan ikke kjøre i transaksjon
+-- Kjør denne migreringen alene og verifiser Flyway-oppsettet først
+-- migration:executeInTransaction=false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_vedtak_bruker ON vedtak (bruker_id);
+```
+
+Hvis prosjektet bruker rammeverk-konfig for Flyway, verifiser tilsvarende innstilling der i stedet for å gjette på globale properties.
+
+## Repeterbare migreringer
+
+`R__*.sql`-filer kjøres på nytt hver gang innholdet endres.
+
+Bruk dem for:
+- views
+- funksjoner
+- triggers
+- seed data
+
+Hold versjonerte `V__`-migreringer uendrede, og bruk repeterbare migreringer for objekter som naturlig regenereres.
+
+Eksempel på `updated_at`-trigger i en repeterbar migrering:
+
+```sql
+-- R__update_updated_at.sql
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -47,102 +72,29 @@ BEGIN
     RETURN NEW;
 END;
 $$ language 'plpgsql';
-
-CREATE TRIGGER update_users_updated_at
-    BEFORE UPDATE ON users
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
 ```
 
-## Adding Columns
+## Testcontainers-eksempel
 
-```sql
--- V2__add_phone_to_users.sql
-ALTER TABLE users ADD COLUMN phone_number VARCHAR(20);
-CREATE INDEX idx_users_phone ON users(phone_number);
-```
-
-## Creating Indexes
-
-```sql
--- V3__add_user_indexes.sql
-CREATE INDEX CONCURRENTLY idx_users_created_at ON users(created_at DESC);
-CREATE INDEX CONCURRENTLY idx_users_name ON users(name);
-```
-
-## Adding Foreign Keys
-
-```sql
--- V4__create_orders_table.sql
-CREATE TABLE orders (
-    id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-CREATE INDEX idx_orders_status ON orders(status);
-```
-
-## Data Migrations
-
-```sql
--- V5__set_default_status.sql
-UPDATE users
-SET status = 'active'
-WHERE status IS NULL;
-
-ALTER TABLE users
-ALTER COLUMN status SET NOT NULL;
-```
-
-## Kotlin Integration
+Bruk Testcontainers for å verifisere at migrasjoner faktisk kan kjøres mot en ekte PostgreSQL-instans i tester.
 
 ```kotlin
-import org.flywaydb.core.Flyway
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
-
-fun createDataSource(jdbcUrl: String): HikariDataSource {
-    val config = HikariConfig().apply {
-        this.jdbcUrl = jdbcUrl
-        username = System.getenv("DATABASE_USERNAME")
-        password = System.getenv("DATABASE_PASSWORD")
-        maximumPoolSize = 5
-        minimumIdle = 1
-        idleTimeout = 60000
-        maxLifetime = 600000
+@Testcontainers
+class DatabaseTest {
+    companion object {
+        @Container
+        val postgres = PostgreSQLContainer("postgres:15-alpine")
+            .withDatabaseName("testdb")
     }
 
-    return HikariDataSource(config)
-}
-
-fun runMigrations(dataSource: HikariDataSource) {
-    Flyway.configure()
-        .dataSource(dataSource)
-        .locations("classpath:db/migration")
-        .load()
-        .migrate()
-}
-
-// In main()
-fun main() {
-    val dataSource = createDataSource(env.databaseUrl)
-    runMigrations(dataSource)
-
-    logger.info("Database migrations completed")
+    @Test
+    fun `migrasjoner kjører uten feil`() {
+        Flyway.configure()
+            .dataSource(postgres.jdbcUrl, postgres.username, postgres.password)
+            .load()
+            .migrate()
+    }
 }
 ```
 
-## Best Practices
-
-1. **Never modify existing migrations**: Create a new migration instead
-2. **Use CONCURRENTLY for indexes**: Avoid locking tables in production
-3. **Test migrations on dev first**: Always test before production
-4. **Keep migrations small**: One logical change per migration
-5. **Use transactions**: Wrap changes in BEGIN/COMMIT when possible
-6. **Add rollback notes**: Comment how to manually rollback if needed
+Dette gir rask tilbakemelding på at migrasjonsrekkefølge, SQL-syntaks og Flyway-konfig faktisk fungerer sammen.
