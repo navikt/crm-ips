@@ -42,14 +42,14 @@ public with sharing class IPS_EventManagementService {
         // Iterate through the events and create manager event DTOs, linking them to the related Work_Trail__c records
         for (Event employeeEvent : employeeEvents) {
             // Skip events that are not related to the specified WhatId record types
-            if (
-                workTrailMap.get(employeeEvent.WhatId) == null ||
-                IPS_WHATID_RECORD_TYPES.contains(workTrailMap.get(employeeEvent.WhatId).RecordType.DeveloperName) ==
+            Work_Trail__c relatedWorkTrail = workTrailMap.get(employeeEvent.WhatId);
+            if (relatedWorkTrail == null ||
+                IPS_WHATID_RECORD_TYPES.contains(relatedWorkTrail.RecordType.DeveloperName) ==
                 false
             ) {
                 continue;
             }
-            managerEvents.add(createEmployeeEvent(employeeEvent, workTrailMap.get(employeeEvent.WhatId)));
+            managerEvents.add(createEmployeeEvent(employeeEvent, relatedWorkTrail));
         }
 
         return managerEvents;
