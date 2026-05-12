@@ -80,7 +80,7 @@ public with sharing class IPS_EventManagementService {
             WHERE
                 OwnerId IN :IPS_Utility.getMyEmployeesUserId()
                 AND StartDateTime >= :date.today()
-                AND StartDateTime <= :date.today().addDays(7)
+                AND StartDateTime < :date.today().addDays(8)
                 AND WhatId != NULL
                 AND RecordType.DeveloperName IN :IPS_EVENT_RECORD_TYPES
                 AND IPS_Status1__c = 'Open'
