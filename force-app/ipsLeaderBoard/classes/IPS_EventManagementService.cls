@@ -127,16 +127,16 @@ public with sharing class IPS_EventManagementService {
         managerEvent.employeeName = employeeEvent.Owner.Name;
         managerEvent.profileName = employeeEvent.Owner.Profile.Name;
         managerEvent.subject = employeeEvent.Subject;
-        managerEvent.location = employeeEvent.Location;
+        managerEvent.location = employeeEvent.Location ?? 'Sted ikke oppgitt';
         managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
-        managerEvent.accountName = employeeEvent.IPS_employerName__c;
-        managerEvent.accountContactName = employeeEvent.Konto_kontakt__r.Name;
+        managerEvent.accountName = employeeEvent.IPS_employerName__c ?? 'Arbeidsgiver ikke oppgitt';
+        managerEvent.accountContactName = employeeEvent.Konto_kontakt__r.Name ?? 'Navn ikke oppgitt';
         managerEvent.isParticipantAttending = employeeEvent.IPS_participant_related_to_meeting__c;
         managerEvent.workTrailId = employeeEvent.WhatId;
         managerEvent.startTime = formatTime(employeeEvent.StartDateTime);
-        managerEvent.participantIdent = relatedWorkTrail.ips_Participant__r.INT_PersonIdent__c;
+        managerEvent.participantIdent = relatedWorkTrail.ips_Participant__r.INT_PersonIdent__c ?? 'Fødselsnummer ikke oppgitt';
         managerEvent.participantName = relatedWorkTrail.ips_Participant__r.Name;
-        managerEvent.participantAddress = relatedWorkTrail.IPS_Participants_home_address__c;
+        managerEvent.participantAddress = relatedWorkTrail.IPS_Participants_home_address__c ?? 'Adresse ikke oppgitt';
         return managerEvent;
     }
     /**
