@@ -59,7 +59,6 @@ public with sharing class IPS_EventManagementService {
      * @description Returns a list of Event records for the current week that are owned by the employees reporting to the manager thats currently using the "Jobbsporet Lederbrett". The events are filtered based on specific criteria, including the WhatId, StartDateTime, and RecordType.
      * @author Håkon Kavli | 05-12-2026
      * @return List<Event> Resulting list of Event records that match the specified criteria for the current week.
-     * @Todo add the WITH_SHARING keyboard to enforce sharing rules once a new permission set is created for the Managers that will use the "Jobbsporet Lederbrett". This will ensure that managers only see events for their direct reports and not for all employees in the organization.
      **/
     @TestVisible
     private static List<Event> getEventsForEmployeesCurrentWeek() {
@@ -85,6 +84,7 @@ public with sharing class IPS_EventManagementService {
                 AND WhatId != NULL
                 AND RecordType.DeveloperName IN :IPS_EVENT_RECORD_TYPES
                 AND IPS_Status1__c = 'Open'
+            WITH USER_MODE
             ORDER BY StartDateTime, OwnerId
         ];
     }
@@ -107,6 +107,7 @@ public with sharing class IPS_EventManagementService {
                     ips_Participant__r.Name
                 FROM Work_Trail__c
                 WHERE Id IN :workTrailIds
+                WITH USER_MODE
                 ORDER BY CreatedDate DESC
             ]
         );
