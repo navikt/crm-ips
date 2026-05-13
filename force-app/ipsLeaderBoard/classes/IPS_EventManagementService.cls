@@ -79,7 +79,7 @@ public with sharing class IPS_EventManagementService {
                 AND WhatId != NULL
                 AND RecordType.DeveloperName IN :IPS_Utility.EVENT_RECORD_TYPES
                 AND IPS_Status1__c = 'Open'
-            WITH USER_MODE
+            WITH SYSTEM_MODE
             ORDER BY StartDateTime, OwnerId
         ];
     }
@@ -102,7 +102,7 @@ public with sharing class IPS_EventManagementService {
                     RecordType.DeveloperName
                 FROM Work_Trail__c
                 WHERE Id IN :workTrailIds
-                WITH USER_MODE
+                WITH SYSTEM_MODE
                 ORDER BY CreatedDate DESC
             ]
         );
