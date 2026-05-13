@@ -12,6 +12,7 @@ public without sharing class IPS_Utility {
     };
     public static final List<String> WORK_TRAIL_ACTIVE_STATUSES = new List<String>{
         'Adapted training and training in the workplace',
+        'Aktiv jobbstøtte',
         'Career mapping and career planning',
         'Discovery',
         'Downsizing',
@@ -24,9 +25,10 @@ public without sharing class IPS_Utility {
         'Job development',
         'Long-term available follow-up and career development',
         'Mapping',
+        'Tilgjengelig Jobbstøtte',
         'Working'
     };
-    public static final List<String> WORK_TRAIL_INACTIVE_STATUSES = new List<String>{ 'Ended', 'Refferred' };
+    public static final List<String> WORK_TRAIL_INACTIVE_STATUSES = new List<String>{ 'Ended', 'Referred' };
 
     public static List<User> getPersonAccountId(String userId) {
         List<User> userList = new List<User>();

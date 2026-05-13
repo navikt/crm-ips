@@ -13,6 +13,27 @@
                         <valueListItems>
                             <value>ChangeOwnerOne</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>Work_Trail__c.IPS_Endre_Sluttdetaljer</value>
+                            <visibilityRule>
+                                <booleanFilter>3 AND (1 OR 2)</booleanFilter>
+                                <criteria>
+                                    <leftValue>{!Record.IPS_Show_edit_enddetails_action__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!$Permission.CustomPermission.NAV_brukerstotte}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>true</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
@@ -53,25 +74,6 @@
                 <identifier>runtime_sales_pathassistant_pathAssistant</identifier>
             </componentInstance>
         </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>flowArguments</name>
-                    <value>
-                        [{&quot;label&quot;:&quot;recordId&quot;,&quot;dataType&quot;:&quot;String&quot;,&quot;supportsRecordId&quot;:true,&quot;value&quot;:&quot;{!Record.Id}&quot;}]</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>flowLayout</name>
-                    <value>oneColumn</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>flowName</name>
-                    <value>CE_Discovery_phases</value>
-                </componentInstanceProperties>
-                <componentName>flowruntime:interview</componentName>
-                <identifier>flowruntime_interview</identifier>
-            </componentInstance>
-        </itemInstances>
         <name>header</name>
         <type>Region</type>
     </flexiPageRegions>
@@ -80,10 +82,30 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
+                    <value>readonly</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.RecordTypeId</fieldItem>
+                <identifier>RecordRecordTypeField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.ips_Participant__c</fieldItem>
                 <identifier>Recordips_Participant_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.OwnerId</fieldItem>
+                <identifier>RecordOwnerIdField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -317,6 +339,104 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>amountOfMonths</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToLoad</name>
+                    <value>36</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfMonthsToOpen</name>
+                    <value>1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecords</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToLoad</name>
+                    <value>50</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>amountOfRecordsToOpen</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>buttonIsHidden</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>configId</name>
+                    <value>UO_delmal_Task</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>customEmptySubtitle</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>filterIsActive</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerIcon</name>
+                    <value>standard:apps</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleEnglish</name>
+                    <value>Sub Goal</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>headerTitleNorwegian</name>
+                    <value>Delmål</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideMyActivitiesFilter</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>includeAmountInTitle</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>initialQueryLimit</name>
+                    <value>50</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>logEvent</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter1Label</name>
+                    <value>Status på delmål</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>picklistFilter2Label</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showHideLabel</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>timelineParentField</name>
+                    <value>Id</value>
+                </componentInstanceProperties>
+                <componentName>timeline</componentName>
+                <identifier>c_timeline1</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$Client.formFactor}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Large</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-4d5b7a24-89c0-4f42-8d9b-ce0f7f3df9d1</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>body</name>
                     <value>Facet-189db25e-a2ee-4961-a48c-3ee6f12a8500</value>
                 </componentInstanceProperties>
@@ -326,6 +446,20 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-4d5b7a24-89c0-4f42-8d9b-ce0f7f3df9d1</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Delmål</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab10</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -372,7 +506,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Participant details</value>
+                    <value>Detaljer</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection2</identifier>
@@ -536,7 +670,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Innsikt details</value>
+                    <value>Innsikt detaljer</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection</identifier>
@@ -552,8 +686,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.CE_What_is_important_to_you__c</fieldItem>
-                <identifier>RecordCE_What_is_important_to_you_cField</identifier>
+                <fieldItem>Record.CE_Surroundings__c</fieldItem>
+                <identifier>RecordCE_Surroundings_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -562,8 +696,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.CE_Salary_and_other_financial_req__c</fieldItem>
-                <identifier>RecordCE_Salary_and_other_financial_req_cField</identifier>
+                <fieldItem>Record.CE_People_and_social_contact__c</fieldItem>
+                <identifier>RecordCE_People_and_social_contact_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -572,8 +706,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.CE_Interests_and_hobbies_beyond_work__c</fieldItem>
-                <identifier>RecordCE_Interests_and_hobbies_beyond_work_cField</identifier>
+                <fieldItem>Record.CE_Activities__c</fieldItem>
+                <identifier>RecordCE_Activities_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -582,8 +716,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.CE_What_skills_abilities_do_you_use__c</fieldItem>
-                <identifier>RecordCE_What_skills_abilities_do_you_use_cField</identifier>
+                <fieldItem>Record.CE_Skills__c</fieldItem>
+                <identifier>RecordCE_Skills_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -592,8 +726,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.CE_Need_for_support_to_complete_tasks__c</fieldItem>
-                <identifier>RecordCE_Need_for_support_to_complete_tasks_cField</identifier>
+                <fieldItem>Record.CE_Learning_style__c</fieldItem>
+                <identifier>RecordCE_Learning_style_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -602,28 +736,18 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.CE_Learning_strategies__c</fieldItem>
-                <identifier>RecordCE_Learning_strategies_cField</identifier>
+                <fieldItem>Record.CE_Future_hopes_and_dreams__c</fieldItem>
+                <identifier>RecordCE_Future_hopes_and_dreams_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.CE_Places_you_usually_visit_in_your_area__c</fieldItem>
-                <identifier>RecordCE_Places_you_usually_visit_in_your_area_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.CE_What_means_of_transport_do_you_use__c</fieldItem>
-                <identifier>RecordCE_What_means_of_transport_do_you_use_cField</identifier>
+                <fieldItem>Record.CE_Status_Entry_Date__c</fieldItem>
+                <identifier>RecordCE_Status_Entry_Date_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-6b793779-d8d8-43d8-bf6d-c596e640227c</name>
@@ -656,7 +780,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Kartlegging detaljer</value>
+                    <value>ICE-detaljer</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection4</identifier>
@@ -722,15 +846,19 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.CE_Occupational_themes__c</fieldItem>
-                <identifier>RecordCE_Occupational_themes_cField</identifier>
+                <fieldItem>Record.CE_Occupational_theme_category__c</fieldItem>
+                <identifier>RecordCE_Occupational_theme_category_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
-            <componentInstance>
-                <componentName>flexipage:blankSpace</componentName>
-                <identifier>flexipage_blankSpace</identifier>
-            </componentInstance>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.CE_Occupational_themes_subcategory__c</fieldItem>
+                <identifier>RecordCE_Occupational_themes_subcategory_cField</identifier>
+            </fieldInstance>
         </itemInstances>
         <name>Facet-c5ccd636-0989-409b-b860-245f01a8f82d</name>
         <type>Facet</type>
@@ -939,24 +1067,10 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Yrkeskartlegging</value>
+                    <value>ICE</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab7</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-7tesuo2d5i9</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>Beskrivende yrkesprofil</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>flexipage_tab8</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -977,11 +1091,25 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
+                    <value>Facet-7tesuo2d5i9</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Beskrivende yrkesprofil</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab8</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
                     <value>Facet-8e5e18b2-0cc6-4608-a20c-06becc09cc47</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Job</value>
+                    <value>Jobb</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab3</identifier>
