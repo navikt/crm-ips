@@ -6,11 +6,6 @@
  **/
 public with sharing class IPS_EventManagementService {
     public static final List<String> IPS_WHATID_RECORD_TYPES = new List<String>{ 'IPS', 'ips_Supported_Employment' };
-    public static final List<String> IPS_EVENT_RECORD_TYPES = new List<String>{
-        'IPS_Event',
-        'IPS_UO_Arbeidsgiver',
-        'ips_UO_m_ter'
-    };
 
     /**
      * @description Returns a list of IPS_ManagerEvent DTOs for the events that are scheduled for the current week and are owned by the employees reporting to the manager currently using the "Jobbsporet Lederbrett". The method retrieves the relevant Event records, transforms them into IPS_ManagerEvent DTOs, and enriches the data with related Work_Trail__c information to provide a comprehensive view of the events for display on the manager's leaderboard.
@@ -71,7 +66,7 @@ public with sharing class IPS_EventManagementService {
                 Owner.Profile.Name,
                 Location,
                 StartDateTime,
-                IPS_Type__c,
+                toLabel(IPS_Type__c),
                 IPS_employerName__c,
                 Konto_kontakt__r.name,
                 IPS_participant_related_to_meeting__c,
@@ -80,9 +75,9 @@ public with sharing class IPS_EventManagementService {
             WHERE
                 OwnerId IN :IPS_Utility.getMyEmployeesUserId()
                 AND StartDateTime >= :date.today()
-                AND StartDateTime < :date.today().addDays(8)
+                AND StartDateTime < :date.today().addDays(7)
                 AND WhatId != NULL
-                AND RecordType.DeveloperName IN :IPS_EVENT_RECORD_TYPES
+                AND RecordType.DeveloperName IN :IPS_Utility.EVENT_RECORD_TYPES
                 AND IPS_Status1__c = 'Open'
             WITH USER_MODE
             ORDER BY StartDateTime, OwnerId
@@ -130,12 +125,12 @@ public with sharing class IPS_EventManagementService {
         managerEvent.location = employeeEvent.Location ?? 'Sted ikke oppgitt';
         managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
         managerEvent.accountName = employeeEvent.IPS_employerName__c ?? 'Arbeidsgiver ikke oppgitt';
-        managerEvent.accountContactName = employeeEvent.Konto_kontakt__r.Name ?? 'Navn ikke oppgitt';
+        managerEvent.accountContactName = employeeEvent.Konto_kontakt__r?.Name ?? 'Navn ikke oppgitt';
         managerEvent.isParticipantAttending = employeeEvent.IPS_participant_related_to_meeting__c;
         managerEvent.workTrailId = employeeEvent.WhatId;
         managerEvent.startTime = formatTime(employeeEvent.StartDateTime);
-        managerEvent.participantIdent = relatedWorkTrail.ips_Participant__r.INT_PersonIdent__c ?? 'Fødselsnummer ikke oppgitt';
-        managerEvent.participantName = relatedWorkTrail.ips_Participant__r.Name;
+        managerEvent.participantIdent = relatedWorkTrail.ips_Participant__r?.INT_PersonIdent__c ?? 'Fødselsnummer ikke oppgitt';
+        managerEvent.participantName = relatedWorkTrail.ips_Participant__r?.Name ?? 'Navn ikke oppgitt';
         managerEvent.participantAddress = relatedWorkTrail.IPS_Participants_home_address__c ?? 'Adresse ikke oppgitt';
         return managerEvent;
     }
@@ -149,7 +144,7 @@ public with sharing class IPS_EventManagementService {
     private static Set<Id> extractWorkTrailIds(List<Event> events) {
         Set<Id> workTrailIds = new Set<Id>();
         for (Event event : events) {
-            if (event.WhatId != null && IPS_EVENT_RECORD_TYPES.contains(event.RecordType.DeveloperName)) {
+            if (event.WhatId != null && IPS_Utility.EVENT_RECORD_TYPES.contains(event.RecordType.DeveloperName)) {
                 workTrailIds.add(event.WhatId);
             }
         }
