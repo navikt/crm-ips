@@ -128,7 +128,7 @@ public with sharing class IPS_EventManagementService {
         managerEvent.accountContactName = employeeEvent.Konto_kontakt__r?.Name ?? 'Navn ikke oppgitt';
         managerEvent.isParticipantAttending = employeeEvent.IPS_participant_related_to_meeting__c;
         managerEvent.workTrailId = employeeEvent.WhatId;
-        managerEvent.startTime = formatTime(employeeEvent.StartDateTime);
+        managerEvent.startTime = employeeEvent.StartDateTime..format('dd.MM.yyyy HH:mm');
         managerEvent.participantIdent = relatedWorkTrail.ips_Participant__r?.INT_PersonIdent__c ?? 'Fødselsnummer ikke oppgitt';
         managerEvent.participantName = relatedWorkTrail.ips_Participant__r?.Name ?? 'Navn ikke oppgitt';
         managerEvent.participantAddress = relatedWorkTrail.IPS_Participants_home_address__c ?? 'Adresse ikke oppgitt';
@@ -149,23 +149,5 @@ public with sharing class IPS_EventManagementService {
             }
         }
         return workTrailIds;
-    }
-
-    /**
-     * @description Simple utility method to format Datetime into a readable string format for display purposes.
-     * @author Håkon Kavli | 05-12-2026
-     * @param dt The Datetime value to be formatted.
-     * @return String The formatted Datetime string.
-     **/
-    private static String formatTime(Datetime dt) {
-        return dt.format('dd') +
-            '.' +
-            dt.format('MM') +
-            '.' +
-            dt.format('yyyy') +
-            ' ' +
-            dt.format('HH') +
-            ':' +
-            dt.format('mm');
     }
 }
