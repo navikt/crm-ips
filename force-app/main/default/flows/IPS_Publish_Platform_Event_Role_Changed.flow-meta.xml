@@ -178,9 +178,6 @@
         <label>Role Changed Platform Event</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <faultConnector>
-            <targetReference>Application_Log</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Current_Profile__c</field>
             <value>
@@ -259,10 +256,6 @@
         <connector>
             <targetReference>Update_Team_Lead_Fagansvarlig</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Application_Log</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>UserRoleId</field>
@@ -293,10 +286,6 @@
         <connector>
             <targetReference>Is_Metodeveileder_Empty</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Application_Log</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>UserRoleId</field>
@@ -327,10 +316,6 @@
         <connector>
             <targetReference>Worktrails</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Application_Log</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>OwnerId</field>
@@ -383,31 +368,6 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
-    <subflows>
-        <name>Application_Log</name>
-        <label>Application Log</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <flowName>IPS_Subflow_Create_Application_Log</flowName>
-        <inputAssignments>
-            <name>applicationDomain</name>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>faultMessage</name>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>sourceFunction</name>
-            <value>
-                <stringValue>IPS -  Publish Platform Event Role Changed</stringValue>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <name>teamLeadId</name>
         <dataType>String</dataType>
