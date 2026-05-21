@@ -6,11 +6,12 @@
  **/
 @IsTest
 public with sharing class IPS_EventManagementServiceTest {
-    private static final String MANAGED_EMPLOYER_SUBJECT = 'Managed employer event';
-    private static final String MANAGED_PARTICIPANT_SUBJECT = 'Managed participant event';
-    private static final String UNMANAGED_SUBJECT = 'Unmanaged employer event';
-    private static final String FUTURE_SUBJECT = 'Managed future event';
-    private static final String NO_WHATID_SUBJECT = 'Managed no whatid event';
+    private static final String MANAGED_EMPLOYER_EVENT_SUBJECT = 'Managed employer meeting';
+    private static final String MANAGED_PARTICIPANT_EVENT_SUBJECT = 'Managed participant meeting';
+    private static final String UNMANAGED_EVENT_SUBJECT = 'Unmanaged employer meeting';
+    private static final String FUTURE_EVENT_SUBJECT = 'Managed future meeting';
+    private static final String EVENT_WITHOUT_WORKTRAIL_SUBJECT = 'Managed no whatId meeting';
+    private static final Integer EXPECTED_MANAGED_EVENT_COUNT = 2;
 
     @TestSetup
     static void makeData() {
@@ -21,11 +22,11 @@ public with sharing class IPS_EventManagementServiceTest {
 
         Account employer = IPS_TestDataFactory.createEmployerAccount();
         insert employer;
-        Work_Trail__C ipsTrail = IPS_TestDataFactory.createJobbspor(accountId);
-        ipsTrail.IPS_Participants_home_address__c = 'Eksempelveien 1';
-        insert ipsTrail;
-        Work_Trail__c uoTrail = IPS_TestDataFactory.createUOJobbspor(accountId);
-        insert uoTrail;
+        Work_Trail__C ipsTypeTrail = IPS_TestDataFactory.createJobbspor(accountId);
+        ipsTypeTrail.IPS_Participants_home_address__c = 'Eksempelveien 1';
+        insert ipsTypeTrail;
+        Work_Trail__c uoTypeTrail = IPS_TestDataFactory.createUOJobbspor(accountId);
+        insert uoTypeTrail;
 
         User employeeUser = IPS_TestDataFactory.createInternalUserWithManager(
             'test.employee@nav.no',
@@ -37,38 +38,38 @@ public with sharing class IPS_EventManagementServiceTest {
         Event eventAssignedToManagersEmployees = IPS_TestDataFactory.createEmployerEventWithParticipant(
             employer.Id,
             employeeUser.Id,
-            ipsTrail.Id
+            ipsTypeTrail.Id
         );
-        eventAssignedToManagersEmployees.Subject = MANAGED_EMPLOYER_SUBJECT;
+        eventAssignedToManagersEmployees.Subject = MANAGED_EMPLOYER_EVENT_SUBJECT;
         events.add(eventAssignedToManagersEmployees);
 
         Event participantEventAssignedToManagersEmployees = IPS_TestDataFactory.createParticipantEventWithOwner(
             employeeUser.Id,
-            uoTrail.Id
+            uoTypeTrail.Id
         );
-        participantEventAssignedToManagersEmployees.Subject = MANAGED_PARTICIPANT_SUBJECT;
+        participantEventAssignedToManagersEmployees.Subject = MANAGED_PARTICIPANT_EVENT_SUBJECT;
         events.add(participantEventAssignedToManagersEmployees);
 
         Event eventAssignedToCurrentUser = IPS_TestDataFactory.createEmployerEventWithParticipant(
             employer.Id,
             UserInfo.getUserId(),
-            ipsTrail.Id
+            ipsTypeTrail.Id
         );
-        eventAssignedToCurrentUser.Subject = UNMANAGED_SUBJECT;
+        eventAssignedToCurrentUser.Subject = UNMANAGED_EVENT_SUBJECT;
         events.add(eventAssignedToCurrentUser);
 
         Event eventOutsideCurrentWeek = IPS_TestDataFactory.createEmployerEventWithParticipant(
             employer.Id,
             employeeUser.Id,
-            ipsTrail.Id
+            ipsTypeTrail.Id
         );
-        eventOutsideCurrentWeek.Subject = FUTURE_SUBJECT;
+        eventOutsideCurrentWeek.Subject = FUTURE_EVENT_SUBJECT;
         eventOutsideCurrentWeek.StartDateTime = DateTime.now().addDays(9);
         eventOutsideCurrentWeek.EndDateTime = DateTime.now().addDays(9).addHours(1);
         events.add(eventOutsideCurrentWeek);
 
         Event eventWithoutWhatId = IPS_TestDataFactory.createEmployerEventWithoutParticipant(employer.Id);
-        eventWithoutWhatId.Subject = NO_WHATID_SUBJECT;
+        eventWithoutWhatId.Subject = EVENT_WITHOUT_WORKTRAIL_SUBJECT;
         eventWithoutWhatId.OwnerId = employeeUser.Id;
         events.add(eventWithoutWhatId);
 
@@ -101,13 +102,17 @@ public with sharing class IPS_EventManagementServiceTest {
         List<Event> events = IPS_EventManagementService.getEventsForEmployeesCurrentWeek();
         Test.stopTest();
 
-        System.Assert.areEqual(2, events.size(), 'Expected only events owned by managed employee in current week');
+        System.Assert.areEqual(
+            EXPECTED_MANAGED_EVENT_COUNT,
+            events.size(),
+            'Expected only events owned by managed employee in current week'
+        );
         Set<String> subjects = new Set<String>();
         for (Event event : events) {
             subjects.add(event.Subject);
         }
         System.Assert.areEqual(
-            new Set<String>{ MANAGED_EMPLOYER_SUBJECT, MANAGED_PARTICIPANT_SUBJECT },
+            new Set<String>{ MANAGED_EMPLOYER_EVENT_SUBJECT, MANAGED_PARTICIPANT_EVENT_SUBJECT },
             subjects,
             'Expected exactly the managed employee events in current week'
         );
@@ -116,12 +121,27 @@ public with sharing class IPS_EventManagementServiceTest {
     @isTest
     private static void extractWorkTrailIds_returnsUniqueWorkTrailIdsForValidEvents() {
         List<Event> events = [
-            SELECT Id, WhatId, RecordType.DeveloperName
+            SELECT Id, WhatId, Subject, RecordType.DeveloperName
             FROM Event
             WHERE
-                Subject IN :new Set<String>{ MANAGED_EMPLOYER_SUBJECT, MANAGED_PARTICIPANT_SUBJECT, NO_WHATID_SUBJECT }
+                Subject IN :new Set<String>{
+                    MANAGED_EMPLOYER_EVENT_SUBJECT,
+                    MANAGED_PARTICIPANT_EVENT_SUBJECT,
+                    EVENT_WITHOUT_WORKTRAIL_SUBJECT
+                }
         ];
-        events.add(events[0]);
+        Event duplicatedManagedEmployerEvent;
+        for (Event event : events) {
+            if (event.Subject == MANAGED_EMPLOYER_EVENT_SUBJECT) {
+                duplicatedManagedEmployerEvent = event;
+                break;
+            }
+        }
+        System.Assert.isNotNull(
+            duplicatedManagedEmployerEvent,
+            'Expected to find managed employer event for duplication'
+        );
+        events.add(duplicatedManagedEmployerEvent);
 
         Test.startTest();
         Set<Id> workTrailIds = IPS_EventManagementService.extractWorkTrailIds(events);
@@ -137,6 +157,11 @@ public with sharing class IPS_EventManagementServiceTest {
             expectedWorkTrailIds,
             workTrailIds,
             'Expected unique Work Trail Ids from valid events only'
+        );
+        System.Assert.areEqual(
+            expectedWorkTrailIds.size(),
+            workTrailIds.size(),
+            'Expected duplicate WhatId values to be deduplicated'
         );
     }
 
@@ -161,7 +186,11 @@ public with sharing class IPS_EventManagementServiceTest {
     @isTest
     private static void createManagerEventsDTO_returnsOnlyEventsWithSupportedWorkTrailRecordType() {
         List<Event> events = getEventsBySubject(
-            new Set<String>{ MANAGED_EMPLOYER_SUBJECT, MANAGED_PARTICIPANT_SUBJECT, NO_WHATID_SUBJECT }
+            new Set<String>{
+                MANAGED_EMPLOYER_EVENT_SUBJECT,
+                MANAGED_PARTICIPANT_EVENT_SUBJECT,
+                EVENT_WITHOUT_WORKTRAIL_SUBJECT
+            }
         );
 
         Test.startTest();
@@ -173,20 +202,20 @@ public with sharing class IPS_EventManagementServiceTest {
             returnedSubjects.add(managerEvent.subject);
         }
         System.Assert.areEqual(
-            2,
+            EXPECTED_MANAGED_EVENT_COUNT,
             managerEvents.size(),
             'Expected only events with supported Work Trail to be transformed'
         );
         System.Assert.areEqual(
-            new Set<String>{ MANAGED_EMPLOYER_SUBJECT, MANAGED_PARTICIPANT_SUBJECT },
+            new Set<String>{ MANAGED_EMPLOYER_EVENT_SUBJECT, MANAGED_PARTICIPANT_EVENT_SUBJECT },
             returnedSubjects,
             'Expected DTOs for supported Work Trail events only'
         );
     }
 
     @isTest
-    private static void createEmployeeEvent_mapsFieldsAndFallbackValues() {
-        Event managedEvent = getEventsBySubject(new Set<String>{ MANAGED_EMPLOYER_SUBJECT })[0];
+    private static void createEmployeeEvent_mapsFields() {
+        Event managedEvent = getEventsBySubject(new Set<String>{ MANAGED_EMPLOYER_EVENT_SUBJECT })[0];
         Work_Trail__c relatedWorkTrail = [
             SELECT
                 Id,
@@ -206,15 +235,35 @@ public with sharing class IPS_EventManagementServiceTest {
         System.Assert.areEqual(managedEvent.Id, managerEvent.eventId, 'Expected event Id to be mapped');
         System.Assert.areEqual(managedEvent.WhatId, managerEvent.workTrailId, 'Expected Work Trail Id to be mapped');
         System.Assert.areEqual(managedEvent.Subject, managerEvent.subject, 'Expected subject to be mapped');
+        System.Assert.areEqual(
+            relatedWorkTrail.IPS_Participants_home_address__c,
+            managerEvent.participantAddress,
+            'Expected participant address to be mapped'
+        );
         System.Assert.isNotNull(managerEvent.startTime, 'Expected formatted start time');
         System.Assert.isNotNull(managerEvent.employeeName, 'Expected employee name');
+    }
 
-        managedEvent.Location = null;
-        managedEvent.IPS_employerName__c = null;
+    @isTest
+    private static void createEmployeeEvent_usesFallbackValuesWhenFieldsAreNull() {
+        Event fallbackEvent = getEventsBySubject(new Set<String>{ MANAGED_EMPLOYER_EVENT_SUBJECT })[0];
+        fallbackEvent.Location = null;
+        fallbackEvent.IPS_employerName__c = null;
+        fallbackEvent.Konto_kontakt__c = null;
+        Work_Trail__c fallbackWorkTrail = [
+            SELECT Id, IPS_Participants_home_address__c, ips_Participant__c
+            FROM Work_Trail__c
+            WHERE Id = :fallbackEvent.WhatId
+            LIMIT 1
+        ];
+        fallbackWorkTrail.IPS_Participants_home_address__c = null;
+        fallbackWorkTrail.ips_Participant__c = null;
+        Test.startTest();
         IPS_ManagerEvent managerEventWithFallbacks = IPS_EventManagementService.createEmployeeEvent(
-            managedEvent,
-            new Work_Trail__c()
+            fallbackEvent,
+            fallbackWorkTrail
         );
+        Test.stopTest();
 
         System.Assert.areEqual(
             'Sted ikke oppgitt',
@@ -259,9 +308,13 @@ public with sharing class IPS_EventManagementServiceTest {
             subjects.add(managerEvent.subject);
         }
 
-        System.Assert.areEqual(2, managerEvents.size(), 'Expected DTOs for managed employee events in current week');
         System.Assert.areEqual(
-            new Set<String>{ MANAGED_EMPLOYER_SUBJECT, MANAGED_PARTICIPANT_SUBJECT },
+            EXPECTED_MANAGED_EVENT_COUNT,
+            managerEvents.size(),
+            'Expected DTOs for managed employee events in current week'
+        );
+        System.Assert.areEqual(
+            new Set<String>{ MANAGED_EMPLOYER_EVENT_SUBJECT, MANAGED_PARTICIPANT_EVENT_SUBJECT },
             subjects,
             'Expected manager DTO subjects to match managed employee events'
         );
