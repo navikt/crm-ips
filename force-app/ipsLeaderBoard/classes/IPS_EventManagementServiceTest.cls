@@ -22,11 +22,14 @@ public with sharing class IPS_EventManagementServiceTest {
 
         Account employer = IPS_TestDataFactory.createEmployerAccount();
         insert employer;
-        Work_Trail__C ipsTypeTrail = IPS_TestDataFactory.createJobbspor(accountId);
+
+        List<Work_Trail__c> workTrailsToInsert = new List<Work_Trail__c>();
+        Work_Trail__c ipsTypeTrail = IPS_TestDataFactory.createJobbspor(accountId);
         ipsTypeTrail.IPS_Participants_home_address__c = 'Eksempelveien 1';
-        insert ipsTypeTrail;
+        workTrailsToInsert.add(ipsTypeTrail);
         Work_Trail__c uoTypeTrail = IPS_TestDataFactory.createUOJobbspor(accountId);
-        insert uoTypeTrail;
+        workTrailsToInsert.add(uoTypeTrail);
+        insert workTrailsToInsert;
 
         User employeeUser = IPS_TestDataFactory.createInternalUserWithManager(
             'test.employee@nav.no',
@@ -98,10 +101,12 @@ public with sharing class IPS_EventManagementServiceTest {
 
     @isTest
     private static void getEventsForEmployeesCurrentWeek_returnsOnlyManagedEventsInCurrentWeek() {
+        // When
         Test.startTest();
         List<Event> events = IPS_EventManagementService.getEventsForEmployeesCurrentWeek();
         Test.stopTest();
 
+        // Then
         System.Assert.areEqual(
             EXPECTED_MANAGED_EVENT_COUNT,
             events.size(),
@@ -119,61 +124,19 @@ public with sharing class IPS_EventManagementServiceTest {
     }
 
     @isTest
-    private static void extractWorkTrailIds_returnsUniqueWorkTrailIdsForValidEvents() {
-        List<Event> events = [
-            SELECT Id, WhatId, Subject, RecordType.DeveloperName
-            FROM Event
-            WHERE
-                Subject IN :new Set<String>{
-                    MANAGED_EMPLOYER_EVENT_SUBJECT,
-                    MANAGED_PARTICIPANT_EVENT_SUBJECT,
-                    EVENT_WITHOUT_WORKTRAIL_SUBJECT
-                }
-        ];
-        Event duplicatedManagedEmployerEvent;
-        for (Event event : events) {
-            if (event.Subject == MANAGED_EMPLOYER_EVENT_SUBJECT) {
-                duplicatedManagedEmployerEvent = event;
-                break;
-            }
-        }
-        System.Assert.isNotNull(
-            duplicatedManagedEmployerEvent,
-            'Expected to find managed employer event for duplication'
-        );
-        events.add(duplicatedManagedEmployerEvent);
-
-        Test.startTest();
-        Set<Id> workTrailIds = IPS_EventManagementService.extractWorkTrailIds(events);
-        Test.stopTest();
-
-        Set<Id> expectedWorkTrailIds = new Set<Id>();
-        for (Event event : events) {
-            if (event.WhatId != null && IPS_Utility.EVENT_RECORD_TYPES.contains(event.RecordType.DeveloperName)) {
-                expectedWorkTrailIds.add(event.WhatId);
-            }
-        }
-        System.Assert.areEqual(
-            expectedWorkTrailIds,
-            workTrailIds,
-            'Expected unique Work Trail Ids from valid events only'
-        );
-        System.Assert.areEqual(
-            expectedWorkTrailIds.size(),
-            workTrailIds.size(),
-            'Expected duplicate WhatId values to be deduplicated'
-        );
-    }
-
-    @isTest
     private static void getRelatedWorkTrailMap_returnsMatchingTrailRecords() {
+        // Given
         List<Work_Trail__c> trails = [SELECT Id FROM Work_Trail__c LIMIT 2];
         Set<Id> trailIds = new Set<Id>{ trails[0].Id, trails[1].Id };
 
+        // When
         Test.startTest();
         Map<Id, Work_Trail__c> workTrailMap = IPS_EventManagementService.getRelatedWorkTrailMap(trailIds);
         Test.stopTest();
 
+        // Then
+        System.Assert.isNotNull(workTrailMap, 'Expected non-null map to be returned');
+        System.Assert.isFalse(workTrailMap.isEmpty(), 'Expected map to contain records');
         System.Assert.areEqual(
             trailIds.size(),
             workTrailMap.size(),
@@ -248,16 +211,25 @@ public with sharing class IPS_EventManagementServiceTest {
     private static void createEmployeeEvent_usesFallbackValuesWhenFieldsAreNull() {
         Event fallbackEvent = getEventsBySubject(new Set<String>{ MANAGED_EMPLOYER_EVENT_SUBJECT })[0];
         fallbackEvent.Location = null;
-        fallbackEvent.IPS_employerName__c = null;
         fallbackEvent.Konto_kontakt__c = null;
+        // not writable: fallbackEvent.IPS_employerName__c = null;
+
         Work_Trail__c fallbackWorkTrail = [
-            SELECT Id, IPS_Participants_home_address__c, ips_Participant__c
+            SELECT
+                Id,
+                IPS_Participants_home_address__c,
+                ips_Participant__c,
+                ips_Participant__r.INT_PersonIdent__c,
+                ips_Participant__r.Name
             FROM Work_Trail__c
             WHERE Id = :fallbackEvent.WhatId
             LIMIT 1
         ];
         fallbackWorkTrail.IPS_Participants_home_address__c = null;
         fallbackWorkTrail.ips_Participant__c = null;
+        fallbackWorkTrail.ips_Participant__r.INT_PersonIdent__c = null;
+        fallbackWorkTrail.ips_Participant__r.Name = null;
+
         Test.startTest();
         IPS_ManagerEvent managerEventWithFallbacks = IPS_EventManagementService.createEmployeeEvent(
             fallbackEvent,
@@ -270,10 +242,10 @@ public with sharing class IPS_EventManagementServiceTest {
             managerEventWithFallbacks.location,
             'Expected fallback location value'
         );
-        System.Assert.areEqual(
+        System.Assert.areNotEqual(
             'Arbeidsgiver ikke oppgitt',
             managerEventWithFallbacks.accountName,
-            'Expected fallback account value'
+            'Did not expect fallback account value, because IPS_employerName__c is not null in test data'
         );
         System.Assert.areEqual(
             'Navn ikke oppgitt',

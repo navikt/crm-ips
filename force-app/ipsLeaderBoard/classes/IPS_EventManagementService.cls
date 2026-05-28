@@ -122,7 +122,7 @@ public with sharing class IPS_EventManagementService {
         managerEvent.employeeName = employeeEvent.Owner.Name;
         managerEvent.profileName = employeeEvent.Owner.Profile.Name;
         managerEvent.subject = employeeEvent.Subject;
-        managerEvent.location = employeeEvent.Location ?? 'Sted ikke oppgitt';
+        managerEvent.location = employeeEvent.Location ?? 'Sted ikke oppgitt'; // unlikely to be null with current validation rules, but added as a fallback
         managerEvent.meetingCategory = employeeEvent.IPS_Type__c;
         managerEvent.accountName = employeeEvent.IPS_employerName__c ?? 'Arbeidsgiver ikke oppgitt';
         managerEvent.accountContactName = employeeEvent.Konto_kontakt__r?.Name ?? 'Navn ikke oppgitt';
