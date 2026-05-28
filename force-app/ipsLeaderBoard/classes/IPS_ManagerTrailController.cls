@@ -1,6 +1,8 @@
 /**
  * @description  : Controller class for managing aggregated Work Trail data for managers in IPS.
  * @author       : Ann Kristin Olsen, Balendra Sounthararajan
+ * @author       : Håkon Kavli
+ * @since        : 0.533.0
  **/
 public without sharing class IPS_ManagerTrailController {
     private static final List<String> ACTIVE_STATUSES = new List<String>{
@@ -33,7 +35,7 @@ public without sharing class IPS_ManagerTrailController {
             for (AggregateResult agg : aggList) {
                 IPS_ManagerTrail trailStatus = new IPS_ManagerTrail();
                 trailStatus.numberOfTrail = (Integer) agg.get('Antall');
-                trailStatus.trailStatus = (String) agg.get('Status');
+                trailStatus.trailStatus = statusMap.get((String) agg.get('Status')) ?? 'Ukjent status';
                 trailStatus.service = (String) agg.get('Tjeneste');
                 trailStatuses.add(trailStatus);
             }
@@ -50,11 +52,11 @@ public without sharing class IPS_ManagerTrailController {
         List<AggregateResult> aggList = new List<AggregateResult>();
 
         aggList = [
-            SELECT count(id) Antall, toLabel(ips_status__c) Status, recordtype.name Tjeneste, End_Cause__c Cause
-            FROM work_trail__c
+            SELECT COUNT(Id) Antall, toLabel(ips_status__c) Status, RecordType.Name Tjeneste, End_Cause__c Cause
+            FROM Work_Trail__c
             WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_status__c IN ('Ended', 'Referred')
-            GROUP BY ips_status__c, recordtype.name, End_Cause__c
-            ORDER BY recordtype.name
+            GROUP BY ips_status__c, RecordType.Name, End_Cause__c
+            ORDER BY RecordType.Name
         ];
 
         if (aggList.size() > 0) {
@@ -80,12 +82,12 @@ public without sharing class IPS_ManagerTrailController {
 
         aggList = [
             SELECT
-                count(id) Antall,
+                COUNT(Id) Antall,
                 CALENDAR_YEAR(ips_End_Date__c) Year,
                 CALENDAR_MONTH(ips_End_Date__c) Month,
                 toLabel(End_Cause__c) Cause,
                 toLabel(ips_Other_end_cases__c) toAnother
-            FROM work_trail__c
+            FROM Work_Trail__c
             WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_Status__c = 'Ended'
             GROUP BY
                 CALENDAR_YEAR(ips_End_Date__c),
@@ -101,8 +103,8 @@ public without sharing class IPS_ManagerTrailController {
                 trailEnded.numberOfTrail = (Integer) agg.get('Antall');
                 trailEnded.year = (Integer) agg.get('Year');
                 trailEnded.month = monthNumberMap.get((Integer) agg.get('Month'));
-                trailEnded.cause = (String) agg.get('Cause');
-                trailEnded.subCause = getSubCause((String) agg.get('toAnother'));
+                trailEnded.cause = mainEndCauseMap.get((String) agg.get('Cause')) ?? 'Ukjent årsak';
+                trailEnded.subCause = subEndCauseMap.get((String) agg.get('toAnother')) ?? 'Ukjent underkategori';
                 trailEnds.add(trailEnded);
             }
         }
@@ -198,5 +200,26 @@ public without sharing class IPS_ManagerTrailController {
         'Working' => 'Jobber',
         'Job development' => 'Jobbutvikling',
         'Downsizing' => 'Nedtrapping'
+    };
+
+    public static Map<String, String> mainEndCauseMap = new Map<String, String>{
+        'Work' => 'Arbeid',
+        'Other end causes' => 'Andre sluttårsaker',
+        'Education' => 'Utdanning'
+    };
+    public static Map<String, String> subEndCauseMap = new Map<String, String>{
+        'Applied / granted disability benefits' => 'Søkt/innvilget uføretrygd',
+        'Applied for / granted old age pension / AFP' => 'Søkt/innvilget alderspensjon/AFP',
+        'Chaining for other work-oriented measures under the auspices of NAV' => 'Kjeding til andre arbeidsrettede tiltak i regi av NAV',
+        'Education - covered by NAV' => 'Utdanning - dekket av NAV',
+        'Illness' => 'Sykdom',
+        'Not applicable' => 'Ikke aktuell',
+        'Other (military, pregnancy, relocation, etc.)' => 'Annet (militær, svangerskap, flytting mm)',
+        'Other active measures in consultation with NAV (eg medical treatment, or municipal measures)' => 'Andre aktive tiltak i samråd med NAV (eks medisinsk behandling eller kommunale tiltak)',
+        'Work in combination with a graduated disability pension' => 'Arbeid i kombinasjon med gradert uførepensjon',
+        'Work in combination with other benefits from NAV' => 'Arbeid i kombinasjon med andre ytelser fra NAV',
+        'Work with wage subsidies from NAV' => 'Arbeid med lønnstilskudd fra NAV',
+        'Work without wage subsidy' => 'Arbeid uten lønnstilskudd',
+        '' => 'Ukjent underkategori'
     };
 }
