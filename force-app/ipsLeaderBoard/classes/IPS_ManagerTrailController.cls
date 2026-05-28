@@ -212,7 +212,7 @@ public without sharing class IPS_ManagerTrailController {
         } else if (status == 'In Education') {
             return 'I utdannelse';
         } else if (status == 'Initial contact') {
-            return 'Jobbutvikling';
+            return 'Innledende kontakt';
         } else if (status == 'Mapping') {
             return 'Kartlegging';
         } else if (status == 'Passive') {
