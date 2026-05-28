@@ -100,7 +100,7 @@ public without sharing class IPS_ManagerTrailController {
                 IPS_ManagerTrail trailEnded = new IPS_ManagerTrail();
                 trailEnded.numberOfTrail = (Integer) agg.get('Antall');
                 trailEnded.year = (Integer) agg.get('Year');
-                trailEnded.month = convertMonthNumberToString((Integer) agg.get('Month'));
+                trailEnded.month = monthNumberMap.get((Integer) agg.get('Month'));
                 trailEnded.cause = (String) agg.get('Cause');
                 trailEnded.subCause = getSubCause((String) agg.get('toAnother'));
                 trailEnds.add(trailEnded);
@@ -170,61 +170,33 @@ public without sharing class IPS_ManagerTrailController {
         }
     }
 
-    public static String convertMonthNumberToString(Integer month) {
-        if (month == 1) {
-            return 'Januar';
-        } else if (month == 2) {
-            return 'Februar';
-        } else if (month == 3) {
-            return 'Mars';
-        } else if (month == 4) {
-            return 'April';
-        } else if (month == 5) {
-            return 'Mai';
-        } else if (month == 6) {
-            return 'Juni';
-        } else if (month == 7) {
-            return 'Juli';
-        } else if (month == 8) {
-            return 'August';
-        } else if (month == 9) {
-            return 'September';
-        } else if (month == 10) {
-            return 'Oktober';
-        } else if (month == 11) {
-            return 'November';
-        } else {
-            return 'Desember';
-        }
-    }
+    public static Map<Integer, String> monthNumberMap = new Map<Integer, String>{
+        1 => 'Januar',
+        2 => 'Februar',
+        3 => 'Mars',
+        4 => 'April',
+        5 => 'Mai',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'August',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
+    };
 
-    public static String convertStatus(string status) {
-        if (status == 'Referred') {
-            return 'Henvist';
-        } else if (status == 'Career mapping and career planning') {
-            return 'Yrkeskartlegging og karriereplanlegging';
-        } else if (status == 'Education and training in and/ or outside the workplace') {
-            return 'Opplæring og trening på og/eller utenom arbeidsplassen';
-        } else if (status == 'Ended') {
-            return 'Sluttet';
-        } else if (status == 'Find a suitable job/ Collaborate with AG') {
-            return 'Finne en passende jobb/samarbeid med arbeidsgiver';
-        } else if (status == 'In Education') {
-            return 'I utdannelse';
-        } else if (status == 'Initial contact') {
-            return 'Innledende kontakt';
-        } else if (status == 'Mapping') {
-            return 'Kartlegging';
-        } else if (status == 'Passive') {
-            return 'Nedtrapping';
-        } else if (status == 'Working') {
-            return 'Jobber';
-        } else if (status == 'Job development') {
-            return 'Jobbutvikling';
-        } else if (status == 'Downsizing') {
-            return 'Nedtrapping';
-        } else {
-            return 'Ingen status';
-        }
-    }
+    public static Map<String, String> statusMap = new Map<String, String>{
+        'Referred' => 'Henvist',
+        'Career mapping and career planning' => 'Yrkeskartlegging og karriereplanlegging',
+        'Education and training in and/ or outside the workplace' => 'Opplæring og trening på og/eller utenom arbeidsplassen',
+        'Ended' => 'Sluttet',
+        'Find a suitable job/ Collaborate with AG' => 'Finne en passende jobb/samarbeid med arbeidsgiver',
+        'In Education' => 'I utdannelse',
+        'Initial contact' => 'Innledende kontakt',
+        'Mapping' => 'Kartlegging',
+        'Passive' => 'Nedtrapping',
+        'Working' => 'Jobber',
+        'Job development' => 'Jobbutvikling',
+        'Downsizing' => 'Nedtrapping'
+    };
 }
