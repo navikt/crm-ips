@@ -1,3 +1,10 @@
+/**
+ * @description  : 
+ * @author       : Håkon Kavli
+ * @since        : 0.531.0
+ * @version      : 0.531.0
+ * @see          : class#member 'text string' <a href='URL'>label</a> 
+**/
 @IsTest
 private class IPS_ManagerEventControllerTest {
     @TestSetup
@@ -13,12 +20,17 @@ private class IPS_ManagerEventControllerTest {
         Work_Trail__C trail = IPS_TestDataFactory.createJobbspor(accountId);
         insert trail;
 
+        // Create users
+        List<User> users = new List<User>();
         User employeeUser = IPS_TestDataFactory.createInternalUserWithManager(
             'test.employee@nav.no',
             UserInfo.getUserId()
         );
-        insert employeeUser;
 
+        insert employeeUser;
+        users.add(employeeUser);
+        User otherUser = IPS_TestDataFactory.createInternalUserWithManager(
+            '
         List<Event> events = new List<Event>();
         Event eventAssignedToManagersEmployees = IPS_TestDataFactory.createEmployerEventWithParticipant(
             employer.Id,
@@ -43,6 +55,11 @@ private class IPS_ManagerEventControllerTest {
     @isTest
     private static void testGetManagerIPSUser() {
         List<IPS_ManagerUsers> events = IPS_ManagerEventController.getIPSUsersManagedByCurrentUser();
+        //System.assertEquals(3, events.size(), 'Expect users connected with manager');
+    }
+    @isTest
+    private static void getAMSUsersManagedByCurrentUser() {
+        List<IPS_ManagerUsers> events = IPS_ManagerEventController.getAMSUsersManagedByCurrentUser();
         //System.assertEquals(3, events.size(), 'Expect users connected with manager');
     }
 

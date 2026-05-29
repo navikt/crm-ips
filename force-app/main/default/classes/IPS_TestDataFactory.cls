@@ -390,6 +390,31 @@ public with sharing class IPS_TestDataFactory {
         return platformUser;
     }
 
+    /**
+     * @description Creates internal user with manager and specified profile
+     * @author Håkon Kavli | 05-29-2026
+     * @param username The username of the user to create
+     * @param managerId The Id of the manager for the user
+     * @param profileId The Id of the profile to assign to the user
+     * @return User The created user instance
+     **/
+    public static User createInternalUserWithManager(String username, Id managerId, Id profileId) {
+        User platformUser = new User();
+        platformUser.FirstName = 'User';
+        platformUser.LastName = 'Test';
+        platformUser.Email = username;
+        platformUser.UserName = username;
+        platformUser.ProfileId = profileId;
+        platformUser.CRM_Nav_Ident__c = 'A123456';
+        platformUser.Alias = 'plattest';
+        platformUser.TimeZoneSidKey = 'Europe/Paris';
+        platformUser.LocaleSidKey = 'no_NO';
+        platformUser.EmailEncodingKey = 'ISO-8859-1';
+        platformUser.LanguageLocaleKey = 'no';
+        platformUser.ManagerId = managerId;
+        return platformUser;
+    }
+
     public static void addPermissionsetUser(String userId) {
         PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'IPS_Jobbspesialist'];
         insert new PermissionSetAssignment(AssigneeId = userId, PermissionSetId = ps.Id);
