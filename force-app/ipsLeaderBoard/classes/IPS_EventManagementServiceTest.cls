@@ -270,6 +270,30 @@ public with sharing class IPS_EventManagementServiceTest {
     }
 
     @isTest
+    private static void extractWorkTrailIds_returnsUniqueNonNullIdsForSupportedEventRecordTypes() {
+        List<Event> events = getEventsBySubject(
+            new Set<String>{
+                MANAGED_EMPLOYER_EVENT_SUBJECT,
+                MANAGED_PARTICIPANT_EVENT_SUBJECT,
+                UNMANAGED_EVENT_SUBJECT,
+                EVENT_WITHOUT_WORKTRAIL_SUBJECT
+            }
+        );
+
+        Test.startTest();
+        Set<Id> workTrailIds = IPS_EventManagementService.extractWorkTrailIds(events);
+        Test.stopTest();
+
+        System.Assert.areEqual(2, workTrailIds.size(), 'Expected duplicate/non-WhatId events to be filtered');
+        for (Event event : events) {
+            if (event.WhatId != null) {
+                System.Assert.isTrue(workTrailIds.contains(event.WhatId), 'Expected non-null WhatId to be included');
+            }
+        }
+        System.Assert.isFalse(workTrailIds.contains(null), 'Expected null WhatId to be excluded');
+    }
+
+    @isTest
     private static void getEventsForCurrentWeek_returnsManagerDtosForManagedEmployeeEvents() {
         Test.startTest();
         List<IPS_ManagerEvent> managerEvents = IPS_EventManagementService.getEventsForCurrentWeek();
