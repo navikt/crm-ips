@@ -93,8 +93,7 @@ if (!allowRemote && !isLoopbackHost(host)) {
   console.error(
     JSON.stringify({
       type: "error",
-      message:
-        `Refusing non-local bind host "${host}". Use --host localhost (default) or pass --allow-remote to bind intentionally.`,
+      message: `Refusing non-local bind host "${host}". Use --host localhost (default) or pass --allow-remote to bind intentionally.`,
     }),
   );
   process.exit(1);
@@ -104,8 +103,7 @@ if (!allowRemote && !isLoopbackHost(urlHost)) {
   console.error(
     JSON.stringify({
       type: "error",
-      message:
-        `Refusing non-local advertised host "${urlHost}" without --allow-remote. Use --url-host localhost (default) or pass --allow-remote explicitly.`,
+      message: `Refusing non-local advertised host "${urlHost}" without --allow-remote. Use --url-host localhost (default) or pass --allow-remote explicitly.`,
     }),
   );
   process.exit(1);
@@ -118,7 +116,9 @@ if (args.includes("--cleanup")) {
     fs.rmSync(vcDir, { recursive: true });
     console.log(JSON.stringify({ type: "cleanup", removed: vcDir }));
   } else {
-    console.log(JSON.stringify({ type: "cleanup", message: "nothing to clean" }));
+    console.log(
+      JSON.stringify({ type: "cleanup", message: "nothing to clean" }),
+    );
   }
   process.exit(0);
 }
@@ -185,13 +185,17 @@ const akselCssPath = (() => {
         console.error(
           JSON.stringify({
             type: "warning",
-            message:
-              "Aksel CSS not found in node_modules. Run: pnpm install",
+            message: "Aksel CSS not found in node_modules. Run: pnpm install",
           }),
         );
       }
     } catch (err) {
-      console.error(JSON.stringify({ type: "warning", message: `Could not read package.json: ${err.message}` }));
+      console.error(
+        JSON.stringify({
+          type: "warning",
+          message: `Could not read package.json: ${err.message}`,
+        }),
+      );
     }
   }
   return found || null;
@@ -221,11 +225,16 @@ function wrapInFrame(content, filename) {
     : `<div style="background:#fef0f0;border:2px solid #c30000;padding:16px;margin-bottom:16px;border-radius:8px;font-family:sans-serif">
         <strong>⚠️ Aksel CSS mangler</strong><br>Kjør: <code>pnpm install</code>
       </div>`;
-  return frameTemplate
-    .replace(/\{\{FILENAME\}\}/g, safeFilename)
-    // Use callbacks so prototype HTML is inserted literally, not as $-tokens.
-    .replace(/\{\{HELPER_SCRIPT\}\}/g, () => `<script>\n${helperJs}\n</script>`)
-    .replace(/\{\{CONTENT\}\}/g, () => cssWarning + content);
+  return (
+    frameTemplate
+      .replace(/\{\{FILENAME\}\}/g, safeFilename)
+      // Use callbacks so prototype HTML is inserted literally, not as $-tokens.
+      .replace(
+        /\{\{HELPER_SCRIPT\}\}/g,
+        () => `<script>\n${helperJs}\n</script>`,
+      )
+      .replace(/\{\{CONTENT\}\}/g, () => cssWarning + content)
+  );
 }
 
 function renderBootstrappedHtmlPage(encodedHtml, title) {
@@ -306,7 +315,9 @@ const server = http.createServer((req, res) => {
 
   if (!allowRemote && !isLoopbackAddress(req.socket.remoteAddress)) {
     res.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
-    res.end("Remote access is disabled. Re-run with --allow-remote to override.");
+    res.end(
+      "Remote access is disabled. Re-run with --allow-remote to override.",
+    );
     return;
   }
 
@@ -429,10 +440,7 @@ const server = http.createServer((req, res) => {
   }
 
   const trimmed = content.trimStart().toLowerCase();
-  if (
-    trimmed.startsWith("<!doctype") ||
-    trimmed.startsWith("<html")
-  ) {
+  if (trimmed.startsWith("<!doctype") || trimmed.startsWith("<html")) {
     const helperScriptTag = `<script>\n${helperJs}\n</script>`;
     const injected = /<\/body>/i.test(content)
       ? content.replace(/<\/body>/i, `${helperScriptTag}\n</body>`)
@@ -451,9 +459,7 @@ const server = http.createServer((req, res) => {
     // rejected unless --allow-remote is passed explicitly, and no wildcard CORS.
     // The fragment is encoded before the HTTP sink so CodeQL does not flag the
     // intentional local-only preview flow as js/stored-xss in consumer repos.
-    res.end(
-      renderBootstrappedFragmentPage(content, newest),
-    );
+    res.end(renderBootstrappedFragmentPage(content, newest));
   }
 });
 
