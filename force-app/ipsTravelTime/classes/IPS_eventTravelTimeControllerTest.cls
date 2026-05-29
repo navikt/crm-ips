@@ -54,7 +54,7 @@ public class IPS_eventTravelTimeControllerTest {
             F_rste_arbeIdsgiverm_te__c = 'Nei',
             Location = 'Fysisk oppmøte',
             Description = 'Møte',
-            IPS_Status1__c = 'Completed'
+            IPS_Status1__c = 'Open'
         );
         Event createEvent2 = new Event(
             ips_Travel_time__c = 0,
@@ -161,12 +161,15 @@ public class IPS_eventTravelTimeControllerTest {
                 StartDateTime,
                 EndDateTime,
                 OwnerId,
-                RecordTypeId,
                 IPS_Status1__c
             FROM Event
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
             LIMIT 1
         ];
+
+        Id travelTimeRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
+            .get('IPS_Traveltime')
+            .getRecordTypeId();
 
         IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
         firstInput.startDate = baseEvent.StartDateTime;
@@ -175,7 +178,7 @@ public class IPS_eventTravelTimeControllerTest {
         firstInput.travelTimeBefore = Integer.valueOf(baseEvent.ips_Travel_time__c);
         firstInput.travelTimeAfter = Integer.valueOf(baseEvent.IPS_travelTimeFrom__c);
         firstInput.ownerId = baseEvent.OwnerId;
-        firstInput.recordtypeId = baseEvent.RecordTypeId;
+        firstInput.recordtypeId = travelTimeRecordTypeId;
         firstInput.status = baseEvent.IPS_Status1__c;
 
         Test.startTest();
