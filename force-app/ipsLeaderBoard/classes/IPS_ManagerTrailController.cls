@@ -27,6 +27,7 @@ public without sharing class IPS_ManagerTrailController {
             SELECT COUNT(Id) Antall, toLabel(ips_Status__c) Status, RecordType.Name Tjeneste
             FROM Work_Trail__c
             WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_Status__c IN :ACTIVE_STATUSES
+            WITH SYSTEM_MODE
             GROUP BY ips_Status__c, RecordType.Name
             ORDER BY RecordType.Name
         ];
@@ -59,6 +60,7 @@ public without sharing class IPS_ManagerTrailController {
                 toLabel(End_Cause__c) Cause
             FROM Work_Trail__c
             WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_status__c IN ('Ended', 'Referred')
+            WITH SYSTEM_MODE
             GROUP BY ips_status__c, RecordType.Name, End_Cause__c
             ORDER BY RecordType.Name
         ];
@@ -93,6 +95,7 @@ public without sharing class IPS_ManagerTrailController {
                 toLabel(ips_Other_end_cases__c) toAnother
             FROM Work_Trail__c
             WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_Status__c = 'Ended'
+            WITH SYSTEM_MODE
             GROUP BY
                 CALENDAR_YEAR(ips_End_Date__c),
                 CALENDAR_MONTH(ips_End_Date__c),
@@ -155,6 +158,7 @@ public without sharing class IPS_ManagerTrailController {
                 OwnerId IN :IPS_Utility.getMyEmployeesUserId()
                 AND ips_UO_Service__c = 'UO Training'
                 AND ips_Status__c IN :ACTIVE_STATUSES
+            WITH SYSTEM_MODE
         ];
 
         if (aggList.size() == 0 || (Integer) aggList[0].get('Antall') == 0) {
