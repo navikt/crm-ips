@@ -31,18 +31,18 @@ public without sharing class IPS_ManagerTrailController {
             ORDER BY RecordType.Name
         ];
 
-        if (aggList.size() > 0) {
-            for (AggregateResult agg : aggList) {
-                IPS_ManagerTrail trailStatus = new IPS_ManagerTrail();
-                trailStatus.numberOfTrail = (Integer) agg.get('Antall');
-                trailStatus.trailStatus = (String) agg.get('Status');
-                trailStatus.service = (String) agg.get('Tjeneste');
-                trailStatuses.add(trailStatus);
-            }
-            return trailStatuses;
-        } else {
+        if (aggList.size() == 0) {
             return null;
         }
+
+        for (AggregateResult agg : aggList) {
+            IPS_ManagerTrail trailStatus = new IPS_ManagerTrail();
+            trailStatus.numberOfTrail = (Integer) agg.get('Antall');
+            trailStatus.trailStatus = (String) agg.get('Status');
+            trailStatus.service = (String) agg.get('Tjeneste');
+            trailStatuses.add(trailStatus);
+        }
+        return trailStatuses;
     }
 
     /* Aggregerte data - referred/ended pr service*/
@@ -63,19 +63,19 @@ public without sharing class IPS_ManagerTrailController {
             ORDER BY RecordType.Name
         ];
 
-        if (aggList.size() > 0) {
-            for (AggregateResult agg : aggList) {
-                IPS_ManagerTrail trailReferred = new IPS_ManagerTrail();
-                trailReferred.numberOfTrail = (Integer) agg.get('Antall');
-                trailReferred.trailStatus = (String) agg.get('Status');
-                trailReferred.service = (String) agg.get('Tjeneste');
-                trailReferred.cause = (String) agg.get('Cause');
-                trailReferreds.add(trailReferred);
-            }
-            return trailReferreds;
-        } else {
+        if (aggList.size() == 0) {
             return null;
         }
+
+        for (AggregateResult agg : aggList) {
+            IPS_ManagerTrail trailReferred = new IPS_ManagerTrail();
+            trailReferred.numberOfTrail = (Integer) agg.get('Antall');
+            trailReferred.trailStatus = (String) agg.get('Status');
+            trailReferred.service = (String) agg.get('Tjeneste');
+            trailReferred.cause = (String) agg.get('Cause');
+            trailReferreds.add(trailReferred);
+        }
+        return trailReferreds;
     }
 
     @AuraEnabled(cacheable=true)
@@ -101,16 +101,18 @@ public without sharing class IPS_ManagerTrailController {
             ORDER BY CALENDAR_YEAR(ips_End_Date__c)
         ];
 
-        if (aggList.size() > 0) {
-            for (AggregateResult agg : aggList) {
-                IPS_ManagerTrail trailEnded = new IPS_ManagerTrail();
-                trailEnded.numberOfTrail = (Integer) agg.get('Antall');
-                trailEnded.year = (Integer) agg.get('Year');
-                trailEnded.month = (String) monthNumberMap.get((Integer) agg.get('Month'));
-                trailEnded.cause = (String) agg.get('Cause');
-                trailEnded.subCause = (String) agg.get('toAnother');
-                trailEnds.add(trailEnded);
-            }
+        if (aggList.size() == 0) {
+            return null;
+        }
+
+        for (AggregateResult agg : aggList) {
+            IPS_ManagerTrail trailEnded = new IPS_ManagerTrail();
+            trailEnded.numberOfTrail = (Integer) agg.get('Antall');
+            trailEnded.year = (Integer) agg.get('Year');
+            trailEnded.month = (String) monthNumberMap.get((Integer) agg.get('Month'));
+            trailEnded.cause = (String) agg.get('Cause');
+            trailEnded.subCause = (String) agg.get('toAnother');
+            trailEnds.add(trailEnded);
         }
         return trailEnds;
     }
@@ -128,17 +130,16 @@ public without sharing class IPS_ManagerTrailController {
             GROUP BY Owner.Name
         ];
 
-        if (aggList.size() > 0) {
-            for (AggregateResult agg : aggList) {
-                IPS_ManagerTrail trailOwner = new IPS_ManagerTrail();
-                trailOwner.numberOfTrail = (Integer) agg.get('Antall');
-                trailOwner.employeeName = (String) agg.get('OwnerName');
-                trailOwners.add(trailOwner);
-            }
-            return trailOwners;
-        } else {
+        if (aggList.size() == 0) {
             return null;
         }
+        for (AggregateResult agg : aggList) {
+            IPS_ManagerTrail trailOwner = new IPS_ManagerTrail();
+            trailOwner.numberOfTrail = (Integer) agg.get('Antall');
+            trailOwner.employeeName = (String) agg.get('OwnerName');
+            trailOwners.add(trailOwner);
+        }
+        return trailOwners;
     }
 
     @AuraEnabled(cacheable=true)
@@ -156,16 +157,16 @@ public without sharing class IPS_ManagerTrailController {
                 AND ips_Status__c IN :ACTIVE_STATUSES
         ];
 
-        if (aggList.size() > 0) {
-            for (AggregateResult agg : aggList) {
-                IPS_ManagerTrail trailUO = new IPS_ManagerTrail();
-                trailUO.numberOfTrail = (Integer) agg.get('Antall');
-                trainingUO.add(trailUO);
-            }
-            return trainingUO;
-        } else {
+        if (aggList.size() == 0 || (Integer) aggList[0].get('Antall') == 0) {
             return null;
         }
+
+        for (AggregateResult agg : aggList) {
+            IPS_ManagerTrail trailUO = new IPS_ManagerTrail();
+            trailUO.numberOfTrail = (Integer) agg.get('Antall');
+            trainingUO.add(trailUO);
+        }
+        return trainingUO;
     }
 
     public static Map<Integer, String> monthNumberMap = new Map<Integer, String>{

@@ -37,6 +37,27 @@ public class IPS_MangagerTrailControllerTest {
     }
 
     @IsTest
+    private static void testEmptyLists() {
+        // Given
+        List<Work_Trail__c> trails = [SELECT Id FROM Work_Trail__c];
+        delete trails;
+
+        // When
+        List<IPS_ManagerTrail> allTrails = IPS_ManagerTrailController.getAggregatedTrailStatus();
+        List<IPS_ManagerTrail> referredTrails = IPS_ManagerTrailController.getReferredTrails();
+        List<IPS_ManagerTrail> jobbspesialistTrails = IPS_ManagerTrailController.getAggregatedTrailJobbspesialist();
+        List<IPS_ManagerTrail> uoTrainingTrails = IPS_ManagerTrailController.getUOTraining();
+        List<IPS_ManagerTrail> endedTrails = IPS_ManagerTrailController.getAggregatedEndedTrail();
+
+        // Then
+        System.Assert.isNull(allTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.isNull(referredTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.isNull(jobbspesialistTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.isNull(uoTrainingTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.isNull(endedTrails, 'Expected null to be returned when there are no trails');
+    }
+
+    @IsTest
     private static void getUserTrails() {
         // When
         List<IPS_ManagerTrail> allTrails = IPS_ManagerTrailController.getAggregatedTrailStatus();
