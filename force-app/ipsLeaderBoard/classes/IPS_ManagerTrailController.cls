@@ -144,35 +144,6 @@ public without sharing class IPS_ManagerTrailController {
         }
         return trailOwners;
     }
-
-    @AuraEnabled(cacheable=true)
-    /* Aggregerte data - antall i opplæringsløp UO */
-    public static List<IPS_ManagerTrail> getUOTraining() {
-        List<IPS_ManagerTrail> trainingUO = new List<IPS_ManagerTrail>();
-        List<AggregateResult> aggList = new List<AggregateResult>();
-
-        aggList = [
-            SELECT COUNT(Id) Antall
-            FROM Work_Trail__c
-            WHERE
-                OwnerId IN :IPS_Utility.getMyEmployeesUserId()
-                AND ips_UO_Service__c = 'Vocational education and training'
-                AND ips_Status__c IN :ACTIVE_STATUSES
-            WITH SYSTEM_MODE
-        ];
-
-        if (aggList.size() == 0 || (Integer) aggList[0].get('Antall') == 0) {
-            return null;
-        }
-
-        for (AggregateResult agg : aggList) {
-            IPS_ManagerTrail trailUO = new IPS_ManagerTrail();
-            trailUO.numberOfTrail = (Integer) agg.get('Antall');
-            trainingUO.add(trailUO);
-        }
-        return trainingUO;
-    }
-
     public static Map<Integer, String> monthNumberMap = new Map<Integer, String>{
         1 => 'Januar',
         2 => 'Februar',
@@ -187,4 +158,34 @@ public without sharing class IPS_ManagerTrailController {
         11 => 'November',
         12 => 'Desember'
     };
+
+    /*    // Currently not in use, but kept for future use when we want to display data on UO trainings
+@AuraEnabled(cacheable=true)
+   // Aggregerte data - antall i opplæringsløp UO 
+    public static List<IPS_ManagerTrail> getUOTraining() {
+        List<IPS_ManagerTrail> trainingUO = new List<IPS_ManagerTrail>();
+        List<AggregateResult> aggList = new List<AggregateResult>();
+
+        aggList = [
+            SELECT COUNT(Id) Antall
+            FROM Work_Trail__c
+            WHERE
+                OwnerId IN :IPS_Utility.getMyEmployeesUserId()
+                AND ips_UO_Service__c = 'Vocational education and training'
+                AND ips_Status__c IN :ACTIVE_STATUSES
+            WITH SYSTEM_MODE
+        ];
+
+        if (aggList == null || aggList.isEmpty()) {
+            return null;
+        }
+
+        for (AggregateResult agg : aggList) {
+            IPS_ManagerTrail trailUO = new IPS_ManagerTrail();
+            trailUO.numberOfTrail = (Integer) agg.get('Antall');
+            trainingUO.add(trailUO);
+        }
+        return trainingUO;
+    }
+ */
 }

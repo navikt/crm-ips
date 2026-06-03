@@ -30,6 +30,8 @@ public class IPS_MangagerTrailControllerTest {
         System.runAs(employeeUser) {
             Work_Trail__c trail = IPS_TestDataFactory.createJobbspor(accountId);
             Work_Trail__c uoTrail = IPS_TestDataFactory.createUOJobbspor(accountId);
+            //  uoTrail.ips_UO_Service__c = 'Vocational education and training';
+            // uoTrail.ips_Status__c = 'Education and training in and / or outside the workplace';
             trails.add(trail);
             trails.add(uoTrail);
             insert trails;
@@ -46,14 +48,12 @@ public class IPS_MangagerTrailControllerTest {
         List<IPS_ManagerTrail> allTrails = IPS_ManagerTrailController.getAggregatedTrailStatus();
         List<IPS_ManagerTrail> referredTrails = IPS_ManagerTrailController.getReferredTrails();
         List<IPS_ManagerTrail> jobbspesialistTrails = IPS_ManagerTrailController.getAggregatedTrailJobbspesialist();
-        List<IPS_ManagerTrail> uoTrainingTrails = IPS_ManagerTrailController.getUOTraining();
         List<IPS_ManagerTrail> endedTrails = IPS_ManagerTrailController.getAggregatedEndedTrail();
 
         // Then
         System.Assert.isNull(allTrails, 'Expected null to be returned when there are no trails');
         System.Assert.isNull(referredTrails, 'Expected null to be returned when there are no trails');
         System.Assert.isNull(jobbspesialistTrails, 'Expected null to be returned when there are no trails');
-        System.Assert.isNull(uoTrainingTrails, 'Expected null to be returned when there are no trails');
         System.Assert.isNull(endedTrails, 'Expected null to be returned when there are no trails');
     }
 
@@ -77,11 +77,11 @@ public class IPS_MangagerTrailControllerTest {
         System.Assert.areEqual(1, allTrails.size(), 'Expect only trail assigned to managers employee to be retuned');
     }
 
-    @IsTest
+    /*     @IsTest
     private static void getUOTraining() {
         List<IPS_ManagerTrail> allTrails = IPS_ManagerTrailController.getUOTraining();
         System.Assert.areEqual(1, allTrails.size(), 'Expect trail in UO training');
-    }
+    } */
 
     @IsTest
     private static void getAggregatedEndedTrail() {
