@@ -1,7 +1,7 @@
 import { LightningElement, wire, track } from 'lwc';
 import getJobCategory from '@salesforce/apex/IPS_jobController.totalJobsByCategory';
 import getJobTraining from '@salesforce/apex/IPS_jobController.totalJobTraining';
-import getUOTraining from '@salesforce/apex/IPS_ManagerTrailController.getUOTraining';
+//import getUOTraining from '@salesforce/apex/IPS_ManagerTrailController.getUOTraining';
 
 export default class Ips_ManagerJobs extends LightningElement {
     @track columnstotalCategory = [
@@ -11,10 +11,10 @@ export default class Ips_ManagerJobs extends LightningElement {
 
     @track jobCategoryList;
     @track jobTrainingList;
-    @track uoTrainingList;
+    // @track uoTrainingList;
     @track jobTrainingNumber = 0;
     @track jobPaidNumber = 0;
-    @track uoTrainingNumber = 0;
+    // @track uoTrainingNumber = 0;
     @track ipsTrainingNumber = 0;
 
     @wire(getJobCategory)
@@ -42,7 +42,7 @@ export default class Ips_ManagerJobs extends LightningElement {
         }
     }
 
-    @wire(getUOTraining)
+    /*     @wire(getUOTraining)
     wiredUOTrain({ error, data }) {
         if (data) {
             this.uoTrainingList = data[0];
@@ -50,5 +50,5 @@ export default class Ips_ManagerJobs extends LightningElement {
         } else if (error) {
             this.error = error;
         }
-    }
+    } */
 }
