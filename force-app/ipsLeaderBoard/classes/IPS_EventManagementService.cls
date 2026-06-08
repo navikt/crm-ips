@@ -17,7 +17,7 @@ public with sharing class IPS_EventManagementService {
         return createManagerEventsDTO(getEventsForEmployeesCurrentWeek());
     }
 
-    /**q
+    /**
      * @description Transforms a list of Event records into a list of IPS_ManagerEvent DTOs, enriching the data with related Work_Trail__c information. The method first extracts unique WhatId values from the events to query related Work_Trail__c records in bulk, avoiding SOQL queries inside loops. It then iterates through the events, creating manager event DTOs only for those that are linked to the specified WhatId record types and populating the DTO fields with relevant information from both the Event and related Work_Trail__c records.
      * @author Håkon Kavli | 05-12-2026
      * @param employeeEvents The list of Event records to be transformed into IPS_ManagerEvent DTOs.
