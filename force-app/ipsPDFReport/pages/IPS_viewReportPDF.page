@@ -1083,6 +1083,45 @@
                     </p></apex:outputText
                 >
             </apex:outputpanel>
+
+            <!-- Samarbeid med utdanningsinstitusjoner endreport -->
+            <apex:outputpanel rendered="{!educationInstitutionMeetingSummary.institutionNames.size != 0}">
+                <apex:outputText><h3>Samarbeid med utdanningsinstitusjoner</h3></apex:outputText>
+                <apex:outputText
+                    >Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende
+                    utdanningsinstitusjoner for å utforske mulighetene for utdanning:</apex:outputText
+                >
+                <div style="padding-bottom: 5px"></div>
+                <div style="page-break-inside: avoid">
+                    <apex:repeat value="{!educationInstitutionMeetingSummary.institutionNames}" var="meeting">
+                        <apex:outputText>
+                            <ul>
+                                <li>{!meeting}</li>
+                            </ul>
+                        </apex:outputText>
+                    </apex:repeat>
+                </div>
+            </apex:outputpanel>
+
+            <apex:outputpanel rendered="{!educationInstitutionMeetingSummary.participantsRelatedToMeeting > 0}">
+                <apex:outputText
+                    ><p>
+                        Det er gjennomført {!educationInstitutionMeetingSummary.participantsRelatedToMeeting}
+                        utdanningsmøte(r) med deltager tilstede.
+                    </p></apex:outputText
+                >
+            </apex:outputpanel>
+            <apex:outputpanel
+                rendered="{!educationInstitutionMeetingSummary.participantsRelatedToMeetingCancelled > 0}"
+            >
+                <apex:outputText
+                    ><p>
+                        Det er {!educationInstitutionMeetingSummary.participantsRelatedToMeetingCancelled}
+                        utdanningsmøte(r) hvor deltager ikke har møtt.
+                    </p></apex:outputText
+                >
+            </apex:outputpanel>
+
             <div style="padding-bottom: 5px"></div>
             <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField>
 
