@@ -37,6 +37,8 @@ public with sharing class IPS_viewReportPDFController {
   
     public list<Event> educationInstitutionMeetings { get; set; }
     public IPS_educationInstitutionMeetingSummary educationInstitutionMeetingSummary { get; set; }
+    public list<Event> educationInstitutionMeetingsWithinInterval { get; set; }
+   
 
     public list<Event> openIntervallMeeting { get; set; }
     public list<Event> openIntervallPartMeeting { get; set; }
@@ -75,6 +77,8 @@ public with sharing class IPS_viewReportPDFController {
 
         this.educationInstitutionMeetings = getEducationalInstitutionMeetings();
         this.educationInstitutionMeetingSummary = IPS_reportPDFService.buildSummary(this.educationInstitutionMeetings);
+        this.educationInstitutionMeetingsWithinInterval = getEducationalInstitutionMeetingsWithinInterval();
+   
 
         this.getPlannedJobs = getPlannedJobs();
         this.activeParticipantsEducations = getActiveEducations(intervallFromDate, intervallToDate);
@@ -291,7 +295,7 @@ public with sharing class IPS_viewReportPDFController {
     }
 
     /**
-     * Get meetings related to educational institution
+     * Get all meetings related to educational institution
      * @return list of meeting
      */
     private list<Event> tempEducationInstitutionMeetings;
@@ -305,6 +309,7 @@ public with sharing class IPS_viewReportPDFController {
                         IPS_participant_related_to_meeting__c,
                         ips_Subcategory_Type_Education__c, 
                         StartDateTime, 
+                        ActivityDate,
                         IPS_educationInstitution__c
             FROM event
             WHERE (ips_Subcategory_Type_Education__c = 'Exploration of education' 
@@ -315,6 +320,38 @@ public with sharing class IPS_viewReportPDFController {
         }
         return tempEducationInstitutionMeetings;
     }
+
+    /**
+     * Get meetings related to educational institution within the intervall
+     * @return list of meeting within the intervall
+     */
+    private list<Event> tempEducationInstitutionMeetingsIntervall;
+    private list<Event> getEducationalInstitutionMeetingsWithinInterval(){
+        if(tempEducationInstitutionMeetingsIntervall == null) {
+            tempEducationInstitutionMeetingsIntervall = [
+                SELECT  id,
+                        Subject,
+                        IPS_Type__c,
+                        IPS_Status1__c,
+                        IPS_participant_related_to_meeting__c,
+                        ips_Subcategory_Type_Education__c, 
+                        StartDateTime, 
+                        ActivityDate,
+                        IPS_educationInstitution__c,
+                        IPS_educationContact__c
+            FROM event
+            WHERE (ips_Subcategory_Type_Education__c = 'Exploration of education' 
+                OR ips_Subcategory_Type_Education__c = 'Support during education')
+                AND WhatId = :workTrailId
+                AND ActivityDate >= :intervallFromDate
+                AND ActivityDate <= :intervallToDate
+                AND IPS_Status1__c = 'Completed'
+            ORDER BY ActivityDate DESC
+        ];
+        }
+        return tempEducationInstitutionMeetingsIntervall;
+    }
+
 
     private list<Event> getOpenIntervallActivity(Date sluttDato) {
         List<Event> emplActivity = new List<Event>();
@@ -341,7 +378,8 @@ public with sharing class IPS_viewReportPDFController {
                     'Meeting with Employer',
                     'Meeting with Participant',
                     'Start up meeting',
-                    'First Meeting with Employer'
+                    'First Meeting with Employer',
+                    'Møte med Utd. Ins.'
                 )
                 AND ActivityDate > :today
                 AND ActivityDate < :tempDate
