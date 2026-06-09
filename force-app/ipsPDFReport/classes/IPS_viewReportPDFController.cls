@@ -34,6 +34,9 @@ public with sharing class IPS_viewReportPDFController {
     public Integer noOfCancelledMeetings { get; set; }
     public Integer notAttendedPartMeetingNumber { get; set; }
     public Set<String> accountNames { get; set; }
+  
+    public list<Event> educationInstitutionMeetings { get; set; }
+    public IPS_educationInstitutionMeetingSummary educationInstitutionMeetingSummary { get; set; }
 
     public list<Event> openIntervallMeeting { get; set; }
     public list<Event> openIntervallPartMeeting { get; set; }
@@ -69,6 +72,10 @@ public with sharing class IPS_viewReportPDFController {
         this.openIntervallMeeting = getOpenIntervallActivity(intervallToDate);
         this.noOfCancelledMeetings = noOfCancelledMeetings(intervallFromDate, intervallToDate);
         this.activeParticipantsJobs = getActiveJobs(intervallFromDate, intervallToDate);
+
+        this.educationInstitutionMeetings = getEducationalInstitutionMeetings();
+        this.educationInstitutionMeetingSummary = IPS_reportPDFService.buildSummary(this.educationInstitutionMeetings);
+
         this.getPlannedJobs = getPlannedJobs();
         this.activeParticipantsEducations = getActiveEducations(intervallFromDate, intervallToDate);
         this.plannedParticipantsEducations = getPlannedEducations(intervallFromDate);
@@ -281,6 +288,32 @@ public with sharing class IPS_viewReportPDFController {
         this.completedEmplMeetingNumber = tempCompletedNumber;
         this.notAttendedEmplMeeting = tempNotAttended;
         this.notAttendedEmplMeetingNumber = tempNotAttendedNumber;
+    }
+
+    /**
+     * Get meetings related to educational institution
+     * @return list of meeting
+     */
+    private list<Event> tempEducationInstitutionMeetings;
+    private list<Event> getEducationalInstitutionMeetings(){
+        if(tempEducationInstitutionMeetings == null) {
+            tempEducationInstitutionMeetings = [
+                SELECT  id,
+                        Subject,
+                        IPS_Type__c,
+                        IPS_Status1__c,
+                        IPS_participant_related_to_meeting__c,
+                        ips_Subcategory_Type_Education__c, 
+                        StartDateTime, 
+                        IPS_educationInstitution__c
+            FROM event
+            WHERE (ips_Subcategory_Type_Education__c = 'Exploration of education' 
+                OR ips_Subcategory_Type_Education__c = 'Support during education')
+                AND WhatId = :workTrailId
+            ORDER BY ActivityDate DESC
+        ];
+        }
+        return tempEducationInstitutionMeetings;
     }
 
     private list<Event> getOpenIntervallActivity(Date sluttDato) {
