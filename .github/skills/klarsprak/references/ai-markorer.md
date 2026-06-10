@@ -52,6 +52,10 @@ Disse brukes mye oftere i KI-generert norsk enn i naturlig norsk.
 - Fjern oppsummeringssetninger som bare gjentar det du allerede har skrevet
 - Ikke tving balanse mellom alternativer når ett er bedre ("begge har sine fordeler")
 - Varier grammatisk struktur i kulepunkter — identisk form er et AI-tegn
+- Pass på oppramsinger med identisk rytme i alle linjer: samme lengde, samme startord og samme konklusjon gir AI-preg
+- Ikke bruk trestegs-maler ukritisk ("først ..., deretter ..., til slutt ...") hvis teksten blir flatere enn innholdet tilsier
+- Vær skeptisk til avsnitt som følger fast mønster: definisjon → fordel → oppsummering, uten ny informasjon mellom
+- Dropp falsk symmetri som "på den ene siden / på den andre siden" når teksten egentlig argumenterer for én løsning
 - Ikke definer ting leseren allerede vet
 - Ikke gjenta et poeng med andre ord rett etter du har sagt det
 - Dropp "Derfor er X så viktig"-formatet som rettferdiggjør forrige setning uten å tilføre noe
@@ -64,3 +68,31 @@ Disse brukes mye oftere i KI-generert norsk enn i naturlig norsk.
 - "Furthermore", "Moreover", "Additionally" — aldri i norsk tekst
 
 Bruk heller konkrete subjekter: "Teamet ...", "Koden ...", "Tjenesten ..."
+
+## Nynorsk og svensk som siver inn
+
+Språkmodeller blander bokmål, nynorsk og svensk. Det skjer ofte i ellers god tekst, så se etter små mønstre, ikke bare åpenbare ord.
+
+### Vanlige nynorsk-tegn i bokmålstekst
+
+- `-ingar` → `-inger`
+- `-leg` / `-lege` → `-lig` / `-lige`
+- `kv-` → `hv-`
+- `ei-` / `eig-` → `e-` / `eg-`
+- `medan` → `mens`
+- `vorte` / `vart` → `blitt` / `ble`
+- `berre` → `bare`
+- `mykje` → `mye`
+- `difor` → `derfor`
+
+### Vanlige svensk-tegn i bokmålstekst
+
+- `engångs-` → `engangs-`
+- `ändring` → `endring`
+- `åtgärd` → `tiltak`
+- `möjlig` / `möjlighet` → `mulig` / `mulighet`
+- `säker` / `säkerhet` brukt i svensk bøying → `sikker` / `sikkerhet`
+
+### Viktig nyanse
+
+A-endelser som `oppdaga`, `fila` og `sida` kan være gyldig, ledig bokmål hvis teksten ellers er konsekvent. Det er ikke det samme som klare nynorskformer som `oppdateringar` eller `mogleg`.

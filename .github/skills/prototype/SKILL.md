@@ -28,12 +28,10 @@ Visual Companion er best for **tidlig utforsking** — når retningen er uklar o
 
 Interaktivt nettleserverktøy for å utforske designkonsepter med Aksel-styling.
 
-### Oppstart
-
 ### Forutsetninger
 
 - Node.js ≥ 18 (for HTTP-server)
-- `@navikt/ds-css` i node_modules (for Aksel-styling; fungerer uten, men viser advarsel)
+- `@navikt/ds-css` i node_modules — KREVES for ekte farger; uten den blir alt fargeløst/klint
 
 1. Sørg for at avhengigheter er installert (kreves for Aksel CSS):
    ```bash
@@ -80,9 +78,10 @@ Før du skriver en HTML-mockup, sjekk alltid `/aksel-design` skill for:
 - Korrekt spacing (token = pixelverdi, f.eks. `--ax-space-16` = 16px)
 - Korrekt fargebruk (`--ax-bg-*`, `--ax-text-*`, `--ax-border-*`)
 
-Serveren laster ekte Aksel CSS. Du kan bruke:
-1. **Ekte Aksel-klasser** (`.aksel-button`, `.aksel-text-field`, etc.) for high-fidelity
-2. **`.mock-*` snarvei-klasser** for raske wireframes (se visual-companion.md)
+Bruk **ekte `.aksel-*`-markup fra `references/aksel-markup-fasit.md`** — generert fra
+`@navikt/ds-react` (ds-reacts egen DOM), rendrer autentisk Aksel via ds-css. Frame-malen
+setter rot-konteksten (`data-color="accent"`) som gjør primærknapper blå. `.mock-*` er kun
+for ikke-Aksel-stillas. Fargene ligger i CSS-en (`data-color`/`data-variant`), ikke i JS.
 
 Tokens i v8: `--ax-space-{px}` (f.eks. `--ax-space-16` = 16px, `--ax-space-24` = 24px).
 Radius: `--ax-radius-4`, `--ax-radius-8`, `--ax-radius-12`.
@@ -95,6 +94,8 @@ Se `references/visual-companion.md` for alle CSS-klasser og eksempler.
 - 2–4 alternativer per skjerm
 - Forklar spørsmålet på siden: «Hvilken tilnærming passer best?»
 - Skaler fidelitet etter spørsmålet — wireframe for layout, detaljer for detaljer
+- **Norske tegn (æ/ø/å) direkte som UTF-8** — aldri `\u00f8`-escapes; serveren skriver
+  ordrett, så escapen blir synlig tekst i skissen («m\u00f8te» i stedet for «møte»)
 
 ### Les brukervalg
 
@@ -112,12 +113,7 @@ Etter at designeren har sett skjermen:
 
 ### Situasjoner brukeren møter
 
-Vis ulike situasjoner som separate mockups eller som sekvens:
-- Normaltilstand (bruker kan handle)
-- Venter (lasting/spinner)
-- Feil (hva kan bruker gjøre?)
-- Tom tilstand (ingenting å vise ennå)
-- Ferdig / bekreftelse
+Vis ulike situasjoner som separate mockups eller sekvens: normal, venter (lasting), feil, tom tilstand, og ferdig/bekreftelse.
 
 ## Fase 2: Figma-leveranse
 
@@ -132,12 +128,12 @@ Figma MCP-verktøy tilgjengelig.
 1. `whoami` → finn planKey
 2. `create_new_file` → opprett fil, **del URL med designeren**
 3. `search_design_system` → finn relevante Aksel-komponenter
-4. `use_figma` **preflight** → importer + logg varianter, tekst-node-navn og fonter (se referanse)
-5. `use_figma` → bygg skissen med eksakte variant-navn og node-navn fra preflight
-6. **`get_screenshot`** → verifiser visuelt (se referanse for sjekkliste)
+4. `use_figma` **preflight** → importer + logg varianter, default-variant, tekst-node-navn og fonter (se referanse)
+5. `use_figma` → bygg skissen **inkrementelt, én seksjon per kall** med eksakte variant-navn og node-navn fra preflight
+6. **`get_screenshot`** → parity-gate: sammenlign mot Visual Companion-fasiten (se referanse for sjekkliste)
 7. Fiks eventuelle problemer, del oppdatert lenke ved milepæler
 
-**Aldri hopp over preflight** — det forhindrer gjetting og feil-runder. Se `references/figma-prototype.md` for detaljer.
+**Sjekk katalogen først — den er fasiten.** Alle 45 aktive Aksel-komponenter har key, akser, defaults, tekst-noder og feller ferdig uttrukket i `references/aksel-figma-katalog.json` (maskinlesbar kilde) og `.md` (lesbar). For layouten rundt komponentene (luft, farger, kanter, typografi) bruk `references/aksel-figma-tokens.md`. Drift-validert — hopp over preflight for det katalogen dekker. Detaljer i `references/figma-prototype.md`.
 
 Bygg kun den nye komponenten/endringen — ikke hele siden. Bruk ekte Aksel-komponenter, riktige tokens, og vis varianter som egne frames.
 
@@ -154,18 +150,25 @@ Finnes den ikke? → Bygg custom, men med Aksel-tokens.
 
 ### Komponent-instansiering
 
-- **Preflight først**: Importer + logg varianter og tekst-noder i ETT kall
-- **Eksakt navnematch** for variant, `defaultVariant` som fallback
-- **Tekst**: `findOne` med eksakt name — IKKE `setProperties()` (ustabile nøkler)
-- **`layoutSizingHorizontal = "FILL"`** kun etter append til auto-layout
-- **Farger**: Slå opp via `search_design_system` — aldri gjett RGB
+- **Preflight først**: importer + logg varianter, default og tekst-noder i ETT kall
+- **Bygg inkrementelt**: ett `use_figma`-kall per seksjon (atomisk — én feil ruller tilbake hele kallet)
+- **`defaultVariant` er ofte feil**: GlobalAlert/LocalAlert=Error, Tag=Neutral, Checkbox=unchecked. Antall barn (RadioGroup/Accordion/Tabs) er også en variant-akse — velg bevisst
+- **Tekst** via `findOne`/`findAllWithCriteria` med eksakt name (ikke `setProperties()` for tekst); les font med `loadFontAsync(node.fontName)` — Aksel = `Source Sans 3`
+- **Komposisjon**: søknadssteg→`FormProgress`; bygg `Table` fra `Table cell`; skjul Slot-placeholdere; `layoutSizingHorizontal="FILL"` kun etter append; farger via `search_design_system` — aldri gjett RGB
 
 Se `references/figma-prototype.md` for fullstendige regler og eksempler.
 
-## Valgfritt: Kodeprototype
+## Valgfritt: Kodeprototype (opt-in)
 
-> «Vil du se dette bygget med ekte Aksel-komponenter i appen?»
-> → Deleger til konditor for å bygge på en prototype-branch. Designer-agenten skriver **aldri** kode selv.
+Fra skisse til **ekte, klikkbar kode** med `@navikt/ds-react` og mockdata — kjørbar lokalt og i demo. Tilbys etter et Visual Companion- og/eller Figma-resultat når retningen er valgt.
+
+Designer-agenten skriver **aldri** kode selv. Spør «Skal jeg få bygget dette som en klikkbar prototype med mockdata?» og deleger til **konditor** med disse rammene:
+- Ekte Aksel-komponenter + alle tilstander (normal/lasting/feil/tom/ferdig)
+- **Kun mockdata** (fixtures/MSW) — ingen ekte API-er, PII, secrets eller accessPolicy
+- Egen `prototype/*`-branch, aldri `main`/prod, merket «prototype – ikke for prod»
+- Kjørbar lokalt + efemert demo-miljø; utviklere tar over for ekte data og UU-live-review før prod
+
+Etter bygging: del demo-lenke/branch. Tilby Issue så utviklerne tar prototypen videre.
 
 ## Iterasjon
 
@@ -190,7 +193,7 @@ Vis resultat → designer gir feedback → juster → gjenta til fornøyd.
 
 ### 🚫 Aldri
 - Skriv kode i prosjektets kildekode (deleger til konditor)
-- Lever prototype som ferdig kode
+- Lever kodeprototype til `main`/prod eller mot ekte data — kun `prototype/*`-branch med mockdata
 - Eksponer verktøynavn til designeren
 - Feilsøk build-problemer (fall tilbake til neste metode)
 - Hopp over UU-sjekk ved leveranse
