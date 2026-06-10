@@ -3,7 +3,6 @@ name: inspektor-gpt
 description: "(internt) Kryssmodell-inspektør for Claude-arbeid — mønstre, API-korrekthet, konsistens"
 model: "gpt-5.5"
 user-invocable: false
-tools: ["view", "grep", "glob"]
 ---
 
 # Inspektør (GPT) 🔍

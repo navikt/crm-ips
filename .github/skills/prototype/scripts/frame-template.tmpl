@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Designskisse — {{FILENAME}}</title>
+  <!-- Declare vc-base FIRST so it ranks BELOW every Aksel @layer.
+       ds-css v8 puts all component styles in @layer (aksel.*). Unlayered rules
+       beat layered ones regardless of specificity, so our generic element resets
+       MUST live in a layer declared before ds-css — otherwise `* { padding: 0 }`
+       silently strips Aksel's button/alert/heading padding ("klint inntil"-bug). -->
+  <style>@layer vc-base;</style>
   <!-- Load real Aksel CSS from node_modules (served by Visual Companion server) -->
   <link rel="stylesheet" href="/aksel.css">
   <style>
@@ -18,7 +24,13 @@
       --ax-radius-full: 9999px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Generic element resets live in vc-base — the LOWEST-priority layer —
+       so real Aksel component styles (in higher aksel.* layers) always win.
+       Chrome classes (.vc-*, .mock-*, .option, .card …) stay UNLAYERED =
+       highest priority, and never collide with .aksel-* selectors. */
+    @layer vc-base {
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+    }
 
     body {
       font-family: var(--vc-font-family);
@@ -78,19 +90,21 @@
     .vc-content {
       max-width: 960px;
       margin: var(--ax-space-32) auto;
-      padding: 0 var(--ax-space-24);
+      padding: var(--ax-space-40) var(--ax-space-32);
     }
 
-    /* --- Typography --- */
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: var(--ax-space-8);
-    }
-    h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: var(--ax-space-4);
+    /* --- Typography (vc-base so Aksel's .aksel-heading wins when both apply) --- */
+    @layer vc-base {
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: var(--ax-space-8);
+      }
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: var(--ax-space-4);
+      }
     }
     .subtitle {
       color: var(--ax-text-subtle);
@@ -411,7 +425,7 @@
     </div>
   </header>
 
-  <main class="vc-content">
+  <main class="vc-content aksel-theme light" data-background="true" data-color="accent">
     {{CONTENT}}
   </main>
 
