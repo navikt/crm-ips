@@ -1,6 +1,57 @@
-# Nav Threat Model — STRIDE, DPIA, auditlogg, Datatilsynet
+# Nav Threat Model — STRIDE, DFD, trusseltabell, DPIA, auditlogg, Datatilsynet
 
 Dyp referanse for trusselmodellering av Nav-applikasjoner. Brukes når SKILL.md eskalerer: ny datakategori, ny integrasjon, DPIA-behov, eller strukturert sikkerhetsgjennomgang før produksjonssetting.
+
+## DFD først
+
+Start med en enkel DFD før du vurderer STRIDE. Målet er å synliggjøre dataflyt og tillitsgrenser, ikke å tegne et perfekt arkitekturdiagram.
+
+### Minimum i DFD-en
+
+- minst én ekstern aktør eller konsument
+- prosessene som faktisk håndterer data
+- datalagre og meldingsstrømmer
+- alle overganger mellom ingress, app, Kafka, database og eksterne tjenester
+- markering av hvor persondata kommer inn, lagres og sendes ut
+
+### Enkel tekstmal
+
+```text
+[Innbygger eller saksbehandler]
+    |
+    | HTTPS / token
+    v
+== Ingress / Wonderwall ==
+    |
+    v
+(frontend eller API)
+    | \
+    |  \---> {Kafka-topic}
+    |
+    +-----> {PostgreSQL}
+    |
+    +-----> [Ekstern tjeneste]
+```
+
+### DFD-sjekkliste
+
+- Tegn bare flyter som finnes i løsningen nå
+- Skill mellom menneskelig aktør, intern tjeneste og ekstern avhengighet
+- Marker hver tillitsgrense eksplisitt
+- Noter hvor auth blir validert og hvor autorisasjon faktisk avgjøres
+- Hold samme navn i DFD, manifest og kode hvis mulig
+
+## Trusseltabell — minimumsformat
+
+Når DFD-en er klar, dokumenter truslene i en tabell. Minstekravet er én rad per viktig flyt eller komponent med tiltak og restrisiko.
+
+| Komponent eller flyt | Data/aktivum | STRIDE | Trussel | Eksisterende vern | Tiltak eller oppfølging | Restrisiko | Eier |
+|----------------------|--------------|--------|---------|-------------------|-------------------------|------------|------|
+| Frontend → backend via TokenX | Personopplysninger, tokens | Spoofing / Information Disclosure | Feil token-type eller for bred respons | Token-validering, Wonderwall, DTO-er | Verifiser `aud`/`iss`, begrens felter i respons | Lav/medium | Teamet |
+| Backend → PostgreSQL | Saksdata | Tampering / Denial of Service | Ugyldig input eller dyre queries påvirker integritet/tilgjengelighet | Parametriserte queries, constraints, pool | Legg til paginering, tidsgrenser, query-review | Medium | Teamet |
+| Saksbehandler → personvisning | Fortrolig eller strengt fortrolig data | Repudiation / Elevation of Privilege | Uautorisert oppslag eller manglende sporbarhet | RBAC, auditlogg, tilgangskontroll | Verifiser kode 6/7 og egen ansatt i egen gren | Medium | Team + prosesseier |
+
+Bruk korte, konkrete beskrivelser. Dropp generiske "kan bli angrepet"-påstander uten tiltak eller eier.
 
 ## STRIDE tilpasset Nav-kontekst
 
@@ -54,7 +105,7 @@ Se seksjonen [Audit-logging-krav](#audit-logging-krav-for-sensitive-personopplys
 
 **Nav-kontekst:** Sjelden primær trussel for interne tjenester (Nais har resource limits), men offentlig eksponerte tjenester (sosialhjelp, søknader) må vurderes.
 
-- [ ] Resource limits (`resources.limits`) satt i Nais-manifestet.
+- [ ] `resources.limits.memory` er satt i Nais-manifestet. CPU er normalt kun satt som `resources.requests.cpu`, ikke som `resources.limits.cpu`.
 - [ ] Rate limiting på offentlig eksponerte og kostbare endepunkter.
 - [ ] Grenser for request-størrelse og payload-dybde (f.eks. JSON-nesting) der eksternt input aksepteres.
 - [ ] Filopplasting har både størrelses- og antallsbegrensning per bruker/sak.
