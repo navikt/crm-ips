@@ -22,6 +22,10 @@ Pakken er avhengig av følgende pakker:
 - [crm-shared-user-notification](https://github.com/navikt/crm-shared-user-notification)
 - [crm-journal-utilities](https://github.com/navikt/crm-journal-utilities)
 
+## Dokumentasjon
+- Automatisk generert -> [![Se DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/navikt/crm-ips).
+- [Confluence](https://confluence.adeo.no/spaces/ATA/pages/566083548/8.+Systemdokumentasjon)
+
 ## Kode generert av GitHub Copilot
 
 Dette repoet bruker GitHub Copilot til å generere kode.
@@ -29,3 +33,4 @@ Dette repoet bruker GitHub Copilot til å generere kode.
 ## Kontakt
 
 Spørsmål? Ta kontakt i [#crm-jobbsporet](https://nav-it.slack.com/archives/crm-jobbsporet) på Slack.
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/navikt/crm-ips)
