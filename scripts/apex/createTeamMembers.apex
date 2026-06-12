@@ -64,10 +64,10 @@ for (User u : users) {
     }
 
     toUpsert.add(new ips_Team_Member__c(
-        ips_User__c            = u.Id,
-        ips_Team__c            = teamId,
-        ips_Role__c            = role,
-        ips_NAV_Ident__c       = u.CRM_NAV_Ident__c,
+        ips_User__c = u.Id,
+        ips_Team__c = teamId,
+        ips_Role__c = role,
+        ips_NAV_Ident__c = u.CRM_NAV_Ident__c,
         // Unik nøkkel per bruker+team — gjør operasjonen idempotent
         ips_Unique_User_Key__c = u.Id + '_' + teamId
     ));
