@@ -424,6 +424,47 @@ Hvis du er usikker på en farge, slå opp tokenet i Aksel-biblioteket FØR du by
 
 **Bruk kun frame-navn** — aldri lag separate tekst-labels over frames. Figma viser frame-navnene automatisk. Doble labels overlapper.
 
+## Kontekst uten å miste redigerbarhet (eksisterende flater)
+
+For eksisterende flater vil designere ofte se modulen i **ekte sidekontekst** (plassering, proporsjoner, hvordan resten av siden flyter) **og** kunne flikke videre på den. Et flatt skjermbilde av hele siden er en blindvei: det kan ikke redigeres, og Figma Make jobber dårlig fra piksler. Løsningen er **bakgrunn + redigerbar overlay** — ekte side som skjermbilde, med den ekte komponent-instansen lagt oppi.
+
+**Teknikk (kontekst-overlay):**
+
+1. **Mål kolonnen** i den kjørende appen — posisjon og bredde der modulen skal stå, relativt til innholdsregionen:
+   ```javascript
+   const m = document.querySelector('#injection-point').getBoundingClientRect();
+   const c = document.querySelector('#maincontent').getBoundingClientRect();
+   // { x: m.left - c.left, y: m.top - c.top, w: m.width }
+   ```
+2. **Injiser et tomt felt** (spacer) med modulens omtrentlige høyde der modulen skal stå, så innholdet under flyter naturlig ned. **Aldri håndkod en HTML-tilnærming av selve modulen** for skjermbildet — det gir drift (feil knapper, feil alert, ulik tekst) fordi tilnærmingen sklir fra den ekte komponenten. Bare et tomt felt.
+3. **Knips innholdsregionen** (`#maincontent` e.l.) — ekskluder dekoratør-krom som ofte rendrer ustylet lokalt.
+4. **I Figma**: lag en frame med **samme dimensjon/aspektforhold** som skjermbildet (ellers cropper `FILL` bildet og offsetene treffer feil), legg skjermbildet som frame-bakgrunn (`scaleMode: FILL`), og plasser den **redigerbare** Aksel-komponent-instansen oppi det tomme feltet. Match kolonnebredden med `resize` (ikke `rescale`):
+   ```javascript
+   inst.x = kolonneX; inst.y = kolonneY;
+   inst.resize(kolonneBredde, inst.height); // auto-layout reflyter; tekst/spacing/tokens beholdes
+   ```
+   > **Ikke bruk `node.rescale(factor)`** her — den skalerer hele objektet (typografi, spacing, strokes) som Figmas Scale-verktøy, og gir drift fra Aksel-tokenene. `resize` lar komponentens auto-layout reflyte ved riktig bredde uten å skalere innholdet.
+
+Resultat: ekte sidekontekst + en modul som fortsatt kan redigeres (den er en instans, ikke et bilde), uten overlapping. Endrer du komponentens høyde vesentlig, må spacer/bakgrunn knipses på nytt.
+
+**Den ekte Figma-/Aksel-komponenten er eneste fasit.** Skjermbilder er kun bakgrunn for kontekst — aldri en kilde komponenten skal «matche».
+
+## Lever tilstander som variant-komponent (ikke løse frames)
+
+Designere flikker i Figma og bruker Figma Make. Begge jobber best fra **ekte, redigerbar struktur** — ikke løse statiske rammer eller piksler. Samle derfor tilstandene i **én komponent med en `Tilstand`-variant-akse**:
+
+```javascript
+const variants = states.map(s => {
+  const comp = figma.createComponentFromNode(s.node);
+  comp.name = "Tilstand=" + s.navn;   // f.eks. Tilstand=Tilby
+  return comp;
+});
+const set = figma.combineAsVariants(variants, figma.currentPage);
+set.name = "<Modulnavn>";
+```
+
+**Slå sammen nesten-like tilstander.** Skiller to tilstander seg bare med et **forbigående** element (f.eks. en bekreftelse som vises kort etter en handling og forsvinner av seg selv), behold **én** hviletilstand og dokumentér det forbigående elementet som en egen **annotasjon** ved siden av — ikke en egen permanent skjerm. To nesten-identiske «status»-rammer leses som dobbeltføring.
+
 ## Parity-gate: Figma vs Visual Companion-fasit (OBLIGATORISK)
 
 **Aldri lever uten visuell verifisering mot fasiten.** Visual Companion-skissen er fasit — Figma-resultatet skal matche den. Etter bygging:
