@@ -124,18 +124,20 @@ public class IPS_eventTravelTimeController {
             eventsToInsert.add(eAfter);
         }
         if (!eventsToInsert.isEmpty()) {
-            CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
-            cdoEvents.insert(eventsToInsert);
+            CRM_DatabaseOperations cdoInsertEvents = new CRM_DatabaseOperations()
+                .setDomain(CRM_ApplicationDomain.Domain.IPS);
+            cdoInsertEvents.insertRecords(eventsToInsert);
         }
     }
-
+    @TestVisible
     private static void deleteTravelTime(id currentRecord) {
         List<Event> deleteTravelTime = new List<Event>();
-        List<sObject> delList = Database.query('SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord');
+        List<Event> delList = [SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord WITH SYSTEM_MODE];
         deleteTravelTime.addAll(delList);
         if (deleteTravelTime.size() > 0) {
-            CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
-            cdoEvents.delete(deleteTravelTime, true);
+            CRM_DatabaseOperations cdoDeleteEvents = new CRM_DatabaseOperations()
+                .setDomain(CRM_ApplicationDomain.Domain.IPS);
+            cdoDeleteEvents.deleteRecords(deleteTravelTime);
         }
     }
 }
