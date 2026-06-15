@@ -77,12 +77,12 @@ echo "Installerer crm-henvendelse 0.202.0"
 sf package install --package 04tQC000001Do1dYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-arbeidsgiver-base 1.677.0"
-sf package install --package 04tQC000001CAr3YAG -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.696.0"
+sf package install --package 04tQC000001MqllYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-ips 0.531.0"
-sf package install --package 04tQC000001F6qvYAC -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-ips 0.534.0"
+sf package install --package 04tQC000001LNU5YAO -r --installation-key $3 --wait 4 --publish-wait 4
 
 # Assign permission sets
 echo "TILDELER"
