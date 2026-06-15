@@ -1,6 +1,12 @@
+/**
+ * @description  : 
+ * @author       : Håkon Kavli
+ * @since        : 0.531.0
+ * @version      : 0.531.0
+ * @see          : class#member 'text string' <a href='URL'>label</a> 
+**/
 public class IPS_eventTravelTimeController {
     @InvocableMethod(label='IPS Traveltime' description='Create or update traveltime')
-    
     public static void invokeTravelTime(List<evenctRequest> request) {
         //parse inputs and variables
         Datetime eventStartDate = request.get(0).startDate;
@@ -11,7 +17,7 @@ public class IPS_eventTravelTimeController {
         String eventStatus = request.get(0).status;
         Id eventOwnerId = request.get(0).ownerId;
         Id recordTypeId = request.get(0).recordtypeId;
-        
+
         if (eventTraveltimeBefore <= 0 || eventTraveltimeBefore == null) {
             eventTraveltimeBefore = 0;
         }
@@ -19,9 +25,9 @@ public class IPS_eventTravelTimeController {
         if (eventTraveltimeAfter <= 0 || eventTraveltimeAfter == null) {
             eventTraveltimeAfter = 0;
         }
-		//delete all travel time
-		deleteTravelTime(currentEventId);
-                
+        //delete all travel time
+        deleteTravelTime(currentEventId);
+
         //create travel time
         createTravelTime(
             eventStartDate,
@@ -37,7 +43,6 @@ public class IPS_eventTravelTimeController {
 
     //Input variables from flow
     public class evenctRequest {
-
         @InvocableVariable(required=true)
         public dateTime startDate;
 
@@ -78,6 +83,7 @@ public class IPS_eventTravelTimeController {
         dateTime startTimeAfter = startDate;
         dateTime endTimeBefore = endDate;
         dateTime endTimeAfter = endDate.addMinutes(travelTimeAfter);
+        List<Event> eventsToInsert = new List<Event>();
 
         //create before traveltime
         if (travelTimeBefore > 0) {
@@ -91,9 +97,9 @@ public class IPS_eventTravelTimeController {
             eBefore.RecordTypeId = recordTypeId;
             eBefore.IPS_eventId__c = currentRecord;
             eBefore.IPS_Status1__c = eventStatus;
-            eBefore.Location ='Reisetid';
+            eBefore.Location = 'Reisetid';
             eBefore.IPS_isFromTimeline__c = true;
-            insert eBefore;
+            eventsToInsert.add(eBefore);
         }
 
         //create after traveltime
@@ -108,19 +114,21 @@ public class IPS_eventTravelTimeController {
             eAfter.RecordTypeId = recordTypeId;
             eAfter.IPS_eventId__c = currentRecord;
             eAfter.IPS_Status1__c = eventStatus;
-            eAfter.Location ='Reisetid';
+            eAfter.Location = 'Reisetid';
             eAfter.IPS_isFromTimeline__c = true;
-            insert eAfter;
+            eventsToInsert.add(eAfter);
+        }
+        if (!eventsToInsert.isEmpty()) {
+            insert eventsToInsert;
         }
     }
-    
-    private static void deleteTravelTime(id currentRecord){
+
+    private static void deleteTravelTime(id currentRecord) {
         List<SObject> deleteTravelTime = new List<Event>();
         List<sObject> delList = Database.query('SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord');
-                deleteTravelTime.addAll(delList);
-        if(deleteTravelTime.size()>0){
+        deleteTravelTime.addAll(delList);
+        if (deleteTravelTime.size() > 0) {
             Database.delete(deleteTravelTime, true);
         }
-        
     }
 }
