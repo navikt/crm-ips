@@ -6,6 +6,10 @@
  **/
 @isTest
 public class IPS_eventTravelTimeControllerTest {
+    public static final String TRAVEL_TIME_RECORD_ID = SObjectType.Event.getRecordTypeInfosByDeveloperName()
+        .get('IPS_Traveltime')
+        .getRecordTypeId();
+
     @TestSetup
     static void makeTrailData() {
         List<Account> accountsToInsert = new List<Account>();
@@ -89,9 +93,6 @@ public class IPS_eventTravelTimeControllerTest {
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c <= 0
             LIMIT 1
         ];
-        Id travelTimeRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
-            .get('IPS_Traveltime')
-            .getRecordTypeId();
 
         IPS_eventTravelTimeController.evenctRequest req = new IPS_eventTravelTimeController.evenctRequest();
         req.startDate = baseEvent.StartDateTime;
@@ -100,7 +101,7 @@ public class IPS_eventTravelTimeControllerTest {
         req.travelTimeBefore = 0;
         req.travelTimeAfter = 0;
         req.ownerId = baseEvent.OwnerId;
-        req.recordtypeId = travelTimeRecordTypeId;
+        req.recordtypeId = TRAVEL_TIME_RECORD_ID;
         req.status = baseEvent.IPS_Status1__c;
 
         // When
@@ -115,6 +116,7 @@ public class IPS_eventTravelTimeControllerTest {
             'Expected no travel time events to be created when travel time is 0 or less'
         );
     }
+
     @isTest
     static void updateEventTravelTimeUnitTest() {
         // Given
@@ -125,10 +127,6 @@ public class IPS_eventTravelTimeControllerTest {
             LIMIT 1
         ];
 
-        Id travelTimeRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
-            .get('IPS_Traveltime')
-            .getRecordTypeId();
-
         IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
         firstInput.startDate = baseEvent.StartDateTime;
         firstInput.endDate = baseEvent.EndDateTime;
@@ -136,7 +134,7 @@ public class IPS_eventTravelTimeControllerTest {
         firstInput.travelTimeBefore = Integer.valueOf(baseEvent.ips_Travel_time__c);
         firstInput.travelTimeAfter = Integer.valueOf(baseEvent.IPS_travelTimeFrom__c);
         firstInput.ownerId = baseEvent.OwnerId;
-        firstInput.recordtypeId = travelTimeRecordTypeId;
+        firstInput.recordtypeId = TRAVEL_TIME_RECORD_ID;
         firstInput.status = baseEvent.IPS_Status1__c;
 
         // When
@@ -224,14 +222,23 @@ public class IPS_eventTravelTimeControllerTest {
                 ips_Subcategory_Type_IPS__c,
                 WhatId,
                 IPS_eventId__c,
-                IPS_Status1__c
+                IPS_Status1__c,
+                OwnerId
             FROM Event
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
             LIMIT 1
         ];
-        baseEvent.StartDateTime = baseEvent.StartDateTime.addMinutes(120);
-        baseEvent.EndDateTime = baseEvent.EndDateTime.addMinutes(120);
-        update baseEvent;
+
+        IPS_eventTravelTimeController.evenctRequest req = new IPS_eventTravelTimeController.evenctRequest();
+        req.startDate = baseEvent.StartDateTime;
+        req.endDate = baseEvent.EndDateTime;
+        req.currentRecord = baseEvent.Id;
+        req.travelTimeBefore = Integer.valueOf(baseEvent.ips_Travel_time__c);
+        req.travelTimeAfter = Integer.valueOf(baseEvent.IPS_travelTimeFrom__c);
+        req.ownerId = baseEvent.OwnerId;
+        req.recordtypeId = TRAVEL_TIME_RECORD_ID;
+        req.status = baseEvent.IPS_Status1__c;
+        IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{ req });
 
         List<Event> travelTimeEvents = [
             SELECT Id
@@ -239,7 +246,6 @@ public class IPS_eventTravelTimeControllerTest {
             WHERE IPS_eventId__c = :baseEvent.Id
         ];
         // Pre-assert to ensure that travel time events exist before deletion
-        System.Assert.isNotNull(travelTimeEvents, 'Travel time events list should not be null prior to deletion');
         System.Assert.isFalse(travelTimeEvents.isEmpty(), 'There should have been travel time events to delete');
 
         // When
@@ -254,7 +260,6 @@ public class IPS_eventTravelTimeControllerTest {
             WHERE IPS_eventId__c = :baseEvent.Id
         ];
 
-        System.Assert.isNotNull(remainingTravelTimeEvents, 'Remaining travel time events list should not be null');
         System.Assert.isTrue(
             remainingTravelTimeEvents.isEmpty(),
             'Expected all travel time events to be deleted when the base event is deleted'
