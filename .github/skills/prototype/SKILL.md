@@ -42,29 +42,29 @@ Interaktivt nettleserverktøy for å utforske designkonsepter med Aksel-styling.
    node .github/skills/prototype/scripts/server.js --project-dir .
    ```
 3. Les startup-JSON fra stdout — den inneholder `url`, `screen_dir`, `state_dir`
-4. Gi designeren URL umiddelbart
+4. Gi designeren URL raskt; for eksisterende flater først etter verifisert før/etter
+
+### Eksisterende flate: nåtilstand først
+
+Klassifiser selv. Bruk issue-/oppgavetekst når det finnes; ellers bruk prompt, side-/rutenavn, komponentnavn og appkontekst. Endring/forbedring/ny komponent på kjent side = eksisterende flate. Ved tvil, anta eksisterende flate.
+
+For eksisterende løsning er dette en gate før første visuelle forslag, også ved Figma/chat:
+1. Hent faktisk side med Playwright/lokal app først; alternativt Figma, demo-URL eller manuelt skjermbilde.
+2. Verifiser riktig side og fjern/stubb lokal cookie-, login- og modalstøy før screenshot.
+3. Vis før/etter med samme viewport, data og sidekontekst; forklar hva som er endret og uendret.
+4. Åpne Visual Companion selv før deling og sjekk at skjermbilder laster (`naturalWidth > 0`).
+5. Aldri rekonstruer eksisterende side fra kode og presenter den som nåtilstand.
 
 ### Tilby visual companion
 
-Spør designeren én gang, som egen melding:
-
-> «Noe av det vi skal jobbe med er enklere å vise enn å beskrive. Jeg kan
-> sette opp en nettleservisning der du ser mockups og klikker for å velge.
-> Vil du prøve det?»
-
-Vent på svar. Hvis nei — jobb kun med tekst og Figma.
+Spør designeren én gang om nettleservisning når innholdet er visuelt.
+Hvis nei — jobb kun med tekst og Figma.
 
 ### Bestemme per spørsmål: nettleser eller chat?
 
-**Nettleser** — innholdet ER visuelt:
-- Wireframes, mockups, layout-sammenlikninger
-- Side-by-side designvarianter
-- Komponenteksempler
-
-**Chat** — innholdet er tekst:
-- Kravspørsmål, scope-avklaringer
-- Konseptuelle valg beskrevet i ord
-- Avveininger
+Bruk nettleser når innholdet er visuelt: wireframes, mockups,
+layout-sammenlikninger, side-by-side-varianter og komponenteksempler.
+Bruk chat for kravspørsmål, scope, konseptuelle valg og avveininger.
 
 ### Skrive innhold
 
@@ -126,7 +126,7 @@ Figma MCP-verktøy tilgjengelig.
 ### Flyt
 
 1. `whoami` → finn planKey
-2. `create_new_file` → opprett fil, **del URL med designeren**
+2. `create_new_file` → opprett fil, del URL når relevant kontekstgate er passert
 3. `search_design_system` → finn relevante Aksel-komponenter
 4. `use_figma` **preflight** → importer + logg varianter, default-variant, tekst-node-navn og fonter (se referanse)
 5. `use_figma` → bygg skissen **inkrementelt, én seksjon per kall** med eksakte variant-navn og node-navn fra preflight
@@ -135,7 +135,7 @@ Figma MCP-verktøy tilgjengelig.
 
 **Sjekk katalogen først — den er fasiten.** Alle 45 aktive Aksel-komponenter har key, akser, defaults, tekst-noder og feller ferdig uttrukket i `references/aksel-figma-katalog.json` (maskinlesbar kilde) og `.md` (lesbar). For layouten rundt komponentene (luft, farger, kanter, typografi) bruk `references/aksel-figma-tokens.md`. Drift-validert — hopp over preflight for det katalogen dekker. Detaljer i `references/figma-prototype.md`.
 
-Bygg kun den nye komponenten/endringen — ikke hele siden. Bruk ekte Aksel-komponenter, riktige tokens, og vis varianter som egne frames.
+Komponenten (ikke hele siden) er enheten du bygger — men for **eksisterende flater** gir du kontekst via **bakgrunn + redigerbar overlay**: skjermbilde av den ekte siden med et injisert tomt felt, og den redigerbare komponent-instansen plassert oppi (se `references/figma-prototype.md`). Aldri håndkod en tilnærming av modulen inn i skjermbildet — det gir drift; den ekte komponenten er eneste fasit. Lever tilstander som **én variant-komponent** (`Tilstand`-akse), ikke løse statiske rammer, og slå sammen nesten-like tilstander.
 
 ### Komponent-gate
 
@@ -155,6 +155,7 @@ Finnes den ikke? → Bygg custom, men med Aksel-tokens.
 - **`defaultVariant` er ofte feil**: GlobalAlert/LocalAlert=Error, Tag=Neutral, Checkbox=unchecked. Antall barn (RadioGroup/Accordion/Tabs) er også en variant-akse — velg bevisst
 - **Tekst** via `findOne`/`findAllWithCriteria` med eksakt name (ikke `setProperties()` for tekst); les font med `loadFontAsync(node.fontName)` — Aksel = `Source Sans 3`
 - **Komposisjon**: søknadssteg→`FormProgress`; bygg `Table` fra `Table cell`; skjul Slot-placeholdere; `layoutSizingHorizontal="FILL"` kun etter append; farger via `search_design_system` — aldri gjett RGB
+- **Leveranse**: samle tilstander i én variant-komponent (`Tilstand`-akse) via `combineAsVariants` — Figma- og Figma Make-vennlig. For sidekontekst: skjermbilde-bakgrunn + redigerbar overlay (aldri håndkodet modul i bildet). Se `references/figma-prototype.md`
 
 Se `references/figma-prototype.md` for fullstendige regler og eksempler.
 
@@ -189,7 +190,7 @@ Vis resultat → designer gir feedback → juster → gjenta til fornøyd.
 - Returner URL / Figma-lenke for resultater
 - Bruk handlingsspråk — aldri verktøynavn
 - Spør designer før større endringer
-- Del lenker umiddelbart etter opprettelse
+- Del lenker raskt; for eksisterende flater først etter verifisert nåtilstand/før/etter
 
 ### 🚫 Aldri
 - Skriv kode i prosjektets kildekode (deleger til konditor)
