@@ -1,14 +1,4 @@
-/**
- * @description : Helper script to create ips_Team__c records in sandbox orgs
- * @author    : Håkon Kavli
- * @since    : 0.522.0
- * @version   : 0.522.0
-**/
-
-// Generate new list SELECT Name FROM UserRole WHERE Name LIKE '%Jobbspesialist%'  ORDER BY Name
-
 List<ips_Team__c> teams = new List<ips_Team__c>();
-
 teams.add(new ips_Team__c(Name ='AMS Ålesund', Region__c = 'Møre og Romsdal', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Alna', Region__c = 'Oslo', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Alta-Kvænangen-Loppa', Region__c = 'Troms og Finnmark', Methodology__c = 'AMS'));
@@ -82,7 +72,7 @@ teams.add(new ips_Team__c(Name ='AMS Moss', Region__c = 'Øst-Viken', Methodolog
 teams.add(new ips_Team__c(Name ='AMS Namdal', Region__c = 'Trøndelag', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Nannestad Gjerdrum', Region__c = 'Øst-Viken', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Narvik', Region__c = 'Nordland', Methodology__c = 'AMS'));
-teams.add(new ips_Team__c(Name ='AMS Nesodden', Region__c = 'Vestfold og Telemark', Methodology__c = 'AMS'));
+teams.add(new ips_Team__c(Name ='AMS Nesodden', Region__c = 'Øst-Viken', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Nittedal', Region__c = 'Øst-Viken', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Nord-Gudbrandsdalen', Region__c = 'Innlandet', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Nord-Østerdal', Region__c = 'Innlandet', Methodology__c = 'AMS'));
@@ -176,7 +166,7 @@ teams.add(new ips_Team__c(Name ='IPS Moss', Region__c = 'Øst-Viken', Methodolog
 teams.add(new ips_Team__c(Name ='IPS Namsos', Region__c = 'Trøndelag', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nannestad Gjerdrum', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nedre Romerike', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
-teams.add(new ips_Team__c(Name ='IPS Nesodden', Region__c = 'Vestfold og Telemark', Methodology__c = 'IPS'));
+teams.add(new ips_Team__c(Name ='IPS Nesodden', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS nevrokompetanseteam Møre og Romsdal', Region__c = 'Møre og Romsdal', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nidaros', Region__c = 'Trøndelag', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nidelv', Region__c = 'Trøndelag', Methodology__c = 'IPS'));

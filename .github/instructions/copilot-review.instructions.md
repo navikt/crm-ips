@@ -21,6 +21,7 @@ Instruksjonen supplerer repo-spesifikke regler, men overstyrer dem ikke.
    - Sjekk at databasekall bruker parameteriserte queries.
    - Sjekk at secrets ikke ligger i kode, config, testdata eller logger.
    - Sjekk at personopplysninger (PII) ikke logges eller eksponeres unødvendig.
+   - Flagg alltid røde signaler som auth-endringer, `accessPolicy`, auditlogg, nye eksterne integrasjoner eller GitHub Actions-sikkerhet.
    - Ved tvil: foreslå manuell sikkerhetsgjennomgang via `/security-review`.
 
 3. **Tilgjengelighet (frontend-PR-er)**
