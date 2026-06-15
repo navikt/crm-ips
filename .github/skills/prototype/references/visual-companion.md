@@ -90,7 +90,7 @@ Returnerer JSON med:
 - `screen_dir` — skriv HTML-filer hit
 - `state_dir` — les events herfra
 
-Gi designeren URL umiddelbart etter oppstart.
+Gi designeren URL raskt etter oppstart; for eksisterende flater først etter verifisert før/etter.
 
 ## Løkken
 

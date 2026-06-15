@@ -24,6 +24,38 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>Account.TAG_CreateTask</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!$Client.formFactor}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Small</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Account.TAG_NewEvent</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!$Client.formFactor}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Small</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Account.TAG_New_Activity_Flow</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!$Client.formFactor}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Small</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                    </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>numVisibleActions</name>
@@ -45,50 +77,6 @@
             <componentInstance>
                 <componentName>tagAccountHighlightsPanel</componentName>
                 <identifier>c_tagAccountHighlightsPanel</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>actionNames</name>
-                    <valueList>
-                        <valueListItems>
-                            <value>Account.IPS_arbgivermote_mobil</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Account.Ny_arbeidsgiveroppgave</value>
-                        </valueListItems>
-                    </valueList>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>collapsed</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>enableActionsConfiguration</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>enableActionsInNative</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>hideChatterActions</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>numVisibleActions</name>
-                    <value>3</value>
-                </componentInstanceProperties>
-                <componentName>force:highlightsPanel</componentName>
-                <identifier>force_highlightsPanel</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!$Client.formFactor}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Small</rightValue>
-                    </criteria>
-                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -363,7 +351,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>fields</name>
-                    <value>Alias__c, EditableWebsite__c</value>
+                    <value>Alias__c, EditableWebsite__c, EditableEmail__c</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>isDefaultOpen</name>
@@ -433,7 +421,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>richTextValue</name>
-                    <value>&lt;p&gt;&lt;strong&gt;Tabeller er samlet og mer kompakt! 🎯&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Hold pekeren over lenkene for å se innholdet eller klikk på en lenke for å åpne detaljene.&lt;/p&gt;</value>
+                    <value>&lt;p&gt;Pågående og avsluttet aktivitet Nav har hatt med bedriften&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
                 <identifier>flexipage_richText</identifier>
@@ -449,6 +437,10 @@
                 <identifier>force_relatedListQuickLinksContainer</identifier>
             </componentInstance>
         </itemInstances>
+        <name>Facet-9154b9e4-542d-48f5-a0e3-5686156518d1</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
@@ -474,7 +466,7 @@
                 <identifier>flexipage_reportChart</identifier>
             </componentInstance>
         </itemInstances>
-        <name>Facet-huta89clkkg</name>
+        <name>Facet-da0bba32-4855-4c62-9517-f39a9cbf4cb3</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -482,32 +474,50 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
-                    <value>Facet-huta89clkkg</value>
+                    <value>Facet-9154b9e4-542d-48f5-a0e3-5686156518d1</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>title</name>
+                    <name>label</name>
                     <value>Alle aktiviteter</value>
                 </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>flexipage_tab</identifier>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection1</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection</identifier>
             </componentInstance>
         </itemInstances>
-        <name>Facet-265064ea-d7fe-4e81-be5f-cdb8371f2658</name>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-da0bba32-4855-4c62-9517-f39a9cbf4cb3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Vis sykefravær i graf</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>name</name>
+                    <value>accordionSection--tfuz0nbttf</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:accordionSection</componentName>
+                <identifier>flexipage_accordionSection3</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-96cd9136-170c-4d3b-9d24-72fc1bd60c81</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>label</name>
-                    <value>Tabs</value>
+                    <name>accordionSections</name>
+                    <value>Facet-96cd9136-170c-4d3b-9d24-72fc1bd60c81</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>tabs</name>
-                    <value>Facet-265064ea-d7fe-4e81-be5f-cdb8371f2658</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset</identifier>
+                <componentName>flexipage:accordion</componentName>
+                <identifier>flexipage_accordion</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
@@ -589,7 +599,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>picklistFilter2Label</name>
-                    <value>Statuis</value>
+                    <value>Status</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>showHideLabel</name>

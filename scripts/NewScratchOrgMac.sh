@@ -77,8 +77,8 @@ echo "Installerer crm-henvendelse 0.202.0"
 sf package install --package 04tQC000001Do1dYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
-echo "Installerer crm-arbeidsgiver-base 1.677.0"
-sf package install --package 04tQC000001Lb0oYAC -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Installerer crm-arbeidsgiver-base 1.696.0"
+sf package install --package 04tQC000001MqllYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo ""
 echo "Installerer crm-ips 0.534.0"
