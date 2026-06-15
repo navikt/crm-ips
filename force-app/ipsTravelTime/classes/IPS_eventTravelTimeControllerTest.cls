@@ -84,7 +84,7 @@ public class IPS_eventTravelTimeControllerTest {
     static void createEventTravelTime() {
         // When
         Test.startTest();
-        List<Event> travelTimeList = [SELECT Id FROM Event];
+        List<Event> travelTimeList = [SELECT Id FROM Event WHERE ips_Travel_time__c = 0 AND IPS_eventId__c != NULL];
         Test.stopTest();
         // Then - > List should not be empty
         System.Assert.isNotNull(travelTimeList, 'Expected to find travel times');
@@ -93,7 +93,7 @@ public class IPS_eventTravelTimeControllerTest {
 
     @isTest
     static void createwithOutTravelTime() {
-        // Given
+        // When
         List<Event> noEventTravel = [
             SELECT
                 Id,
@@ -147,7 +147,9 @@ public class IPS_eventTravelTimeControllerTest {
         }
 
         // When
+        Test.startTest();
         update eventsToUpdate;
+        Test.stopTest();
 
         // Then - > Verify that the StartDateTime and EndDateTime of the events have been updated correctly
         List<Event> updatedEvents = [
