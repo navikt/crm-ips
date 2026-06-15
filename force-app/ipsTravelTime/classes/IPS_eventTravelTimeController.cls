@@ -18,11 +18,11 @@ public class IPS_eventTravelTimeController {
         Id eventOwnerId = request.get(0).ownerId;
         Id recordTypeId = request.get(0).recordtypeId;
 
-        if (eventTraveltimeBefore <= 0 || eventTraveltimeBefore == null) {
+        if (eventTraveltimeBefore == null || eventTraveltimeBefore <= 0) {
             eventTraveltimeBefore = 0;
         }
 
-        if (eventTraveltimeAfter <= 0 || eventTraveltimeAfter == null) {
+        if (eventTraveltimeAfter == null || eventTraveltimeAfter <= 0) {
             eventTraveltimeAfter = 0;
         }
         //delete all travel time
@@ -124,16 +124,18 @@ public class IPS_eventTravelTimeController {
             eventsToInsert.add(eAfter);
         }
         if (!eventsToInsert.isEmpty()) {
-            insert eventsToInsert;
+            CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
+            cdoEvents.insert(eventsToInsert);
         }
     }
 
     private static void deleteTravelTime(id currentRecord) {
-        List<SObject> deleteTravelTime = new List<Event>();
+        List<Event> deleteTravelTime = new List<Event>();
         List<sObject> delList = Database.query('SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord');
         deleteTravelTime.addAll(delList);
         if (deleteTravelTime.size() > 0) {
-            Database.delete(deleteTravelTime, true);
+            CRM_DatabaseOperations cdoEvents = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
+            cdoEvents.delete(deleteTravelTime, true);
         }
     }
 }
