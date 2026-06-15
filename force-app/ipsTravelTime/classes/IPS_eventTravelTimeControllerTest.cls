@@ -6,7 +6,7 @@
  **/
 @isTest
 public class IPS_eventTravelTimeControllerTest {
-    public static final String TRAVEL_TIME_RECORD_ID = SObjectType.Event.getRecordTypeInfosByDeveloperName()
+    public static final Id TRAVEL_TIME_RECORD_ID = SObjectType.Event.getRecordTypeInfosByDeveloperName()
         .get('IPS_Traveltime')
         .getRecordTypeId();
 
