@@ -2,7 +2,7 @@
  * @Description  : Test class for IPS_eventTravelTimeController. This class contains test methods to validate the functionality of the IPS_eventTravelTimeController, which is responsible for handling travel time calculations for events in the IPS application. The test methods cover scenarios such as creating events with travel time, updating events with travel time, and ensuring that events without travel time are handled correctly.
  * @author      : Ann-Kristin Olsen
  * @author       : Håkon Kavli
- * @since        : 0.531.0
+ * @since        : 0.536.0
  **/
 @isTest
 public class IPS_eventTravelTimeControllerTest {
@@ -82,13 +82,18 @@ public class IPS_eventTravelTimeControllerTest {
 
     @isTest
     static void createEventTravelTime() {
+        // When
+        Test.startTest();
         List<Event> travelTimeList = [SELECT Id FROM Event];
-        //List should not be empty
+        Test.stopTest();
+        // Then - > List should not be empty
+        System.Assert.isNotNull(travelTimeList, 'Expected to find travel times');
         System.Assert.areNotEqual(0, travelTimeList.size(), 'List should not be empty');
     }
 
     @isTest
     static void createwithOutTravelTime() {
+        // Given
         List<Event> noEventTravel = [
             SELECT
                 Id,
@@ -106,6 +111,7 @@ public class IPS_eventTravelTimeControllerTest {
             FROM Event
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c <= 0
         ];
+        // Then
         for (Event j : noEventTravel) {
             System.Assert.areEqual(0, j.ips_Travel_time__c, 'No travel time before');
             System.Assert.areEqual(0, j.IPS_travelTimeFrom__c, 'No travel time after');
@@ -114,6 +120,7 @@ public class IPS_eventTravelTimeControllerTest {
 
     @isTest
     static void updateEventTravelTime() {
+        // Given
         List<Event> eventsToUpdate = new List<Event>();
 
         List<Event> updateEvent = [
@@ -138,30 +145,31 @@ public class IPS_eventTravelTimeControllerTest {
             i.EndDateTime = i.EndDateTime.addMinutes(120);
             eventsToUpdate.add(i);
         }
-        System.Assert.isFalse(updateEvent.isEmpty(), 'Event list to update should not be empty');
+
+        // When
         update eventsToUpdate;
+
+        // Then - > Verify that the StartDateTime and EndDateTime of the events have been updated correctly
         List<Event> updatedEvents = [
             SELECT Id, StartDateTime
             FROM Event
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
         ];
+        System.Assert.isFalse(updateEvent.isEmpty(), 'Event list to update should not be empty');
         System.Assert.isFalse(updatedEvents.isEmpty(), 'Updated event list should not be empty');
         for (Event e : updatedEvents) {
-            System.Assert.isTrue(e.StartDateTime > System.now(), 'StartDateTime should be shifted forward after update');
+            System.Assert.isTrue(
+                e.StartDateTime > System.now(),
+                'StartDateTime should be shifted forward after update'
+            );
         }
     }
 
     @isTest
     static void updateEventTravelTime1() {
+        // Given
         Event baseEvent = [
-            SELECT
-                Id,
-                ips_Travel_time__c,
-                IPS_travelTimeFrom__c,
-                StartDateTime,
-                EndDateTime,
-                OwnerId,
-                IPS_Status1__c
+            SELECT Id, ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime, OwnerId, IPS_Status1__c
             FROM Event
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
             LIMIT 1
@@ -181,12 +189,14 @@ public class IPS_eventTravelTimeControllerTest {
         firstInput.recordtypeId = travelTimeRecordTypeId;
         firstInput.status = baseEvent.IPS_Status1__c;
 
+        // When
         Test.startTest();
         IPS_eventTravelTimeController.invokeTravelTime(
             new List<IPS_eventTravelTimeController.evenctRequest>{ firstInput }
         );
         Test.stopTest();
 
+        // Then - > Verify that travel time events were created with correct values
         List<Event> travelTimeEvents = [
             SELECT Id, Subject, IPS_eventId__c
             FROM Event
