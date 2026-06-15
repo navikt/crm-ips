@@ -1,10 +1,10 @@
 /**
- * @description  : 
+ * @description  : Controller class for handling travel time calculations for events in the IPS application. This class contains methods to create and delete travel time events based on the start and end times of the main event, as well as the specified travel time before and after the event. The controller is designed to be invoked from a flow, allowing for seamless integration with the event management process in the IPS application.
+ * @author       : Ann-Kristin Olsen
  * @author       : Håkon Kavli
- * @since        : 0.531.0
- * @version      : 0.531.0
- * @see          : class#member 'text string' <a href='URL'>label</a> 
-**/
+ * @since        : 0.536.0
+ * @version      : 0.536.0
+ **/
 public class IPS_eventTravelTimeController {
     @InvocableMethod(label='IPS Traveltime' description='Create or update traveltime')
     public static void invokeTravelTime(List<evenctRequest> request) {
@@ -79,6 +79,11 @@ public class IPS_eventTravelTimeController {
         String eventStatus,
         id ownerId
     ) {
+        // If both travel times are 0 or less, do not create any travel time events
+        if (travelTimeBefore <= 0 && travelTimeAfter <= 0) {
+            return;
+        }
+        // Calculate start and end times for travel time events
         dateTime startTimeBefore = startDate.addMinutes(-travelTimeBefore);
         dateTime startTimeAfter = startDate;
         dateTime endTimeBefore = endDate;
