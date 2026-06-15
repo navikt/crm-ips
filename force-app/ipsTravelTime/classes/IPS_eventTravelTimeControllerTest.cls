@@ -1,6 +1,6 @@
 /**
  * @Description  : Test class for IPS_eventTravelTimeController. This class contains test methods to validate the functionality of the IPS_eventTravelTimeController, which is responsible for handling travel time calculations for events in the IPS application. The test methods cover scenarios such as creating events with travel time, updating events with travel time, and ensuring that events without travel time are handled correctly.
- * @author      : Ann-Kristin Olsen
+ * @author       : Ann-Kristin Olsen
  * @author       : Håkon Kavli
  * @since        : 0.536.0
  **/
@@ -81,45 +81,86 @@ public class IPS_eventTravelTimeControllerTest {
     }
 
     @isTest
-    static void createEventTravelTime() {
-        // When
-        Test.startTest();
-        List<Event> travelTimeList = [SELECT Id FROM Event WHERE ips_Travel_time__c = 0 AND IPS_eventId__c != NULL];
-        Test.stopTest();
-        // Then - > List should not be empty
-        System.Assert.isNotNull(travelTimeList, 'Expected to find travel times');
-        System.Assert.areNotEqual(0, travelTimeList.size(), 'List should not be empty');
-    }
-
-    @isTest
-    static void createwithOutTravelTime() {
-        // When
-        List<Event> noEventTravel = [
-            SELECT
-                Id,
-                ips_Travel_time__c,
-                IPS_travelTimeFrom__c,
-                StartDateTime,
-                EndDateTime,
-                Subject,
-                Description,
-                IPS_Type__c,
-                ips_Subcategory_Type_IPS__c,
-                WhatId,
-                IPS_eventId__c,
-                IPS_Status1__c
+    static void createWithoutTravelTime() {
+        // Given
+        Event baseEvent = [
+            SELECT Id, StartDateTime, EndDateTime, OwnerId, IPS_Status1__c
             FROM Event
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c <= 0
+            LIMIT 1
         ];
+        Id travelTimeRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
+            .get('IPS_Traveltime')
+            .getRecordTypeId();
+
+        IPS_eventTravelTimeController.evenctRequest req = new IPS_eventTravelTimeController.evenctRequest();
+        req.startDate = baseEvent.StartDateTime;
+        req.endDate = baseEvent.EndDateTime;
+        req.currentRecord = baseEvent.Id;
+        req.travelTimeBefore = 0;
+        req.travelTimeAfter = 0;
+        req.ownerId = baseEvent.OwnerId;
+        req.recordtypeId = travelTimeRecordTypeId;
+        req.status = baseEvent.IPS_Status1__c;
+
+        // When
+        Test.startTest();
+        IPS_eventTravelTimeController.invokeTravelTime(new List<IPS_eventTravelTimeController.evenctRequest>{ req });
+        Test.stopTest();
+
         // Then
-        for (Event j : noEventTravel) {
-            System.Assert.areEqual(0, j.ips_Travel_time__c, 'No travel time before');
-            System.Assert.areEqual(0, j.IPS_travelTimeFrom__c, 'No travel time after');
+        List<Event> travelTimeEvents = [SELECT Id FROM Event WHERE IPS_eventId__c = :baseEvent.Id];
+        System.Assert.isTrue(
+            travelTimeEvents.isEmpty(),
+            'Expected no travel time events to be created when travel time is 0 or less'
+        );
+    }
+    @isTest
+    static void updateEventTravelTimeUnitTest() {
+        // Given
+        Event baseEvent = [
+            SELECT Id, ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime, OwnerId, IPS_Status1__c
+            FROM Event
+            WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
+            LIMIT 1
+        ];
+
+        Id travelTimeRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
+            .get('IPS_Traveltime')
+            .getRecordTypeId();
+
+        IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
+        firstInput.startDate = baseEvent.StartDateTime;
+        firstInput.endDate = baseEvent.EndDateTime;
+        firstInput.currentRecord = baseEvent.Id;
+        firstInput.travelTimeBefore = Integer.valueOf(baseEvent.ips_Travel_time__c);
+        firstInput.travelTimeAfter = Integer.valueOf(baseEvent.IPS_travelTimeFrom__c);
+        firstInput.ownerId = baseEvent.OwnerId;
+        firstInput.recordtypeId = travelTimeRecordTypeId;
+        firstInput.status = baseEvent.IPS_Status1__c;
+
+        // When
+        Test.startTest();
+        IPS_eventTravelTimeController.invokeTravelTime(
+            new List<IPS_eventTravelTimeController.evenctRequest>{ firstInput }
+        );
+        Test.stopTest();
+
+        // Then - > Verify that travel time events were created with correct values
+        List<Event> travelTimeEvents = [
+            SELECT Id, Subject, IPS_eventId__c
+            FROM Event
+            WHERE IPS_eventId__c = :baseEvent.Id
+        ];
+        System.Assert.isFalse(travelTimeEvents.isEmpty(), 'Travel time events should have been created');
+        for (Event e : travelTimeEvents) {
+            System.Assert.areEqual('Reisetid', e.Subject, 'Travel time event subject should be Reisetid');
+            System.Assert.areEqual(baseEvent.Id, e.IPS_eventId__c, 'Travel time event should reference the base event');
         }
     }
 
     @isTest
-    static void updateEventTravelTime() {
+    static void updateEventTravelTimeIntegrationTest() {
         // Given
         List<Event> eventsToUpdate = new List<Event>();
 
@@ -168,46 +209,55 @@ public class IPS_eventTravelTimeControllerTest {
     }
 
     @isTest
-    static void updateEventTravelTime1() {
+    static void deleteTravelTimeEventsOnEventDelete() {
         // Given
         Event baseEvent = [
-            SELECT Id, ips_Travel_time__c, IPS_travelTimeFrom__c, StartDateTime, EndDateTime, OwnerId, IPS_Status1__c
+            SELECT
+                Id,
+                ips_Travel_time__c,
+                IPS_travelTimeFrom__c,
+                StartDateTime,
+                EndDateTime,
+                Subject,
+                Description,
+                IPS_Type__c,
+                ips_Subcategory_Type_IPS__c,
+                WhatId,
+                IPS_eventId__c,
+                IPS_Status1__c
             FROM Event
             WHERE IPS_eventId__c = NULL AND ips_Travel_time__c > 0
             LIMIT 1
         ];
+        baseEvent.StartDateTime = baseEvent.StartDateTime.addMinutes(120);
+        baseEvent.EndDateTime = baseEvent.EndDateTime.addMinutes(120);
+        update baseEvent;
 
-        Id travelTimeRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
-            .get('IPS_Traveltime')
-            .getRecordTypeId();
-
-        IPS_eventTravelTimeController.evenctRequest firstInput = new IPS_eventTravelTimeController.evenctRequest();
-        firstInput.startDate = baseEvent.StartDateTime;
-        firstInput.endDate = baseEvent.EndDateTime;
-        firstInput.currentRecord = baseEvent.Id;
-        firstInput.travelTimeBefore = Integer.valueOf(baseEvent.ips_Travel_time__c);
-        firstInput.travelTimeAfter = Integer.valueOf(baseEvent.IPS_travelTimeFrom__c);
-        firstInput.ownerId = baseEvent.OwnerId;
-        firstInput.recordtypeId = travelTimeRecordTypeId;
-        firstInput.status = baseEvent.IPS_Status1__c;
-
-        // When
-        Test.startTest();
-        IPS_eventTravelTimeController.invokeTravelTime(
-            new List<IPS_eventTravelTimeController.evenctRequest>{ firstInput }
-        );
-        Test.stopTest();
-
-        // Then - > Verify that travel time events were created with correct values
         List<Event> travelTimeEvents = [
-            SELECT Id, Subject, IPS_eventId__c
+            SELECT Id
             FROM Event
             WHERE IPS_eventId__c = :baseEvent.Id
         ];
-        System.Assert.isFalse(travelTimeEvents.isEmpty(), 'Travel time events should have been created');
-        for (Event e : travelTimeEvents) {
-            System.Assert.areEqual('Reisetid', e.Subject, 'Travel time event subject should be Reisetid');
-            System.Assert.areEqual(baseEvent.Id, e.IPS_eventId__c, 'Travel time event should reference the base event');
-        }
+        // Pre-assert to ensure that travel time events exist before deletion
+        System.Assert.isNotNull(travelTimeEvents, 'Travel time events list should not be null prior to deletion');
+        System.Assert.isFalse(travelTimeEvents.isEmpty(), 'There should have been travel time events to delete');
+
+        // When
+        Test.startTest();
+        IPS_eventTravelTimeController.deleteTravelTime(baseEvent.Id);
+        Test.stopTest();
+
+        // Then
+        List<Event> remainingTravelTimeEvents = [
+            SELECT Id
+            FROM Event
+            WHERE IPS_eventId__c = :baseEvent.Id
+        ];
+
+        System.Assert.isNotNull(remainingTravelTimeEvents, 'Remaining travel time events list should not be null');
+        System.Assert.isTrue(
+            remainingTravelTimeEvents.isEmpty(),
+            'Expected all travel time events to be deleted when the base event is deleted'
+        );
     }
 }
