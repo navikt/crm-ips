@@ -329,10 +329,11 @@
                     <apex:outputpanel rendered="{!isIPS}">
                         <table style="width: 100%; border: 1px solid #262626">
                             <tr style="background-color: #f1f1f1">
-                                <th style="vertical-align: top; width: 25%">Utdanningsinstitusjon</th>
-                                <th style="vertical-align: top; width: 25%">Kontaktperson</th>
+                                <th style="vertical-align: top; width: 15%">Utd. Ins.</th>
+                                <th style="vertical-align: top; width: 15%">Kontaktperson</th>
                                 <th style="vertical-align: top; width: 10%">Deltaker deltatt</th>
                                 <th style="vertical-align: top; width: 30%">Emne</th>
+                                <th style="vertical-align: top; width: 20%">Møtekategori</th>
                                 <th style="vertical-align: top; width: 10%">Møtedato</th>
                             </tr>
                             <apex:repeat value="{!educationInstitutionMeetingsWithinInterval}" var="meeting">
@@ -919,7 +920,7 @@
             </apex:outputpanel>
         </apex:outputPanel>
 
-        <!-- End rapport -->
+        <!-- End report -->
         <apex:outputPanel rendered="{!isEndReport}" layout="block">
             <apex:outputText rendered="{!isIPS}"
                 ><p>
@@ -1128,10 +1129,12 @@
                 >
             </apex:outputpanel>
 
-            <!-- Samarbeid med utdanningsinstitusjoner endreport -->
-            <apex:outputpanel rendered="{!educationInstitutionMeetingSummary.institutionNames.size != 0}">
-                <apex:outputText><h3>Samarbeid med utdanningsinstitusjoner</h3></apex:outputText>
-                <apex:outputText
+            <!-- Samarbeid med utdanningsinstitusjoner -->
+            <apex:outputpanel>
+                <apex:outputText rendered="{!educationInstitutionMeetingSummary != null}"
+                    ><h3>Samarbeid med utdanningsinstitusjoner</h3></apex:outputText
+                >
+                <apex:outputText rendered="{!educationInstitutionMeetingSummary.institutionNames.size != 0}"
                     >Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende
                     utdanningsinstitusjoner for å utforske mulighetene for utdanning:</apex:outputText
                 >

@@ -45,4 +45,25 @@ public with sharing class IPS_reportPDFService {
 
         return summary;
     }
+
+    /**
+     * Returns list of meetings completed within given interval
+     * @param meetings List of education meetings
+     * @param fromDate Start date of the interval report
+     * @param endDate End date of the interval report
+     * @return  `List<Event>` List of events within interval with completed status
+     */
+    public static List<Event> getEducationMeetingsCompletedWithinInterval(List<Event> meetings, Date fromDate, Date endDate){
+        List<Event> meetingsWithinInterval = new List<Event>();
+        for(Event meeting : meetings){
+            if  (
+                meeting.ActivityDate >= fromDate &&
+                meeting.ActivityDate <= endDate &&
+                meeting.IPS_Status1__c == 'Completed'
+                ){
+                    meetingsWithinInterval.add(meeting);
+            }
+        }
+        return meetingsWithinInterval;
+    }
 }
