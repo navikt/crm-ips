@@ -26,16 +26,18 @@ public with sharing class IPS_reportPDFService {
                 summary.cancelledMeetings++;
             }
 
-            if (String.isNotBlank(meeting.IPS_educationInstitution__c)) {
-                uniqueInstitutionNames.add(
-                    meeting.IPS_educationInstitution__c.trim().toLowerCase()
-                );
-            }
             if(meeting.IPS_participant_related_to_meeting__c == true && meeting.IPS_Status1__c == 'Completed'){
                 summary.participantsRelatedToMeeting++;
             }
+
             if(meeting.IPS_participant_related_to_meeting__c == true && meeting.IPS_Status1__c == 'Participant Absent'){
                 summary.participantsRelatedToMeetingCancelled++;
+            }
+
+            if (String.isNotBlank(meeting.IPS_educationInstitution__c) && meeting.IPS_Status1__c == 'Completed') {
+                uniqueInstitutionNames.add(
+                    meeting.IPS_educationInstitution__c.trim().toLowerCase()
+                );
             }
         }
 
