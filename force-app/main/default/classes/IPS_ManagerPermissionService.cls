@@ -114,7 +114,9 @@ public without sharing class IPS_ManagerPermissionService {
         }
 
         if (!toInsert.isEmpty()) {
-            Database.insert(toInsert, false);
+            CRM_DatabaseOperations cdo = new CRM_DatabaseOperations()
+                .setDomain(CRM_ApplicationDomain.Domain.IPS);
+            cdo.insertRecords(toInsert);
         }
     }
 
@@ -172,7 +174,9 @@ public without sharing class IPS_ManagerPermissionService {
             WHERE PermissionSetId = :managerPermSetId AND AssigneeId IN :managersToRemoveFrom
         ];
         if (!toDelete.isEmpty()) {
-            Database.delete(toDelete, false);
+            CRM_DatabaseOperations cdo = new CRM_DatabaseOperations()
+                .setDomain(CRM_ApplicationDomain.Domain.IPS);
+            cdo.deleteRecords(toDelete);
         }
     }
 
