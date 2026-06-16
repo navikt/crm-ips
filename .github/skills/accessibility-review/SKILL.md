@@ -8,9 +8,73 @@ Review-prosess for universell utforming (UU) i Nav-flater. Universell utforming 
 
 ## Avgrensning mot `accessibility.instructions.md`
 
-Denne skillen er for review-arbeid; instructions auto-injiseres under koding. Skillen gjentar IKKE instruction-innholdet, men bygger videre på det med review-prosess og Nav-spesifikke heuristikker.
+Denne skillen er for review-arbeid og større UI-flyter; instructions auto-injiseres under koding med korte minimumsregler. Skillen utdyper med konkrete sjekkpunkter, testoppskrifter og Nav-spesifikke heuristikker.
 
 Når du koder nytt: la instructions styre. Når du skal gjennomgå en branch, flate eller ekstern leveranse før produksjon: bruk denne skillen.
+
+## Kodemønstre som skal sjekkes
+
+### Semantikk og struktur
+
+- Bruk `<main>`, `<nav>`, `<article>`, `<section>`, `<button>` og `<a>` der semantikken finnes.
+- Overskriftsnivåer skal være logiske og uten hopp (`h1` → `h2` → `h3`).
+- Dokumentet skal ha riktig `lang` og sidetittel der app-strukturen eier dette.
+
+### Skjema og feil
+
+- Bruk Aksel `TextField`, `Textarea`, `Select`, `Checkbox`, `Radio` og tilsvarende der de finnes.
+- Alle felter skal ha synlig label.
+- Feltfeil skal være koblet til feltet og være konkrete på klarspråk.
+- Flere feil i samme skjema skal samles i `ErrorSummary` øverst.
+
+### Interaksjon
+
+- Alle interaktive elementer skal ha tilgjengelig navn og synlig fokus.
+- Ikonknapper skal ha `title` eller tilsvarende Aksel-mønster.
+- Ikke bruk `<div onClick>` uten rolle, `tabIndex`, tastaturhåndtering og fokusstil.
+- Bruk beskrivende lenketekst, ikke "Klikk her".
+
+### Dynamisk innhold
+
+- Loading, feil, tomtilstand og suksess skal annonseres når de påvirker brukerflyten.
+- Bruk `aria-live`, `aria-busy` eller Aksel-komponentenes innebygde mønstre der semantikken ikke allerede er dekket.
+- Modal, meny og tabs skal ha korrekt fokusrekkefølge og kunne lukkes/navigeres med tastatur.
+
+## Testoppskrifter
+
+### Tastatur
+
+1. Tab gjennom hele endret flyt uten mus.
+2. Kontroller at fokus er synlig hele veien.
+3. Kontroller at rekkefølgen følger visuell og logisk flyt.
+4. Bruk Enter/Space på knapper og lenker.
+5. Bruk Escape for modal/meny der relevant.
+
+### `jest-axe`
+
+```tsx
+import { axe, toHaveNoViolations } from "jest-axe";
+
+expect.extend(toHaveNoViolations);
+
+it("har ingen automatiske tilgjengelighetsfeil", async () => {
+  const { container } = render(<MyComponent />);
+  expect(await axe(container)).toHaveNoViolations();
+});
+```
+
+### Playwright + axe-core
+
+```tsx
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+
+test("side har ingen alvorlige tilgjengelighetsfeil", async ({ page }) => {
+  await page.goto("/skjema");
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});
+```
 
 ## Bruk Aksel i bunn
 

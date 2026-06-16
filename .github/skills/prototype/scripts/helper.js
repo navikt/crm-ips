@@ -21,8 +21,7 @@
     el.setAttribute("aria-pressed", String(isSelected));
 
     if (isSelected) {
-      const label =
-        el.querySelector("h3, .content h3")?.textContent || choice;
+      const label = el.querySelector("h3, .content h3")?.textContent || choice;
       selected.set(choice, label);
       recordEvent("click", choice, el.textContent.trim().substring(0, 120));
     } else {

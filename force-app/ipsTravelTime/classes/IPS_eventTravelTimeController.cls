@@ -1,6 +1,12 @@
+/**
+ * @description  : Controller class for handling travel time calculations for events in the IPS application. This class contains methods to create and delete travel time events based on the start and end times of the main event, as well as the specified travel time before and after the event. The controller is designed to be invoked from a flow, allowing for seamless integration with the event management process in the IPS application.
+ * @author       : Ann-Kristin Olsen
+ * @author       : Håkon Kavli
+ * @since        : 0.536.0
+ * @version      : 0.536.0
+ **/
 public class IPS_eventTravelTimeController {
     @InvocableMethod(label='IPS Traveltime' description='Create or update traveltime')
-    
     public static void invokeTravelTime(List<evenctRequest> request) {
         //parse inputs and variables
         Datetime eventStartDate = request.get(0).startDate;
@@ -11,17 +17,17 @@ public class IPS_eventTravelTimeController {
         String eventStatus = request.get(0).status;
         Id eventOwnerId = request.get(0).ownerId;
         Id recordTypeId = request.get(0).recordtypeId;
-        
-        if (eventTraveltimeBefore <= 0 || eventTraveltimeBefore == null) {
+
+        if (eventTraveltimeBefore == null || eventTraveltimeBefore <= 0) {
             eventTraveltimeBefore = 0;
         }
 
-        if (eventTraveltimeAfter <= 0 || eventTraveltimeAfter == null) {
+        if (eventTraveltimeAfter == null || eventTraveltimeAfter <= 0) {
             eventTraveltimeAfter = 0;
         }
-		//delete all travel time
-		deleteTravelTime(currentEventId);
-                
+        //delete all travel time
+        deleteTravelTime(currentEventId);
+
         //create travel time
         createTravelTime(
             eventStartDate,
@@ -37,7 +43,6 @@ public class IPS_eventTravelTimeController {
 
     //Input variables from flow
     public class evenctRequest {
-
         @InvocableVariable(required=true)
         public dateTime startDate;
 
@@ -74,10 +79,16 @@ public class IPS_eventTravelTimeController {
         String eventStatus,
         id ownerId
     ) {
+        // If both travel times are 0 or less, do not create any travel time events
+        if (travelTimeBefore <= 0 && travelTimeAfter <= 0) {
+            return;
+        }
+        // Calculate start and end times for travel time events
         dateTime startTimeBefore = startDate.addMinutes(-travelTimeBefore);
         dateTime startTimeAfter = startDate;
         dateTime endTimeBefore = endDate;
         dateTime endTimeAfter = endDate.addMinutes(travelTimeAfter);
+        List<Event> eventsToInsert = new List<Event>();
 
         //create before traveltime
         if (travelTimeBefore > 0) {
@@ -91,9 +102,9 @@ public class IPS_eventTravelTimeController {
             eBefore.RecordTypeId = recordTypeId;
             eBefore.IPS_eventId__c = currentRecord;
             eBefore.IPS_Status1__c = eventStatus;
-            eBefore.Location ='Reisetid';
+            eBefore.Location = 'Reisetid';
             eBefore.IPS_isFromTimeline__c = true;
-            insert eBefore;
+            eventsToInsert.add(eBefore);
         }
 
         //create after traveltime
@@ -108,19 +119,25 @@ public class IPS_eventTravelTimeController {
             eAfter.RecordTypeId = recordTypeId;
             eAfter.IPS_eventId__c = currentRecord;
             eAfter.IPS_Status1__c = eventStatus;
-            eAfter.Location ='Reisetid';
+            eAfter.Location = 'Reisetid';
             eAfter.IPS_isFromTimeline__c = true;
-            insert eAfter;
+            eventsToInsert.add(eAfter);
+        }
+        if (!eventsToInsert.isEmpty()) {
+            CRM_DatabaseOperations cdoInsertEvents = new CRM_DatabaseOperations()
+                .setDomain(CRM_ApplicationDomain.Domain.IPS);
+            cdoInsertEvents.insertRecords(eventsToInsert);
         }
     }
-    
-    private static void deleteTravelTime(id currentRecord){
-        List<SObject> deleteTravelTime = new List<Event>();
-        List<sObject> delList = Database.query('SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord');
-                deleteTravelTime.addAll(delList);
-        if(deleteTravelTime.size()>0){
-            Database.delete(deleteTravelTime, true);
+    @TestVisible
+    private static void deleteTravelTime(id currentRecord) {
+        List<Event> deleteTravelTime = new List<Event>();
+        List<Event> delList = [SELECT Id FROM Event WHERE IPS_eventId__c = :currentRecord WITH SYSTEM_MODE];
+        deleteTravelTime.addAll(delList);
+        if (deleteTravelTime.size() > 0) {
+            CRM_DatabaseOperations cdoDeleteEvents = new CRM_DatabaseOperations()
+                .setDomain(CRM_ApplicationDomain.Domain.IPS);
+            cdoDeleteEvents.deleteRecords(deleteTravelTime);
         }
-        
     }
 }

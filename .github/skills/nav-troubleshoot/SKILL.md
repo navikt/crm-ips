@@ -24,6 +24,7 @@ Skillen er Nav-spesifikk: Nais, Texas/Oasis, TokenX, Rapids & Rivers, `accessPol
 | 401 Unauthorized / 403 Forbidden | [references/auth-diagnose.md](./references/auth-diagnose.md) |
 | Kafka consumer lag / meldinger prosesseres ikke | [references/kafka-diagnose.md](./references/kafka-diagnose.md) |
 | Database-tilkoblingsfeil / pool exhaustion | [references/database-diagnose.md](./references/database-diagnose.md) |
+| Feilrate, latency eller restarts der signalene spriker mellom metrics, logs og traces | [references/observability-diagnose.md](./references/observability-diagnose.md) |
 | Treg responstid | Se kort tre under |
 | Deploy feiler | Se kort tre under |
 
@@ -40,7 +41,7 @@ Treg responstid
     └── Memory pressure → øk `resources.limits.memory`
 ```
 
-Se `observability-setup` for Micrometer, PromQL/LogQL og varsling.
+Se [references/observability-diagnose.md](./references/observability-diagnose.md) for Nav-spesifikk diagnostikk i Mimir/Loki/Tempo. Se `observability-setup` for oppsett av Micrometer, PromQL/LogQL og varsling.
 
 ## Deploy-problemer (kort)
 

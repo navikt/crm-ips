@@ -174,12 +174,44 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Publish_Error_Log_Event</name>
+        <label>Publish Application Log Event</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Function__c</field>
+            <value>
+                <stringValue>IPS - Publish Platform Event Role Changed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>IPS_Application_Log_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Role_Changed_Platform_Event</name>
         <label>Role Changed Platform Event</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <faultConnector>
-            <targetReference>Application_Log</targetReference>
+            <targetReference>Publish_Error_Log_Event</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Current_Profile__c</field>
@@ -261,7 +293,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Application_Log</targetReference>
+            <targetReference>Publish_Error_Log_Event</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -295,7 +327,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Application_Log</targetReference>
+            <targetReference>Publish_Error_Log_Event</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -329,7 +361,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Application_Log</targetReference>
+            <targetReference>Publish_Error_Log_Event</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -383,31 +415,6 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
-    <subflows>
-        <name>Application_Log</name>
-        <label>Application Log</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <flowName>IPS_Subflow_Create_Application_Log</flowName>
-        <inputAssignments>
-            <name>applicationDomain</name>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>faultMessage</name>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>sourceFunction</name>
-            <value>
-                <stringValue>IPS -  Publish Platform Event Role Changed</stringValue>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <name>teamLeadId</name>
         <dataType>String</dataType>
