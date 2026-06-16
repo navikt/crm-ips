@@ -1,10 +1,11 @@
  #!/bin/bash
 
+echo "Delete org med alias $1 hvis den finnes"
+sf org delete scratch --target-org $1 --no-prompt
+
+echo ""
 echo "Oppretter scratch org"
 sf org create scratch --alias $1 --set-default --definition-file ../config/project-scratch-def.json --duration-days $2 --wait 10
-
-sf force:org:open --target-org $1
-
 
 echo ""
 echo "Installerer platform-data-model 0.1.2"
@@ -80,9 +81,13 @@ echo ""
 echo "Installerer crm-arbeidsgiver-base 1.696.0"
 sf package install --package 04tQC000001MqllYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
+//echo ""
+//echo "Installerer crm-ips 0.534.0"
+//sf package install --package 04tQC000001LNU5YAO -r --installation-key $3 --wait 4 --publish-wait 4
+
 echo ""
-echo "Installerer crm-ips 0.534.0"
-sf package install --package 04tQC000001LNU5YAO -r --installation-key $3 --wait 4 --publish-wait 4
+echo "Deployer metadata.."
+sf project deploy start --wait 10
 
 # Assign permission sets
 echo "TILDELER"
@@ -103,5 +108,9 @@ sf org assign permset --name IPS_Config
 # Opprett testdata
 echo ".. Oppretter testdata.."
 sf apex run --file ./apex/createTestData.apex
+
+echo ""
+echo "Open org i nettleser.."
+sf force:org:open --target-org $1
 
 echo "************************* FERDIG *********************************"
