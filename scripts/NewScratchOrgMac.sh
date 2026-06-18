@@ -5,7 +5,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-echo "Delete org med alias $1 hvis den finnes"
+echo "Sletter org med alias $1 hvis den finnes"
 sf org delete scratch --target-org "$1" --no-prompt || true
 
 
@@ -15,10 +15,10 @@ sf org create scratch --alias "$1" --set-default --definition-file ../config/pro
 echo "\nInstallerer platform-data-model 0.1.2"
 sf package install --package 04tQC000000oHLpYAM --no-prompt --wait 4 --publish-wait 4 
 
-echo "\nINSTALLERER custom-metadata-dao"
+echo "\nInstallerer custom-metadata-dao"
 sf package install --package 04tQC000000oHKDYA2 --no-prompt --wait 4 --publish-wait 4
 
-echo "\nINSTALLERER custom-permission-helper 0.1.2"
+echo "\nInstallerer custom-permission-helper 0.1.2"
 sf package install --package 04tQC000000oGw2YAE --no-prompt --wait 4 --publish-wait 4
 
 echo "Installer feature-toggle ver. 0.1.3"
@@ -86,7 +86,7 @@ sf org assign permset --name IPS_Config
 echo "\n.. Oppretter testdata.."
 sf apex run --file ./apex/createTestData.apex
 
-echo "\nOpen org i nettleser.."
+echo "\nÅpner orgen i nettleseren.."
 sf force:org:open --target-org "$1"
 
 echo "\n************************* FERDIG *********************************"
