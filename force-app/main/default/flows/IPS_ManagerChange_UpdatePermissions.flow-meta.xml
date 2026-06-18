@@ -3,13 +3,10 @@
     <actionCalls>
         <name>Update_Manager_Permission</name>
         <label>Update Manager Permission</label>
-        <locationX>176</locationX>
-        <locationY>134</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <actionName>IPS_ManagerPermissionService</actionName>
         <actionType>apex</actionType>
-        <faultConnector>
-            <targetReference>Log_Error</targetReference>
-        </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>newManagerId</name>
@@ -51,50 +48,14 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>50</locationX>
+        <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Update_Manager_Permission</targetReference>
         </connector>
+        <flowRunAsUser>DefaultWorkflowUser</flowRunAsUser>
         <object>IPS_Manager_Change__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
-    <subflows>
-        <name>Log_Error</name>
-        <label>Log Error</label>
-        <locationX>308</locationX>
-        <locationY>134</locationY>
-        <flowName>Flow_Create_Application_Log</flowName>
-        <inputAssignments>
-            <name>Application_Domain</name>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Error_Source</name>
-            <value>
-                <stringValue>IPS - Manager Change - Update Permissions</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Log_Level</name>
-            <value>
-                <stringValue>ERROR</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Log_Message</name>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Reference_Object</name>
-            <value>
-                <stringValue>IPS_Manager_Change__e</stringValue>
-            </value>
-        </inputAssignments>
-    </subflows>
 </Flow>
