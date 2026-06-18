@@ -109,17 +109,11 @@ private class IPS_ManagerPermissionServiceTest {
         PermissionSet managerPermSet = getPermissionSet(MANAGER_PERM_SET);
         PermissionSet workTrailPermSet = getPermissionSet(WORK_TRAIL_PERM_SET);
 
-        // Assign former manager the manager permission set
-        insert new PermissionSetAssignment(
-            AssigneeId = formerManager.Id,
-            PermissionSetId = managerPermSet.Id
-        );
+        insert new List<PermissionSetAssignment>{
+            new PermissionSetAssignment(AssigneeId = formerManager.Id, PermissionSetId = managerPermSet.Id),
+            new PermissionSetAssignment(AssigneeId = workTrailUser.Id, PermissionSetId = workTrailPermSet.Id)
+        };
 
-        // Assign work trail user the work trail permission set and set their manager
-        insert new PermissionSetAssignment(
-            AssigneeId = workTrailUser.Id,
-            PermissionSetId = workTrailPermSet.Id
-        );
         workTrailUser.ManagerId = formerManager.Id;
         update workTrailUser;
 
