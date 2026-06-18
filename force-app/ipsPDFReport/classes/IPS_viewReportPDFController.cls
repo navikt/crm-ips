@@ -77,9 +77,9 @@ public with sharing class IPS_viewReportPDFController {
 
         this.educationInstitutionMeetings = getEducationalInstitutionMeetings();
         this.educationInstitutionMeetingSummary = IPS_reportPDFService.buildSummary(this.educationInstitutionMeetings);
-        this.educationInstitutionMeetingsWithinInterval = IPS_reportPDFService.getEducationMeetingsCompletedWithinInterval(this.educationInstitutionMeetings, intervallFromDate, intervallToDate);
-   
-
+        if(isIntervallReport){
+            this.educationInstitutionMeetingsWithinInterval = IPS_reportPDFService.getEducationMeetingsCompletedWithinInterval(this.educationInstitutionMeetings, intervallFromDate, intervallToDate);
+        }
         this.getPlannedJobs = getPlannedJobs();
         this.activeParticipantsEducations = getActiveEducations(intervallFromDate, intervallToDate);
         this.plannedParticipantsEducations = getPlannedEducations(intervallFromDate);
