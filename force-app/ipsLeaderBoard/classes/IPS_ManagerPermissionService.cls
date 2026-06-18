@@ -61,15 +61,7 @@ public without sharing class IPS_ManagerPermissionService {
         List<String> newManagerIdList,
         List<String> formerManagerIdList
     ) {
-        Map<String, Id> permSetIdByName = new Map<String, Id>();
-        for (PermissionSet ps : [
-            SELECT Id, Name
-            FROM PermissionSet
-            WHERE Name IN :new Set<String>{ MANAGER_PERM_SET, WORK_TRAIL_PERM_SET }
-            WITH SYSTEM_MODE
-        ]) {
-            permSetIdByName.put(ps.Name, ps.Id);
-        }
+        Map<String, Id> permSetIdByName = fetchPermissionSetIds();
 
         if (
             !permSetIdByName.containsKey(MANAGER_PERM_SET) ||
@@ -86,6 +78,19 @@ public without sharing class IPS_ManagerPermissionService {
 
         assignToNewManagers(newManagerIds, managerPermSetId);
         removeFromFormerManagersIfNoWorkTrailUsers(formerManagerIds, managerPermSetId, workTrailPermSetId);
+    }
+
+    private static Map<String, Id> fetchPermissionSetIds() {
+        Map<String, Id> permSetIdByName = new Map<String, Id>();
+        for (PermissionSet ps : [
+            SELECT Id, Name
+            FROM PermissionSet
+            WHERE Name IN :new Set<String>{ MANAGER_PERM_SET, WORK_TRAIL_PERM_SET }
+            WITH SYSTEM_MODE
+        ]) {
+            permSetIdByName.put(ps.Name, ps.Id);
+        }
+        return permSetIdByName;
     }
 
     private static void assignToNewManagers(Set<Id> newManagerIds, Id managerPermSetId) {
