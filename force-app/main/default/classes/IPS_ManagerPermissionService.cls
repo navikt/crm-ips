@@ -66,6 +66,7 @@ public without sharing class IPS_ManagerPermissionService {
             SELECT Id, Name
             FROM PermissionSet
             WHERE Name IN :new Set<String>{ MANAGER_PERM_SET, WORK_TRAIL_PERM_SET }
+            WITH SYSTEM_MODE
         ]) {
             permSetIdByName.put(ps.Name, ps.Id);
         }
@@ -97,6 +98,7 @@ public without sharing class IPS_ManagerPermissionService {
             SELECT AssigneeId
             FROM PermissionSetAssignment
             WHERE PermissionSetId = :managerPermSetId AND AssigneeId IN :newManagerIds
+            WITH SYSTEM_MODE
         ]) {
             alreadyAssigned.add(psa.AssigneeId);
         }
@@ -135,6 +137,7 @@ public without sharing class IPS_ManagerPermissionService {
             SELECT Id, ManagerId
             FROM User
             WHERE ManagerId IN :formerManagerIds AND IsActive = TRUE
+            WITH SYSTEM_MODE
         ]) {
             managerByUser.put(u.Id, u.ManagerId);
         }
@@ -150,6 +153,7 @@ public without sharing class IPS_ManagerPermissionService {
                 SELECT AssigneeId
                 FROM PermissionSetAssignment
                 WHERE PermissionSetId = :workTrailPermSetId AND AssigneeId IN :managerByUser.keySet()
+                WITH SYSTEM_MODE
             ]) {
                 Id managerId = managerByUser.get(psa.AssigneeId);
                 workTrailCountByManager.put(managerId, workTrailCountByManager.get(managerId) + 1);
@@ -172,6 +176,7 @@ public without sharing class IPS_ManagerPermissionService {
             SELECT Id
             FROM PermissionSetAssignment
             WHERE PermissionSetId = :managerPermSetId AND AssigneeId IN :managersToRemoveFrom
+            WITH SYSTEM_MODE
         ];
         if (!toDelete.isEmpty()) {
             CRM_DatabaseOperations cdo = new CRM_DatabaseOperations()
