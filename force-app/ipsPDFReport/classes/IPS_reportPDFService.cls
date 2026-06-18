@@ -55,7 +55,13 @@ public with sharing class IPS_reportPDFService {
      */
     public static List<Event> getEducationMeetingsCompletedWithinInterval(List<Event> meetings, Date fromDate, Date endDate){
         List<Event> meetingsWithinInterval = new List<Event>();
+        if(fromDate == null || endDate == null){
+            throw new IllegalArgumentException('Report from date and end date cannot be null');
+        }
         for(Event meeting : meetings){
+            if(meeting.ActivityDate == null){
+                throw new IllegalArgumentException('Meeting activity date cannot be null');
+            }
             if  (
                 meeting.ActivityDate >= fromDate &&
                 meeting.ActivityDate <= endDate &&
