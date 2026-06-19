@@ -3,12 +3,14 @@ on:
   pull_request:
     branches:
       - "*"
+    types: [opened, synchronize, reopened, ready_for_review]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   run-pr-validation:
+    if: github.event.pull_request.draft == false
     name: Validate PR
     uses: navikt/crm-workflows-base/.github/workflows/validate.yml@master
     permissions:
