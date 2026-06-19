@@ -77,9 +77,9 @@ public with sharing class IPS_viewReportPDFController {
 
         this.educationInstitutionMeetings = getEducationalInstitutionMeetings();
         this.educationInstitutionMeetingSummary = IPS_reportPDFService.buildSummary(this.educationInstitutionMeetings);
-        this.educationInstitutionMeetingsWithinInterval = getEducationalInstitutionMeetingsWithinInterval();
-   
-
+        if(isIntervallReport){
+            this.educationInstitutionMeetingsWithinInterval = IPS_reportPDFService.getEducationMeetingsCompletedWithinInterval(this.educationInstitutionMeetings, intervallFromDate, intervallToDate);
+        }
         this.getPlannedJobs = getPlannedJobs();
         this.activeParticipantsEducations = getActiveEducations(intervallFromDate, intervallToDate);
         this.plannedParticipantsEducations = getPlannedEducations(intervallFromDate);
@@ -310,8 +310,9 @@ public with sharing class IPS_viewReportPDFController {
                         ips_Subcategory_Type_Education__c, 
                         StartDateTime, 
                         ActivityDate,
-                        IPS_educationInstitution__c
-            FROM event
+                        IPS_educationInstitution__c,
+                        IPS_educationContact__c
+            FROM Event
             WHERE (ips_Subcategory_Type_Education__c = 'Exploration of education' 
                 OR ips_Subcategory_Type_Education__c = 'Support during education')
                 AND WhatId = :workTrailId
@@ -320,38 +321,6 @@ public with sharing class IPS_viewReportPDFController {
         }
         return tempEducationInstitutionMeetings;
     }
-
-    /**
-     * Get meetings related to educational institution within the intervall
-     * @return list of meeting within the intervall
-     */
-    private list<Event> tempEducationInstitutionMeetingsIntervall;
-    private list<Event> getEducationalInstitutionMeetingsWithinInterval(){
-        if(tempEducationInstitutionMeetingsIntervall == null) {
-            tempEducationInstitutionMeetingsIntervall = [
-                SELECT  id,
-                        Subject,
-                        IPS_Type__c,
-                        IPS_Status1__c,
-                        IPS_participant_related_to_meeting__c,
-                        ips_Subcategory_Type_Education__c, 
-                        StartDateTime, 
-                        ActivityDate,
-                        IPS_educationInstitution__c,
-                        IPS_educationContact__c
-            FROM event
-            WHERE (ips_Subcategory_Type_Education__c = 'Exploration of education' 
-                OR ips_Subcategory_Type_Education__c = 'Support during education')
-                AND WhatId = :workTrailId
-                AND ActivityDate >= :intervallFromDate
-                AND ActivityDate <= :intervallToDate
-                AND IPS_Status1__c = 'Completed'
-            ORDER BY ActivityDate DESC
-        ];
-        }
-        return tempEducationInstitutionMeetingsIntervall;
-    }
-
 
     private list<Event> getOpenIntervallActivity(Date sluttDato) {
         List<Event> emplActivity = new List<Event>();
