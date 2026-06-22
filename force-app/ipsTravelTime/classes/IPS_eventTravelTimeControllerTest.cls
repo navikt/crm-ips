@@ -219,7 +219,6 @@ public class IPS_eventTravelTimeControllerTest {
 
         Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
 
-        Test.startTest();
         Event calendarEvent = new Event(
             ips_Travel_time__c = 10,
             IPS_travelTimeFrom__c = 15,
@@ -233,6 +232,9 @@ public class IPS_eventTravelTimeControllerTest {
             IPS_Status1__c = 'Open',
             ips_Subcategory_Type_IPS__c = 'Job support'
         );
+
+        // When
+        Test.startTest();
         insert calendarEvent;
         test.stopTest();
         // Then
