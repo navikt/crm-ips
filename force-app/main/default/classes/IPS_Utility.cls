@@ -6,8 +6,11 @@
  **/
 public without sharing class IPS_Utility {
     public static final List<String> EVENT_RECORD_TYPES = new List<String>{
+        'ArbeidsgiverEvent',
+        'IPS_Education_Event',
         'IPS_Education_Event',
         'IPS_Event',
+        'IPS_UO_Arbeidsgiver',
         'Ips_uo_Deltakermote',
         'ips_UO_m_ter'
     };
@@ -39,6 +42,7 @@ public without sharing class IPS_Utility {
                 SELECT AccountId
                 FROM User
                 WHERE Id = :userId AND Account.CRM_Person__r.INT_Confidential__C = :confidential
+                WITH SYSTEM_MODE
                 LIMIT 1
             ];
         }
@@ -65,10 +69,28 @@ public without sharing class IPS_Utility {
             SELECT Id
             FROM USER
             WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE AND Profile.Name IN :profilesToFetch
+            WITH SYSTEM_MODE
         ]) {
             userIds.add(u.Id);
         }
         return userIds;
+    }
+
+    /**
+     * List all active employees id reporting to the current user filtered by profile.
+     * @param relevantProfiles list of relevant profiles
+     * @return  id of the employees reporting to the current user
+     */
+    public static List<Id> getMyEmployeesUserId(List<String> relevantProfiles) {
+        Map<Id, User> userIds = new Map<Id, User>(
+            [
+                SELECT Id
+                FROM USER
+                WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE AND Profile.Name IN :relevantProfiles
+                WITH SYSTEM_MODE
+            ]
+        );
+        return userIds.keySet();
     }
 
     /**
