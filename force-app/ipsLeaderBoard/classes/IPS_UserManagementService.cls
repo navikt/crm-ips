@@ -18,7 +18,7 @@ public without sharing class IPS_UserManagementService {
         List<User> fetchedUsers = [
             SELECT Id, Name, Profile.Name
             FROM User
-            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserId(profileName)
+            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserIds(profileNames)
             WITH SYSTEM_MODE
         ];
 

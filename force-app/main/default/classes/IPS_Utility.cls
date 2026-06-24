@@ -50,38 +50,10 @@ public without sharing class IPS_Utility {
 
     /**
      * List all active employees id reporting to the current user filtered by profile.
-     * @param employerProfile profile of the employer
-     * @return  id of the employees reporting to the current user
-     * To do: deprecation of this method, as it is not used in the codebase. Use getMyEmployeesUserId(List<String> relevantProfiles) instead.
-     */
-    public static List<Id> getMyEmployeesUserId(String employerProfile) {
-        List<Id> userIds = new List<Id>();
-        // If jobbspesialist of IPS/UO, metodeveilder of IPS/UO will also be added to the query.
-        List<String> profilesToFetch = new List<String>();
-        if (employerProfile == 'NAV UO Jobbspesialist') {
-            profilesToFetch.add('NAV UO Jobbspesialist');
-            profilesToFetch.add('NAV UO Metodeveileder');
-        } else if (employerProfile == 'NAV IPS Jobbspesialist') {
-            profilesToFetch.add('NAV IPS Jobbspesialist');
-            profilesToFetch.add('NAV IPS Metodeveileder');
-        }
-        for (User u : [
-            SELECT Id
-            FROM USER
-            WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE AND Profile.Name IN :profilesToFetch
-            WITH SYSTEM_MODE
-        ]) {
-            userIds.add(u.Id);
-        }
-        return userIds;
-    }
-
-    /**
-     * List all active employees id reporting to the current user filtered by profile.
      * @param relevantProfiles list of relevant profiles
      * @return  id of the employees reporting to the current user
      */
-    public static List<Id> getMyEmployeesUserId(List<String> relevantProfiles) {
+    public static Set<Id> getMyEmployeesUserIds(List<String> relevantProfiles) {
         Map<Id, User> userIds = new Map<Id, User>(
             [
                 SELECT Id
