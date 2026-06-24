@@ -53,6 +53,7 @@ public without sharing class IPS_Utility {
      * List all active employees id reporting to the current user filtered by profile.
      * @param employerProfile profile of the employer
      * @return  id of the employees reporting to the current user
+     * To do: deprecation of this method, as it is not used in the codebase. Use getMyEmployeesUserId(List<String> relevantProfiles) instead.
      */
     public static List<Id> getMyEmployeesUserId(String employerProfile) {
         List<Id> userIds = new List<Id>();
