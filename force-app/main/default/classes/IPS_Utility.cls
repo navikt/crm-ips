@@ -6,6 +6,7 @@
  **/
 public without sharing class IPS_Utility {
     public static final List<String> EVENT_RECORD_TYPES = new List<String>{
+        'IPS_Education_Event',
         'IPS_Event',
         'Ips_uo_Deltakermote',
         'ips_UO_m_ter'
