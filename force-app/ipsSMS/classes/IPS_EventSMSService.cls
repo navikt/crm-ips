@@ -36,6 +36,7 @@ public without sharing class IPS_EventSMSService {
                     IPS_Partticipant_phone_number__c
                 FROM Work_Trail__c
                 WHERE Id IN :workTrailIdSet
+                WITH SYSTEM_MODE
             ]
         );
 
@@ -70,7 +71,12 @@ public without sharing class IPS_EventSMSService {
             }
         }
         // Update Events to reflect sent SMS
-        for (SMS__c smsRecord : [SELECT Id, EventId__c FROM SMS__c WHERE Id IN :insertedSMSrecordIds]) {
+        for (SMS__c smsRecord : [
+            SELECT Id, EventId__c
+            FROM SMS__c
+            WHERE Id IN :insertedSMSrecordIds
+            WITH SYSTEM_MODE
+        ]) {
             Event relatedEvent = eventMap.get(smsRecord.EventId__c);
             if (relatedEvent != null) {
                 relatedEvent.IPS_IsReminderSMSSendt__c = true;
