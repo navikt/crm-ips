@@ -33,8 +33,7 @@ public without sharing class IPS_jobController {
                 WHERE
                     ips_Work_Trail__c = :workTrailId
                     AND ips_Form_of_Employment__c IN :CONTRACT_WORK
-                    AND ips_Status__c = 'Completed'
-            ];
+                    AND ips_Status__c = 'Completed' WITH SYSTEM_MODE];
 
             return myJobs;
         } catch (Exception e) {
@@ -68,8 +67,7 @@ public without sharing class IPS_jobController {
                 WHERE
                     ips_Work_Trail__c = :workTrailId
                     AND ips_Form_of_Employment__c IN :CONTRACT_WORK
-                    AND ips_Status__c = 'Ongoing'
-            ];
+                    AND ips_Status__c = 'Ongoing' WITH SYSTEM_MODE];
 
             return myJobs;
         } catch (Exception e) {
@@ -102,8 +100,7 @@ public without sharing class IPS_jobController {
                 WHERE
                     ips_Work_Trail__c = :workTrailId
                     AND ips_Form_of_Employment__c = 'work training'
-                    AND ips_Status__c = 'Ongoing'
-            ];
+                    AND ips_Status__c = 'Ongoing' WITH SYSTEM_MODE];
 
             return mytraining;
         } catch (Exception e) {
@@ -137,8 +134,7 @@ public without sharing class IPS_jobController {
                 WHERE
                     ips_Work_Trail__c = :workTrailId
                     AND ips_Form_of_Employment__c = 'work training'
-                    AND ips_Status__c = 'Completed'
-            ];
+                    AND ips_Status__c = 'Completed' WITH SYSTEM_MODE];
 
             return mytraining;
         } catch (Exception e) {
@@ -167,8 +163,7 @@ public without sharing class IPS_jobController {
                     ips_What_did_not_work_at_the_workplace__c,
                     ips_What_did_work_at_the_workplace__c
                 FROM ips_Job__c
-                WHERE Id = :recId
-            ];
+                WHERE Id = :recId WITH SYSTEM_MODE];
 
             return mytraining;
         } catch (Exception e) {
@@ -190,8 +185,8 @@ public without sharing class IPS_jobController {
                     ips_status__c = 'Ongoing'
                     AND ips_Form_of_Employment__c IN :CONTRACT_WORK
                     AND ips_Work_Trail__r.OwnerId IN :IPS_Utility.getMyEmployeesUserId()
-                GROUP BY ips_form_of_employment__c
-            ];
+                WITH SYSTEM_MODE
+                GROUP BY ips_form_of_employment__c];
 
             if (aggList.size() > 0) {
                 for (AggregateResult agg : aggList) {
@@ -221,8 +216,7 @@ public without sharing class IPS_jobController {
                 WHERE
                     ips_status__c = 'Ongoing'
                     AND ips_Form_of_Employment__c = 'work training'
-                    AND ips_Work_Trail__r.OwnerId IN :IPS_Utility.getMyEmployeesUserId()
-            ];
+                    AND ips_Work_Trail__r.OwnerId IN :IPS_Utility.getMyEmployeesUserId() WITH SYSTEM_MODE];
 
             if (aggList.size() > 0) {
                 for (AggregateResult agg : aggList) {

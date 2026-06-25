@@ -1,58 +1,46 @@
+/**
+ * @description  :  Controller class for managing Work Trail data for the current user in IPS. This class provides methods to retrieve the user's work trail, ongoing and completed education records, and specific education details. It is designed to be used in conjunction with Lightning components or other front-end interfaces that require access to the user's work trail and education information.
+ * @author       : Ann Kristin Olssen
+ * @since        : v1.0.0
+ * @author       : Håkon Kavli
+ * @since        : 0.536.0
+ * @version      : 0.536.0
+ **/
 public without sharing class IPS_myActivityController {
-    
     /* All open goals that is connected with worktrail */
-    @AuraEnabled(cacheable = true)    
-    public static List<Task> getParticipantsGoals(String workTrailId){
-
+    @AuraEnabled(cacheable=true)
+    public static List<Task> getParticipantsGoals(String workTrailId) {
         List<Task> userGoal = new List<Task>();
-        userGoal =[
-            SELECT 
-                id,
-                CreatedDate,
-                ActivityDate,
-                Subject,
-                Description,
-                Status
-            FROM Task 
-            WHERE WhatId = :workTrailId 
-            AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'  
-            AND Status ='Open'
+        userGoal = [
+            SELECT id, CreatedDate, ActivityDate, Subject, Description, Status
+            FROM Task
+            WHERE WhatId = :workTrailId AND Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)' AND Status = 'Open'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate ASC
         ];
         return userGoal;
     }
 
     /* History of all completed goals connected with worktrail */
-    @AuraEnabled(cacheable = true)    
-    public static List<Task> getAllGoals(String workTrailId){
-
+    @AuraEnabled(cacheable=true)
+    public static List<Task> getAllGoals(String workTrailId) {
         List<Task> userGoal = new List<Task>();
-        userGoal =[
-            SELECT 
-                id,
-                ActivityDate,
-                CreatedDate,
-                CompletedDateTime,
-                Subject,
-                Type_of_Task_IPSUO__c,
-                Description,
-                Status
-            FROM Task 
-            WHERE WhatId = :workTrailId 
-            AND Type_of_Task_IPSUO__c ='Delmål (av hovedmål)'
-            AND Status = 'Completed'
+        userGoal = [
+            SELECT id, ActivityDate, CreatedDate, CompletedDateTime, Subject, Type_of_Task_IPSUO__c, Description, Status
+            FROM Task
+            WHERE WhatId = :workTrailId AND Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)' AND Status = 'Completed'
+            WITH SYSTEM_MODE
             ORDER BY CompletedDateTime DESC
         ];
         return userGoal;
     }
 
     /* All Completed Logs that is connected with worktrail */
-    @AuraEnabled(cacheable = true)    
-    public static List<Task> getParticipantsLogs(String workTrailId){
-
+    @AuraEnabled(cacheable=true)
+    public static List<Task> getParticipantsLogs(String workTrailId) {
         List<Task> userLogs = new List<Task>();
-        userLogs =[
-            SELECT 
+        userLogs = [
+            SELECT
                 id,
                 ActivityDate,
                 CreatedDate,
@@ -63,27 +51,29 @@ public without sharing class IPS_myActivityController {
                 Samtalereferat__c,
                 WhatId,
                 Status
-            FROM Task 
-            WHERE WhatId = :workTrailId 
-            AND Type_of_Task_IPSUO__c ='Logg kontakt'  
-            AND Samtalereferat__c = true
-            AND Status ='Completed'
+            FROM Task
+            WHERE
+                WhatId = :workTrailId
+                AND Type_of_Task_IPSUO__c = 'Logg kontakt'
+                AND Samtalereferat__c = TRUE
+                AND Status = 'Completed'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate DESC
         ];
         return userLogs;
     }
 
-    @AuraEnabled(cacheable = true)    
-    public static List<Event> getEmployerActivity(String workTrailId,String contactId){
+    @AuraEnabled(cacheable=true)
+    public static List<Event> getEmployerActivity(String workTrailId, String contactId) {
         Date todaysDate = System.today();
         List<Event> emplActivity = new List<Event>();
-        emplActivity =[
-            SELECT 
+        emplActivity = [
+            SELECT
                 id,
                 Subject,
                 CreatedDate,
                 Location,
-                IPS_subjectAndDate__c, 
+                IPS_subjectAndDate__c,
                 ActivityDate,
                 ActivityDateTime,
                 IPS_timeFrom__c,
@@ -91,30 +81,31 @@ public without sharing class IPS_myActivityController {
                 Description,
                 IPS_employerName__c,
                 IPS_Type__c,
-                toLabel(IPS_Status1__c) 
-            FROM event 
-            WHERE 
-                ActivityDate >=: todaysDate  
-                AND WhatId = :workTrailId 
-                AND WhoId= :contactId 
-                AND IPS_Type__c ='Meeting with Employer'
-                AND IPS_Status1__c ='Open'
+                toLabel(IPS_Status1__c)
+            FROM event
+            WHERE
+                ActivityDate >= :todaysDate
+                AND WhatId = :workTrailId
+                AND WhoId = :contactId
+                AND IPS_Type__c = 'Meeting with Employer'
+                AND IPS_Status1__c = 'Open'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate DESC
         ];
         return emplActivity;
     }
 
-    @AuraEnabled(cacheable = true) 
-    public static List<Event> getParticipantActivity(String workTrailId){
+    @AuraEnabled(cacheable=true)
+    public static List<Event> getParticipantActivity(String workTrailId) {
         Date todaysDate = System.today();
         List<Event> userActivity = new List<Event>();
-        userActivity =[
-            SELECT 
+        userActivity = [
+            SELECT
                 id,
                 Subject,
                 CreatedDate,
-                Location, 
-                EndDateTime, 
+                Location,
+                EndDateTime,
                 StartDateTime,
                 IPS_subjectAndDate__c,
                 ActivityDate,
@@ -123,40 +114,45 @@ public without sharing class IPS_myActivityController {
                 IPS_timeTo__c,
                 Description,
                 IPS_Type__c,
-                toLabel(IPS_Status1__c )
-            FROM event 
-            WHERE 
-                ActivityDate >=: todaysDate 
-                AND WhatId = :workTrailId 
-                AND IPS_Type__c ='Meeting with Participant'
-                AND IPS_Status1__c ='Open'
+                toLabel(IPS_Status1__c)
+            FROM event
+            WHERE
+                ActivityDate >= :todaysDate
+                AND WhatId = :workTrailId
+                AND IPS_Type__c = 'Meeting with Participant'
+                AND IPS_Status1__c = 'Open'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate DESC
         ];
         return userActivity;
     }
 
-    @AuraEnabled(cacheable = true) 
-    public static List<Event> getAllActivity(String workTrailId,String contactId){
+    @AuraEnabled(cacheable=true)
+    public static List<Event> getAllActivity(String workTrailId, String contactId) {
         Date todaysDate = System.today();
         List<Event> userActivity = new List<Event>();
-        userActivity =[
-            SELECT 
+        userActivity = [
+            SELECT
                 id,
                 IPS_subjectAndDate__c,
                 Location,
-                EndDateTime, 
+                EndDateTime,
                 StartDateTime,
                 Description,
                 IPS_Type__c,
                 IPS_Status1__c,
                 IPS_employerName__c
-            FROM event 
-            WHERE 
+            FROM event
+            WHERE
                 WhatId = :workTrailId
-                AND WhoId= :contactId
-                AND IPS_Status1__c ='Completed'
-                AND (IPS_Type__c ='Meeting with Participant' OR IPS_Type__c='Meeting with Employer' OR IPS_Type__c='First Meeting with Employer' OR IPS_Type__c='Start up meeting')
-                ORDER BY ActivityDate DESC
+                AND WhoId = :contactId
+                AND IPS_Status1__c = 'Completed'
+                AND (IPS_Type__c = 'Meeting with Participant'
+                OR IPS_Type__c = 'Meeting with Employer'
+                OR IPS_Type__c = 'First Meeting with Employer'
+                OR IPS_Type__c = 'Start up meeting')
+            WITH SYSTEM_MODE
+            ORDER BY ActivityDate DESC
         ];
         return userActivity;
     }

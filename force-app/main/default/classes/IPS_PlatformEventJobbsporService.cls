@@ -29,8 +29,7 @@ public without sharing class IPS_PlatformEventJobbsporService {
             		toLabel(ips_UO_Service__c),
             		Oppstartsdato__c 
             FROM Work_trail__c
-            WHERE Id IN :workTrailIdSet
-        ];
+            WHERE Id IN :workTrailIdSet WITH SYSTEM_MODE];
         
         for(Work_Trail__c t:workTrailList){
             IPSJobbsporEvent__e eventJobbspor = new IPSJobbsporEvent__e();

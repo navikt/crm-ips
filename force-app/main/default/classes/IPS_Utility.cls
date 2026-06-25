@@ -41,6 +41,7 @@ public without sharing class IPS_Utility {
                 SELECT AccountId
                 FROM User
                 WHERE Id = :userId AND Account.CRM_Person__r.INT_Confidential__C = :confidential
+
                 WITH SYSTEM_MODE
                 LIMIT 1
             ];
@@ -58,9 +59,7 @@ public without sharing class IPS_Utility {
             [
                 SELECT Id
                 FROM USER
-                WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE AND Profile.Name IN :relevantProfiles
-                WITH SYSTEM_MODE
-            ]
+                WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE AND Profile.Name IN :relevantProfiles WITH SYSTEM_MODE]
         );
         return userIds.keySet();
     }
@@ -71,7 +70,7 @@ public without sharing class IPS_Utility {
      */
     public static List<Id> getMyEmployeesUserId() {
         List<Id> userIds = new List<Id>();
-        for (User u : [SELECT Id FROM USER WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE]) {
+        for (User u : [SELECT Id FROM USER WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE WITH SYSTEM_MODE]) {
             userIds.add(u.Id);
         }
         return userIds;

@@ -15,7 +15,7 @@ public with sharing class IPS_ParticipantsReportsController {
         FROM ips_report__c 
         WHERE 
         IPS_status__c = 'Open'
-        AND IPS_workTrailName__c =:recordId]; 
+        AND IPS_workTrailName__c =:recordId WITH SYSTEM_MODE]; 
 
         return reportList;
     }
@@ -33,7 +33,7 @@ public with sharing class IPS_ParticipantsReportsController {
             FROM ips_report__c 
             WHERE 
                 IPS_status__c = 'Open'
-                AND IPS_workTrailName__c =:workTrailId];
+                AND IPS_workTrailName__c =:workTrailId WITH SYSTEM_MODE];
 
         return reportLists;
     }
@@ -54,6 +54,7 @@ public with sharing class IPS_ParticipantsReportsController {
             FROM ips_report__c 
             WHERE 
                 IPS_workTrailName__c =:workTrailId
+            WITH SYSTEM_MODE
             ORDER BY CreatedDate DESC];
 
         return reportLists;

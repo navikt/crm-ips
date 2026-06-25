@@ -1,111 +1,112 @@
+/**
+ * @description  : Controller class for managing Work Trail data for the current user in IPS. This class provides methods to retrieve the user's work trail, ongoing and completed education records, and specific education details. It is designed to be used in conjunction with Lightning components or other front-end interfaces that require access to the user's work trail and education information.
+ * @author       : Håkon Kavli
+ * @since        : 0.536.0
+ **/
 public without sharing class IPS_myWorkTrailController {
-
-    @AuraEnabled(cacheable = true)
+    @AuraEnabled(cacheable=true)
     public static List<work_trail__c> getUserWorkTrailId(String userId) {
+        List<User> userList = IPS_Utility.getPersonAccountId(userId);
+        if (userList.isEmpty()) {
+            system.debug('No accountId found on user');
+            return new List<work_trail__c>();
+        }
+        String accountId = userList[0]?.AccountId;
+        List<Work_Trail__c> mytrail = new List<Work_Trail__c>();
+        mytrail = [
+            SELECT id, ips_Participant__r.PersonContactId, RecordType.DeveloperName, ips_End_Date__c
+            FROM Work_Trail__c
+            WHERE ips_Participant__c = :accountId AND (ips_End_Date__c = LAST_N_DAYS:365 OR ips_End_Date__c = NULL)
+            WITH SYSTEM_MODE
+            ORDER BY CreatedDate DESC
+            LIMIT 1
+        ];
 
-            List<User> userList = IPS_Utility.getPersonAccountId(userId);
-                if(userList.isEmpty()){
-                    system.debug('No accountId found on user');
-                    return new List<work_trail__c>();
-                }
-            String accountId = userList[0]?.AccountId;
-            List<Work_Trail__c> mytrail = new List<Work_Trail__c>();
-            mytrail = [
-                SELECT id,ips_Participant__r.PersonContactId,RecordType.DeveloperName,ips_End_Date__c
-                FROM Work_Trail__c 
-                WHERE ips_Participant__c = :accountId AND (ips_End_Date__c = LAST_N_DAYS:365 OR ips_End_Date__c =NULL)
-                ORDER BY CreatedDate DESC 
-                LIMIT 1];
-            
-            return mytrail;
+        return mytrail;
     }
-/******************************** Education *******************************************/
+    /******************************** Education *******************************************/
     /* Ongoing education on main page */
-    @AuraEnabled(cacheable = true)
-    public static List<ips_Education__c> getUserEducations(String workTrailId){
+    @AuraEnabled(cacheable=true)
+    public static List<ips_Education__c> getUserEducations(String workTrailId) {
         try {
             List<ips_Education__c> myEducation = new List<ips_Education__c>();
-            myEducation =[
-                SELECT 
-                id,
-                Name,
-                ips_Work_Trail__c,
-                ips_Contact_at_the_Education_Institution__c,
-                ips_Name_of_the_Education_Institution__c,
-                ips_Start_Date__c,
-                ips_End_Date__c,
-                ips_Education_Support_Plan__c,
-                toLabel(ips_Form_of_Education__c),
-                toLabel(ips_Status__c)
+            myEducation = [
+                SELECT
+                    id,
+                    Name,
+                    ips_Work_Trail__c,
+                    ips_Contact_at_the_Education_Institution__c,
+                    ips_Name_of_the_Education_Institution__c,
+                    ips_Start_Date__c,
+                    ips_End_Date__c,
+                    ips_Education_Support_Plan__c,
+                    toLabel(ips_Form_of_Education__c),
+                    toLabel(ips_Status__c)
                 FROM ips_Education__c
-                WHERE ips_Work_Trail__c =:workTrailId AND ips_Status__c = 'Ongoing'
-                ];
+                WHERE ips_Work_Trail__c = :workTrailId AND ips_Status__c = 'Ongoing'
+                WITH SYSTEM_MODE
+            ];
 
-                return myEducation;
-            
+            return myEducation;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
     }
 
     /*All completed educations */
-    @AuraEnabled(cacheable = true)
-    public static List<ips_Education__c> getallEducations(String workTrailId){
+    @AuraEnabled(cacheable=true)
+    public static List<ips_Education__c> getallEducations(String workTrailId) {
         try {
             List<ips_Education__c> myEducation = new List<ips_Education__c>();
-            myEducation =[
-                SELECT 
-                id,
-                Name,
-                ips_Work_Trail__c,
-                ips_End_Date__c,
-                ips_Start_Date__c,
-                ips_Name_of_the_Education_Institution__c,
-                toLabel(ips_Form_of_Education__c),
-                toLabel(ips_Status__c),
-                ips_What_did_work_with_this_education__c,
-                ips_What_did_not_work_with_thiseducation__c
+            myEducation = [
+                SELECT
+                    id,
+                    Name,
+                    ips_Work_Trail__c,
+                    ips_End_Date__c,
+                    ips_Start_Date__c,
+                    ips_Name_of_the_Education_Institution__c,
+                    toLabel(ips_Form_of_Education__c),
+                    toLabel(ips_Status__c),
+                    ips_What_did_work_with_this_education__c,
+                    ips_What_did_not_work_with_thiseducation__c
                 FROM ips_Education__c
-                WHERE ips_Work_Trail__c =:workTrailId
-                AND ips_Status__c ='Completed'
-                ];
+                WHERE ips_Work_Trail__c = :workTrailId AND ips_Status__c = 'Completed'
+                WITH SYSTEM_MODE
+            ];
 
-                return myEducation;
-            
+            return myEducation;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
     }
 
     /* Education details */
-    @AuraEnabled(cacheable = true)
-    public static List<ips_Education__c> getUserEducation(String recId){
+    @AuraEnabled(cacheable=true)
+    public static List<ips_Education__c> getUserEducation(String recId) {
         try {
             List<ips_Education__c> myEducation = new List<ips_Education__c>();
-            myEducation =[
-                SELECT 
-                id,
-                Name,
-                ips_Work_Trail__c,
-                ips_Name_of_the_Education_Institution__c,
-                toLabel(ips_Form_of_Education__c),
-                ips_Start_Date__c, 
-                ips_End_Date__c,
-                toLabel(ips_Status__c), 
-                ips_Education_Support_Plan__c, 
-                ips_What_did_work_with_this_education__c, 
-                ips_What_did_not_work_with_thiseducation__c 
+            myEducation = [
+                SELECT
+                    id,
+                    Name,
+                    ips_Work_Trail__c,
+                    ips_Name_of_the_Education_Institution__c,
+                    toLabel(ips_Form_of_Education__c),
+                    ips_Start_Date__c,
+                    ips_End_Date__c,
+                    toLabel(ips_Status__c),
+                    ips_Education_Support_Plan__c,
+                    ips_What_did_work_with_this_education__c,
+                    ips_What_did_not_work_with_thiseducation__c
                 FROM ips_Education__c
-                WHERE Id =:recId
-                ];
+                WHERE Id = :recId
+                WITH SYSTEM_MODE
+            ];
 
-                return myEducation;
-            
+            return myEducation;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
     }
-
-
-
 }

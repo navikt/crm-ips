@@ -24,7 +24,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
                                FROM Task 
                                WHERE Type_of_Task_IPSUO__c in('Delmål (av hovedmål)') 
                                AND whatId =:currentId 
-                               AND status ='Open'];
+                               AND status ='Open' WITH SYSTEM_MODE];
         if(!alltasks.isEmpty()){
             for(Task t:alltasks){
             	t.OwnerId = ownerId;
@@ -46,7 +46,7 @@ public without sharing class IPS_changeOwnerOnActivityController {
                                  WHERE IPS_Type__c in ('Meeting with Participant','Meeting with Employer','First Meeting with Employer','Start up meeting') 
                                  AND IPS_Status1__c ='Open'
                                  AND OwnerId =:oldOwnerId
-                                 AND whatId =:currentId];
+                                 AND whatId =:currentId WITH SYSTEM_MODE];
         if(!allevents.isEmpty()){
             for(Event e:allevents){
             	e.OwnerId = ownerId;

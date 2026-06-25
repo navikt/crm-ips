@@ -35,9 +35,7 @@ public without sharing class IPS_EventSMSService {
                     ips_Participant__r.CRM_Person__r.INT_KrrMobilePhone__c,
                     IPS_Partticipant_phone_number__c
                 FROM Work_Trail__c
-                WHERE Id IN :workTrailIdSet
-                WITH SYSTEM_MODE
-            ]
+                WHERE Id IN :workTrailIdSet WITH SYSTEM_MODE]
         );
 
         // Map Work Trails by their correpsonding Events
@@ -74,9 +72,7 @@ public without sharing class IPS_EventSMSService {
         for (SMS__c smsRecord : [
             SELECT Id, EventId__c
             FROM SMS__c
-            WHERE Id IN :insertedSMSrecordIds
-            WITH SYSTEM_MODE
-        ]) {
+            WHERE Id IN :insertedSMSrecordIds WITH SYSTEM_MODE]) {
             Event relatedEvent = eventMap.get(smsRecord.EventId__c);
             if (relatedEvent != null) {
                 relatedEvent.IPS_IsReminderSMSSendt__c = true;

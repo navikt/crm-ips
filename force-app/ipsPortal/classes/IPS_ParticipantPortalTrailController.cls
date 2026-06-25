@@ -32,6 +32,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
                 ips_Participant__c = :currentRecordId
                 AND (ips_End_Date__c = LAST_N_DAYS:365
                 OR ips_End_Date__c = NULL)
+            WITH SYSTEM_MODE
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
@@ -122,6 +123,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
                 ips_Participant__c = :currentRecordId
                 AND (ips_End_Date__c = LAST_N_DAYS:365
                 OR ips_End_Date__c = NULL)
+            WITH SYSTEM_MODE
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];

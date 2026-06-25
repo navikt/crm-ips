@@ -597,8 +597,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 AND ActivityDate < :tempDate
                 AND WhatId = :recordId
                 AND IPS_Status1__c = 'Open'
-            ORDER BY ActivityDate ASC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ActivityDate ASC];
 
         for (event e : emplActivity) {
             IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
@@ -651,8 +651,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 AND IPS_Status1__c = 'Completed'
                 AND ActivityDate >= :reportDateFrom
                 AND ActivityDate <= :reportDateTo
-            ORDER BY ActivityDate DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ActivityDate DESC];
 
         for (Event epart : employeeActivity) {
             IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
@@ -700,8 +700,7 @@ public with sharing class IPS_ParticipantPortalReportController {
                 IPS_Type__c IN ('Meeting with Employer', 'First Meeting with Employer')
                 AND WhatId = :recordId
                 AND IPS_participant_related_to_meeting__c = TRUE
-                AND IPS_Status1__c = 'Completed'
-        ];
+                AND IPS_Status1__c = 'Completed' WITH SYSTEM_MODE];
         tempList.AntallCompletedMeeting = (Integer) employeeActivityCount[0].get('countOfMeeting');
         tempList.EventId = '1';
         wrapperTempList.add(tempList);
@@ -746,8 +745,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 OR ips_Subcategory_Type_IPS__c = 'Job support'
                 OR IPS_Subcategory_Type_UO__c = 'Relationship building')
                 AND IPS_Status1__c IN ('Open', 'Completed', 'Participant Absent')
-            ORDER BY ActivityDate DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ActivityDate DESC];
 
         for (Event epart : employeeActivity) {
             tempAccountName.add(epart.RelatedToAccount__r.name);
@@ -789,8 +788,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 AND ActivityDate <= :reportDateTo
                 AND WhatId = :recordId
                 AND IPS_Status1__c = 'Completed'
-            ORDER BY ActivityDate DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ActivityDate DESC];
 
         for (Event epart : employeeActivity) {
             IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
@@ -825,8 +824,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 IPS_Type__c IN ('Meeting with Participant', 'Start up meeting')
                 AND WhatId = :recordId
                 AND IPS_Status1__c = 'Completed'
-            ORDER BY ActivityDate DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ActivityDate DESC];
 
         Integer numbersOfMeeting = 0;
         IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
@@ -953,8 +952,7 @@ public with sharing class IPS_ParticipantPortalReportController {
             WHERE
                 IPS_Type__c IN ('Meeting with Participant', 'Start up meeting')
                 AND WhatId = :recordId
-                AND IPS_Status1__c = 'Participant Absent'
-        ];
+                AND IPS_Status1__c = 'Participant Absent' WITH SYSTEM_MODE];
         tempList.AntallAbsentMeeting = (Integer) absentCount[0].get('countOfMeeting');
         tempList.EventId = '1';
         wrapperTempList.add(tempList);
@@ -995,8 +993,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 ips_Status__c
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :currentRecordId AND ips_Status__c IN ('Ongoing', 'Completed', 'Planned')
-            ORDER BY ips_Start_Date__c DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ips_Start_Date__c DESC];
 
         for (ips_Education__c i : tempEducation) {
             IPS_ParticipantPortalEducation tempList = new IPS_ParticipantPortalEducation();
@@ -1028,8 +1026,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 AMS_Description__c
             FROM AMS_Vocational_education_and_training__c
             WHERE AMS_Work_Trail__c = :currentRecordId AND AMS_Status__c IN ('Ongoing', 'Completed', 'Planned')
-            ORDER BY AMS_Start_Date__c DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY AMS_Start_Date__c DESC];
 
         for (AMS_Vocational_education_and_training__c ams : tempAMSEducation) {
             IPS_ParticipantPortalEducation tempAMSList = new IPS_ParticipantPortalEducation();
@@ -1115,8 +1113,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 ips_Status__c
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :currentRecordId AND ips_Status__c IN ('Ongoing', 'Completed')
-            ORDER BY ips_Start_Date__c DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ips_Start_Date__c DESC];
 
         for (ips_Education__c i : tempEducation) {
             IPS_ParticipantPortalEducation tempList = new IPS_ParticipantPortalEducation();
@@ -1148,8 +1146,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 AMS_Description__c
             FROM AMS_Vocational_education_and_training__c
             WHERE AMS_Work_Trail__c = :currentRecordId AND AMS_Status__c IN ('Ongoing', 'Completed')
-            ORDER BY AMS_Start_Date__c DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY AMS_Start_Date__c DESC];
 
         for (AMS_Vocational_education_and_training__c ams : tempAMSEducation) {
             IPS_ParticipantPortalEducation tempAMSList = new IPS_ParticipantPortalEducation();
@@ -1189,8 +1187,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 AND Type_of_Task_IPSUO__c = 'Historikk'
                 AND (subject = 'Passiv tilstand aktivert'
                 OR subject = 'Passiv tilstand deaktivert')
-            ORDER BY CreatedDate
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY CreatedDate];
 
         Task tempListActive = null;
         Integer index = 0;
@@ -1230,9 +1228,9 @@ public with sharing class IPS_ParticipantPortalReportController {
                 SELECT id, subject, ActivityDate, CreatedDate, whatId
                 FROM Task
                 WHERE WhatId = :currentRecordId AND subject = 'Oppfølging av passiv deltaker' AND Status = 'Open'
+                WITH SYSTEM_MODE
                 ORDER BY CreatedDate DESC
-                LIMIT 1
-            ];
+                LIMIT 1];
             if (!followUpParticipantTaskReturned.isEmpty()) {
                 followUpParticipantTask = followUpParticipantTaskReturned[0];
             }
@@ -1271,8 +1269,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 IPS_jobSubject__c
             FROM ips_Job__c
             WHERE ips_Work_Trail__c = :recordId AND ips_Status__c = 'Ongoing'
-            ORDER BY ips_Start_Date__c DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ips_Start_Date__c DESC];
 
         for (ips_Job__c j : activeJobs) {
             IPS_ParticipantPortalJob tempListActive = new IPS_ParticipantPortalJob();
@@ -1312,8 +1310,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 AND ips_Status__c = 'Completed'
                 AND ips_End_Date__c >= :reportDateFrom
                 AND ips_End_Date__c <= :reportDateTo
-            ORDER BY ips_End_Date__c DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ips_End_Date__c DESC];
 
         for (ips_Job__c j : closedJobs) {
             IPS_ParticipantPortalJob tempListCompleted = new IPS_ParticipantPortalJob();
@@ -1363,8 +1361,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 IPS_jobSubject__c
             FROM ips_Job__c
             WHERE ips_Work_Trail__c = :recordId AND ips_Status__c IN ('Ongoing', 'Completed')
-            ORDER BY ips_Start_Date__c DESC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY ips_Start_Date__c DESC];
 
         for (ips_Job__c j : activeJobs) {
             IPS_ParticipantPortalJob tempListActive = new IPS_ParticipantPortalJob();
@@ -1413,8 +1411,8 @@ public with sharing class IPS_ParticipantPortalReportController {
                 Status
             FROM Task
             WHERE Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)' AND Status = 'Completed' AND WhatId = :recordId
-            ORDER BY IPS_Completed_Date_Time__c ASC
-        ];
+            WITH SYSTEM_MODE
+            ORDER BY IPS_Completed_Date_Time__c ASC];
 
         for (Task ta : tempGoalList) {
             IPS_ParticipantPortalTask tempList = new IPS_ParticipantPortalTask();
@@ -1501,8 +1499,7 @@ public with sharing class IPS_ParticipantPortalReportController {
         tempReportList = [
             SELECT id, IPS_subject__c, IPS_dueDateBack__c
             FROM ips_report__c
-            WHERE IPS_workTrailName__c = :currentRecordId AND IPS_status__c = 'Shared report'
-        ];
+            WHERE IPS_workTrailName__c = :currentRecordId AND IPS_status__c = 'Shared report' WITH SYSTEM_MODE];
 
         for (ips_report__c r : tempReportList) {
             IPS_ParticipantPortalReport tempList = new IPS_ParticipantPortalReport();
@@ -1566,8 +1563,7 @@ public with sharing class IPS_ParticipantPortalReportController {
                 IPS_workTrailName__r.ips_Priority_career_wishes__c,
                 IPS_workTrailName__r.ips_Desired_profession_industry_career__c
             FROM ips_report__c
-            WHERE id = :currentRecordId AND IPS_status__c = 'Shared report'
-        ];
+            WHERE id = :currentRecordId AND IPS_status__c = 'Shared report' WITH SYSTEM_MODE];
 
         if (!tempReportList.isEmpty()) {
             for (ips_report__c r : tempReportList) {

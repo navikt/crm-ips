@@ -1,3 +1,11 @@
+/**
+ * @description  : Controller class for managing participant portal activity data in IPS. This class provides methods to retrieve and format various types of activity records, including logs, goals, meetings, jobs, and education/training, that are associated with a participant's work trail. The methods are designed to be used in the IPS Participant Portal Lightning Web Component (LWC) to display relevant activity information to participants.
+ * @author      : Ann Kristin Olsen
+ * @author       : Håkon Kavli
+ * @since        : 0.536.0
+ * @version      : 0.536.0
+ * @see          : class#member 'text string' <a href='URL'>label</a>
+ **/
 public with sharing class IPS_ParticipantPortalActivityController {
     /*All Completed Logs that is connected with worktrail
      * */
@@ -21,6 +29,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
                 AND Type_of_Task_IPSUO__c = 'Logg kontakt'
                 AND Samtalereferat__c = TRUE
                 AND Status = 'Completed'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate DESC
         ];
 
@@ -57,6 +66,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
             SELECT id, ActivityDate, Subject, Description
             FROM Task
             WHERE WhatId = :trailRecordId AND Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)' AND Status = 'Open'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate ASC
         ];
 
@@ -93,6 +103,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
             SELECT id, ActivityDate, CreatedDate, CompletedDateTime, Subject, Description
             FROM Task
             WHERE WhatId = :trailRecordId AND Type_of_Task_IPSUO__c = 'Delmål (av hovedmål)' AND Status = 'Completed'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate ASC
         ];
 
@@ -139,6 +150,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
                 OR IPS_Type__c = 'Meeting with Employer'
                 OR IPS_Type__c = 'Start up meeting')
                 AND IPS_Status1__c = 'Open'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate ASC
         ];
 
@@ -184,6 +196,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
                 OR IPS_Type__c = 'Meeting with Employer'
                 OR IPS_Type__c = 'Start up meeting')
                 AND IPS_Status1__c = 'Completed'
+            WITH SYSTEM_MODE
             ORDER BY ActivityDate DESC
         ];
 
@@ -237,6 +250,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
                     'Zero hours contrac'
                 )
                 AND ips_Status__c = 'Ongoing'
+            WITH SYSTEM_MODE
         ];
 
         for (ips_Job__c j : tempJobList) {
@@ -284,6 +298,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
                 ips_Work_Trail__c = :trailRecordId
                 AND ips_Form_of_Employment__c = 'work training'
                 AND ips_Status__c = 'Ongoing'
+            WITH SYSTEM_MODE
         ];
 
         for (ips_Job__c j : tempJobTrainingList) {
@@ -326,6 +341,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
                 ips_Form_of_Education__c
             FROM ips_Education__c
             WHERE ips_Work_Trail__c = :trailRecordId AND ips_Status__c = 'Ongoing'
+            WITH SYSTEM_MODE
         ];
 
         for (ips_Education__c e : tempEducationList) {
@@ -383,6 +399,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
                 )
             FROM AMS_Vocational_education_and_training__c
             WHERE AMS_Work_Trail__c = :trailRecordId AND AMS_Status__c = 'Ongoing'
+            WITH SYSTEM_MODE
         ];
 
         for (AMS_Vocational_education_and_training__c e : tempEducationList) {
