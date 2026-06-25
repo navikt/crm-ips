@@ -10,7 +10,7 @@ public with sharing class IPS_CVController {
     @AuraEnabled(cacheable=true)
     public static CV getCV(String recordId) {
         try {
-            String fodselsnummer = [SELECT IPS_Personnummer__c FROM Work_Trail__c WHERE id = :recordId]
+            String fodselsnummer = [SELECT IPS_Personnummer__c FROM Work_Trail__c WHERE Id = :recordId WITH SYSTEM_MODE]
             ?.IPS_Personnummer__c;
 
             if (String.isBlank(fodselsnummer)) {
