@@ -1,107 +1,92 @@
  #!/bin/bash
 
-echo "Oppretter scratch org"
-sf org create scratch --alias $1 --set-default --definition-file ../config/project-scratch-def.json --duration-days $2 --wait 10
+if [ -z "$1" ]; then
+    echo "Feil: Org-alias mangler. Bruk: $0 <alias> <duration-days> <installation-key>\n"
+    exit 1
+fi
 
-sf force:org:open --target-org $1
+echo "Sletter org med alias $1 hvis den finnes"
+sf org delete scratch --target-org "$1" --no-prompt || true
 
 
-echo ""
-echo "Installerer platform-data-model 0.1.2"
+echo "\nOppretter scratch org"
+sf org create scratch --alias "$1" --set-default --definition-file ../config/project-scratch-def.json --duration-days $2 --wait 10
+
+echo "\nInstallerer platform-data-model 0.1.2"
 sf package install --package 04tQC000000oHLpYAM --no-prompt --wait 4 --publish-wait 4 
 
-echo ""
-echo "INSTALLERER custom-metadata-dao"
+echo "\nInstallerer custom-metadata-dao"
 sf package install --package 04tQC000000oHKDYA2 --no-prompt --wait 4 --publish-wait 4
 
-echo ""
-echo "INSTALLERER custom-permission-helper 0.1.2"
+echo "\nInstallerer custom-permission-helper 0.1.2"
 sf package install --package 04tQC000000oGw2YAE --no-prompt --wait 4 --publish-wait 4
 
 echo "Installer feature-toggle ver. 0.1.3"
 sf package install --package 04tQC000000oHP3YAM --no-prompt --wait 30 --publish-wait 30
 
-echo "Installerer crm-platform-base 0.301.0"
+echo "\nInstallerer crm-platform-base 0.301.0"
 sf package install --package 04tQC000001DwiLYAS -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-platform-access-controll 0.177.0"
+echo "\nInstallerer crm-platform-access-controll 0.177.0"
 sf package install --package 04tQC000001AGR7YAO -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-thread-view 0.9.0.."
+echo "\nInstallerer crm-thread-view 0.9.0.."
 sf package install --package 04tQC0000011athYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-platform-reporting 0.44.0.." 
+echo "\nInstallerer crm-platform-reporting 0.44.0.." 
 sf package install --package 04tQC000000xlvlYAA -r --installation-key $3 --wait 4 --publish-wait 8
 
-echo ""
-echo "Installerer crm-shared-timeline 1.44.0"
+echo "\nInstallerer crm-shared-timeline 1.44.0"
 sf package install --package 04tQC0000019KTZYA2 -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-shared-base 1.1.0.."
+echo "\nInstallerer crm-shared-base 1.1.0.."
  sf package install --package 04t2o000000ySqpAAE -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-shared-flowComponents 0.4.0.."
+echo "\nInstallerer crm-shared-flowComponents 0.4.0.."
 sf package install --package 04t7U0000008qz4QAA -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-henvendelse-base 0.36.0.."
+echo "\nInstallerer crm-henvendelse-base 0.36.0.."
 sf package install --package 04tQC000000uSXtYAM -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-platform-integration 0.171.0"
+echo "\nInstallerer crm-platform-integration 0.171.0"
 sf package install --package 04tQC000001A8RxYAK --no-prompt --installation-key $3  --wait 30 --publish-wait 30
 
-echo ""
-echo "Installerer crm-journal-utilities 0.55.0.."
+echo "\nInstallerer crm-journal-utilities 0.55.0.."
 sf package install --package 04tQC0000012pVhYAI -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-platform-oppgave 0.73.0"
+echo "\nInstallerer crm-platform-oppgave 0.73.0"
 sf package install --package 04tQC000001BzqnYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-shared-user-notification 0.27.0"
+echo "\nInstallerer crm-shared-user-notification 0.27.0"
 sf package install --package 04tQC0000012h6jYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-community-base 0.141.0"
+echo "\nInstallerer crm-community-base 0.141.0"
 sf package install --package 04tQC000001DmhNYAS -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-henvendelse 0.202.0"
+echo "\nInstallerer crm-henvendelse 0.202.0"
 sf package install --package 04tQC000001Do1dYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-arbeidsgiver-base 1.677.0"
-sf package install --package 04tQC000001CAr3YAG -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nInstallerer crm-arbeidsgiver-base 1.696.0"
+sf package install --package 04tQC000001MqllYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo ""
-echo "Installerer crm-ips 0.531.0"
-sf package install --package 04tQC000001F6qvYAC -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nDeployer metadata.."
+sf project deploy start --target-org "$1" --wait 10
 
 # Assign permission sets
-echo "TILDELER"
-echo "Tildel tilatelsessett til brukeren - IPS_management.."
+echo "\nGir brukeren tilgangen til IPS_management.."
 sf org assign permset --name IPS_management 
 
-echo ""
-echo "TILDELER"
-echo "Tildel tilatelsessett til brukeren IPS_Utvidet_oppf_lging_management.."
+echo "\nGir brukeren tilgangen IPS_Utvidet_oppf_lging_management.."
 sf org assign permset --name IPS_Utvidet_oppf_lging_management 
 
-echo ""
-echo "TILDELER"
-echo "Tildel tilatelsessett til brukeren IPS_Config.."
+echo "\nGir brukeren tilatelsessettet IPS_Config.."
 sf org assign permset --name IPS_Config
 
-
 # Opprett testdata
-echo ".. Oppretter testdata.."
+echo "\n.. Oppretter testdata.."
 sf apex run --file ./apex/createTestData.apex
 
-echo "************************* FERDIG *********************************"
+echo "\nÅpner orgen i nettleseren.."
+sf force:org:open --target-org "$1"
+
+echo "\n************************* FERDIG *********************************"

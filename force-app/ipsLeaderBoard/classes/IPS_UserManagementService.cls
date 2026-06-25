@@ -1,16 +1,25 @@
+/**
+ * @description  : Retrieves lists of users managed by the current user based on their profile. This service class provides methods to fetch IPS and AMS jobbspecialists that report to the manager currently using the "Jobbsporet Lederbrett". The methods utilize the IPS_Utility class to filter users based on their profiles and return structured data for use in the application.
+ * @author       : Balendra Sounthararajan
+ * @since        : v1.0.0
+ * @author       : Håkon Kavli
+ * @since        : 0.536.0
+ * @version      : 0.536.0
+ **/
 public without sharing class IPS_UserManagementService {
     /**
-     * Retunrs list of users managed by the current user according the given profile.
-     * @param profileName profile of the user
+     * Returns list of users managed by the current user according to the given profiles.
+     * @param profileNames list of profiles of the users
      * @return  List of users
      */
-    private static List<IPS_ManagerUsers> getUsersManagedByCurrentUser(String profileName) {
+    private static List<IPS_ManagerUsers> getUsersManagedByCurrentUser(List<String> profileNames) {
         List<IPS_ManagerUsers> usersList = new List<IPS_ManagerUsers>();
 
         List<User> fetchedUsers = [
             SELECT Id, Name, Profile.Name
             FROM User
-            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserId(profileName)
+            WHERE isActive = TRUE AND Id IN :IPS_Utility.getMyEmployeesUserIds(profileNames)
+            WITH SYSTEM_MODE
         ];
 
         for (User user : fetchedUsers) {
@@ -29,7 +38,7 @@ public without sharing class IPS_UserManagementService {
      */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerUsers> getIPSUsersManagedByCurrentUser() {
-        return getUsersManagedByCurrentUser('NAV IPS Jobbspesialist');
+        return getUsersManagedByCurrentUser(new List<String>{ 'NAV IPS Jobbspesialist', 'NAV IPS Metodeveileder' });
     }
 
     /**
@@ -38,6 +47,6 @@ public without sharing class IPS_UserManagementService {
      */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerUsers> getAMSUsersManagedByCurrentUser() {
-        return getUsersManagedByCurrentUser('NAV UO Jobbspesialist');
+        return getUsersManagedByCurrentUser(new List<String>{ 'NAV UO Jobbspesialist', 'NAV UO Metodeveileder' });
     }
 }

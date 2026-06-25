@@ -317,6 +317,54 @@
                     </apex:outputpanel>
                 </apex:outputpanel>
             </div>
+
+            <!-- Samarbeid med utdanningsinstitusjoner i perioden -->
+            <apex:outputpanel rendered="{!educationInstitutionMeetingsWithinInterval.size > 0}">
+                <apex:outputText><h3>Samarbeid med utdanningsinstitusjoner i perioden:</h3></apex:outputText>
+
+                <apex:outputpanel>
+                    <apex:outputText
+                        ><h4>Møter gjennomført med utdanningsinstitusjon(er) i perioden:</h4></apex:outputText
+                    >
+                    <apex:outputpanel rendered="{!isIPS}">
+                        <table style="width: 100%; border: 1px solid #262626">
+                            <tr style="background-color: #f1f1f1">
+                                <th style="vertical-align: top; width: 15%">Utd. Ins.</th>
+                                <th style="vertical-align: top; width: 15%">Kontaktperson</th>
+                                <th style="vertical-align: top; width: 10%">Deltaker deltatt</th>
+                                <th style="vertical-align: top; width: 30%">Emne</th>
+                                <th style="vertical-align: top; width: 20%">Møtekategori</th>
+                                <th style="vertical-align: top; width: 10%">Møtedato</th>
+                            </tr>
+                            <apex:repeat value="{!educationInstitutionMeetingsWithinInterval}" var="meeting">
+                                <tr style="vertical-align: top; border: 1px solid #ff0000">
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!meeting.IPS_educationInstitution__c}" />
+                                    </td>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!meeting.IPS_educationContact__c}" />
+                                    </td>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!meeting.IPS_participant_related_to_meeting__c}" />
+                                    </td>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!meeting.Subject}" />
+                                    </td>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputField value="{!meeting.ips_Subcategory_Type_Education__c}" />
+                                    </td>
+                                    <td style="border: 1px solid #f1f1f1">
+                                        <apex:outputText value="{0,date,dd'.'MM'.'yyyy}">
+                                            <apex:param value="{!meeting.ActivityDate}" />
+                                        </apex:outputText>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </table>
+                    </apex:outputpanel>
+                </apex:outputpanel>
+            </apex:outputpanel>
+
             <!-- Deltakelse i jobb og arbeidstrening -->
             <apex:outputpanel rendered="{!activeParticipantsJobs.size != 0}">
                 <apex:outputText><h3>Deltakelse i jobb og arbeidstrening</h3></apex:outputText>
@@ -875,7 +923,7 @@
             </apex:outputpanel>
         </apex:outputPanel>
 
-        <!-- End rapport -->
+        <!-- End report -->
         <apex:outputPanel rendered="{!isEndReport}" layout="block">
             <apex:outputText rendered="{!isIPS}"
                 ><p>
@@ -1083,6 +1131,52 @@
                     </p></apex:outputText
                 >
             </apex:outputpanel>
+
+            <!-- Samarbeid med utdanningsinstitusjoner -->
+            <apex:outputpanel rendered="{!educationInstitutionMeetingSummary.institutionNames.size > 0}">
+                <apex:outputText><h3>Samarbeid med utdanningsinstitusjoner</h3></apex:outputText>
+                <apex:outputText>
+                    Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende
+                    utdanningsinstitusjoner for å utforske mulighetene for utdanning:</apex:outputText
+                >
+
+                <div style="padding-bottom: 5px"></div>
+                <div style="page-break-inside: avoid">
+                    <ul>
+                        <apex:repeat
+                            value="{!educationInstitutionMeetingSummary.institutionNames}"
+                            var="institutionName"
+                        >
+                            <apex:outputText>
+                                <li>{!institutionName}</li>
+                            </apex:outputText>
+                        </apex:repeat>
+                    </ul>
+                </div>
+            </apex:outputpanel>
+
+            <apex:outputpanel rendered="{!educationInstitutionMeetingSummary.participantsRelatedToMeeting > 0}">
+                <apex:outputText>
+                    <p>
+                        Det er gjennomført {!educationInstitutionMeetingSummary.participantsRelatedToMeeting}
+                        utdanningsmøte(r) med deltager tilstede.
+                    </p></apex:outputText
+                >
+            </apex:outputpanel>
+            <apex:outputpanel
+                rendered="{!educationInstitutionMeetingSummary.participantsRelatedToMeetingCancelled > 0}"
+            >
+                <apex:outputText rendered="{!educationInstitutionMeetingSummary.institutionNames.size == 0}"
+                    ><h3>Samarbeid med utdanningsinstitusjoner</h3></apex:outputText
+                >
+                <apex:outputText
+                    ><p>
+                        Det er {!educationInstitutionMeetingSummary.participantsRelatedToMeetingCancelled}
+                        utdanningsmøte(r) hvor deltager ikke har møtt.
+                    </p></apex:outputText
+                >
+            </apex:outputpanel>
+
             <div style="padding-bottom: 5px"></div>
             <apex:outputField rendered="{!isUO}" value="{!currentRecord.IPS_endReportSumm3__c}"></apex:outputField>
 
