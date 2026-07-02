@@ -1382,6 +1382,40 @@ public with sharing class IPS_ParticipantPortalReportController {
             wrapperTempList.add(tempListActive);
         }
 
+        List<AMS_Apprentice_Job__c> amsJobs = [
+            SELECT
+                id,
+                Name,
+                AMS_Employer__r.Name,
+                Form_Of_Employment__c,
+                AMS_Start_Date__c,
+                AMS_Description_of_the_apprentice_job__c,
+                AMS_Apprentice_Job_Support_Plan__c,
+                AMS_End_Date__c,
+                AMS_Status__c,
+                AMS_What_did_not_work_at_the_workplace__c,
+                AMS_What_did_work_at_the_workplace__c
+            FROM AMS_Apprentice_Job__c
+            WHERE Work_Trail__c = :recordId AND AMS_Status__c IN ('Ongoing', 'Ended')
+            ORDER BY AMS_Start_Date__c DESC
+        ];
+
+        for (AMS_Apprentice_Job__c j : amsJobs) {
+            IPS_ParticipantPortalJob amsJob = new IPS_ParticipantPortalJob();
+            amsJob.JobbId = j.id;
+            amsJob.Emne = j.Name;
+            amsJob.Arbeidsform = IPS_ParticipantPortalUtility.formatTypeOf(j.Form_Of_Employment__c);
+            amsJob.Plan = j.AMS_Apprentice_Job_Support_Plan__c;
+            amsJob.StartDato = j.AMS_Start_Date__c;
+            amsJob.SluttDato = j.AMS_End_Date__c;
+            amsJob.Arbeidsgiver = j.AMS_Employer__r.Name;
+            amsJob.Stillingsbeskrivelse = j.AMS_Description_of_the_apprentice_job__c;
+            amsJob.Fungerer = j.AMS_What_did_work_at_the_workplace__c;
+            amsJob.FungererIkke = j.AMS_What_did_not_work_at_the_workplace__c;
+            amsJob.Status = IPS_ParticipantPortalUtility.formatJobStatus(j.AMS_Status__c);
+            wrapperTempList.add(amsJob);
+        }
+
         return wrapperTempList;
     }
 

@@ -94,6 +94,7 @@
                 <div lwc:else>
                     <h3>{label.participantCareerPlanTitleAMS}</h3>
                     <p>{report.reportTrailWorkWish}</p>
+                    <p>{report.reportSummarizeComment1}</p>
                 </div>
 
 
@@ -155,7 +156,7 @@
                         </p>
                     </template>
                 </template>
-
+                <p tabindex="0">{report.reportSummarizeComment2}</p>
 
                 <h3>{label.cooperationEmployerSection}</h3>
                     <p>Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende arbeidsgivere for å utforske
@@ -173,10 +174,11 @@
                             </p>
                         </template>
                     </template>
+                    <p tabindex="0">{report.reportSummarizeComment3}</p>
 
                     
+                    <h3 tabindex="0">{label.participantWorkTraining}</h3>
                     <template lwc:if={isJobEnd}>
-                        <h3 tabindex="0">{label.participantWorkTraining}</h3>
                         <template for:each={jobsListEnd} for:item="job">
                             <c-ips_-participant-portal-readmore tabindex="0" key={job.JobbId} label={job.Emne}>
                                 <dl>
@@ -226,10 +228,12 @@
                     </template>
 
 
-                    <h3>Beskriv jobbutviklingsprosessen</h3>
-                    <p>{report.reportSummarizeComment7}</p>
-                    <h3>Oppsummering av behov for tilrettelegging</h3>
-                    <p>{report.reportSummarizeComment6}</p>
+                    <template lwc:if={typeValue}>
+                        <h3>Beskriv jobbutviklingsprosessen</h3>
+                        <p>{report.reportSummarizeComment7}</p>
+                        <h3>Oppsummering av behov for tilrettelegging</h3>
+                        <p>{report.reportSummarizeComment6}</p>
+                    </template>
                     <h3>Oppsummering av jobb/arbeidstrening</h3>
                     <p>{report.reportSummarizeComment4}</p>
 
