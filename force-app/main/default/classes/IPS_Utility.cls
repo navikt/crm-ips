@@ -29,7 +29,7 @@ public without sharing class IPS_Utility {
         'Mapping',
         'Working'
     };
-    public static final List<String> WORK_TRAIL_INACTIVE_STATUSES = new List<String>{ 'Ended', 'Refferred' };
+    public static final List<String> WORK_TRAIL_INACTIVE_STATUSES = new List<String>{ 'Ended', 'Referred' };
 
     public static List<User> getPersonAccountId(String userId) {
         List<User> userList = new List<User>();
@@ -71,7 +71,13 @@ public without sharing class IPS_Utility {
      */
     public static List<Id> getMyEmployeesUserId() {
         List<Id> userIds = new List<Id>();
-        for (User u : [SELECT Id FROM USER WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE]) {
+        for (User u : [
+                SELECT Id 
+                FROM USER 
+                WHERE ManagerId = :UserInfo.getUserId() 
+                AND IsActive = TRUE
+                WITH SYSTEM_MODE
+                ]) {
             userIds.add(u.Id);
         }
         return userIds;
