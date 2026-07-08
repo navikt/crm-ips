@@ -150,6 +150,34 @@ public class IPS_ParticipantPortalTrailControllerTest {
     }
 
     @IsTest
+    public static void getTrailWithFutureEndDateTest() {
+        String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
+
+        List<Work_Trail__c> jobbspor = [
+            SELECT Id, ips_End_Date__c
+            FROM Work_Trail__c
+            WHERE ips_Participant__c = :participantId
+            LIMIT 1
+        ];
+        jobbspor[0].ips_End_Date__c = System.today().addDays(30);
+        update jobbspor[0];
+
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
+        List<IPS_ParticipantPortalWorkTrail> trails = null;
+
+        Test.startTest();
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
+        System.runAs(testUser) {
+            trails = IPS_ParticipantPortalTrailController.getTrail(participantId);
+        }
+        Test.stopTest();
+
+        System.Assert.isNotNull(trails, 'Trails should not be null');
+        System.Assert.areEqual(1, trails.size(), 'Expected to still find the trail with a future end date');
+        System.Assert.areEqual(jobbspor[0].Id, trails[0].jobbsporId, 'Expected Jobbspor Id to match');
+    }
+
+    @IsTest
     public static void getParticipantsLogsTest() {
         List<IPS_ParticipantPortalTask> logToRetrieve = new List<IPS_ParticipantPortalTask>();
         testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
