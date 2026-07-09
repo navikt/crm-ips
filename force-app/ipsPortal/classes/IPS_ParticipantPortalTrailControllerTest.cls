@@ -174,7 +174,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         System.Assert.isNotNull(trails, 'Trails should not be null');
         System.Assert.areEqual(1, trails.size(), 'Expected to still find the trail with a future end date');
-        System.Assert.areEqual(jobbspor[0].Id, trails[0].jobbsporId, 'Expected Jobbspor Id to match');
+        System.Assert.areEqual(jobbspor.Id, trails[0].jobbsporId, 'Expected Jobbspor Id to match');
     }
 
     @IsTest
