@@ -153,14 +153,14 @@ public class IPS_ParticipantPortalTrailControllerTest {
     public static void getTrailWithFutureEndDateTest() {
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
 
-        List<Work_Trail__c> jobbspor = [
+        Work_Trail__c jobbspor = [
             SELECT Id, ips_End_Date__c
             FROM Work_Trail__c
-            WHERE ips_Participant__c = :participantId
+            WHERE Id = :workTrailId
             LIMIT 1
         ];
-        jobbspor[0].ips_End_Date__c = System.today().addDays(30);
-        update jobbspor[0];
+        jobbspor.ips_End_Date__c = System.today().addDays(30);
+        update jobbspor;
 
         testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
         List<IPS_ParticipantPortalWorkTrail> trails = null;
