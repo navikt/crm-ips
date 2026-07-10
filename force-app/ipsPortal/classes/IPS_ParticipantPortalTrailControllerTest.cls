@@ -29,6 +29,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         List<Work_Trail__c> workTrailsToCreate = new List<Work_Trail__c>();
         Work_Trail__c jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
         Work_Trail__c amsWorkTrail = IPS_TestDataFactory.createUOJobbspor(participantId);
+        amsWorkTrail.ips_End_Date__c = System.today().addDays(-366);
         workTrailsToCreate.add(jobbspor);
         workTrailsToCreate.add(amsWorkTrail);
         insert workTrailsToCreate;
@@ -153,14 +154,14 @@ public class IPS_ParticipantPortalTrailControllerTest {
     public static void getTrailWithFutureEndDateTest() {
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
 
-        List<Work_Trail__c> jobbspor = [
+        Work_Trail__c jobbspor = [
             SELECT Id, ips_End_Date__c
             FROM Work_Trail__c
-            WHERE ips_Participant__c = :participantId
+            WHERE Id = :workTrailId
             LIMIT 1
         ];
-        jobbspor[0].ips_End_Date__c = System.today().addDays(30);
-        update jobbspor[0];
+        jobbspor.ips_End_Date__c = System.today().addDays(30);
+        update jobbspor;
 
         testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
         List<IPS_ParticipantPortalWorkTrail> trails = null;
@@ -174,7 +175,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
 
         System.Assert.isNotNull(trails, 'Trails should not be null');
         System.Assert.areEqual(1, trails.size(), 'Expected to still find the trail with a future end date');
-        System.Assert.areEqual(jobbspor[0].Id, trails[0].jobbsporId, 'Expected Jobbspor Id to match');
+        System.Assert.areEqual(jobbspor.Id, trails[0].jobbsporId, 'Expected Jobbspor Id to match');
     }
 
     @IsTest
