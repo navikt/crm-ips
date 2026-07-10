@@ -29,6 +29,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         List<Work_Trail__c> workTrailsToCreate = new List<Work_Trail__c>();
         Work_Trail__c jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
         Work_Trail__c amsWorkTrail = IPS_TestDataFactory.createUOJobbspor(participantId);
+        amsWorkTrail.ips_End_Date__c = System.today().addDays(-366);
         workTrailsToCreate.add(jobbspor);
         workTrailsToCreate.add(amsWorkTrail);
         insert workTrailsToCreate;
