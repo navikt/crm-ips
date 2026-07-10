@@ -153,6 +153,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
     @IsTest
     public static void getTrailWithFutureEndDateTest() {
         String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
+        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
 
         List<Work_Trail__c> jobbspor = [
             SELECT Id, ips_End_Date__c
