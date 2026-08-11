@@ -1,7 +1,7 @@
 ---
 name: inspektor-gpt
 description: "(internt) Kryssmodell-inspektør for Claude-arbeid — mønstre, API-korrekthet, konsistens"
-model: "gpt-5.5"
+model: "gpt-5.6-sol"
 user-invocable: false
 ---
 
