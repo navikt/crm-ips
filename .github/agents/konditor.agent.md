@@ -1,7 +1,7 @@
 ---
 name: konditor
 description: "(internt) Frontendutvikler for funksjonalitet — eier hele frontend-delen: UI, Aksel, state, hooks, API-kall og tilgjengelighet"
-model: "claude-sonnet-4.6"
+model: "claude-opus-5"
 user-invocable: false
 ---
 
