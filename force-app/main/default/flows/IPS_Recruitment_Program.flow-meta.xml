@@ -73,6 +73,38 @@
         </value>
     </customProperties>
     <decisions>
+        <name>If_Eligible_For_The_Recruitment_Program</name>
+        <label>Check if Eligible for the Recruitment Program</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Not_Eligible_Screen_se</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Eligible</defaultConnectorLabel>
+        <rules>
+            <name>If_Eligible_For_The_Recruitment_Program_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Worktrail.ips_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Referred</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Worktrail.ips_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ended</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RP_Enroll</targetReference>
+            </connector>
+            <label>Is Eligible</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Opt_In_RP</name>
         <label>Opt In RP ?</label>
         <locationX>0</locationX>
@@ -124,7 +156,7 @@
         <defaultConnector>
             <targetReference>Worktrail_in_Recruitment_Program</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>No Recruimtent Program Registered</defaultConnectorLabel>
         <rules>
             <name>Yes_RP_Period_Registered</name>
             <conditionLogic>( 1 AND 2 AND 3 ) OR 4</conditionLogic>
@@ -238,7 +270,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>RP_Enroll</targetReference>
+            <targetReference>If_Eligible_For_The_Recruitment_Program</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -289,7 +321,7 @@ DATEVALUE(NOW())</expression>
         <expression>TODAY()</expression>
     </formulas>
     <interviewLabel>IPS - Recruitment Program {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>IPS - Recruitment Program</label>
+    <label>Rekrutteringsprogrammet i helse</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -442,6 +474,30 @@ DATEVALUE(NOW())</expression>
         <object>Work_Trail__c</object>
     </recordUpdates>
     <screens>
+        <name>Not_Eligible_Screen_se</name>
+        <label>Not Eligible Screen</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Not_eligible_screen_text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;Jobbspor med status «Henvist» eller «Avsluttet» kan ikke meldes inn i Rekrutteringsprogrammet for helse. Bare jobbspor med en aktiv status kan meldes inn.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Registered_RP_Period</name>
         <label>Registered RP Period</label>
         <locationX>0</locationX>
@@ -453,6 +509,14 @@ DATEVALUE(NOW())</expression>
             <name>deleteRegisteredRP</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Du har en registrert periode fra {!Get_Last_Recruitment_Program.Start_Date__c} til {!Get_Last_Recruitment_Program.End_Date__c}﻿. &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Perioden kan endres eller slettes under fanen &lt;strong&gt;Rekrutteringsprogrammet&lt;/strong&gt;.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -473,6 +537,14 @@ DATEVALUE(NOW())</expression>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>recruitmentProgram.Start_Date__c</objectFieldReference>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -498,6 +570,14 @@ DATEVALUE(NOW())</expression>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(189, 27, 27); font-size: 14px;&quot;&gt;﻿Sluttdato må være etter startdato!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(24, 23, 23); font-size: 14px;&quot;&gt;Startdato er &lt;/span&gt;&lt;strong style=&quot;color: rgb(24, 23, 23); font-size: 14px;&quot;&gt;{!Get_Last_Recruitment_Program.Start_Date__c}&lt;/strong&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>OR(
@@ -543,6 +623,14 @@ DATEVALUE(NOW())</expression>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -562,6 +650,14 @@ DATEVALUE(NOW())</expression>
             <name>introInfo</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(24, 24, 24);&quot;&gt;Bekreft at du ønsker å melde denne deltakeren inn i rekrutteringsprogrammet for helse&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>OptInRP</name>
@@ -588,6 +684,14 @@ DATEVALUE(NOW())</expression>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -634,6 +738,14 @@ DATEVALUE(NOW())</expression>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <nextOrFinishButtonLabel>Bekreft</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
