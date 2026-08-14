@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Healtcare_Recruitment_For_Active_Trails</fullName>
+    <active>true</active>
+    <description>NO:Jobbsporet er meldt inn i rekrutteringsprogrammet for helse. Meld jobbsporet ut av rekrutteringsprogrammet før du endrer til en inaktiv status som &quot;Henvist&quot; eller &quot;Avsluttet&quot;</description>
+    <errorConditionFormula>AND(
+    IPS_Is_healthcare_related__c = TRUE,
+    OR(
+        ISPICKVAL(ips_Status__c, &apos;Referred&apos;),
+        ISPICKVAL(ips_Status__c, &apos;Ended&apos;)
+    )
+)</errorConditionFormula>
+    <errorMessage>Jobbsporet er meldt inn i rekrutteringsprogrammet for helse. Meld jobbsporet ut av rekrutteringsprogrammet før du endrer til en inaktiv status som &quot;Henvist&quot; eller &quot;Avsluttet&quot;.</errorMessage>
+</ValidationRule>
