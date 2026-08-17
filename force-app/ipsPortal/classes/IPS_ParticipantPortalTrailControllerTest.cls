@@ -29,6 +29,7 @@ public class IPS_ParticipantPortalTrailControllerTest {
         List<Work_Trail__c> workTrailsToCreate = new List<Work_Trail__c>();
         Work_Trail__c jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
         Work_Trail__c amsWorkTrail = IPS_TestDataFactory.createUOJobbspor(participantId);
+        amsWorkTrail.ips_End_Date__c = System.today().addDays(-366);
         workTrailsToCreate.add(jobbspor);
         workTrailsToCreate.add(amsWorkTrail);
         insert workTrailsToCreate;
@@ -147,6 +148,35 @@ public class IPS_ParticipantPortalTrailControllerTest {
             trails1[0].jobbsporStatus,
             'Expected Jobbspor status to be In Education'
         );
+    }
+
+    @IsTest
+    public static void getTrailWithFutureEndDateTest() {
+        String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']?.CRM_Account__c;
+        workTrailId = [SELECT Id FROM Work_Trail__c WHERE RecordType.DeveloperName = 'IPS' LIMIT 1]?.Id;
+
+        List<Work_Trail__c> jobbspor = [
+            SELECT Id, ips_End_Date__c
+            FROM Work_Trail__c
+            WHERE Id = :workTrailId
+            LIMIT 1
+        ];
+        jobbspor[0].ips_End_Date__c = System.today().addDays(30);
+        update jobbspor;
+
+        testUser = [SELECT Id FROM User WHERE Alias = 'autoproc' LIMIT 1];
+        List<IPS_ParticipantPortalWorkTrail> trails = null;
+
+        Test.startTest();
+        IPS_TestDataFactory.givePermissionSetToUserByName(testUser.Id, 'IPS_Deltaker');
+        System.runAs(testUser) {
+            trails = IPS_ParticipantPortalTrailController.getTrail(participantId);
+        }
+        Test.stopTest();
+
+        System.Assert.isNotNull(trails, 'Trails should not be null');
+        System.Assert.areEqual(1, trails.size(), 'Expected to still find the trail with a future end date');
+        System.Assert.areEqual(jobbspor[0].Id, trails[0].jobbsporId, 'Expected Jobbspor Id to match');
     }
 
     @IsTest

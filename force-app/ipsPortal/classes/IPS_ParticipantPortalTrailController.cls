@@ -18,7 +18,11 @@ public with sharing class IPS_ParticipantPortalTrailController {
     }
 
     /**
-     * @description Returns a list of IPS_ParticipantPortalWorkTrail wrappers containing the most recent work trail ID for a given participant record. This method queries the Work_Trail__c object to find the most recent work trail associated with the participant, filtering for those that have ended within the last 365 days or have no end date. The results are ordered by creation date in descending order, ensuring that the most recent work trail is retrieved. The wrapper class is then populated with the ID of the work trail, which can be used to fetch additional details for display on the participant portal.
+     * @description Returns a list of IPS_ParticipantPortalWorkTrail wrappers containing the most recent work trail ID for a given participant record. 
+     * This method queries the Work_Trail__c object to find the most recent work trail associated with the participant, 
+     * filtering for those that have no end date, an end date in the future, or an end date within the last 365 days. 
+     * The results are ordered by creation date in descending order, ensuring that the most recent work trail is retrieved. 
+     * The wrapper class is then populated with the ID of the work trail, which can be used to fetch additional details for display on the participant portal.
      * @author Ann-Kristin Olsen | 01-06-2025
      * @param currentRecordId The ID of the participant record for which to retrieve the most recent work trail.
      * @return List<IPS_ParticipantPortalWorkTrail> A list of IPS_ParticipantPortalWorkTrail wrappers containing the most recent work trail ID for the specified participant.
@@ -30,7 +34,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
             FROM Work_Trail__c
             WHERE
                 ips_Participant__c = :currentRecordId
-                AND (ips_End_Date__c = LAST_N_DAYS:365
+                AND (ips_End_Date__c >= LAST_N_DAYS:365
                 OR ips_End_Date__c = NULL)
             ORDER BY CreatedDate DESC
             LIMIT 1
@@ -59,7 +63,13 @@ public with sharing class IPS_ParticipantPortalTrailController {
     }
 
     /**
-     * @description Returns a wrapper with the most recent work trail for a given participant record, including all relevant details for display on the participant portal. The method queries the Work_Trail__c object for records associated with the participant, filtering for those that have ended within the last 365 days or have no end date. The results are ordered by creation date in descending order, ensuring that the most recent work trail is retrieved. The wrapper class is then populated with the details of the work trail, which can be used to display comprehensive information about the participant's work history and current status on the portal.
+     * @description Returns a wrapper with the most recent work trail for a given participant record, 
+     * including all relevant details for display on the participant portal. 
+     * The method queries the Work_Trail__c object for records associated with the participant, 
+     * filtering for those that have no end date, an end date in the future, or an end date within the last 365 days. 
+     * The results are ordered by creation date in descending order, ensuring that the most recent work trail is retrieved. 
+     * The wrapper class is then populated with the details of the work trail, 
+     * which can be used to display comprehensive information about the participant's work history and current status on the portal.
      * @author Ann-Kristin Olsen | January 6th, 2025
      * @param currentRecordId The Work_Trail__c record ID for which to retrieve the work trail details. This ID is used to query the Work_Trail__c object and fetch the relevant information for the participant portal.
      * @return List<IPS_ParticipantPortalWorkTrail> A list of IPS_ParticipantPortalWorkTrail wrappers containing the details of the most recent work trail for the specified participant.
@@ -120,7 +130,7 @@ public with sharing class IPS_ParticipantPortalTrailController {
             FROM Work_Trail__c
             WHERE
                 ips_Participant__c = :currentRecordId
-                AND (ips_End_Date__c = LAST_N_DAYS:365
+                AND (ips_End_Date__c >= LAST_N_DAYS:365
                 OR ips_End_Date__c = NULL)
             ORDER BY CreatedDate DESC
             LIMIT 1

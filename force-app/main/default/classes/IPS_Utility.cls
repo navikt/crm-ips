@@ -73,7 +73,13 @@ public without sharing class IPS_Utility {
      */
     public static List<Id> getMyEmployeesUserId() {
         List<Id> userIds = new List<Id>();
-        for (User u : [SELECT Id FROM USER WHERE ManagerId = :UserInfo.getUserId() AND IsActive = TRUE]) {
+        for (User u : [
+                SELECT Id 
+                FROM USER 
+                WHERE ManagerId = :UserInfo.getUserId() 
+                AND IsActive = TRUE
+                WITH SYSTEM_MODE
+                ]) {
             userIds.add(u.Id);
         }
         return userIds;

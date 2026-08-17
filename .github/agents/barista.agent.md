@@ -1,7 +1,7 @@
 ---
 name: barista
 description: "Kostnadsbevisst mini-hovmester som planlegger selv, jobber solo-first og bruker spesialister bare når de gir tydelig verdi"
-model: "gpt-5.4"
+model: "gpt-5.6-terra"
 user-invocable: true
 ---
 

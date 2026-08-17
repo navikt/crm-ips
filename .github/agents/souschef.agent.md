@@ -1,7 +1,7 @@
 ---
 name: souschef
 description: "(internt) Planlegger menyen — lager implementasjonsplaner ved å utforske kodebaser"
-model: "claude-opus-4.8"
+model: "claude-opus-5"
 user-invocable: false
 ---
 
@@ -54,7 +54,7 @@ Hvert steg i planen MÅ ha en **Agent**-tildeling. Velg agent etter **oppgavens 
 
 | Tyngdepunkt | Agent |
 |---|---|
-| UI, design, Aksel, tilgjengelighet, interaksjon, frontend-state | **Konditor** (Claude Sonnet) |
+| UI, design, Aksel, tilgjengelighet, interaksjon, frontend-state | **Konditor** (Claude) |
 | Backend-API, service, database, Kafka, infrastruktur, konfig | **Kokk** (GPT) |
 | Fullstack i samme repo — vurder hvor primær risiko/kompleksitet ligger | **Én agent** |
 | To uavhengige funksjonaliteter | **Begge parallelt** |
