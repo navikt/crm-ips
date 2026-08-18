@@ -175,14 +175,15 @@ public with sharing class IPS_ParticipantPortalActivityController {
 
         List<Event> tempEventList = new List<Event>();
         tempEventList = [
-            SELECT id, IPS_subjectAndDate__c, Location, StartDateTime, EndDateTime, Description, IPS_employerName__c
-            FROM event
+            SELECT id, IPS_subjectAndDate__c, Location, StartDateTime, EndDateTime, Description, IPS_employerName__c,IPS_educationInstitution__c
+            FROM Event
             WHERE
                 WhoId = :participantId
                 AND WhatId = :trailRecordId
                 AND (IPS_Type__c = 'Meeting with Participant'
                 OR IPS_Type__c = 'Meeting with Employer'
-                OR IPS_Type__c = 'Start up meeting')
+                OR IPS_Type__c = 'Start up meeting'
+                OR IPS_Type__c = 'Møte med Utd. Ins.')
                 AND IPS_Status1__c = 'Completed'
             ORDER BY ActivityDate DESC
         ];
@@ -196,6 +197,7 @@ public with sharing class IPS_ParticipantPortalActivityController {
             tempList.EventId = t.id;
             tempList.Lokasjon = t.Location;
             tempList.Arbeidsgiver = t.IPS_employerName__c;
+            tempList.Utdanningsinstitusjon = t.IPS_educationInstitution__c;
             tempWrapperList.add(tempList);
         }
         return tempWrapperList;
