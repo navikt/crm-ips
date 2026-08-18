@@ -207,6 +207,92 @@ public class IPS_eventTravelTimeControllerTest {
     }
 
     @isTest
+    static void createFromCalendarWithTravelTime() {
+        // Given — event created from calendar (IPS_isFromTimeline__c = false)
+        Account businessAccount = [
+            SELECT Id
+            FROM Account
+            WHERE RecordType.DeveloperName = 'IPS_UO_account_recordpage'
+            LIMIT 1
+        ];
+        Account personAccount = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PersonAccount' LIMIT 1];
+
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+
+        Event calendarEvent = new Event(
+            ips_Travel_time__c = 10,
+            IPS_travelTimeFrom__c = 15,
+            WhatId = personAccount.Id,
+            RelatedToAccount__c = businessAccount.Id,
+            RecordTypeId = devRecordTypeId,
+            StartDateTime = System.Datetime.now().addDays(1),
+            EndDateTime = System.Datetime.now().addDays(1).addMinutes(60),
+            Subject = 'Kalender-møte',
+            IPS_isFromTimeline__c = false,
+            IPS_Status1__c = 'Open',
+            ips_Subcategory_Type_IPS__c = 'Job support'
+        );
+
+        // When
+        Test.startTest();
+        insert calendarEvent;
+        test.stopTest();
+        // Then
+        List<Event> travelTimeEvents = [
+            SELECT Id, Subject
+            FROM Event
+            WHERE IPS_eventId__c = :calendarEvent.Id AND RecordTypeId = :TRAVEL_TIME_RECORD_ID
+        ];
+        System.Assert.isFalse(
+            travelTimeEvents.isEmpty(),
+            'Expected travel time events to be created for calendar event'
+        );
+        for (Event e : travelTimeEvents) {
+            System.Assert.areEqual('Reisetid', e.Subject, 'Travel time subject should be Reisetid');
+        }
+    }
+
+    @isTest
+    static void createFromCalendarWithoutTravelTimeCreatesNoEvents() {
+        // Given — calendar event with no travel time
+        Account businessAccount = [
+            SELECT Id
+            FROM Account
+            WHERE RecordType.DeveloperName = 'IPS_UO_account_recordpage'
+            LIMIT 1
+        ];
+        Account personAccount = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PersonAccount' LIMIT 1];
+
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+
+        Event calendarEvent = new Event(
+            ips_Travel_time__c = 0,
+            IPS_travelTimeFrom__c = 0,
+            WhatId = personAccount.Id,
+            RelatedToAccount__c = businessAccount.Id,
+            RecordTypeId = devRecordTypeId,
+            StartDateTime = System.Datetime.now().addDays(1),
+            EndDateTime = System.Datetime.now().addDays(1).addMinutes(60),
+            Subject = 'Kalender-møte uten reisetid',
+            IPS_isFromTimeline__c = false,
+            IPS_Status1__c = 'Open',
+            ips_Subcategory_Type_IPS__c = 'Job support'
+        );
+
+        // When
+        Test.startTest();
+        insert calendarEvent;
+        Test.stopTest();
+
+        // Then — flow entry criteria should filter this out
+        List<Event> travelTimeEvents = [SELECT Id FROM Event WHERE IPS_eventId__c = :calendarEvent.Id];
+        System.Assert.isTrue(
+            travelTimeEvents.isEmpty(),
+            'Expected no travel time events when both travel time values are 0'
+        );
+    }
+
+    @isTest
     static void deleteTravelTimeEventsOnEventDelete() {
         // Given
         Event baseEvent = [
