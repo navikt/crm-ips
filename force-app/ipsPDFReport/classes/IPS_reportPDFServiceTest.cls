@@ -34,7 +34,7 @@ private class IPS_reportPDFServiceTest {
         Assert.areEqual(1, summary.participantsRelatedToMeeting);
         Assert.areEqual(1, summary.participantsRelatedToMeetingCancelled);
         Assert.areEqual(1, summary.institutionNames.size());
-        Assert.isTrue(summary.institutionNames.contains('aremark vgs'));
+        Assert.isTrue(summary.institutionNames.contains('AREMARK VGS'));
     }
 
     @IsTest
