@@ -36,7 +36,7 @@ public with sharing class IPS_reportPDFService {
 
             if (String.isNotBlank(meeting.IPS_educationInstitution__c) && meeting.IPS_Status1__c == 'Completed') {
                 uniqueInstitutionNames.add(
-                    meeting.IPS_educationInstitution__c.trim().toLowerCase()
+                    meeting.IPS_educationInstitution__c.trim().toUpperCase()
                 );
             }
         }
