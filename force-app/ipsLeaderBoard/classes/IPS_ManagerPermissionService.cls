@@ -57,16 +57,10 @@ public without sharing class IPS_ManagerPermissionService {
 
     @future
     @TestVisible
-    private static void handlePermissionChanges(
-        List<String> newManagerIdList,
-        List<String> formerManagerIdList
-    ) {
+    private static void handlePermissionChanges(List<String> newManagerIdList, List<String> formerManagerIdList) {
         Map<String, Id> permSetIdByName = fetchPermissionSetIds();
 
-        if (
-            !permSetIdByName.containsKey(MANAGER_PERM_SET) ||
-            !permSetIdByName.containsKey(WORK_TRAIL_PERM_SET)
-        ) {
+        if (!permSetIdByName.containsKey(MANAGER_PERM_SET) || !permSetIdByName.containsKey(WORK_TRAIL_PERM_SET)) {
             return;
         }
 
@@ -80,6 +74,11 @@ public without sharing class IPS_ManagerPermissionService {
         removeFromFormerManagersIfNoWorkTrailUsers(formerManagerIds, managerPermSetId, workTrailPermSetId);
     }
 
+    /**
+     * @description Retrieves the Ids of the relevant permission sets (IPS_Manager_Daily_Follow_Up and IPS_Is_Work_Trail_User) from Salesforce.
+     * @author Håkon Kavli | 08-24-2026
+     * @return Map<String, Id> Mapping of permission set names to their corresponding Salesforce Ids.
+     **/
     private static Map<String, Id> fetchPermissionSetIds() {
         Map<String, Id> permSetIdByName = new Map<String, Id>();
         for (PermissionSet ps : [
@@ -93,6 +92,12 @@ public without sharing class IPS_ManagerPermissionService {
         return permSetIdByName;
     }
 
+    /**
+     * @description Assigns the IPS_Manager_Daily_Follow_Up permission set to new managers if they do not already have it. This method checks for existing assignments to avoid duplicates and performs the assignment in bulk.
+     * @author Håkon Kavli | 08-24-2026
+     * @param newManagerIds Set of Salesforce User Ids representing the new managers to whom the permission set should be assigned.
+     * @param managerPermSetId Salesforce Id of the IPS_Manager_Daily_Follow_Up permission set.
+     **/
     private static void assignToNewManagers(Set<Id> newManagerIds, Id managerPermSetId) {
         if (newManagerIds.isEmpty()) {
             return;
@@ -111,22 +116,23 @@ public without sharing class IPS_ManagerPermissionService {
         List<PermissionSetAssignment> toInsert = new List<PermissionSetAssignment>();
         for (Id managerId : newManagerIds) {
             if (!alreadyAssigned.contains(managerId)) {
-                toInsert.add(
-                    new PermissionSetAssignment(
-                        AssigneeId = managerId,
-                        PermissionSetId = managerPermSetId
-                    )
-                );
+                toInsert.add(new PermissionSetAssignment(AssigneeId = managerId, PermissionSetId = managerPermSetId));
             }
         }
 
         if (!toInsert.isEmpty()) {
-            CRM_DatabaseOperations cdo = new CRM_DatabaseOperations()
-                .setDomain(CRM_ApplicationDomain.Domain.IPS);
+            CRM_DatabaseOperations cdo = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
             cdo.insertRecords(toInsert);
         }
     }
 
+    /**
+     * @description Removes the IPS_Manager_Daily_Follow_Up permission set from former managers if they no longer manage any active Work Trail users. This method counts the number of active Work Trail users for each former manager and removes the permission set only if the count is zero.
+     * @author Håkon Kavli | 08-24-2026
+     * @param formerManagerIds Set of Salesforce User Ids representing the former managers from whom the permission set may be removed.
+     * @param managerPermSetId Salesforce Id of the IPS_Manager_Daily_Follow_Up permission set.
+     * @param workTrailPermSetId Salesforce Id of the IPS_Is_Work_Trail_User permission set.
+     **/
     private static void removeFromFormerManagersIfNoWorkTrailUsers(
         Set<Id> formerManagerIds,
         Id managerPermSetId,
@@ -184,8 +190,7 @@ public without sharing class IPS_ManagerPermissionService {
             WITH SYSTEM_MODE
         ];
         if (!toDelete.isEmpty()) {
-            CRM_DatabaseOperations cdo = new CRM_DatabaseOperations()
-                .setDomain(CRM_ApplicationDomain.Domain.IPS);
+            CRM_DatabaseOperations cdo = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
             cdo.deleteRecords(toDelete);
         }
     }
@@ -194,11 +199,7 @@ public without sharing class IPS_ManagerPermissionService {
         Set<Id> idSet = new Set<Id>();
         for (String s : idStrings) {
             if (String.isNotBlank(s)) {
-                try {
-                    idSet.add((Id) s);
-                } catch (Exception e) {
-                    // Skip malformed IDs
-                }
+                idSet.add((Id) s);
             }
         }
         return idSet;
