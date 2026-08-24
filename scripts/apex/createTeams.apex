@@ -13,7 +13,6 @@ teams.add(new ips_Team__c(Name ='AMS Bergen Sentrum', Region__c = 'Vestland', Me
 teams.add(new ips_Team__c(Name ='AMS Bergen Sør', Region__c = 'Vestland', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Bergen Vest', Region__c = 'Vestland', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Bergenhus', Region__c = 'Vestland', Methodology__c = 'AMS'));
-teams.add(new ips_Team__c(Name ='AMS Bergenshus', Region__c = 'Vestland', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Bjerke', Region__c = 'Oslo', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Bodø', Region__c = 'Nordland', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Drammen', Region__c = 'Vest-Viken', Methodology__c = 'AMS'));
