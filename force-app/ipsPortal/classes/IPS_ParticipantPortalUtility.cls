@@ -44,6 +44,8 @@ public without sharing class IPS_ParticipantPortalUtility{
         if(subcategory == 'Relationship building'){return 'Relasjonsbygging';}
         if(subcategory == 'Job support'){return 'Jobbstøtte';}
         if(subcategory == 'Follow-up'){return 'Oppfølging';}
+        if(subcategory == 'Exploration of education'){return 'Utforsking av utdanning';}
+        if(subcategory == 'Support during education'){return 'Støtte under utdanning';}
         else {return 'Ingen underkategori';}
     }
 
