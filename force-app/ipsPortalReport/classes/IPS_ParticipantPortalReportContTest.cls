@@ -270,6 +270,49 @@ public class IPS_ParticipantPortalReportContTest {
     }
 
     @isTest
+    static void getCompletedEducationMeetingsIPS() {
+        ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
+        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Education_Event').getRecordTypeId();
+
+        Event educationMeetingCompleted = new Event(
+            RecordTypeId = devRecordTypeId,
+            WhatId = workTrailId,
+            StartDateTime = system.Datetime.now(),
+            EndDateTime = system.Datetime.now().addHours(1),
+            Subject = 'Møte med Utdanningsinstitusjon',
+            IPS_Type__c = 'Møte med Utd. Ins.',
+            IPS_Status1__c = 'Completed',
+            IPS_participant_related_to_meeting__c = true,
+            IPS_educationInstitution__c = 'Testskolen',
+            IPS_educationContact__c = 'Kari Kontakt',
+            ips_Subcategory_Type_Education__c = 'Exploration of education',
+            Location = 'Kontoret'
+        );
+        insert educationMeetingCompleted;
+
+        List<IPS_ParticipantPortalEvent> meetings = IPS_ParticipantPortalReportController.getParticipantsReportEducationCompletedMeetings(
+            workTrailId,
+            Date.today().addDays(-30),
+            Date.today()
+        );
+
+        List<IPS_ParticipantPortalEvent> meetingsEnd = IPS_ParticipantPortalReportController.getParticipantsReportEducationCompletedMeetingsNo(
+            workTrailId
+        );
+
+        List<String> meetingsName = IPS_ParticipantPortalReportController.getParticipantsReportEducationNameMeetings(
+            workTrailId
+        );
+
+        // Assert
+        System.assertNotEquals(0, meetings.size(), 'Completed education meetings should be returned');
+        System.assertEquals('Testskolen', meetings[0].Utdanningsinstitusjon, 'Education institution name should match');
+        System.assertEquals('Kari Kontakt', meetings[0].UtdanningsinstitusjonKontakt, 'Education contact should match');
+        System.assertNotEquals(0, meetingsEnd.size(), 'Completed education meetings count should be returned');
+        System.assertNotEquals(0, meetingsName.size(), 'Education institution names should be returned');
+    }
+
+    @isTest
     static void getReportAllPassivPeriods() {
         ID workTrailId = [SELECT id FROM Work_Trail__c WHERE RecordType.developername = 'IPS' LIMIT 1]?.id;
 
