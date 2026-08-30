@@ -239,6 +239,57 @@
                     </template>
                 </template>
 
+                <template lwc:if={isEducationCompleted}>
+                    <h3 tabindex="0">{label.cooperationEducationSection}</h3>
+                    <p tabindex="0">Møter gjennomført med utdanningsinstitusjon(er) i perioden.</p>
+                    <template lwc:if={isMobile}>
+                        <template for:each={educationMeetingsList} for:item="edu">
+                            <c-ips_-participant-portal-readmore key={edu.EventId} label={edu.Emne}>
+                                <dl>
+                                    <dt>Utd. Ins.</dt>
+                                    <dd>{edu.Utdanningsinstitusjon}</dd>
+                                    <dt>Kontaktperson</dt>
+                                    <dd>{edu.UtdanningsinstitusjonKontakt}</dd>
+                                    <dt>Deltaker deltar</dt>
+                                    <dd>{edu.DeltakerDeltatt}</dd>
+                                    <dt>Emne</dt>
+                                    <dd>{edu.Emne}</dd>
+                                    <dt>Møtekategori</dt>
+                                    <dd>{edu.Underkategori}</dd>
+                                    <dt>Møtedato</dt>
+                                    <dd>{edu.Motedato}</dd>
+                                </dl>
+                            </c-ips_-participant-portal-readmore>
+                        </template>
+                    </template>
+                    <template lwc:if={isDesktop}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Utd. Ins.</th>
+                                    <th>Kontaktperson</th>
+                                    <th>Deltaker deltar</th>
+                                    <th>Emne</th>
+                                    <th>Møtekategori</th>
+                                    <th>Møtedato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={educationMeetingsList} for:item="edu">
+                                    <tr key={edu.EventId}>
+                                        <td>{edu.Utdanningsinstitusjon}</td>
+                                        <td>{edu.UtdanningsinstitusjonKontakt}</td>
+                                        <td>{edu.DeltakerDeltatt}</td>
+                                        <td>{edu.Emne}</td>
+                                        <td>{edu.Underkategori}</td>
+                                        <td>{edu.Motedato}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </template>
+
                 <template lwc:if={isJob}>
                     <p tabindex="0">{label.participantWorkTraining}</p>
                     <template for:each={jobsList} for:item="job">
