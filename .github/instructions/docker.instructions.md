@@ -1,8 +1,9 @@
 ---
-applyTo: "**/Dockerfile"
+description: "Dockerfile-standarder for Nav — Chainguard base images, multi-stage builds og sikkerhet"
+applyTo: "**/Dockerfile*, **/.dockerignore"
 ---
 
-# Dockerfile Standards
+# Docker — Nav
 
 Standarder for Dockerfile i Nav: Chainguard base images, multi-stage builds og sikkerhetspraksis.
 
@@ -10,63 +11,60 @@ Reference: [Chainguard base images — sikkerhet.nav.no](https://sikkerhet.nav.n
 
 ## Base Images — Chainguard
 
-Nav pays for [Chainguard base images](https://sikkerhet.nav.no/docs/verktoy/chainguard-dockerimages) with minimal vulnerabilities. Use these instead of Google distroless or full OS images.
+Nav betaler for [Chainguard base images](https://sikkerhet.nav.no/docs/verktoy/chainguard-dockerimages) med minimale sårbarheter. Bruk disse i stedet for Google Distroless eller fulle OS-images.
 
-### Nav's private registry (JVM, Node, Python)
+### Navs private registry (JVM, Node, Python)
 
 ```
 europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/<image>:<tag>
 ```
 
-Available images: `jdk`, `jre`, `node`, `python`, `airflow-core`.
+Tilgjengelige images: `jdk`, `jre`, `node`, `python`, `airflow-core`.
 
-### Free Chainguard images (Go, nginx)
+### Gratis Chainguard images (Go, nginx)
 
 ```
 cgr.dev/chainguard/<image>:<tag>
 ```
 
-For Go and nginx, good free alternatives exist in Chainguard's public registry.
+### Tags
 
-### Tags and updates
-
-- Use major version (e.g. `openjdk-21`, `22-slim`) — **Chainguard does not backport** to minor/patch
-- Recommendation: don't pin SHA. Set up a workflow to rebuild regularly instead
-- Use [digestabot](https://github.com/navikt/digestabot) if you want to pin SHA and get automatic PRs
+- Bruk major version (f.eks. `openjdk-21`, `22-slim`) — Chainguard backporter ikke
+- Ikke pin SHA. Sett opp workflow for regelmessig rebuild
+- Bruk [digestabot](https://github.com/navikt/digestabot) om du vil pinne SHA med automatiske PR-er
 
 ```dockerfile
 # ✅ Chainguard fra Navs registry
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-21
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22-slim
 
-# ✅ Free Chainguard for Go and nginx
+# ✅ Gratis Chainguard for Go og nginx
 FROM cgr.dev/chainguard/go:latest
 FROM cgr.dev/chainguard/static:latest
 FROM cgr.dev/chainguard/nginx:latest
 
-# ⚠️ Google distroless works, but Chainguard is preferred at Nav
+# ⚠️ Google Distroless fungerer, men Chainguard er foretrukket i Nav
 FROM gcr.io/distroless/java21-debian12:nonroot
-FROM gcr.io/distroless/static-debian12:nonroot
 
-# ❌ Avoid full OS images
+# ❌ Unngå fulle OS-images
 FROM ubuntu:22.04
 FROM openjdk:21
 ```
 
 ## Multi-Stage Builds
 
-All Nav apps must use multi-stage builds for minimal image size.
+Alle Nav-apper skal bruke multi-stage builds.
 
-### JVM applications (build outside Dockerfile)
+### JVM (JAR bygget i CI — single-stage OK)
 
 ```dockerfile
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-21
 ENV TZ="Europe/Oslo"
-COPY target/app.jar app.jar
-CMD ["-jar","app.jar"]
+COPY build/libs/app.jar app.jar
+CMD ["java", "-jar", "app.jar"]
 ```
 
-### JVM with build in Dockerfile (Kotlin/Java)
+### JVM med bygg i Dockerfile (Kotlin/Java)
 
 ```dockerfile
 FROM gradle:8-jdk21 AS build
@@ -80,39 +78,7 @@ RUN gradle shadowJar --no-daemon
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-21
 WORKDIR /app
 COPY --from=build /app/build/libs/*-all.jar app.jar
-CMD ["-jar", "app.jar"]
-```
-
-### Spring Boot
-
-```dockerfile
-FROM gradle:8-jdk21 AS build
-WORKDIR /app
-COPY . .
-RUN gradle bootJar --no-daemon
-
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-21
-WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
-```
-
-### Go
-
-```dockerfile
-FROM cgr.dev/chainguard/go:latest AS builder
-ENV GOOS=linux
-ENV CGO_ENABLED=0
-WORKDIR /src
-COPY go.mod go.sum ./
-RUN go mod download
-COPY . .
-RUN go build -a -installsuffix cgo -o /bin/app .
-
-FROM cgr.dev/chainguard/static:latest
-WORKDIR /app
-COPY --from=builder /bin/app /app/app
-ENTRYPOINT ["/app/app"]
+CMD ["java", "-jar", "app.jar"]
 ```
 
 ### Node.js
@@ -128,7 +94,7 @@ EXPOSE 8080
 CMD ["server/dist/index.js"]
 ```
 
-### Node.js with build in Dockerfile
+### Node.js med bygg i Dockerfile
 
 ```dockerfile
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22-dev AS builder
@@ -139,66 +105,30 @@ RUN npm run build
 
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22-slim
 WORKDIR /app
-COPY --from=builder /app /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/build ./build
 CMD ["build/server.js"]
 ```
 
-### Python with build in Dockerfile
+## Sikkerhet
 
 ```dockerfile
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.12-dev AS builder
-WORKDIR /app
-RUN python3 -m venv venv
-ENV PATH=/app/venv/bin:$PATH
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+# ✅ Chainguard kjører som non-root automatisk — ingen USER nødvendig
 
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.12 AS runner
-WORKDIR /app
-COPY src/ .
-COPY --from=builder /app/venv /app/venv
-ENV PATH="/app/venv/bin:$PATH"
-ENTRYPOINT ["python", "main.py"]
-```
+# ✅ For andre base images — kjør som non-root
+USER nonroot
+USER 1001
 
-### Nginx
-
-```dockerfile
-FROM cgr.dev/chainguard/node:latest-dev AS build
-USER root
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-FROM cgr.dev/chainguard/nginx AS production
-COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 8080
-```
-
-## Security
-
-```dockerfile
-# ✅ Chainguard images run as non-root by default
-# No USER instruction needed for Chainguard
-
-# ✅ For other base images — run as non-root
-USER nonroot                          # distroless
-USER 1001                            # numerisk UID
-RUN adduser --system --uid 1001 app  # Alpine
-
-# ✅ Minimal COPY — never COPY entire context into final stage
+# ✅ Minimal COPY — aldri COPY hele konteksten til final stage
 COPY --from=build /app/build/libs/app.jar .
 
-# ❌ Wrong — copies secrets, test files, .git
+# ❌ Kopierer secrets, testfiler, .git
 COPY . .
 ```
 
 ## .dockerignore
 
-Always create a `.dockerignore`:
+Lag alltid en `.dockerignore`:
 
 ```
 .git
@@ -215,19 +145,19 @@ docker-compose*.yml
 ## Layer Caching
 
 ```dockerfile
-# ✅ Copy dependency files first for better caching
+# ✅ Kopier avhengighetsfiler først for bedre caching
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-# ❌ Wrong — invalidates cache on any file change
+# ❌ Invaliderer cache ved alle filendringer
 COPY . .
 RUN go mod download && go build
 ```
 
-## CI — Chainguard Authentication
+## CI — Chainguard-autentisering
 
-Use `nais/docker-build-push` in GitHub Actions — it handles authentication to Nav's Chainguard registry automatically:
+Bruk `nais/docker-build-push` i GitHub Actions — den håndterer autentisering mot Navs Chainguard-registry automatisk:
 
 ```yaml
 jobs:
@@ -237,34 +167,30 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - uses: nais/docker-build-push@v0
         id: docker-push
         with:
           team: <myteam>
 ```
 
-## Boundaries
+## Grenser
 
-### ✅ Always
-
+### Alltid
 - Chainguard base images fra Navs registry (JVM/Node/Python) eller `cgr.dev` (Go/nginx)
 - Multi-stage builds
 - `.dockerignore`-fil
-- Copy dependencies separately for layer caching
+- Kopier avhengigheter separat for layer caching
 - `nais/docker-build-push` for CI
 
-### ⚠️ Ask First
-
+### Spør først
 - Custom base images
-- `--privileged` or extra Linux capabilities
-- Mounting secrets in build
-- Google distroless instead of Chainguard
+- `--privileged` eller ekstra Linux capabilities
+- Mounting secrets i build
 
-### 🚫 Never
-
-- `COPY . .` in final stage
-- Root user in production
-- Secrets in Dockerfile (`ENV SECRET=...`, `ARG PASSWORD=...`)
-- `latest` tag on Nav registry images (use specific major version)
-- Full OS images (`ubuntu`, `debian`, `openjdk`)
+### Aldri
+- `COPY . .` i final stage
+- Root-bruker i produksjon
+- Secrets i Dockerfile (`ENV SECRET=...`, `ARG PASSWORD=...`)
+- `latest`-tag på Nav registry images (bruk spesifikk major version)
+- Fulle OS-images (`ubuntu`, `debian`, `openjdk`)
