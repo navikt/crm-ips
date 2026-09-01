@@ -14,6 +14,7 @@ public class IPS_ParticipantPortalEvent {
    @AuraEnabled public String Arbeidsgiver{get;set;}
    @AuraEnabled public String ArbeidsgiverKontakt{get;set;}
    @AuraEnabled public String Utdanningsinstitusjon{get;set;}
+   @AuraEnabled public String UtdanningsinstitusjonKontakt{get;set;}
    @AuraEnabled public String DeltakerDeltatt{get;set;}
    @AuraEnabled public String Lokasjon{get;set;}
    @AuraEnabled public Integer AntallCompletedMeeting{get;set;}
