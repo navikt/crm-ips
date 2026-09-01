@@ -174,6 +174,23 @@
                         </template>
                     </template>
 
+                <h3>{label.cooperationEducationSection}</h3>
+                    <p>Jobbspesialist har enten på egenhånd, eller sammen med deg, vært i kontakt med følgende utdanningsinstitusjoner for å utforske
+                        mulighetene for utdanning:
+                    </p>
+                    <template lwc:if={isEducationCompletedNo}>
+<ul style="list-style-type:disc;">
+                            <template for:each={educationNameList} for:item="eduName">
+                                <li key={eduName} tabindex="0"><p>{eduName}</p></li>
+                            </template>
+                        </ul>
+                        <template for:each={educationMeetingsListNo} for:item="eduNo">
+<p key={eduNo.EventId} tabindex="0">
+                                Det er gjennomført {eduNo.AntallCompletedMeeting} utdanningsmøte(r) med deltaker tilstede.
+                            </p>
+                        </template>
+                    </template>
+
                     
                     <template lwc:if={isJobEnd}>
                         <h3 tabindex="0">{label.participantWorkTraining}</h3>

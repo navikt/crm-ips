@@ -21,25 +21,23 @@ import getParticipantReportCompletedGoalsEnd from '@salesforce/apex/IPS_Particip
 import getParticipantCompletedMeetingsEnd from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportCompletedMeetingsEnd';
 import getCompletedEmployeeMeetingsNo from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEmployeeCompletedMeetingsNo';
 import getCompletedEmployeeName from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEmployeeNameMeetings';
+import getCompletedEducationMeetingsNo from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEducationCompletedMeetingsNo';
+import getCompletedEducationName from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEducationNameMeetings';
 import getParticipantJobsEnd from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantJobsEnd';
 import getParticipantEducationsEnd from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantEducationsEnd';
 import getParticipantAbsentMeetingsEndNo from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportAbsentMeetingsEndNo';
 
-
-
 import getParticipantCompletedEmployeeMetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEmployeeCompletedMeetings';
-
+import getParticipantCompletedEducationMeetings from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportEducationCompletedMeetings';
 
 /* End and Intervall report */
 import getParticipantPassivePeriods from '@salesforce/apex/IPS_ParticipantPortalReportController.getParticipantsReportAllPassivPeriods';
-
-
-
 
 import mainGoalSection from '@salesforce/label/c.IPS_main_goal_section_report';
 import summarizeSectionReport from '@salesforce/label/c.IPS_summarize_section_report';
 import cooperationParticipantSection from '@salesforce/label/c.IPS_cooperation_with_participant_section';
 import cooperationEmployerSection from '@salesforce/label/c.IPS_cooperation_with_employer_section';
+import cooperationEducationSection from '@salesforce/label/c.IPS_cooperation_with_education_section';
 import planNextPeriodeSection from '@salesforce/label/c.IPS_plan_for_next_periode';
 import participantCommentSection from '@salesforce/label/c.IPS_participants_comment_section';
 import priorityWorkSection from '@salesforce/label/c.IPS_priority_work_section_IPS';
@@ -80,7 +78,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     completedMeetingsListEnd;
     employeeMeetingsList;
     employeeMeetingsListNo;
+    educationMeetingsList;
+    educationMeetingsListNo;
     employeeNameList;
+    educationNameList;
     openMeetingsList;
     openGoalsList;
     completedGoalsList;
@@ -103,7 +104,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     isCancel = false;
     isEmployeeCompleted = false;
     isEmployeeCompletedNo = false;
+    isEducationCompletedNo = false;
+    isEducationCompleted = false;
     isEmployeeName = false;
+    isEducationName = false;
     isOpenMeeting = false;
     isJob = false;
     isJobEnd = false;
@@ -115,8 +119,8 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     warningText = errorMessage;
 
     breadcrumbs = [
-        {label: 'Mitt jobbspor',href: ''},
-        {label: 'veilederrapport',href: ''}
+        { label: 'Mitt jobbspor', href: '' },
+        { label: 'veilederrapport', href: '' }
     ];
 
     homeImg = IPS_HOME_LOGOS + '/House.svg';
@@ -126,6 +130,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         summarizeSectionReport,
         cooperationParticipantSection,
         cooperationEmployerSection,
+        cooperationEducationSection,
         planNextPeriodeSection,
         participantCommentSection,
         priorityWorkSection,
@@ -153,9 +158,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         this.error = error;
     }
 
-
     render() {
-        
         switch (this.reportTypeName) {
             case REPORT_TYPE_INTERVAL:
                 return templateIntervall;
@@ -171,16 +174,16 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     }
 
     async loadParticipantReport() {
-            const data = await getParticipantReport({ recordId: this.recordId, typeOfId: REPORT_TYPE_REPORT });
-            if (data && data.length > 0) {
-                this.reportList = data;
-                this.reportTypeName = this.reportList[0].reportType;
-                this.reportRecordTypeName = this.reportList[0].reportTrailType;
-                this.reportTrailRecordId = this.reportList[0].reportTrailId;
-                this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
-                this.reportDateTo = this.reportList[0].reportNotFormatToDate;
-                this.isReportDataLoaded = true;
-            }
+        const data = await getParticipantReport({ recordId: this.recordId, typeOfId: REPORT_TYPE_REPORT });
+        if (data && data.length > 0) {
+            this.reportList = data;
+            this.reportTypeName = this.reportList[0].reportType;
+            this.reportRecordTypeName = this.reportList[0].reportTrailType;
+            this.reportTrailRecordId = this.reportList[0].reportTrailId;
+            this.reportDateFrom = this.reportList[0].reportNotFormatFromDate;
+            this.reportDateTo = this.reportList[0].reportNotFormatToDate;
+            this.isReportDataLoaded = true;
+        }
     }
 
     get typeValue() {
@@ -192,11 +195,8 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
     }
 
     get isMobile() {
-        return formFactorPropertyName === 'Small'
+        return formFactorPropertyName === 'Small';
     }
-        
-
-    
 
     @wire(getParticipantCancelledMeetings, {
         recordId: '$reportTrailRecordId',
@@ -204,10 +204,10 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     cancelledMeetingsListHandler({ data, error }) {
-        if (this.isReportDataLoaded ) {
+        if (this.isReportDataLoaded) {
             if (data) {
                 if (data.length > 0) {
-                    this.cancelledMeetingsNumber = data?.[0]?.AntallCancelledMeeting || 0;;
+                    this.cancelledMeetingsNumber = data?.[0]?.AntallCancelledMeeting || 0;
                     if (this.cancelledMeetingsNumber > 0) {
                         this.isCancel = true;
                     }
@@ -282,8 +282,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
-   
-
     @wire(getParticipantAbsentMeetings, {
         recordId: '$reportTrailRecordId',
         recordDateFrom: '$reportDateFrom',
@@ -300,7 +298,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
-    
     @wire(getParticipantAbsentMeetingsEndNo, {
         recordId: '$reportTrailRecordId'
     })
@@ -314,9 +311,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             }
         }
     }
-   
-
-    
 
     @wire(getParticipantOpenMeetings, {
         recordId: '$reportTrailRecordId',
@@ -344,7 +338,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             }
             if (error) {
                 this.handleWireError(error);
-            }       
+            }
         }
     }
 
@@ -381,9 +375,25 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
-@wire(getCompletedEmployeeName,{
-    recordId: '$reportTrailRecordId'              
-})
+    @wire(getParticipantCompletedEducationMeetings, {
+        recordId: '$reportTrailRecordId',
+        recordDateFrom: '$reportDateFrom',
+        recordDateTo: '$reportDateTo'
+    })
+    completeEducationHandler({ data, error }) {
+        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_INTERVAL) {
+            if (data) {
+                this.handleWireResponse(data, 'educationMeetingsList', 'isEducationCompleted');
+            }
+            if (error) {
+                this.handleWireError(error);
+            }
+        }
+    }
+
+    @wire(getCompletedEmployeeName, {
+        recordId: '$reportTrailRecordId'
+    })
     employeeNameHandler({ data, error }) {
         if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_END) {
             if (data) {
@@ -394,7 +404,6 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             }
         }
     }
-
 
     @wire(getCompletedEmployeeMeetingsNo, {
         recordId: '$reportTrailRecordId'
@@ -410,6 +419,34 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         }
     }
 
+    @wire(getCompletedEducationName, {
+        recordId: '$reportTrailRecordId'
+    })
+    educationNameHandler({ data, error }) {
+        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_END) {
+            if (data) {
+                this.handleWireResponse(data, 'educationNameList', 'isEducationName');
+            }
+            if (error) {
+                this.handleWireError(error);
+            }
+        }
+    }
+
+    @wire(getCompletedEducationMeetingsNo, {
+        recordId: '$reportTrailRecordId'
+    })
+    completeEducationNoHandler({ data, error }) {
+        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_END) {
+            if (data) {
+                this.handleWireResponse(data, 'educationMeetingsListNo', 'isEducationCompletedNo');
+            }
+            if (error) {
+                this.handleWireError(error);
+            }
+        }
+    }
+
     @wire(getParticipantCompletedMeetings, {
         recordId: '$reportTrailRecordId',
         typeOfReport: '$reportTypeName',
@@ -417,7 +454,7 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
         recordDateTo: '$reportDateTo'
     })
     completedListHandler({ data, error }) {
-        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_INTERVAL)  {
+        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_INTERVAL) {
             if (data) {
                 this.handleWireResponse(data, 'completedMeetingsList', 'isCompleted');
             }
@@ -426,23 +463,22 @@ export default class Ips_ParticipantPortalReport extends NavigationMixin(Lightni
             }
         }
     }
-    
 
     @wire(getParticipantCompletedMeetingsEnd, {
         recordId: '$reportTrailRecordId'
     })
     completedListHandlerEnd({ data, error }) {
-        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_END) { {
-            if (data) {
-                this.handleWireResponse(data, 'completedMeetingsListEnd', 'isCompletedEnd');
-            }
-            if (error) {
-                this.handleWireError(error);
+        if (this.isReportDataLoaded && this.reportTypeName === REPORT_TYPE_END) {
+            {
+                if (data) {
+                    this.handleWireResponse(data, 'completedMeetingsListEnd', 'isCompletedEnd');
+                }
+                if (error) {
+                    this.handleWireError(error);
+                }
             }
         }
     }
-}
-    
 
     @wire(getParticipantCompletedGoals, {
         recordId: '$reportTrailRecordId',

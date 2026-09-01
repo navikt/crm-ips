@@ -189,6 +189,83 @@ public with sharing class IPS_ParticipantPortalReportController {
 
     /*
     *********************************************************
+    @Method Name    : getParticipantsReportEducationCompletedMeetings
+    @author         : Copilot / Balendra Sounthararajan
+    @description    : AuraEnabled som er synlig for uthenting av data fra LWC komponent.
+                      Henter data fra Event objektet. Henter møter med utdanningsinstitusjon som er fullført.
+                      Henter innenfor intervall for intervallrapport.
+
+    @param          : JobbsporId
+    @param          : Startdato
+    @param          : Sluttdato
+    @Return         : Liste over møter knyttet til ett jobbspor
+    ********************************************************
+    */
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalEvent> getParticipantsReportEducationCompletedMeetings(
+        String recordId,
+        Date recordDateFrom,
+        Date recordDateTo
+    ) {
+        Id currentRecordId = recordId;
+        Date reportDateTo = recordDateTo;
+        Date reportDateFrom = recordDateFrom;
+
+        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+
+        wrapperListMeeting = getReportCompletedEducationMeetings(currentRecordId, reportDateFrom, reportDateTo);
+
+        return wrapperListMeeting;
+    }
+
+    /*
+    *********************************************************
+    @Method Name    : getParticipantsReportEducationCompletedMeetingsNo
+    @author         : Copilot / Balendra Sounthararajan
+    @description    : AuraEnabled som er synlig for uthenting av data fra LWC komponent.
+                      Henter data fra Event objektet. Henter antall utdanningsinstitusjonmøter som er fullført.
+                      Henter for sluttrapport.
+
+    @param          : JobbsporId
+    @Return         : Liste over møter knyttet til ett jobbspor
+    ********************************************************
+    */
+    @AuraEnabled(cacheable=true)
+    public static List<IPS_ParticipantPortalEvent> getParticipantsReportEducationCompletedMeetingsNo(String recordId) {
+        Id currentRecordId = recordId;
+
+        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
+
+        wrapperListMeeting = getReportCompletedEducationMeetingsNo(currentRecordId);
+
+        return wrapperListMeeting;
+    }
+
+    /*
+    *********************************************************
+    @Method Name    : getParticipantsReportEducationNameMeetings
+    @author         : Copilot / Balendra Sounthararajan
+    @description    : AuraEnabled som er synlig for uthenting av data fra LWC komponent.
+                      Henter data fra Event objektet. Henter utdanningsinstitusjonsnavn fra møter som er knyttet til jobbspor.
+                      Henter for sluttrapport.
+
+    @param          : JobbsporId
+    @Return         : Liste over møter knyttet til ett jobbspor
+    ********************************************************
+    */
+    @AuraEnabled(cacheable=true)
+    public static List<String> getParticipantsReportEducationNameMeetings(String recordId) {
+        Id currentRecordId = recordId;
+
+        List<String> wrapperListMeeting = new List<String>();
+
+        wrapperListMeeting = getReportCompletedEducationMeetingsName(currentRecordId);
+
+        return wrapperListMeeting;
+    }
+
+    /*
+    *********************************************************
     @Method Name    : getParticipantsReportEmployeeCompletedMeetingsNo
     @author         : AKO
     @description    : AuraEnabled som er synlig for uthenting av data fra LWC komponent.
@@ -676,6 +753,134 @@ public with sharing class IPS_ParticipantPortalReportController {
             }
             wrapperTempList.add(tempList);
         }
+        return wrapperTempList;
+    }
+
+    /*
+    *********************************************************
+    @Method Name    : getReportCompletedEducationMeetings
+    @author         : Copilot / Balendra Sounthararajan
+    @description    : Henter data fra Event objektet. Henter møter med utdanningsinstitusjon og deltaker som er fullført.
+
+    @param          : JobbsporId
+    @param          : Startdato
+    @param          : Sluttdato
+    @Return         : Liste over Møter knyttet til ett jobbspor
+    ********************************************************
+    */
+    private static List<IPS_ParticipantPortalEvent> getReportCompletedEducationMeetings(
+        id recordId,
+        Date reportDateFrom,
+        Date reportDateTo
+    ) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        list<Event> educationActivity = new List<Event>();
+
+        educationActivity = [
+            SELECT
+                id,
+                Subject,
+                ActivityDate,
+                IPS_Type__c,
+                IPS_educationInstitution__c,
+                IPS_educationContact__c,
+                IPS_participant_related_to_meeting__c,
+                ips_Subcategory_Type_Education__c
+            FROM event
+            WHERE
+                IPS_Type__c = 'Møte med Utd. Ins.'
+                AND WhatId = :recordId
+                AND IPS_Status1__c = 'Completed'
+                AND ActivityDate >= :reportDateFrom
+                AND ActivityDate <= :reportDateTo
+            ORDER BY ActivityDate DESC
+        ];
+
+        for (Event epart : educationActivity) {
+            IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+            tempList.EventId = epart.Id;
+            tempList.Emne = epart.Subject;
+            tempList.Motedato = IPS_ParticipantPortalUtility.formatDate(epart.ActivityDate);
+            tempList.Utdanningsinstitusjon = epart.IPS_educationInstitution__c;
+            tempList.UtdanningsinstitusjonKontakt = epart.IPS_educationContact__c;
+            tempList.DeltakerDeltatt = IPS_ParticipantPortalUtility.formatParticipatedBoolean(
+                epart.IPS_participant_related_to_meeting__c
+            );
+            if (epart.ips_Subcategory_Type_Education__c != null) {
+                tempList.Underkategori = IPS_ParticipantPortalUtility.formatSubcategory(
+                    epart.ips_Subcategory_Type_Education__c
+                );
+            }
+            wrapperTempList.add(tempList);
+        }
+        return wrapperTempList;
+    }
+
+    /*
+    *********************************************************
+    @Method Name    : getReportCompletedEducationMeetingsNo
+    @author         : Copilot / Balendra Sounthararajan
+    @description    : Henter data fra Event objektet. Henter møter med utdanningsinstitusjon og deltaker som er fullført.
+
+    @param          : JobbsporId
+    @Return         : Liste med fullførte Møter knyttet til ett jobbspor
+    ********************************************************
+    */
+    private static List<IPS_ParticipantPortalEvent> getReportCompletedEducationMeetingsNo(id recordId) {
+        List<IPS_ParticipantPortalEvent> wrapperTempList = new List<IPS_ParticipantPortalEvent>();
+        IPS_ParticipantPortalEvent tempList = new IPS_ParticipantPortalEvent();
+
+        AggregateResult[] educationActivityCount = [
+            SELECT count(Id) countOfMeeting
+            FROM event
+            WHERE
+                IPS_Type__c = 'Møte med Utd. Ins.'
+                AND WhatId = :recordId
+                AND IPS_participant_related_to_meeting__c = TRUE
+                AND IPS_Status1__c = 'Completed'
+        ];
+        tempList.AntallCompletedMeeting = (Integer) educationActivityCount[0].get('countOfMeeting');
+        tempList.EventId = recordId;
+        wrapperTempList.add(tempList);
+        return wrapperTempList;
+    }
+
+    
+    /*
+    *********************************************************
+    @Method Name    : getReportCompletedEducationMeetingsName
+    @author         : Copilot / Balendra Sounthararajan
+    @description    : Henter data fra Event objektet. Henter unike navn på utdanningsinstitusjoner knyttet til møter.
+
+    @param          : JobbsporId,
+    @Return         : Liste over utdanningsinstitusjonsnavn knyttet til ett jobbspor
+    ********************************************************
+    */
+    private static List<String> getReportCompletedEducationMeetingsName(id recordId) {
+        List<String> wrapperTempList = new List<String>();
+        list<Event> educationActivity = new List<Event>();
+        // Set to hold unique institution names, it could be several meetings with same institution, we only want to list the name once.
+        Set<String> tempInstitutionName = new Set<String>();
+
+        educationActivity = [
+            SELECT id, Subject, ActivityDate, IPS_Type__c, IPS_educationInstitution__c, ips_Subcategory_Type_Education__c
+            FROM event
+            WHERE
+                IPS_Type__c = 'Møte med Utd. Ins.'
+                AND WhatId = :recordId
+                AND (ips_Subcategory_Type_Education__c = 'Exploration of education'
+                OR ips_Subcategory_Type_Education__c = 'Support during education')
+                AND IPS_Status1__c IN ('Completed', 'Participant Absent')
+            ORDER BY ActivityDate DESC
+        ];
+
+        for (Event epart : educationActivity) {
+            if (String.isNotBlank(epart.IPS_educationInstitution__c)) {
+                tempInstitutionName.add(epart.IPS_educationInstitution__c);
+            }
+        }
+
+        wrapperTempList = new List<String>(tempInstitutionName);
         return wrapperTempList;
     }
 
