@@ -87,17 +87,13 @@ public without sharing class IPS_Utility {
             return true;
         }
 
-        PermissionSetAssignment psa = [
+        List<PermissionSetAssignment> psaList = [
             SELECT Id
             FROM PermissionSetAssignment
             WHERE AssigneeId = :userId AND PermissionSet.Name = 'Personalleder_IPS_UO'
             WITH SYSTEM_MODE
             LIMIT 1
         ];
-
-        if (psa != null) {
-            return true;
-        }
-        return false;
+        return !psaList.isEmpty();
     }
 }
