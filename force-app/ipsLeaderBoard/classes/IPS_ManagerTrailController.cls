@@ -5,6 +5,7 @@
  * @since        : 0.533.0
  **/
 public without sharing class IPS_ManagerTrailController {
+    public static Boolean hasAccess = IPS_Utility.checkIfUserHasLeaderboardAccess(UserInfo.getUserId());
     private static final List<String> ACTIVE_STATUSES = new List<String>{
         'Initial contact',
         'Mapping',
@@ -20,6 +21,11 @@ public without sharing class IPS_ManagerTrailController {
     @AuraEnabled(cacheable=true)
     /* Aggregerte data - antall jobbspor pr status, active statuses only */
     public static List<IPS_ManagerTrail> getAggregatedTrailStatus() {
+        // Check if the current user has access to the leaderboard. If not, return null.
+        if (!hasAccess) {
+            return null;
+        }
+
         List<IPS_ManagerTrail> trailStatuses = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
 
@@ -49,6 +55,9 @@ public without sharing class IPS_ManagerTrailController {
     /* Aggregerte data - referred/ended pr service*/
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerTrail> getReferredTrails() {
+        if (!hasAccess) {
+            return null;
+        }
         List<IPS_ManagerTrail> trailReferreds = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
 
@@ -83,6 +92,9 @@ public without sharing class IPS_ManagerTrailController {
     @AuraEnabled(cacheable=true)
     /* Aggregerte data - antall sluttet pr år og måned */
     public static List<IPS_ManagerTrail> getAggregatedEndedTrail() {
+        if (!hasAccess) {
+            return null;
+        }
         List<IPS_ManagerTrail> trailEnds = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
 
@@ -123,6 +135,9 @@ public without sharing class IPS_ManagerTrailController {
     @AuraEnabled(cacheable=true)
     /* Aggregerte data - antall jobbspor pr jobbspesialist */
     public static List<IPS_ManagerTrail> getAggregatedTrailJobbspesialist() {
+        if (!hasAccess) {
+            return null;
+        }
         List<IPS_ManagerTrail> trailOwners = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
 
