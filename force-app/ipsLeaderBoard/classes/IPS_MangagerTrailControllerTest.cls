@@ -69,7 +69,7 @@ public class IPS_MangagerTrailControllerTest {
         );
 
         System.Assert.isNotNull(endedTrails, 'Expected an empty list to be returned when there are no trails');
-        System.Assert.areEqual(0, endedTrails.size(), 'Expected an empty listto be returned when there are no trails');
+        System.Assert.areEqual(0, endedTrails.size(), 'Expected an empty list to be returned when there are no trails');
     }
 
     @IsTest
