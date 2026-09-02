@@ -51,10 +51,21 @@ public class IPS_MangagerTrailControllerTest {
         List<IPS_ManagerTrail> endedTrails = IPS_ManagerTrailController.getAggregatedEndedTrail();
 
         // Then
-        System.Assert.isNull(allTrails, 'Expected null to be returned when there are no trails');
-        System.Assert.isNull(referredTrails, 'Expected null to be returned when there are no trails');
-        System.Assert.isNull(jobbspesialistTrails, 'Expected null to be returned when there are no trails');
-        System.Assert.isNull(endedTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.isNotNull(allTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.areEqual(0, allTrails.size(), 'Expected no trails to be returned when there are no trails');
+
+        System.Assert.isNotNull(referredTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.areEqual(0, referredTrails.size(), 'Expected no trails to be returned when there are no trails');
+
+        System.Assert.isNotNull(jobbspesialistTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.areEqual(
+            0,
+            jobbspesialistTrails.size(),
+            'Expected no trails to be returned when there are no trails'
+        );
+
+        System.Assert.isNotNull(endedTrails, 'Expected null to be returned when there are no trails');
+        System.Assert.areEqual(0, endedTrails.size(), 'Expected no trails to be returned when there are no trails');
     }
 
     @IsTest
