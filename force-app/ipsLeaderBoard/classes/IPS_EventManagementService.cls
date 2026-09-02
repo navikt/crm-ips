@@ -17,7 +17,7 @@ public without sharing class IPS_EventManagementService {
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerEvent> getEventsForCurrentWeek() {
         if (!hasAccess) {
-            return null;
+            return new List<IPS_ManagerEvent>();
         }
         return createManagerEventsDTO(getEventsForEmployeesCurrentWeek());
     }
