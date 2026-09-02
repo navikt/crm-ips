@@ -5,7 +5,7 @@
  * @since        : 0.533.0
  **/
 public without sharing class IPS_ManagerTrailController {
-    public static Boolean hasAccess = IPS_Utility.checkIfUserHasLeaderboardAccess(UserInfo.getUserId());
+    private static Boolean hasAccess = IPS_Utility.checkIfUserHasLeaderboardAccess(UserInfo.getUserId());
     private static final List<String> ACTIVE_STATUSES = new List<String>{
         'Initial contact',
         'Mapping',
