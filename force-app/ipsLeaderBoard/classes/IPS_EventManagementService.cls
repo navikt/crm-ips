@@ -7,6 +7,8 @@
 public without sharing class IPS_EventManagementService {
     public static final List<String> IPS_WHATID_RECORD_TYPES = new List<String>{ 'IPS', 'ips_Supported_Employment' };
 
+    public static Boolean hasAccess = IPS_Utility.checkIfUserHasLeaderboardAccess(UserInfo.getUserId());
+
     /**
      * @description Returns a list of IPS_ManagerEvent DTOs for the events that are scheduled for the current week and are owned by the employees reporting to the manager currently using the "Jobbsporet Lederbrett". The method retrieves the relevant Event records, transforms them into IPS_ManagerEvent DTOs, and enriches the data with related Work_Trail__c information to provide a comprehensive view of the events for display on the manager's leaderboard.
      * @author Håkon Kavli | 05-12-2026
@@ -14,6 +16,9 @@ public without sharing class IPS_EventManagementService {
      **/
     @AuraEnabled(cacheable=true)
     public static List<IPS_ManagerEvent> getEventsForCurrentWeek() {
+        if (!hasAccess) {
+            return null;
+        }
         return createManagerEventsDTO(getEventsForEmployeesCurrentWeek());
     }
 
