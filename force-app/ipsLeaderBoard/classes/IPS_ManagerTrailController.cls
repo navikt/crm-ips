@@ -130,6 +130,7 @@ public without sharing class IPS_ManagerTrailController {
             SELECT COUNT(Id) Antall, Owner.Name OwnerName
             FROM Work_Trail__c
             WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_Status__c IN :ACTIVE_STATUSES
+            WITH SYSTEM_MODE
             GROUP BY Owner.Name
         ];
 
