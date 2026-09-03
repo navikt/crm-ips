@@ -12,8 +12,8 @@ public class IPS_ManagerJobControllerTest {
         User jobUser = IPS_TestDataFactory.createInternalUserWithManager('test.managerjobs@nav.no', UserInfo.getUserId());
         insert jobUser;
 
-        String participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555']
-        ?.CRM_Account__c;
+        participant = [SELECT CRM_Account__c FROM Person__c WHERE Id = :participant.Id];
+        String participantId = participant.CRM_Account__c;
 
         Account employerAccount = IPS_TestDataFactory.createEmployerAccount();
         insert employerAccount;
@@ -30,6 +30,22 @@ public class IPS_ManagerJobControllerTest {
 
         ips_Job__c activeWorkTraining = IPS_TestDataFactory.createWorkTraining(employerAccount.Id, jobbspor.Id, 'Ongoing');
         insert activeWorkTraining;
+    }
+
+    @isTest
+    static void getEmptyListsWhenNoJobsExist() {
+   
+        List<ips_Job__c> jobs = [SELECT Id FROM ips_Job__c];
+        delete jobs;
+
+        List<IPS_ManagerJob> jobCategories = IPS_ManagerJobController.totalJobsByCategory();
+        List<IPS_ManagerJob> jobTrainings = IPS_ManagerJobController.totalJobTraining();
+
+        Assert.isNotNull(jobCategories, 'Expected an empty list to be returned when there are no jobs');
+        Assert.areEqual(0, jobCategories.size(), 'Expected an empty list to be returned when there are no jobs');
+
+        Assert.isNotNull(jobTrainings, 'Expected an empty list to be returned when there are no work trainings');
+        Assert.areEqual(0, jobTrainings.size(), 'Expected an empty list to be returned when there are no work trainings');
     }
 
     @isTest

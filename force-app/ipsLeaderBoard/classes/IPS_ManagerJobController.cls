@@ -3,6 +3,7 @@
  * @author       : Balendra Sounthararajan
  **/
 public without sharing class IPS_ManagerJobController {
+    private static Boolean hasAccess = IPS_Utility.checkIfUserHasLeaderboardAccess(UserInfo.getUserId());
     private static final List<String> CONTRACT_WORK = new List<String>{
         'Freelance / self-employed',
         'Permanent employment',
@@ -16,6 +17,11 @@ public without sharing class IPS_ManagerJobController {
         try {
             List<IPS_ManagerJob> jobCategoryList = new List<IPS_ManagerJob>();
             List<AggregateResult> aggList = new List<AggregateResult>();
+
+            // Check if the current user has access to the leaderboard. If not, return empty list.
+            if (!hasAccess) {
+                return jobCategoryList;
+            }
 
             aggList = [
                 SELECT Count(Id) Antall, toLabel(ips_Form_of_Employment__c) Ansettelsesform
@@ -49,6 +55,11 @@ public without sharing class IPS_ManagerJobController {
         try {
             List<IPS_ManagerJob> jobTrainingList = new List<IPS_ManagerJob>();
             List<AggregateResult> aggList = new List<AggregateResult>();
+
+            // Check if the current user has access to the leaderboard. If not, return empty list.
+            if (!hasAccess) {
+                return jobTrainingList;
+            }
 
             aggList = [
                 SELECT Count(Id) Antall
