@@ -1,6 +1,6 @@
 import { LightningElement, wire, track } from 'lwc';
-import getJobCategory from '@salesforce/apex/IPS_jobController.totalJobsByCategory';
-import getJobTraining from '@salesforce/apex/IPS_jobController.totalJobTraining';
+import getJobCategory from '@salesforce/apex/IPS_ManagerJobController.totalJobsByCategory';
+import getJobTraining from '@salesforce/apex/IPS_ManagerJobController.totalJobTraining';
 //import getUOTraining from '@salesforce/apex/IPS_ManagerTrailController.getUOTraining';
 
 export default class Ips_ManagerJobs extends LightningElement {
