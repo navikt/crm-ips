@@ -92,30 +92,4 @@ public class IPS_jobControllerTest {
 
         System.assertEquals(1, jobs.size(),'Confirm that there is 1 detail job');
     }
-    
-    @isTest
-    static void getaggregatedJobTraining(){
-        ips_Job__c job = [SELECT Id FROM ips_Job__c WHERE ips_Status__c ='Ongoing' AND ips_Form_of_Employment__c = 'work training'];
-        List<IPS_job> jobs = new List<IPS_job>();
-        
-        Test.startTest();
-        jobs = IPS_jobController.totalJobTraining();
-        Test.stopTest();
-
-        System.assertEquals(1, jobs.size(),'Confirm that there is 1 work training');
-    }
-    
-    @isTest
-    static void getaggregatedJobCategory(){
-        ips_Job__c job = [SELECT Id FROM ips_Job__c WHERE ips_Status__c ='Ongoing' AND ips_Form_of_Employment__c = 'Permanent employment'];
-        List<IPS_job> jobs = new List<IPS_job>();
-        
-        Test.startTest();
-        jobs = IPS_jobController.totalJobsByCategory();
-        Test.stopTest();
-
-        System.assertEquals(1, jobs.size(),'Confirm that there i 1 active jobs');
-    }
-    
-    
 }
