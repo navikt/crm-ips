@@ -24,6 +24,9 @@ sf package install --package 04tQC000001KcwbYAC --no-prompt --wait 10 --publish-
 echo "Installer feature-toggle ver. 0.1.50.3"
 sf package install --package 04tQC000001Kd4fYAC --no-prompt --wait 30 --publish-wait 30
 
+echo "Installer record-type-cache ver. 0.1.17.3"
+sf package install --package 04tQC000001Kd33YAC --no-prompt --wait 10 --publish-wait 4
+
 echo "\nInstallerer crm-platform-base 0.308.0.1"
 sf package install --package 04tQC000001UGhtYAG -r --installation-key $3 --wait 4 --publish-wait 4
 
