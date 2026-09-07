@@ -5,6 +5,7 @@
  * @since        : 0.533.0
  **/
 public without sharing class IPS_ManagerTrailController {
+    private static Boolean hasAccess = IPS_Utility.checkIfUserHasLeaderboardAccess(UserInfo.getUserId());
     private static final List<String> ACTIVE_STATUSES = new List<String>{
         'Initial contact',
         'Mapping',
@@ -23,6 +24,11 @@ public without sharing class IPS_ManagerTrailController {
         List<IPS_ManagerTrail> trailStatuses = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
 
+        // Check if the current user has access to the leaderboard. If not, return empty list.
+        if (!hasAccess) {
+            return trailStatuses;
+        }
+
         aggList = [
             SELECT COUNT(Id) Antall, toLabel(ips_Status__c) Status, RecordType.Name Tjeneste
             FROM Work_Trail__c
@@ -33,7 +39,7 @@ public without sharing class IPS_ManagerTrailController {
         ];
 
         if (aggList.size() == 0) {
-            return null;
+            return trailStatuses;
         }
 
         for (AggregateResult agg : aggList) {
@@ -51,7 +57,10 @@ public without sharing class IPS_ManagerTrailController {
     public static List<IPS_ManagerTrail> getReferredTrails() {
         List<IPS_ManagerTrail> trailReferreds = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
-
+        // Check if the current user has access to the leaderboard. If not, return empty list.
+        if (!hasAccess) {
+            return trailReferreds;
+        }
         aggList = [
             SELECT
                 COUNT(Id) Antall,
@@ -66,7 +75,7 @@ public without sharing class IPS_ManagerTrailController {
         ];
 
         if (aggList.size() == 0) {
-            return null;
+            return trailReferreds;
         }
 
         for (AggregateResult agg : aggList) {
@@ -85,6 +94,11 @@ public without sharing class IPS_ManagerTrailController {
     public static List<IPS_ManagerTrail> getAggregatedEndedTrail() {
         List<IPS_ManagerTrail> trailEnds = new List<IPS_ManagerTrail>();
         List<AggregateResult> aggList = new List<AggregateResult>();
+
+        // Check if the current user has access to the leaderboard. If not, return empty list.
+        if (!hasAccess) {
+            return trailEnds;
+        }
 
         aggList = [
             SELECT
@@ -105,7 +119,7 @@ public without sharing class IPS_ManagerTrailController {
         ];
 
         if (aggList.size() == 0) {
-            return null;
+            return trailEnds;
         }
 
         for (AggregateResult agg : aggList) {
@@ -124,17 +138,22 @@ public without sharing class IPS_ManagerTrailController {
     /* Aggregerte data - antall jobbspor pr jobbspesialist */
     public static List<IPS_ManagerTrail> getAggregatedTrailJobbspesialist() {
         List<IPS_ManagerTrail> trailOwners = new List<IPS_ManagerTrail>();
-        List<AggregateResult> aggList = new List<AggregateResult>();
 
-        aggList = [
+        // Check if the current user has access to the leaderboard. If not, return empty list.
+        if (!hasAccess) {
+            return trailOwners;
+        }
+
+        List<AggregateResult> aggList = [
             SELECT COUNT(Id) Antall, Owner.Name OwnerName
             FROM Work_Trail__c
             WHERE OwnerId IN :IPS_Utility.getMyEmployeesUserId() AND ips_Status__c IN :ACTIVE_STATUSES
+            WITH SYSTEM_MODE
             GROUP BY Owner.Name
         ];
 
         if (aggList.size() == 0) {
-            return null;
+            return trailOwners;
         }
         for (AggregateResult agg : aggList) {
             IPS_ManagerTrail trailOwner = new IPS_ManagerTrail();
