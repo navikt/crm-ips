@@ -26,6 +26,75 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Copies all worktrails (any status) into the common collection used for the transfer loop (Jobbspesialist moving to NAV Kontor scenario).</description>
+        <name>Assign_All_Worktrails_To_Transfer</name>
+        <label>Assign All Worktrails To Transfer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varWorktrailsToTransfer</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_All_Worktrails_Related_To_The_User</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Worktrails</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Copies the Ended-only worktrails into the common collection used for the transfer loop (lateral role change scenario).</description>
+        <name>Assign_Ended_Worktrails_To_Transfer</name>
+        <label>Assign Ended Worktrails To Transfer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varWorktrailsToTransfer</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Worktrails_Related_To_The_User</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Worktrails</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Keeps the existing behaviour of only transferring Ended worktrails when the Jobbspesialist merely changes role/team.</description>
+        <name>Set_Transfer_All_Worktrails_False</name>
+        <label>Set Transfer All Worktrails - False</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varIsTransferAllWorktrails</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Metodeveileder</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Flags this interview so all worktrails owned by the user (regardless of status) are transferred, used when a Jobbspesialist moves to the NAV Kontor profile.</description>
+        <name>Set_Transfer_All_Worktrails_True</name>
+        <label>Set Transfer All Worktrails - True</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varIsTransferAllWorktrails</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Get_Metodeveileder</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Sets Fagansvarlig as the Team Lead</description>
         <name>Update_Team_Lead_Fagansvarlig</name>
         <label>Update Team Lead - Fagansvarlig</label>
@@ -46,7 +115,8 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Worktrails_Related_To_The_User</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>Check_Worktrail_Transfer_Scope</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -70,9 +140,66 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Worktrails_Related_To_The_User</targetReference>
+            <targetReference>Check_Worktrail_Transfer_Scope</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Check_Worktrail_Transfer_Scope</name>
+        <label>Check Worktrail Transfer Scope</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_Worktrails_Related_To_The_User</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Ended Worktrails Only</defaultConnectorLabel>
+        <rules>
+            <name>Transfer_All_Worktrails</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varIsTransferAllWorktrails</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_All_Worktrails_Related_To_The_User</targetReference>
+            </connector>
+            <label>Transfer All Worktrails</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Fagansvarlig_Empty</name>
+        <label>Is Fagansvarlig Empty ?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Update_Team_Lead_Fagansvarlig</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Fagansvarlig_Empty</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Fagansvarlig</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Fagansvarlig</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Application_Log_Fagansvarlig_Empty</targetReference>
+            </connector>
+            <label>Fagansvarlig Empty</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Is_Metodeveileder_Empty</name>
         <label>Is Metodeveileder Empty ?</label>
@@ -112,8 +239,37 @@
         <locationY>0</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
+            <name>Profile_Changed_To_Nav_Kontor</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV Kontor</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV IPS Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV UO Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Transfer_All_Worktrails_True</targetReference>
+            </connector>
+            <label>Profile Changed To NAV Kontor</label>
+        </rules>
+        <rules>
             <name>Role_Changed_Outcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.UserRoleId</leftValueReference>
                 <operator>NotEqualTo</operator>
@@ -121,8 +277,22 @@
                     <elementReference>$Record__Prior.UserRoleId</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV IPS Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CRM_UserProfileName__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NAV UO Jobbspesialist</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Get_Metodeveileder</targetReference>
+                <targetReference>Set_Transfer_All_Worktrails_False</targetReference>
             </connector>
             <label>Role Changed</label>
         </rules>
@@ -132,6 +302,11 @@
         <name>formattedWorktrailId</name>
         <dataType>String</dataType>
         <expression>LEFT({!varWorktrailIds}, LEN({!varWorktrailIds}) - 2)</expression>
+    </formulas>
+    <formulas>
+        <name>logNobodyFoundMessage</name>
+        <dataType>String</dataType>
+        <expression>&apos;Fant verken en aktiv metodeveileder eller fagansvarlig å overføre jobbspor til. Jobbsporene ble ikke overført og må håndteres manuelt.&apos;</expression>
     </formulas>
     <formulas>
         <name>userName</name>
@@ -145,7 +320,7 @@
         <label>Worktrails</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <collectionReference>Get_Worktrails_Related_To_The_User</collectionReference>
+        <collectionReference>varWorktrailsToTransfer</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>Add_Id_The_Collection</targetReference>
@@ -173,6 +348,39 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Creates a log when fagansvarlig is empty</description>
+        <name>Application_Log_Fagansvarlig_Empty</name>
+        <label>Application Log - Fagansvarlig Empty</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>logNobodyFoundMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Id__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Function__c</field>
+            <value>
+                <stringValue>IPS - Publish Platform Event Role Changed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>IPS_Application_Log_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordCreates>
         <name>Publish_Error_Log_Event</name>
         <label>Publish Application Log Event</label>
@@ -262,6 +470,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Transfer_All_Worktrails__c</field>
+            <value>
+                <elementReference>varIsTransferAllWorktrails</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>User_Id__c</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
@@ -283,13 +497,38 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Get_All_Worktrails_Related_To_The_User</name>
+        <label>Get All Worktrails Related To The User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_All_Worktrails_To_Transfer</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Publish_Error_Log_Event</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OwnerId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Fagansvarlig</name>
         <label>Get Fagansvarlig</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Update_Team_Lead_Fagansvarlig</targetReference>
+            <targetReference>Is_Fagansvarlig_Empty</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -357,7 +596,7 @@
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Worktrails</targetReference>
+            <targetReference>Assign_Ended_Worktrails_To_Transfer</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -388,7 +627,7 @@
         <connector>
             <targetReference>Role_Changed</targetReference>
         </connector>
-        <filterLogic>( 1 OR 2 ) AND 3</filterLogic>
+        <filterLogic>((1 OR 2) AND 3) OR (4 AND 5)</filterLogic>
         <filters>
             <field>CRM_UserProfileName__c</field>
             <operator>EqualTo</operator>
@@ -405,6 +644,20 @@
         </filters>
         <filters>
             <field>UserRoleId</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CRM_UserProfileName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>NAV Kontor</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CRM_UserProfileName__c</field>
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
@@ -430,10 +683,26 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <description>True when  jobbspesialist (IPS/AMS) moving to the NAV Kontor profile. ALL of their worktrails (any status) must be transferred.</description>
+        <name>varIsTransferAllWorktrails</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varWorktrailIds</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varWorktrailsToTransfer</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Work_Trail__c</objectType>
     </variables>
 </Flow>
