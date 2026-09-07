@@ -53,12 +53,19 @@
         <connector>
             <targetReference>UpdateWorkTrail</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
         <filters>
             <field>IPS_report_Type__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>End report</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_status__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <filters>
