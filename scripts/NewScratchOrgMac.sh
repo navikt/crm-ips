@@ -12,62 +12,62 @@ sf org delete scratch --target-org "$1" --no-prompt || true
 echo "\nOppretter scratch org"
 sf org create scratch --alias "$1" --set-default --definition-file ../config/project-scratch-def.json --duration-days $2 --wait 10
 
-echo "\nInstallerer platform-data-model 0.1.2"
-sf package install --package 04tQC000000oHLpYAM --no-prompt --wait 4 --publish-wait 4 
+echo "\nInstallerer platform-data-model 0.1.49.3"
+sf package install --package 04tQC000001KcyDYAS --no-prompt --wait 10 --publish-wait 4 
 
-echo "\nInstallerer custom-metadata-dao"
-sf package install --package 04tQC000000oHKDYA2 --no-prompt --wait 4 --publish-wait 4
+echo "\nInstallerer custom-metadata-dao 0.1.49.3"
+sf package install --package 04tQC000001KczpYAC --no-prompt --wait 10 --publish-wait 4
 
-echo "\nInstallerer custom-permission-helper 0.1.2"
-sf package install --package 04tQC000000oGw2YAE --no-prompt --wait 4 --publish-wait 4
+echo "\nInstallerer custom-permission-helper 0.1.49.3"
+sf package install --package 04tQC000001KcwbYAC --no-prompt --wait 10 --publish-wait 4
 
-echo "Installer feature-toggle ver. 0.1.3"
-sf package install --package 04tQC000000oHP3YAM --no-prompt --wait 30 --publish-wait 30
+echo "Installer feature-toggle ver. 0.1.50.3"
+sf package install --package 04tQC000001Kd4fYAC --no-prompt --wait 30 --publish-wait 30
 
-echo "\nInstallerer crm-platform-base 0.308.0"
+echo "\nInstallerer crm-platform-base 0.308.0.1"
 sf package install --package 04tQC000001UGhtYAG -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-platform-access-controll 0.177.0"
-sf package install --package 04tQC000001AGR7YAO -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nInstallerer crm-platform-access-control 0.178.0.2"
+sf package install --package 04tQC000001WWfJYAW  -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-thread-view 0.9.0.."
+echo "\nInstallerer crm-thread-view 0.8.0.1"
 sf package install --package 04tQC0000011athYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-platform-reporting 0.45.0.." 
-sf package install --package 04tQC000001UI29YAG -r --installation-key $3 --wait 4 --publish-wait 8
+echo "\nInstallerer crm-platform-reporting 0.47.0.2" 
+sf package install --package 04tQC000001WtgjYAC -r --installation-key $3 --wait 4 --publish-wait 8
 
-echo "\nInstallerer crm-shared-timeline 1.44.0"
-sf package install --package 04tQC0000019KTZYA2 -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nInstallerer crm-shared-timeline 1.45.0"
+sf package install --package 04tQC000001GPWXYA4 -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-shared-base 1.1.0.."
+echo "\nInstallerer crm-shared-base 1.1.0.1"
  sf package install --package 04t2o000000ySqpAAE -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-shared-flowComponents 0.4.0.."
+echo "\nInstallerer crm-shared-flowComponents 0.4.0.3"
 sf package install --package 04t7U0000008qz4QAA -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-henvendelse-base 0.36.0.."
-sf package install --package 04tQC000000uSXtYAM -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nInstallerer crm-henvendelse-base 0.38.0.2"
+sf package install --package 04tQC000001So7lYAC -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-platform-integration 0.173.0"
+echo "\nInstallerer crm-platform-integration 0.173.0.1"
 sf package install --package 04tQC000001Ms4PYAS --no-prompt --installation-key $3  --wait 30 --publish-wait 30
 
-echo "\nInstallerer crm-journal-utilities 0.55.0.."
+echo "\nInstallerer crm-journal-utilities 0.55.0.1"
 sf package install --package 04tQC0000012pVhYAI -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo "\nInstallerer crm-platform-oppgave 0.84.0"
 sf package install --package 04tQC000001UvwLYAS -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-shared-user-notification 0.27.0"
+echo "\nInstallerer crm-shared-user-notification 0.27.0.2"
 sf package install --package 04tQC0000012h6jYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-community-base 0.145.0"
+echo "\nInstallerer crm-community-base 0.145.0.1"
 sf package install --package 04tQC000001MXeHYAW -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-henvendelse 0.202.0"
-sf package install --package 04tQC000001Do1dYAC -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nInstallerer crm-henvendelse 0.202.0.1"
+sf package install --package 04tQC000001TjKXYA0 -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-arbeidsgiver-base 1.709.0"
-sf package install --package 04tQC000001UndpYAC -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nInstallerer crm-arbeidsgiver-base 1.715.0"
+sf package install --package 04tQC000001Y90HYAS -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo "\nDeployer metadata.."
 sf project deploy start --target-org "$1" --wait 10
