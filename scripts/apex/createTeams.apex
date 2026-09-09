@@ -136,7 +136,6 @@ teams.add(new ips_Team__c(Name ='IPS Bergen Nord Kommune', Region__c = 'Vestland
 teams.add(new ips_Team__c(Name ='IPS Bergen Nord', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Bergen Sentrum', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Bergen Sør', Region__c = 'Vestland', Methodology__c = 'IPS'));
-teams.add(new ips_Team__c(Name ='IPS Bergenhus (syktbrajobb)', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Bodø', Region__c = 'Nordland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Enebakk', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Ephor', Region__c = 'Trøndelag', Methodology__c = 'IPS'));
