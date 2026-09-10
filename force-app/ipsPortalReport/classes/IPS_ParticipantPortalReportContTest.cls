@@ -18,8 +18,6 @@ public class IPS_ParticipantPortalReportContTest {
         /***** IPS *****/
         Work_Trail__c jobbspor = IPS_TestDataFactory.createJobbspor(participantId);
         insert jobbspor;
-        
-        jobbspor.ips_Passive__c = true;
         update jobbspor;
 
        /***** AMS *****/

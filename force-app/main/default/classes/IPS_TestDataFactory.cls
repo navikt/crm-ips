@@ -72,7 +72,6 @@ public with sharing class IPS_TestDataFactory {
         Work_Trail__c trail = new Work_Trail__c();
         trail.ips_Participant__c = participantId;
         trail.ips_Status__c = 'In Education';
-        trail.ips_Passive__c = false;
         trail.IPS_Partticipant_phone_number__c = '98765431';
         trail.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
         return trail;
