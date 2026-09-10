@@ -127,6 +127,7 @@ teams.add(new ips_Team__c(Name ='AMS Voss-Hardanger', Region__c = 'Vestland', Me
 teams.add(new ips_Team__c(Name ='IPS Ålesund', Region__c = 'Møre og Romsdal', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Alta', Region__c = 'Troms og Finnmark', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Årstad (hurtigRasktijobb)', Region__c = 'Vestland', Methodology__c = 'IPS'));
+teams.add(new ips_Team__c(Name ='IPS Ås', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Asker', Region__c = 'Vest-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Askøy', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Aurskog-Høland', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
@@ -231,5 +232,5 @@ teams.add(new ips_Team__c(Name ='TJ Porsgrunn', Region__c = 'Vestfold og Telemar
 teams.add(new ips_Team__c(Name ='TJ Sarpsborg', Region__c = 'Øst-Viken', Methodology__c = 'TJ'));
 teams.add(new ips_Team__c(Name ='TJ Ullern Vestre Aker', Region__c = 'Oslo', Methodology__c = 'TJ'));
 teams.add(new ips_Team__c(Name ='TJ Vefsna', Region__c = 'Nordland', Methodology__c = 'TJ'));
-insert teams;
 
+insert teams;
