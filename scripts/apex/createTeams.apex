@@ -124,9 +124,11 @@ teams.add(new ips_Team__c(Name ='AMS Verdal', Region__c = 'Trøndelag', Methodol
 teams.add(new ips_Team__c(Name ='AMS Vest (Vestland)', Region__c = 'Vestland', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Vestby', Region__c = 'Øst-Viken', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='AMS Voss-Hardanger', Region__c = 'Vestland', Methodology__c = 'AMS'));
+teams.add(new ips_Team__c(Name ='AMS Ytre Helgeland', Region__c = 'Nordland', Methodology__c = 'AMS'));
 teams.add(new ips_Team__c(Name ='IPS Ålesund', Region__c = 'Møre og Romsdal', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Alta', Region__c = 'Troms og Finnmark', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Årstad (hurtigRasktijobb)', Region__c = 'Vestland', Methodology__c = 'IPS'));
+teams.add(new ips_Team__c(Name ='IPS Ås', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Asker', Region__c = 'Vest-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Askøy', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Aurskog-Høland', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
@@ -136,19 +138,18 @@ teams.add(new ips_Team__c(Name ='IPS Bergen Nord Kommune', Region__c = 'Vestland
 teams.add(new ips_Team__c(Name ='IPS Bergen Nord', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Bergen Sentrum', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Bergen Sør', Region__c = 'Vestland', Methodology__c = 'IPS'));
-teams.add(new ips_Team__c(Name ='IPS Bergenhus (syktbrajobb)', Region__c = 'Vestland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Bodø', Region__c = 'Nordland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Enebakk', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Ephor', Region__c = 'Trøndelag', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Fact og mestring', Region__c = 'Trøndelag', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Follo', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
+teams.add(new ips_Team__c(Name ='IPS Fredrikstad', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Gjøvik', Region__c = 'Innlandet', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Hadeland', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Halden', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Hamar', Region__c = 'Innlandet', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Haugaland', Region__c = 'Rogaland', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Horten og Holmestrand', Region__c = 'Vestland', Methodology__c = 'IPS'));
-teams.add(new ips_Team__c(Name ='IPS Indre Nordmøre', Region__c = 'Møre og Romsdal', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Indre Nordmøre', Region__c = 'Møre og Romsdal', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Indre-Østfold', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Jæren', Region__c = 'Rogaland', Methodology__c = 'IPS'));
@@ -169,7 +170,7 @@ teams.add(new ips_Team__c(Name ='IPS Namsos', Region__c = 'Trøndelag', Methodol
 teams.add(new ips_Team__c(Name ='IPS Nannestad Gjerdrum', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nedre Romerike', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nesodden', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
-teams.add(new ips_Team__c(Name ='IPS nevrokompetanseteam Møre og Romsdal', Region__c = 'Møre og Romsdal', Methodology__c = 'IPS'));
+teams.add(new ips_Team__c(Name ='IPS Nevrokompetanseteam Møre og Romsdal', Region__c = 'Møre og Romsdal', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nidaros', Region__c = 'Trøndelag', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nidelv', Region__c = 'Trøndelag', Methodology__c = 'IPS'));
 teams.add(new ips_Team__c(Name ='IPS Nittedal', Region__c = 'Øst-Viken', Methodology__c = 'IPS'));
@@ -232,5 +233,5 @@ teams.add(new ips_Team__c(Name ='TJ Porsgrunn', Region__c = 'Vestfold og Telemar
 teams.add(new ips_Team__c(Name ='TJ Sarpsborg', Region__c = 'Øst-Viken', Methodology__c = 'TJ'));
 teams.add(new ips_Team__c(Name ='TJ Ullern Vestre Aker', Region__c = 'Oslo', Methodology__c = 'TJ'));
 teams.add(new ips_Team__c(Name ='TJ Vefsna', Region__c = 'Nordland', Methodology__c = 'TJ'));
-insert teams;
 
+insert teams;

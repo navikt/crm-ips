@@ -35,6 +35,19 @@
                         </valueListItems>
                         <valueListItems>
                             <value>Work_Trail__c.IPS_setParticipantPassive</value>
+                            <visibilityRule>
+                                <booleanFilter>1 AND 2</booleanFilter>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>Referred</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Status__c}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>Ended</rightValue>
+                                </criteria>
+                            </visibilityRule>
                         </valueListItems>
                         <valueListItems>
                             <value>Work_Trail__c.IPS_cloneWorkTrail</value>
@@ -107,7 +120,7 @@
                         <valueListItems>
                             <value>Work_Trail__c.IPS_Endre_Sluttdetaljer</value>
                             <visibilityRule>
-                                <booleanFilter>(1  AND 3) OR (2 AND 3)</booleanFilter>
+                                <booleanFilter>(1 AND 3 AND 4) OR (2 AND 3)</booleanFilter>
                                 <criteria>
                                     <leftValue>{!Record.IPS_Show_edit_enddetails_action__c}</leftValue>
                                     <operator>EQUAL</operator>
@@ -122,6 +135,11 @@
                                     <leftValue>{!Record.IPS_IsEndCauseSet__c}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>true</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.ips_Has_Completed_Final_Report__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>false</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
@@ -142,6 +160,10 @@
                 <componentInstanceProperties>
                     <name>hideChatterActions</name>
                     <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideSlackAction</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>numVisibleActions</name>
