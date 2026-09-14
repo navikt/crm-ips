@@ -1,15 +1,14 @@
 ---
 name: forfatter
 description: "Norsk teknisk redaktør, tekstforfatter eller innholdsdesigner: klarspråk, AI-markører, anglisismer, fagtermer, mikrotekst."
-model: Claude Sonnet 4.6
+model: Claude Sonnet 5
 tools:
   - read
   - edit
   - search
-  - vscode
   - todo
-  - io.github.navikt/github-mcp/get_file_contents
-  - io.github.navikt/github-mcp/search_code
+  - github/get_file_contents
+  - github/search_code
 ---
 
 # Tekstredaktør
