@@ -234,4 +234,6 @@ teams.add(new ips_Team__c(Name ='TJ Sarpsborg', ips_Region__c = 'Øst-Viken', ip
 teams.add(new ips_Team__c(Name ='TJ Ullern Vestre Aker', ips_Region__c = 'Oslo', ips_Methodology__c = 'TJ'));
 teams.add(new ips_Team__c(Name ='TJ Vefsna', ips_Region__c = 'Nordland', ips_Methodology__c = 'TJ'));
 
-insert teams;
+// Update the list of teams in the database
+CRM_DatabaseOperations cdo = new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS);
+cdo.updateRecords(teams);
