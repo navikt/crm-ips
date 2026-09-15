@@ -51,7 +51,6 @@ for (Account personAccounts : [SELECT Id, PersonContactId, Name FROM Account WHE
         ips_Participant__c =  personAccounts.Id, 
         RecordTypeId = workTrailRecordTypeId,
         ips_Status__c = 'In Education',
-        ips_Passive__c = false,
         IPS_Partticipant_phone_number__c = '98765431');
     workTrails.add(workTrail);
 }
