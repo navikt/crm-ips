@@ -12,6 +12,8 @@ public without sharing class IPS_PlatformEventJobbsporService {
                 SELECT 
             		id,
             		OwnerId,
+                    Owner.Department,
+                    Owner.CompanyName,
             		ips_Applying_Department__c,
             		ips_Behandlingsteam__c,
             		CreatedDate,
@@ -37,7 +39,7 @@ public without sharing class IPS_PlatformEventJobbsporService {
             eventJobbspor.JobbsporId__c =hashString(t.Id);
             eventJobbspor.UserId__c = hashString(t.OwnerId);
             eventJobbspor.UserDepartmentName__c = t.Owner.Department;
-            eventJobbspor.UserDepartmentId__c = t.Owner.CompanyName;
+            eventJobbspor.UserDepartmentNumber__c = t.Owner.CompanyName;
             eventJobbspor.JobbsporCreated__c = Date.valueOf(t.CreatedDate);
             eventJobbspor.JobbsporEndDate__c = t.ips_End_Date__c;
             eventJobbspor.JobbsporEndReason__c = translateFieldValue(t.End_Cause__c, 'ENDCAUSE');
