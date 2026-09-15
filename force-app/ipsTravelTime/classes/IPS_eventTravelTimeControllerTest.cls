@@ -32,8 +32,7 @@ public class IPS_eventTravelTimeControllerTest {
 
         Work_Trail__c trail = new Work_Trail__c(
             ips_Participant__c = personAccount.Id,
-            ips_Status__c = 'Referred',
-            ips_Passive__c = false
+            ips_Status__c = 'Referred'
         );
         insert trail;
 
