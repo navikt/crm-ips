@@ -233,8 +233,5 @@ teams.add(new ips_Team__c(Name ='TJ Porsgrunn', ips_Region__c = 'Vestfold og Tel
 teams.add(new ips_Team__c(Name ='TJ Sarpsborg', ips_Region__c = 'Øst-Viken', ips_Methodology__c = 'TJ'));
 teams.add(new ips_Team__c(Name ='TJ Ullern Vestre Aker', ips_Region__c = 'Oslo', ips_Methodology__c = 'TJ'));
 teams.add(new ips_Team__c(Name ='TJ Vefsna', ips_Region__c = 'Nordland', ips_Methodology__c = 'TJ'));
-try {
-    new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS).insertRecords(teams);
-} catch (Exception e) {
-    System.debug('Error updating teams: ' + e.getMessage());
-}
+
+new CRM_DatabaseOperations().setDomain(CRM_ApplicationDomain.Domain.IPS).insertRecords(teams);
