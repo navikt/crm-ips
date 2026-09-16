@@ -7,13 +7,23 @@ public without sharing class IPS_PlatformEventJobbsporService {
         }
         
         List<IPSJobbsporEvent__e> eventJobbsporList = new List<IPSJobbsporEvent__e>();
+        Set<Id> ownerIdSet = new Set<Id>();
+        for (Work_Trail__c trail : trailList) {
+            ownerIdSet.add(trail.OwnerId);
+        }
+        Map<Id, User> ownerById = new Map<Id, User>();
+        for (User userRecord : [
+                SELECT Id, Department, CompanyName
+                FROM User
+                WHERE Id IN :ownerIdSet
+        ]) {
+            ownerById.put(userRecord.Id, userRecord);
+        }
         
         List<Work_Trail__c> workTrailList = [
                 SELECT 
             		id,
             		OwnerId,
-                    Owner.Department,
-                    Owner.CompanyName,
             		ips_Applying_Department__c,
             		ips_Behandlingsteam__c,
             		CreatedDate,
@@ -36,10 +46,11 @@ public without sharing class IPS_PlatformEventJobbsporService {
         
         for(Work_Trail__c t:workTrailList){
             IPSJobbsporEvent__e eventJobbspor = new IPSJobbsporEvent__e();
+            User ownerUser = ownerById.get(t.OwnerId);
             eventJobbspor.JobbsporId__c =hashString(t.Id);
             eventJobbspor.UserId__c = hashString(t.OwnerId);
-            eventJobbspor.UserDepartmentName__c = t.Owner.Department;
-            eventJobbspor.UserDepartmentNumber__c = t.Owner.CompanyName;
+            eventJobbspor.UserDepartmentName__c = ownerUser != null ? ownerUser.Department : null;
+            eventJobbspor.UserDepartmentNumber__c = ownerUser != null ? ownerUser.CompanyName : null;
             eventJobbspor.JobbsporCreated__c = Date.valueOf(t.CreatedDate);
             eventJobbspor.JobbsporEndDate__c = t.ips_End_Date__c;
             eventJobbspor.JobbsporEndReason__c = translateFieldValue(t.End_Cause__c, 'ENDCAUSE');
