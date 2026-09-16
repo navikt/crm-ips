@@ -301,7 +301,8 @@
     <formulas>
         <name>formattedWorktrailId</name>
         <dataType>String</dataType>
-        <expression>LEFT({!varWorktrailIds}, LEN({!varWorktrailIds}) - 2)</expression>
+        <description>Removes the trailing &quot;, &quot; separator left by the Worktrails loop after concatenating the Work_Trail__c Ids into varWorktrailIds, so the value published on Worktrails__c is a clean comma-separated list. Guards against a negative LEFT length (and a resulting flow fault) when no worktrails were found and varWorktrailIds is empty, returning an empty string in that case instead.</description>
+        <expression>IF(LEN({!varWorktrailIds}) &lt;= 2, &apos;&apos;, LEFT({!varWorktrailIds}, LEN({!varWorktrailIds}) - 2))</expression>
     </formulas>
     <formulas>
         <name>logNobodyFoundMessage</name>
