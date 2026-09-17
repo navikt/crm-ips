@@ -25,19 +25,25 @@ public with sharing class IPS_TestDataFactory {
     public static User getStandardUser(String firstname, String lastname) {
         Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'Standard User' LIMIT 1];
         String uniqueSuffix = String.valueOf(Datetime.now().getTime());
+        String safeFirst = firstname == null ? '' : firstname;
+        String safeLast = lastname == null ? '' : lastname;
+        String firstPart = safeFirst.length() > 2 ? safeFirst.substring(0, 2) : safeFirst;
+        String lastPart = safeLast.length() > 2 ? safeLast.substring(0, 2) : safeLast;
+        String userKey = firstPart + lastPart + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3));
+        String alias = userKey.length() > 8 ? userKey.substring(0, 8) : userKey;
         User user = new User(
             FirstName = firstname,
             LastName = lastname,
             Email = firstname + '.' + lastname + '.' + uniqueSuffix + '@nav.no',
             Username = firstname + '.' + lastname + '.' + uniqueSuffix + '@nav.no',
-            Alias = (firstname.substring(0, 2) + lastname.substring(0, 2) + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3))).substring(0, 8),
+            Alias = alias,
             LanguageLocaleKey = 'no',
             LocaleSidKey = 'no_NO',
             TimeZoneSidKey = 'Europe/Paris',
             EmailEncodingKey = 'UTF-8',
             ProfileId = profile.Id,
             Department = '1',
-            CRM_NAV_Ident__c = firstname.substring(0, 2) + lastname.substring(0, 2) + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3))
+            CRM_NAV_Ident__c = userKey
         );
         return user;
     }
@@ -45,19 +51,25 @@ public with sharing class IPS_TestDataFactory {
     public static User getAdminUser(String firstname, String lastname) {
         Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'System administrator' LIMIT 1];
         String uniqueSuffix = String.valueOf(Datetime.now().getTime());
+        String safeFirst = firstname == null ? '' : firstname;
+        String safeLast = lastname == null ? '' : lastname;
+        String firstPart = safeFirst.length() > 2 ? safeFirst.substring(0, 2) : safeFirst;
+        String lastPart = safeLast.length() > 2 ? safeLast.substring(0, 2) : safeLast;
+        String userKey = firstPart + lastPart + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3));
+        String alias = userKey.length() > 8 ? userKey.substring(0, 8) : userKey;
         User user = new User(
             FirstName = firstname,
             LastName = lastname,
             Email = firstname + '.' + lastname + '.' + uniqueSuffix + '@nav.no',
             Username = firstname + '.' + lastname + '.' + uniqueSuffix + '@nav.no',
-            Alias = (firstname.substring(0, 2) + lastname.substring(0, 2) + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3))).substring(0, 8),
+            Alias = alias,
             LanguageLocaleKey = 'no',
             LocaleSidKey = 'no_NO',
             TimeZoneSidKey = 'Europe/Paris',
             EmailEncodingKey = 'UTF-8',
             ProfileId = profile.Id,
             Department = '1',
-            CRM_NAV_Ident__c = firstname.substring(0, 2) + lastname.substring(0, 2) + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3))
+            CRM_NAV_Ident__c = userKey
         );
         return user;
     }
