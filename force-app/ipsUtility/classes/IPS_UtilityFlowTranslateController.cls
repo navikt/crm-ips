@@ -50,7 +50,7 @@ public with sharing class IPS_UtilityFlowTranslateController {
                             when 'Working' { output.outputString = 'Jobber'; }
                             when 'Downsizing' { output.outputString = 'Nedtrapping'; }
                             when 'Career mapping and career planning' { output.outputString = 'Yrkeskartlegging og karriereplanlegging'; }
-                            when 'Find a suitable job / Collaborate with AG' { output.outputString = 'Finne en passende jobb / samarbeid med arb.g'; }
+                            when 'Find a suitable job / Collaborate with AG' { output.outputString = 'Finne en passende jobb / samarbeid med arbeidsgiver'; }
                             when 'Education and training in and / or outside the workplace' { output.outputString = 'Opplæring og trening på og/eller utenom arbeidsplassen'; }
                             when 'Information and decision support' { output.outputString = 'Informasjon og beslutningsstøtte'; }
                             when 'Discovery' { output.outputString = 'Utforske muligheter'; }
