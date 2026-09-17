@@ -100,6 +100,68 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assign_TeamId_From_Confirm</name>
+        <label>Assign Team Id From Confirm</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_selectedTeamId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dataTable_confirmTeam.firstSelectedRow.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_TeamMemberDetails</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_TeamId_From_Other</name>
+        <label>Assign Team Id From Other</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_selectedTeamId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dataTable_selectOtherTeam.firstSelectedRow.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_TeamMemberDetails</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_TeamMemberDetails</name>
+        <label>Assign Team Member Details</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_User__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sObj_User.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_Role__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_roleName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_Team__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_selectedTeamId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Team_Member</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Set_Flow_Fault_Step_On_Role</name>
         <label>Set Flow Fault Step On Role</label>
         <locationX>0</locationX>
@@ -109,6 +171,23 @@
             <operator>Assign</operator>
             <value>
                 <stringValue>Could not find the named Role</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_Team</name>
+        <label>Set Flow Fault Step On Team</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Could not find any Team</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -132,6 +211,22 @@
             <targetReference>Loop_Relevant_Profiles</targetReference>
         </connector>
     </assignments>
+    <choices>
+        <name>choice_Role_Jobbspesialist</name>
+        <choiceText>Jobbspesialist</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Jobbspesialist</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choice_Role_Metodeveileder</name>
+        <choiceText>Metodeveileder</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Metodeveileder</stringValue>
+        </value>
+    </choices>
     <constants>
         <description>The title of the flow, in Norwegian</description>
         <name>const_flowTitle</name>
@@ -171,6 +266,31 @@
             <label>Profile Is Nav Kontor</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Decision_TeamConfirmed</name>
+        <label>Team Confirmed?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Assign_TeamId_From_Confirm</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Team Confirmed</defaultConnectorLabel>
+        <rules>
+            <name>Show_All_Teams</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>chk_ShowAllTeams</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_All_Teams</targetReference>
+            </connector>
+            <label>Show All Teams</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>IPS Admin Give User Access {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Admin Give User Access</label>
@@ -207,6 +327,34 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_Team_Member</name>
+        <label>Create Team Member</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <faultConnector>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </faultConnector>
+        <inputReference>sObj_TeamMember</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_All_Teams</name>
+        <label>Get All Teams</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_SelectOtherTeam</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_Team</targetReference>
+        </faultConnector>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Team__c</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_Jobbspor_User_Role</name>
         <label>Get Jobbspor User Role</label>
@@ -269,6 +417,32 @@
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Matching_Teams</name>
+        <label>Get Matching Teams</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_ConfirmTeam</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_Team</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>var_teamName</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ips_Team__c</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -370,6 +544,9 @@
         <label>Update User</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Matching_Teams</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>sfl_CreateApplicationLog</targetReference>
         </faultConnector>
@@ -583,9 +760,11 @@
         </fields>
         <fields>
             <name>var_roleName</name>
+            <choiceReferences>choice_Role_Jobbspesialist</choiceReferences>
+            <choiceReferences>choice_Role_Metodeveileder</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Rolle</fieldText>
-            <fieldType>InputField</fieldType>
+            <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
@@ -596,6 +775,168 @@
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>var_teamName</name>
+            <dataType>String</dataType>
+            <fieldText>Team</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Skriv inn hele eller deler av teamnavnet. Du får bekrefte eller velge et annet team i neste steg.&lt;/p&gt;</helpText>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_ConfirmTeam</name>
+        <label>Confirm Team</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Decision_TeamConfirmed</targetReference>
+        </connector>
+        <fields>
+            <name>s_displayText_ConfirmTeam</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Bekreft teamet under, eller kryss av for å velge et annet team fra hele listen.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>dataTable_confirmTeam</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>ips_Team__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Bekreft team</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>SINGLE_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_Matching_Teams</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-a1a1&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Team&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_Region__c&quot;,&quot;guid&quot;:&quot;column-b2b2&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Region&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_Methodology__c&quot;,&quot;guid&quot;:&quot;column-c3c3&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Methodology&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>false</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>chk_ShowAllTeams</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Ingen av disse er riktig – vis alle team</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_SelectOtherTeam</name>
+        <label>Select Other Team</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Assign_TeamId_From_Other</targetReference>
+        </connector>
+        <fields>
+            <name>s_displayText_SelectOtherTeam</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Velg riktig team fra listen under.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>dataTable_selectOtherTeam</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>ips_Team__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Velg team</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>SINGLE_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_All_Teams</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-d4d4&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Team&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_Region__c&quot;,&quot;guid&quot;:&quot;column-e5e5&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Region&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;ips_Methodology__c&quot;,&quot;guid&quot;:&quot;column-f6f6&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Methodology&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -680,6 +1021,15 @@
         <objectType>Application_Log__c</objectType>
     </variables>
     <variables>
+        <description>The Team Member record to create for the User in the selected Team</description>
+        <name>sObj_TeamMember</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ips_Team_Member__c</objectType>
+    </variables>
+    <variables>
         <description>The User to update</description>
         <name>sObj_User</name>
         <dataType>SObject</dataType>
@@ -702,5 +1052,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Profile</objectType>
+    </variables>
+    <variables>
+        <description>The Id of the Team selected/confirmed for the new Team Member</description>
+        <name>var_selectedTeamId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
