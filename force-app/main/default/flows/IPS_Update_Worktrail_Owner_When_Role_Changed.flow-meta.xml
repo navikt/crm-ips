@@ -3,6 +3,31 @@
     <apiVersion>66.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <decisions>
+        <name>Check_Worktrail_Transfer_Scope</name>
+        <label>Check Worktrail Transfer Scope</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Update_Worktrails_Related_To_The_User</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Ended Worktrails Only</defaultConnectorLabel>
+        <rules>
+            <name>Transfer_All_Worktrails</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Transfer_All_Worktrails__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_All_Worktrails_Related_To_The_User</targetReference>
+            </connector>
+            <label>Transfer All Worktrails</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>New_Jobbspesialist</name>
         <label>New Jobbspesialist ?</label>
         <locationX>0</locationX>
@@ -33,12 +58,12 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Worktrails_Related_To_The_User</targetReference>
+                <targetReference>Check_Worktrail_Transfer_Scope</targetReference>
             </connector>
             <label>No</label>
         </rules>
     </decisions>
-    <description>Triggers when a platform event &apos;Role Changed&apos; is published.</description>
+    <description>Triggers when a platform event &apos;Role Changed&apos; is published. Transfers worktrails to the old team.</description>
     <environments>Default</environments>
     <interviewLabel>IPS - Update Worktrail Owner When Role Changed {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Update Worktrail Owner When Role Changed</label>
@@ -155,6 +180,32 @@
         <object>User_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordUpdates>
+        <description>Transfers worktrails to the old team</description>
+        <name>Update_All_Worktrails_Related_To_The_User</name>
+        <label>Update All Worktrails Related To The User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Application_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OwnerId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.User_Id__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$Record.Previous_Team_Lead_Id__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Work_Trail__c</object>
+    </recordUpdates>
     <recordUpdates>
         <name>Update_Worktrails_Related_To_The_User</name>
         <label>Update Worktrails Related To The User</label>
