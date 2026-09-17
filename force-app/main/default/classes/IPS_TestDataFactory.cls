@@ -24,38 +24,40 @@ public with sharing class IPS_TestDataFactory {
 
     public static User getStandardUser(String firstname, String lastname) {
         Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'Standard User' LIMIT 1];
+        String uniqueSuffix = String.valueOf(Datetime.now().getTime());
         User user = new User(
             FirstName = firstname,
             LastName = lastname,
-            Email = firstname + '.' + lastname + '@nav.no',
-            Username = firstname + '.' + lastname + '@nav.no',
-            Alias = firstname.substring(0, 2) + lastname.substring(0, 2),
+            Email = firstname + '.' + lastname + '.' + uniqueSuffix + '@nav.no',
+            Username = firstname + '.' + lastname + '.' + uniqueSuffix + '@nav.no',
+            Alias = (firstname.substring(0, 2) + lastname.substring(0, 2) + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3))).substring(0, 8),
             LanguageLocaleKey = 'no',
             LocaleSidKey = 'no_NO',
             TimeZoneSidKey = 'Europe/Paris',
             EmailEncodingKey = 'UTF-8',
             ProfileId = profile.Id,
             Department = '1',
-            CRM_NAV_Ident__c = firstname.substring(0, 2) + lastname.substring(0, 2) + '123'
+            CRM_NAV_Ident__c = firstname.substring(0, 2) + lastname.substring(0, 2) + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3))
         );
         return user;
     }
 
     public static User getAdminUser(String firstname, String lastname) {
         Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = 'System administrator' LIMIT 1];
+        String uniqueSuffix = String.valueOf(Datetime.now().getTime());
         User user = new User(
             FirstName = firstname,
             LastName = lastname,
-            Email = firstname + '.' + lastname + '@nav.no',
-            Username = firstname + '.' + lastname + '@nav.no',
-            Alias = firstname.substring(0, 2) + lastname.substring(0, 2),
+            Email = firstname + '.' + lastname + '.' + uniqueSuffix + '@nav.no',
+            Username = firstname + '.' + lastname + '.' + uniqueSuffix + '@nav.no',
+            Alias = (firstname.substring(0, 2) + lastname.substring(0, 2) + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3))).substring(0, 8),
             LanguageLocaleKey = 'no',
             LocaleSidKey = 'no_NO',
             TimeZoneSidKey = 'Europe/Paris',
             EmailEncodingKey = 'UTF-8',
             ProfileId = profile.Id,
             Department = '1',
-            CRM_NAV_Ident__c = firstname.substring(0, 2) + lastname.substring(0, 2) + '123'
+            CRM_NAV_Ident__c = firstname.substring(0, 2) + lastname.substring(0, 2) + uniqueSuffix.substring(Math.max(0, uniqueSuffix.length() - 3))
         );
         return user;
     }
