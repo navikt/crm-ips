@@ -6,7 +6,7 @@ public without sharing class IPS_PlatformEventJobbsporBatch implements Database.
     
     public Database.QueryLocator start(Database.BatchableContext bc){
         String query = 'SELECT ';
-        query += 'Id ';
+        query += 'Id, OwnerId ';
         query += 'FROM Work_Trail__c ';
         
         return Database.getQueryLocator(query);
