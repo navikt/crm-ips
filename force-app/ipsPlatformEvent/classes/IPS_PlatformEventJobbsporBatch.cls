@@ -25,12 +25,16 @@ public with sharing class IPS_PlatformEventJobbsporBatch implements Database.Bat
         Date monthStart = Date.today().toStartOfMonth();
         Date monthEnd = monthStart.addMonths(1).addDays(-1);
 
-        String query = 'SELECT ';
-        query += 'Id, OwnerId ';
-        query += 'FROM Work_Trail__c ';
-        query += 'WHERE (ips_Status__c != \'Ended\' OR (ips_Status__c = \'Ended\' AND ips_End_Date__c >= :monthStart AND ips_End_Date__c <= :monthEnd))';
-
-        return Database.getQueryLocator(query);
+        return Database.getQueryLocator([
+            SELECT Id, OwnerId
+            FROM Work_Trail__c
+            WHERE ips_Status__c != 'Ended'
+                OR (
+                    ips_Status__c = 'Ended'
+                    AND ips_End_Date__c >= :monthStart
+                    AND ips_End_Date__c <= :monthEnd
+                )
+        ]);
     }
     
     public void execute(Database.BatchableContext bc, List<Work_trail__c> records){
