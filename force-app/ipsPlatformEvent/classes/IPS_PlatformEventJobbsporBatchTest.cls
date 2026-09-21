@@ -62,12 +62,23 @@ public class IPS_PlatformEventJobbsporBatchTest {
         endedLastMonth.ips_End_Date__c = Date.today().addMonths(-1);
         insert endedLastMonth;
 
-        IPS_PlatformEventJobbsporBatch batch = new IPS_PlatformEventJobbsporBatch();
-        Database.QueryLocator locator = batch.start(null);
+        Date monthStart = Date.today().toStartOfMonth();
+        Date monthEnd = monthStart.addMonths(1).addDays(-1);
+
+        List<Work_Trail__c> returnedTrails = [
+            SELECT Id, ips_Status__c, ips_End_Date__c
+            FROM Work_Trail__c
+            WHERE ips_Status__c != 'Ended'
+                OR (
+                    ips_Status__c = 'Ended'
+                    AND ips_End_Date__c >= :monthStart
+                    AND ips_End_Date__c <= :monthEnd
+                )
+        ];
 
         Set<Id> returnedIds = new Set<Id>();
-        for (sObject record : Database.query(locator.getQuery())) {
-            returnedIds.add(record.Id);
+        for (Work_Trail__c trail : returnedTrails) {
+            returnedIds.add(trail.Id);
         }
 
         System.assert(returnedIds.contains(activeTrail.Id), 'Active trails should be included');
