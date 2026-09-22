@@ -47,8 +47,8 @@ public without sharing class IPS_PlatformEventJobbsporService {
         for(Work_Trail__c t:workTrailList){
             IPSJobbsporEvent__e eventJobbspor = new IPSJobbsporEvent__e();
             User ownerUser = ownerById.get(t.OwnerId);
-            eventJobbspor.JobbsporId__c =hashString(t.Id);
-            eventJobbspor.UserId__c = hashString(t.OwnerId);
+            eventJobbspor.JobbsporId__c = hashStringWithController(t.Id);
+            eventJobbspor.UserId__c = hashStringWithController(t.OwnerId);
             eventJobbspor.UserDepartmentName__c = ownerUser != null ? ownerUser.Department : null;
             eventJobbspor.UserDepartmentNumber__c = ownerUser != null ? ownerUser.CompanyName : null;
             eventJobbspor.JobbsporCreated__c = Date.valueOf(t.CreatedDate);
@@ -111,11 +111,15 @@ public without sharing class IPS_PlatformEventJobbsporService {
     
     
     
-    Private static String hashString(String inputString){
-            Blob inputBlob = Blob.valueOf(inputString);
-            Blob hashedBlob = Crypto.generateDigest('SHA-256', inputBlob);
-            String hashedString = EncodingUtil.convertToHex(hashedBlob);
-        return hashedString;
+    private static String hashStringWithController(String inputString) {
+        IPS_StringHasherController.eventRequest request = new IPS_StringHasherController.eventRequest();
+        request.inputString = inputString;
+
+        List<IPS_StringHasherController.FlowOutput> outputs = IPS_StringHasherController.hashString(
+            new List<IPS_StringHasherController.eventRequest>{ request }
+        );
+
+        return outputs.isEmpty() ? null : outputs[0].hashString;
     }
 
     private static String translateFieldValue(String inputString, String fieldCategory) {
