@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Update_Manager_Permission</name>
+        <label>Update Manager Permission</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_ManagerPermissionService</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>newManagerId</name>
+            <value>
+                <elementReference>$Record.New_Manager_Id__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>formerManagerId</name>
+            <value>
+                <elementReference>$Record.Former_Manager_Id__c</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_ManagerPermissionService</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <interviewLabel>IPS - Manager Change - Update Permissions {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - Manager Change - Update Permissions</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Manager_Permission</targetReference>
+        </connector>
+        <flowRunAsUser>DefaultWorkflowUser</flowRunAsUser>
+        <object>IPS_Manager_Change__e</object>
+        <triggerType>PlatformEvent</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
