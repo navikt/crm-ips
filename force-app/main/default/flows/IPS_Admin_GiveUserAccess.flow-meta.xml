@@ -227,6 +227,30 @@
             <stringValue>Metodeveileder</stringValue>
         </value>
     </choices>
+    <choices>
+        <name>choice_Methodology_IPS</name>
+        <choiceText>IPS</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>IPS</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choice_Methodology_AMS</name>
+        <choiceText>AMS</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AMS</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choice_Methodology_TJ</name>
+        <choiceText>TJ</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>TJ</stringValue>
+        </value>
+    </choices>
     <constants>
         <description>The title of the flow, in Norwegian</description>
         <name>const_flowTitle</name>
@@ -349,6 +373,14 @@
         <faultConnector>
             <targetReference>Set_Flow_Fault_Step_On_Team</targetReference>
         </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ips_Methodology__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_methodology</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>ips_Team__c</object>
         <sortField>Name</sortField>
@@ -437,6 +469,13 @@
             <operator>Contains</operator>
             <value>
                 <elementReference>var_teamName</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ips_Methodology__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_methodology</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -962,6 +1001,25 @@
                 </width>
             </styleProperties>
         </fields>
+        <fields>
+            <name>var_methodology</name>
+            <choiceReferences>choice_Methodology_IPS</choiceReferences>
+            <choiceReferences>choice_Methodology_AMS</choiceReferences>
+            <choiceReferences>choice_Methodology_TJ</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Metode</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -1161,6 +1219,14 @@
     <variables>
         <description>The Id of the Team selected/confirmed for the new Team Member</description>
         <name>var_selectedTeamId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The methodology used to filter teams</description>
+        <name>var_methodology</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
