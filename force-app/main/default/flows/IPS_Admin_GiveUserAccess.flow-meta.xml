@@ -96,7 +96,7 @@
             <assignToReference>sObj_TeamMember.ips_Role__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>var_roleName</elementReference>
+                <elementReference>var_teamRole</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -212,7 +212,7 @@
         </connector>
     </assignments>
     <choices>
-        <name>choice_Role_Jobbspesialist</name>
+        <name>choice_TeamRole_Jobbspesialist</name>
         <choiceText>Jobbspesialist</choiceText>
         <dataType>String</dataType>
         <value>
@@ -220,11 +220,19 @@
         </value>
     </choices>
     <choices>
-        <name>choice_Role_Metodeveileder</name>
+        <name>choice_TeamRole_Metodeveileder</name>
         <choiceText>Metodeveileder</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>Metodeveileder</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choice_TeamRole_Fagansvarlig</name>
+        <choiceText>Fagansvarlig</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Fagansvarlig</stringValue>
         </value>
     </choices>
     <choices>
@@ -404,7 +412,7 @@
             <field>Name</field>
             <operator>Contains</operator>
             <value>
-                <elementReference>var_roleName</elementReference>
+                <elementReference>var_salesforceRole</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -751,7 +759,7 @@
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Velg rolle til brukeren</stringValue>
+                    <stringValue>Velg Salesforce-rolle til brukeren</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -994,11 +1002,29 @@
             </styleProperties>
         </fields>
         <fields>
-            <name>var_roleName</name>
-            <choiceReferences>choice_Role_Jobbspesialist</choiceReferences>
-            <choiceReferences>choice_Role_Metodeveileder</choiceReferences>
+            <name>var_salesforceRole</name>
             <dataType>String</dataType>
-            <fieldText>Rolle</fieldText>
+            <fieldText>Salesforce Rolle</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Skriv inn hele eller deler av Salesforce-rollen. Du velger riktig rolle fra trefflisten på neste steg.&lt;/p&gt;</helpText>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_teamRole</name>
+            <choiceReferences>choice_TeamRole_Jobbspesialist</choiceReferences>
+            <choiceReferences>choice_TeamRole_Metodeveileder</choiceReferences>
+            <choiceReferences>choice_TeamRole_Fagansvarlig</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Teamrolle</fieldText>
             <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
