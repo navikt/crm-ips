@@ -61,7 +61,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Assign_TeamMemberDetails</targetReference>
+            <targetReference>Screen_TeamMemberDetails</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -77,7 +77,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Assign_TeamMemberDetails</targetReference>
+            <targetReference>Screen_TeamMemberDetails</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -105,6 +105,38 @@
             <value>
                 <elementReference>var_selectedTeamId</elementReference>
             </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_Is_External__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_isExternal</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_Start_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_startDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_End_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_endDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_Is_Temporary_Position__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_isTemporary</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember</assignToReference>
+            <operator>Assign</operator>
         </assignmentItems>
         <connector>
             <targetReference>Create_Team_Member</targetReference>
@@ -212,6 +244,38 @@
         </connector>
     </assignments>
     <choices>
+        <name>choice_Methodology_AMS</name>
+        <choiceText>AMS</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AMS</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choice_Methodology_IPS</name>
+        <choiceText>IPS</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>IPS</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choice_Methodology_TJ</name>
+        <choiceText>TJ</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>TJ</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choice_TeamRole_Fagansvarlig</name>
+        <choiceText>Fagansvarlig</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Fagansvarlig</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>choice_TeamRole_Jobbspesialist</name>
         <choiceText>Jobbspesialist</choiceText>
         <dataType>String</dataType>
@@ -225,38 +289,6 @@
         <dataType>String</dataType>
         <value>
             <stringValue>Metodeveileder</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>choice_TeamRole_Fagansvarlig</name>
-        <choiceText>Fagansvarlig</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>Fagansvarlig</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>choice_Methodology_IPS</name>
-        <choiceText>IPS</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>IPS</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>choice_Methodology_AMS</name>
-        <choiceText>AMS</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>AMS</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>choice_Methodology_TJ</name>
-        <choiceText>TJ</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>TJ</stringValue>
         </value>
     </choices>
     <constants>
@@ -324,6 +356,11 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>var_isTemporary</name>
+        <dataType>Boolean</dataType>
+        <expression>NOT(ISBLANK({!var_endDate}))</expression>
+    </formulas>
     <interviewLabel>IPS Admin Give User Access {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Admin Give User Access</label>
     <loops>
@@ -396,32 +433,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_Jobbspor_User_Role</name>
-        <label>Get Jobbspor User Role</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>screen_chooseUsersAndRole</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Set_Flow_Fault_Step_On_Role</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Name</field>
-            <operator>Contains</operator>
-            <value>
-                <elementReference>var_salesforceRole</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>UserRole</object>
-        <sortField>Name</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>GET_Jobbsporet_User</name>
         <label>GET Jobbsporet User</label>
         <locationX>0</locationX>
@@ -469,6 +480,7 @@
             <targetReference>Screen_ConfirmTeam</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Set_Flow_Fault_Step_On_Team</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
@@ -549,13 +561,39 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Salesforce_User_Role</name>
+        <label>Get Salesforce User Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>screen_chooseUsersAndRole</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Flow_Fault_Step_On_Role</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>var_salesforceRole</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>UserRole</object>
+        <sortField>Name</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Supervisor_User</name>
         <label>Get Supervisor User</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Jobbspor_User_Role</targetReference>
+            <targetReference>Get_Salesforce_User_Role</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Set_Flow_Fault_Step_From_Get_Supervisor_User</targetReference>
@@ -595,6 +633,7 @@
             <targetReference>Get_Matching_Teams</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>sfl_CreateApplicationLog</targetReference>
         </faultConnector>
         <inputReference>sObj_User</inputReference>
@@ -777,7 +816,7 @@
             <inputParameters>
                 <name>tableData</name>
                 <value>
-                    <elementReference>Get_Jobbspor_User_Role</elementReference>
+                    <elementReference>Get_Salesforce_User_Role</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -888,7 +927,7 @@
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <styleProperties>
                 <verticalAlignment>
@@ -904,6 +943,105 @@
             <dataType>Boolean</dataType>
             <fieldText>Ingen av disse er riktig – vis alle team</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_EnterAccessDetails</name>
+        <label>Enter Access Details</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Relevant_Profiles</targetReference>
+        </connector>
+        <fields>
+            <name>s_displayText_AccessDetails</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_salesforceRole</name>
+            <dataType>String</dataType>
+            <fieldText>Salesforcerolle</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Skriv inn hele eller deler av Salesforce-rollen. Du velger riktig rolle fra trefflisten på neste steg.&lt;/p&gt;</helpText>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_teamRole</name>
+            <choiceReferences>choice_TeamRole_Jobbspesialist</choiceReferences>
+            <choiceReferences>choice_TeamRole_Metodeveileder</choiceReferences>
+            <choiceReferences>choice_TeamRole_Fagansvarlig</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Teamrolle</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_methodology</name>
+            <choiceReferences>choice_Methodology_IPS</choiceReferences>
+            <choiceReferences>choice_Methodology_AMS</choiceReferences>
+            <choiceReferences>choice_Methodology_TJ</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Metode</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_teamName</name>
+            <dataType>String</dataType>
+            <fieldText>Team</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Skriv inn hele eller deler av teamnavnet. Du får bekrefte eller velge et annet team i neste steg.&lt;/p&gt;</helpText>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <styleProperties>
@@ -963,105 +1101,6 @@
             <dataType>String</dataType>
             <fieldText>Personalansvarlig leder</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Screen_EnterAccessDetails</name>
-        <label>Enter Access Details</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Get_Relevant_Profiles</targetReference>
-        </connector>
-        <fields>
-            <name>s_displayText_AccessDetails</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
-        <fields>
-            <name>var_salesforceRole</name>
-            <dataType>String</dataType>
-            <fieldText>Salesforce Rolle</fieldText>
-            <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;Skriv inn hele eller deler av Salesforce-rollen. Du velger riktig rolle fra trefflisten på neste steg.&lt;/p&gt;</helpText>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
-        <fields>
-            <name>var_teamRole</name>
-            <choiceReferences>choice_TeamRole_Jobbspesialist</choiceReferences>
-            <choiceReferences>choice_TeamRole_Metodeveileder</choiceReferences>
-            <choiceReferences>choice_TeamRole_Fagansvarlig</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Teamrolle</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
-        <fields>
-            <name>var_methodology</name>
-            <choiceReferences>choice_Methodology_IPS</choiceReferences>
-            <choiceReferences>choice_Methodology_AMS</choiceReferences>
-            <choiceReferences>choice_Methodology_TJ</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Metode</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
-        <fields>
-            <name>var_teamName</name>
-            <dataType>String</dataType>
-            <fieldText>Team</fieldText>
-            <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;Skriv inn hele eller deler av teamnavnet. Du får bekrefte eller velge et annet team i neste steg.&lt;/p&gt;</helpText>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <styleProperties>
@@ -1165,6 +1204,85 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
+    <screens>
+        <name>Screen_TeamMemberDetails</name>
+        <label>Team Member Details</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Assign_TeamMemberDetails</targetReference>
+        </connector>
+        <fields>
+            <name>s_displayText_TeamMemberDetails</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Angi detaljer for teammedlemskapet.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_isExternal</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Eksternt teammedlem</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_startDate</name>
+            <dataType>Date</dataType>
+            <fieldText>Startdato</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>false</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_endDate</name>
+            <dataType>Date</dataType>
+            <fieldText>Sluttdato</fieldText>
+            <helpText>&lt;p&gt;Hvis du angir en sluttdato, blir teammedlemskapet automatisk markert som midlertidig.&lt;/p&gt;</helpText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>false</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <start>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -1172,7 +1290,7 @@
             <targetReference>Screen_EnterUserDetails</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <name>sfl_CreateApplicationLog</name>
         <label>Create Application Log</label>
