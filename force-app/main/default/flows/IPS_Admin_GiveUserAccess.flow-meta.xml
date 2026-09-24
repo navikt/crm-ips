@@ -49,8 +49,8 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Assign_TeamId_From_Confirm</name>
-        <label>Assign Team Id From Confirm</label>
+        <name>Assign_Team_Values_From_Confirm</name>
+        <label>Assign Team Values From Confirm</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
@@ -58,6 +58,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>dataTable_confirmTeam.firstSelectedRow.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_selectedTeamName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dataTable_confirmTeam.firstSelectedRow.Name</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -74,6 +81,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>dataTable_selectOtherTeam.firstSelectedRow.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_selectedTeamName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dataTable_selectOtherTeam.firstSelectedRow.Name</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -104,13 +118,6 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>var_selectedTeamId</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sObj_TeamMember.ips_Is_External__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>var_isExternal</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -336,7 +343,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Assign_TeamId_From_Confirm</targetReference>
+            <targetReference>Assign_Team_Values_From_Confirm</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Team Confirmed</defaultConnectorLabel>
         <rules>
@@ -1267,8 +1274,8 @@
             <name>var_endDate</name>
             <dataType>Date</dataType>
             <fieldText>Sluttdato</fieldText>
-            <helpText>&lt;p&gt;Hvis du angir en sluttdato, blir teammedlemskapet automatisk markert som midlertidig.&lt;/p&gt;</helpText>
             <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Hvis du angir en sluttdato, blir teammedlemskapet automatisk markert som midlertidig.&lt;/p&gt;</helpText>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <styleProperties>
@@ -1290,7 +1297,7 @@
             <targetReference>Screen_EnterUserDetails</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>sfl_CreateApplicationLog</name>
         <label>Create Application Log</label>
@@ -1388,12 +1395,32 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>var_isExternalTeamMember</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
         <description>The Id of the Team selected/confirmed for the new Team Member</description>
         <name>var_selectedTeamId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_selectedTeamName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>var_teamName</elementReference>
+        </value>
     </variables>
     <variables>
         <name>var_sObj_NavKontorProfile</name>
