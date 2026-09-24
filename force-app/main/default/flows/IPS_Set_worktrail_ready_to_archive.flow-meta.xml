@@ -29,7 +29,7 @@
     <formulas>
         <name>readyForArchive</name>
         <dataType>Boolean</dataType>
-        <expression>({!$Record.ips_End_Date__c} + 373 ) &lt;= TODAY()</expression>
+        <expression>({!$Record.ips_End_Date__c} + 365 ) &lt;= TODAY()</expression>
     </formulas>
     <interviewLabel>IPS - Set worktrail ready to archive {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - Set worktrail ready to archive</label>
@@ -99,16 +99,21 @@
         </filters>
         <filters>
             <field>ips_End_Date__c</field>
-            <operator>LessThan</operator>
+            <operator>IsNull</operator>
             <value>
-                <dateValue>2024-01-01</dateValue>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IPS_IsEndCauseSet__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>Work_Trail__c</object>
         <schedule>
-            <dayOfMonthToRun>0</dayOfMonthToRun>
-            <frequency>Once</frequency>
-            <frequencyNumber>0</frequencyNumber>
+            <frequency>Daily</frequency>
             <startDate>2026-03-24</startDate>
             <startTime>06:00:00.000Z</startTime>
         </schedule>
