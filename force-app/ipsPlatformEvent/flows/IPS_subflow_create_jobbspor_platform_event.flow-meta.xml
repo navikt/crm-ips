@@ -207,7 +207,7 @@
             <name>outputString</name>
         </outputParameters>
     </actionCalls>
-    <apiVersion>65.0</apiVersion>
+    <apiVersion>66.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>Assign_data</name>
@@ -324,6 +324,20 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>IPS_loopThroughAllRecords.Passive_deactivate__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.UserDepartmentName__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$User.CompanyName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporList.UserDepartmentNumber__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$User.Department</elementReference>
             </value>
         </assignmentItems>
         <connector>

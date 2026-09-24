@@ -49,8 +49,8 @@ public without sharing class IPS_PlatformEventJobbsporService {
             User ownerUser = ownerById.get(t.OwnerId);
             eventJobbspor.JobbsporId__c = hashStringWithController(t.Id);
             eventJobbspor.UserId__c = hashStringWithController(t.OwnerId);
-            eventJobbspor.UserDepartmentName__c = ownerUser != null ? ownerUser.Department : null;
-            eventJobbspor.UserDepartmentNumber__c = ownerUser != null ? ownerUser.CompanyName : null;
+            eventJobbspor.UserDepartmentName__c = ownerUser != null ? ownerUser.CompanyName : null;
+            eventJobbspor.UserDepartmentNumber__c = ownerUser != null ? ownerUser.Department : null;
             eventJobbspor.JobbsporCreated__c = Date.valueOf(t.CreatedDate);
             eventJobbspor.JobbsporEndDate__c = t.ips_End_Date__c;
             eventJobbspor.JobbsporEndReason__c = translateFieldValue(t.End_Cause__c, 'ENDCAUSE');
