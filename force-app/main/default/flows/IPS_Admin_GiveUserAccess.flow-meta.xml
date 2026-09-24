@@ -49,57 +49,6 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Set_Flow_Fault_Step_From_Get_Supervisor_User</name>
-        <label>Set Flow Fault Step From Get Supervisor User</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>var_faultStep</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Could not find the named Supervisor User</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>sfl_CreateApplicationLog</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_Flow_Fault_Step_On_Jobbspor_User</name>
-        <label>Set Flow Fault Step On Jobbspor User</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>var_faultStep</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Could not find the named Jobbspor User</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>sfl_CreateApplicationLog</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_Flow_Fault_Step_On_Profiles</name>
-        <label>Set Flow Fault Step On Profiles</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>var_faultStep</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Could not find any relevant profiles</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>sfl_CreateApplicationLog</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Assign_TeamId_From_Confirm</name>
         <label>Assign Team Id From Confirm</label>
         <locationX>0</locationX>
@@ -159,6 +108,57 @@
         </assignmentItems>
         <connector>
             <targetReference>Create_Team_Member</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_From_Get_Supervisor_User</name>
+        <label>Set Flow Fault Step From Get Supervisor User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Could not find the named Supervisor User</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_Jobbspor_User</name>
+        <label>Set Flow Fault Step On Jobbspor User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Could not find the named Jobbspor User</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Flow_Fault_Step_On_Profiles</name>
+        <label>Set Flow Fault Step On Profiles</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Could not find any relevant profiles</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -568,6 +568,14 @@
             <name>s_displayText2</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>dataTable_jobbspesialistUser</name>
@@ -622,6 +630,14 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>dataTable_supervisor</name>
@@ -676,6 +692,14 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>dataTable_selectRole</name>
@@ -730,60 +754,14 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Screen_EnterUserDetails</name>
-        <label>Enter User and Role Details</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Get_Relevant_Profiles</targetReference>
-        </connector>
-        <fields>
-            <name>s_displayText1</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>var_theUserToGiveAccessTo</name>
-            <dataType>String</dataType>
-            <fieldText>Bruker som skal få tilgang</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>var_roleName</name>
-            <choiceReferences>choice_Role_Jobbspesialist</choiceReferences>
-            <choiceReferences>choice_Role_Metodeveileder</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Rolle</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>var_leaderName</name>
-            <dataType>String</dataType>
-            <fieldText>Personalansvarlig leder</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>var_teamName</name>
-            <dataType>String</dataType>
-            <fieldText>Team</fieldText>
-            <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;Skriv inn hele eller deler av teamnavnet. Du får bekrefte eller velge et annet team i neste steg.&lt;/p&gt;</helpText>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -803,6 +781,14 @@
             <name>s_displayText_ConfirmTeam</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Bekreft teamet under, eller kryss av for å velge et annet team fra hele listen.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>dataTable_confirmTeam</name>
@@ -857,6 +843,14 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>chk_ShowAllTeams</name>
@@ -864,6 +858,109 @@
             <fieldText>Ingen av disse er riktig – vis alle team</fieldText>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_EnterUserDetails</name>
+        <label>Enter User and Role Details</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Relevant_Profiles</targetReference>
+        </connector>
+        <fields>
+            <name>s_displayText1</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_theUserToGiveAccessTo</name>
+            <dataType>String</dataType>
+            <fieldText>Bruker som skal få tilgang</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_roleName</name>
+            <choiceReferences>choice_Role_Jobbspesialist</choiceReferences>
+            <choiceReferences>choice_Role_Metodeveileder</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Rolle</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_leaderName</name>
+            <dataType>String</dataType>
+            <fieldText>Personalansvarlig leder</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_teamName</name>
+            <dataType>String</dataType>
+            <fieldText>Team</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Skriv inn hele eller deler av teamnavnet. Du får bekrefte eller velge et annet team i neste steg.&lt;/p&gt;</helpText>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -883,6 +980,14 @@
             <name>s_displayText_SelectOtherTeam</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Velg riktig team fra listen under.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>dataTable_selectOtherTeam</name>
@@ -937,6 +1042,14 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1046,19 +1159,19 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>var_sObj_NavKontorProfile</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Profile</objectType>
-    </variables>
-    <variables>
         <description>The Id of the Team selected/confirmed for the new Team Member</description>
         <name>var_selectedTeamId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_sObj_NavKontorProfile</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Profile</objectType>
     </variables>
 </Flow>
