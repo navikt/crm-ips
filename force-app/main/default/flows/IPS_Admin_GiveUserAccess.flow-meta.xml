@@ -912,14 +912,14 @@
     </screens>
     <screens>
         <name>Screen_EnterUserDetails</name>
-        <label>Enter User and Role Details</label>
+        <label>Enter User Details</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_Relevant_Profiles</targetReference>
+            <targetReference>Screen_EnterAccessDetails</targetReference>
         </connector>
         <fields>
             <name>s_displayText1</name>
@@ -951,24 +951,6 @@
             </styleProperties>
         </fields>
         <fields>
-            <name>var_roleName</name>
-            <choiceReferences>choice_Role_Jobbspesialist</choiceReferences>
-            <choiceReferences>choice_Role_Metodeveileder</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Rolle</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
-        <fields>
             <name>var_leaderName</name>
             <dataType>String</dataType>
             <fieldText>Personalansvarlig leder</fieldText>
@@ -984,12 +966,40 @@
                 </width>
             </styleProperties>
         </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_EnterAccessDetails</name>
+        <label>Enter Access Details</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Relevant_Profiles</targetReference>
+        </connector>
         <fields>
-            <name>var_teamName</name>
+            <name>s_displayText_AccessDetails</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_roleName</name>
+            <choiceReferences>choice_Role_Jobbspesialist</choiceReferences>
+            <choiceReferences>choice_Role_Metodeveileder</choiceReferences>
             <dataType>String</dataType>
-            <fieldText>Team</fieldText>
-            <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;Skriv inn hele eller deler av teamnavnet. Du får bekrefte eller velge et annet team i neste steg.&lt;/p&gt;</helpText>
+            <fieldText>Rolle</fieldText>
+            <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <styleProperties>
@@ -1009,6 +1019,23 @@
             <dataType>String</dataType>
             <fieldText>Metode</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>var_teamName</name>
+            <dataType>String</dataType>
+            <fieldText>Team</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Skriv inn hele eller deler av teamnavnet. Du får bekrefte eller velge et annet team i neste steg.&lt;/p&gt;</helpText>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <styleProperties>
