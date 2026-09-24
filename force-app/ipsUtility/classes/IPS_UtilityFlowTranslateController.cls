@@ -60,6 +60,7 @@ public with sharing class IPS_UtilityFlowTranslateController {
                             when 'Ended' { output.outputString = 'Sluttet'; }
                             when 'Aktiv jobbstøtte' { output.outputString = 'Aktiv jobbstøtte'; }
                             when 'Tilgjengelig Jobbstøtte' { output.outputString = 'Tilgjengelig Jobbstøtte'; }
+                            when 'Passive' { output.outputString = 'Passiv'; }
                             when else { output.outputString = 'Ukjent status'; }
                         }
                     }
