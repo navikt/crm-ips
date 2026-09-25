@@ -612,12 +612,19 @@
         <faultConnector>
             <targetReference>Set_Flow_Fault_Step_From_Get_Supervisor_User</targetReference>
         </faultConnector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>(1 OR 2) AND 3 AND 4</filterLogic>
         <filters>
             <field>ProfileId</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>var_sObj_NavKontorProfile.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ProfileId</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>coll_Id_relevantProfileIds</elementReference>
             </value>
         </filters>
         <filters>
