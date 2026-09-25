@@ -3,36 +3,6 @@
     <apiVersion>66.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <name>Assign_NewUserDetails</name>
-        <label>Assign New User Details</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>sObj_User.Id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sObj_User.ManagerId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>dataTable_supervisor.firstSelectedRow.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sObj_User.UserRoleId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>dataTable_selectRole.firstSelectedRow.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Get_Matching_Teams</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Assign_Profile_Id_To_Relevant_Jobbspor_User_List</name>
         <label>Assign Profile Id To Relevant Jobbspor User List</label>
         <locationX>0</locationX>
@@ -103,7 +73,14 @@
             <assignToReference>sObj_TeamMember.ips_User__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>sObj_User.Id</elementReference>
+                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_Manager_Id__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dataTable_supervisor.firstSelectedRow.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -203,23 +180,6 @@
             <operator>Assign</operator>
             <value>
                 <stringValue>Could not find any relevant profiles</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>sfl_CreateApplicationLog</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_Flow_Fault_Step_On_Role</name>
-        <label>Set Flow Fault Step On Role</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>var_faultStep</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Could not find the named Role</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -441,9 +401,6 @@
         <label>Create Team Member</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <connector>
-            <targetReference>Update_User</targetReference>
-        </connector>
         <faultConnector>
             <targetReference>sfl_CreateApplicationLog</targetReference>
         </faultConnector>
@@ -604,39 +561,13 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_Salesforce_User_Role</name>
-        <label>Get Salesforce User Role</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>screen_chooseUsersAndRole</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Set_Flow_Fault_Step_On_Role</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Name</field>
-            <operator>Contains</operator>
-            <value>
-                <elementReference>var_salesforceRole</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>UserRole</object>
-        <sortField>Name</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>Get_Supervisor_User</name>
         <label>Get Supervisor User</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Salesforce_User_Role</targetReference>
+            <targetReference>screen_chooseUsersAndRole</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Set_Flow_Fault_Step_From_Get_Supervisor_User</targetReference>
@@ -674,17 +605,6 @@
         <object>User</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordUpdates>
-        <name>Update_User</name>
-        <label>Update User</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>sfl_CreateApplicationLog</targetReference>
-        </faultConnector>
-        <inputReference>sObj_User</inputReference>
-    </recordUpdates>
     <runInMode>DefaultMode</runInMode>
     <screens>
         <name>screen_chooseUsersAndRole</name>
@@ -695,7 +615,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Assign_NewUserDetails</targetReference>
+            <targetReference>Get_Matching_Teams</targetReference>
         </connector>
         <fields>
             <name>s_displayText2</name>
@@ -834,68 +754,6 @@
                 </width>
             </styleProperties>
         </fields>
-        <fields>
-            <name>dataTable_selectRole</name>
-            <dataTypeMappings>
-                <typeName>T</typeName>
-                <typeValue>UserRole</typeValue>
-            </dataTypeMappings>
-            <extensionName>flowruntime:datatable</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Velg Salesforce-rolle til brukeren</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>selectionMode</name>
-                <value>
-                    <stringValue>SINGLE_SELECT</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>minRowSelection</name>
-                <value>
-                    <numberValue>1.0</numberValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>tableData</name>
-                <value>
-                    <elementReference>Get_Salesforce_User_Role</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>shouldDisplayLabel</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>maxRowSelection</name>
-                <value>
-                    <numberValue>1.0</numberValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columns</name>
-                <value>
-                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-7441&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Name&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
-                </value>
-            </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -1019,23 +877,6 @@
             <name>s_displayText_AccessDetails</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
-        <fields>
-            <name>var_salesforceRole</name>
-            <dataType>String</dataType>
-            <fieldText>Salesforcerolle</fieldText>
-            <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;Skriv inn hele eller deler av Salesforce-rollen. Du velger riktig rolle fra trefflisten på neste steg.&lt;/p&gt;</helpText>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
             <styleProperties>
                 <verticalAlignment>
                     <stringValue>top</stringValue>
@@ -1389,7 +1230,7 @@
         <inputAssignments>
             <name>ReferenceID</name>
             <value>
-                <elementReference>sObj_User.Id</elementReference>
+                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow.Id</elementReference>
             </value>
         </inputAssignments>
     </subflows>
@@ -1417,15 +1258,6 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ips_Team_Member__c</objectType>
-    </variables>
-    <variables>
-        <description>The User to update</description>
-        <name>sObj_User</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>User</objectType>
     </variables>
     <variables>
         <name>var_faultStep</name>
