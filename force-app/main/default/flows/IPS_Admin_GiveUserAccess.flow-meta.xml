@@ -371,6 +371,29 @@
             </connector>
             <label>Show All Teams</label>
         </rules>
+        <rules>
+            <name>Not_Selected</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>dataTable_confirmTeam.firstSelectedRow</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>chk_ShowAllTeams</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Screen_ConfirmTeam</targetReference>
+            </connector>
+            <label>Not Selected</label>
+        </rules>
     </decisions>
     <environments>Default</environments>
     <formulas>
