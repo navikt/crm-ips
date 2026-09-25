@@ -29,7 +29,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_User</targetReference>
+            <targetReference>Get_Matching_Teams</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -107,6 +107,13 @@
             </value>
         </assignmentItems>
         <assignmentItems>
+            <assignToReference>sObj_TeamMember.ips_NAV_Ident__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow.CRM_NAV_Ident__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
             <assignToReference>sObj_TeamMember.ips_Role__c</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -147,10 +154,6 @@
             <value>
                 <elementReference>var_isTemporary</elementReference>
             </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sObj_TeamMember</assignToReference>
-            <operator>Assign</operator>
         </assignmentItems>
         <connector>
             <targetReference>Create_Team_Member</targetReference>
@@ -415,6 +418,9 @@
         <label>Create Team Member</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_User</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>sfl_CreateApplicationLog</targetReference>
         </faultConnector>
@@ -650,9 +656,6 @@
         <label>Update User</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <connector>
-            <targetReference>Get_Matching_Teams</targetReference>
-        </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>sfl_CreateApplicationLog</targetReference>
