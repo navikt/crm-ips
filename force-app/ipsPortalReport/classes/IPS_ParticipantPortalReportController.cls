@@ -64,14 +64,13 @@ public with sharing class IPS_ParticipantPortalReportController {
         Date recordDateFrom,
         Date recordDateTo
     ) {
-        Id currentRecordId = recordId;
-        Date reportDateTo = recordDateTo;
-        Date reportDateFrom = recordDateFrom;
-
-        List<IPS_ParticipantPortalTask> wrapperList = new List<IPS_ParticipantPortalTask>();
-
-        wrapperList = getReportCompletedGoals(currentRecordId, reportDateFrom, reportDateTo);
-        return wrapperList;
+        return (List<IPS_ParticipantPortalTask>) getParticipantReportData(
+            'completedGoals',
+            recordId,
+            null,
+            recordDateFrom,
+            recordDateTo
+        );
     }
 
     /*
@@ -88,13 +87,7 @@ public with sharing class IPS_ParticipantPortalReportController {
    */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalTask> getParticipantsReportCompletedGoalsEnd(String recordId) {
-        Id currentRecordId = recordId;
-
-        List<IPS_ParticipantPortalTask> wrapperList = new List<IPS_ParticipantPortalTask>();
-
-        wrapperList = getReportCompletedGoalsEnd(currentRecordId);
-
-        return wrapperList;
+        return (List<IPS_ParticipantPortalTask>) getParticipantReportData('completedGoalsEnd', recordId, null, null, null);
     }
 
     /*
@@ -119,16 +112,13 @@ public with sharing class IPS_ParticipantPortalReportController {
         Date recordDateFrom,
         Date recordDateTo
     ) {
-        Id currentRecordId = recordId;
-        String reportType = typeOfReport;
-        Date reportDateTo = recordDateTo;
-        Date reportDateFrom = recordDateFrom;
-
-        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
-
-        wrapperListMeeting = getReportCompletedMeetings(currentRecordId, reportType, reportDateFrom, reportDateTo);
-
-        return wrapperListMeeting;
+        return (List<IPS_ParticipantPortalEvent>) getParticipantReportData(
+            'completedMeetings',
+            recordId,
+            typeOfReport,
+            recordDateFrom,
+            recordDateTo
+        );
     }
 
     /*
@@ -145,13 +135,13 @@ public with sharing class IPS_ParticipantPortalReportController {
     */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalEvent> getParticipantsReportCompletedMeetingsEnd(String recordId) {
-        Id currentRecordId = recordId;
-
-        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
-
-        wrapperListMeeting = getParticipantsCompletedMeetingsEnd(currentRecordId);
-
-        return wrapperListMeeting;
+        return (List<IPS_ParticipantPortalEvent>) getParticipantReportData(
+            'completedMeetingsEnd',
+            recordId,
+            null,
+            null,
+            null
+        );
     }
 
     /*
@@ -176,15 +166,13 @@ public with sharing class IPS_ParticipantPortalReportController {
         Date recordDateFrom,
         Date recordDateTo
     ) {
-        Id currentRecordId = recordId;
-        Date reportDateTo = recordDateTo;
-        Date reportDateFrom = recordDateFrom;
-
-        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
-
-        wrapperListMeeting = getReportCompletedEmployeeMeetings(currentRecordId, reportDateFrom, reportDateTo);
-
-        return wrapperListMeeting;
+        return (List<IPS_ParticipantPortalEvent>) getParticipantReportData(
+            'employeeCompletedMeetings',
+            recordId,
+            null,
+            recordDateFrom,
+            recordDateTo
+        );
     }
 
     /*
@@ -207,15 +195,13 @@ public with sharing class IPS_ParticipantPortalReportController {
         Date recordDateFrom,
         Date recordDateTo
     ) {
-        Id currentRecordId = recordId;
-        Date reportDateTo = recordDateTo;
-        Date reportDateFrom = recordDateFrom;
-
-        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
-
-        wrapperListMeeting = getReportCompletedEducationMeetings(currentRecordId, reportDateFrom, reportDateTo);
-
-        return wrapperListMeeting;
+        return (List<IPS_ParticipantPortalEvent>) getParticipantReportData(
+            'educationCompletedMeetings',
+            recordId,
+            null,
+            recordDateFrom,
+            recordDateTo
+        );
     }
 
     /*
@@ -232,13 +218,13 @@ public with sharing class IPS_ParticipantPortalReportController {
     */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalEvent> getParticipantsReportEducationCompletedMeetingsNo(String recordId) {
-        Id currentRecordId = recordId;
-
-        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
-
-        wrapperListMeeting = getReportCompletedEducationMeetingsNo(currentRecordId);
-
-        return wrapperListMeeting;
+        return (List<IPS_ParticipantPortalEvent>) getParticipantReportData(
+            'educationCompletedMeetingsNo',
+            recordId,
+            null,
+            null,
+            null
+        );
     }
 
     /*
@@ -255,13 +241,7 @@ public with sharing class IPS_ParticipantPortalReportController {
     */
     @AuraEnabled(cacheable=true)
     public static List<String> getParticipantsReportEducationNameMeetings(String recordId) {
-        Id currentRecordId = recordId;
-
-        List<String> wrapperListMeeting = new List<String>();
-
-        wrapperListMeeting = getReportCompletedEducationMeetingsName(currentRecordId);
-
-        return wrapperListMeeting;
+        return (List<String>) getParticipantReportData('educationNameMeetings', recordId, null, null, null);
     }
 
     /*
@@ -278,13 +258,13 @@ public with sharing class IPS_ParticipantPortalReportController {
     */
     @AuraEnabled(cacheable=true)
     public static List<IPS_ParticipantPortalEvent> getParticipantsReportEmployeeCompletedMeetingsNo(String recordId) {
-        Id currentRecordId = recordId;
-
-        List<IPS_ParticipantPortalEvent> wrapperListMeeting = new List<IPS_ParticipantPortalEvent>();
-
-        wrapperListMeeting = getReportCompletedEmployeeMeetingsNo(currentRecordId);
-
-        return wrapperListMeeting;
+        return (List<IPS_ParticipantPortalEvent>) getParticipantReportData(
+            'employeeCompletedMeetingsNo',
+            recordId,
+            null,
+            null,
+            null
+        );
     }
 
     /*
@@ -301,13 +281,48 @@ public with sharing class IPS_ParticipantPortalReportController {
     */
     @AuraEnabled(cacheable=true)
     public static List<String> getParticipantsReportEmployeeNameMeetings(String recordId) {
-        Id currentRecordId = recordId;
+        return (List<String>) getParticipantReportData('employeeNameMeetings', recordId, null, null, null);
+    }
 
-        List<String> wrapperListMeeting = new List<String>();
+    private static Object getParticipantReportData(
+        String reportKey,
+        String recordId,
+        String typeOfReport,
+        Date recordDateFrom,
+        Date recordDateTo
+    ) {
+        if (reportKey == 'completedGoals') {
+            return getReportCompletedGoals(recordId, recordDateFrom, recordDateTo);
+        }
+        if (reportKey == 'completedGoalsEnd') {
+            return getReportCompletedGoalsEnd(recordId);
+        }
+        if (reportKey == 'completedMeetings') {
+            return getReportCompletedMeetings(recordId, typeOfReport, recordDateFrom, recordDateTo);
+        }
+        if (reportKey == 'completedMeetingsEnd') {
+            return getParticipantsCompletedMeetingsEnd(recordId);
+        }
+        if (reportKey == 'employeeCompletedMeetings') {
+            return getReportCompletedEmployeeMeetings(recordId, recordDateFrom, recordDateTo);
+        }
+        if (reportKey == 'educationCompletedMeetings') {
+            return getReportCompletedEducationMeetings(recordId, recordDateFrom, recordDateTo);
+        }
+        if (reportKey == 'educationCompletedMeetingsNo') {
+            return getReportCompletedEducationMeetingsNo(recordId);
+        }
+        if (reportKey == 'educationNameMeetings') {
+            return getReportCompletedEducationMeetingsName(recordId);
+        }
+        if (reportKey == 'employeeCompletedMeetingsNo') {
+            return getReportCompletedEmployeeMeetingsNo(recordId);
+        }
+        if (reportKey == 'employeeNameMeetings') {
+            return getReportCompletedEmployeeMeetingsName(recordId);
+        }
 
-        wrapperListMeeting = getReportCompletedEmployeeMeetingsName(currentRecordId);
-
-        return wrapperListMeeting;
+        return null;
     }
 
     /*
