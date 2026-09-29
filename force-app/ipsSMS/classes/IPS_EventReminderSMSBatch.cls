@@ -28,7 +28,7 @@ public without sharing class IPS_EventReminderSMSBatch implements Database.Batch
         query += 'FROM Event ';
         query += 'WHERE StartDateTime < :horizonDate ';
         query += 'AND StartDateTime > :now ';
-        query += 'AND RecordType.DeveloperName IN (\'IPS_Event\', \'Ips_uo_Deltakermote\', \'ips_UO_m_ter\') ';
+        query += 'AND RecordType.DeveloperName IN (\'IPS_Event\', \'Ips_uo_Deltakermote\', \'ips_UO_m_ter\', \'IPS_Education_Event\') ';
         query += 'AND WhoId != null ';
         query += 'AND WhatId != null ';
         query += 'AND IPS_Status1__c = \'Open\' ';
