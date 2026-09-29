@@ -91,24 +91,6 @@ public without sharing class IPS_PlatformEventJobbsporService {
     	}
 	}
     
-    public static Integer getMinutesIncludingLastDay20Hours() {
-        
-        Date inputDate = Date.today() ;
-        // Get the first day of the next month
-        Date firstDayOfNextMonth = inputDate.toStartOfMonth().addMonths(1);
-        // Subtract one day to get the last day of the current month
-        Date lastDateOfMonth = firstDayOfNextMonth.addDays(-1);
-        
-       //Integer totalDaysInBetween = lastDateOfMonth.day()-inputDate.day();
-       Integer totalDaysInBetween = firstDayOfNextMonth.day()-inputDate.day();
- 	   Integer totalMinutesIn = totalDaysInBetween * 1440;        
-
-        Integer additionalMinutes = 12 * 60;
-
-        // Return the total minutes including the additional 20 hours
-        return totalMinutesIn - additionalMinutes;
-    }
-    
     
     
     private static String hashStringWithController(String inputString) {
