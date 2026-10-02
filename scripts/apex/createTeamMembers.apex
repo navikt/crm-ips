@@ -59,7 +59,7 @@ ips_Team_Member__c buildTeamMember(User u, Id teamId, String role) {
         ips_Team__c = teamId,
         ips_Role__c = role,
         ips_NAV_Ident__c = u.CRM_NAV_Ident__c,
-        ips_Manager__c = u.ManagerId,
+        ips_Manager_Id__c = u.ManagerId,
         // Unik nøkkel per bruker+team — gjør operasjonen idempotent
         ips_Unique_User_Key__c = u.Id + '_' + teamId
     );
