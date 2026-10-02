@@ -59,6 +59,7 @@ ips_Team_Member__c buildTeamMember(User u, Id teamId, String role) {
         ips_Team__c = teamId,
         ips_Role__c = role,
         ips_NAV_Ident__c = u.CRM_NAV_Ident__c,
+        ips_Manager__c = u.ManagerId,
         // Unik nøkkel per bruker+team — gjør operasjonen idempotent
         ips_Unique_User_Key__c = u.Id + '_' + teamId
     );
@@ -126,7 +127,7 @@ final Set<String> TARGET_PROFILES = new Set<String>{
 
 // --- Hent brukere ---
 List<User> users = [
-    SELECT Id, Name, CRM_NAV_Ident__c, UserRoleId, UserRole.Name, Profile.Name
+    SELECT Id, Name, CRM_NAV_Ident__c, UserRoleId, UserRole.Name, Profile.Name, ManagerId
     FROM User
     WHERE IsActive = TRUE
         AND Profile.Name IN :TARGET_PROFILES
