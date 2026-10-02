@@ -26,3 +26,17 @@ C:\Dev\crm-arbeidsforhold-9> node bin\check-sfdx-versions.js
 
 It will list package name, current version, latest release.
 ![alt text](image.png)
+
+macOS system
+
+- Open Terminal
+- Go to your project folder
+- Run `bash bin/check-sfdx-versions.sh`
+- This script runs without Node.js and uses macOS built-in `osascript` together with `sf`
+- Update `sfdx-project.json` automatically by typing `YES`
+- Backup is saved to `sfdx-project.json.backup`
+
+```bash
+cd /path/to/crm-ips-9
+bash bin/check-sfdx-versions.sh
+```
