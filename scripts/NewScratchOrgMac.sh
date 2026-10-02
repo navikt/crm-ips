@@ -73,7 +73,7 @@ echo "\nInstallerer crm-arbeidsgiver-base 1.726.0"
 sf package install --package 04tQC000001afthYAA -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo "\nDeployer metadata.."
-sf project deploy start --target-org "$1" --wait 10
+sf project deploy start --target-org "$1" --wait 20
 
 # Assign permission sets
 echo "\nGir brukeren tilgangen til IPS_management.."
