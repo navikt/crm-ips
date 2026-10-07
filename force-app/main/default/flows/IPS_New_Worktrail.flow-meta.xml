@@ -82,7 +82,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Create_Worktrail_0_0</targetReference>
+            <targetReference>Create_Worktrail1</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -273,6 +273,11 @@ IF( DATE( YEAR(TODAY()), MONTH({!participantDOB}) , DAY({!participantDOB})) &lt;
         <scale>0</scale>
     </formulas>
     <formulas>
+        <name>var_ParticipantsPhoneHelper</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &apos; &apos;, &apos;&apos;)</expression>
+    </formulas>
+    <formulas>
         <name>varCreateHistoryDescription</name>
         <dataType>String</dataType>
         <expression>&apos;Jobbsporet opprettet av &apos;&amp;{!$User.NKS_FullName__c}</expression>
@@ -307,10 +312,23 @@ ISPICKVAL({!Get_RelatedPersonRecord.INT_Confidential__c},&apos;UGRADERT&apos;)
         <name>varParticipantsPhone</name>
         <dataType>String</dataType>
         <expression>IF(
-ISBLANK({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c})
-,&apos;&apos;,
-LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,&quot;&quot;)
-, 21)
+    ISBLANK({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}),
+    &apos;&apos;,
+    LEFT(
+        IF(
+            LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &apos; &apos;, &apos;&apos;), 2) = &apos;00&apos;,
+            &apos;+&apos; &amp; MID(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &apos; &apos;, &apos;&apos;), 3, 99),
+            IF(
+                AND(
+                    LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &apos; &apos;, &apos;&apos;), 2) = &apos;47&apos;,
+                    LEN(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &apos; &apos;, &apos;&apos;)) = 10
+                ),
+                &apos;+&apos; &amp; SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &apos; &apos;, &apos;&apos;),
+                SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &apos; &apos;, &apos;&apos;)
+            )
+        ),
+        21
+    )
 )</expression>
     </formulas>
     <formulas>
@@ -355,6 +373,12 @@ LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,
         <locationX>0</locationX>
         <locationY>0</locationY>
         <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Category__c</field>
             <value>
                 <stringValue>IPS</stringValue>
@@ -388,16 +412,15 @@ LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Create_Worktrail_0</name>
+        <name>Create_Worktrail1</name>
         <label>Create Worktrail</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>Redirect</targetReference>
+            <targetReference>update_WorkTrailName</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -481,15 +504,16 @@ LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,
         <object>Work_Trail__c</object>
     </recordCreates>
     <recordCreates>
-        <name>Create_Worktrail_0_0</name>
+        <name>Create_Worktrail_0</name>
         <label>Create Worktrail</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignRecordIdToReference>varWorkTrailId</assignRecordIdToReference>
         <connector>
-            <targetReference>update_WorkTrailName</targetReference>
+            <targetReference>Redirect</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Noe_gikk_galt</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -685,11 +709,27 @@ LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,
             <name>displayTitle</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>isExisting</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;Deltaker er allerede registrert med ett aktivt jobbspor.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -706,11 +746,27 @@ LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,
             <name>DisplayTxt2</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>displaytxt</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Du kan ikke opprette et jobbspor på denne personen grunnet konfidensialitet knyttet til bosted. &lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -730,6 +786,14 @@ LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,
             <name>DisplayTxt1</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>ips_participants_scn</name>
@@ -738,6 +802,14 @@ LEFT(SUBSTITUTE({!Get_RelatedPersonRecord.INT_KrrMobilePhone__c}, &quot; &quot;,
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;Fødselsnummer kan kun inneholde 11 numeriske verdier uten mellomrom og spesialtegn.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>AND(
@@ -764,11 +836,27 @@ LEN( {!ips_participants_scn}) == 11
             <name>displayTxtWarning</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>Errormessage</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Kunne ikke opprettes. Kontakt din administrator&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -788,11 +876,27 @@ LEN( {!ips_participants_scn}) == 11
             <name>displayTxtCreated</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>CreatedMessage</name>
             <fieldText>&lt;p&gt;Jobbspor har blitt opprettet&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -812,6 +916,14 @@ LEN( {!ips_participants_scn}) == 11
             <name>DisplayTxt3</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>Participant_Detail_Section1</name>
@@ -844,6 +956,14 @@ LEN( {!ips_participants_scn}) == 11
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <styleProperties>
+                        <verticalAlignment>
+                            <stringValue>top</stringValue>
+                        </verticalAlignment>
+                        <width>
+                            <stringValue>12</stringValue>
+                        </width>
+                    </styleProperties>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -860,6 +980,14 @@ LEN( {!ips_participants_scn}) == 11
                     <name>Name</name>
                     <fieldText>&lt;p&gt;&lt;strong&gt;Valgt Deltaker&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deltaker: {!Get_RelatedPersonRecord.CRM_FullName__c}&lt;/p&gt;&lt;p&gt;Personnummer: {!Get_RelatedPersonRecord.Name}&lt;/p&gt;&lt;p&gt;Alder: {!Get_RelatedPersonRecord.CRM_AgeNumber__c}&lt;/p&gt;</fieldText>
                     <fieldType>DisplayText</fieldType>
+                    <styleProperties>
+                        <verticalAlignment>
+                            <stringValue>top</stringValue>
+                        </verticalAlignment>
+                        <width>
+                            <stringValue>12</stringValue>
+                        </width>
+                    </styleProperties>
                 </fields>
                 <fields>
                     <name>Er_dette_riktig_deltaker</name>
@@ -871,6 +999,14 @@ LEN( {!ips_participants_scn}) == 11
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <styleProperties>
+                        <verticalAlignment>
+                            <stringValue>top</stringValue>
+                        </verticalAlignment>
+                        <width>
+                            <stringValue>12</stringValue>
+                        </width>
+                    </styleProperties>
                     <validationRule>
                         <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at dette er riktig deltaker.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                         <formulaExpression>{!Er_dette_riktig_deltaker}</formulaExpression>
@@ -886,6 +1022,14 @@ LEN( {!ips_participants_scn}) == 11
             </fields>
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>Behandlingsteam_Innsatsteam</name>
@@ -894,6 +1038,14 @@ LEN( {!ips_participants_scn}) == 11
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>IPS_nav_supervisor</name>
@@ -902,6 +1054,14 @@ LEN( {!ips_participants_scn}) == 11
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>IPS_referred_date</name>
@@ -911,6 +1071,14 @@ LEN( {!ips_participants_scn}) == 11
             <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;Henvist dato skal samsvare med vedtaksdato i Arena.&lt;/span&gt;&lt;/p&gt;</helpText>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -930,6 +1098,14 @@ LEN( {!ips_participants_scn}) == 11
             <name>displayTxtUserInformed</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>Er_bruker_infomert</name>
@@ -941,6 +1117,14 @@ LEN( {!ips_participants_scn}) == 11
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Du må verifisere at deltaker er informert.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Er_bruker_infomert}</formulaExpression>
@@ -977,6 +1161,14 @@ LEN( {!ips_participants_scn}) == 11
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -993,11 +1185,27 @@ LEN( {!ips_participants_scn}) == 11
             <name>DisplayTxt2Empty</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>displaytxtempty</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0); background-color: rgb(255, 255, 255);&quot;&gt;Det finnes ingen forekomst med dette fødselsnummer {!ips_participants_scn}.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1017,11 +1225,27 @@ LEN( {!ips_participants_scn}) == 11
             <name>displayTxtAlertAge</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!varTitle}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>displayUnderAge</name>
             <fieldText>&lt;p&gt;Du har registrert deltaker med en alder under 18 år.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>addedUnderAge</name>
@@ -1033,6 +1257,14 @@ LEN( {!ips_participants_scn}) == 11
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 17, 0);&quot;&gt;﻿Du må verifisere at skriftlig samtykke foreligger når deltaker er under 18 år&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!addedUnderAge}</formulaExpression>

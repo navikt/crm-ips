@@ -2,47 +2,6 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>61.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
-    <assignments>
-        <name>End_details_registered_date</name>
-        <label>End details registered date</label>
-        <locationX>50</locationX>
-        <locationY>458</locationY>
-        <assignmentItems>
-            <assignToReference>getWorkTrailValues.IPS_End_Details_Registered_Date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>TODAY</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>updateBasedOnUserInput</targetReference>
-        </connector>
-    </assignments>
-    <decisions>
-        <name>Is_end_details_registered_date_empty</name>
-        <label>Is end details registered date empty ?</label>
-        <locationX>182</locationX>
-        <locationY>350</locationY>
-        <defaultConnector>
-            <targetReference>updateBasedOnUserInput</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
-        <rules>
-            <name>Yes</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getWorkTrailValues.IPS_End_Details_Registered_Date__c</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>End_details_registered_date</targetReference>
-            </connector>
-            <label>Yes</label>
-        </rules>
-    </decisions>
     <description>Viser sluttdato, sluttårsak og detaljer når deltaker i jobbsporet blir satt til avsluttet.</description>
     <environments>Default</environments>
     <formulas>
@@ -75,7 +34,7 @@
         <description>Gets worktrail details</description>
         <name>getWorkTrailValues</name>
         <label>Get worktrail values</label>
-        <locationX>182</locationX>
+        <locationX>176</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -96,8 +55,8 @@
     <recordUpdates>
         <name>updateBasedOnUserInput</name>
         <label>Update based on userinput</label>
-        <locationX>182</locationX>
-        <locationY>650</locationY>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
         <connector>
             <targetReference>IPS_removes_any_manually_shared_records</targetReference>
         </connector>
@@ -110,13 +69,13 @@
     <screens>
         <name>displayInformationEnded</name>
         <label>displayInformationEnded</label>
-        <locationX>182</locationX>
+        <locationX>176</locationX>
         <locationY>242</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Is_end_details_registered_date_empty</targetReference>
+            <targetReference>updateBasedOnUserInput</targetReference>
         </connector>
         <fields>
             <name>displayInformationEndTitle</name>
@@ -131,24 +90,56 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>getWorkTrailValues.ips_End_Date__c</objectFieldReference>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>getWorkTrailValues.End_Cause__c</objectFieldReference>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>getWorkTrailValues.ips_Other_end_cases__c</objectFieldReference>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <nextOrFinishButtonLabel>Lagre</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
@@ -157,8 +148,8 @@
     <screens>
         <name>Error_display</name>
         <label>Error display</label>
-        <locationX>490</locationX>
-        <locationY>758</locationY>
+        <locationX>440</locationX>
+        <locationY>458</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -169,13 +160,21 @@
             <name>display_error_msg</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Det har oppstått en feil !&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(208, 82, 82);&quot;&gt;Vennligst meld feilen via porten.&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getWorkTrailValues</targetReference>
@@ -185,8 +184,8 @@
     <subflows>
         <name>Application_log</name>
         <label>Application log</label>
-        <locationX>490</locationX>
-        <locationY>866</locationY>
+        <locationX>440</locationX>
+        <locationY>566</locationY>
         <flowName>IPS_Subflow_Create_Application_Log</flowName>
         <inputAssignments>
             <name>applicationDomain</name>
@@ -216,8 +215,8 @@
     <subflows>
         <name>IPS_removes_any_manually_shared_records</name>
         <label>Removes any manually shared records</label>
-        <locationX>182</locationX>
-        <locationY>758</locationY>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
         <flowName>IPS_worktrail_subflow_delete_shared_records</flowName>
         <inputAssignments>
             <name>recordId</name>

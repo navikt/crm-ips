@@ -14,8 +14,7 @@ public class IPS_myWorkTrailControllerTest {
         Work_Trail__c trailIPS = new Work_Trail__c(
             ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
-            ips_Status__c = 'Working',
-            ips_Passive__c = false
+            ips_Status__c = 'Working'
         );
         insert trailIPS;
         String userId;
@@ -43,8 +42,7 @@ public class IPS_myWorkTrailControllerTest {
         Work_Trail__c trailIPS = new Work_Trail__c(
             ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
-            ips_Status__c = 'Working',
-            ips_Passive__c = false
+            ips_Status__c = 'Working'
         );
         insert trailIPS;
 
@@ -89,8 +87,7 @@ public class IPS_myWorkTrailControllerTest {
         Work_Trail__c trailIPS = new Work_Trail__c(
             ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
-            ips_Status__c = 'Working',
-            ips_Passive__c = false
+            ips_Status__c = 'Working'
         );
         insert trailIPS;
 
@@ -134,8 +131,7 @@ public class IPS_myWorkTrailControllerTest {
         Work_Trail__c trailIPS = new Work_Trail__c(
             ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
-            ips_Status__c = 'Working',
-            ips_Passive__c = false
+            ips_Status__c = 'Working'
         );
         insert trailIPS;
 
@@ -194,8 +190,7 @@ public class IPS_myWorkTrailControllerTest {
         Work_Trail__c trailIPS = new Work_Trail__c(
             ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
-            ips_Status__c = 'Working',
-            ips_Passive__c = false
+            ips_Status__c = 'Working'
         );
         insert trailIPS;
 
@@ -239,8 +234,7 @@ public class IPS_myWorkTrailControllerTest {
         Work_Trail__c trailIPS = new Work_Trail__c(
             ips_Participant__c = account.id,
             recordTypeId = recTypeIdIPS,
-            ips_Status__c = 'Working',
-            ips_Passive__c = false
+            ips_Status__c = 'Working'
         );
         insert trailIPS;
 

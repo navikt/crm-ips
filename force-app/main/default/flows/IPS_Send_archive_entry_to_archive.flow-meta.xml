@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Post_to_archive</name>
         <label>Post to archive</label>
-        <locationX>440</locationX>
+        <locationX>374</locationX>
         <locationY>276</locationY>
         <actionName>ArchiveHandler</actionName>
         <actionType>apex</actionType>
@@ -69,7 +69,7 @@
         <description>Flags the record as ready for deletion.</description>
         <name>Set_status_to_completed</name>
         <label>Set status to completed</label>
-        <locationX>176</locationX>
+        <locationX>242</locationX>
         <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>$Record.Status__c</assignToReference>
@@ -92,7 +92,7 @@
     <assignments>
         <name>Set_status_to_failed</name>
         <label>Set status to failed</label>
-        <locationX>968</locationX>
+        <locationX>770</locationX>
         <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>$Record.Status__c</assignToReference>
@@ -116,7 +116,7 @@
     <decisions>
         <name>Archived</name>
         <label>Archived ?</label>
-        <locationX>440</locationX>
+        <locationX>374</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -125,7 +125,7 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>archiveResponce</leftValueReference>
                 <operator>IsNull</operator>
@@ -138,6 +138,13 @@
                 <operator>IsBlank</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>archiveResponce</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>null</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -171,7 +178,7 @@
     <recordCreates>
         <name>Create_application_log</name>
         <label>Create application log</label>
-        <locationX>968</locationX>
+        <locationX>770</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>Set_status_to_failed</targetReference>
@@ -206,7 +213,7 @@
     <recordUpdates>
         <name>Update_archive_entry</name>
         <label>Update archive entry</label>
-        <locationX>176</locationX>
+        <locationX>242</locationX>
         <locationY>600</locationY>
         <inputReference>$Record</inputReference>
     </recordUpdates>
