@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Split_Selected_Values</name>
+        <label>Split Selected Values</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>IPS_SplitSelectedValues</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Create_Themes</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>selectedValues</name>
+            <value>
+                <elementReference>Choose_Work_Theme</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>IPS_SplitSelectedValues</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>themes</assignToReference>
+            <name>values</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <choices>
+        <name>Aktivitetogledelse</name>
+        <choiceText>Aktivitet og ledelse</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Aktivitet og ledelse</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Driftogmobilitet</name>
+        <choiceText>Drift og mobilitet</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Drift og mobilitet</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Kreativitetogmedia</name>
+        <choiceText>Kreativitet og media</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Kreativitet og media</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Kunnskapogutforskning</name>
+        <choiceText>Kunnskap og utforskning</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Kunnskap og utforskning</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Menneskerogservice</name>
+        <choiceText>Mennesker og service</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Mennesker og service</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Natur_og_dyr</name>
+        <choiceText>Natur og dyr</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Natur og dyr</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Naturogdyr</name>
+        <choiceText>Natur og dyr</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Natur og dyr</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Praktiskogtekniskarbeid</name>
+        <choiceText>Praktisk og teknisk arbeid</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Praktisk og teknisk arbeid</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Samfunnogverdier</name>
+        <choiceText>Samfunn og verdier</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Samfunn og verdier</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Strukturogproblemlosing</name>
+        <choiceText>Struktur og problemløsning</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Struktur og problemløsing</stringValue>
+        </value>
+    </choices>
+    <customProperties>
+        <name>ScreenProgressIndicator</name>
+        <value>
+            <stringValue>{&quot;location&quot;:&quot;top&quot;,&quot;type&quot;:&quot;simple&quot;}</stringValue>
+        </value>
+    </customProperties>
+    <environments>Default</environments>
+    <interviewLabel>CE - Occupational Theme {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>CE - Job Topic</label>
+    <loops>
+        <name>Create_Themes</name>
+        <label>Themes</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>themes</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Create_Work_Themes</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_Work_Themes</name>
+        <label>Create Work Theme</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Themes</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Main_Theme__c</field>
+            <value>
+                <elementReference>Create_Themes</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Create_Themes</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Get_Worktrail.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Work_Trail__c</field>
+            <value>
+                <elementReference>Get_Worktrail.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>CE_Work_Theme__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Worktrail</name>
+        <label>Get Worktrail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Chose_Work_Theme</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Work_Trail__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <screens>
+        <name>Chose_Work_Theme</name>
+        <label>Choose Work Theme</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Split_Selected_Values</targetReference>
+        </connector>
+        <fields>
+            <name>Choose_Work_Theme</name>
+            <choiceReferences>Aktivitetogledelse</choiceReferences>
+            <choiceReferences>Driftogmobilitet</choiceReferences>
+            <choiceReferences>Kreativitetogmedia</choiceReferences>
+            <choiceReferences>Praktiskogtekniskarbeid</choiceReferences>
+            <choiceReferences>Kunnskapogutforskning</choiceReferences>
+            <choiceReferences>Naturogdyr</choiceReferences>
+            <choiceReferences>Menneskerogservice</choiceReferences>
+            <choiceReferences>Strukturogproblemlosing</choiceReferences>
+            <choiceReferences>Samfunnogverdier</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Choose work theme</fieldText>
+            <fieldType>MultiSelectCheckboxes</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>bottom</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <nextOrFinishButtonLabel>Bekreft</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Worktrail</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>jobTopic</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>CE_Work_Theme__c</objectType>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>themes</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>themes2</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>workTheme</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>CE_Work_Theme__c</objectType>
+    </variables>
+    <variables>
+        <name>workThemes</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>CE_Work_Theme__c</objectType>
+    </variables>
+</Flow>
