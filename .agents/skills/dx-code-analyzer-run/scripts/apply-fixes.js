@@ -1,0 +1,127 @@
+#!/usr/bin/env node
+// Apply engine-provided auto-fixes to source files
+// Usage: node apply-fixes.js <path-to-results.json>
+// WARNING: This modifies files in place. Ensure you have backups or are using version control.
+
+const fs = require("fs");
+const path = require("path");
+
+if (process.argv.length < 3) {
+  console.error("Usage: node apply-fixes.js <results-file.json>");
+  process.exit(1);
+}
+
+const filePath = process.argv[2];
+const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+const runDir = data.runDir || "";
+
+// Fix targets are confined to the current working directory (the project being
+// fixed). loc.file and runDir come from the results JSON and are untrusted;
+// resolving each target against cwd and rejecting anything that escapes it
+// stops a crafted results file from writing arbitrary paths (e.g. /etc/passwd
+// or ../../outside-project).
+const baseDir = fs.realpathSync(process.cwd());
+
+function isOutside(base, target) {
+  const rel = path.relative(base, target);
+  return rel === "" || rel.startsWith("..") || path.isAbsolute(rel);
+}
+
+function safeResolve(candidate) {
+  if (typeof candidate !== "string" || !candidate) return null;
+  let rel = candidate;
+  // Engine output often uses absolute paths under the scan runDir; normalize
+  // those to project-relative before confinement.
+  if (runDir && rel.startsWith(runDir)) rel = rel.substring(runDir.length + 1);
+  const resolved = path.resolve(baseDir, rel);
+  // Lexical guard: rejects absolute paths and `..` traversal.
+  if (isOutside(baseDir, resolved)) return null;
+  // Symlink-aware guard: path.resolve/relative do not follow symlinks, so a
+  // symlinked path component (e.g. `link/victim` where `link` -> outside the
+  // tree) would pass the lexical check and let writeFileSync escape. Fix
+  // targets are read before being written, so the file exists — resolve its
+  // real path and re-check. Writing to the realpath also avoids following a
+  // symlink at write time. A missing target (realpathSync throws) is skipped.
+  let real;
+  try {
+    real = fs.realpathSync(resolved);
+  } catch {
+    return null;
+  }
+  if (isOutside(baseDir, real)) return null;
+  return real;
+}
+
+// Group fixes by confined, absolute file path
+const fileFixesMap = new Map();
+let fixesSkippedUnsafe = 0;
+data.violations.forEach(v => {
+  if (v.fixes && v.fixes.length > 0) {
+    v.fixes.forEach(fix => {
+      const loc = fix.location;
+      const filePath = safeResolve(loc.file);
+      if (!filePath) {
+        fixesSkippedUnsafe++;
+        return;
+      }
+
+      if (!fileFixesMap.has(filePath)) fileFixesMap.set(filePath, []);
+      fileFixesMap.get(filePath).push({
+        startLine: loc.startLine,
+        startColumn: loc.startColumn,
+        endLine: loc.endLine,
+        endColumn: loc.endColumn,
+        fixedCode: fix.fixedCode,
+        rule: v.rule
+      });
+    });
+  }
+});
+
+// Sort fixes by line/column (descending) to apply bottom-up
+// This ensures earlier fixes don't shift line numbers for later ones
+fileFixesMap.forEach((fixes, file) => {
+  fixes.sort((a, b) => {
+    if (b.startLine !== a.startLine) return b.startLine - a.startLine;
+    return b.startColumn - a.startColumn;
+  });
+});
+
+// Apply fixes to each file
+let filesModified = 0;
+let fixesApplied = 0;
+let fixesSkipped = 0;
+
+fileFixesMap.forEach((fixes, filePath) => {
+  try {
+    const content = fs.readFileSync(filePath, "utf8");
+    const lines = content.split("\n");
+
+    fixes.forEach(fix => {
+      const startIdx = fix.startLine - 1;
+      const endIdx = fix.endLine - 1;
+      if (startIdx < 0 || endIdx >= lines.length || startIdx > endIdx) {
+        fixesSkipped++;
+        return;
+      }
+
+      // Handle multi-line replacements: splice out old lines, insert new content
+      const firstLine = lines[startIdx];
+      const lastLine = lines[endIdx];
+      const before = firstLine.substring(0, fix.startColumn - 1);
+      const after = lastLine.substring(fix.endColumn - 1);
+      const replacement = before + fix.fixedCode + after;
+
+      // Remove the spanned lines and insert the replacement
+      lines.splice(startIdx, endIdx - startIdx + 1, replacement);
+      fixesApplied++;
+    });
+
+    fs.writeFileSync(filePath, lines.join("\n"), "utf8");
+    filesModified++;
+  } catch (err) {
+    console.error("Error fixing " + filePath + ": " + err.message);
+  }
+});
+
+console.log(JSON.stringify({ success: true, filesModified, fixesApplied, fixesSkipped, fixesSkippedUnsafe, totalFixableFiles: fileFixesMap.size }));
