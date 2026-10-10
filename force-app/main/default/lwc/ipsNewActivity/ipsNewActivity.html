@@ -1,0 +1,104 @@
+<template>
+    <lightning-quick-action-panel header={headerLabel}>
+        <div class="slds-m-bottom_small">
+            <div class="slds-form-element">
+                <span class="slds-form-element__label">Jobbspor</span>
+                <div class="slds-form-element__control">
+                    <div class="work-trail-value" role="group" aria-label="Gjeldende jobbspor">
+                        <lightning-icon
+                            icon-name="utility:record_lookup"
+                            size="x-small"
+                            alternative-text=""
+                            class="work-trail-icon"
+                        ></lightning-icon>
+                        <span class="work-trail-name">{workTrailName}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <template lwc:if={isLoading}>
+            <div class="slds-is-relative slds-p-around_large">
+                <lightning-spinner alternative-text="Henter aktiviteter" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template lwc:if={errorMessage}>
+            <div class="slds-text-color_error" role="alert">{errorMessage}</div>
+        </template>
+
+        <template lwc:if={isEmpty}>
+            <p role="status">Det finnes ingen aktiviteter du kan opprette på dette jobbsporet.</p>
+        </template>
+
+        <template lwc:if={isGroupStep}>
+            <ul class="activity-list" aria-label="Aktiviteter">
+                <template for:each={menuItems} for:item="item">
+                    <li key={item.key}>
+                        <button
+                            type="button"
+                            class="activity-button slds-button slds-button_neutral"
+                            data-key={item.key}
+                            onclick={handleItemClick}
+                        >
+                            <lightning-icon
+                                icon-name={item.icon}
+                                size="x-small"
+                                class="slds-m-right_x-small"
+                            ></lightning-icon>
+                            {item.label}
+                        </button>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <template lwc:if={isOptionStep}>
+            <p class="slds-m-bottom_small">{stepDescription}</p>
+            <ul class="activity-list" aria-label={selectedGroup.label}>
+                <template for:each={selectedGroup.options} for:item="option">
+                    <li key={option.key}>
+                        <button
+                            type="button"
+                            class="activity-button slds-button slds-button_neutral"
+                            data-key={option.key}
+                            onclick={handleOptionClick}
+                        >
+                            <lightning-icon
+                                icon-name={option.icon}
+                                size="x-small"
+                                class="slds-m-right_x-small"
+                            ></lightning-icon>
+                            {option.label}
+                        </button>
+                        <template lwc:if={option.helpText}>
+                            <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small">
+                                {option.helpText}
+                            </p>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <template lwc:if={isFlowStep}>
+            <lightning-flow
+                flow-api-name={selectedFlow.flowApiName}
+                flow-input-variables={flowInputVariables}
+                onstatuschange={handleFlowStatusChange}
+            ></lightning-flow>
+        </template>
+
+        <div slot="footer">
+            <template lwc:if={showBackButton}>
+                <lightning-button
+                    class="back-button slds-m-right_x-small"
+                    label="Tilbake"
+                    icon-name="utility:back"
+                    onclick={handleBack}
+                ></lightning-button>
+            </template>
+            <lightning-button class="cancel-button" label="Avbryt" onclick={handleCancel}></lightning-button>
+        </div>
+    </lightning-quick-action-panel>
+</template>
