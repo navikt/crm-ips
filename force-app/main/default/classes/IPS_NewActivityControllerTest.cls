@@ -13,6 +13,21 @@ private class IPS_NewActivityControllerTest {
 
         Work_Trail__c ipsTrail = IPS_TestDataFactory.createJobbspor(participantId);
         insert new List<Work_Trail__c>{ ceTrail, ipsTrail };
+
+        // Record type visibility for the CE activities only comes from CE_management, so the running user needs it.
+        Id userId = UserInfo.getUserId();
+        PermissionSet ceManagement = [SELECT Id FROM PermissionSet WHERE Name = 'CE_management' LIMIT 1];
+        if (
+            [
+                SELECT COUNT()
+                FROM PermissionSetAssignment
+                WHERE AssigneeId = :userId AND PermissionSetId = :ceManagement.Id
+            ] == 0
+        ) {
+            System.runAs(new User(Id = userId)) {
+                insert new PermissionSetAssignment(AssigneeId = userId, PermissionSetId = ceManagement.Id);
+            }
+        }
     }
 
     private static Id getTrailId(String recordTypeName) {
@@ -87,7 +102,7 @@ private class IPS_NewActivityControllerTest {
         Assert.isNotNull(opportunity, 'Ny mulighet skal være tilgjengelig på CE-jobbspor');
         Assert.areEqual(1, opportunity.options.size(), 'Ny mulighet skal ha ett valg');
         IPS_NewActivityController.MenuOption option = opportunity.options[0];
-        Assert.areEqual('Ny mulighet', opportunity.label, 'Gruppen skal vise Ny mulighet');
+        Assert.areEqual('Mulighet', opportunity.label, 'Gruppen skal vise Mulighet');
         Assert.areEqual('Ny mulighet', option.label, 'Knappen skal vise Ny mulighet');
         Assert.areEqual('CE_New_Opportunity', option.flowApiName, 'Valget skal åpne skjermflyten');
         Assert.areEqual('utility:light_bulb', option.icon, 'Valget skal ha et ikon');
