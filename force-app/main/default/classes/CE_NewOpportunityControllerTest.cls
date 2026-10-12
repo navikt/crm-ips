@@ -5,6 +5,7 @@ private class CE_NewOpportunityControllerTest {
 
     @TestSetup
     static void makeData() {
+        IPS_TestDataFactory.createAdminUserWithPermissionSet('Ce', 'Manager', 'CE_management');
         insert IPS_TestDataFactory.createPerson();
         Id participantId = [SELECT CRM_Account__c FROM Person__c WHERE Name = '12069755555'].CRM_Account__c;
         Id ceRecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName()
@@ -55,10 +56,30 @@ private class CE_NewOpportunityControllerTest {
         return request;
     }
 
+    private static User getCeUser() {
+        return [SELECT Id FROM User WHERE Username LIKE 'Ce.Manager.%' LIMIT 1];
+    }
+
+    private static List<CE_NewOpportunityController.ThemeOption> getThemesAsCe(Id recordId) {
+        List<CE_NewOpportunityController.ThemeOption> themes;
+        System.runAs(getCeUser()) {
+            themes = CE_NewOpportunityController.getRegisteredThemes(recordId);
+        }
+        return themes;
+    }
+
     private static CE_NewOpportunityController.CreateResult run(CE_NewOpportunityController.CreateRequest request) {
         return CE_NewOpportunityController.createOpportunity(
             new List<CE_NewOpportunityController.CreateRequest>{ request }
         )[0];
+    }
+
+    private static CE_NewOpportunityController.CreateResult runAsCe(CE_NewOpportunityController.CreateRequest request) {
+        CE_NewOpportunityController.CreateResult result;
+        System.runAs(getCeUser()) {
+            result = run(request);
+        }
+        return result;
     }
 
     @IsTest
@@ -66,9 +87,7 @@ private class CE_NewOpportunityControllerTest {
         Work_Trail__c trail = getTrail();
 
         Test.startTest();
-        List<CE_NewOpportunityController.ThemeOption> themes = CE_NewOpportunityController.getRegisteredThemes(
-            trail.Id
-        );
+        List<CE_NewOpportunityController.ThemeOption> themes = getThemesAsCe(trail.Id);
         Test.stopTest();
 
         Assert.areEqual(1, themes.size(), 'Bare hovedtema på dette jobbsporet skal vises');
@@ -84,7 +103,7 @@ private class CE_NewOpportunityControllerTest {
 
         Test.startTest();
         try {
-            CE_NewOpportunityController.getRegisteredThemes(themeId);
+            getThemesAsCe(themeId);
         } catch (AuraHandledException e) {
             thrown = true;
         }
@@ -104,7 +123,7 @@ private class CE_NewOpportunityControllerTest {
         request.accountId = employer.Id;
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = run(request);
+        CE_NewOpportunityController.CreateResult result = runAsCe(request);
         Test.stopTest();
 
         Assert.isNull(result.errorMessage, 'Lagringen skal lykkes');
@@ -155,7 +174,7 @@ private class CE_NewOpportunityControllerTest {
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = run(request(trail.Id, theme.Id, null));
+        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id, null));
         Test.stopTest();
 
         Assert.isNull(result.errorMessage, 'Valgfrie felt skal kunne stå tomme');
@@ -179,7 +198,7 @@ private class CE_NewOpportunityControllerTest {
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = run(request(trail.Id, theme.Id, 'Ledelse'));
+        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id, 'Ledelse'));
         update new CE_Work_Theme__c(Id = theme.Id, Main_Theme__c = OTHER_MAIN_THEME, Sub_Theme__c = 'Transport');
         Test.stopTest();
 
@@ -199,7 +218,7 @@ private class CE_NewOpportunityControllerTest {
         CE_Work_Theme__c otherTheme = getTheme(OTHER_MAIN_THEME);
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = run(request(trail.Id, otherTheme.Id, 'Transport'));
+        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, otherTheme.Id, 'Transport'));
         Test.stopTest();
 
         Assert.areEqual(CE_NewOpportunityController.ERROR_THEME, result.errorMessage, 'Feil jobbspor skal avvises');
@@ -214,7 +233,7 @@ private class CE_NewOpportunityControllerTest {
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = run(request(trail.Id, theme.Id, 'Ledelse;Transport'));
+        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id, 'Ledelse;Transport'));
         Test.stopTest();
 
         Assert.areEqual(
@@ -261,7 +280,7 @@ private class CE_NewOpportunityControllerTest {
         request.description = 'x'.repeat(300);
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = run(request);
+        CE_NewOpportunityController.CreateResult result = runAsCe(request);
         Test.stopTest();
 
         Assert.areEqual(CE_NewOpportunityController.ERROR_SAVE, result.errorMessage, 'Lagringsfeil skal vises');

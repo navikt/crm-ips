@@ -14,20 +14,16 @@ private class IPS_NewActivityControllerTest {
         Work_Trail__c ipsTrail = IPS_TestDataFactory.createJobbspor(participantId);
         insert new List<Work_Trail__c>{ ceTrail, ipsTrail };
 
-        // Record type visibility for the CE activities only comes from CE_management, so the running user needs it.
-        Id userId = UserInfo.getUserId();
-        PermissionSet ceManagement = [SELECT Id FROM PermissionSet WHERE Name = 'CE_management' LIMIT 1];
-        if (
-            [
-                SELECT COUNT()
-                FROM PermissionSetAssignment
-                WHERE AssigneeId = :userId AND PermissionSetId = :ceManagement.Id
-            ] == 0
-        ) {
-            System.runAs(new User(Id = userId)) {
-                insert new PermissionSetAssignment(AssigneeId = userId, PermissionSetId = ceManagement.Id);
-            }
+        IPS_TestDataFactory.createAdminUserWithPermissionSet('Ce', 'Manager', 'CE_management');
+    }
+
+    private static List<IPS_NewActivityController.MenuGroup> getMenuAsCe(Id recordId) {
+        User ceUser = [SELECT Id FROM User WHERE Username LIKE 'Ce.Manager.%' LIMIT 1];
+        List<IPS_NewActivityController.MenuGroup> groups;
+        System.runAs(ceUser) {
+            groups = IPS_NewActivityController.getMenu(recordId);
         }
+        return groups;
     }
 
     private static Id getTrailId(String recordTypeName) {
@@ -49,7 +45,7 @@ private class IPS_NewActivityControllerTest {
         Id trailId = getTrailId('CE_Customized_Employment');
 
         Test.startTest();
-        List<IPS_NewActivityController.MenuGroup> groups = IPS_NewActivityController.getMenu(trailId);
+        List<IPS_NewActivityController.MenuGroup> groups = getMenuAsCe(trailId);
         Test.stopTest();
 
         Map<String, IPS_NewActivityController.MenuGroup> groupsByKey = byKey(groups);
@@ -93,9 +89,7 @@ private class IPS_NewActivityControllerTest {
     @IsTest
     static void getMenu_ceWorkTrail_includesOpportunityScreenFlow() {
         Test.startTest();
-        List<IPS_NewActivityController.MenuGroup> groups = IPS_NewActivityController.getMenu(
-            getTrailId('CE_Customized_Employment')
-        );
+        List<IPS_NewActivityController.MenuGroup> groups = getMenuAsCe(getTrailId('CE_Customized_Employment'));
         Test.stopTest();
 
         IPS_NewActivityController.MenuGroup opportunity = byKey(groups).get('Opportunity');
@@ -119,7 +113,7 @@ private class IPS_NewActivityControllerTest {
         update trail;
 
         Test.startTest();
-        List<IPS_NewActivityController.MenuGroup> groups = IPS_NewActivityController.getMenu(trail.Id);
+        List<IPS_NewActivityController.MenuGroup> groups = getMenuAsCe(trail.Id);
         Test.stopTest();
 
         List<IPS_NewActivityController.MenuOption> meetings = byKey(groups).get('Meeting').options;
@@ -134,7 +128,7 @@ private class IPS_NewActivityControllerTest {
         Id trailId = getTrailId('IPS');
 
         Test.startTest();
-        List<IPS_NewActivityController.MenuGroup> groups = IPS_NewActivityController.getMenu(trailId);
+        List<IPS_NewActivityController.MenuGroup> groups = getMenuAsCe(trailId);
         Test.stopTest();
 
         Assert.isTrue(groups.isEmpty(), 'IPS-jobbspor skal ikke ha meny ennå');
@@ -145,8 +139,8 @@ private class IPS_NewActivityControllerTest {
         Id accountId = [SELECT CRM_Account__c FROM Person__c LIMIT 1].CRM_Account__c;
 
         Test.startTest();
-        List<IPS_NewActivityController.MenuGroup> nullGroups = IPS_NewActivityController.getMenu(null);
-        List<IPS_NewActivityController.MenuGroup> accountGroups = IPS_NewActivityController.getMenu(accountId);
+        List<IPS_NewActivityController.MenuGroup> nullGroups = getMenuAsCe(null);
+        List<IPS_NewActivityController.MenuGroup> accountGroups = getMenuAsCe(accountId);
         Test.stopTest();
 
         Assert.isTrue(nullGroups.isEmpty(), 'Tom recordId skal gi tom meny');
