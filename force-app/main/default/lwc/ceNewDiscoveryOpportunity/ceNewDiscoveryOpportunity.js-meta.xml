@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>CE - Ny mulighet</masterLabel>
+    <description>Skjema i flyten CE_New_Opportunity. Velg et registrert hovedtema, undertemaer og opplysninger om muligheten.</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="recordId" type="String" label="Jobbspor-ID" role="inputOnly" required="true" />
+            <property name="themeId" type="String" label="Hovedtema-ID" />
+            <property name="subThemes" type="String" label="Undertemaer (semikolonseparert)" />
+            <property name="opportunityName" type="String" label="Navn på muligheten" />
+            <property name="description" type="String" label="Beskrivelse" />
+            <property name="status" type="String" label="Status" />
+            <property name="accountId" type="String" label="Arbeidsgiver-ID" />
+            <property name="errorMessage" type="String" label="Feilmelding fra lagring" role="inputOnly" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
