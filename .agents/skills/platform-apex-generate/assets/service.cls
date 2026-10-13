@@ -33,7 +33,7 @@ public with sharing class {SObject}Service {
 
         // DML
         try {
-            update records;
+            Database.update(records, AccessLevel.USER_MODE);
         } catch (DmlException e) {
             throw new {SObject}ServiceException(
                 'Failed to update {SObject} records: ' + e.getMessage()
