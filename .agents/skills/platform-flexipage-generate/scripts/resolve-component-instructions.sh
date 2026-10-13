@@ -27,8 +27,11 @@ if [ -z "$COMPONENT" ]; then
   exit 1
 fi
 
-# Derive filename: replace ':' with '_', append .md
-FILENAME=$(echo "$COMPONENT" | sed 's/:/_/g').md
+if ! [[ "$COMPONENT" =~ ^[A-Za-z0-9_]+:[A-Za-z0-9_]+$ ]]; then
+  echo "Invalid componentDefinition: $COMPONENT" >&2
+  exit 1
+fi
+FILENAME="${COMPONENT/:/_}.md"
 
 # Resolve path relative to the skill directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
