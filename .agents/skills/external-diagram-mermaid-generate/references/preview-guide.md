@@ -14,7 +14,7 @@ After generating the diagram, offer the user a localhost preview for real-time i
 2. Start preview server (runs in background):
    ```bash
    # From installed skill folder:
-   python ../scripts/mermaid_preview.py start --file /tmp/mermaid-preview.mmd
+   python scripts/mermaid_preview.py start --file /tmp/mermaid-preview.mmd
    ```
 
 3. Provide URL to user:
