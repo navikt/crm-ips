@@ -1,0 +1,116 @@
+<template>
+    <template lwc:if={isLoading}>
+        <div class="slds-is-relative slds-p-around_large">
+            <lightning-spinner alternative-text="Laster hovedtemaer" size="small"></lightning-spinner>
+        </div>
+    </template>
+
+    <template lwc:elseif={loadError}>
+        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert" data-id="load-error">
+            <p>{loadError}</p>
+        </div>
+    </template>
+
+    <template lwc:elseif={hasNoThemes}>
+        <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert" data-id="no-themes">
+            <div>
+                <p class="slds-text-heading_small">Jobbsporet har ingen registrerte hovedtemaer</p>
+                <p>Du må registrere et hovedtema på jobbsporet før du kan opprette en mulighet.</p>
+            </div>
+        </div>
+    </template>
+
+    <template lwc:elseif={showForm}>
+        <template lwc:if={showServerError}>
+            <div
+                class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small"
+                role="alert"
+                data-id="server-error"
+            >
+                <p>{errorMessage}</p>
+            </div>
+        </template>
+
+        <lightning-combobox
+            data-id="theme"
+            name="theme"
+            label="Hovedtema"
+            placeholder="Velg et registrert hovedtema"
+            options={themeOptions}
+            value={selectedThemeId}
+            required
+            message-when-value-missing="Velg et hovedtema."
+            onchange={handleThemeChange}
+        ></lightning-combobox>
+
+        <template lwc:if={hasSelectedTheme}>
+            <div class="slds-m-top_small">
+                <template lwc:if={hasSubThemeOptions}>
+                    <lightning-checkbox-group
+                        data-id="sub-themes"
+                        name="subThemes"
+                        label="Undertemaer"
+                        options={subThemeOptions}
+                        value={selectedSubThemes}
+                        onchange={handleSubThemesChange}
+                    ></lightning-checkbox-group>
+                    <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small" data-id="sub-theme-help">
+                        {subThemeHelpText}
+                    </p>
+                </template>
+                <template lwc:else>
+                    <p class="slds-text-body_regular" data-id="no-sub-themes">
+                        Det finnes ingen undertemaer for dette hovedtemaet.
+                    </p>
+                </template>
+                <template lwc:if={hasRemovedSubThemes}>
+                    <p class="slds-text-body_small slds-m-top_xx-small" role="status" data-id="removed-sub-themes">
+                        {removedSubThemesText}
+                    </p>
+                </template>
+            </div>
+
+            <lightning-input
+                class="slds-m-top_small"
+                data-id="name"
+                name="opportunityName"
+                label="Navn på muligheten"
+                value={nameValue}
+                max-length={nameMaxLength}
+                required
+                message-when-value-missing="Skriv inn navn på muligheten."
+                onchange={handleNameChange}
+            ></lightning-input>
+
+            <lightning-textarea
+                class="slds-m-top_small"
+                data-id="description"
+                name="description"
+                label="Beskrivelse"
+                value={descriptionValue}
+                max-length={textMaxLength}
+                onchange={handleDescriptionChange}
+            ></lightning-textarea>
+
+            <lightning-input
+                class="slds-m-top_small"
+                data-id="status"
+                name="status"
+                label="Status"
+                value={statusValue}
+                max-length={textMaxLength}
+                onchange={handleStatusChange}
+            ></lightning-input>
+
+            <lightning-record-picker
+                class="slds-m-top_small"
+                data-id="account"
+                label="Arbeidsgiver"
+                placeholder="Søk etter arbeidsgiver"
+                object-api-name="Account"
+                value={accountValue}
+                onchange={handleAccountChange}
+            ></lightning-record-picker>
+        </template>
+    </template>
+</template>
