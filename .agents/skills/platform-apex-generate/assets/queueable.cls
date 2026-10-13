@@ -57,6 +57,7 @@ public with sharing class {ClassName} implements Queueable /*, Database.AllowsCa
 
         } catch (Exception e) {
             handleError(context.getJobId(), e);
+            throw e;
         }
     }
 
