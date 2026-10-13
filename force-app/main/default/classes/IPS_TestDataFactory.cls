@@ -30,6 +30,24 @@ public with sharing class IPS_TestDataFactory {
         return createUserWithProfile(firstname, lastname, 'System administrator');
     }
 
+    /**
+     * @description Creates an admin user that has the given permission set, so tests can run with the permissions of a real app user
+     * @param firstname First name of the user
+     * @param lastname Last name of the user
+     * @param permissionSetName The developer name of the permission set to assign
+     * @return The inserted user
+     **/
+    public static User createAdminUserWithPermissionSet(String firstname, String lastname, String permissionSetName) {
+        User user = getAdminUser(firstname, lastname);
+        Id permissionSetId = [SELECT Id FROM PermissionSet WHERE Name = :permissionSetName LIMIT 1].Id;
+        // Setup objects and regular objects can not be mixed in one transaction without runAs
+        System.runAs(new User(Id = UserInfo.getUserId())) {
+            insert user;
+            insert new PermissionSetAssignment(AssigneeId = user.Id, PermissionSetId = permissionSetId);
+        }
+        return user;
+    }
+
     private static User createUserWithProfile(String firstname, String lastname, String profileName) {
         Profile profile = [SELECT Id, UserLicense.Name FROM Profile WHERE Name = :profileName LIMIT 1];
         String uniqueSuffix = String.valueOf(Datetime.now().getTime());
