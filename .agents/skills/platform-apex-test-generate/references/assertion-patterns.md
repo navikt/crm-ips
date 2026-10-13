@@ -79,7 +79,7 @@ for (Database.SaveResult sr : results) {
 
 Database.SaveResult sr = Database.insert(invalidAccount, false);
 Assert.isFalse(sr.isSuccess(), 'Insert should fail for invalid data');
-Assert.isTrue(sr.getErrors()[0].getMessage().contains('REQUIRED_FIELD_MISSING'),
+Assert.areEqual(StatusCode.REQUIRED_FIELD_MISSING, sr.getErrors()[0].getStatusCode(),
     'Error should indicate missing required field');
 ```
 
