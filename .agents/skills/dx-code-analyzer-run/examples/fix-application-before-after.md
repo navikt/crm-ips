@@ -66,7 +66,12 @@ export function processRecords(records) {
 
 **Command:**
 ```bash
-node <skill_dir>/scripts/apply-fixes.js ./results.json
+node <skill_dir>/scripts/apply-fixes.js ./results.json > ./applied-fixes.json
+```
+
+**Summary command:**
+```bash
+node <skill_dir>/scripts/summarize-fixes.js ./applied-fixes.json
 ```
 
 **Output:**
@@ -75,7 +80,14 @@ node <skill_dir>/scripts/apply-fixes.js ./results.json
   "success": true,
   "filesModified": 15,
   "fixesApplied": 67,
-  "fixesSkipped": 0
+  "fixesSkipped": 0,
+  "appliedFixesByRule": {
+    "no-var": 42,
+    "prefer-const": 18,
+    "@salesforce-ux/slds/no-hardcoded-values-slds2": 5,
+    "no-extra-boolean-cast": 2
+  },
+  "appliedFixesBySeverity": { "1": 0, "2": 0, "3": 62, "4": 5, "5": 0 }
 }
 ```
 

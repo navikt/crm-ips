@@ -72,7 +72,8 @@ data.violations.forEach(v => {
         endLine: loc.endLine,
         endColumn: loc.endColumn,
         fixedCode: fix.fixedCode,
-        rule: v.rule
+        rule: v.rule,
+        severity: v.severity
       });
     });
   }
@@ -91,11 +92,16 @@ fileFixesMap.forEach((fixes, file) => {
 let filesModified = 0;
 let fixesApplied = 0;
 let fixesSkipped = 0;
+const appliedFixesByRule = {};
+const appliedFixesBySeverity = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
 fileFixesMap.forEach((fixes, filePath) => {
   try {
     const content = fs.readFileSync(filePath, "utf8");
     const lines = content.split("\n");
+    const fileFixesByRule = {};
+    const fileFixesBySeverity = {};
+    let fileFixesApplied = 0;
 
     fixes.forEach(fix => {
       const startIdx = fix.startLine - 1;
@@ -114,14 +120,23 @@ fileFixesMap.forEach((fixes, filePath) => {
 
       // Remove the spanned lines and insert the replacement
       lines.splice(startIdx, endIdx - startIdx + 1, replacement);
-      fixesApplied++;
+      fileFixesApplied++;
+      fileFixesByRule[fix.rule] = (fileFixesByRule[fix.rule] || 0) + 1;
+      fileFixesBySeverity[fix.severity] = (fileFixesBySeverity[fix.severity] || 0) + 1;
     });
 
     fs.writeFileSync(filePath, lines.join("\n"), "utf8");
     filesModified++;
+    fixesApplied += fileFixesApplied;
+    Object.entries(fileFixesByRule).forEach(([rule, count]) => {
+      appliedFixesByRule[rule] = (appliedFixesByRule[rule] || 0) + count;
+    });
+    Object.entries(fileFixesBySeverity).forEach(([severity, count]) => {
+      appliedFixesBySeverity[severity] += count;
+    });
   } catch (err) {
     console.error("Error fixing " + filePath + ": " + err.message);
   }
 });
 
-console.log(JSON.stringify({ success: true, filesModified, fixesApplied, fixesSkipped, fixesSkippedUnsafe, totalFixableFiles: fileFixesMap.size }));
+console.log(JSON.stringify({ success: true, filesModified, fixesApplied, fixesSkipped, fixesSkippedUnsafe, totalFixableFiles: fileFixesMap.size, appliedFixesByRule, appliedFixesBySeverity }));

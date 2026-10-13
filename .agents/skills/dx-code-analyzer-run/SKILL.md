@@ -67,10 +67,10 @@ node "<skill_dir>/scripts/describe-rule.js" "ApexCRUDViolation" --engine pmd
 node "<skill_dir>/scripts/discover-fixes.js" "./code-analyzer-results-TIMESTAMP.json"
 
 # Apply fixes (after user confirms)
-node "<skill_dir>/scripts/apply-fixes.js" "./code-analyzer-results-TIMESTAMP.json"
+node "<skill_dir>/scripts/apply-fixes.js" "./code-analyzer-results-TIMESTAMP.json" > "./code-analyzer-applied-fixes-TIMESTAMP.json"
 
 # Summarize applied fixes
-node "<skill_dir>/scripts/summarize-fixes.js" "./code-analyzer-results-TIMESTAMP.json"
+node "<skill_dir>/scripts/summarize-fixes.js" "./code-analyzer-applied-fixes-TIMESTAMP.json"
 
 # Filter vendor files (jQuery, Bootstrap, *.min.js) before applying fixes
 node "<skill_dir>/scripts/filter-violations.js" "./code-analyzer-results-TIMESTAMP.json" "./code-analyzer-results-TIMESTAMP-filtered.json" --report
@@ -334,14 +334,14 @@ Would you like me to apply these fixes? (yes / no / select specific rules)
 ### 6.4 Apply
 
 ```bash
-node "<skill_dir>/scripts/apply-fixes.js" "./code-analyzer-results-TIMESTAMP.json"
+node "<skill_dir>/scripts/apply-fixes.js" "./code-analyzer-results-TIMESTAMP.json" > "./code-analyzer-applied-fixes-TIMESTAMP.json"
 ```
-(Filtered file if 6.1 created one.)
+(Use the filtered file if 6.1 created one.)
 
 ### 6.5 Summarize (MANDATORY immediately after 6.4)
 
 ```bash
-node "<skill_dir>/scripts/summarize-fixes.js" "./code-analyzer-results-TIMESTAMP.json"
+node "<skill_dir>/scripts/summarize-fixes.js" "./code-analyzer-applied-fixes-TIMESTAMP.json"
 ```
 
 Then present:
@@ -366,7 +366,7 @@ Want me to re-run the scan to verify the fixes resolved the violations?
 ### 6.6 — Handling the user's choice
 - **Decline / "no":** skip apply, skip summarize. Do not re-scan.
 - **"Select rules":** filter the discovery list to those rules and pass the filtered file to `apply-fixes.js`.
-- **"All" / "yes":** run `apply-fixes.js` against the full (or vendor-filtered) results file as-is.
+- **"All" / "yes":** run `apply-fixes.js` against the full (or vendor-filtered) results file as-is, redirecting its JSON output for Step 6.5.
 
 ### 6.7 — Optional re-scan for verification
 If the user accepts the offer in 6.5, re-run the same scan with a **new timestamp** (do not overwrite the original). Compare violation counts before vs. after and show the delta — fixes that resolved cleanly will drop out; remaining violations either need manual remediation or are unrelated.

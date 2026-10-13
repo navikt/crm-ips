@@ -61,7 +61,10 @@ node "<skill_dir>/scripts/filter-violations.js" \
   --report
 
 # 3. Apply fixes to filtered results
-node "<skill_dir>/scripts/apply-fixes.js" "./results-project.json"
+node "<skill_dir>/scripts/apply-fixes.js" "./results-project.json" > "./applied-fixes.json"
+
+# 4. Summarize fixes actually applied
+node "<skill_dir>/scripts/summarize-fixes.js" "./applied-fixes.json"
 ```
 
 **Pros:**
