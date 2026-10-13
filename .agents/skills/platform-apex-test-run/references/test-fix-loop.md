@@ -33,17 +33,17 @@ Claude:
 
 ## Failure Analysis Decision Tree
 
-| Error Type | Root Cause | Auto-Fix Strategy |
-|------------|------------|-------------------|
-| `System.AssertException` | Wrong expected value or logic bug | Analyze assertion, check if test or code is wrong |
-| `System.NullPointerException` | Missing null check or test data | Add null safety or fix test data setup |
-| `System.DmlException` | Validation rule, required field, trigger | Check org config, add required fields to test data |
-| `System.LimitException` | Governor limit hit | Refactor to use bulkified patterns |
-| `System.QueryException` | No rows returned | Add test data or adjust query |
-| `System.TypeException` | Type mismatch | Fix type casting or data format |
+| Error Type                    | Root Cause                               | Auto-Fix Strategy                                  |
+| ----------------------------- | ---------------------------------------- | -------------------------------------------------- |
+| `System.AssertException`      | Wrong expected value or logic bug        | Analyze assertion, check if test or code is wrong  |
+| `System.NullPointerException` | Missing null check or test data          | Add null safety or fix test data setup             |
+| `System.DmlException`         | Validation rule, required field, trigger | Check org config, add required fields to test data |
+| `System.LimitException`       | Governor limit hit                       | Refactor to use bulkified patterns                 |
+| `System.QueryException`       | No rows returned                         | Add test data or adjust query                      |
+| `System.TypeException`        | Type mismatch                            | Fix type casting or data format                    |
 
 ## Auto-Fix Command
 
 ```text
-Skill(skill="sf-apex", args="Fix failing test [TestClassName].[methodName] - Error: [error message]")
+Skill(skill="platform-apex-generate", args="Fix failing test [TestClassName].[methodName] - Error: [error message]")
 ```
