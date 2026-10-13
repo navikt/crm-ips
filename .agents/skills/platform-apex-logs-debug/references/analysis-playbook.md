@@ -47,7 +47,7 @@ Prefer fixes that are:
 
 ## 6. Loop with adjacent skills
 
-- use `sf-apex` for code fixes
+- use `platform-apex-generate` for code fixes
 - use `platform-apex-test-run` to reproduce and verify
 - use `platform-metadata-deploy` to deploy fixes
 - use `platform-data-manage` when the issue depends on missing or malformed test data
