@@ -43,7 +43,8 @@ public inherited sharing class {SObject}Selector {
         return Database.query(
             'SELECT ' + getDefaultFields() +
             ' FROM {SObject}' +
-            ' WHERE Id IN :recordIds'
+            ' WHERE Id IN :recordIds',
+            AccessLevel.USER_MODE
         );
     }
 
