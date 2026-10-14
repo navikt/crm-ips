@@ -1,12 +1,12 @@
 ---
 name: research-agent
 description: Utforsker kodebaser, undersøker problemer og samler kontekst før implementering
-model: GPT-5.6 Luna
+model: GPT-6 Luna
 tools:
   - read
-  - search
-  - web
-  - ms-vscode.vscode-websearchforcopilot/websearch
+  - grep
+  - glob
+  - web_fetch
   - github/get_file_contents
   - github/search_code
   - github/search_repositories
