@@ -85,6 +85,9 @@ sf org assign permset --name IPS_Utvidet_oppf_lging_management
 echo "\nGir brukeren tilatelsessettet IPS_Config.."
 sf org assign permset --name IPS_Config
 
+echo "\nGir brukeren tilatelsessettet IPS_AMS_User_Support.."
+sf org assign permset --name IPS_AMS_User_Support
+
 # Opprett testdata
 echo "\n.. Oppretter testdata.."
 sf apex run --file ./apex/createTestData.apex
