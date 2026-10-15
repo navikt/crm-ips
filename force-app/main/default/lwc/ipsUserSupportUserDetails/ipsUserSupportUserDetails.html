@@ -2,12 +2,44 @@
     <lightning-card title="Brukerinformasjon" icon-name="standard:user">
         <div class="slds-p-horizontal_medium">
             <lightning-record-view-form record-id={recordId} object-api-name="User">
-                <lightning-output-field field-name="Name"></lightning-output-field>
-                <lightning-output-field field-name="Email"></lightning-output-field>
-                <lightning-output-field field-name="UserRoleId"></lightning-output-field>
-                <lightning-output-field field-name="ProfileId"></lightning-output-field>
-                <lightning-output-field field-name="ManagerId"></lightning-output-field>
-                <lightning-output-field field-name="CRM_NAV_Ident__c"></lightning-output-field>
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <!-- Venstre kolonne: hvem brukeren er -->
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-output-field field-name="Name"></lightning-output-field>
+                        <lightning-output-field field-name="Email"></lightning-output-field>
+
+                        <div class="slds-form-element slds-form-element_stacked">
+                            <span class="slds-form-element__label">Role</span>
+                            <lightning-output-field field-name="UserRoleId" variant="label-hidden"></lightning-output-field>
+                        </div>
+
+                        <div class="slds-form-element slds-form-element_stacked">
+                            <span class="slds-form-element__label">Profile</span>
+                            <lightning-output-field field-name="ProfileId" variant="label-hidden"></lightning-output-field>
+                        </div>
+
+                        <div class="slds-form-element slds-form-element_stacked">
+                            <span class="slds-form-element__label">Manager</span>
+                            <lightning-output-field field-name="ManagerId" variant="label-hidden"></lightning-output-field>
+                        </div>
+
+                        <lightning-output-field field-name="CRM_NAV_Ident__c"></lightning-output-field>
+                    </div>
+
+                    <!-- Høyre kolonne: status og historikk -->
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-output-field field-name="IsActive"></lightning-output-field>
+                        <lightning-output-field field-name="LastLoginDate"></lightning-output-field>
+                        <lightning-output-field field-name="CreatedDate"></lightning-output-field>
+
+                        <div class="slds-form-element slds-form-element_stacked">
+                            <span class="slds-form-element__label">Last Modified By</span>
+                            <lightning-output-field field-name="LastModifiedById" variant="label-hidden"></lightning-output-field>
+                        </div>
+
+                        <lightning-output-field field-name="LastModifiedDate"></lightning-output-field>
+                    </div>
+                </div>
             </lightning-record-view-form>
         </div>
     </lightning-card>
