@@ -31,8 +31,8 @@ Read the appropriate reference file(s) before generating architectural designs. 
 
 | Code Type | Ruleset File |
 |---|---|
-| Apex (classes, triggers, tests, async, integrations) | [../../Blogs/salesforce-apex-coding-rules.md](../../Blogs/salesforce-apex-coding-rules.md) |
-| LWC (components, templates, JS, events, Jest tests) | [../../Blogs/salesforce-lwc-coding-rules.md](../../Blogs/salesforce-lwc-coding-rules.md) |
+| Apex (classes, triggers, tests, async, integrations) | [../../blogs/salesforce-apex-coding-rules.md](../../blogs/salesforce-apex-coding-rules.md) |
+| LWC (components, templates, JS, events, Jest tests) | [../../blogs/salesforce-lwc-coding-rules.md](../../blogs/salesforce-lwc-coding-rules.md) |
 
 These rulesets contain comprehensive coding standards, anti-patterns, and code examples. Apply these rules whenever generating code as part of an architecture deliverable.
 
@@ -394,8 +394,8 @@ Depending on what the user needs, produce:
 
 ## Quick Reference Pointers
 
-- **Apex coding rules (full ruleset)** → [../../Blogs/salesforce-apex-coding-rules.md](../../Blogs/salesforce-apex-coding-rules.md)
-- **LWC coding rules (full ruleset)** → [../../Blogs/salesforce-lwc-coding-rules.md](../../Blogs/salesforce-lwc-coding-rules.md)
+- **Apex coding rules (full ruleset)** → [../../blogs/salesforce-apex-coding-rules.md](../../blogs/salesforce-apex-coding-rules.md)
+- **LWC coding rules (full ruleset)** → [../../blogs/salesforce-lwc-coding-rules.md](../../blogs/salesforce-lwc-coding-rules.md)
 - **Developer skill (Apex, LWC, SOQL patterns)** → [../salesforce-developer/SKILL.md](../salesforce-developer/SKILL.md)
 - **Data model, sharing, LDV, data skew** → [references/data-model-patterns.md](references/data-model-patterns.md)
 - **Integration patterns, API selection, event-driven** → [references/integration-patterns.md](references/integration-patterns.md)

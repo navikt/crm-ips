@@ -23,8 +23,8 @@ Read the appropriate reference file(s) **AND** the corresponding coding ruleset 
 
 | Code Type | Ruleset File |
 |---|---|
-| Apex (classes, triggers, tests, async, integrations) | [../../Blogs/salesforce-apex-coding-rules.md](../../Blogs/salesforce-apex-coding-rules.md) |
-| LWC (components, templates, JS, events, Jest tests) | [../../Blogs/salesforce-lwc-coding-rules.md](../../Blogs/salesforce-lwc-coding-rules.md) |
+| Apex (classes, triggers, tests, async, integrations) | [../../blogs/salesforce-apex-coding-rules.md](../../blogs/salesforce-apex-coding-rules.md) |
+| LWC (components, templates, JS, events, Jest tests) | [../../blogs/salesforce-lwc-coding-rules.md](../../blogs/salesforce-lwc-coding-rules.md) |
 
 These rulesets contain comprehensive coding standards, anti-patterns, PMD/ESLint rules, and code examples. **Always** apply these rules to all generated code.
 
@@ -277,8 +277,8 @@ force-app/main/default/
 
 ## Quick Reference Pointers
 
-- **Apex coding rules (full ruleset)** → [../../Blogs/salesforce-apex-coding-rules.md](../../Blogs/salesforce-apex-coding-rules.md)
-- **LWC coding rules (full ruleset)** → [../../Blogs/salesforce-lwc-coding-rules.md](../../Blogs/salesforce-lwc-coding-rules.md)
+- **Apex coding rules (full ruleset)** → [../../blogs/salesforce-apex-coding-rules.md](../../blogs/salesforce-apex-coding-rules.md)
+- **LWC coding rules (full ruleset)** → [../../blogs/salesforce-lwc-coding-rules.md](../../blogs/salesforce-lwc-coding-rules.md)
 - **Architecture & solution design** → [../salesforce-architect-skill/SKILL.md](../salesforce-architect-skill/SKILL.md)
 - **Security & sharing rules** → [references/security-sharing.md](references/security-sharing.md)
 - **Agentforce, platform events, CDC** → [references/agentforce-ai.md](references/agentforce-ai.md)
