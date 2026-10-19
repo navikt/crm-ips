@@ -41,6 +41,7 @@ export default class CeWorkThemeSelector extends LightningElement {
     }
     set selectedThemes(value) {
         this.selectedThemeValues = splitValues(value);
+        this.retainAvailableSelections();
     }
 
     connectedCallback() {
@@ -100,11 +101,10 @@ export default class CeWorkThemeSelector extends LightningElement {
 
     handleNext() {
         const result = this.validate();
+        this.reportValidity();
         if (!result.isValid) {
-            this.validationError = result.errorMessage;
             return;
         }
-        this.validationError = undefined;
         if (this.availableActions.includes('NEXT') || this.availableActions.includes('FINISH')) {
             this.dispatchEvent(new FlowNavigationNextEvent());
         }
@@ -112,6 +112,9 @@ export default class CeWorkThemeSelector extends LightningElement {
 
     handleSelectionChange(event) {
         this.selectedThemeValues = event.detail.value || [];
+        if (this.validationError) {
+            this.reportValidity();
+        }
         this.dispatchEvent(new FlowAttributeChangeEvent('selectedThemes', this.selectedThemes));
     }
 
@@ -125,6 +128,15 @@ export default class CeWorkThemeSelector extends LightningElement {
             this.selectedThemeValues = retainedValues;
             this.dispatchEvent(new FlowAttributeChangeEvent('selectedThemes', this.selectedThemes));
         }
+        if (this.validationError) {
+            this.reportValidity();
+        }
+    }
+
+    @api
+    reportValidity() {
+        const result = this.validate();
+        this.validationError = result.isValid ? undefined : result.errorMessage;
     }
 
     @api
