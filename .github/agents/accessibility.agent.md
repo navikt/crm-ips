@@ -1,15 +1,15 @@
 ---
 name: accessibility-agent
 description: WCAG 2.1/2.2, universell utforming, Aksel-tilgjengelighet og automatisert UU-testing
-model: Claude Sonnet 5
+model: Claude Sonnet 5.5
 tools:
   - execute
   - read
   - edit
-  - search
-  - web
+  - grep
+  - glob
+  - web_fetch
   - todo
-  - ms-vscode.vscode-websearchforcopilot/websearch
   - com.figma/figma-mcp/get_design_context
   - com.figma/figma-mcp/get_screenshot
 ---
