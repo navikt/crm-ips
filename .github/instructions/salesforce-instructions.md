@@ -19,8 +19,8 @@ Before generating any Salesforce code or answering Salesforce questions, you **M
 
 | Ruleset | File | When to Read |
 |---|---|---|
-| **Apex coding rules** (bulkification, SOQL, DML, triggers, async, security, testing, PMD) | [`Blogs/salesforce-apex-coding-rules.md`](Blogs/salesforce-apex-coding-rules.md) | Any Apex class, trigger, test class, or server-side code |
-| **LWC coding rules** (templates, JS, wire, events, navigation, Jest, accessibility) | [`Blogs/salesforce-lwc-coding-rules.md`](Blogs/salesforce-lwc-coding-rules.md) | Any LWC component, Aura, or front-end code |
+| **Apex coding rules** (bulkification, SOQL, DML, triggers, async, security, testing, PMD) | [`Blogs/salesforce-apex-coding-rules.md`](blogs/salesforce-apex-coding-rules.md) | Any Apex class, trigger, test class, or server-side code |
+| **LWC coding rules** (templates, JS, wire, events, navigation, Jest, accessibility) | [`Blogs/salesforce-lwc-coding-rules.md`](blogs/salesforce-lwc-coding-rules.md) | Any LWC component, Aura, or front-end code |
 
 ### Skill Reference Files (detailed patterns with code examples)
 
