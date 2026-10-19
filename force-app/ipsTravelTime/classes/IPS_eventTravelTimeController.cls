@@ -103,6 +103,8 @@ public class IPS_eventTravelTimeController {
             eBefore.IPS_eventId__c = currentRecord;
             eBefore.IPS_Status1__c = eventStatus;
             eBefore.Location = 'Reisetid';
+            eBefore.IsReminderSet = false;
+            eBefore.ReminderDateTime = null;
             eBefore.IPS_isFromTimeline__c = true;
             eventsToInsert.add(eBefore);
         }
@@ -120,6 +122,8 @@ public class IPS_eventTravelTimeController {
             eAfter.IPS_eventId__c = currentRecord;
             eAfter.IPS_Status1__c = eventStatus;
             eAfter.Location = 'Reisetid';
+            eAfter.IsReminderSet = false;
+            eAfter.ReminderDateTime = null;
             eAfter.IPS_isFromTimeline__c = true;
             eventsToInsert.add(eAfter);
         }
