@@ -62,7 +62,7 @@ Each skill has a `references/` directory with deep-dive guides. Read the ones ma
 
 ## Apex — Critical Rules
 
-- **API version: 66.0** (Spring '26) for all new components.
+- **API version: 68.0** (Winter '28) for all new components.
 - **Never** put SOQL, DML, or HTTP callouts inside loops. Collect, query once, process in bulk.
 - Always use bind variables (`:variable`) in SOQL — never concatenate user input (SOQL injection risk).
 - Prefer `Database.insert/update/delete` with `allOrNone=false` for partial-success handling; always check `SaveResult`.
@@ -128,7 +128,7 @@ Each skill has a `references/` directory with deep-dive guides. Read the ones ma
 
 ## Security
 
-- SOQL: `WITH USER_MODE` (preferred) or `WITH SECURITY_ENFORCED`. DML: `Security.stripInaccessible(AccessType.CREATABLE/UPDATABLE, records)`.
+- SOQL: `WITH USER_MODE` (preferred) or `WITH SHARING`. DML: `Security.stripInaccessible(AccessType.CREATABLE/UPDATABLE, records)`.
 - Never use `global` access modifier unless building a managed package or REST/SOAP endpoint — use `public`.
 - Mixed DML: never combine setup objects (User, PermissionSet) and non-setup objects (Account, Contact) in the same transaction.
 - Triggers: NEVER perform callouts directly — use `@future(callout=true)` or Queueable with `Database.AllowsCallouts`.
