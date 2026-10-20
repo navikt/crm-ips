@@ -14,7 +14,7 @@
         <inputParameters>
             <name>selectedValues</name>
             <value>
-                <elementReference>Choose_Work_Theme</elementReference>
+                <elementReference>Choose_Work_Theme.selectedThemes</elementReference>
                 <inputConfiguratorMode>Resource</inputConfiguratorMode>
             </value>
         </inputParameters>
@@ -25,6 +25,60 @@
             <name>values</name>
         </outputParameters>
     </actionCalls>
+    <assignments>
+        <name>Increment_Theme_Counter</name>
+        <label>Increment Theme Counter</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>themeCounter</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Append_Theme_To_Summary</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Append_Theme_To_Summary</name>
+        <label>Append Theme To Summary</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>createdThemesText</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>createdThemeSummaryLine</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Themes</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Has_Themes_To_Create</name>
+        <label>Has Themes To Create</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Split_Selected_Values</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Themes selected</defaultConnectorLabel>
+        <rules>
+            <name>No_Themes_Available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Choose_Work_Theme.selectedThemes</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>No themes available</label>
+        </rules>
+    </decisions>
     <apiVersion>67.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <choices>
@@ -114,6 +168,11 @@
         </value>
     </customProperties>
     <environments>Default</environments>
+    <formulas>
+        <name>createdThemeSummaryLine</name>
+        <dataType>String</dataType>
+        <expression>TEXT({!themeCounter}) &amp; '. ' &amp; {!Create_Themes} &amp; '&lt;br/&gt;'</expression>
+    </formulas>
     <interviewLabel>CE - Occupational Theme {!$Flow.CurrentDateTime}</interviewLabel>
     <label>CE - Job Topic</label>
     <loops>
@@ -126,6 +185,9 @@
         <nextValueConnector>
             <targetReference>Create_Work_Themes</targetReference>
         </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Confirm_Created_Work_Themes</targetReference>
+        </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -152,7 +214,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Create_Themes</targetReference>
+            <targetReference>Increment_Theme_Counter</targetReference>
         </connector>
         <inputAssignments>
             <field>Main_Theme__c</field>
@@ -211,27 +273,58 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Split_Selected_Values</targetReference>
+            <targetReference>Has_Themes_To_Create</targetReference>
         </connector>
         <fields>
             <name>Choose_Work_Theme</name>
-            <choiceReferences>Aktivitetogledelse</choiceReferences>
-            <choiceReferences>Driftogmobilitet</choiceReferences>
-            <choiceReferences>Kreativitetogmedia</choiceReferences>
-            <choiceReferences>Praktiskogtekniskarbeid</choiceReferences>
-            <choiceReferences>Kunnskapogutforskning</choiceReferences>
-            <choiceReferences>Naturogdyr</choiceReferences>
-            <choiceReferences>Menneskerogservice</choiceReferences>
-            <choiceReferences>Strukturogproblemlosing</choiceReferences>
-            <choiceReferences>Samfunnogverdier</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Choose work theme</fieldText>
-            <fieldType>MultiSelectCheckboxes</fieldType>
+            <extensionName>c:ceWorkThemeSelector</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
+            <isRequired>false</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
             <styleProperties>
                 <verticalAlignment>
                     <stringValue>bottom</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <nextOrFinishButtonLabel>Velg</nextOrFinishButtonLabel>
+        <showFooter>false</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Confirm_Created_Work_Themes</name>
+        <label>Opprettede yrkestemaer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Created_Themes_Summary</name>
+            <extensionName>c:ceWorkThemeCreationConfirmation</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>createdThemesText</name>
+                <value>
+                    <elementReference>createdThemesText</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>false</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
                 </verticalAlignment>
                 <width>
                     <stringValue>12</stringValue>
@@ -250,6 +343,24 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>createdThemesText</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>themeCounter</name>
+        <dataType>Number</dataType>
+        <scale>0</scale>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
     <variables>
         <name>jobTopic</name>
         <dataType>SObject</dataType>

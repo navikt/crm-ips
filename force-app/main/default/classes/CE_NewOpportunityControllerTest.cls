@@ -68,6 +68,14 @@ private class CE_NewOpportunityControllerTest {
         return themes;
     }
 
+    private static List<CE_Work_Theme__c> getWorkThemesAsCe(Id recordId) {
+        List<CE_Work_Theme__c> themes;
+        System.runAs(getCeUser()) {
+            themes = CE_NewOpportunityController.getWorkThemes(recordId);
+        }
+        return themes;
+    }
+
     private static CE_NewOpportunityController.CreateResult run(CE_NewOpportunityController.CreateRequest request) {
         return CE_NewOpportunityController.createOpportunity(
             new List<CE_NewOpportunityController.CreateRequest>{ request }
@@ -94,6 +102,35 @@ private class CE_NewOpportunityControllerTest {
         Assert.areEqual(getTheme(MAIN_THEME).Id, themes[0].recordId, 'Valget skal bruke ID-en til hovedtemaet');
         Assert.areEqual(MAIN_THEME, themes[0].mainTheme, 'Hovedtemaet skal returneres');
         Assert.areEqual(new List<String>{ 'Ledelse' }, themes[0].subThemes, 'Lagrede undertemaer skal returneres');
+    }
+
+    @IsTest
+    static void getWorkThemes_returnsOnlyThemesOnWorkTrail() {
+        Work_Trail__c trail = getTrail();
+
+        Test.startTest();
+        List<CE_Work_Theme__c> themes = getWorkThemesAsCe(trail.Id);
+        Test.stopTest();
+
+        Assert.areEqual(1, themes.size(), 'Bare temaer på dette jobbsporet skal vises');
+        Assert.areEqual(getTheme(MAIN_THEME).Id, themes[0].Id, 'Riktig tema skal returneres');
+        Assert.areEqual(MAIN_THEME, themes[0].Name, 'Temaets navn skal returneres');
+    }
+
+    @IsTest
+    static void getWorkThemes_wrongIdType_throws() {
+        Id themeId = getTheme(MAIN_THEME).Id;
+        Boolean thrown = false;
+
+        Test.startTest();
+        try {
+            getWorkThemesAsCe(themeId);
+        } catch (AuraHandledException e) {
+            thrown = true;
+        }
+        Test.stopTest();
+
+        Assert.isTrue(thrown, 'Bare ID til jobbspor skal godtas');
     }
 
     @IsTest
