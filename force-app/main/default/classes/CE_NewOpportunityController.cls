@@ -23,6 +23,20 @@ public with sharing class CE_NewOpportunityController {
     private static final String ERROR_LOAD = 'Kunne ikke hente hovedtemaene. Prøv igjen, eller kontakt brukerstøtte.';
     private static final String HEX_DIGITS = '0123456789abcdef';
 
+    @AuraEnabled(cacheable=true)
+    public static List<CE_Work_Theme__c> getWorkThemes(Id workTrailId) {
+        if (workTrailId == null || workTrailId.getSObjectType() != Work_Trail__c.SObjectType) {
+            throw new AuraHandledException(ERROR_WORK_TRAIL);
+        }
+        return [
+            SELECT Id, Name
+            FROM CE_Work_Theme__c
+            WHERE Work_Trail__c = :workTrailId
+            WITH USER_MODE
+            ORDER BY Name ASC
+        ];
+    }
+
     @AuraEnabled
     public static List<ThemeOption> getRegisteredThemes(Id workTrailId) {
         if (workTrailId == null || workTrailId.getSobjectType() != Work_Trail__c.SObjectType) {
