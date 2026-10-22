@@ -242,7 +242,8 @@
         </rules>
     </decisions>
     <description>Opprettelse av nytt Jobbspor for IPS.
-** Bruke telefonnummer på Person hentet fra KRR</description>
+** Bruke telefonnummer på Person hentet fra KRR
+** Infotekst for Behandlingsteam og valgfritt felt for Nettverk/samarbeidspartner</description>
     <environments>Default</environments>
     <formulas>
         <name>adjustfor100</name>
@@ -490,6 +491,12 @@ ISPICKVAL({!Get_RelatedPersonRecord.INT_Confidential__c},&apos;UGRADERT&apos;)
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>ips_Network_partner__c</field>
+            <value>
+                <elementReference>Nettverk_samarbeidspartner</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>ips_Participant__c</field>
             <value>
                 <elementReference>Get_RelatedPersonRecord.CRM_Account__c</elementReference>
@@ -580,6 +587,12 @@ ISPICKVAL({!Get_RelatedPersonRecord.INT_Confidential__c},&apos;UGRADERT&apos;)
             <field>ips_NAV_supervisor__c</field>
             <value>
                 <elementReference>IPS_nav_supervisor</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Network_partner__c</field>
+            <value>
+                <elementReference>Nettverk_samarbeidspartner</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1032,6 +1045,19 @@ LEN( {!ips_participants_scn}) == 11
             </styleProperties>
         </fields>
         <fields>
+            <name>Behandlingsteam_Info</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;NB&lt;/strong&gt;: kun navnet på behandlingsteamet deltaker tilhører. Navn på behandler og kontaktinformasjon legges inn i feltet &quot;Nettverk/samarbeidspartner&quot;.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
             <name>Behandlingsteam_Innsatsteam</name>
             <dataType>String</dataType>
             <fieldText>Behandlingsteam/Innsøkende avdeling</fieldText>
@@ -1046,6 +1072,26 @@ LEN( {!ips_participants_scn}) == 11
                     <stringValue>12</stringValue>
                 </width>
             </styleProperties>
+        </fields>
+        <fields>
+            <name>Nettverk_samarbeidspartner</name>
+            <fieldText>Nettverk/samarbeidspartner</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <helpText>&lt;p&gt;Her registreres navn, rolle og kontaktinformasjon på person i nettverket og/eller en profesjonell samarbeidspartner, som eksempelvis navnet på deltakers behandler.&lt;/p&gt;</helpText>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>false</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Maks 255 tegn.&lt;/p&gt;</errorMessage>
+                <formulaExpression>LEN({!Nettverk_samarbeidspartner}) &lt;= 255</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
             <name>IPS_nav_supervisor</name>
