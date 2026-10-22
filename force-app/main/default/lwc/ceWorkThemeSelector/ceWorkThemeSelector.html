@@ -1,0 +1,38 @@
+<template>
+    <template lwc:if={isLoading}>
+        <div class="slds-is-relative slds-p-around_large">
+            <lightning-spinner alternative-text="Laster inn yrkestemaer" size="small"></lightning-spinner>
+        </div>
+    </template>
+
+    <template lwc:elseif={loadError}>
+        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">{loadError}</div>
+    </template>
+
+    <template lwc:elseif={hasAvailableThemes}>
+        <lightning-checkbox-group
+            label="Velg yrkestemaer"
+            options={availableOptions}
+            value={selectedThemeValues}
+            onchange={handleSelectionChange}
+        >
+        </lightning-checkbox-group>
+    </template>
+
+    <template lwc:else>
+        <p role="status">Alle tilgjengelige yrkestemaer er allerede opprettet for dette jobbsporet.</p>
+    </template>
+
+    <template lwc:if={validationError}>
+        <div class="slds-text-color_error" role="alert">{validationError}</div>
+    </template>
+
+    <div class="slds-m-top_medium slds-p-top_medium slds-border_top slds-text-align_right">
+        <template lwc:if={showSelectButton}>
+            <lightning-button variant="brand" label="Velg" onclick={handleNext}></lightning-button>
+        </template>
+        <template lwc:elseif={noThemesAvailable}>
+            <lightning-button variant="brand" label="Lukk" onclick={handleNext}></lightning-button>
+        </template>
+    </div>
+</template>
