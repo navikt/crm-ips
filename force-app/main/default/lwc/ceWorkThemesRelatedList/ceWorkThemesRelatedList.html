@@ -12,10 +12,19 @@
         </template>
 
         <template lwc:if={hasRecords}>
-            <table class="slds-table slds-table_bordered slds-table_cell-buffer" aria-label="Yrkestema">
+            <table
+                class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_fixed-layout"
+                aria-label="Yrkestema"
+            >
+                <colgroup>
+                    <col class="name-column" />
+                    <col class="count-column" />
+                    <col class="actions-column" />
+                </colgroup>
                 <thead>
                     <tr class="slds-line-height_reset">
                         <th scope="col">Navn</th>
+                        <th scope="col" class="slds-text-align_left">Antall muligheter</th>
                         <th scope="col"><span class="slds-assistive-text">Handlinger</span></th>
                     </tr>
                 </thead>
@@ -25,13 +34,18 @@
                             <th scope="row">
                                 <button
                                     type="button"
-                                    class="slds-button slds-button_reset slds-text-link"
+                                    class="slds-button slds-button_reset slds-text-link slds-hyphenate"
                                     data-record-id={record.Id}
                                     onclick={handleViewClick}
                                 >
                                     {record.Name}
                                 </button>
                             </th>
+                            <td class="slds-text-align_left">
+                                <lightning-formatted-number
+                                    value={record.opportunityCount}
+                                ></lightning-formatted-number>
+                            </td>
                             <td class="slds-text-align_right">
                                 <lightning-button-menu
                                     alternative-text={record.Name}

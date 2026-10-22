@@ -50,7 +50,11 @@ export default class CeWorkThemesRelatedList extends NavigationMixin(LightningEl
         this.workThemesResult = result;
         const { data, error } = result;
         if (data) {
-            this.records = data;
+            this.records = data.map((row) => ({
+                Id: row.recordId,
+                Name: row.name,
+                opportunityCount: row.opportunityCount
+            }));
             this.loadError = undefined;
             this.hasLoaded = true;
         } else if (error) {
