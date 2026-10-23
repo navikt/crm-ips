@@ -283,6 +283,31 @@
         </value>
     </customProperties>
     <decisions>
+        <name>Check_Give_User_Access_Permission</name>
+        <label>Check Give User Access Permission</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Screen_EnterUserDetails</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Continue</defaultConnectorLabel>
+        <rules>
+            <name>Access_Denied</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Permission.IPS_Admin_GiveAccessToJobbsporetUsers</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Access_Denied</targetReference>
+            </connector>
+            <label>Access denied</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_If_Nav_Kontor_Profile</name>
         <label>Check If Nav Kontor Profile</label>
         <locationX>0</locationX>
@@ -606,6 +631,22 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <runInMode>DefaultMode</runInMode>
+    <screens>
+        <name>Screen_Access_Denied</name>
+        <label>Access Denied</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Access_Denied_Message</name>
+            <fieldText>&lt;p&gt;Only users with the &quot;Give Access to Jobbsporet&quot; permission may run this flow.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>screen_chooseUsersAndRole</name>
         <label>Choose Users and Role</label>
@@ -1175,7 +1216,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Screen_EnterUserDetails</targetReference>
+            <targetReference>Check_Give_User_Access_Permission</targetReference>
         </connector>
     </start>
     <status>Active</status>
