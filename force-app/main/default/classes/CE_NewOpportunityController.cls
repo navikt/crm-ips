@@ -61,7 +61,7 @@ public with sharing class CE_NewOpportunityController {
         return rows;
     }
 
-    // Only aggregate counts, after Work Trail access has been checked.
+    // Include opportunities hidden by sharing, but expose only counts after checking Work Trail access.
     private without sharing class OpportunityCounter {
         public Map<Id, Integer> countByTheme(Id workTrailId, Set<Id> themeIds) {
             if (!CE_Discovery_Opportunity__c.Work_Trail__c.getDescribe().isAccessible()) {

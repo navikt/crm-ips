@@ -187,6 +187,51 @@ private class CE_NewOpportunityControllerTest {
     }
 
     @IsTest
+    static void getWorkThemes_countsOpportunitiesPerThemeOnWorkTrail() {
+        Work_Trail__c trail = getTrail();
+        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
+        CE_Work_Theme__c otherTheme = getTheme(OTHER_MAIN_THEME);
+        CE_Work_Theme__c secondTheme = new CE_Work_Theme__c(
+            Name = OTHER_MAIN_THEME,
+            Main_Theme__c = OTHER_MAIN_THEME,
+            Work_Trail__c = trail.Id
+        );
+        insert secondTheme;
+        insert new List<CE_Discovery_Opportunity__c>{
+            new CE_Discovery_Opportunity__c(Name = 'Mulighet 1', Work_Trail__c = trail.Id, CE_Work_Theme__c = theme.Id),
+            new CE_Discovery_Opportunity__c(
+                Name = 'Mulighet 2',
+                Work_Trail__c = trail.Id,
+                CE_Work_Theme__c = theme.Id,
+                OwnerId = getCeUser().Id
+            ),
+            new CE_Discovery_Opportunity__c(
+                Name = 'Mulighet 3',
+                Work_Trail__c = trail.Id,
+                CE_Work_Theme__c = secondTheme.Id
+            ),
+            new CE_Discovery_Opportunity__c(
+                Name = 'Annet jobbspor',
+                Work_Trail__c = otherTheme.Work_Trail__c,
+                CE_Work_Theme__c = otherTheme.Id
+            )
+        };
+
+        Test.startTest();
+        List<CE_NewOpportunityController.WorkThemeRow> themes = getWorkThemesAsCe(trail.Id);
+        Test.stopTest();
+
+        Map<Id, Integer> counts = new Map<Id, Integer>();
+        for (CE_NewOpportunityController.WorkThemeRow row : themes) {
+            counts.put(row.recordId, row.opportunityCount);
+        }
+        Assert.areEqual(2, themes.size(), 'Bare temaer på dette jobbsporet skal vises');
+        Assert.areEqual(2, counts.get(theme.Id), 'Alle muligheter på temaet skal telles uavhengig av eier');
+        Assert.areEqual(1, counts.get(secondTheme.Id), 'Hvert tema skal ha sin egen telling');
+        Assert.isFalse(counts.containsKey(otherTheme.Id), 'Temaer på andre jobbspor skal ikke tas med');
+    }
+
+    @IsTest
     static void getWorkThemes_wrongIdType_throws() {
         Id themeId = getTheme(MAIN_THEME).Id;
         Boolean thrown = false;
