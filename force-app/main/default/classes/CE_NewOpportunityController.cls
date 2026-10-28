@@ -24,17 +24,45 @@ public with sharing class CE_NewOpportunityController {
     private static final String HEX_DIGITS = '0123456789abcdef';
 
     @AuraEnabled(cacheable=true)
-    public static List<CE_Work_Theme__c> getWorkThemes(Id workTrailId) {
+    public static List<WorkThemeRow> getWorkThemes(Id workTrailId) {
         if (workTrailId == null || workTrailId.getSObjectType() != Work_Trail__c.SObjectType) {
             throw new AuraHandledException(ERROR_WORK_TRAIL);
         }
-        return [
+        List<CE_Work_Theme__c> themes = [
             SELECT Id, Name
             FROM CE_Work_Theme__c
             WHERE Work_Trail__c = :workTrailId
             WITH USER_MODE
             ORDER BY Name ASC
         ];
+        Map<Id, Integer> countsByTheme = new Map<Id, Integer>();
+        for (AggregateResult result : [
+            SELECT CE_Work_Theme__c themeId, COUNT(Id) opportunityCount
+            FROM CE_Discovery_Opportunity__c
+            WHERE Work_Trail__c = :workTrailId AND CE_Work_Theme__c IN :themes
+            WITH USER_MODE
+            GROUP BY CE_Work_Theme__c
+        ]) {
+            countsByTheme.put((Id) result.get('themeId'), (Integer) result.get('opportunityCount'));
+        }
+        List<WorkThemeRow> rows = new List<WorkThemeRow>();
+        for (CE_Work_Theme__c theme : themes) {
+            WorkThemeRow row = new WorkThemeRow();
+            row.recordId = theme.Id;
+            row.name = theme.Name;
+            row.opportunityCount = countsByTheme.containsKey(theme.Id) ? countsByTheme.get(theme.Id) : 0;
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    public class WorkThemeRow {
+        @AuraEnabled
+        public Id recordId;
+        @AuraEnabled
+        public String name;
+        @AuraEnabled
+        public Integer opportunityCount;
     }
 
     @AuraEnabled
