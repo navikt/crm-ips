@@ -15,6 +15,14 @@ const COLUMNS = [
         type: 'button',
         typeAttributes: { label: { fieldName: 'name' }, name: 'view', variant: 'base' }
     },
+    {
+        label: 'Antall muligheter',
+        fieldName: 'opportunityCount',
+        type: 'number',
+        editable: false,
+        cellAttributes: { alignment: 'left' },
+        typeAttributes: { maximumFractionDigits: 0 }
+    },
     { type: 'action', typeAttributes: { rowActions: ROW_ACTIONS } }
 ];
 
@@ -46,8 +54,9 @@ export default class CeWorkThemesRelatedList extends NavigationMixin(LightningEl
         const { data, error } = result;
         if (data) {
             this.records = data.map((record) => ({
-                Id: record.Id,
-                name: record.Name || ''
+                Id: record.recordId,
+                name: record.name || '',
+                opportunityCount: record.opportunityCount
             }));
             this.loadError = undefined;
             this.hasLoaded = true;

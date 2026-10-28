@@ -22,24 +22,22 @@ public without sharing class IPS_PlatformEventJobbsporService {
         
         List<Work_Trail__c> workTrailList = [
                 SELECT 
-            		id,
-            		OwnerId,
-            		ips_Applying_Department__c,
-            		ips_Behandlingsteam__c,
-            		CreatedDate,
-            		ips_End_Date__c,
-            		toLabel(End_Cause__c),
-            		toLabel(ips_Other_end_cases__c),
-            		ips_First_meeting_with_the_Employer_held__c,
-            		recordtype.developername,
-            		toLabel(ips_Status__c),
-            		Passive_activate__c,
-            		Passive_deactivate__c,
-            		ips_Referred_date__c,
-            		IPS_Personnummer__c,
-            		toLabel(ips_Main_Goal_list__c),
-            		toLabel(ips_UO_Service__c),
-            		Oppstartsdato__c 
+                    id,
+                    OwnerId,
+                    CreatedDate,
+                    ips_End_Date__c,
+                    toLabel(End_Cause__c),
+                    toLabel(ips_Other_end_cases__c),
+                    ips_First_meeting_with_the_Employer_held__c,
+                    recordtype.developername,
+                    toLabel(ips_Status__c),
+                    Passive_activate__c,
+                    Passive_deactivate__c,
+                    ips_Referred_date__c,
+                    IPS_Personnummer__c,
+                    toLabel(ips_Main_Goal_list__c),
+                    toLabel(ips_UO_Service__c),
+                    Oppstartsdato__c 
             FROM Work_trail__c
             WHERE Id IN :workTrailIdSet
         ];
@@ -63,12 +61,10 @@ public without sharing class IPS_PlatformEventJobbsporService {
             eventJobbspor.ParticipantSCN__c = t.IPS_Personnummer__c;
             eventJobbspor.ParticipantStartDate__c = Date.valueOf(t.Oppstartsdato__c);
             if(t.recordtype.developername =='ips_Supported_Employment'){
-                eventJobbspor.JobbsporApplyingDepartment__c =t.ips_Applying_Department__c;
                 eventJobbspor.JobbsporService__c = 'AMS';
                 eventJobbspor.ParticipantsMainGoal__c = translateFieldValue(t.ips_UO_Service__c, 'MAINGOAL');
             }
             if(t.recordtype.developername == 'IPS'){
-                eventJobbspor.JobbsporApplyingDepartment__c =t.ips_Behandlingsteam__c;
                 eventJobbspor.JobbsporService__c = 'IPS';
                 eventJobbspor.ParticipantsMainGoal__c = translateFieldValue(t.ips_Main_Goal_list__c, 'MAINGOAL');
             }
@@ -88,8 +84,8 @@ public without sharing class IPS_PlatformEventJobbsporService {
                     System.debug(errormessage);
                 }
             }       
-    	}
-	}
+        }
+    }
     
     
     
