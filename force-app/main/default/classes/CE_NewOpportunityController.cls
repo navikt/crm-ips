@@ -28,6 +28,16 @@ public with sharing class CE_NewOpportunityController {
         if (workTrailId == null || workTrailId.getSObjectType() != Work_Trail__c.SObjectType) {
             throw new AuraHandledException(ERROR_WORK_TRAIL);
         }
+        List<Work_Trail__c> trails = [
+            SELECT Id
+            FROM Work_Trail__c
+            WHERE Id = :workTrailId
+            WITH USER_MODE
+            LIMIT 1
+        ];
+        if (trails.isEmpty()) {
+            throw new AuraHandledException(ERROR_WORK_TRAIL);
+        }
         List<CE_Work_Theme__c> themes = [
             SELECT Id, Name
             FROM CE_Work_Theme__c
@@ -35,34 +45,50 @@ public with sharing class CE_NewOpportunityController {
             WITH USER_MODE
             ORDER BY Name ASC
         ];
-        Map<Id, Integer> countsByTheme = new Map<Id, Integer>();
-        for (AggregateResult result : [
-            SELECT CE_Work_Theme__c themeId, COUNT(Id) opportunityCount
-            FROM CE_Discovery_Opportunity__c
-            WHERE Work_Trail__c = :workTrailId AND CE_Work_Theme__c IN :themes
-            WITH USER_MODE
-            GROUP BY CE_Work_Theme__c
-        ]) {
-            countsByTheme.put((Id) result.get('themeId'), (Integer) result.get('opportunityCount'));
+        Set<Id> themeIds = new Map<Id, CE_Work_Theme__c>(themes).keySet();
+        Map<Id, Integer> countsByThemeId = new Map<Id, Integer>();
+        if (!themeIds.isEmpty()) {
+            countsByThemeId = new OpportunityCounter().countByTheme(workTrailId, themeIds);
         }
         List<WorkThemeRow> rows = new List<WorkThemeRow>();
         for (CE_Work_Theme__c theme : themes) {
             WorkThemeRow row = new WorkThemeRow();
             row.recordId = theme.Id;
             row.name = theme.Name;
-            row.opportunityCount = countsByTheme.containsKey(theme.Id) ? countsByTheme.get(theme.Id) : 0;
+            row.opportunityCount = countsByThemeId.containsKey(theme.Id) ? countsByThemeId.get(theme.Id) : 0;
             rows.add(row);
         }
         return rows;
     }
 
+    // Include opportunities hidden by sharing, but expose only counts after checking Work Trail access.
+    private without sharing class OpportunityCounter {
+        public Map<Id, Integer> countByTheme(Id workTrailId, Set<Id> themeIds) {
+            if (!CE_Discovery_Opportunity__c.Work_Trail__c.getDescribe().isAccessible()) {
+                throw new AuraHandledException(ERROR_LOAD);
+            }
+            Map<Id, Integer> countsByThemeId = new Map<Id, Integer>();
+            for (AggregateResult result : [
+                SELECT CE_Work_Theme__c themeId, COUNT(Id) opportunityCount
+                FROM CE_Discovery_Opportunity__c
+                WHERE Work_Trail__c = :workTrailId AND CE_Work_Theme__c IN :themeIds
+                WITH SECURITY_ENFORCED
+                GROUP BY CE_Work_Theme__c
+            ]) {
+                countsByThemeId.put((Id) result.get('themeId'), (Integer) result.get('opportunityCount'));
+            }
+            return countsByThemeId;
+        }
+    }
+
+    /** Related-list values, including all linked opportunities */
     public class WorkThemeRow {
         @AuraEnabled
-        public Id recordId;
+        public Id recordId { get; set; }
         @AuraEnabled
-        public String name;
+        public String name { get; set; }
         @AuraEnabled
-        public Integer opportunityCount;
+        public Integer opportunityCount { get; set; }
     }
 
     @AuraEnabled

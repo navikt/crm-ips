@@ -119,6 +119,74 @@ private class CE_NewOpportunityControllerTest {
     }
 
     @IsTest
+    static void getWorkThemes_countsOpportunitiesPerTheme() {
+        Work_Trail__c trail = getTrail();
+        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
+        CE_Work_Theme__c otherTheme = getTheme(OTHER_MAIN_THEME);
+        insert new CE_Discovery_Opportunity__c(
+            Name = 'Mulighet på et annet jobbspor',
+            Work_Trail__c = otherTheme.Work_Trail__c,
+            CE_Work_Theme__c = otherTheme.Id
+        );
+
+        Test.startTest();
+        List<CE_NewOpportunityController.WorkThemeRow> themes = getWorkThemesAsCe(trail.Id);
+        Test.stopTest();
+
+        Assert.areEqual(2, themes[0].opportunityCount, 'Begge muligheter skal telles');
+        Assert.areEqual(
+            1,
+            getWorkThemesAsCe(otherTheme.Work_Trail__c)[0].opportunityCount,
+            'Bare muligheten på det andre jobbsporet skal telles der'
+        );
+    }
+
+    @IsTest
+    static void getWorkThemes_countsOpportunitiesCreatedByOtherUsers() {
+        Work_Trail__c trail = getTrail();
+        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
+        CE_Discovery_Opportunity__c otherUserOpportunity = new CE_Discovery_Opportunity__c(
+            Name = 'Mulighet opprettet av en annen bruker',
+            Work_Trail__c = trail.Id,
+            CE_Work_Theme__c = theme.Id
+        );
+        insert otherUserOpportunity;
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
+
+        CE_Discovery_Opportunity__c stored = [
+            SELECT CreatedById
+            FROM CE_Discovery_Opportunity__c
+            WHERE Id = :otherUserOpportunity.Id
+        ];
+        Assert.areNotEqual(getCeUser().Id, stored.CreatedById, 'Testdata skal ha en annen oppretter enn leseren');
+
+        Test.startTest();
+        List<CE_NewOpportunityController.WorkThemeRow> themes = getWorkThemesAsCe(trail.Id);
+        Test.stopTest();
+
+        Assert.areEqual(2, themes[0].opportunityCount, 'Muligheter skal telles uavhengig av oppretter');
+    }
+
+    @IsTest
+    static void getWorkThemes_deletedWorkTrail_throws() {
+        Work_Trail__c trail = getTrail();
+        delete trail;
+        Boolean thrown = false;
+
+        Test.startTest();
+        try {
+            getWorkThemesAsCe(trail.Id);
+        } catch (AuraHandledException e) {
+            thrown = true;
+        }
+        Test.stopTest();
+
+        Assert.isTrue(thrown, 'Telling skal kreve et jobbspor som brukeren har tilgang til');
+    }
+
+    @IsTest
     static void getWorkThemes_countsOpportunitiesPerThemeOnWorkTrail() {
         Work_Trail__c trail = getTrail();
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
