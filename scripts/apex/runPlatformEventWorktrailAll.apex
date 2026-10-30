@@ -1,0 +1,1 @@
+Database.executeBatch(new IPS_PlatformEventJobbsporAllBatch(), 10);
