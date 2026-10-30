@@ -86,7 +86,102 @@ public without sharing class IPS_PlatformEventJobbsporService {
             }       
         }
     }
-    
+
+    public static void getUserRolesToPlatformEvent(List<User> users ){
+        if (users == null || users.isEmpty()) {
+            return;
+        }
+
+        List<IPSRoleUserEvent__e> eventList = new List<IPSRoleUserEvent__e>();
+        for (User userRecord : users) {
+            if (userRecord == null) {
+                continue;
+            }
+
+            IPSRoleUserEvent__e eventUserRole = new IPSRoleUserEvent__e();
+            eventUserRole.UserId__c = hashStringWithController(userRecord.Id);
+            eventUserRole.UserProfileName__c = userRecord.Profile != null ? userRecord.Profile.Name : null;
+            eventUserRole.isUserActive__c = userRecord.IsActive;
+            eventUserRole.UserRoleName__c = getUserRoleName(userRecord);
+            eventUserRole.UserRole__c = getUserRoleValue(userRecord);
+            eventUserRole.UserService__c = getUserService(userRecord);
+            eventUserRole.UserDepartmentNumber__c = userRecord.Department;
+            eventUserRole.UserDepartmentName__c = userRecord.CompanyName;
+            eventUserRole.RoleId__c = userRecord.UserRoleId;
+            eventUserRole.RoleName__c = userRecord.UserRole != null ? userRecord.UserRole.Name : null;
+            eventUserRole.RoleLastModifiedDate__c = userRecord.UserRole != null ? userRecord.UserRole.SystemModstamp : null;
+            eventUserRole.UserStatus__c = userRecord.IsActive ? 'Active' : 'Inactive';
+            eventUserRole.UserIsExternal__c = isExternalUser(userRecord.Profile != null ? userRecord.Profile.Name : null);
+
+            eventList.add(eventUserRole);
+        }
+
+        if (eventList.isEmpty()) {
+            return;
+        }
+
+        List<Database.SaveResult> results = EventBus.publish(eventList);
+        for (Database.SaveResult sr : results) {
+            if (sr.isSuccess()) {
+                System.debug('Successfully published user role event.');
+            } else {
+                for (Database.Error err : sr.getErrors()) {
+                    System.debug('Error returned: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                }
+            }
+        }
+    }
+
+    private static String getUserRoleName(User userRecord) {
+        if (userRecord.UserRole == null || String.isBlank(userRecord.UserRole.Name)) {
+            return null;
+        }
+
+        String roleName = userRecord.UserRole.Name;
+        if (roleName.startsWith('AMS')) {
+            return roleName.substring(3).replace('Jobbspesialist', '').replace('Metodeveileder', '').trim();
+        }
+        if (roleName.startsWith('IPS')) {
+            return roleName.substring(3).replace('Jobbspesialist', '').replace('Metodeveileder', '').trim();
+        }
+        if (roleName.startsWith('Fagansvarlig')) {
+            return roleName.substring(13).trim();
+        }
+        return null;
+    }
+
+    private static String getUserRoleValue(User userRecord) {
+        String profileName = userRecord.Profile != null ? userRecord.Profile.Name : '';
+        if (String.isBlank(profileName)) {
+            return null;
+        }
+
+        if (profileName.contains('Metodeveileder')) {
+            return 'Metodeveileder';
+        }
+        if (profileName.contains('Jobbspesialist')) {
+            return 'Jobbspesialist';
+        }
+        return null;
+    }
+
+    private static String getUserService(User userRecord) {
+        String profileName = userRecord.Profile != null ? userRecord.Profile.Name : '';
+        if (String.isBlank(profileName)) {
+            return null;
+        }
+        if (profileName.contains('IPS')) {
+            return 'IPS';
+        }
+        if (profileName.contains('AMS')) {
+            return 'AMS';
+        }
+        return null;
+    }
+
+    private static Boolean isExternalUser(String profileName) {
+        return String.isNotBlank(profileName) && profileName.containsIgnoreCase('Ekstern');
+    }
     
     
     private static String hashStringWithController(String inputString) {
