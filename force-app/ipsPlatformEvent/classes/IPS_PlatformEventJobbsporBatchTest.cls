@@ -19,7 +19,7 @@ public class IPS_PlatformEventJobbsporBatchTest {
         Database.executeBatch(batch);
         Test.stopTest();
 
-        System.assertNotEquals(null, workTrail.Id, 'Work trail should be created before batch execution');
+        System.Assert.isNotNull(workTrail.Id, 'Work trail should be created before batch execution');
     }
 
     @isTest
@@ -40,7 +40,7 @@ public class IPS_PlatformEventJobbsporBatchTest {
         Database.executeBatch(batch);
         Test.stopTest();
 
-        System.assertNotEquals(null, workTrail.Id, 'Work trail should exist for the all-batch test');
+        System.Assert.isNotNull(workTrail.Id, 'Work trail should exist for the all-batch test');
     }
 
     @isTest
@@ -66,7 +66,7 @@ public class IPS_PlatformEventJobbsporBatchTest {
         Database.executeBatch(batch);
         Test.stopTest();
 
-        System.assertEquals(testUser.Id, [SELECT Id FROM User WHERE Id = :testUser.Id LIMIT 1].Id, 'User should still exist after batch execution');
+        System.Assert.areEqual(testUser.Id, [SELECT Id FROM User WHERE Id = :testUser.Id LIMIT 1].Id, 'User should still exist after batch execution');
     }
 
     @isTest
@@ -82,7 +82,7 @@ public class IPS_PlatformEventJobbsporBatchTest {
             WHERE CronJobDetail.Name = 'IPS_PlatformEventJobbsporBatch_Monthly'
         ];
 
-        System.assertEquals(1, jobs.size(), 'Only one monthly cron job should exist');
+        System.Assert.areEqual(1, jobs.size(), 'Only one monthly cron job should exist');
     }
 
     @isTest
@@ -98,7 +98,7 @@ public class IPS_PlatformEventJobbsporBatchTest {
             WHERE CronJobDetail.Name = 'IPS_PlatformEventJobbsporUserBatch_LastDayOfMonth'
         ];
 
-        System.assertEquals(1, jobs.size(), 'Only one user-batch monthly cron job should exist');
+        System.Assert.areEqual(1, jobs.size(), 'Only one user-batch monthly cron job should exist');
     }
 
     @isTest
@@ -144,9 +144,9 @@ public class IPS_PlatformEventJobbsporBatchTest {
             returnedIds.add(trail.Id);
         }
 
-        System.assert(returnedIds.contains(activeTrail.Id), 'Active trails should be included');
-        System.assert(returnedIds.contains(endedThisMonth.Id), 'Ended trails from this month should be included');
-        System.assert(!returnedIds.contains(endedLastMonth.Id), 'Ended trails from previous months should not be included');
+        System.Assert.isTrue(returnedIds.contains(activeTrail.Id), 'Active trails should be included');
+        System.Assert.isTrue(returnedIds.contains(endedThisMonth.Id), 'Ended trails from this month should be included');
+        System.Assert.isFalse(returnedIds.contains(endedLastMonth.Id), 'Ended trails from previous months should not be included');
     }
 
     @isTest
@@ -171,6 +171,6 @@ public class IPS_PlatformEventJobbsporBatchTest {
         IPS_PlatformEventJobbsporService.getUserRolesToPlatformEvent(new List<User>{ testUser });
         Test.stopTest();
 
-        System.assertEquals(1, [SELECT COUNT() FROM User WHERE Id = :testUser.Id]);
+        System.Assert.areEqual(1, [SELECT COUNT() FROM User WHERE Id = :testUser.Id], 'The user should exist after the service call');
     }
 }
