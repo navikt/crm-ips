@@ -60,7 +60,7 @@ Vi har besluttet å {konkret valg}.
 
 ### Sikkerhet og personvern
 - **Dataklassifisering:** Åpen / Intern / Fortrolig / Strengt fortrolig
-- **Auth-mekanisme:** ID-porten / Azure AD / TokenX / Maskinporten
+- **Auth-mekanisme:** ID-porten / Entra ID / TokenX / Maskinporten
 - **PII-håndtering:** {hvordan personopplysninger beskyttes}
 - **Tilgangsstyring:** {accessPolicy-strategi}
 
@@ -75,6 +75,11 @@ Vi har besluttet å {konkret valg}.
 - **Migrasjonsstrategi:** {hvordan vi kommer fra nåtilstand til måltilstand}
 - **Tilbakerulling:** {hvordan vi ruller tilbake hvis det feiler}
 - **Tidsramme:** {når skal dette være på plass}
+
+### Brukeropplevelse
+- **Berørte brukere og oppgave:** {arbeidsflyt, eller hvorfor det ikke gjelder}
+- **Effekt av beslutningen:** {informasjon, samhandling, universell utforming og feilretting}
+- **Grunnlag og hull:** {foreslått flyt eller utprøvd grensesnitt, åpne antakelser}
 
 ## Konsekvenser
 
