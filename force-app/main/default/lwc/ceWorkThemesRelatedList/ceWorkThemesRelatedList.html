@@ -1,20 +1,70 @@
 <template>
-    <template if:true={loadError}>
-        <div class="slds-var-p-around_medium" role="alert">{loadError}</div>
-    </template>
+    <lightning-card title={listTitle} icon-name="standard:topic">
+        <lightning-button
+            slot="actions"
+            label="Ny"
+            variant="brand-outline"
+            onclick={handleCreateClick}
+        ></lightning-button>
 
-    <template if:true={hasRecords}>
-        <lightning-datatable
-            key-field="Id"
-            data={records}
-            columns={columns}
-            hide-checkbox-column
-            onrowaction={handleRowAction}
-        >
-        </lightning-datatable>
-    </template>
+        <template lwc:if={loadError}>
+            <div class="slds-var-p-around_medium" role="alert">{loadError}</div>
+        </template>
 
-    <template if:true={showEmptyState}>
-        <p class="slds-var-p-around_medium">Du kan opprette det første yrkestemaet med knapp øverst på siden.</p>
-    </template>
+        <template lwc:if={hasRecords}>
+            <table
+                class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_fixed-layout"
+                aria-label="Yrkestema"
+            >
+                <colgroup>
+                    <col class="name-column" />
+                    <col class="count-column" />
+                    <col class="actions-column" />
+                </colgroup>
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col">Navn</th>
+                        <th scope="col" class="slds-text-align_left">Antall muligheter</th>
+                        <th scope="col"><span class="slds-assistive-text">Handlinger</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={records} for:item="record">
+                        <tr key={record.Id}>
+                            <th scope="row">
+                                <button
+                                    type="button"
+                                    class="slds-button slds-button_reset slds-text-link slds-hyphenate"
+                                    data-record-id={record.Id}
+                                    onclick={handleViewClick}
+                                >
+                                    {record.Name}
+                                </button>
+                            </th>
+                            <td class="slds-text-align_left">
+                                <lightning-formatted-number
+                                    value={record.opportunityCount}
+                                ></lightning-formatted-number>
+                            </td>
+                            <td class="slds-text-align_right">
+                                <lightning-button-menu
+                                    alternative-text={record.Name}
+                                    icon-size="x-small"
+                                    menu-alignment="right"
+                                    data-record-id={record.Id}
+                                    onselect={handleMenuSelect}
+                                >
+                                    <lightning-menu-item value="delete" label="Slett"></lightning-menu-item>
+                                </lightning-button-menu>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+
+        <template lwc:if={showEmptyState}>
+            <p class="slds-var-p-around_medium">Ingen yrkestemaer er opprettet ennå.</p>
+        </template>
+    </lightning-card>
 </template>

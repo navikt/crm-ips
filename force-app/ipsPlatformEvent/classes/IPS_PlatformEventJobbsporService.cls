@@ -22,24 +22,22 @@ public without sharing class IPS_PlatformEventJobbsporService {
         
         List<Work_Trail__c> workTrailList = [
                 SELECT 
-            		id,
-            		OwnerId,
-            		ips_Applying_Department__c,
-            		ips_Behandlingsteam__c,
-            		CreatedDate,
-            		ips_End_Date__c,
-            		toLabel(End_Cause__c),
-            		toLabel(ips_Other_end_cases__c),
-            		ips_First_meeting_with_the_Employer_held__c,
-            		recordtype.developername,
-            		toLabel(ips_Status__c),
-            		Passive_activate__c,
-            		Passive_deactivate__c,
-            		ips_Referred_date__c,
-            		IPS_Personnummer__c,
-            		toLabel(ips_Main_Goal_list__c),
-            		toLabel(ips_UO_Service__c),
-            		Oppstartsdato__c 
+                    id,
+                    OwnerId,
+                    CreatedDate,
+                    ips_End_Date__c,
+                    toLabel(End_Cause__c),
+                    toLabel(ips_Other_end_cases__c),
+                    ips_First_meeting_with_the_Employer_held__c,
+                    recordtype.developername,
+                    toLabel(ips_Status__c),
+                    Passive_activate__c,
+                    Passive_deactivate__c,
+                    ips_Referred_date__c,
+                    IPS_Personnummer__c,
+                    toLabel(ips_Main_Goal_list__c),
+                    toLabel(ips_UO_Service__c),
+                    Oppstartsdato__c 
             FROM Work_trail__c
             WHERE Id IN :workTrailIdSet
         ];
@@ -63,12 +61,10 @@ public without sharing class IPS_PlatformEventJobbsporService {
             eventJobbspor.ParticipantSCN__c = t.IPS_Personnummer__c;
             eventJobbspor.ParticipantStartDate__c = Date.valueOf(t.Oppstartsdato__c);
             if(t.recordtype.developername =='ips_Supported_Employment'){
-                eventJobbspor.JobbsporApplyingDepartment__c =t.ips_Applying_Department__c;
                 eventJobbspor.JobbsporService__c = 'AMS';
                 eventJobbspor.ParticipantsMainGoal__c = translateFieldValue(t.ips_UO_Service__c, 'MAINGOAL');
             }
             if(t.recordtype.developername == 'IPS'){
-                eventJobbspor.JobbsporApplyingDepartment__c =t.ips_Behandlingsteam__c;
                 eventJobbspor.JobbsporService__c = 'IPS';
                 eventJobbspor.ParticipantsMainGoal__c = translateFieldValue(t.ips_Main_Goal_list__c, 'MAINGOAL');
             }
@@ -88,9 +84,104 @@ public without sharing class IPS_PlatformEventJobbsporService {
                     System.debug(errormessage);
                 }
             }       
-    	}
-	}
-    
+        }
+    }
+
+    public static void getUserRolesToPlatformEvent(List<User> users ){
+        if (users == null || users.isEmpty()) {
+            return;
+        }
+
+        List<IPSRoleUserEvent__e> eventList = new List<IPSRoleUserEvent__e>();
+        for (User userRecord : users) {
+            if (userRecord == null) {
+                continue;
+            }
+
+            IPSRoleUserEvent__e eventUserRole = new IPSRoleUserEvent__e();
+            eventUserRole.UserId__c = hashStringWithController(userRecord.Id);
+            eventUserRole.UserProfileName__c = userRecord.Profile != null ? userRecord.Profile.Name : null;
+            eventUserRole.isUserActive__c = userRecord.IsActive;
+            eventUserRole.UserRoleName__c = getUserRoleName(userRecord);
+            eventUserRole.UserRole__c = getUserRoleValue(userRecord);
+            eventUserRole.UserService__c = getUserService(userRecord);
+            eventUserRole.UserDepartmentNumber__c = userRecord.Department;
+            eventUserRole.UserDepartmentName__c = userRecord.CompanyName;
+            eventUserRole.RoleId__c = userRecord.UserRoleId;
+            eventUserRole.RoleName__c = userRecord.UserRole != null ? userRecord.UserRole.Name : null;
+            eventUserRole.RoleLastModifiedDate__c = userRecord.UserRole != null ? userRecord.UserRole.SystemModstamp : null;
+            eventUserRole.UserStatus__c = userRecord.IsActive ? 'Active' : 'Inactive';
+            eventUserRole.UserIsExternal__c = isExternalUser(userRecord.Profile != null ? userRecord.Profile.Name : null);
+
+            eventList.add(eventUserRole);
+        }
+
+        if (eventList.isEmpty()) {
+            return;
+        }
+
+        List<Database.SaveResult> results = EventBus.publish(eventList);
+        for (Database.SaveResult sr : results) {
+            if (sr.isSuccess()) {
+                System.debug('Successfully published user role event.');
+            } else {
+                for (Database.Error err : sr.getErrors()) {
+                    System.debug('Error returned: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                }
+            }
+        }
+    }
+
+    private static String getUserRoleName(User userRecord) {
+        if (userRecord.UserRole == null || String.isBlank(userRecord.UserRole.Name)) {
+            return null;
+        }
+
+        String roleName = userRecord.UserRole.Name;
+        if (roleName.startsWith('AMS')) {
+            return roleName.substring(3).replace('Jobbspesialist', '').replace('Metodeveileder', '').trim();
+        }
+        if (roleName.startsWith('IPS')) {
+            return roleName.substring(3).replace('Jobbspesialist', '').replace('Metodeveileder', '').trim();
+        }
+        if (roleName.startsWith('Fagansvarlig')) {
+            return roleName.substring(13).trim();
+        }
+        return null;
+    }
+
+    private static String getUserRoleValue(User userRecord) {
+        String profileName = userRecord.Profile != null ? userRecord.Profile.Name : '';
+        if (String.isBlank(profileName)) {
+            return null;
+        }
+
+        if (profileName.contains('Metodeveileder')) {
+            return 'Metodeveileder';
+        }
+        if (profileName.contains('Jobbspesialist')) {
+            return 'Jobbspesialist';
+        }
+        return null;
+    }
+
+    private static String getUserService(User userRecord) {
+        String profileName = userRecord.Profile != null ? userRecord.Profile.Name : '';
+        if (String.isBlank(profileName)) {
+            return null;
+        }
+        if (profileName.contains('IPS')) {
+            return 'IPS';
+        }
+        if (profileName.contains('AMS')) {
+            return 'AMS';
+        }
+        return null;
+    }
+
+    private static Boolean isExternalUser(String profileName) {
+        return String.isNotBlank(profileName) && profileName.containsIgnoreCase('Ekstern');
+    }
     
     
     private static String hashStringWithController(String inputString) {

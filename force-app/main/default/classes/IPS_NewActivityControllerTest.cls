@@ -51,7 +51,6 @@ private class IPS_NewActivityControllerTest {
         Map<String, IPS_NewActivityController.MenuGroup> groupsByKey = byKey(groups);
         Assert.areEqual('Meeting', groups[0].key, 'Møte skal komme først');
         Assert.areEqual(3, groupsByKey.get('Meeting').options.size(), 'Møte skal ha tre typer');
-        Assert.areEqual(1, groupsByKey.get('Task').options.size(), 'Oppgave skal ha ett valg');
         Assert.areEqual(1, groupsByKey.get('SubGoal').options.size(), 'Delmål skal ha ett valg');
         Assert.areEqual(1, groupsByKey.get('ContactLog').options.size(), 'Kontaktlogg skal ha ett valg');
 

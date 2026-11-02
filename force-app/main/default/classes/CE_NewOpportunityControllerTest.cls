@@ -68,8 +68,8 @@ private class CE_NewOpportunityControllerTest {
         return themes;
     }
 
-    private static List<CE_Work_Theme__c> getWorkThemesAsCe(Id recordId) {
-        List<CE_Work_Theme__c> themes;
+    private static List<CE_NewOpportunityController.WorkThemeRow> getWorkThemesAsCe(Id recordId) {
+        List<CE_NewOpportunityController.WorkThemeRow> themes;
         System.runAs(getCeUser()) {
             themes = CE_NewOpportunityController.getWorkThemes(recordId);
         }
@@ -109,12 +109,126 @@ private class CE_NewOpportunityControllerTest {
         Work_Trail__c trail = getTrail();
 
         Test.startTest();
-        List<CE_Work_Theme__c> themes = getWorkThemesAsCe(trail.Id);
+        List<CE_NewOpportunityController.WorkThemeRow> themes = getWorkThemesAsCe(trail.Id);
         Test.stopTest();
 
         Assert.areEqual(1, themes.size(), 'Bare temaer på dette jobbsporet skal vises');
-        Assert.areEqual(getTheme(MAIN_THEME).Id, themes[0].Id, 'Riktig tema skal returneres');
-        Assert.areEqual(MAIN_THEME, themes[0].Name, 'Temaets navn skal returneres');
+        Assert.areEqual(getTheme(MAIN_THEME).Id, themes[0].recordId, 'Riktig tema skal returneres');
+        Assert.areEqual(MAIN_THEME, themes[0].name, 'Temaets navn skal returneres');
+        Assert.areEqual(0, themes[0].opportunityCount, 'Tema uten muligheter skal vise null');
+    }
+
+    @IsTest
+    static void getWorkThemes_countsOpportunitiesPerTheme() {
+        Work_Trail__c trail = getTrail();
+        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
+        CE_Work_Theme__c otherTheme = getTheme(OTHER_MAIN_THEME);
+        insert new CE_Discovery_Opportunity__c(
+            Name = 'Mulighet på et annet jobbspor',
+            Work_Trail__c = otherTheme.Work_Trail__c,
+            CE_Work_Theme__c = otherTheme.Id
+        );
+
+        Test.startTest();
+        List<CE_NewOpportunityController.WorkThemeRow> themes = getWorkThemesAsCe(trail.Id);
+        Test.stopTest();
+
+        Assert.areEqual(2, themes[0].opportunityCount, 'Begge muligheter skal telles');
+        Assert.areEqual(
+            1,
+            getWorkThemesAsCe(otherTheme.Work_Trail__c)[0].opportunityCount,
+            'Bare muligheten på det andre jobbsporet skal telles der'
+        );
+    }
+
+    @IsTest
+    static void getWorkThemes_countsOpportunitiesCreatedByOtherUsers() {
+        Work_Trail__c trail = getTrail();
+        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
+        CE_Discovery_Opportunity__c otherUserOpportunity = new CE_Discovery_Opportunity__c(
+            Name = 'Mulighet opprettet av en annen bruker',
+            Work_Trail__c = trail.Id,
+            CE_Work_Theme__c = theme.Id
+        );
+        insert otherUserOpportunity;
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
+
+        CE_Discovery_Opportunity__c stored = [
+            SELECT CreatedById
+            FROM CE_Discovery_Opportunity__c
+            WHERE Id = :otherUserOpportunity.Id
+        ];
+        Assert.areNotEqual(getCeUser().Id, stored.CreatedById, 'Testdata skal ha en annen oppretter enn leseren');
+
+        Test.startTest();
+        List<CE_NewOpportunityController.WorkThemeRow> themes = getWorkThemesAsCe(trail.Id);
+        Test.stopTest();
+
+        Assert.areEqual(2, themes[0].opportunityCount, 'Muligheter skal telles uavhengig av oppretter');
+    }
+
+    @IsTest
+    static void getWorkThemes_deletedWorkTrail_throws() {
+        Work_Trail__c trail = getTrail();
+        delete trail;
+        Boolean thrown = false;
+
+        Test.startTest();
+        try {
+            getWorkThemesAsCe(trail.Id);
+        } catch (AuraHandledException e) {
+            thrown = true;
+        }
+        Test.stopTest();
+
+        Assert.isTrue(thrown, 'Telling skal kreve et jobbspor som brukeren har tilgang til');
+    }
+
+    @IsTest
+    static void getWorkThemes_countsOpportunitiesPerThemeOnWorkTrail() {
+        Work_Trail__c trail = getTrail();
+        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
+        CE_Work_Theme__c otherTheme = getTheme(OTHER_MAIN_THEME);
+        CE_Work_Theme__c secondTheme = new CE_Work_Theme__c(
+            Name = OTHER_MAIN_THEME,
+            Main_Theme__c = OTHER_MAIN_THEME,
+            Work_Trail__c = trail.Id
+        );
+        insert secondTheme;
+        insert new List<CE_Discovery_Opportunity__c>{
+            new CE_Discovery_Opportunity__c(Name = 'Mulighet 1', Work_Trail__c = trail.Id, CE_Work_Theme__c = theme.Id),
+            new CE_Discovery_Opportunity__c(
+                Name = 'Mulighet 2',
+                Work_Trail__c = trail.Id,
+                CE_Work_Theme__c = theme.Id,
+                OwnerId = getCeUser().Id
+            ),
+            new CE_Discovery_Opportunity__c(
+                Name = 'Mulighet 3',
+                Work_Trail__c = trail.Id,
+                CE_Work_Theme__c = secondTheme.Id
+            ),
+            new CE_Discovery_Opportunity__c(
+                Name = 'Annet jobbspor',
+                Work_Trail__c = otherTheme.Work_Trail__c,
+                CE_Work_Theme__c = otherTheme.Id
+            )
+        };
+
+        Test.startTest();
+        List<CE_NewOpportunityController.WorkThemeRow> themes = getWorkThemesAsCe(trail.Id);
+        Test.stopTest();
+
+        Map<Id, Integer> counts = new Map<Id, Integer>();
+        for (CE_NewOpportunityController.WorkThemeRow row : themes) {
+            counts.put(row.recordId, row.opportunityCount);
+        }
+        Assert.areEqual(2, themes.size(), 'Bare temaer på dette jobbsporet skal vises');
+        Assert.areEqual(2, counts.get(theme.Id), 'Alle muligheter på temaet skal telles uavhengig av eier');
+        Assert.areEqual(1, counts.get(secondTheme.Id), 'Hvert tema skal ha sin egen telling');
+        Assert.isFalse(counts.containsKey(otherTheme.Id), 'Temaer på andre jobbspor skal ikke tas med');
     }
 
     @IsTest

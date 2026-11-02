@@ -1,0 +1,13 @@
+<template>
+    <lightning-modal-header label="Nytt yrkestema"></lightning-modal-header>
+    <lightning-modal-body>
+        <lightning-flow
+            flow-api-name="CE_Job_Topic"
+            flow-input-variables={flowInputVariables}
+            onstatuschange={handleFlowStatusChange}
+        ></lightning-flow>
+        <template lwc:if={flowError}>
+            <div class="slds-text-color_error" role="alert">Kunne ikke fullføre opprettingen av yrkestemaet.</div>
+        </template>
+    </lightning-modal-body>
+</template>
