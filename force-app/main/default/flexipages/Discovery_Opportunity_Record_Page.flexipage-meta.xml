@@ -42,6 +42,20 @@
                 <identifier>force_highlightsPanel</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>hideUpdateButton</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>variant</name>
+                    <value>linear</value>
+                </componentInstanceProperties>
+                <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
+                <identifier>runtime_sales_pathassistant_pathAssistant</identifier>
+            </componentInstance>
+        </itemInstances>
         <name>header</name>
         <type>Region</type>
     </flexiPageRegions>
@@ -336,6 +350,13 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection4</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Information Sharing</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -354,6 +375,13 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection7</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Information Sharing</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>detailTabContent</name>
@@ -676,6 +704,68 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
+                <fieldItem>Record.Agreement_Pay__c</fieldItem>
+                <identifier>AgreementPayField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Agreement_Benefits__c</fieldItem>
+                <identifier>AgreementBenefitsField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>AgreementPayLeft</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Agreement_Support_Schemes__c</fieldItem>
+                <identifier>AgreementSupportSchemesField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>AgreementPayRight</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>AgreementPayLeft</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>AgreementPayLeftColumn</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>AgreementPayRight</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>AgreementPayRightColumn</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>AgreementPayColumns</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.Agreement_Support_Needs__c</fieldItem>
                 <identifier>AgreementSupportNeedsField</identifier>
             </fieldInstance>
@@ -791,68 +881,6 @@
             </componentInstance>
         </itemInstances>
         <name>AgreementStartupColumns</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Agreement_Pay__c</fieldItem>
-                <identifier>AgreementPayField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Agreement_Benefits__c</fieldItem>
-                <identifier>AgreementBenefitsField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <name>AgreementPayLeft</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Agreement_Support_Schemes__c</fieldItem>
-                <identifier>AgreementSupportSchemesField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <name>AgreementPayRight</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>AgreementPayLeft</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>AgreementPayLeftColumn</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>AgreementPayRight</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>AgreementPayRightColumn</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>AgreementPayColumns</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -1010,8 +1038,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Potential_work_tasks__c</fieldItem>
-                <identifier>RecordPotential_work_tasks_cField2</identifier>
+                <fieldItem>Record.Analysis_Job_Summary__c</fieldItem>
+                <identifier>AnalysisJobSummaryField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-ea7f3131-12f7-4885-89c4-ec28378225a4</name>
@@ -1033,6 +1061,88 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Analysis_Mentor__c</fieldItem>
+                <identifier>AnalysisMentorField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Analysis_Supporters__c</fieldItem>
+                <identifier>AnalysisSupportersField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Analysis_Specialist_Support__c</fieldItem>
+                <identifier>AnalysisSpecialistSupportField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>AnalysisSupportLeft</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Analysis_Adaptation_Needs__c</fieldItem>
+                <identifier>AnalysisAdaptationNeedsField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Analysis_Possible_Adaptations__c</fieldItem>
+                <identifier>AnalysisPossibleAdaptationsField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>AnalysisSupportRight</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>AnalysisSupportLeft</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>AnalysisSupportLeftColumn</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>AnalysisSupportRight</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>AnalysisSupportRightColumn</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>AnalysisSupportColumns</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
                     <name>columns</name>
@@ -1044,10 +1154,149 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Section</value>
+                    <value>Detaljer</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection3</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>AnalysisSupportColumns</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Opplæring og tilrettelegging</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>AnalysisSupportSection</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>AnalysisDetailsContent</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>New</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>maxRecordsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>CE_Discovery_Opportunity__c.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>CE_Tasks__r</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListDisplayType</name>
+                    <value>ADVGRID</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListFieldAliases</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>CREATED_DATE</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>NAME</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Task_Type__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Skill_Requirements_Details__c</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListLabel</name>
+                    <value>Oppgaver på arbeidsplassen</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sortFieldAlias</name>
+                    <value>CREATED_DATE</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sortFieldOrder</name>
+                    <value>Ascending</value>
+                </componentInstanceProperties>
+                <componentName>lst:dynamicRelatedList</componentName>
+                <identifier>lst_dynamicRelatedList</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>AnalysisTasksContent</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>active</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>AnalysisDetailsContent</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Standard.Tab.detail</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>AnalysisDetailsTab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>AnalysisTasksContent</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Oppgaver</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>AnalysisTasksTab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>AnalysisTabs</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Tabs</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>tabs</name>
+                    <value>AnalysisTabs</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tabset</componentName>
+                <identifier>AnalysisTabset</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-naboebx17sp</name>
@@ -1116,7 +1365,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Jobbutvikling</value>
+                    <value>Innledende jobbanalyse</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>detailTab</identifier>
@@ -1134,6 +1383,19 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab4</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Information Sharing</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Initial Job Analysis</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1144,10 +1406,28 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>Jobbanalyse</value>
+                    <value>Utvidet jobbanalyse</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab2</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND 2 AND 3</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Information Sharing</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Initial Job Analysis</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Status__c}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Agreement</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1162,6 +1442,13 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab3</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.Status__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Job Support Plan</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>maintabs</name>
