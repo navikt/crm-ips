@@ -19,6 +19,22 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Set_Selected_Jobbsporet_User</name>
+        <label>Set Selected Jobbsporet User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>sObj_SelectedJobbsporetUser</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Current_Salesforce_Role</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_Team_Values_From_Confirm</name>
         <label>Assign Team Values From Confirm</label>
         <locationX>0</locationX>
@@ -87,7 +103,7 @@
             <assignToReference>sObj_TeamMember.ips_NAV_Ident__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow.CRM_NAV_Ident__c</elementReference>
+                <elementReference>sObj_SelectedJobbsporetUser.CRM_NAV_Ident__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -133,7 +149,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Submission_User</targetReference>
+            <targetReference>Get_Submission_Current_Role</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -529,9 +545,9 @@
         <name>formula_Access_Request_Valid</name>
         <dataType>Boolean</dataType>
         <expression>AND(
-    NOT(ISBLANK({!Get_Submission_User.Id})),
-    {!Get_Submission_User.IsActive},
-    {!Get_Selected_User_Role_Context.Id} = {!Get_Submission_User.Id},
+    NOT(ISBLANK({!sObj_SelectedJobbsporetUser.Id})),
+    {!sObj_SelectedJobbsporetUser.IsActive},
+    {!sObj_SelectedJobbsporetUser.Id} = {!sObj_TeamMember.ips_User__c},
     OR(
         NOT({!formula_Can_Select_Salesforce_Role}),
         {!radio_Salesforce_Role_Action} = "Keep",
@@ -639,32 +655,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <name>Get_Selected_User_Role_Context</name>
-        <label>Get Selected User Role Context</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Current_Salesforce_Role</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Set_Access_Request_Validation_Fault</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>UserRoleId</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>Get_Current_Salesforce_Role</name>
         <label>Get Current Salesforce Role</label>
         <locationX>0</locationX>
@@ -681,7 +671,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Selected_User_Role_Context.UserRoleId</elementReference>
+                <elementReference>sObj_SelectedJobbsporetUser.UserRoleId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -726,33 +716,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_Submission_User</name>
-        <label>Get Submission User</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Submission_Current_Role</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Set_Access_Request_Validation_Fault</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>sObj_TeamMember.ips_User__c</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>IsActive</queriedFields>
-        <queriedFields>UserRoleId</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>Get_Submission_Current_Role</name>
         <label>Get Submission Current Role</label>
         <locationX>0</locationX>
@@ -769,7 +732,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Submission_User.UserRoleId</elementReference>
+                <elementReference>sObj_SelectedJobbsporetUser.UserRoleId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -849,7 +812,7 @@
         <label>GET Jobbsporet User</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Supervisor_User</targetReference>
         </connector>
@@ -880,6 +843,12 @@
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>CRM_NAV_Ident__c</queriedFields>
+        <queriedFields>CRM_UserProfileName__c</queriedFields>
+        <queriedFields>IsActive</queriedFields>
+        <queriedFields>UserRoleId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -1211,7 +1180,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_Selected_User_Role_Context</targetReference>
+            <targetReference>Set_Selected_Jobbsporet_User</targetReference>
         </connector>
         <fields>
             <name>s_displayText2</name>
@@ -1828,6 +1797,14 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>sObj_SelectedJobbsporetUser</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
     </variables>
     <variables>
         <name>sObj_applicationLog</name>
