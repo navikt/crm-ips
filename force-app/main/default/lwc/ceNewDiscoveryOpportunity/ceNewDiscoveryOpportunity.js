@@ -32,12 +32,13 @@ function splitValues(value) {
 export default class CeNewDiscoveryOpportunity extends LightningElement {
     @api recordId;
     @api errorMessage;
+    // Retained for older Flow versions; no longer displayed or saved.
+    @api status;
 
     selectedThemeId = '';
     selectedSubThemes = [];
     nameValue = '';
     descriptionValue = '';
-    statusValue = '';
     accountValue = null;
 
     themes = [];
@@ -81,14 +82,6 @@ export default class CeNewDiscoveryOpportunity extends LightningElement {
     }
     set description(value) {
         this.descriptionValue = value || '';
-    }
-
-    @api
-    get status() {
-        return this.statusValue;
-    }
-    set status(value) {
-        this.statusValue = value || '';
     }
 
     @api
@@ -257,12 +250,6 @@ export default class CeNewDiscoveryOpportunity extends LightningElement {
         this.hideServerError();
     }
 
-    handleStatusChange(event) {
-        this.statusValue = event.detail.value || '';
-        this.notifyFlow('status', this.statusValue);
-        this.hideServerError();
-    }
-
     handleAccountChange(event) {
         this.accountValue = event.detail.recordId || null;
         this.notifyFlow('accountId', this.accountValue || '');
@@ -293,8 +280,7 @@ export default class CeNewDiscoveryOpportunity extends LightningElement {
             this.hasSelectedTheme &&
             Boolean(this.nameValue.trim()) &&
             this.nameValue.trim().length <= NAME_MAX_LENGTH &&
-            this.descriptionValue.length <= TEXT_MAX_LENGTH &&
-            this.statusValue.length <= TEXT_MAX_LENGTH;
+            this.descriptionValue.length <= TEXT_MAX_LENGTH;
         return isValid ? { isValid: true } : { isValid: false, errorMessage: ERROR_REQUIRED };
     }
 

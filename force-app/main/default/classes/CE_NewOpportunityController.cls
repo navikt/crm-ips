@@ -232,9 +232,6 @@ public with sharing class CE_NewOpportunityController {
         if (String.isNotBlank(request.description)) {
             userFields.add(CE_Discovery_Opportunity__c.Description__c);
         }
-        if (String.isNotBlank(request.status)) {
-            userFields.add(CE_Discovery_Opportunity__c.Status__c);
-        }
         if (String.isNotBlank(request.accountId)) {
             userFields.add(CE_Discovery_Opportunity__c.CE_RelatedToAccount__c);
         }
@@ -257,7 +254,6 @@ public with sharing class CE_NewOpportunityController {
             Work_Trail__c = trail.Id,
             CE_Work_Theme__c = themeId,
             Description__c = String.isBlank(request.description) ? null : request.description.trim(),
-            Status__c = String.isBlank(request.status) ? null : request.status.trim(),
             CE_RelatedToAccount__c = accountId
         );
 
@@ -366,8 +362,6 @@ public with sharing class CE_NewOpportunityController {
         public String name;
         @InvocableVariable(label='Beskrivelse')
         public String description;
-        @InvocableVariable(label='Status')
-        public String status;
         @InvocableVariable(label='Arbeidsgiver-ID')
         public String accountId;
     }
