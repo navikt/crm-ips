@@ -30,6 +30,13 @@
                     <elementReference>Get_Opportunity.CE_RelatedToAccount__r.Id</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RelatedToAccount__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Error</targetReference>
             </connector>
@@ -86,7 +93,6 @@
         <connector>
             <targetReference>Get_Opportunity</targetReference>
         </connector>
-        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
         <filters>
             <field>IPS_Type__c</field>

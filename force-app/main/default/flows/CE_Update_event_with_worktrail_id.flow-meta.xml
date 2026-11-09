@@ -12,10 +12,10 @@
             <name>CE_Employer_Meeting</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Record_Type.Name</leftValueReference>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>CE Employer event opportunity</stringValue>
+                    <elementReference>Get_Record_Type.Id</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -114,6 +114,7 @@
         <connector>
             <targetReference>Get_Record_Type</targetReference>
         </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
         <filters>
             <field>WhatId</field>
@@ -130,7 +131,7 @@
             </value>
         </filters>
         <object>Event</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
