@@ -45,8 +45,8 @@ public without sharing class IPS_PlatformEventJobbsporService {
         for(Work_Trail__c t:workTrailList){
             IPSJobbsporEvent__e eventJobbspor = new IPSJobbsporEvent__e();
             User ownerUser = ownerById.get(t.OwnerId);
-            eventJobbspor.JobbsporId__c = hashStringWithController(t.Id);
-            eventJobbspor.UserId__c = hashStringWithController(t.OwnerId);
+            eventJobbspor.JobbsporId__c = t.Id;
+            eventJobbspor.UserId__c = t.OwnerId;
             eventJobbspor.UserDepartmentName__c = ownerUser != null ? ownerUser.CompanyName : null;
             eventJobbspor.UserDepartmentNumber__c = ownerUser != null ? ownerUser.Department : null;
             eventJobbspor.JobbsporCreated__c = Date.valueOf(t.CreatedDate);
@@ -99,7 +99,7 @@ public without sharing class IPS_PlatformEventJobbsporService {
             }
 
             IPSRoleUserEvent__e eventUserRole = new IPSRoleUserEvent__e();
-            eventUserRole.UserId__c = hashStringWithController(userRecord.Id);
+            eventUserRole.UserId__c = userRecord.Id;
             eventUserRole.UserProfileName__c = userRecord.Profile != null ? userRecord.Profile.Name : null;
             eventUserRole.isUserActive__c = userRecord.IsActive;
             eventUserRole.UserRoleName__c = getUserRoleName(userRecord);
