@@ -183,9 +183,23 @@
         </rules>
         <rules>
             <name>Manager_Changed</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>isManagerChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isRoleChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isRoleRejected</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -219,7 +233,7 @@
             <label>Role Changed</label>
         </rules>
     </decisions>
-    <description>Checks the event creator&apos;s Give Access to Jobbsporet custom permission and updates User.ManagerId and User.UserRoleId according to issue 3074. Preserves the profile scope from IPS_Admin_GiveUserAccess. No team records are read or changed. Unchanged values cause no User DML.</description>
+    <description>Enables authorized users to give access to the Jobbsporet app, based on a manual process and information from &quot;Mine Tilganger&quot;</description>
     <environments>Default</environments>
     <formulas>
         <name>areReferencesValid</name>
