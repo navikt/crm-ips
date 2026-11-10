@@ -11,7 +11,7 @@
             <assignToReference>userUpdate.Id</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Target_User.Id</elementReference>
+                <elementReference>requestedUserId</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -35,7 +35,7 @@
             <assignToReference>userUpdate.Id</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Target_User.Id</elementReference>
+                <elementReference>requestedUserId</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -65,7 +65,7 @@
             <assignToReference>userUpdate.Id</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Target_User.Id</elementReference>
+                <elementReference>requestedUserId</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -137,21 +137,6 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnectorLabel>No User Changes</defaultConnectorLabel>
-        <rules>
-            <name>Invalid_Role</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>isRoleRejected</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Log_Rejected_Role</targetReference>
-            </connector>
-            <label>Invalid Role</label>
-        </rules>
         <rules>
             <name>Manager_And_Role_Changed</name>
             <conditionLogic>and</conditionLogic>
@@ -231,6 +216,18 @@
                 <targetReference>Assign_Role</targetReference>
             </connector>
             <label>Role Changed</label>
+        </rules>
+        <rules>
+            <name>Invalid_Role</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isRoleRejected</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Invalid Role</label>
         </rules>
     </decisions>
     <description>Enables authorized users to give access to the Jobbsporet app, based on a manual process and information from &quot;Mine Tilganger&quot;</description>
@@ -376,32 +373,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordCreates>
-        <name>Log_Rejected_Role</name>
-        <label>Log Rejected Role</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <inputAssignments>
-            <field>Application_Domain__c</field>
-            <value>
-                <stringValue>IPS</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Log_Message__c</field>
-            <value>
-                <elementReference>roleRejectionMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Function__c</field>
-            <value>
-                <stringValue>IPS_Update_User_From_Team_Member_Event</stringValue>
-            </value>
-        </inputAssignments>
-        <object>IPS_Application_Log_Event__e</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
     <recordCreates>
         <name>Log_Request_Failure</name>
         <label>Log Request Failure</label>
