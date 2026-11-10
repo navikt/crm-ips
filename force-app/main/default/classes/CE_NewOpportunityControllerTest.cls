@@ -270,7 +270,6 @@ private class CE_NewOpportunityControllerTest {
         Account employer = [SELECT Id FROM Account WHERE Name LIKE 'Røre Pinne%' LIMIT 1];
         CE_NewOpportunityController.CreateRequest request = request(trail.Id, theme.Id, 'Ledelse;Idrett og aktivitet');
         request.description = 'Prøve ut arbeid i butikk';
-        request.status = 'Ny';
         request.accountId = employer.Id;
 
         Test.startTest();
@@ -286,7 +285,6 @@ private class CE_NewOpportunityControllerTest {
                 Main_Theme__c,
                 Sub_Theme__c,
                 Description__c,
-                Status__c,
                 CE_RelatedToAccount__c,
                 OwnerId
             FROM CE_Discovery_Opportunity__c
@@ -307,7 +305,6 @@ private class CE_NewOpportunityControllerTest {
             'Hvert undertema skal lagres på egen linje'
         );
         Assert.areEqual('Prøve ut arbeid i butikk', opportunity.Description__c, 'Beskrivelsen skal lagres');
-        Assert.areEqual('Ny', opportunity.Status__c, 'Status skal lagres');
         Assert.areEqual(employer.Id, opportunity.CE_RelatedToAccount__c, 'Arbeidsgiveren skal lagres');
         Assert.areEqual(trail.OwnerId, opportunity.OwnerId, 'Eier skal være den samme som på jobbsporet');
 
@@ -332,14 +329,13 @@ private class CE_NewOpportunityControllerTest {
         Assert.isNotNull(result.opportunityId, 'Muligheten skal opprettes');
         Assert.isNull(getTheme(MAIN_THEME).Sub_Theme__c, 'Fjernede undertemaer skal fjernes fra hovedtemaet');
         CE_Discovery_Opportunity__c opportunity = [
-            SELECT Main_Theme__c, Sub_Theme__c, Description__c, Status__c, CE_RelatedToAccount__c
+            SELECT Main_Theme__c, Sub_Theme__c, Description__c, CE_RelatedToAccount__c
             FROM CE_Discovery_Opportunity__c
             WHERE Id = :result.opportunityId
         ];
         Assert.isNull(opportunity.Description__c, 'Tom beskrivelse skal ikke lagres');
         Assert.areEqual(MAIN_THEME, opportunity.Main_Theme__c, 'Hovedtema skal kopieres uten undertemaer');
         Assert.isNull(opportunity.Sub_Theme__c, 'Ingen valgte undertemaer skal gi tomt snapshot');
-        Assert.isNull(opportunity.Status__c, 'Tom status skal ikke lagres');
         Assert.isNull(opportunity.CE_RelatedToAccount__c, 'Arbeidsgiver er valgfri');
     }
 
