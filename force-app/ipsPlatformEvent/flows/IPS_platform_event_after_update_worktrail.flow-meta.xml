@@ -2,6 +2,79 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>67.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Assignment</name>
+        <label>Assignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>JobbsporId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>JobbsporIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>JobbsporId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_recordtype_list</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Check_if_list_is_empty</name>
+        <label>Check if list is empty</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Create_platform_event_based_on_updates</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isNotEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>JobbsporIds</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_platform_event_based_on_updates</targetReference>
+            </connector>
+            <label>isNotEmpty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Checks_all_recordtypes</name>
+        <label>Checks all recordtypes</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Loop_through_recordtype_list</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>isIPSorAMS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_recordtype_list.Id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.RecordTypeId</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assignment</targetReference>
+            </connector>
+            <label>isIPSorAMS</label>
+        </rules>
+    </decisions>
     <description>Jobbsporet - oppretter en platform event når jobbsporet er oppdatert på 
 - endring av eier
 - endring av sluttdetaljer
@@ -13,6 +86,20 @@
     <environments>Default</environments>
     <interviewLabel>IPS - platform event after update worktrail • {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS - platform event after update worktrail</label>
+    <loops>
+        <name>Loop_through_recordtype_list</name>
+        <label>Loop through recordtype list</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_recordtype</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Checks_all_recordtypes</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Check_if_list_is_empty</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -32,6 +119,34 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_recordtype</name>
+        <label>Get recordtype</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_through_recordtype_list</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>ips_Supported_Employment</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -117,13 +232,13 @@
         <recordTriggerType>Update</recordTriggerType>
         <scheduledPaths>
             <connector>
-                <targetReference>Create_platform_event_based_on_updates</targetReference>
+                <targetReference>Get_recordtype</targetReference>
             </connector>
             <pathType>AsyncAfterCommit</pathType>
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <subflows>
         <name>Create_platform_event_based_on_updates</name>
         <label>Create platform event based on updates</label>
@@ -131,10 +246,24 @@
         <locationY>0</locationY>
         <flowName>IPS_subflow_create_jobbspor_platform_event</flowName>
         <inputAssignments>
-            <name>input_JobbsporId</name>
+            <name>input_JobbsporIdList</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <elementReference>JobbsporIds</elementReference>
             </value>
         </inputAssignments>
     </subflows>
+    <variables>
+        <name>JobbsporId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>JobbsporIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
