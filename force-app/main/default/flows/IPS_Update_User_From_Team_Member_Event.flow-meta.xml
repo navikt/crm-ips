@@ -80,13 +80,45 @@
             <targetReference>Update_User</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Log_rejected_request</name>
+        <label>Log rejected request</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>flow_errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestFailureMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Log_Request_Failure</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Log_rejected_role</name>
+        <label>Log rejected role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>flow_errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>roleRejectionMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Log_Request_Failure</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Are_References_Valid</name>
         <label>Are References Valid</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Log_Request_Failure</targetReference>
+            <targetReference>Is_the_Role_Change_Valid</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Invalid User Manager Or Role</defaultConnectorLabel>
         <rules>
@@ -112,7 +144,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Log_Request_Failure</targetReference>
+            <targetReference>Log_rejected_request</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Reject Request</defaultConnectorLabel>
         <rules>
@@ -132,10 +164,42 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_the_Role_Change_Valid</name>
+        <label>Is the Role Change Valid</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Valid- or no role change</defaultConnectorLabel>
+        <rules>
+            <name>Invalid_Role</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isRoleChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isRoleRejected</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Log_rejected_role</targetReference>
+            </connector>
+            <label>Invalid Role</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Select_User_Changes</name>
         <label>Select User Changes</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Is_the_Role_Change_Valid</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No User Changes</defaultConnectorLabel>
         <rules>
             <name>Manager_And_Role_Changed</name>
@@ -216,18 +280,6 @@
                 <targetReference>Assign_Role</targetReference>
             </connector>
             <label>Role Changed</label>
-        </rules>
-        <rules>
-            <name>Invalid_Role</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>isRoleRejected</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <label>Invalid Role</label>
         </rules>
     </decisions>
     <description>Enables authorized users to give access to the Jobbsporet app, based on a manual process and information from &quot;Mine Tilganger&quot;</description>
@@ -387,7 +439,7 @@
         <inputAssignments>
             <field>Log_Message__c</field>
             <value>
-                <elementReference>requestFailureMessage</elementReference>
+                <elementReference>flow_errorMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -519,6 +571,9 @@
         <label>Update User</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_the_Role_Change_Valid</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Log_Update_Failure</targetReference>
         </faultConnector>
@@ -536,6 +591,13 @@
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>flow_errorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>userUpdate</name>
         <dataType>SObject</dataType>
