@@ -118,7 +118,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Is_the_Role_Change_Valid</targetReference>
+            <targetReference>Log_rejected_request</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Invalid User Manager Or Role</defaultConnectorLabel>
         <rules>
@@ -172,13 +172,6 @@
         <rules>
             <name>Invalid_Role</name>
             <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>isRoleChanged</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
             <conditions>
                 <leftValueReference>isRoleRejected</leftValueReference>
                 <operator>EqualTo</operator>
@@ -488,7 +481,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Log_Request_Failure</targetReference>
+            <targetReference>Log_rejected_request</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -520,7 +513,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Log_Request_Failure</targetReference>
+            <targetReference>Log_rejected_request</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -545,7 +538,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Log_Request_Failure</targetReference>
+            <targetReference>Log_rejected_request</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
