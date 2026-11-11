@@ -19,6 +19,22 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Set_Selected_Jobbsporet_User</name>
+        <label>Set Selected Jobbsporet User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>sObj_SelectedJobbsporetUser</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Current_Salesforce_Role</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_Team_Values_From_Confirm</name>
         <label>Assign Team Values From Confirm</label>
         <locationX>0</locationX>
@@ -87,7 +103,7 @@
             <assignToReference>sObj_TeamMember.ips_NAV_Ident__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow.CRM_NAV_Ident__c</elementReference>
+                <elementReference>sObj_SelectedJobbsporetUser.CRM_NAV_Ident__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -133,7 +149,55 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Create_Team_Member</targetReference>
+            <targetReference>Get_Submission_Current_Role</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Access_Request_Create_Fault</name>
+        <label>Set Access Request Create Fault</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>TEAM_MEMBER_CREATE_FAILED</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Rollback_Access_Request</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Access_Request_Publish_Fault</name>
+        <label>Set Access Request Publish Fault</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>ACCESS_EVENT_QUEUE_FAILED</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Rollback_Access_Request</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Access_Request_Validation_Fault</name>
+        <label>Set Access Request Validation Fault</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>var_faultStep</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>ACCESS_REQUEST_VALIDATION_FAILED</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Rollback_Access_Request</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -221,6 +285,22 @@
         </connector>
     </assignments>
     <choices>
+        <name>choice_Keep_Salesforce_Role</name>
+        <choiceText>Behold rollen</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Keep</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choice_Change_Salesforce_Role</name>
+        <choiceText>Endre rollen</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Change</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>choice_Methodology_AMS</name>
         <choiceText>AMS</choiceText>
         <dataType>String</dataType>
@@ -282,6 +362,81 @@
             <stringValue>{&quot;location&quot;:&quot;top&quot;,&quot;type&quot;:&quot;simple&quot;}</stringValue>
         </value>
     </customProperties>
+    <decisions>
+        <name>Check_Submission_Permission</name>
+        <label>Check Submission Permission</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Screen_Access_Denied</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Access denied</defaultConnectorLabel>
+        <rules>
+            <name>Submission_Authorized</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Permission.IPS_Admin_GiveAccessToJobbsporetUsers</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Team_Member</targetReference>
+            </connector>
+            <label>Submission authorized</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Validate_Access_Request</name>
+        <label>Validate Access Request</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_Access_Request_Validation_Fault</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Request no longer valid</defaultConnectorLabel>
+        <rules>
+            <name>Access_Request_Valid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_Access_Request_Valid</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Submission_Permission</targetReference>
+            </connector>
+            <label>Request valid</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Give_User_Access_Permission</name>
+        <label>Check Give User Access Permission</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Screen_EnterUserDetails</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Continue</defaultConnectorLabel>
+        <rules>
+            <name>Access_Denied</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Permission.IPS_Admin_GiveAccessToJobbsporetUsers</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Access_Denied</targetReference>
+            </connector>
+            <label>Access denied</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Check_If_Nav_Kontor_Profile</name>
         <label>Check If Nav Kontor Profile</label>
@@ -357,6 +512,58 @@
     </decisions>
     <environments>Default</environments>
     <formulas>
+        <name>formula_Can_Select_Salesforce_Role</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+    NOT(ISBLANK({!Get_Current_Salesforce_Role.Id})),
+    OR(
+        {!Get_Current_Salesforce_Role.Name} = "NAV Kontor",
+        CONTAINS({!Get_Current_Salesforce_Role.Name}, "Jobbspesialist"),
+        CONTAINS({!Get_Current_Salesforce_Role.Name}, "Metodeveileder")
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>formula_Current_Salesforce_Role_Text</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    ISBLANK({!Get_Current_Salesforce_Role.Id}),
+    "Brukeren har ingen Salesforce-rolle.",
+    "Gjeldende Salesforce-rolle: " &amp; {!Get_Current_Salesforce_Role.Name}
+)</expression>
+    </formulas>
+    <formulas>
+        <name>formula_Selected_Salesforce_Role_Id</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    AND({!formula_Can_Select_Salesforce_Role}, {!radio_Salesforce_Role_Action} = "Change"),
+    {!dataTable_Salesforce_Role.firstSelectedRow.Id},
+    ""
+)</expression>
+    </formulas>
+    <formulas>
+        <name>formula_Access_Request_Valid</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+    NOT(ISBLANK({!sObj_SelectedJobbsporetUser.Id})),
+    {!sObj_SelectedJobbsporetUser.IsActive},
+    {!sObj_SelectedJobbsporetUser.Id} = {!sObj_TeamMember.ips_User__c},
+    OR(
+        NOT({!formula_Can_Select_Salesforce_Role}),
+        {!radio_Salesforce_Role_Action} = "Keep",
+        AND(
+            {!radio_Salesforce_Role_Action} = "Change",
+            NOT(ISBLANK({!Get_Submission_New_Role.Id})),
+            OR(
+                {!Get_Submission_Current_Role.Name} = "NAV Kontor",
+                CONTAINS({!Get_Submission_Current_Role.Name}, "Jobbspesialist"),
+                CONTAINS({!Get_Submission_Current_Role.Name}, "Metodeveileder")
+            )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
         <name>var_isTemporary</name>
         <dataType>Boolean</dataType>
         <expression>NOT(ISBLANK({!var_endDate}))</expression>
@@ -401,11 +608,179 @@
         <label>Create Team Member</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>Publish_Team_Member_Changed</targetReference>
+        </connector>
         <faultConnector>
-            <targetReference>sfl_CreateApplicationLog</targetReference>
+            <targetReference>Set_Access_Request_Create_Fault</targetReference>
         </faultConnector>
         <inputReference>sObj_TeamMember</inputReference>
     </recordCreates>
+    <recordCreates>
+        <name>Publish_Team_Member_Changed</name>
+        <label>Publish Team Member Changed</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Screen_Access_Request_Sent</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Access_Request_Publish_Fault</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>ips_Manager__c</field>
+            <value>
+                <elementReference>sObj_TeamMember.ips_Manager__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Role__c</field>
+            <value>
+                <elementReference>formula_Selected_Salesforce_Role_Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_Team__c</field>
+            <value>
+                <elementReference>sObj_TeamMember.ips_Team__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ips_User__c</field>
+            <value>
+                <elementReference>sObj_TeamMember.ips_User__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>IPS_Team_Member_Changed__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Current_Salesforce_Role</name>
+        <label>Get Current Salesforce Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Selectable_Salesforce_Roles</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Access_Request_Validation_Fault</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sObj_SelectedJobbsporetUser.UserRoleId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>UserRole</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Selectable_Salesforce_Roles</name>
+        <label>Get Selectable Salesforce Roles</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_Select_Salesforce_Role</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Access_Request_Validation_Fault</targetReference>
+        </faultConnector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Jobbspesialist</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Metodeveileder</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>UserRole</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Submission_Current_Role</name>
+        <label>Get Submission Current Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Submission_New_Role</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Access_Request_Validation_Fault</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sObj_SelectedJobbsporetUser.UserRoleId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>UserRole</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Submission_New_Role</name>
+        <label>Get Submission New Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Validate_Access_Request</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Access_Request_Validation_Fault</targetReference>
+        </faultConnector>
+        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>formula_Selected_Salesforce_Role_Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Jobbspesialist</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Metodeveileder</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>UserRole</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_All_Teams</name>
         <label>Get All Teams</label>
@@ -437,7 +812,7 @@
         <label>GET Jobbsporet User</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Supervisor_User</targetReference>
         </connector>
@@ -468,6 +843,12 @@
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>CRM_NAV_Ident__c</queriedFields>
+        <queriedFields>CRM_UserProfileName__c</queriedFields>
+        <queriedFields>IsActive</queriedFields>
+        <queriedFields>UserRoleId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -605,7 +986,191 @@
         <object>User</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordRollbacks>
+        <name>Rollback_Access_Request</name>
+        <label>Roll Back Access Request</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>sfl_CreateApplicationLog</targetReference>
+        </connector>
+    </recordRollbacks>
     <runInMode>DefaultMode</runInMode>
+    <screens>
+        <name>Screen_Select_Salesforce_Role</name>
+        <label>Select Salesforce Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_Matching_Teams</targetReference>
+        </connector>
+        <fields>
+            <name>display_Current_Salesforce_Role</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;{!const_flowTitle}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!formula_Current_Salesforce_Role_Text}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>display_Salesforce_Role_Unchanged</name>
+            <fieldText>&lt;p&gt;Salesforce-rollen beholdes. Du kan bare endre rollen hvis brukeren har rollen NAV Kontor, en Jobbspesialist-rolle eller en Metodeveileder-rolle. Du kan fortsatt registrere teammedlemskap og leder.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>formula_Can_Select_Salesforce_Role</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>radio_Salesforce_Role_Action</name>
+            <choiceReferences>choice_Keep_Salesforce_Role</choiceReferences>
+            <choiceReferences>choice_Change_Salesforce_Role</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>choice_Keep_Salesforce_Role</defaultSelectedChoiceReference>
+            <fieldText>Vil du endre Salesforce-rollen?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>formula_Can_Select_Salesforce_Role</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>dataTable_Salesforce_Role</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>UserRole</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <helpText>&lt;p&gt;Velg en Salesforce-rolle som passer til teamrollen. Jobbspesialist bruker en Jobbspesialist-rolle. Fagansvarlig og Metodeveileder bruker en Metodeveileder-rolle.&lt;/p&gt;</helpText>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>SINGLE_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_Selectable_Salesforce_Roles</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Velg ny Salesforce-rolle</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-salesforce-role-name&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Salesforce-rolle&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Name&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>formula_Can_Select_Salesforce_Role</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>radio_Salesforce_Role_Action</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Change</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_Access_Request_Failed</name>
+        <label>Access Request Failed</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>display_Access_Request_Failed</name>
+            <fieldText>&lt;p&gt;Forespørselen ble ikke sendt, og teammedlemskapet er ikke lagret.&lt;/p&gt;&lt;p&gt;Brukeren eller rollen kan ha blitt endret, eller det kan ha oppstått en teknisk feil. Start på nytt og kontroller valgene. Kontakt brukerstøtte hvis feilen fortsetter.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_Access_Request_Sent</name>
+        <label>Access Request Sent</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>display_Access_Request_Sent</name>
+            <fieldText>&lt;p&gt;Teammedlemskapet er opprettet. Forespørselen om leder og eventuell Salesforce-rolle er sendt til behandling i bakgrunnen.&lt;/p&gt;&lt;p&gt;Kontroller Salesforce-brukeren for å se om endringene er gjennomført.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_Access_Denied</name>
+        <label>Access Denied</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Access_Denied_Message</name>
+            <fieldText>&lt;p&gt;Only users with the &quot;Give Access to Jobbsporet&quot; permission may run this flow.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>screen_chooseUsersAndRole</name>
         <label>Choose Users and Role</label>
@@ -615,7 +1180,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_Matching_Teams</targetReference>
+            <targetReference>Set_Selected_Jobbsporet_User</targetReference>
         </connector>
         <fields>
             <name>s_displayText2</name>
@@ -1175,7 +1740,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Screen_EnterUserDetails</targetReference>
+            <targetReference>Check_Give_User_Access_Permission</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -1184,17 +1749,14 @@
         <label>Create Application Log</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>Screen_Access_Request_Failed</targetReference>
+        </connector>
         <flowName>Flow_Create_Application_Log</flowName>
         <inputAssignments>
             <name>Application_Domain</name>
             <value>
                 <stringValue>IPS</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Error_Payload</name>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1227,12 +1789,6 @@
                 <stringValue>User</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <name>ReferenceID</name>
-            <value>
-                <elementReference>dataTable_jobbspesialistUser.firstSelectedRow.Id</elementReference>
-            </value>
-        </inputAssignments>
     </subflows>
     <variables>
         <description>Relevant Profile Id&apos;s for &quot;Jobbsporet&quot;-users and their Managers</description>
@@ -1241,6 +1797,14 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>sObj_SelectedJobbsporetUser</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
     </variables>
     <variables>
         <name>sObj_applicationLog</name>
