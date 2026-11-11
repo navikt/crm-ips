@@ -15,12 +15,12 @@
             </value>
         </assignmentItems>
     </assignments>
-    <description>Removes leading and trailing whitespace from the participant phone number before the Work Trail is saved.</description>
+    <description>Removes spaces from the participant phone number before the Work Trail is saved.</description>
     <environments>Default</environments>
     <formulas>
         <name>Trimmed_Participant_Phone</name>
         <dataType>String</dataType>
-        <expression>TRIM({!$Record.IPS_Partticipant_phone_number__c})</expression>
+        <expression>SUBSTITUTE(TRIM({!$Record.IPS_Partticipant_phone_number__c}), &apos; &apos;, &apos;&apos;)</expression>
     </formulas>
     <interviewLabel>IPS Work Trail Before Trim Participant Phone {!$Flow.CurrentDateTime}</interviewLabel>
     <label>IPS Work Trail - Before - Trim Participant Phone</label>
