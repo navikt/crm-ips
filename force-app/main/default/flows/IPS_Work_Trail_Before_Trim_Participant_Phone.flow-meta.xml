@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Trim_Participant_Phone</name>
+        <label>Trim Participant Phone</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.IPS_Partticipant_phone_number__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Trimmed_Participant_Phone</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description>Removes spaces from the participant phone number before the Work Trail is saved.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>Trimmed_Participant_Phone</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE(TRIM({!$Record.IPS_Partticipant_phone_number__c}), &apos; &apos;, &apos;&apos;)</expression>
+    </formulas>
+    <interviewLabel>IPS Work Trail Before Trim Participant Phone {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS Work Trail - Before - Trim Participant Phone</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Trim_Participant_Phone</targetReference>
+        </connector>
+        <filters>
+            <field>IPS_Partticipant_phone_number__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Work_Trail__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
