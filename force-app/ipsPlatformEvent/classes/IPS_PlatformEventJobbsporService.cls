@@ -109,7 +109,7 @@ public without sharing class IPS_PlatformEventJobbsporService {
             eventUserRole.UserDepartmentName__c = userRecord.CompanyName;
             eventUserRole.RoleId__c = userRecord.UserRoleId;
             eventUserRole.RoleName__c = userRecord.UserRole != null ? userRecord.UserRole.Name : null;
-            eventUserRole.RoleLastModifiedDate__c = userRecord.UserRole != null ? userRecord.UserRole.LastModifiedDate : null;
+            eventUserRole.RoleLastModifiedDate__c = userRecord.LastModifiedDate;
             eventUserRole.UserStatus__c = userRecord.IsActive ? 'Active' : 'Inactive';
             eventUserRole.UserIsExternal__c = isExternalUser(userRecord.Profile != null ? userRecord.Profile.Name : null);
 
