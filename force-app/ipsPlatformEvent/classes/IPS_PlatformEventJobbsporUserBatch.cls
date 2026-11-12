@@ -30,7 +30,8 @@ public with sharing class IPS_PlatformEventJobbsporUserBatch implements Database
                 UserRoleId,
                 UserRole.Name,
                 Department,
-                CompanyName
+                CompanyName,
+                LastModifiedDate
             FROM User
             WHERE Profile.Name IN (
                 'NAV IPS Jobbspesialist',
@@ -38,6 +39,7 @@ public with sharing class IPS_PlatformEventJobbsporUserBatch implements Database
                 'NAV UO Jobbspesialist',
                 'NAV UO Metodeveileder'
             )
+            WITH SYSTEM_MODE
         ]);
     }
 
