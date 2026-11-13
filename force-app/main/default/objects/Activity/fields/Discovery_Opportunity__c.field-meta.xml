@@ -2,6 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Discovery_Opportunity__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
     <label>CE Discovery Opportunity</label>
     <lookupFilter>
         <active>true</active>
@@ -9,6 +10,11 @@
             <field>CE_Discovery_Opportunity__c.Work_Trail__c</field>
             <operation>equals</operation>
             <valueField>$Source.WhatId</valueField>
+        </filterItems>
+        <filterItems>
+            <field>CE_Discovery_Opportunity__c.CE_RelatedToAccount__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.RelatedToAccount__c</valueField>
         </filterItems>
         <isOptional>false</isOptional>
     </lookupFilter>
