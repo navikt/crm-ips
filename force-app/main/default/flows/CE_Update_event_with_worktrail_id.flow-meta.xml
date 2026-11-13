@@ -2,6 +2,29 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Meeting_Type</name>
+        <label>Meeting Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CE_Employer_Meeting</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_Record_Type.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Opportunity</targetReference>
+            </connector>
+            <label>Employer Meeting Discovery Opportunity</label>
+        </rules>
+    </decisions>
+    <description>Updates employer meetings registered in Opportunity discovery timeline with worktrail and employer.</description>
     <environments>Default</environments>
     <interviewLabel>CE - Update event with worktrail id {!$Flow.CurrentDateTime}</interviewLabel>
     <label>CE - Update event with worktrail id</label>
@@ -25,8 +48,8 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <name>Get_worktrail</name>
-        <label>Get worktrail</label>
+        <name>Get_Opportunity</name>
+        <label>Get Opportunity</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -38,11 +61,32 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Discovery_Opportunity__r.Work_Trail__r.Id</elementReference>
+                <elementReference>$Record.Discovery_Opportunity__r.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Work_Trail__c</object>
+        <object>CE_Discovery_Opportunity__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Record_Type</name>
+        <label>Get Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Meeting_Type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>CE_Employer_event_opportunity</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
@@ -53,7 +97,7 @@
         <inputAssignments>
             <field>WhatId</field>
             <value>
-                <elementReference>Get_worktrail.Id</elementReference>
+                <elementReference>Get_Opportunity.Work_Trail__r.Id</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -62,16 +106,10 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_worktrail</targetReference>
+            <targetReference>Get_Record_Type</targetReference>
         </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
-        <filters>
-            <field>RecordTypeName__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>CE Employer event</stringValue>
-            </value>
-        </filters>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -79,8 +117,15 @@
                 <stringValue></stringValue>
             </value>
         </filters>
+        <filters>
+            <field>IPS_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Meeting with Employer</stringValue>
+            </value>
+        </filters>
         <object>Event</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
