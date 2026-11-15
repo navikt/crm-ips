@@ -15,6 +15,8 @@ public with sharing class CE_NewOpportunityController {
     @TestVisible
     private static final String ERROR_SUB_THEMES = 'Ett eller flere undertemaer passer ikke til hovedtemaet. Velg undertemaer på nytt.';
     @TestVisible
+    private static final String ERROR_ACCOUNT_REQUIRED = 'Velg en arbeidsgiver.';
+    @TestVisible
     private static final String ERROR_ACCOUNT = 'Fant ikke arbeidsgiveren. Velg arbeidsgiver på nytt.';
     @TestVisible
     private static final String ERROR_ACCESS = 'Du har ikke tilgang til å opprette muligheter.';
@@ -173,8 +175,8 @@ public with sharing class CE_NewOpportunityController {
             return result;
         }
 
-        Id accountId = String.isBlank(request.accountId) ? null : Id.valueOf(request.accountId);
-        if (accountId != null && [SELECT COUNT() FROM Account WHERE Id = :accountId WITH USER_MODE] == 0) {
+        Id accountId = Id.valueOf(request.accountId);
+        if ([SELECT COUNT() FROM Account WHERE Id = :accountId WITH USER_MODE] == 0) {
             result.errorMessage = ERROR_ACCOUNT;
             return result;
         }
@@ -211,7 +213,10 @@ public with sharing class CE_NewOpportunityController {
         if (String.isBlank(request.name)) {
             return ERROR_NAME;
         }
-        if (String.isNotBlank(request.accountId) && !isIdOfType(request.accountId, Account.SObjectType)) {
+        if (String.isBlank(request.accountId)) {
+            return ERROR_ACCOUNT_REQUIRED;
+        }
+        if (!isIdOfType(request.accountId, Account.SObjectType)) {
             return ERROR_ACCOUNT;
         }
         if (!canCreateOpportunity(request)) {
