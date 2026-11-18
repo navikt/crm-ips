@@ -10,13 +10,35 @@
     </template>
 
     <template lwc:elseif={hasAvailableThemes}>
-        <lightning-checkbox-group
-            label="Velg yrkestemaer"
-            options={availableOptions}
-            value={selectedThemeValues}
-            onchange={handleSelectionChange}
-        >
-        </lightning-checkbox-group>
+        <fieldset class="slds-form-element">
+            <legend class="slds-form-element__legend slds-form-element__label">Velg yrkestemaer</legend>
+            <div class="slds-form-element__control">
+                <template for:each={themeCards} for:item="theme">
+                    <div key={theme.value} class="slds-box slds-var-m-bottom_small">
+                        <lightning-input
+                            class="theme-heading"
+                            type="checkbox"
+                            name={theme.value}
+                            label={theme.label}
+                            checked={theme.checked}
+                            aria-describedby={theme.descriptionId}
+                            onchange={handleSelectionChange}
+                        ></lightning-input>
+                        <template lwc:if={theme.hasSubThemes}>
+                            <ul
+                                id={theme.descriptionId}
+                                class="sub-themes slds-var-m-top_small"
+                                aria-label="Undertemaer"
+                            >
+                                <template for:each={theme.subThemes} for:item="subTheme">
+                                    <li key={subTheme.value} class="sub-theme">{subTheme.label}</li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </fieldset>
     </template>
 
     <template lwc:else>
