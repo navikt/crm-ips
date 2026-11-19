@@ -14,6 +14,7 @@ const ERROR_LOADING = 'Vent til skjemaet er ferdig lastet.';
 const ERROR_NO_THEMES = 'Du kan ikke opprette en mulighet før jobbsporet har et registrert hovedtema.';
 const ERROR_REQUIRED = 'Fyll ut de obligatoriske feltene som er markert.';
 const ERROR_NAME_BLANK = 'Skriv inn navn på muligheten.';
+const ERROR_ACCOUNT_REQUIRED = 'Velg en arbeidsgiver.';
 
 function splitValues(value) {
     if (typeof value !== 'string') {
@@ -252,6 +253,7 @@ export default class CeNewDiscoveryOpportunity extends LightningElement {
 
     handleAccountChange(event) {
         this.accountValue = event.detail.recordId || null;
+        event.target.setCustomValidity('');
         this.notifyFlow('accountId', this.accountValue || '');
         this.hideServerError();
     }
@@ -272,12 +274,19 @@ export default class CeNewDiscoveryOpportunity extends LightningElement {
         if (nameInput) {
             nameInput.setCustomValidity(this.nameValue && !this.nameValue.trim() ? ERROR_NAME_BLANK : '');
         }
+        const accountInput = this.template.querySelector('lightning-record-picker[data-id="account"]');
+        if (accountInput) {
+            accountInput.setCustomValidity(this.accountValue ? '' : ERROR_ACCOUNT_REQUIRED);
+        }
         this.template
-            .querySelectorAll('lightning-combobox, lightning-input, lightning-textarea, lightning-checkbox-group')
+            .querySelectorAll(
+                'lightning-combobox, lightning-input, lightning-textarea, lightning-checkbox-group, lightning-record-picker'
+            )
             .forEach((input) => input.reportValidity());
 
         const isValid =
             this.hasSelectedTheme &&
+            Boolean(this.accountValue) &&
             Boolean(this.nameValue.trim()) &&
             this.nameValue.trim().length <= NAME_MAX_LENGTH &&
             this.descriptionValue.length <= TEXT_MAX_LENGTH;
