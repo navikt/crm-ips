@@ -78,7 +78,7 @@ public with sharing class IPS_TestDataFactory {
         Integer intrandomNumber = Integer.valueof((Math.random() * 1000));
         Account acct = new Account();
         acct.Name = 'Røre Pinne' + intrandomNumber;
-        acct.RecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Employer').getRecordTypeId();
+        acct.RecordTypeId = RecordTypeCache.getRecordTypeByDeveloperName('Account', 'Employer').Id;
         return acct;
     }
 
@@ -87,7 +87,7 @@ public with sharing class IPS_TestDataFactory {
         trail.ips_Participant__c = participantId;
         trail.ips_Status__c = 'In Education';
         trail.IPS_Partticipant_phone_number__c = '98765431';
-        trail.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName().get('IPS').getRecordTypeId();
+        trail.RecordTypeId = RecordTypeCache.getRecordTypeByDeveloperName('Work_Trail__c', 'IPS').Id;
         return trail;
     }
 
@@ -97,14 +97,13 @@ public with sharing class IPS_TestDataFactory {
         trailUO.ips_Status__c = 'Initial contact';
         trailUO.ips_UO_Service__c = 'AMS';
         trailUO.IPS_Partticipant_phone_number__c = '+4798765432';
-        trailUO.RecordTypeId = SObjectType.Work_Trail__c.getRecordTypeInfosByDeveloperName()
-            .get('ips_Supported_Employment')
-            .getRecordTypeId();
+        trailUO.RecordTypeId = RecordTypeCache.getRecordTypeByDeveloperName('Work_Trail__c', 'ips_Supported_Employment')
+            .Id;
         return trailUO;
     }
 
     public static Event createEmployerEventWithoutParticipant(String employerId) {
-        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        Id devRecordTypeId = RecordTypeCache.getRecordTypeByDeveloperName('Event', 'IPS_Event').Id;
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
@@ -134,7 +133,7 @@ public with sharing class IPS_TestDataFactory {
      * @return  `Task`
      */
     public static Task creategoal(String jobbsporId) {
-        Id devRecordTypeId1 = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
+        Id devRecordTypeId1 = RecordTypeCache.getRecordTypeByDeveloperName('Task', 'IPS_Task').Id;
 
         Task taskGoal = new Task(
             WhatId = jobbsporId,
@@ -155,7 +154,7 @@ public with sharing class IPS_TestDataFactory {
      * @return  `Task`
      */
     public static Task createPassiveActivateGoal(String jobbsporId) {
-        Id devRecordTypeId1 = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
+        Id devRecordTypeId1 = RecordTypeCache.getRecordTypeByDeveloperName('Task', 'IPS_Task').Id;
 
         Task taskGoal = new Task(
             WhatId = jobbsporId,
@@ -175,7 +174,7 @@ public with sharing class IPS_TestDataFactory {
      * @return  `Task`
      */
     public static Task createPassiveDeactivateGoal(String jobbsporId) {
-        Id devRecordTypeId1 = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
+        Id devRecordTypeId1 = RecordTypeCache.getRecordTypeByDeveloperName('Task', 'IPS_Task').Id;
 
         Task taskGoal = new Task(
             WhatId = jobbsporId,
@@ -189,7 +188,7 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static Task createhistory(String jobbsporId) {
-        Id devRecordTypeId1 = SObjectType.Task.getRecordTypeInfosByDeveloperName().get('IPS_Task').getRecordTypeId();
+        Id devRecordTypeId1 = RecordTypeCache.getRecordTypeByDeveloperName('Task', 'IPS_Task').Id;
 
         Task taskGoal = new Task(
             WhatId = jobbsporId,
@@ -202,7 +201,7 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static Event createEmployerEventWithParticipant(String employerId, Id ownerId, String jobbsporId) {
-        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName().get('IPS_Event').getRecordTypeId();
+        Id devRecordTypeId = RecordTypeCache.getRecordTypeByDeveloperName('Event', 'IPS_Event').Id;
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
@@ -234,9 +233,7 @@ public with sharing class IPS_TestDataFactory {
      * @return  `Event`
      */
     public static Event createParticipantEvent(String contactId, String jobbsporId) {
-        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
-            .get('Ips_uo_Deltakermote')
-            .getRecordTypeId();
+        Id devRecordTypeId = RecordTypeCache.getRecordTypeByDeveloperName('Event', 'Ips_uo_Deltakermote').Id;
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
@@ -260,9 +257,7 @@ public with sharing class IPS_TestDataFactory {
     }
 
     public static Event createParticipantEventWithOwner(String ownerId, String jobbsporId) {
-        Id devRecordTypeId = SObjectType.Event.getRecordTypeInfosByDeveloperName()
-            .get('Ips_uo_Deltakermote')
-            .getRecordTypeId();
+        Id devRecordTypeId = RecordTypeCache.getRecordTypeByDeveloperName('Event', 'Ips_uo_Deltakermote').Id;
 
         Event createEvent = new Event(
             ips_Travel_time__c = 15,
