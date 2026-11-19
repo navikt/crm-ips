@@ -44,7 +44,7 @@
         <nameSegment>customNotificationAction</nameSegment>
         <offset>0</offset>
     </actionCalls>
-    <apiVersion>66.0</apiVersion>
+    <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <name>Add_record_to_list</name>
@@ -565,6 +565,41 @@
                 <stringValue>Referred</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.Oppstartsdato__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varSetDateNull</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_End_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varSetDateNull</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_First_meeting_with_the_Employer_held__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varSetDateNull</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.End_Cause__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNewWorkTrailRecord.ips_Other_end_cases__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>checkServiceInput</targetReference>
         </connector>
@@ -992,7 +1027,8 @@
             <label>isIPS</label>
         </rules>
     </decisions>
-    <description>Kloner ett jobbspor basert på et avsluttet jobbspor, overfører spesifikke data, status og fjerner manuell deling av gammelt jobbsporet</description>
+    <description>Kloner ett jobbspor basert på et avsluttet jobbspor, overfører spesifikke data, status og fjerner manuell deling av gammelt jobbsporet.
+19/11/26 - fjernet datofelter for oppstart, første arbeidsgivermøte,  og avsluttning, samt avsluttnignsdetaljer</description>
     <environments>Default</environments>
     <formulas>
         <name>varDaysSinceEnded</name>
@@ -1411,6 +1447,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>displayTitle3</name>
             <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>addData_Section1</name>
@@ -1455,6 +1499,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <styleProperties>
+                        <verticalAlignment>
+                            <stringValue>top</stringValue>
+                        </verticalAlignment>
+                        <width>
+                            <stringValue>12</stringValue>
+                        </width>
+                    </styleProperties>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -1466,6 +1518,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             </fields>
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>addData_Section2</name>
@@ -1483,6 +1543,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <styleProperties>
+                        <verticalAlignment>
+                            <stringValue>top</stringValue>
+                        </verticalAlignment>
+                        <width>
+                            <stringValue>12</stringValue>
+                        </width>
+                    </styleProperties>
                 </fields>
                 <fields>
                     <name>IPS_navSupervisor</name>
@@ -1494,6 +1562,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <styleProperties>
+                        <verticalAlignment>
+                            <stringValue>top</stringValue>
+                        </verticalAlignment>
+                        <width>
+                            <stringValue>12</stringValue>
+                        </width>
+                    </styleProperties>
                 </fields>
                 <fields>
                     <name>IPS_treatmentTeam</name>
@@ -1505,6 +1581,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <styleProperties>
+                        <verticalAlignment>
+                            <stringValue>top</stringValue>
+                        </verticalAlignment>
+                        <width>
+                            <stringValue>12</stringValue>
+                        </width>
+                    </styleProperties>
                     <visibilityRule>
                         <conditionLogic>and</conditionLogic>
                         <conditions>
@@ -1526,6 +1610,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
                     <fieldType>InputField</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
+                    <styleProperties>
+                        <verticalAlignment>
+                            <stringValue>top</stringValue>
+                        </verticalAlignment>
+                        <width>
+                            <stringValue>12</stringValue>
+                        </width>
+                    </styleProperties>
                     <visibilityRule>
                         <conditionLogic>and</conditionLogic>
                         <conditions>
@@ -1547,6 +1639,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             </fields>
             <isRequired>false</isRequired>
             <regionContainerType>SectionWithoutHeader</regionContainerType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1564,11 +1664,27 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>Copy_2_of_Copy_1_of_Title2</name>
             <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>displayInformationWarning0</name>
             <fieldText>&lt;p&gt;Det finnes allerede et aktivt jobbspor på denne deltakeren.&lt;/p&gt;&lt;p&gt;Kan ikke klone jobbsporet før alle aktive jobbspor er avsluttet.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>activeParticipantOnWorkTrail</name>
@@ -1623,6 +1739,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1639,11 +1763,27 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>displayTitle5</name>
             <fieldText>&lt;p&gt;{!Title}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>displayInformationCreated</name>
             <fieldText>&lt;p&gt;Jobbspor opprettet på bruker✅&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1660,11 +1800,27 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>displayTitle6</name>
             <fieldText>&lt;p&gt;{!Title}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>displayInformationError</name>
             <fieldText>&lt;p&gt;Kloningen av jobbsporet feilet⚠️&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Feilmelding:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(240, 11, 39);&quot;&gt;{!var_flowErrorStep} - {!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1685,11 +1841,27 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>Title2</name>
             <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>displayInformationRecordTypes</name>
             <fieldText>&lt;p&gt;Velg tjeneste ved behov. Hvis ikke la tjeneste stå som foreslått.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>Service</name>
@@ -1703,6 +1875,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1720,11 +1900,27 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>displayErrorMessage</name>
             <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>errorMessage1</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Valget du gjorde kvalifiserte ikke. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Jobbsporet må være avsluttet og innenfor 12 måneder siden sluttdato.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Status: {!getWorktrailRecord.ips_Status__c}&lt;/p&gt;&lt;p&gt;Antall dager siden avsluttet: {!varDaysSinceEnded}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1742,11 +1938,27 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>Copy_1_of_Title2</name>
             <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>displayInformationWarning</name>
             <fieldText>&lt;p&gt;Jobbsporet du ønsker klone har en sluttdato som er eldre enn 12 måneder.&lt;/p&gt;&lt;p&gt;Opprett ett nytt jobbspor.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1763,11 +1975,27 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>Copy_2_of_Copy_2_of_Copy_1_of_Title2</name>
             <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>Copy_2_of_displayInformationWarning0</name>
             <fieldText>&lt;p&gt;Det finne en veilederrapport som ikke er journalført eller delt med deltaker.&lt;/p&gt;&lt;p&gt;Kan ikke klone jobbsporet før rapport er journalført.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>activeReport</name>
@@ -1822,6 +2050,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1842,6 +2078,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <name>Title</name>
             <fieldText>&lt;p&gt;{!varTitle}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <fields>
             <name>IPS_transfere_choices</name>
@@ -1855,6 +2099,14 @@ Kan gå videre uten å velge data, men må da huke av for dette.</description>
             <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
