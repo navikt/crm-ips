@@ -1,12 +1,11 @@
 /**
- * @description  :
+ * @description  : Test data factory for creating IPS related test records
  * @author       : Håkon Kavli
- * @since        : 0.531.0
- * @version      : 0.531.0
- * @see          : class#member 'text string' <a href='URL'>label</a>
+ * @since        : 0.555.0
+ * @version      : 0.555.0
  **/
 @SuppressWarnings('PMD.ExcessivePublicCount')
-@istest
+@isTest
 public with sharing class IPS_TestDataFactory {
     public static Person__c createPerson() {
         return createPerson('12069755555');
