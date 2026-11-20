@@ -1,9 +1,10 @@
 import { LightningElement, api, wire } from 'lwc';
 import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
-import { getObjectInfo, getPicklistValues } from 'lightning/uiObjectInfoApi';
+import { getObjectInfo, getPicklistValuesByRecordType } from 'lightning/uiObjectInfoApi';
 import getRegisteredThemes from '@salesforce/apex/CE_NewOpportunityController.getRegisteredThemes';
 import WORK_THEME_OBJECT from '@salesforce/schema/CE_Work_Theme__c';
 import MAIN_THEME_FIELD from '@salesforce/schema/CE_Work_Theme__c.Main_Theme__c';
+import SUB_THEME_FIELD from '@salesforce/schema/CE_Work_Theme__c.Sub_Theme__c';
 
 const ERROR_LOAD = 'Kunne ikke laste inn tilgjengelige yrkestemaer. Prøv igjen.';
 const ERROR_REQUIRED = 'Velg minst ett yrkestema.';
@@ -29,6 +30,8 @@ export default class CeWorkThemeSelector extends LightningElement {
     selectedThemeValues = [];
     existingThemeValues = new Set();
     picklistOptions = [];
+    subThemeOptions = [];
+    subThemeControllerValues = {};
     existingThemesLoaded = false;
     picklistLoaded = false;
     loadError;
@@ -57,10 +60,18 @@ export default class CeWorkThemeSelector extends LightningElement {
         }
     }
 
-    @wire(getPicklistValues, { recordTypeId: '$recordTypeId', fieldApiName: MAIN_THEME_FIELD })
+    @wire(getPicklistValuesByRecordType, { objectApiName: WORK_THEME_OBJECT, recordTypeId: '$recordTypeId' })
     wiredMainThemes({ data, error }) {
         if (data) {
-            this.picklistOptions = data.values.map(({ label, value }) => ({ label, value }));
+            const mainField = data.picklistFieldValues[MAIN_THEME_FIELD.fieldApiName];
+            const subField = data.picklistFieldValues[SUB_THEME_FIELD.fieldApiName];
+            if (!mainField || !subField) {
+                this.loadError = ERROR_LOAD;
+                return;
+            }
+            this.picklistOptions = mainField.values.map(({ label, value }) => ({ label, value }));
+            this.subThemeOptions = subField.values;
+            this.subThemeControllerValues = subField.controllerValues;
             this.picklistLoaded = true;
             this.retainAvailableSelections();
         } else if (error) {
@@ -91,6 +102,22 @@ export default class CeWorkThemeSelector extends LightningElement {
         return this.availableOptions.length > 0;
     }
 
+    get themeCards() {
+        return this.availableOptions.map((option, index) => {
+            const controllerIndex = this.subThemeControllerValues[option.value];
+            const subThemes = this.subThemeOptions.filter(
+                ({ validFor }) => controllerIndex !== undefined && validFor.includes(controllerIndex)
+            );
+            return {
+                ...option,
+                checked: this.selectedThemeValues.includes(option.value),
+                subThemes,
+                hasSubThemes: subThemes.length > 0,
+                descriptionId: subThemes.length ? `sub-themes-${index}` : ''
+            };
+        });
+    }
+
     get noThemesAvailable() {
         return this.existingThemesLoaded && this.picklistLoaded && !this.hasAvailableThemes;
     }
@@ -111,7 +138,16 @@ export default class CeWorkThemeSelector extends LightningElement {
     }
 
     handleSelectionChange(event) {
-        this.selectedThemeValues = event.detail.value || [];
+        const selectedValues = new Set(this.selectedThemeValues);
+        const { name, checked } = event.target;
+        if (checked) {
+            selectedValues.add(name);
+        } else {
+            selectedValues.delete(name);
+        }
+        this.selectedThemeValues = this.availableOptions
+            .filter(({ value }) => selectedValues.has(value))
+            .map(({ value }) => value);
         if (this.validationError) {
             this.reportValidity();
         }
