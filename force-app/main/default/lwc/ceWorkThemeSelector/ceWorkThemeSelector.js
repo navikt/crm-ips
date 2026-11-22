@@ -1,13 +1,34 @@
 import { LightningElement, api, wire } from 'lwc';
-import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
-import { getObjectInfo, getPicklistValuesByRecordType } from 'lightning/uiObjectInfoApi';
+import { FlowAttributeChangeEvent, FlowNavigationNextEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
+import { getObjectInfo, getPicklistValues } from 'lightning/uiObjectInfoApi';
 import getRegisteredThemes from '@salesforce/apex/CE_NewOpportunityController.getRegisteredThemes';
 import WORK_THEME_OBJECT from '@salesforce/schema/CE_Work_Theme__c';
 import MAIN_THEME_FIELD from '@salesforce/schema/CE_Work_Theme__c.Main_Theme__c';
-import SUB_THEME_FIELD from '@salesforce/schema/CE_Work_Theme__c.Sub_Theme__c';
 
 const ERROR_LOAD = 'Kunne ikke laste inn tilgjengelige yrkestemaer. Prøv igjen.';
 const ERROR_REQUIRED = 'Velg minst ett yrkestema.';
+
+// Categories organize the UI only. Selectable values and labels always come from active picklist metadata.
+const THEME_CATEGORIES = [
+    { label: 'Aktivitet og ledelse', values: ['Idrett og aktivitet', 'Ledelse'] },
+    { label: 'Drift og mobilitet', values: ['Reise og mobilitet', 'Renhold og orden', 'Transport'] },
+    { label: 'Kreativitet og media', values: ['Kunst', 'Media og innholdsproduksjon', 'Mote', 'Underholdning'] },
+    { label: 'Kunnskap og utforskning', values: ['Geografi', 'Historie', 'Vitenskap'] },
+    { label: 'Mennesker og service', values: ['Barn', 'Helse og omsorg', 'Kommunikasjon', 'Kundeservice og vertskap'] },
+    { label: 'Natur og dyr', values: ['Dyr og dyrestell', 'Landbruk', 'Natur og friluftsliv', 'Vann'] },
+    {
+        label: 'Praktisk og teknisk arbeid',
+        values: ['Bygg og anlegg', 'Mekanikk og teknisk arbeid', 'Teknologi / IT', 'Vedlikehold og praktisk arbeid']
+    },
+    {
+        label: 'Samfunn og verdier',
+        values: ['Forsvar og beredskap', 'Interessearbeid og påvirkning', 'Politikk', 'Religion / åndelighet']
+    },
+    {
+        label: 'Struktur og problemløsing',
+        values: ['Logistikk', 'Matematikk', 'Nysgjerrighet / problemløsing', 'Struktur, orden og organisering']
+    }
+];
 
 function splitValues(value) {
     if (typeof value !== 'string') {
@@ -30,8 +51,6 @@ export default class CeWorkThemeSelector extends LightningElement {
     selectedThemeValues = [];
     existingThemeValues = new Set();
     picklistOptions = [];
-    subThemeOptions = [];
-    subThemeControllerValues = {};
     existingThemesLoaded = false;
     picklistLoaded = false;
     loadError;
@@ -60,18 +79,12 @@ export default class CeWorkThemeSelector extends LightningElement {
         }
     }
 
-    @wire(getPicklistValuesByRecordType, { objectApiName: WORK_THEME_OBJECT, recordTypeId: '$recordTypeId' })
+    @wire(getPicklistValues, { recordTypeId: '$recordTypeId', fieldApiName: MAIN_THEME_FIELD })
     wiredMainThemes({ data, error }) {
         if (data) {
-            const mainField = data.picklistFieldValues[MAIN_THEME_FIELD.fieldApiName];
-            const subField = data.picklistFieldValues[SUB_THEME_FIELD.fieldApiName];
-            if (!mainField || !subField) {
-                this.loadError = ERROR_LOAD;
-                return;
-            }
-            this.picklistOptions = mainField.values.map(({ label, value }) => ({ label, value }));
-            this.subThemeOptions = subField.values;
-            this.subThemeControllerValues = subField.controllerValues;
+            this.picklistOptions = [
+                ...new Map(data.values.map(({ label, value }) => [value, { label, value }])).values()
+            ];
             this.picklistLoaded = true;
             this.retainAvailableSelections();
         } else if (error) {
@@ -102,24 +115,27 @@ export default class CeWorkThemeSelector extends LightningElement {
         return this.availableOptions.length > 0;
     }
 
-    get themeCards() {
-        return this.availableOptions.map((option, index) => {
-            const controllerIndex = this.subThemeControllerValues[option.value];
-            const subThemes = this.subThemeOptions.filter(
-                ({ validFor }) => controllerIndex !== undefined && validFor.includes(controllerIndex)
-            );
+    get themeCategories() {
+        const options = this.availableOptions.map((option) => {
+            const isSelected = this.selectedThemeValues.includes(option.value);
             return {
                 ...option,
-                checked: this.selectedThemeValues.includes(option.value),
-                subThemes,
-                hasSubThemes: subThemes.length > 0,
-                descriptionId: subThemes.length ? `sub-themes-${index}` : ''
+                isSelected,
+                buttonClass: `slds-button ${isSelected ? 'slds-button_brand' : 'slds-button_neutral'}`
             };
         });
+        const categorizedValues = new Set(THEME_CATEGORIES.flatMap(({ values }) => values));
+        return [
+            ...THEME_CATEGORIES.map(({ label, values }) => ({
+                label,
+                options: options.filter(({ value }) => values.includes(value))
+            })),
+            { label: 'Andre yrkestemaer', options: options.filter(({ value }) => !categorizedValues.has(value)) }
+        ].filter(({ options: categoryOptions }) => categoryOptions.length > 0);
     }
 
     get noThemesAvailable() {
-        return this.existingThemesLoaded && this.picklistLoaded && !this.hasAvailableThemes;
+        return !this.loadError && this.existingThemesLoaded && this.picklistLoaded && !this.hasAvailableThemes;
     }
 
     get showSelectButton() {
@@ -132,22 +148,21 @@ export default class CeWorkThemeSelector extends LightningElement {
         if (!result.isValid) {
             return;
         }
-        if (this.availableActions.includes('NEXT') || this.availableActions.includes('FINISH')) {
+        if (this.availableActions.includes('NEXT')) {
             this.dispatchEvent(new FlowNavigationNextEvent());
+        } else if (this.availableActions.includes('FINISH')) {
+            this.dispatchEvent(new FlowNavigationFinishEvent());
         }
     }
 
-    handleSelectionChange(event) {
-        const selectedValues = new Set(this.selectedThemeValues);
-        const { name, checked } = event.target;
-        if (checked) {
-            selectedValues.add(name);
-        } else {
-            selectedValues.delete(name);
+    handleThemeToggle(event) {
+        const value = event.currentTarget.dataset.value;
+        if (!this.availableOptions.some((option) => option.value === value)) {
+            return;
         }
-        this.selectedThemeValues = this.availableOptions
-            .filter(({ value }) => selectedValues.has(value))
-            .map(({ value }) => value);
+        this.selectedThemeValues = this.selectedThemeValues.includes(value)
+            ? this.selectedThemeValues.filter((selectedValue) => selectedValue !== value)
+            : [...this.selectedThemeValues, value];
         if (this.validationError) {
             this.reportValidity();
         }
