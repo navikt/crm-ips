@@ -20,6 +20,8 @@ export default class CeNewDiscoveryOpportunity extends LightningElement {
     @api errorMessage;
     // Retained for older Flow versions; no longer displayed or saved.
     @api status;
+    // Retained for package upgrades; removing a published public property blocks installation.
+    @api subThemes;
 
     selectedThemeId = '';
     nameValue = '';
