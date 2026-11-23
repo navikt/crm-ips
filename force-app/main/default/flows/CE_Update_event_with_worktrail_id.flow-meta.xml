@@ -21,14 +21,18 @@
                 <elementReference>Get_Job.ips_Employer__c</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>$Record.Discovery_Opportunity__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue></stringValue>
-            </value>
-        </assignmentItems>
     </assignments>
+    <customErrors>
+        <name>Job_And_Opportunity_Selected</name>
+        <label>Job And Opportunity Selected</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>Velg enten mulighet eller jobb. Fjern verdien i ett av feltene.</errorMessage>
+            <fieldSelection>CE_Job__c</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+    </customErrors>
     <customErrors>
         <name>Job_Missing_Relationships</name>
         <label>Job Missing Relationships</label>
@@ -45,7 +49,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <customErrorMessages>
-            <errorMessage>Velg samme arbeidsgiver som er registrert på jobben.</errorMessage>
+            <errorMessage>Arbeidsgiveren stemmer ikke med arbeidsgiveren på jobben. Velg «{!Get_Job.ips_Employer__r.Name}».</errorMessage>
             <fieldSelection>RelatedToAccount__c</fieldSelection>
             <isFieldError>true</isFieldError>
         </customErrorMessages>
@@ -59,6 +63,28 @@
             <targetReference>Get_Record_Type</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Existing Discovery Meeting</defaultConnectorLabel>
+        <rules>
+            <name>Job_And_Opportunity</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CE_Job__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Discovery_Opportunity__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Job_And_Opportunity_Selected</targetReference>
+            </connector>
+            <label>Job And Opportunity</label>
+        </rules>
         <rules>
             <name>Job_Meeting</name>
             <conditionLogic>and</conditionLogic>
@@ -158,7 +184,7 @@
             <label>Employer Meeting Discovery Opportunity</label>
         </rules>
     </decisions>
-    <description>Sets the work trail on Discovery opportunity employer meetings. For job timeline meetings, derives the work trail and employer from CE_Job__c on every save, rejects a different employer, and clears any meeting opportunity link. The opportunity on the job is not used or changed.</description>
+    <description>Sets the work trail on Discovery opportunity employer meetings. For employer meetings linked to a job, derives the work trail and employer from CE_Job__c on every save and rejects a different employer. Rejects meetings linked to both a job and an opportunity without clearing either lookup. Both lookups remain optional on general CE employer meetings. The opportunity on the job is not used or changed.</description>
     <environments>Default</environments>
     <interviewLabel>CE - Update event with worktrail id {!$Flow.CurrentDateTime}</interviewLabel>
     <label>CE - Update event with worktrail id</label>
