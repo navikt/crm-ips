@@ -24,7 +24,7 @@
     </assignments>
     <assignments>
         <name>Set_Start_Date</name>
-        <label>Sett startdato</label>
+        <label>Sett startdato og arbeidsgiver</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
@@ -32,6 +32,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>Start_Date</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>job.ips_Employer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Opportunity.CE_RelatedToAccount__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -128,6 +135,28 @@
             <label>Jobben er allerede opprettet</label>
         </rules>
         <rules>
+            <name>Missing_Employer</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Opportunity.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Opportunity.CE_RelatedToAccount__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Opportunity_Missing_Employer</targetReference>
+            </connector>
+            <label>Muligheten mangler arbeidsgiver</label>
+        </rules>
+        <rules>
             <name>Ready_To_Create</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -150,7 +179,7 @@
             <label>Klar til å opprette jobb</label>
         </rules>
     </decisions>
-    <description>Oppretter en jobb fra en mulighet med brukerens tilganger. Forslag fra arbeidsavtalen kan redigeres før lagring. Begge handlingene åpner den eksisterende jobben hvis muligheten allerede har en jobb. Opprettelse og kobling til muligheten lagres i én transaksjon. Tekstene i flyten er på norsk; objektfeltene bruker Salesforce sine feltetiketter.</description>
+    <description>Oppretter en jobb fra en mulighet med brukerens tilganger. Arbeidsgiver hentes fra muligheten og vises skrivebeskyttet. Muligheter uten arbeidsgiver må utfylles før opprettelse. Andre forslag fra arbeidsavtalen kan redigeres før lagring. Begge handlingene åpner den eksisterende jobben hvis muligheten allerede har en jobb. Opprettelse og kobling til muligheten lagres i én transaksjon. En bekreftelse vises før videresending til en nyopprettet jobb. Tekstene i flyten er på norsk; objektfeltene bruker Salesforce sine feltetiketter.</description>
     <environments>Default</environments>
     <formulas>
         <name>targetJobId</name>
@@ -224,7 +253,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Navigate_To_Job</targetReference>
+            <targetReference>Job_Created</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Capture_Save_Error</targetReference>
@@ -262,14 +291,41 @@
             <objectFieldReference>job.Name</objectFieldReference>
         </fields>
         <fields>
-            <fieldType>ObjectProvided</fieldType>
+            <name>Employer</name>
+            <extensionName>flowruntime:lookup</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>disabled</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fieldApiName</name>
+                <value>
+                    <stringValue>ips_Employer__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Arbeidsgiver</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectApiName</name>
+                <value>
+                    <stringValue>ips_Job__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>Get_Opportunity.CE_RelatedToAccount__c</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <objectFieldReference>job.ips_Employer__c</objectFieldReference>
-        </fields>
-        <fields>
-            <name>Contact_Source</name>
-            <fieldText>&lt;p&gt;Velg en arbeidsgiverkontakt hvis det er aktuelt. Kontaktpersoner registrert i arbeidsavtalen:&lt;/p&gt;&lt;p&gt;{!Get_Opportunity.Agreement_Workplace_Contacts__c}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
@@ -311,6 +367,26 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>Job_Created</name>
+        <label>Jobben er opprettet</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Navigate_To_Job</targetReference>
+        </connector>
+        <fields>
+            <name>Creation_Confirmation</name>
+            <fieldText>&lt;p&gt;Jobben er opprettet.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Videre til jobb</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Navigate_To_Job</name>
         <label>Åpne jobb</label>
         <locationX>0</locationX>
@@ -339,6 +415,23 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Opportunity_Missing_Employer</name>
+        <label>Muligheten mangler arbeidsgiver</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Missing_Employer_Message</name>
+            <fieldText>&lt;p&gt;Muligheten mangler arbeidsgiver. Registrer en arbeidsgiver på muligheten før du oppretter jobben.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Lukk</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
