@@ -2,6 +2,166 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Set_Job_Meeting_Relationships</name>
+        <label>Set Job Meeting Relationships</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.WhatId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Job.ips_Work_Trail__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.RelatedToAccount__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Job.ips_Employer__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <customErrors>
+        <name>Job_And_Opportunity_Selected</name>
+        <label>Job And Opportunity Selected</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>Velg enten mulighet eller jobb. Fjern verdien i ett av feltene.</errorMessage>
+            <fieldSelection>CE_Job__c</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>Job_Missing_Relationships</name>
+        <label>Job Missing Relationships</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>Jobben mangler arbeidsgiver eller jobbspor. Registrer begge på jobben før du oppretter møtet.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>Job_Employer_Mismatch</name>
+        <label>Job Employer Mismatch</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>Arbeidsgiveren stemmer ikke med arbeidsgiveren på jobben. Velg «{!Get_Job.ips_Employer__r.Name}».</errorMessage>
+            <fieldSelection>RelatedToAccount__c</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>Meeting_Context</name>
+        <label>Meeting Context</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_Record_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Existing Discovery Meeting</defaultConnectorLabel>
+        <rules>
+            <name>Job_And_Opportunity</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CE_Job__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Discovery_Opportunity__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Job_And_Opportunity_Selected</targetReference>
+            </connector>
+            <label>Job And Opportunity</label>
+        </rules>
+        <rules>
+            <name>Job_Meeting</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CE_Job__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Job</targetReference>
+            </connector>
+            <label>Job Meeting</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Job_Relationships</name>
+        <label>Check Job Relationships</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_Job_Meeting_Relationships</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Use Job Work Trail And Employer</defaultConnectorLabel>
+        <rules>
+            <name>Missing_Job_Relationships</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Job.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Job.ips_Employer__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Job.ips_Work_Trail__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Job_Missing_Relationships</targetReference>
+            </connector>
+            <label>Missing Job Relationships</label>
+        </rules>
+        <rules>
+            <name>Different_Employer</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RelatedToAccount__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RelatedToAccount__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_Job.ips_Employer__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Job_Employer_Mismatch</targetReference>
+            </connector>
+            <label>Different Employer</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Meeting_Type</name>
         <label>Meeting Type</label>
@@ -24,7 +184,7 @@
             <label>Employer Meeting Discovery Opportunity</label>
         </rules>
     </decisions>
-    <description>Updates employer meetings registered in Opportunity discovery timeline with worktrail and employer.</description>
+    <description>Sets the work trail on Discovery opportunity employer meetings. For employer meetings linked to a job, derives the work trail and employer from CE_Job__c on every save and rejects a different employer. Rejects meetings linked to both a job and an opportunity without clearing either lookup. Both lookups remain optional on general CE employer meetings. The opportunity on the job is not used or changed.</description>
     <environments>Default</environments>
     <interviewLabel>CE - Update event with worktrail id {!$Flow.CurrentDateTime}</interviewLabel>
     <label>CE - Update event with worktrail id</label>
@@ -47,6 +207,27 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Job</name>
+        <label>Get Job</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Job_Relationships</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.CE_Job__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ips_Job__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_Opportunity</name>
         <label>Get Opportunity</label>
@@ -106,10 +287,10 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Record_Type</targetReference>
+            <targetReference>Meeting_Context</targetReference>
         </connector>
-        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
-        <filterLogic>and</filterLogic>
+        <doesRequireRecordChangedToMeetCriteria>false</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>(1 OR 3) AND 2</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -124,9 +305,17 @@
                 <stringValue>Meeting with Employer</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>CE_Job__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
         <object>Event</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>100</triggerOrder>
 </Flow>
