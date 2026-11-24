@@ -326,13 +326,143 @@ private class CE_NewOpportunityControllerTest {
         Assert.isNotNull(result.opportunityId, 'Muligheten skal opprettes');
         Assert.areEqual(MAIN_THEME, getTheme(MAIN_THEME).Main_Theme__c, 'Yrkestemaet skal ikke endres');
         CE_Discovery_Opportunity__c opportunity = [
-            SELECT Main_Theme__c, Description__c, CE_RelatedToAccount__c
+            SELECT
+                Main_Theme__c,
+                Description__c,
+                CE_RelatedToAccount__c,
+                Information_to_share__c,
+                Information_not_to_share__c
             FROM CE_Discovery_Opportunity__c
             WHERE Id = :result.opportunityId
         ];
         Assert.isNull(opportunity.Description__c, 'Tom beskrivelse skal ikke lagres');
+        Assert.isNull(opportunity.Information_to_share__c, 'Tomt kildefelt skal gi tom informasjon som kan deles');
+        Assert.isNull(
+            opportunity.Information_not_to_share__c,
+            'Tomt kildefelt skal gi tom informasjon som ikke skal deles'
+        );
         Assert.areEqual(MAIN_THEME, opportunity.Main_Theme__c, 'Yrkestema skal kopieres til muligheten');
         Assert.isNotNull(opportunity.CE_RelatedToAccount__c, 'Arbeidsgiver skal lagres selv om valgfrie felt er tomme');
+    }
+
+    @IsTest
+    static void createOpportunity_copiesSharingInformationAtMaximumLength() {
+        Work_Trail__c trail = getTrail();
+        trail.Information_to_share__c = 'a'.repeat(999) + '\n' + 'a'.repeat(1000);
+        trail.Information_not_to_share__c = 'b'.repeat(2000);
+        update trail;
+        CE_NewOpportunityController.CreateRequest request = request(trail.Id, getTheme(MAIN_THEME).Id);
+
+        Test.startTest();
+        CE_NewOpportunityController.CreateResult result = runAsCe(request);
+        Test.stopTest();
+
+        Assert.isNull(result.errorMessage, 'Kopiering av felt med maksimal lengde skal lykkes');
+        CE_Discovery_Opportunity__c opportunity = [
+            SELECT Information_to_share__c, Information_not_to_share__c
+            FROM CE_Discovery_Opportunity__c
+            WHERE Id = :result.opportunityId
+        ];
+        Assert.areEqual(
+            trail.Information_to_share__c,
+            opportunity.Information_to_share__c,
+            'Informasjon som kan deles skal kopieres uten forkorting eller fjerning av linjeskift'
+        );
+        Assert.areEqual(
+            trail.Information_not_to_share__c,
+            opportunity.Information_not_to_share__c,
+            'Informasjon som ikke skal deles skal kopieres i sin helhet'
+        );
+    }
+
+    @IsTest
+    static void createOpportunity_withOneSharingField_copiesFieldsIndependently() {
+        Work_Trail__c trail = getTrail();
+        trail.Information_not_to_share__c = 'Dette skal ikke deles med arbeidsgiver.';
+        update trail;
+        CE_NewOpportunityController.CreateRequest request = request(trail.Id, getTheme(MAIN_THEME).Id);
+
+        Test.startTest();
+        CE_NewOpportunityController.CreateResult result = runAsCe(request);
+        Test.stopTest();
+
+        Assert.isNull(result.errorMessage, 'Opprettelsen skal lykkes selv om bare ett kildefelt er fylt ut');
+        CE_Discovery_Opportunity__c opportunity = [
+            SELECT Information_to_share__c, Information_not_to_share__c
+            FROM CE_Discovery_Opportunity__c
+            WHERE Id = :result.opportunityId
+        ];
+        Assert.isNull(opportunity.Information_to_share__c, 'Tomt kildefelt skal forbli tomt');
+        Assert.areEqual(
+            trail.Information_not_to_share__c,
+            opportunity.Information_not_to_share__c,
+            'Utfylt kildefelt skal kopieres uavhengig av det andre feltet'
+        );
+    }
+
+    @IsTest
+    static void createOpportunity_sharingInformationChanges_doNotSynchronize() {
+        Work_Trail__c trail = getTrail();
+        trail.Information_to_share__c = 'Opprinnelig informasjon som kan deles';
+        trail.Information_not_to_share__c = 'Opprinnelig informasjon som ikke skal deles';
+        update trail;
+        CE_NewOpportunityController.CreateRequest request = request(trail.Id, getTheme(MAIN_THEME).Id);
+
+        Test.startTest();
+        CE_NewOpportunityController.CreateResult result = runAsCe(request);
+        Assert.isNull(result.errorMessage, 'Muligheten skal opprettes');
+        trail.Information_to_share__c = 'Endret informasjon på jobbsporet';
+        trail.Information_not_to_share__c = null;
+        update trail;
+        CE_Discovery_Opportunity__c opportunity = [
+            SELECT Information_to_share__c, Information_not_to_share__c
+            FROM CE_Discovery_Opportunity__c
+            WHERE Id = :result.opportunityId
+        ];
+        Assert.areEqual(
+            'Opprinnelig informasjon som kan deles',
+            opportunity.Information_to_share__c,
+            'Endringer på jobbsporet skal ikke overskrive engangskopien'
+        );
+        Assert.areEqual(
+            'Opprinnelig informasjon som ikke skal deles',
+            opportunity.Information_not_to_share__c,
+            'Tømming av et kildefelt skal ikke tømme engangskopien'
+        );
+        opportunity.Information_to_share__c = 'Tilpasset informasjon på muligheten';
+        opportunity.Information_not_to_share__c = 'Tilpasset begrensning på muligheten';
+        update opportunity;
+        Test.stopTest();
+
+        Work_Trail__c storedTrail = [
+            SELECT Information_to_share__c, Information_not_to_share__c
+            FROM Work_Trail__c
+            WHERE Id = :trail.Id
+        ];
+        Assert.areEqual(
+            trail.Information_to_share__c,
+            storedTrail.Information_to_share__c,
+            'Endringer på muligheten skal ikke kopieres tilbake til jobbsporet'
+        );
+        Assert.isNull(
+            storedTrail.Information_not_to_share__c,
+            'Endringer på muligheten skal ikke fylle ut jobbsporets tomme felt'
+        );
+        opportunity = [
+            SELECT Information_to_share__c, Information_not_to_share__c
+            FROM CE_Discovery_Opportunity__c
+            WHERE Id = :result.opportunityId
+        ];
+        Assert.areEqual(
+            'Tilpasset informasjon på muligheten',
+            opportunity.Information_to_share__c,
+            'Mulighetens informasjon skal kunne redigeres uavhengig'
+        );
+        Assert.areEqual(
+            'Tilpasset begrensning på muligheten',
+            opportunity.Information_not_to_share__c,
+            'Mulighetens begrensning skal kunne redigeres uavhengig'
+        );
     }
 
     @IsTest

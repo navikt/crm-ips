@@ -1,6 +1,7 @@
 /**
  * Controller for creating new opportunities linked to registered work themes.
  * Handles the retrieval of registered themes and the creation of new opportunities.
+ * Copies sharing information from the work trail only when creating an opportunity.
  * Provides methods for validating input and handling errors related to opportunities and themes.
  * @author Balendra Sounthararajan / Copilot
  */
@@ -140,7 +141,7 @@ public with sharing class CE_NewOpportunityController {
 
         Id workTrailId = Id.valueOf(request.workTrailId);
         List<Work_Trail__c> trails = [
-            SELECT Id, OwnerId
+            SELECT Id, OwnerId, Information_to_share__c, Information_not_to_share__c
             FROM Work_Trail__c
             WHERE Id = :workTrailId
             WITH USER_MODE
@@ -212,9 +213,17 @@ public with sharing class CE_NewOpportunityController {
         if (!opportunityDescribe.isCreateable()) {
             return false;
         }
+        if (
+            !Work_Trail__c.Information_to_share__c.getDescribe().isAccessible() ||
+            !Work_Trail__c.Information_not_to_share__c.getDescribe().isAccessible()
+        ) {
+            return false;
+        }
         List<Schema.SObjectField> userFields = new List<Schema.SObjectField>{
             CE_Discovery_Opportunity__c.Name,
-            CE_Discovery_Opportunity__c.CE_Work_Theme__c
+            CE_Discovery_Opportunity__c.CE_Work_Theme__c,
+            CE_Discovery_Opportunity__c.Information_to_share__c,
+            CE_Discovery_Opportunity__c.Information_not_to_share__c
         };
         if (String.isNotBlank(request.description)) {
             userFields.add(CE_Discovery_Opportunity__c.Description__c);
@@ -241,7 +250,9 @@ public with sharing class CE_NewOpportunityController {
             Work_Trail__c = trail.Id,
             CE_Work_Theme__c = themeId,
             Description__c = String.isBlank(request.description) ? null : request.description.trim(),
-            CE_RelatedToAccount__c = accountId
+            CE_RelatedToAccount__c = accountId,
+            Information_to_share__c = trail.Information_to_share__c,
+            Information_not_to_share__c = trail.Information_not_to_share__c
         );
 
         if (trail.OwnerId != null && trail.OwnerId.getSobjectType() == User.SObjectType) {
