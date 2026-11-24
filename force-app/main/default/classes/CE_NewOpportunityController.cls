@@ -1,5 +1,5 @@
 /**
- * Controller for creating new opportunities and managing themes.
+ * Controller for creating new opportunities linked to registered work themes.
  * Handles the retrieval of registered themes and the creation of new opportunities.
  * Provides methods for validating input and handling errors related to opportunities and themes.
  * @author Balendra Sounthararajan / Copilot
@@ -9,19 +9,18 @@ public with sharing class CE_NewOpportunityController {
     @TestVisible
     private static final String ERROR_WORK_TRAIL = 'Fant ikke jobbsporet. Lukk vinduet og prøv igjen.';
     @TestVisible
-    private static final String ERROR_THEME = 'Velg et hovedtema som er registrert på dette jobbsporet.';
+    private static final String ERROR_THEME = 'Velg et yrkestema som er registrert på dette jobbsporet.';
     @TestVisible
     private static final String ERROR_NAME = 'Skriv inn navn på muligheten.';
     @TestVisible
-    private static final String ERROR_SUB_THEMES = 'Ett eller flere undertemaer passer ikke til hovedtemaet. Velg undertemaer på nytt.';
+    private static final String ERROR_ACCOUNT_REQUIRED = 'Velg en arbeidsgiver.';
     @TestVisible
     private static final String ERROR_ACCOUNT = 'Fant ikke arbeidsgiveren. Velg arbeidsgiver på nytt.';
     @TestVisible
     private static final String ERROR_ACCESS = 'Du har ikke tilgang til å opprette muligheter.';
     @TestVisible
-    private static final String ERROR_SAVE = 'Muligheten ble ikke lagret, og hovedtemaet ble ikke endret. Prøv igjen, eller kontakt brukerstøtte.';
-    private static final String ERROR_LOAD = 'Kunne ikke hente hovedtemaene. Prøv igjen, eller kontakt brukerstøtte.';
-    private static final String HEX_DIGITS = '0123456789abcdef';
+    private static final String ERROR_SAVE = 'Muligheten ble ikke lagret. Prøv igjen, eller kontakt brukerstøtte.';
+    private static final String ERROR_LOAD = 'Kunne ikke hente yrkestemaene. Prøv igjen, eller kontakt brukerstøtte.';
 
     @AuraEnabled(cacheable=true)
     public static List<WorkThemeRow> getWorkThemes(Id workTrailId) {
@@ -99,7 +98,7 @@ public with sharing class CE_NewOpportunityController {
         try {
             List<ThemeOption> options = new List<ThemeOption>();
             for (CE_Work_Theme__c theme : [
-                SELECT Id, Name, Main_Theme__c, Sub_Theme__c
+                SELECT Id, Name, Main_Theme__c
                 FROM CE_Work_Theme__c
                 WHERE Work_Trail__c = :workTrailId
                 WITH USER_MODE
@@ -109,7 +108,6 @@ public with sharing class CE_NewOpportunityController {
                 option.recordId = theme.Id;
                 option.name = theme.Name;
                 option.mainTheme = theme.Main_Theme__c;
-                option.subThemes = splitValues(theme.Sub_Theme__c);
                 options.add(option);
             }
             return options;
@@ -119,8 +117,8 @@ public with sharing class CE_NewOpportunityController {
     }
 
     @InvocableMethod(
-        label='CE - Opprett mulighet og oppdater undertemaer'
-        description='Lagrer undertemaene på det registrerte hovedtemaet og oppretter muligheten i samme transaksjon.'
+        label='CE - Opprett mulighet'
+        description='Oppretter en mulighet knyttet til et registrert yrkestema på jobbsporet.'
         category='Jobbsporet'
     )
     public static List<CreateResult> createOpportunity(List<CreateRequest> requests) {
@@ -155,7 +153,7 @@ public with sharing class CE_NewOpportunityController {
 
         Id themeId = Id.valueOf(request.themeId);
         List<CE_Work_Theme__c> themes = [
-            SELECT Id, Main_Theme__c, Sub_Theme__c
+            SELECT Id, Main_Theme__c
             FROM CE_Work_Theme__c
             WHERE Id = :themeId AND Work_Trail__c = :workTrailId
             WITH USER_MODE
@@ -167,30 +165,16 @@ public with sharing class CE_NewOpportunityController {
         }
 
         CE_Work_Theme__c theme = themes[0];
-        List<String> selectedSubThemes = splitValues(request.subThemes);
-        if (!getValidSubThemes(theme.Main_Theme__c).containsAll(selectedSubThemes)) {
-            result.errorMessage = ERROR_SUB_THEMES;
-            return result;
-        }
-
-        Id accountId = String.isBlank(request.accountId) ? null : Id.valueOf(request.accountId);
-        if (accountId != null && [SELECT COUNT() FROM Account WHERE Id = :accountId WITH USER_MODE] == 0) {
+        Id accountId = Id.valueOf(request.accountId);
+        if ([SELECT COUNT() FROM Account WHERE Id = :accountId WITH USER_MODE] == 0) {
             result.errorMessage = ERROR_ACCOUNT;
             return result;
         }
 
         Savepoint savepoint = Database.setSavepoint();
         try {
-            String newSubThemes = selectedSubThemes.isEmpty() ? null : String.join(selectedSubThemes, ';');
-            if (!sameValues(splitValues(theme.Sub_Theme__c), selectedSubThemes)) {
-                Database.update(
-                    new CE_Work_Theme__c(Id = theme.Id, Sub_Theme__c = newSubThemes),
-                    AccessLevel.USER_MODE
-                );
-            }
             CE_Discovery_Opportunity__c opportunity = buildOpportunity(request, trails[0], theme.Id, accountId);
             opportunity.Main_Theme__c = theme.Main_Theme__c;
-            opportunity.Sub_Theme__c = selectedSubThemes.isEmpty() ? null : String.join(selectedSubThemes, '\n');
             insert opportunity;
             result.opportunityId = opportunity.Id;
         } catch (Exception e) {
@@ -211,7 +195,10 @@ public with sharing class CE_NewOpportunityController {
         if (String.isBlank(request.name)) {
             return ERROR_NAME;
         }
-        if (String.isNotBlank(request.accountId) && !isIdOfType(request.accountId, Account.SObjectType)) {
+        if (String.isBlank(request.accountId)) {
+            return ERROR_ACCOUNT_REQUIRED;
+        }
+        if (!isIdOfType(request.accountId, Account.SObjectType)) {
             return ERROR_ACCOUNT;
         }
         if (!canCreateOpportunity(request)) {
@@ -263,53 +250,6 @@ public with sharing class CE_NewOpportunityController {
         return opportunity;
     }
 
-    /**
-     * Returns the active Sub_Theme__c values that are valid for the given Main_Theme__c value,
-     * based on the validFor bitmap in the dependent picklist describe.
-     */
-    @TestVisible
-    private static Set<String> getValidSubThemes(String mainTheme) {
-        Set<String> validValues = new Set<String>();
-        if (String.isBlank(mainTheme)) {
-            return validValues;
-        }
-        List<Schema.PicklistEntry> controllerEntries = CE_Work_Theme__c.Main_Theme__c.getDescribe().getPicklistValues();
-        Integer controllerIndex = -1;
-        for (Integer i = 0; i < controllerEntries.size(); i++) {
-            if (controllerEntries[i].getValue() == mainTheme) {
-                controllerIndex = i;
-                break;
-            }
-        }
-        if (controllerIndex < 0) {
-            return validValues;
-        }
-        for (Schema.PicklistEntry entry : CE_Work_Theme__c.Sub_Theme__c.getDescribe().getPicklistValues()) {
-            if (entry.isActive() && isValidFor(entry, controllerIndex)) {
-                validValues.add(entry.getValue());
-            }
-        }
-        return validValues;
-    }
-
-    private static Boolean isValidFor(Schema.PicklistEntry entry, Integer controllerIndex) {
-        Map<String, Object> entryJson = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(entry));
-        String validFor = (String) entryJson.get('validFor');
-        if (String.isBlank(validFor)) {
-            return false;
-        }
-        String hex = EncodingUtil.convertToHex(EncodingUtil.base64Decode(validFor)).toLowerCase();
-        Integer byteIndex = controllerIndex / 8;
-        if (hex.length() < (byteIndex + 1) * 2) {
-            return false;
-        }
-        Integer byteValue =
-            HEX_DIGITS.indexOf(hex.substring(byteIndex * 2, byteIndex * 2 + 1)) * 16 +
-            HEX_DIGITS.indexOf(hex.substring(byteIndex * 2 + 1, byteIndex * 2 + 2));
-        Integer mask = 128 >> Math.mod(controllerIndex, 8);
-        return (byteValue & mask) != 0;
-    }
-
     private static Boolean isIdOfType(String value, Schema.SObjectType expectedType) {
         if (String.isBlank(value)) {
             return false;
@@ -321,25 +261,6 @@ public with sharing class CE_NewOpportunityController {
         }
     }
 
-    private static List<String> splitValues(String value) {
-        List<String> values = new List<String>();
-        if (String.isBlank(value)) {
-            return values;
-        }
-        Set<String> seen = new Set<String>();
-        for (String part : value.split(';')) {
-            String trimmed = part.trim();
-            if (String.isNotBlank(trimmed) && seen.add(trimmed)) {
-                values.add(trimmed);
-            }
-        }
-        return values;
-    }
-
-    private static Boolean sameValues(List<String> first, List<String> second) {
-        return new Set<String>(first).equals(new Set<String>(second));
-    }
-
     public class ThemeOption {
         @AuraEnabled
         public Id recordId;
@@ -347,17 +268,13 @@ public with sharing class CE_NewOpportunityController {
         public String name;
         @AuraEnabled
         public String mainTheme;
-        @AuraEnabled
-        public List<String> subThemes;
     }
 
     public class CreateRequest {
         @InvocableVariable(label='Jobbspor-ID' required=true)
         public String workTrailId;
-        @InvocableVariable(label='Hovedtema-ID')
+        @InvocableVariable(label='Yrkestema-ID')
         public String themeId;
-        @InvocableVariable(label='Undertemaer (semikolonseparert)')
-        public String subThemes;
         @InvocableVariable(label='Navn på muligheten')
         public String name;
         @InvocableVariable(label='Beskrivelse')

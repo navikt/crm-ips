@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CE_Employer_Matches_Opportunity</fullName>
+    <active>true</active>
+    <description>When a job has an employer and is linked to a discovery opportunity, both records
+        must have the same employer.</description>
+    <errorConditionFormula>AND(
+        NOT(ISBLANK(Discovery_Opportunity__c)),
+        NOT(ISBLANK(ips_Employer__c)),
+        ips_Employer__c &lt;&gt; Discovery_Opportunity__r.CE_RelatedToAccount__c
+        )</errorConditionFormula>
+    <errorDisplayField>ips_Employer__c</errorDisplayField>
+    <errorMessage>Arbeidsgiveren på jobben må være den samme som på muligheten. Endre arbeidsgiver
+        eller velg en annen mulighet.</errorMessage>
+</ValidationRule>

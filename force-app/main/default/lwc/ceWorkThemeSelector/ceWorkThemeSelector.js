@@ -1,5 +1,5 @@
 import { LightningElement, api, wire } from 'lwc';
-import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
+import { FlowAttributeChangeEvent, FlowNavigationNextEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
 import { getObjectInfo, getPicklistValues } from 'lightning/uiObjectInfoApi';
 import getRegisteredThemes from '@salesforce/apex/CE_NewOpportunityController.getRegisteredThemes';
 import WORK_THEME_OBJECT from '@salesforce/schema/CE_Work_Theme__c';
@@ -7,6 +7,28 @@ import MAIN_THEME_FIELD from '@salesforce/schema/CE_Work_Theme__c.Main_Theme__c'
 
 const ERROR_LOAD = 'Kunne ikke laste inn tilgjengelige yrkestemaer. Prøv igjen.';
 const ERROR_REQUIRED = 'Velg minst ett yrkestema.';
+
+// Categories organize the UI only. Selectable values and labels always come from active picklist metadata.
+const THEME_CATEGORIES = [
+    { label: 'Aktivitet og ledelse', values: ['Idrett og aktivitet', 'Ledelse'] },
+    { label: 'Drift og mobilitet', values: ['Reise og mobilitet', 'Renhold og orden', 'Transport'] },
+    { label: 'Kreativitet og media', values: ['Kunst', 'Media og innholdsproduksjon', 'Mote', 'Underholdning'] },
+    { label: 'Kunnskap og utforskning', values: ['Geografi', 'Historie', 'Vitenskap'] },
+    { label: 'Mennesker og service', values: ['Barn', 'Helse og omsorg', 'Kommunikasjon', 'Kundeservice og vertskap'] },
+    { label: 'Natur og dyr', values: ['Dyr og dyrestell', 'Landbruk', 'Natur og friluftsliv', 'Vann'] },
+    {
+        label: 'Praktisk og teknisk arbeid',
+        values: ['Bygg og anlegg', 'Mekanikk og teknisk arbeid', 'Teknologi / IT', 'Vedlikehold og praktisk arbeid']
+    },
+    {
+        label: 'Samfunn og verdier',
+        values: ['Forsvar og beredskap', 'Interessearbeid og påvirkning', 'Politikk', 'Religion / åndelighet']
+    },
+    {
+        label: 'Struktur og problemløsing',
+        values: ['Logistikk', 'Matematikk', 'Nysgjerrighet / problemløsing', 'Struktur, orden og organisering']
+    }
+];
 
 function splitValues(value) {
     if (typeof value !== 'string') {
@@ -60,7 +82,9 @@ export default class CeWorkThemeSelector extends LightningElement {
     @wire(getPicklistValues, { recordTypeId: '$recordTypeId', fieldApiName: MAIN_THEME_FIELD })
     wiredMainThemes({ data, error }) {
         if (data) {
-            this.picklistOptions = data.values.map(({ label, value }) => ({ label, value }));
+            this.picklistOptions = [
+                ...new Map(data.values.map(({ label, value }) => [value, { label, value }])).values()
+            ];
             this.picklistLoaded = true;
             this.retainAvailableSelections();
         } else if (error) {
@@ -91,8 +115,27 @@ export default class CeWorkThemeSelector extends LightningElement {
         return this.availableOptions.length > 0;
     }
 
+    get themeCategories() {
+        const options = this.availableOptions.map((option) => {
+            const isSelected = this.selectedThemeValues.includes(option.value);
+            return {
+                ...option,
+                isSelected,
+                buttonClass: `slds-button ${isSelected ? 'slds-button_brand' : 'slds-button_neutral'}`
+            };
+        });
+        const categorizedValues = new Set(THEME_CATEGORIES.flatMap(({ values }) => values));
+        return [
+            ...THEME_CATEGORIES.map(({ label, values }) => ({
+                label,
+                options: options.filter(({ value }) => values.includes(value))
+            })),
+            { label: 'Andre yrkestemaer', options: options.filter(({ value }) => !categorizedValues.has(value)) }
+        ].filter(({ options: categoryOptions }) => categoryOptions.length > 0);
+    }
+
     get noThemesAvailable() {
-        return this.existingThemesLoaded && this.picklistLoaded && !this.hasAvailableThemes;
+        return !this.loadError && this.existingThemesLoaded && this.picklistLoaded && !this.hasAvailableThemes;
     }
 
     get showSelectButton() {
@@ -105,13 +148,21 @@ export default class CeWorkThemeSelector extends LightningElement {
         if (!result.isValid) {
             return;
         }
-        if (this.availableActions.includes('NEXT') || this.availableActions.includes('FINISH')) {
+        if (this.availableActions.includes('NEXT')) {
             this.dispatchEvent(new FlowNavigationNextEvent());
+        } else if (this.availableActions.includes('FINISH')) {
+            this.dispatchEvent(new FlowNavigationFinishEvent());
         }
     }
 
-    handleSelectionChange(event) {
-        this.selectedThemeValues = event.detail.value || [];
+    handleThemeToggle(event) {
+        const value = event.currentTarget.dataset.value;
+        if (!this.availableOptions.some((option) => option.value === value)) {
+            return;
+        }
+        this.selectedThemeValues = this.selectedThemeValues.includes(value)
+            ? this.selectedThemeValues.filter((selectedValue) => selectedValue !== value)
+            : [...this.selectedThemeValues, value];
         if (this.validationError) {
             this.reportValidity();
         }

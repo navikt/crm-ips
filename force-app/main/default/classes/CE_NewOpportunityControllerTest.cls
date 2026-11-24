@@ -1,7 +1,7 @@
 @IsTest
 private class CE_NewOpportunityControllerTest {
-    private static final String MAIN_THEME = 'Aktivitet og ledelse';
-    private static final String OTHER_MAIN_THEME = 'Drift og mobilitet';
+    private static final String MAIN_THEME = 'Landbruk';
+    private static final String OTHER_MAIN_THEME = 'Transport';
 
     @TestSetup
     static void makeData() {
@@ -19,12 +19,7 @@ private class CE_NewOpportunityControllerTest {
         insert new List<Work_Trail__c>{ trail, otherTrail };
 
         insert new List<CE_Work_Theme__c>{
-            new CE_Work_Theme__c(
-                Name = MAIN_THEME,
-                Main_Theme__c = MAIN_THEME,
-                Sub_Theme__c = 'Ledelse',
-                Work_Trail__c = trail.Id
-            ),
+            new CE_Work_Theme__c(Name = MAIN_THEME, Main_Theme__c = MAIN_THEME, Work_Trail__c = trail.Id),
             new CE_Work_Theme__c(
                 Name = OTHER_MAIN_THEME,
                 Main_Theme__c = OTHER_MAIN_THEME,
@@ -44,15 +39,20 @@ private class CE_NewOpportunityControllerTest {
     }
 
     private static CE_Work_Theme__c getTheme(String mainTheme) {
-        return [SELECT Id, Sub_Theme__c, Work_Trail__c FROM CE_Work_Theme__c WHERE Main_Theme__c = :mainTheme LIMIT 1];
+        return [
+            SELECT Id, Name, Main_Theme__c, Work_Trail__c, LastModifiedDate
+            FROM CE_Work_Theme__c
+            WHERE Main_Theme__c = :mainTheme
+            LIMIT 1
+        ];
     }
 
-    private static CE_NewOpportunityController.CreateRequest request(Id trailId, Id themeId, String subThemes) {
+    private static CE_NewOpportunityController.CreateRequest request(Id trailId, Id themeId) {
         CE_NewOpportunityController.CreateRequest request = new CE_NewOpportunityController.CreateRequest();
         request.workTrailId = trailId;
         request.themeId = themeId;
-        request.subThemes = subThemes;
         request.name = '  Butikkmedarbeider  ';
+        request.accountId = [SELECT Id FROM Account WHERE Name LIKE 'Røre Pinne%' LIMIT 1].Id;
         return request;
     }
 
@@ -98,10 +98,10 @@ private class CE_NewOpportunityControllerTest {
         List<CE_NewOpportunityController.ThemeOption> themes = getThemesAsCe(trail.Id);
         Test.stopTest();
 
-        Assert.areEqual(1, themes.size(), 'Bare hovedtema på dette jobbsporet skal vises');
-        Assert.areEqual(getTheme(MAIN_THEME).Id, themes[0].recordId, 'Valget skal bruke ID-en til hovedtemaet');
-        Assert.areEqual(MAIN_THEME, themes[0].mainTheme, 'Hovedtemaet skal returneres');
-        Assert.areEqual(new List<String>{ 'Ledelse' }, themes[0].subThemes, 'Lagrede undertemaer skal returneres');
+        Assert.areEqual(1, themes.size(), 'Bare yrkestema på dette jobbsporet skal vises');
+        Assert.areEqual(getTheme(MAIN_THEME).Id, themes[0].recordId, 'Valget skal bruke ID-en til yrkestemaet');
+        Assert.areEqual(MAIN_THEME, themes[0].mainTheme, 'Yrkestemaet skal returneres');
+        Assert.areEqual(MAIN_THEME, themes[0].name, 'Yrkestemaets navn skal returneres');
     }
 
     @IsTest
@@ -122,8 +122,8 @@ private class CE_NewOpportunityControllerTest {
     static void getWorkThemes_countsOpportunitiesPerTheme() {
         Work_Trail__c trail = getTrail();
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
-        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
-        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id)).opportunityId);
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id)).opportunityId);
         CE_Work_Theme__c otherTheme = getTheme(OTHER_MAIN_THEME);
         insert new CE_Discovery_Opportunity__c(
             Name = 'Mulighet på et annet jobbspor',
@@ -144,6 +144,22 @@ private class CE_NewOpportunityControllerTest {
     }
 
     @IsTest
+    static void getWorkThemes_deletedOpportunity_isNotCounted() {
+        Work_Trail__c trail = getTrail();
+        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
+        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id));
+        Assert.isNotNull(result.opportunityId, 'Muligheten skal opprettes før sletting');
+        delete new CE_Discovery_Opportunity__c(Id = result.opportunityId);
+
+        Test.startTest();
+        List<CE_NewOpportunityController.WorkThemeRow> themes = getWorkThemesAsCe(trail.Id);
+        Test.stopTest();
+
+        Assert.areEqual(1, themes.size(), 'Yrkestemaet skal fortsatt vises etter sletting av muligheten');
+        Assert.areEqual(0, themes[0].opportunityCount, 'Slettede muligheter skal ikke telles');
+    }
+
+    @IsTest
     static void getWorkThemes_countsOpportunitiesCreatedByOtherUsers() {
         Work_Trail__c trail = getTrail();
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
@@ -153,7 +169,7 @@ private class CE_NewOpportunityControllerTest {
             CE_Work_Theme__c = theme.Id
         );
         insert otherUserOpportunity;
-        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id, 'Ledelse')).opportunityId);
+        Assert.isNotNull(runAsCe(request(trail.Id, theme.Id)).opportunityId);
 
         CE_Discovery_Opportunity__c stored = [
             SELECT CreatedById
@@ -264,11 +280,11 @@ private class CE_NewOpportunityControllerTest {
     }
 
     @IsTest
-    static void createOpportunity_updatesThemeAndCreatesOpportunity() {
+    static void createOpportunity_createsOpportunityWithoutChangingTheme() {
         Work_Trail__c trail = getTrail();
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
         Account employer = [SELECT Id FROM Account WHERE Name LIKE 'Røre Pinne%' LIMIT 1];
-        CE_NewOpportunityController.CreateRequest request = request(trail.Id, theme.Id, 'Ledelse;Idrett og aktivitet');
+        CE_NewOpportunityController.CreateRequest request = request(trail.Id, theme.Id);
         request.description = 'Prøve ut arbeid i butikk';
         request.accountId = employer.Id;
 
@@ -278,65 +294,75 @@ private class CE_NewOpportunityControllerTest {
 
         Assert.isNull(result.errorMessage, 'Lagringen skal lykkes');
         CE_Discovery_Opportunity__c opportunity = [
-            SELECT
-                Name,
-                Work_Trail__c,
-                CE_Work_Theme__c,
-                Main_Theme__c,
-                Sub_Theme__c,
-                Description__c,
-                CE_RelatedToAccount__c,
-                OwnerId
+            SELECT Name, Work_Trail__c, CE_Work_Theme__c, Main_Theme__c, Description__c, CE_RelatedToAccount__c, OwnerId
             FROM CE_Discovery_Opportunity__c
             WHERE Id = :result.opportunityId
         ];
         Assert.areEqual('Butikkmedarbeider', opportunity.Name, 'Navnet skal lagres uten mellomrom rundt');
         Assert.areEqual(trail.Id, opportunity.Work_Trail__c, 'Muligheten skal knyttes til jobbsporet');
-        Assert.areEqual(theme.Id, opportunity.CE_Work_Theme__c, 'Muligheten skal knyttes til hovedtemaet');
-        Assert.areEqual(MAIN_THEME, opportunity.Main_Theme__c, 'Hovedtema skal kopieres til muligheten');
-        Assert.areEqual(
-            new Set<String>{ 'Ledelse', 'Idrett og aktivitet' },
-            new Set<String>(opportunity.Sub_Theme__c.split('\n')),
-            'Valgte undertemaer skal kopieres til muligheten'
-        );
-        Assert.areEqual(
-            'Ledelse\nIdrett og aktivitet',
-            opportunity.Sub_Theme__c,
-            'Hvert undertema skal lagres på egen linje'
-        );
+        Assert.areEqual(theme.Id, opportunity.CE_Work_Theme__c, 'Muligheten skal knyttes til yrkestemaet');
+        Assert.areEqual(MAIN_THEME, opportunity.Main_Theme__c, 'Yrkestema skal kopieres til muligheten');
         Assert.areEqual('Prøve ut arbeid i butikk', opportunity.Description__c, 'Beskrivelsen skal lagres');
         Assert.areEqual(employer.Id, opportunity.CE_RelatedToAccount__c, 'Arbeidsgiveren skal lagres');
         Assert.areEqual(trail.OwnerId, opportunity.OwnerId, 'Eier skal være den samme som på jobbsporet');
 
-        Set<String> storedSubThemes = new Set<String>(getTheme(MAIN_THEME).Sub_Theme__c.split(';'));
-        Assert.areEqual(
-            new Set<String>{ 'Ledelse', 'Idrett og aktivitet' },
-            storedSubThemes,
-            'Undertemaene skal lagres på hovedtemaet'
-        );
+        CE_Work_Theme__c storedTheme = getTheme(MAIN_THEME);
+        Assert.areEqual(theme.Name, storedTheme.Name, 'Yrkestemaets navn skal ikke endres');
+        Assert.areEqual(theme.Main_Theme__c, storedTheme.Main_Theme__c, 'Yrkestemaet skal ikke endres');
+        Assert.areEqual(theme.Work_Trail__c, storedTheme.Work_Trail__c, 'Jobbsporet skal ikke endres');
+        Assert.areEqual(theme.LastModifiedDate, storedTheme.LastModifiedDate, 'Yrkestemaet skal ikke oppdateres');
     }
 
     @IsTest
-    static void createOpportunity_withoutOptionalFields_clearsSubThemes() {
+    static void createOpportunity_withoutOptionalFields_createsOpportunity() {
         Work_Trail__c trail = getTrail();
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id, null));
+        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id));
         Test.stopTest();
 
         Assert.isNull(result.errorMessage, 'Valgfrie felt skal kunne stå tomme');
         Assert.isNotNull(result.opportunityId, 'Muligheten skal opprettes');
-        Assert.isNull(getTheme(MAIN_THEME).Sub_Theme__c, 'Fjernede undertemaer skal fjernes fra hovedtemaet');
+        Assert.areEqual(MAIN_THEME, getTheme(MAIN_THEME).Main_Theme__c, 'Yrkestemaet skal ikke endres');
         CE_Discovery_Opportunity__c opportunity = [
-            SELECT Main_Theme__c, Sub_Theme__c, Description__c, CE_RelatedToAccount__c
+            SELECT Main_Theme__c, Description__c, CE_RelatedToAccount__c
             FROM CE_Discovery_Opportunity__c
             WHERE Id = :result.opportunityId
         ];
         Assert.isNull(opportunity.Description__c, 'Tom beskrivelse skal ikke lagres');
-        Assert.areEqual(MAIN_THEME, opportunity.Main_Theme__c, 'Hovedtema skal kopieres uten undertemaer');
-        Assert.isNull(opportunity.Sub_Theme__c, 'Ingen valgte undertemaer skal gi tomt snapshot');
-        Assert.isNull(opportunity.CE_RelatedToAccount__c, 'Arbeidsgiver er valgfri');
+        Assert.areEqual(MAIN_THEME, opportunity.Main_Theme__c, 'Yrkestema skal kopieres til muligheten');
+        Assert.isNotNull(opportunity.CE_RelatedToAccount__c, 'Arbeidsgiver skal lagres selv om valgfrie felt er tomme');
+    }
+
+    @IsTest
+    static void createOpportunity_missingEmployer_returnsErrorWithoutChanges() {
+        Work_Trail__c trail = getTrail();
+        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
+        List<CE_NewOpportunityController.CreateRequest> requests = new List<CE_NewOpportunityController.CreateRequest>();
+        for (String accountId : new List<String>{ null, '', '   ' }) {
+            CE_NewOpportunityController.CreateRequest request = request(trail.Id, theme.Id);
+            request.accountId = accountId;
+            requests.add(request);
+        }
+
+        Test.startTest();
+        List<CE_NewOpportunityController.CreateResult> results = CE_NewOpportunityController.createOpportunity(
+            requests
+        );
+        Test.stopTest();
+
+        Assert.areEqual(3, results.size(), 'Alle forespørsler skal få et resultat');
+        for (CE_NewOpportunityController.CreateResult result : results) {
+            Assert.areEqual(
+                CE_NewOpportunityController.ERROR_ACCOUNT_REQUIRED,
+                result.errorMessage,
+                'Arbeidsgiver er påkrevd'
+            );
+            Assert.isNull(result.opportunityId, 'Ingen mulighet skal opprettes uten arbeidsgiver');
+        }
+        Assert.areEqual(MAIN_THEME, getTheme(MAIN_THEME).Main_Theme__c, 'Yrkestemaet skal ikke endres');
+        Assert.areEqual(0, [SELECT COUNT() FROM CE_Discovery_Opportunity__c], 'Ingen mulighet skal finnes');
     }
 
     @IsTest
@@ -345,18 +371,18 @@ private class CE_NewOpportunityControllerTest {
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id, 'Ledelse'));
-        update new CE_Work_Theme__c(Id = theme.Id, Main_Theme__c = OTHER_MAIN_THEME, Sub_Theme__c = 'Transport');
+        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id));
+        update new CE_Work_Theme__c(Id = theme.Id, Main_Theme__c = OTHER_MAIN_THEME);
         Test.stopTest();
 
         Assert.isNull(result.errorMessage, 'Muligheten skal opprettes');
         CE_Discovery_Opportunity__c opportunity = [
-            SELECT Main_Theme__c, Sub_Theme__c
+            SELECT Main_Theme__c, CE_Work_Theme__c
             FROM CE_Discovery_Opportunity__c
             WHERE Id = :result.opportunityId
         ];
-        Assert.areEqual(MAIN_THEME, opportunity.Main_Theme__c, 'Snapshot skal beholde opprinnelig hovedtema');
-        Assert.areEqual('Ledelse', opportunity.Sub_Theme__c, 'Snapshot skal beholde opprinnelige undertemaer');
+        Assert.areEqual(MAIN_THEME, opportunity.Main_Theme__c, 'Snapshot skal beholde opprinnelig yrkestema');
+        Assert.areEqual(theme.Id, opportunity.CE_Work_Theme__c, 'Koblingen til yrkestemaet skal beholdes');
     }
 
     @IsTest
@@ -365,30 +391,12 @@ private class CE_NewOpportunityControllerTest {
         CE_Work_Theme__c otherTheme = getTheme(OTHER_MAIN_THEME);
 
         Test.startTest();
-        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, otherTheme.Id, 'Transport'));
+        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, otherTheme.Id));
         Test.stopTest();
 
         Assert.areEqual(CE_NewOpportunityController.ERROR_THEME, result.errorMessage, 'Feil jobbspor skal avvises');
         Assert.isNull(result.opportunityId, 'Ingen mulighet skal opprettes');
-        Assert.isNull(getTheme(OTHER_MAIN_THEME).Sub_Theme__c, 'Hovedtemaet skal ikke endres');
-        Assert.areEqual(0, [SELECT COUNT() FROM CE_Discovery_Opportunity__c], 'Ingen mulighet skal finnes');
-    }
-
-    @IsTest
-    static void createOpportunity_subThemeForOtherMainTheme_returnsErrorWithoutChanges() {
-        Work_Trail__c trail = getTrail();
-        CE_Work_Theme__c theme = getTheme(MAIN_THEME);
-
-        Test.startTest();
-        CE_NewOpportunityController.CreateResult result = runAsCe(request(trail.Id, theme.Id, 'Ledelse;Transport'));
-        Test.stopTest();
-
-        Assert.areEqual(
-            CE_NewOpportunityController.ERROR_SUB_THEMES,
-            result.errorMessage,
-            'Undertema fra et annet hovedtema skal avvises'
-        );
-        Assert.areEqual('Ledelse', getTheme(MAIN_THEME).Sub_Theme__c, 'Hovedtemaet skal ikke endres');
+        Assert.areEqual(OTHER_MAIN_THEME, getTheme(OTHER_MAIN_THEME).Main_Theme__c, 'Yrkestemaet skal ikke endres');
         Assert.areEqual(0, [SELECT COUNT() FROM CE_Discovery_Opportunity__c], 'Ingen mulighet skal finnes');
     }
 
@@ -397,12 +405,12 @@ private class CE_NewOpportunityControllerTest {
         Work_Trail__c trail = getTrail();
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
 
-        CE_NewOpportunityController.CreateRequest blankName = request(trail.Id, theme.Id, 'Ledelse');
+        CE_NewOpportunityController.CreateRequest blankName = request(trail.Id, theme.Id);
         blankName.name = '   ';
-        CE_NewOpportunityController.CreateRequest badTrail = request(theme.Id, theme.Id, 'Ledelse');
-        CE_NewOpportunityController.CreateRequest badTheme = request(trail.Id, null, 'Ledelse');
+        CE_NewOpportunityController.CreateRequest badTrail = request(theme.Id, theme.Id);
+        CE_NewOpportunityController.CreateRequest badTheme = request(trail.Id, null);
         badTheme.themeId = 'ikke-en-id';
-        CE_NewOpportunityController.CreateRequest badAccount = request(trail.Id, theme.Id, 'Ledelse');
+        CE_NewOpportunityController.CreateRequest badAccount = request(trail.Id, theme.Id);
         badAccount.accountId = trail.Id;
 
         Test.startTest();
@@ -413,17 +421,17 @@ private class CE_NewOpportunityControllerTest {
 
         Assert.areEqual(CE_NewOpportunityController.ERROR_NAME, results[0].errorMessage, 'Navn er påkrevd');
         Assert.areEqual(CE_NewOpportunityController.ERROR_WORK_TRAIL, results[1].errorMessage, 'Ugyldig jobbspor');
-        Assert.areEqual(CE_NewOpportunityController.ERROR_THEME, results[2].errorMessage, 'Ugyldig hovedtema');
+        Assert.areEqual(CE_NewOpportunityController.ERROR_THEME, results[2].errorMessage, 'Ugyldig yrkestema');
         Assert.areEqual(CE_NewOpportunityController.ERROR_ACCOUNT, results[3].errorMessage, 'Ugyldig arbeidsgiver');
         Assert.areEqual(0, [SELECT COUNT() FROM CE_Discovery_Opportunity__c], 'Ingen mulighet skal finnes');
     }
 
     @IsTest
-    static void createOpportunity_insertFails_rollsBackThemeUpdate() {
+    static void createOpportunity_insertFails_savesNothing() {
         Work_Trail__c trail = getTrail();
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
-        CE_NewOpportunityController.CreateRequest request = request(trail.Id, theme.Id, 'Idrett og aktivitet');
-        // Description__c is a 255 character text area, so the insert fails after the theme is updated.
+        CE_NewOpportunityController.CreateRequest request = request(trail.Id, theme.Id);
+        // Description__c is a 255 character text area, so the insert fails.
         request.description = 'x'.repeat(300);
 
         Test.startTest();
@@ -432,7 +440,7 @@ private class CE_NewOpportunityControllerTest {
 
         Assert.areEqual(CE_NewOpportunityController.ERROR_SAVE, result.errorMessage, 'Lagringsfeil skal vises');
         Assert.isNull(result.opportunityId, 'Ingen ID skal returneres');
-        Assert.areEqual('Ledelse', getTheme(MAIN_THEME).Sub_Theme__c, 'Endringen i hovedtemaet skal rulles tilbake');
+        Assert.areEqual(MAIN_THEME, getTheme(MAIN_THEME).Main_Theme__c, 'Yrkestemaet skal ikke endres');
         Assert.areEqual(0, [SELECT COUNT() FROM CE_Discovery_Opportunity__c], 'Ingen mulighet skal finnes');
     }
 
@@ -442,27 +450,18 @@ private class CE_NewOpportunityControllerTest {
         CE_Work_Theme__c theme = getTheme(MAIN_THEME);
         User user = IPS_TestDataFactory.getStandardUser('Uten', 'Tilgang');
         insert user;
+        CE_NewOpportunityController.CreateRequest request = request(trail.Id, theme.Id);
 
         CE_NewOpportunityController.CreateResult result;
         Test.startTest();
         System.runAs(user) {
-            result = run(request(trail.Id, theme.Id, 'Idrett og aktivitet'));
+            result = run(request);
         }
         Test.stopTest();
 
         Assert.isNotNull(result.errorMessage, 'Bruker uten tilgang skal få feilmelding');
         Assert.isNull(result.opportunityId, 'Ingen mulighet skal opprettes');
-        Assert.areEqual('Ledelse', getTheme(MAIN_THEME).Sub_Theme__c, 'Hovedtemaet skal ikke endres');
+        Assert.areEqual(MAIN_THEME, getTheme(MAIN_THEME).Main_Theme__c, 'Yrkestemaet skal ikke endres');
         Assert.areEqual(0, [SELECT COUNT() FROM CE_Discovery_Opportunity__c], 'Ingen mulighet skal finnes');
-    }
-
-    @IsTest
-    static void getValidSubThemes_followsPicklistDependency() {
-        Set<String> valid = CE_NewOpportunityController.getValidSubThemes(MAIN_THEME);
-
-        Assert.isTrue(valid.contains('Ledelse'), 'Ledelse hører til Aktivitet og ledelse');
-        Assert.isTrue(valid.contains('Idrett og aktivitet'), 'Idrett og aktivitet hører til Aktivitet og ledelse');
-        Assert.isFalse(valid.contains('Transport'), 'Transport hører til et annet hovedtema');
-        Assert.isTrue(CE_NewOpportunityController.getValidSubThemes(null).isEmpty(), 'Uten hovedtema er ingen gyldige');
     }
 }
