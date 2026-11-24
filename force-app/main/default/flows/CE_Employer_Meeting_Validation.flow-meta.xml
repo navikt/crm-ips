@@ -8,7 +8,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <customErrorMessages>
-            <errorMessage>Velg samme arbeidsgiver som er registrert på muligheten.</errorMessage>
+            <errorMessage>Arbeidsgiveren stemmer ikke med arbeidsgiveren på muligheten. Velg «{!Get_Opportunity.CE_RelatedToAccount__r.Name}».</errorMessage>
             <fieldSelection>RelatedToAccount__c</fieldSelection>
             <isFieldError>true</isFieldError>
         </customErrorMessages>
@@ -80,7 +80,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Discovery_Opportunity__r.Id</elementReference>
+                <elementReference>$Record.Discovery_Opportunity__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -113,4 +113,5 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>200</triggerOrder>
 </Flow>
