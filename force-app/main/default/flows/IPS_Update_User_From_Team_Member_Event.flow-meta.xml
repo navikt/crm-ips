@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Assign_Manager</name>
+        <label>Assign Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>userUpdate.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestedUserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>userUpdate.ManagerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestedManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_User</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Manager_And_Role</name>
+        <label>Assign Manager And Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>userUpdate.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestedUserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>userUpdate.ManagerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestedManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>userUpdate.UserRoleId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestedRoleId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_User</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Role</name>
+        <label>Assign Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>userUpdate.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestedUserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>userUpdate.UserRoleId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestedRoleId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_User</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Log_rejected_request</name>
+        <label>Log rejected request</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>flow_errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>requestFailureMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Log_Request_Failure</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Log_rejected_role</name>
+        <label>Log rejected role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>flow_errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>roleRejectionMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Log_Request_Failure</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Are_References_Valid</name>
+        <label>Are References Valid</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Log_rejected_request</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Invalid User Manager Or Role</defaultConnectorLabel>
+        <rules>
+            <name>References_Valid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>areReferencesValid</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Select_User_Changes</targetReference>
+            </connector>
+            <label>References Valid</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Platform event flow interviews run in the publisher context. Check the custom permission natively, including permission set groups, and reject if the running user does not match the event creator.</description>
+        <name>Is_Publisher_Authorized</name>
+        <label>Is Publisher Authorized</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Log_rejected_request</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Reject Request</defaultConnectorLabel>
+        <rules>
+            <name>Publisher_Authorized</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isPublisherAuthorized</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Target_User</targetReference>
+            </connector>
+            <label>Publisher Authorized</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_the_Role_Change_Valid</name>
+        <label>Is the Role Change Valid</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Valid- or no role change</defaultConnectorLabel>
+        <rules>
+            <name>Invalid_Role</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isRoleRejected</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Log_rejected_role</targetReference>
+            </connector>
+            <label>Invalid Role</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Select_User_Changes</name>
+        <label>Select User Changes</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Is_the_Role_Change_Valid</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No User Changes</defaultConnectorLabel>
+        <rules>
+            <name>Manager_And_Role_Changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isManagerChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isRoleChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isRoleRejected</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Manager_And_Role</targetReference>
+            </connector>
+            <label>Manager And Role Changed</label>
+        </rules>
+        <rules>
+            <name>Manager_Changed</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>isManagerChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isRoleChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isRoleRejected</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Manager</targetReference>
+            </connector>
+            <label>Manager Changed</label>
+        </rules>
+        <rules>
+            <name>Role_Changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isRoleChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isRoleRejected</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Role</targetReference>
+            </connector>
+            <label>Role Changed</label>
+        </rules>
+    </decisions>
+    <description>Enables authorized users to give access to the Jobbsporet app, based on a manual process and information from &quot;Mine Tilganger&quot;</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>areReferencesValid</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+    NOT(ISBLANK({!Get_Target_User.Id})),
+    OR(
+        {!Get_Target_User.Profile.Name} = &quot;NAV Kontor&quot;,
+        {!Get_Target_User.Profile.Name} = &quot;NAV UO Jobbspesialist&quot;,
+        {!Get_Target_User.Profile.Name} = &quot;NAV UO Metodeveileder&quot;,
+        {!Get_Target_User.Profile.Name} = &quot;NAV IPS Jobbspesialist&quot;,
+        {!Get_Target_User.Profile.Name} = &quot;NAV IPS Metodeveileder&quot;
+    ),
+    OR(
+        ISBLANK({!requestedManagerId}),
+        AND(
+            NOT(ISBLANK({!Get_Manager.Id})),
+            {!Get_Manager.Id} &lt;&gt; {!Get_Target_User.Id},
+            OR(
+                {!Get_Manager.Profile.Name} = &quot;NAV Kontor&quot;,
+                {!Get_Manager.Profile.Name} = &quot;NAV UO Jobbspesialist&quot;,
+                {!Get_Manager.Profile.Name} = &quot;NAV UO Metodeveileder&quot;,
+                {!Get_Manager.Profile.Name} = &quot;NAV IPS Jobbspesialist&quot;,
+                {!Get_Manager.Profile.Name} = &quot;NAV IPS Metodeveileder&quot;
+            )
+        )
+    ),
+    OR(
+        ISBLANK({!requestedRoleId}),
+        NOT(ISBLANK({!Get_Requested_Role.Id}))
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>isManagerChanged</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+    NOT(ISBLANK({!requestedManagerId})),
+    {!Get_Manager.Id} &lt;&gt; {!Get_Target_User.ManagerId}
+)</expression>
+    </formulas>
+    <formulas>
+        <name>isPublisherAuthorized</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+    {!$User.Id} = {!$Record.CreatedById},
+    {!$User.IsActive},
+    {!$Permission.IPS_Admin_GiveAccessToJobbsporetUsers}
+)</expression>
+    </formulas>
+    <formulas>
+        <name>isRoleChanged</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+    NOT(ISBLANK({!requestedRoleId})),
+    {!isRoleTransitionAllowed},
+    {!Get_Requested_Role.Id} &lt;&gt; {!Get_Target_User.UserRoleId}
+)</expression>
+    </formulas>
+    <formulas>
+        <name>isRoleRejected</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+    NOT(ISBLANK({!requestedRoleId})),
+    NOT({!isRoleTransitionAllowed})
+)</expression>
+    </formulas>
+    <formulas>
+        <name>isRoleTransitionAllowed</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+    NOT(ISBLANK({!Get_Target_User.UserRoleId})),
+    OR(
+        {!Get_Target_User.UserRole.Name} = &quot;NAV Kontor&quot;,
+        CONTAINS({!Get_Target_User.UserRole.Name}, &quot;Jobbspesialist&quot;),
+        CONTAINS({!Get_Target_User.UserRole.Name}, &quot;Metodeveileder&quot;)
+    ),
+    OR(
+        CONTAINS({!Get_Requested_Role.Name}, &quot;Jobbspesialist&quot;),
+        CONTAINS({!Get_Requested_Role.Name}, &quot;Metodeveileder&quot;)
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>requestedManagerId</name>
+        <dataType>String</dataType>
+        <expression>TRIM({!$Record.ips_Manager__c})</expression>
+    </formulas>
+    <formulas>
+        <name>requestedRoleId</name>
+        <dataType>String</dataType>
+        <expression>TRIM({!$Record.ips_Role__c})</expression>
+    </formulas>
+    <formulas>
+        <name>requestedUserId</name>
+        <dataType>String</dataType>
+        <expression>TRIM({!$Record.ips_User__c})</expression>
+    </formulas>
+    <formulas>
+        <name>requestFailureMessage</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    {!isPublisherAuthorized},
+    &quot;Forespørselen kunne ikke behandles. Brukeren ble ikke oppdatert. Kontroller bruker, leder og rolle før ny innsending.&quot;,
+    &quot;Avsenderen av hendelsen mangler gyldig tilgang. Brukeren ble ikke oppdatert. Be administratoren kontrollere tilgangen før ny innsending.&quot;
+) &amp; &quot; Referanse: &quot; &amp; {!$Flow.InterviewGuid}</expression>
+    </formulas>
+    <formulas>
+        <name>roleRejectionMessage</name>
+        <dataType>String</dataType>
+        <expression>&quot;Rolleovergangen er ikke tillatt. Gjeldende rolle er beholdt. Kontroller gjeldende og ønsket rolle. Referanse: &quot; &amp; {!$Flow.InterviewGuid}</expression>
+    </formulas>
+    <formulas>
+        <name>updateFailureMessage</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    {!isRoleRejected},
+    &quot;Rolleovergangen er ikke tillatt. Gjeldende rolle er beholdt. &quot;,
+    &quot;&quot;
+) &amp; &quot;Oppdateringen av brukeren feilet. Be administratoren undersøke feilen i Flowen før ny innsending. Referanse: &quot; &amp; {!$Flow.InterviewGuid}</expression>
+    </formulas>
+    <interviewLabel>IPS - Update User From Team Member Event {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IPS - Update User From Team Member Event</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Log_Request_Failure</name>
+        <label>Log Request Failure</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>flow_errorMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Function__c</field>
+            <value>
+                <stringValue>IPS_Update_User_From_Team_Member_Event</stringValue>
+            </value>
+        </inputAssignments>
+        <object>IPS_Application_Log_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Log_Update_Failure</name>
+        <label>Log Update Failure</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Application_Domain__c</field>
+            <value>
+                <stringValue>IPS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_Message__c</field>
+            <value>
+                <elementReference>updateFailureMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Function__c</field>
+            <value>
+                <stringValue>IPS_Update_User_From_Team_Member_Event</stringValue>
+            </value>
+        </inputAssignments>
+        <object>IPS_Application_Log_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Manager</name>
+        <label>Get Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Requested_Role</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Log_rejected_request</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>requestedManagerId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Requested_Role</name>
+        <label>Get Requested Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Are_References_Valid</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Log_rejected_request</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>requestedRoleId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>UserRole</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Target_User</name>
+        <label>Get Target User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Manager</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Log_rejected_request</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>requestedUserId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_User</name>
+        <label>Update User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_the_Role_Change_Valid</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Log_Update_Failure</targetReference>
+        </faultConnector>
+        <inputReference>userUpdate</inputReference>
+    </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Publisher_Authorized</targetReference>
+        </connector>
+        <flowRunAsUser>TriggeringUser</flowRunAsUser>
+        <object>IPS_Team_Member_Changed__e</object>
+        <triggerType>PlatformEvent</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>flow_errorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>userUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+</Flow>

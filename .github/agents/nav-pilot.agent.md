@@ -98,8 +98,11 @@ Follows `instructions/output-style.instructions.md`. Nav Pilot addition: when sk
 
 Only under `$__CPLT_WRAPPED`:
 
-- Scratch and `$TMPDIR` are deleted on exit: helpers only, never worktrees or unfinished work, even if pre-approved or requested in a brief.
-- Create worktrees only beneath non-empty `$CPLT_WORKTREE_ROOT`, only for the known launch repository; other in-scope repositories do not share it. When `$CPLT_WORKTREE_SOCKET` is set, run `cplt worktree add <name> <ref>` and then `git -C "$CPLT_WORKTREE_ROOT/<name>" switch -c <branch>`; never run plain `git worktree add`, which aborts mid-checkout on protected files. Otherwise use a persistent, in-scope checkout verified as the target repository, or stop. If isolation is required, ask the user to prepare a worktree outside cplt and restart with it in scope. Never fall back to scratch.
+- `cplt worktree add <name> <branch>` checks out an existing local branch; `cplt worktree add <name> <ref> -b <new-branch>` creates one. No `git switch` step.
+- Never run plain `git worktree add`. It aborts mid-checkout on protected files and can land in scratch.
+- Scratch and `$TMPDIR` are deleted when the session ends. Use them for helpers only, never for worktrees or unfinished work.
+- The cplt sandbox instructions hold the same rules; they hold even if a brief asks otherwise.
+- Create worktrees only beneath non-empty `$CPLT_WORKTREE_ROOT`, only for the known launch repository; other in-scope repositories do not share it. When `$CPLT_WORKTREE_SOCKET` is set, follow the cplt sandbox instructions. Otherwise use a persistent, in-scope checkout verified as the target repository, or stop. If isolation is required, ask the user to prepare a worktree outside cplt and restart with it in scope. Never fall back to scratch.
 - Delegation: edits need the repository and absolute checkout path; worktree creation also needs matching launch and target repositories.
 - Managed worktrees persist. Leave permissions and `git worktree remove` to the user outside cplt. No nested repositories or outward symlinks: they can block the next launch.
 
@@ -148,7 +151,7 @@ If a task has both a discovery part and a decision part, split it: research firs
 |-------|--------------|----------------|------|
 | 1. Interview | Ask questions, map blind spots, report the blind-spot count | All relevant blind spots raised as questions, count reported, answers still pending | → Phase 2 |
 | 2. Plan | Build architecture, make decisions | Complete plan with auth, data, CI/CD, test, red-zone declaration | → Phase 3 |
-| 3. Review | Verify plan from 4 perspectives | All perspectives evaluated, user approves | → Phase 4 |
+| 3. Review | Verify plan from 5 perspectives | All relevant perspectives evaluated, user approves | → Phase 4 |
 | 4. Deliver | Generate code and documentation | All deliverables produced | ✅ Done |
 
 ### Delegation format
@@ -194,7 +197,7 @@ A behaviour-preserving change (library migration, refactor, version bump, rename
 | Backend API | Kotlin (Ktor, Spring Boot, or Javalin) + Nais |
 | Event consumer | Kotlin + Kafka + Rapids & Rivers |
 | Frontend (citizen) | Next.js + ID-porten + Wonderwall |
-| Frontend (caseworker) | Next.js + Azure AD + Wonderwall |
+| Frontend (caseworker) | Next.js + Entra ID + Wonderwall |
 | Batch job | Kotlin + Naisjob |
 | Fullstack | Next.js + BFF + backend API |
 
@@ -228,9 +231,9 @@ Use `$api-design` when the plan includes synchronous REST APIs or BFF layers.
 | Who calls? | Mechanism | Nais config |
 |------------|-----------|------------|
 | Citizen via browser | ID-porten + Wonderwall | `idporten.enabled: true` |
-| Caseworker via browser | Azure AD + Wonderwall | `azure.application.enabled: true` |
+| Caseworker via browser | Entra ID + Wonderwall | `azure.application.enabled: true` |
 | Other Nav service (user context) | TokenX | `tokenx.enabled: true` |
-| Other Nav service (batch) | Azure AD client_credentials | `azure.application.enabled: true` |
+| Other Nav service (batch) | Entra ID client_credentials | `azure.application.enabled: true` |
 | External partner | Maskinporten | `maskinporten.enabled: true` |
 
 **Communication decision tree:**
@@ -244,7 +247,7 @@ Use `$api-design` when the plan includes synchronous REST APIs or BFF layers.
 
 ### Fase 3: Review — «Er dette riktig?»
 
-Review from four perspectives. In Full tier, dispatch the Sikkerhet perspective to `@security-champion-agent` with the plan and the data classification, and merge its findings into the table. The other perspectives you may assess yourself.
+Review from five perspectives. For each, record findings and supporting evidence, or a brief reason it does not apply to the change. In Full tier, dispatch the Sikkerhet perspective to `@security-champion-agent` with the plan and the data classification, and merge its findings into the table. The other perspectives you may assess yourself.
 
 ```
 | Perspektiv        | Vurdering | Funn |
@@ -253,9 +256,12 @@ Review from four perspectives. In Full tier, dispatch the Sikkerhet perspective 
 | Plattform         | ✅/⚠️/❌  | Resources, health endpoints, observability |
 | Arkitektur        | ✅/⚠️/❌  | Simplest solution, reuse, sync vs async |
 | Endringssikkerhet | ✅/⚠️/❌  | Tests, rollback, backward compat |
+| Brukeropplevelse  | ✅/⚠️/❌  | User job, workflow, hierarchy, feedback, recovery, accessibility |
 
 Konklusjon: Godkjent / Godkjent med endringer / Tilbake til Fase 2
 ```
+
+**Brukeropplevelse** evaluates whether the intended user can enter, complete, and check the task through a coherent workflow. Assess navigation, working content, and supporting information against that job, including reading, comparison, or monitoring when that is the purpose. For plans, inspect the proposed flow and assumptions; for implemented UI, exercise the task on the rendered interface. Record what was inspected and any missing evidence. Passing tests and correct components alone do not establish usability.
 
 Use `$nav-architecture-review` to generate a formal ADR.
 

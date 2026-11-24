@@ -59,7 +59,7 @@ Ask user if they need:
    ```yaml
    gcp:
      sqlInstances:
-       - type: POSTGRES_15
+       - type: POSTGRES_18
          databases:
            - name: mydb
    ```
@@ -71,7 +71,7 @@ Ask user if they need:
      pool: nav-dev # or nav-prod
    ```
 
-3. **Azure AD authentication**
+3. **Entra ID authentication**
 
    ```yaml
    azure:
@@ -139,7 +139,7 @@ spec:
   # Database (optional)
   gcp:
     sqlInstances:
-      - type: POSTGRES_15
+      - type: POSTGRES_18
         databases:
           - name: myapp-db
 
@@ -170,6 +170,12 @@ spec:
       rules:
         - application: downstream-app
           namespace: downstream-namespace
+      # External hosts (optional - remove if the app calls nothing outside the cluster)
+      # Egress is blocked unless listed here or on the Nais default allow-list:
+      # https://doc.nais.io/workloads/reference/access-policies/
+      # host has no https://; add ports for protocols other than HTTPS.
+      external:
+        - host: api.example.com
 ```
 
 ## Follow-up
@@ -194,7 +200,7 @@ After generating the manifest, explain:
 1. **Resource-modellen** — Why `requests` vs `limits`, and why there's no CPU limit (only requests). What happens when a pod exceeds memory limits vs CPU requests?
 2. **accessPolicy** — Why Nais defaults to deny-all networking. What breaks if you forget `outbound.rules` for a downstream service?
 3. **Replicas og autoscaling** — Why `min: 2` (availability during deploys), and how `cpuThresholdPercentage` triggers scaling.
-4. **Auth-valg** — The difference between Azure AD (machine-to-machine), TokenX (user context delegation), and ID-porten (citizen login). Which one fits your use case and why?
+4. **Auth-valg** — The difference between Entra ID (machine-to-machine), TokenX (user context delegation), and ID-porten (citizen login). Which one fits your use case and why?
 
 🔴 **Rød sone**: `accessPolicy` and auth configuration directly affect your application's security posture — understand the trust boundaries before deploying.
 
