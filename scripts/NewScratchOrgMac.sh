@@ -69,8 +69,8 @@ sf package install --package 04tQC000001MXeHYAW -r --installation-key $3 --wait 
 echo "\nInstallerer crm-henvendelse 0.209.0"
 sf package install --package 04tQC000001YzwXYAS -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-arbeidsgiver-base 1.726.0"
-sf package install --package 04tQC000001afthYAA -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nInstallerer crm-arbeidsgiver-base 1.742.0"
+sf package install --package 04tQB000002oVCLYA2 -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo "\nDeployer metadata.."
 sf project deploy start --target-org "$1" --wait 10
