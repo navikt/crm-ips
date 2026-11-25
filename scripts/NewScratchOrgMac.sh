@@ -69,11 +69,11 @@ sf package install --package 04tQC000001MXeHYAW -r --installation-key $3 --wait 
 echo "\nInstallerer crm-henvendelse 0.209.0"
 sf package install --package 04tQC000001YzwXYAS -r --installation-key $3 --wait 4 --publish-wait 4
 
-echo "\nInstallerer crm-arbeidsgiver-base 1.742.0"
-sf package install --package 04tQB000002oVCLYA2 -r --installation-key $3 --wait 4 --publish-wait 4
+echo "\nInstallerer crm-arbeidsgiver-base 1.743.0"
+sf package install --package 04tQC000001gOWnYAM -r --installation-key $3 --wait 4 --publish-wait 4
 
 echo "\nDeployer metadata.."
-sf project deploy start --target-org "$1" --wait 10
+sf project deploy start --target-org "$1" --wait 20
 
 # Assign permission sets
 echo "\nGir brukeren tilgangen til IPS_management.."
