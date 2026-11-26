@@ -243,7 +243,8 @@
     </decisions>
     <description>Opprettelse av nytt Jobbspor for IPS.
 ** Bruke telefonnummer på Person hentet fra KRR
-** Infotekst for Behandlingsteam og valgfritt felt for Nettverk/samarbeidspartner</description>
+** Infotekst for Behandlingsteam og valgfritt felt for Nettverk/samarbeidspartner
+** Maks 80 tegn i Behandlingsteam (JOBBSPORET-707)</description>
     <environments>Default</environments>
     <formulas>
         <name>adjustfor100</name>
@@ -1072,6 +1073,10 @@ LEN( {!ips_participants_scn}) == 11
                     <stringValue>12</stringValue>
                 </width>
             </styleProperties>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Behandlingsteam kan ha maks 80 tegn. Skriv bare navnet på behandlingsteamet.&lt;/p&gt;</errorMessage>
+                <formulaExpression>LEN({!Behandlingsteam_Innsatsteam}) &lt;= 80</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
             <name>Nettverk_samarbeidspartner</name>
