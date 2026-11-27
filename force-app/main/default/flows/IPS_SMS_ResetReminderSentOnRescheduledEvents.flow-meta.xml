@@ -2,7 +2,7 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
-    <description>Resets the Reminder Sent Flag when Events are rescheduled</description>
+    <description>Resets the reminder SMS flag when IPS, AMS or CE meetings are rescheduled.</description>
     <environments>Default</environments>
     <label>IPS - SMS - Reset Reminder Sent On Rescheduled Events</label>
     <processMetadataValues>
@@ -49,7 +49,15 @@
 ||
 {!$Record.RecordType.DeveloperName} = &apos;Ips_uo_Deltakermote&apos;
 ||
-{!$Record.RecordType.DeveloperName} = &apos;ips_UO_m_ter&apos;)
+{!$Record.RecordType.DeveloperName} = &apos;ips_UO_m_ter&apos;
+||
+{!$Record.RecordType.DeveloperName} = &apos;CE_Participant_event&apos;
+||
+{!$Record.RecordType.DeveloperName} = &apos;CE_Employer_event&apos;
+||
+{!$Record.RecordType.DeveloperName} = &apos;CE_Employer_event_opportunity&apos;
+||
+{!$Record.RecordType.DeveloperName} = &apos;CE_Employer_event_job&apos;)
 &amp;&amp;
 ISCHANGED({!$Record.ActivityDateTime})
 &amp;&amp;
