@@ -18,14 +18,12 @@
  *                     eventuelt med suffiksene " Jobbspesialist"/" Metodeveileder" fjernet
  *                   - Teams er allerede opprettet i org
  * @author       : Håkon Kavli
- * @since        : 0.531.0
- * @version      : 0.531.0
- * @see          : class#member 'text string' <a href='URL'>label</a>
  **/
 public with sharing class IPS_CreateTeamMembersHelper {
     // Hent alle teams fra org ved lasting av klassen
     public static List<ips_Team__c> teams = [SELECT Id, Name FROM ips_Team__c WITH SYSTEM_MODE];
     public static Map<String, Id> teamIdByName = getTeamIdByName();
+    private static Map<Id, ips_Team__c> teamById = getTeamById();
     public static final Set<String> TARGET_PROFILES = new Set<String>{
         'NAV IPS Jobbspesialist',
         'NAV IPS Metodeveileder',
@@ -63,6 +61,14 @@ public with sharing class IPS_CreateTeamMembersHelper {
         return teamIdByName;
     }
 
+    private static Map<Id, ips_Team__c> getTeamById() {
+        Map<Id, ips_Team__c> teamById = new Map<Id, ips_Team__c>();
+        for (ips_Team__c team : teams) {
+            teamById.put(team.Id, team);
+        }
+        return teamById;
+    }
+
     // --- Get all relevant IPS/AMS roles in the hierarchy, skip roles without active users ---
     public static Map<Id, UserRole> salesforceRolesById = new Map<Id, UserRole>(
         [
@@ -90,7 +96,8 @@ public with sharing class IPS_CreateTeamMembersHelper {
             childRoleIdsByParentId.get(role.ParentRoleId).add(role.Id);
         }
     }
-    public static List<ips_Team_Member__c> teamMembersToCreate = new List<ips_Team_Member__c>();
+    public class UnknownTeamException extends Exception {
+    }
 
     /**
      * @description Returns the list of team members that would be created for the given users.
@@ -109,28 +116,30 @@ public with sharing class IPS_CreateTeamMembersHelper {
      * @return List<ips_Team_Member__c> Resulting list of team members to be created
      **/
     public List<ips_Team_Member__c> createTeamMembers(List<User> usersToCreateTeamMembersFor) {
-        List<String> skipped = new List<String>();
-        // Clear the list of team members to create before processing
-        teamMembersToCreate.clear();
+        List<ips_Team_Member__c> teamMembersToCreate = new List<ips_Team_Member__c>();
+        Integer missingRoleCount = 0;
+        Integer missingTeamCount = 0;
 
         for (User u : usersToCreateTeamMembersFor) {
             String salesforceRole = u.UserRole?.Name;
             if (salesforceRole == null) {
+                missingRoleCount++;
                 continue;
             }
 
             // Process fagansvarlig roles separately
             if (salesforceRole.startsWith(FAGANSVARLIG_ROLE_PREFIX)) {
-                teamMembersToCreate.addAll(
-                    addFagansvarligTeamMembers(
-                        u,
-                        teamIdByName,
-                        childRoleIdsByParentId,
-                        salesforceRolesById,
-                        ROLE_NAME_SUFFIXES,
-                        skipped
-                    )
+                List<ips_Team_Member__c> fagansvarligTeamMembers = addFagansvarligTeamMembers(
+                    u,
+                    teamIdByName,
+                    childRoleIdsByParentId,
+                    salesforceRolesById,
+                    ROLE_NAME_SUFFIXES
                 );
+                if (fagansvarligTeamMembers.isEmpty()) {
+                    missingTeamCount++;
+                }
+                teamMembersToCreate.addAll(fagansvarligTeamMembers);
                 // Process next user in the list
                 continue;
             }
@@ -141,10 +150,25 @@ public with sharing class IPS_CreateTeamMembersHelper {
             Boolean isExternal = isExternal(salesforceRole);
             Id teamId = resolveTeamId(salesforceRole, teamIdByName, ROLE_NAME_SUFFIXES);
             if (teamId == null) {
+                missingTeamCount++;
                 continue;
             }
             teamMembersToCreate.add(buildTeamMember(u, teamId, teamRole, isExternal));
         }
+
+        if (missingRoleCount > 0 || missingTeamCount > 0) {
+            LoggerUtility logger = new LoggerUtility();
+            logger.info(
+                'Skipped users: ' +
+                    missingRoleCount +
+                    ' without a role, ' +
+                    missingTeamCount +
+                    ' without a matching team.',
+                CRM_ApplicationDomain.Domain.IPS
+            );
+            logger.publishSynch();
+        }
+
         return teamMembersToCreate;
     }
 
@@ -181,14 +205,19 @@ public with sharing class IPS_CreateTeamMembersHelper {
      * @description Helper method to build an ips_Team_Member__c record for a given user, team, and role.
      */
     public ips_Team_Member__c buildTeamMember(User u, Id teamId, String role, Boolean isExternal) {
+        ips_Team__c team = teamById.get(teamId);
+        if (team == null) {
+            throw new UnknownTeamException('No team was found for the supplied team Id.');
+        }
+
         return new ips_Team_Member__c(
             ips_Is_External__c = isExternal,
             ips_NAV_Ident__c = u.CRM_NAV_Ident__c,
             ips_Role__c = role,
             ips_Start_Date__c = Date.valueOf(u.CreatedDate),
             ips_Team__c = teamId,
-            // Unik nøkkel per bruker+team — gjør operasjonen idempotent
-            ips_Unique_User_Key__c = u.Id + '_' + teamId,
+            // Samme unike nøkkel som aktiv Flow: ident + teamnavn.
+            ips_Unique_User_Key__c = u.CRM_NAV_Ident__c + '_' + team.Name,
             ips_User__c = u.Id
         );
     }
@@ -203,8 +232,7 @@ public with sharing class IPS_CreateTeamMembersHelper {
         Map<String, Id> teamIdByName,
         Map<Id, List<Id>> childRoleIdsByParentId,
         Map<Id, UserRole> roleById,
-        List<String> suffixes,
-        List<String> skipped
+        List<String> suffixes
     ) {
         List<ips_Team_Member__c> toUpsert = new List<ips_Team_Member__c>();
         Set<Id> teamIds = new Set<Id>();
