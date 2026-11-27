@@ -2,8 +2,14 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IPS_9_checkSubcategoryAMS</fullName>
     <active>true</active>
+    <description>Requires a subcategory on AMS and CE employer meetings on every save.</description>
     <errorConditionFormula>AND(
-        RecordType.DeveloperName = &quot;ips_UO_m_ter&quot;,
+        OR(
+            RecordType.DeveloperName = &quot;ips_UO_m_ter&quot;,
+            RecordType.DeveloperName = &quot;CE_Employer_event&quot;,
+            RecordType.DeveloperName = &quot;CE_Employer_event_opportunity&quot;,
+            RecordType.DeveloperName = &quot;CE_Employer_event_job&quot;
+        ),
         ISPICKVAL(IPS_Subcategory_Type_UO__c,&apos;&apos;)
         )</errorConditionFormula>
     <errorDisplayField>IPS_Subcategory_Type_UO__c</errorDisplayField>
