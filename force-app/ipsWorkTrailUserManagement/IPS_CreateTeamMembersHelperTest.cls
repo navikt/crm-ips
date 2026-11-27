@@ -4,11 +4,7 @@ private class IPS_CreateTeamMembersHelperTest {
 
     @testSetup
     static void setup() {
-        insert new ips_Team__c(
-            Name = TEAM_NAME,
-            ips_Methodology__c = 'IPS',
-            ips_Region__c = 'Oslo'
-        );
+        insert new ips_Team__c(Name = TEAM_NAME, ips_Methodology__c = 'IPS', ips_Region__c = 'Oslo');
     }
 
     @isTest
