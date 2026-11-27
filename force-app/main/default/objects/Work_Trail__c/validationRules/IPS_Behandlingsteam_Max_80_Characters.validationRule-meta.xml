@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IPS_Behandlingsteam_Max_80_Characters</fullName>
+    <active>true</active>
+    <description>JOBBSPORET-707: Behandlingsteam can have max 80 characters on IPS job tracks. Only checked when the record is created or the field is changed, so existing records with longer text are not blocked when other fields are edited. AMS/CE are not affected.</description>
+    <errorConditionFormula>AND(
+  RecordType.DeveloperName = &quot;IPS&quot;,
+  OR(
+    ISNEW(),
+    ISCHANGED(ips_Behandlingsteam__c)
+  ),
+  LEN(ips_Behandlingsteam__c) &gt; 80
+)</errorConditionFormula>
+    <errorDisplayField>ips_Behandlingsteam__c</errorDisplayField>
+    <errorMessage>Behandlingsteam can have max 80 characters. Only enter the name of the treatment team. The clinician&apos;s name and contact information should be entered in the field “Network / partner”.</errorMessage>
+</ValidationRule>
