@@ -24,6 +24,21 @@
         <br />
     </template>
 
+    <template lwc:if={openReportTitle}>
+        <lightning-card title={openReportTitle}>
+            <div class="slds-notify slds-notify_alert slds-alert_warning slds-m-around_medium" role="alert">
+                <span class="slds-assistive-text">Advarsel</span>
+                <lightning-icon
+                    icon-name="utility:warning"
+                    alternative-text="Advarsel"
+                    size="small"
+                    class="slds-m-right_x-small"
+                ></lightning-icon>
+                <h2 class="slds-text-heading_small">{openReportMessage}</h2>
+            </div>
+        </lightning-card>
+    </template>
+
     <!-- Input fields ncecessory to populate intervall reports -->
     <template if:true={isIntervall}>
         <lightning-layout-item size="5">

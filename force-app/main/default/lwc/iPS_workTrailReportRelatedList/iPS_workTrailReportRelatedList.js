@@ -52,6 +52,8 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     error;
     isLoading = false;
     trail;
+    @track openReportTitle;
+    @track openReportMessage;
 
     @wire(getRecord, { recordId: '$recordId', fields })
     wiredtrail;
@@ -105,6 +107,22 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     }
 
     handleButtonClick(event) {
+        const openReports = this.records?.filter(
+            (report) => report.IPS_status__c === 'Open' && report.IPS_report_Type__c === 'Intervall'
+        );
+
+        if (openReports?.length) {
+            const isIntervallNote = event.target.label === 'Opprett Underveisnotat';
+            const reportName = isIntervallNote ? 'underveisnotat' : 'underveisrapport';
+
+            this.openReportTitle = `Det finnes allerede en åpen rapport`;
+            this.openReportMessage = `${reportName[0].toUpperCase()}${reportName.slice(1)} må slettes, fortsette i åpent dokument eller journalføre før du kan opprette ny.`;
+            return;
+        }
+
+        this.openReportTitle = undefined;
+        this.openReportMessage = undefined;
+
         switch (event.target.label) {
             case 'Opprett Underveisnotat':
                 this.isIntervall = true;
@@ -122,6 +140,21 @@ export default class IPS_workTrailReportRelatedList extends NavigationMixin(Ligh
     }
 
     submitEnd(event) {
+        const openEndReports = this.records?.filter(
+            (report) => report.IPS_status__c === 'Open' && report.IPS_report_Type__c === 'End report'
+        );
+
+        if (openEndReports?.length) {
+            const isEndNote = event.target.label === 'Opprett Avslutningsnotat';
+            const endReportName = isEndNote ? 'avslutningsnotat' : 'sluttrapport';
+
+            this.openReportTitle = `Det finnes allerede en åpen rapport`;
+            this.openReportMessage = `${isEndNote ? 'Avslutningsnotatet' : 'Sluttrapporten'} må slettes, eller fortsett i åpent dokument`;
+            return;
+        }
+
+        this.openReportTitle = undefined;
+        this.openReportMessage = undefined;
         this.intervallDateFrom = null;
         this.intervallDateTo = null;
         this.reportType = 'End report';
