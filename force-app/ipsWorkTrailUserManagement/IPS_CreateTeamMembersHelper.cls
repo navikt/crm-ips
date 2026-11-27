@@ -39,7 +39,13 @@ public with sharing class IPS_CreateTeamMembersHelper {
 
     // Suffikser som kan forekomme på rollenavn under en Fagansvarlig-rolle, men
     // som ikke er en del av selve team-navnet.
-    public static final List<String> ROLE_NAME_SUFFIXES = new List<String>{ ' Jobbspesialist', ' Metodeveileder' };
+    public static final List<String> ROLE_NAME_SUFFIXES = new List<String>{
+        ' Jobbspesialist Ekstern',
+        ' Jobbspesialist (kommune) Ekstern',
+        ' Jobbspesialist (spes.helse) Ekstern',
+        ' Jobbspesialist',
+        ' Metodeveileder'
+    };
 
     public static Map<String, String> profileToRole = new Map<String, String>{
         'NAV IPS Jobbspesialist' => 'Jobbspesialist',
@@ -63,13 +69,11 @@ public with sharing class IPS_CreateTeamMembersHelper {
             SELECT Id, Name, ParentRoleId
             FROM UserRole
             WHERE
-                (ParentRole.ParentRole.Name = :ULTIMATE_PARENT_ROLE_NAME
+                ParentRole.ParentRole.Name = :ULTIMATE_PARENT_ROLE_NAME
                 OR ParentRole.ParentRole.ParentRole.Name = :ULTIMATE_PARENT_ROLE_NAME
-                OR ParentRole.ParentRole.ParentRole.ParentRole.Name = :ULTIMATE_PARENT_ROLE_NAME)
-                AND Id IN (SELECT UserRoleId FROM User WHERE IsActive = TRUE AND Profile.Name IN :TARGET_PROFILES)
+                OR ParentRole.ParentRole.ParentRole.ParentRole.Name = :ULTIMATE_PARENT_ROLE_NAME
             WITH SYSTEM_MODE
             ORDER BY Name
-            LIMIT 500
         ]
     );
 
@@ -111,6 +115,9 @@ public with sharing class IPS_CreateTeamMembersHelper {
 
         for (User u : usersToCreateTeamMembersFor) {
             String salesforceRole = u.UserRole?.Name;
+            if (salesforceRole == null) {
+                continue;
+            }
 
             // Process fagansvarlig roles separately
             if (salesforceRole.startsWith(FAGANSVARLIG_ROLE_PREFIX)) {
@@ -121,7 +128,6 @@ public with sharing class IPS_CreateTeamMembersHelper {
                         childRoleIdsByParentId,
                         salesforceRolesById,
                         ROLE_NAME_SUFFIXES,
-                        teamMembersToCreate,
                         skipped
                     )
                 );
@@ -134,6 +140,9 @@ public with sharing class IPS_CreateTeamMembersHelper {
             // Check if user is External
             Boolean isExternal = isExternal(salesforceRole);
             Id teamId = resolveTeamId(salesforceRole, teamIdByName, ROLE_NAME_SUFFIXES);
+            if (teamId == null) {
+                continue;
+            }
             teamMembersToCreate.add(buildTeamMember(u, teamId, teamRole, isExternal));
         }
         return teamMembersToCreate;
@@ -195,9 +204,9 @@ public with sharing class IPS_CreateTeamMembersHelper {
         Map<Id, List<Id>> childRoleIdsByParentId,
         Map<Id, UserRole> roleById,
         List<String> suffixes,
-        List<ips_Team_Member__c> toUpsert,
         List<String> skipped
     ) {
+        List<ips_Team_Member__c> toUpsert = new List<ips_Team_Member__c>();
         Set<Id> teamIds = new Set<Id>();
         Set<Id> visitedRoleIds = new Set<Id>();
         List<Id> queue = new List<Id>();
